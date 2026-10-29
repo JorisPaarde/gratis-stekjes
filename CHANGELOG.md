@@ -9,6 +9,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.13.2] - 2026-10-29
+
+### Fixed
+
+- Deploy schrijft `.env`-secrets als single-quoted dotenv-waarden (`scripts/dotenv-quote.sh`), zodat `#`/`!`/`$`/spaties in o.a. `MAIL_PASSWORD` niet meer worden afgekapt door phpdotenv (SMTP 535).
+- Na `.env`-schrijven: `config:clear` vóór `config:cache`.
+
 ## [0.13.1] - 2026-10-29
 
 ### Fixed
