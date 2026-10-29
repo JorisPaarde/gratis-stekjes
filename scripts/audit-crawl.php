@@ -104,6 +104,7 @@ function extractLinks(string $html): array
 }
 
 $stektips = app(App\Services\Stektips::class)->all();
+$kennisbank = app(App\Services\Kennisbank::class)->all();
 $steden = app(App\Services\Steden::class)->all();
 $organisaties = app(App\Services\Organisaties::class)->all();
 
@@ -115,6 +116,9 @@ $paths = [
     '/aanbod', '/api/zoeken?q=Haarlem', '/api/partners', '/api/deelplekken', '/api/nu-te-stekken',
     '/account/registreren', '/account/inloggen', '/account/wachtwoord-vergeten', '/beheer',
 ];
+foreach ($kennisbank as $a) {
+    $paths[] = '/stektips/artikel/'.$a['slug'];
+}
 foreach ($stektips as $s) {
     $paths[] = '/stektips/'.$s['slug'];
 }

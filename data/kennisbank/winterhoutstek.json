@@ -1,0 +1,49 @@
+{
+  "slug": "winterhoutstek",
+  "titel": "Winterhoutstek: stekken in de rustperiode",
+  "samenvatting": "Van mid-herfst tot late winter: houtige stekken van dit jaar, buiten of in pot. Rustig, betrouwbaar, weinig apparatuur.",
+  "zoekwoorden": [
+    "winterhoutstek",
+    "winterstek",
+    "hardwood cuttings",
+    "stekken in de winter",
+    "houtstek"
+  ],
+  "categorieen": ["stekmethoden", "timing-seizoen"],
+  "gerelateerde_soorten": ["wilg", "zwarte-bes", "rode-bes", "kruisbes", "vijg", "moerbei", "zwarte-vlier"],
+  "seizoenen": ["herfst", "winter"],
+  "maanden": [11, 12, 1, 2],
+  "niveau": "beginner",
+  "locatie": "buiten",
+  "inhoud": [
+    {
+      "type": "p",
+      "tekst": "Winterhoutstek (hardwood cutting) neem je van mid-herfst tot late winter, na bladval, buiten strenge vorst om. Het hout is stevig maar nog buigzaam — groei van dit seizoen. Geschikt voor veel bladverliezende struiken, klimmers en fruit (bessen, vijg, moerbei) en voor wilg."
+    },
+    {
+      "type": "h2",
+      "tekst": "Hoe"
+    },
+    {
+      "type": "ol",
+      "items": [
+        "Kies gezonde, krachtige scheuten van dit jaar; tip (zacht deel) eraf.",
+        "Zaag of knip stukken van 15–30 cm: schuine snede boven een knop (bovenkant), rechte snede onder een knop (onderkant).",
+        "Zet ongeveer twee derde in de grond of in een diepe pot met luchtige, zandige mix.",
+        "Houd de stekken vochtig in droge zomers; laat ze tot de volgende herfst staan tot ze goed geworteld zijn."
+      ]
+    },
+    {
+      "type": "p",
+      "tekst": "Commercieel stekpoeder noemt de RHS als optie; voor veel makkelijke soorten (wilg, bessen) is het niet nodig. Wil je mild stimuleren zonder synthetisch poeder: zie wilgenwater. Winterstek past goed bij permacultuur: weinig energie, buiten, van snoei- of dunningshout."
+    }
+  ],
+  "bronnen": [
+    {
+      "titel": "RHS — Hardwood cuttings",
+      "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
+    }
+  ],
+  "duurzamer_alternatief": null,
+  "howto": true
+}

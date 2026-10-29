@@ -8,6 +8,7 @@ use App\Models\Message;
 use App\Models\User;
 use App\Services\Organisaties;
 use App\Services\Steden;
+use App\Services\Kennisbank;
 use App\Services\Stektips;
 use Database\Seeders\DeelplekkenSeeder;
 use Database\Seeders\DemoSeeder;
@@ -49,6 +50,9 @@ function auditPublicGetRoutes(): array
         '/partners', // 301
     ];
 
+    foreach (app(Kennisbank::class)->all() as $artikel) {
+        $routes[] = '/stektips/artikel/'.$artikel['slug'];
+    }
     foreach (app(Stektips::class)->all() as $soort) {
         $routes[] = '/stektips/'.$soort['slug'];
     }

@@ -9,6 +9,16 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.19.0] - 2026-10-29
+
+### Added
+
+- Kennisbank op `/stektips`: 11 artikelen (JSON in `data/kennisbank/*.json`) over stekmethoden, timing, wortelbevordering, snoeien en permacultuur — elk met ≥1 geverifieerde bron-URL.
+- Artikelpagina’s op `/stektips/artikel/{slug}` (padsegment `artikel` voorkomt botsing met soort-slugs; zie `docs/kennisbank-urls.md`).
+- Overzicht `/stektips` met server-side zoeken en filters (categorie, seizoen, maand, binnen/buiten, soort); 48 soortpagina’s blijven op `/stektips/{slug}` en zijn filterbaar.
+- Breadcrumbs, schema.org Article/HowTo JSON-LD, blok “Gerelateerde artikelen” (ook op soortpagina’s); stekpoeder verwijst naar wilgenwater als duurzamer alternatief.
+- Sitemap uitgebreid met kennisbank-URL’s; tests voor filter/zoek/artikel/related/bronnen.
+
 ## [0.18.0] - 2026-10-29
 
 ### Added

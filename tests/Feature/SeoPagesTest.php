@@ -20,7 +20,8 @@ test('stektips index en soortpagina', function () {
         ->assertSee('Zwarte bes', false)
         ->assertSee('Herfstolijfwilg', false)
         ->assertSee('Monstera', false)
-        ->assertSee('48 soorten', false);
+        ->assertSee('48 soorten', false)
+        ->assertSee('Wilgenwater', false);
 
     $this->get(route('stektips.show', ['slug' => 'aardbei']))
         ->assertOk()
@@ -39,5 +40,6 @@ test('sitemap bevat stektips', function () {
 
     expect($xml)->toContain(route('stektips.index'));
     expect($xml)->toContain(route('stektips.show', ['slug' => 'munt']));
+    expect($xml)->toContain(route('stektips.artikel', ['slug' => 'wilgenwater']));
     expect($xml)->toContain(route('hoe-werkt-het'));
 });

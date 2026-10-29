@@ -64,7 +64,12 @@ Route::get('/over', [ContentPageController::class, 'over'])->name('over');
 Route::get('/doe-mee', [ContentPageController::class, 'doeMee'])->name('doe-mee');
 Route::get('/invasieve-soorten', InvasieveSoortenController::class)->name('invasieve-soorten');
 Route::get('/stektips', [StektipsController::class, 'index'])->name('stektips.index');
-Route::get('/stektips/{slug}', [StektipsController::class, 'show'])->name('stektips.show');
+Route::get('/stektips/artikel/{slug}', [StektipsController::class, 'artikel'])
+    ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+    ->name('stektips.artikel');
+Route::get('/stektips/{slug}', [StektipsController::class, 'show'])
+    ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+    ->name('stektips.show');
 
 Route::get('/gratis-planten', [GratisPlantenController::class, 'index'])->name('gratis-planten.index');
 Route::get('/gratis-planten/{stad}', [GratisPlantenController::class, 'show'])
