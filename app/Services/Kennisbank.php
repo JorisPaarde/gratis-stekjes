@@ -119,14 +119,69 @@ final class Kennisbank
     }
 
     /**
+     * Pijler-hubs in de volgorde van categories.json → pillars.
+     *
      * @return list<array<string, mixed>>
      */
     public function pillars(): array
     {
-        return array_values(array_filter(
-            $this->all(),
-            static fn (array $a): bool => ! empty($a['is_pillar'])
-        ));
+        $byPillar = [];
+        foreach ($this->all() as $artikel) {
+            if (empty($artikel['is_pillar'])) {
+                continue;
+            }
+            $key = (string) ($artikel['pillar'] ?? $artikel['slug'] ?? '');
+            if ($key !== '') {
+                $byPillar[$key] = $artikel;
+            }
+        }
+
+        $ordered = [];
+        foreach (array_keys($this->pillarMeta()) as $pillarSlug) {
+            if (isset($byPillar[$pillarSlug])) {
+                $ordered[] = $byPillar[$pillarSlug];
+                unset($byPillar[$pillarSlug]);
+            }
+        }
+        foreach ($byPillar as $artikel) {
+            $ordered[] = $artikel;
+        }
+
+        return $ordered;
+    }
+
+    /**
+     * @return array<string, array{hub_slug: string, naam: string}>
+     */
+    public function pillarMeta(): array
+    {
+        $path = ($this->directory ?? base_path('data/kennisbank')).'/categories.json';
+        if (! is_readable($path)) {
+            return [];
+        }
+        $data = json_decode((string) file_get_contents($path), true);
+        $pillars = $data['pillars'] ?? [];
+        if (! is_array($pillars)) {
+            return [];
+        }
+
+        $out = [];
+        foreach ($pillars as $slug => $meta) {
+            if (! is_string($slug) || ! is_array($meta)) {
+                continue;
+            }
+            $hub = (string) ($meta['hub_slug'] ?? '');
+            $naam = (string) ($meta['naam'] ?? '');
+            if ($hub === '' || $naam === '') {
+                continue;
+            }
+            $out[$slug] = [
+                'hub_slug' => $hub,
+                'naam' => $naam,
+            ];
+        }
+
+        return $out;
     }
 
     /**

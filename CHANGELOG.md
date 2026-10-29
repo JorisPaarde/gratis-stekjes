@@ -9,6 +9,16 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.20.2] - 2026-10-29
+
+### Fixed
+
+- Permacultuur-pillarkaart op `/stektips` (hub `/stektips/artikel/permacultuur-gilde-voedselbos`); test dwingt alle vijf pijlers af.
+
+### Changed
+
+- Snoeikalender op pijler Snoeien: twaalf maandregels i.p.v. zes groepen.
+
 ## [0.20.1] - 2026-10-29
 
 ### Added
