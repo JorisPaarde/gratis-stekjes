@@ -33,6 +33,7 @@ class CronController extends Controller
                 'queue_work' => ['exit' => $queueExit],
                 'expiry_reminders' => $expiry->sendExpiryReminders(),
                 'purge_geocode_cache' => ['deleted' => $expiry->purgeGeocodeCache()],
+                'purge_mail_log' => ['deleted' => $expiry->purgeMailLog()],
             ];
         } catch (Throwable $e) {
             return response()->json([

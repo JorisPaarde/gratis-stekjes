@@ -7,8 +7,10 @@ namespace App\Services;
 use App\Mail\AanbodExpiryReminderMail;
 use App\Models\Aanbod;
 use App\Models\GeocodeCache;
+use App\Models\MailLog;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Schema;
 use Throwable;
 
 final class AanbodExpiryService
@@ -124,6 +126,19 @@ final class AanbodExpiryService
 
         return GeocodeCache::query()
             ->where('cached_at', '<', now()->subDays($days))
+            ->delete();
+    }
+
+    public function purgeMailLog(): int
+    {
+        if (! Schema::hasTable('mail_log')) {
+            return 0;
+        }
+
+        $days = (int) config('stekjes.mail_log_retention_days', 90);
+
+        return MailLog::query()
+            ->where('created_at', '<', now()->subDays($days))
             ->delete();
     }
 

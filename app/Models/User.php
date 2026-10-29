@@ -80,4 +80,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Aanbod::class);
     }
+
+    public function mailLogs(): HasMany
+    {
+        return $this->hasMany(MailLog::class);
+    }
+
+    public function latestMailLog(): ?MailLog
+    {
+        return $this->mailLogs()->orderByDesc('id')->first();
+    }
 }

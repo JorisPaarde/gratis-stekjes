@@ -28,6 +28,64 @@
   @if($errors->has('deelplek'))
     <p class="error" role="alert">{{ $errors->first('deelplek') }}</p>
   @endif
+  @if($errors->has('user'))
+    <p class="error" role="alert">{{ $errors->first('user') }}</p>
+  @endif
+
+  <h2 id="gebruikers">Gebruikers</h2>
+  <p class="muted">Bevestigingsstatus en laatste mailpoging (geen e-mailadressen in mail_log). Tijdstip in Europe/Amsterdam.</p>
+  @if(count($users) === 0)
+    <p class="muted">Nog geen gebruikers.</p>
+  @else
+    <div class="beheer-table-wrap">
+      <table class="beheer-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Naam</th>
+            <th>Bevestigd</th>
+            <th>Laatste mail</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach($users as $row)
+            @php
+              /** @var \App\Models\User $u */
+              $u = $row['user'];
+              /** @var \App\Models\MailLog|null $mail */
+              $mail = $row['last_mail'];
+            @endphp
+            <tr>
+              <td>{{ $u->id }}</td>
+              <td>{{ $u->name }}</td>
+              <td>{{ $u->hasVerifiedEmail() ? 'ja' : 'nee' }}</td>
+              <td>
+                @if($mail)
+                  {{ $mail->type }} · {{ $mail->isOk() ? 'ok' : 'fout' }}
+                  · {{ $mail->created_at?->timezone('Europe/Amsterdam')->format('d-m-Y H:i') }}
+                  @if(! $mail->isOk() && $mail->error)
+                    <div class="muted">{{ \Illuminate\Support\Str::limit($mail->error, 80) }}</div>
+                  @endif
+                @else
+                  <span class="muted">geen</span>
+                @endif
+              </td>
+              <td class="beheer-actions">
+                @unless($u->hasVerifiedEmail())
+                  <form method="post" action="{{ route('beheer.users.resend-verification') }}">
+                    @csrf
+                    <input type="hidden" name="user_id" value="{{ $u->id }}">
+                    <button type="submit" class="linkish">Bevestigingsmail opnieuw sturen</button>
+                  </form>
+                @endunless
+              </td>
+            </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+  @endif
 
   <h2 id="deelplek-aanmeldingen">Deelplek-aanmeldingen</h2>
   <p class="muted">Aanmeldingen via <a href="{{ route('voor-organisaties.aanmelden') }}">/voor-organisaties/aanmelden</a>. Pas na goedkeuring zichtbaar op deelplekken en stadspagina’s. Contact-e-mail is niet publiek.</p>

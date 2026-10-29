@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use App\Models\MailLog;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Schema;
 use Throwable;
 
 /**
  * Transactionele account-mail: plan verzending na de HTTP-response
  * (geen database-queue / cron), zodat de gebruiker niet op SMTP wacht.
- * SMTP-fouten worden gelogd en geven geen 500.
+ * SMTP-fouten worden gelogd (laravel.log + mail_log) en geven geen 500.
  */
 final class SafeMail
 {
@@ -21,14 +24,24 @@ final class SafeMail
      */
     public static function notify(object $notifiable, object $notification): bool
     {
+        $userId = self::resolveUserId($notifiable);
+        $type = self::typeName($notification);
+
         try {
-            self::afterResponse(static function () use ($notifiable, $notification): void {
-                $notifiable->notify($notification);
+            self::afterResponse(static function () use ($notifiable, $notification, $userId, $type): void {
+                try {
+                    $notifiable->notify($notification);
+                    self::record($userId, $type, 'ok', null);
+                } catch (Throwable $e) {
+                    Log::error(SafeMail::safeSummary($e));
+                    self::record($userId, $type, 'fail', SafeMail::safeSummary($e));
+                }
             });
 
             return true;
         } catch (Throwable $e) {
             Log::error(self::safeSummary($e));
+            self::record($userId, $type, 'fail', self::safeSummary($e));
 
             return false;
         }
@@ -37,16 +50,25 @@ final class SafeMail
     /**
      * Verstuur on-demand naar een expliciet adres (niet via $user->email), na de response.
      */
-    public static function toAddress(string $email, object $notification): bool
+    public static function toAddress(string $email, object $notification, ?int $userId = null): bool
     {
+        $type = self::typeName($notification);
+
         try {
-            self::afterResponse(static function () use ($email, $notification): void {
-                Notification::route('mail', $email)->notify($notification);
+            self::afterResponse(static function () use ($email, $notification, $userId, $type): void {
+                try {
+                    Notification::route('mail', $email)->notify($notification);
+                    self::record($userId, $type, 'ok', null);
+                } catch (Throwable $e) {
+                    Log::error(SafeMail::safeSummary($e));
+                    self::record($userId, $type, 'fail', SafeMail::safeSummary($e));
+                }
             });
 
             return true;
         } catch (Throwable $e) {
             Log::error(self::safeSummary($e));
+            self::record($userId, $type, 'fail', self::safeSummary($e));
 
             return false;
         }
@@ -58,11 +80,7 @@ final class SafeMail
     private static function afterResponse(callable $send): void
     {
         $runner = static function () use ($send): void {
-            try {
-                $send();
-            } catch (Throwable $e) {
-                Log::error(SafeMail::safeSummary($e));
-            }
+            $send();
         };
 
         // Console/Pest: direct versturen (geen web-response; terminate() is onbetrouwbaar
@@ -98,5 +116,51 @@ final class SafeMail
         $message = mb_substr($message, 0, 220);
 
         return "{$class}: {$message} @ {$file}:{$line}";
+    }
+
+    public static function typeName(object $notification): string
+    {
+        return class_basename($notification);
+    }
+
+    private static function resolveUserId(object $notifiable): ?int
+    {
+        if ($notifiable instanceof User) {
+            return (int) $notifiable->getKey();
+        }
+
+        if (isset($notifiable->id) && is_numeric($notifiable->id)) {
+            return (int) $notifiable->id;
+        }
+
+        return null;
+    }
+
+    private static function record(?int $userId, string $type, string $status, ?string $error): void
+    {
+        try {
+            if (! Schema::hasTable('mail_log')) {
+                return;
+            }
+
+            $errorShort = null;
+            if ($error !== null && $error !== '') {
+                $errorShort = mb_substr($error, 0, 255);
+            }
+
+            MailLog::query()->create([
+                'user_id' => $userId,
+                'type' => mb_substr($type, 0, 80),
+                'status' => $status === 'ok' ? 'ok' : 'fail',
+                'error' => $errorShort,
+                'created_at' => now(),
+            ]);
+        } catch (Throwable $e) {
+            try {
+                Log::warning('mail_log schrijven mislukt: '.self::safeSummary($e));
+            } catch (Throwable) {
+                // Logging mag de request/mail nooit breken.
+            }
+        }
     }
 }

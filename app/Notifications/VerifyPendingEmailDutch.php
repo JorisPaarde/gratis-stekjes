@@ -41,7 +41,7 @@ class VerifyPendingEmailDutch extends Notification
     {
         return URL::temporarySignedRoute(
             'account.email.bevestigen',
-            Carbon::now()->addMinutes((int) Config::get('auth.verification.expire', 60)),
+            Carbon::now()->addMinutes((int) Config::get('auth.verification.expire', 1440)),
             [
                 'id' => $this->userId,
                 'hash' => sha1($this->pendingEmail),
