@@ -22,6 +22,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - Kennisbank-categorieën hernoemd naar de vijf pijlers; bestaande artikelslugs ongewijzigd (geen breaking redirects).
 - Soortpagina’s hortensia/lavendel/monstera/vijg dienen als stekpagina (geen dubbele content).
+- Kennisbank-artikelen in ik-vorm (geen we/wij/ons/onze); test dekt `data/kennisbank/*.json`, `soorten/*.json` en `data/stektips.json`.
 
 ## [0.19.1] - 2026-10-29
 

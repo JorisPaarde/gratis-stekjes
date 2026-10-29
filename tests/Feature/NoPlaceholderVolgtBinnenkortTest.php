@@ -89,3 +89,32 @@ test('privacy, over en initiatieven tonen geen Volgt binnenkort en geen we/wij/o
         );
     }
 });
+
+test('kennisbank-artikelen en soort-JSON bevatten geen we/wij/ons/onze', function () {
+    $files = array_merge(
+        glob(base_path('data/kennisbank/*.json')) ?: [],
+        glob(base_path('soorten/*.json')) ?: [],
+        [base_path('data/stektips.json')]
+    );
+
+    $skip = ['categories.json', 'soort-hubs.json'];
+    $hits = [];
+
+    foreach ($files as $path) {
+        $name = basename((string) $path);
+        if (in_array($name, $skip, true)) {
+            continue;
+        }
+        if (! is_readable($path)) {
+            continue;
+        }
+        $contents = (string) file_get_contents($path);
+        if (preg_match('/\b(we|wij|ons|onze)\b/iu', $contents) === 1) {
+            $hits[] = str_replace(base_path().DIRECTORY_SEPARATOR, '', (string) $path);
+        }
+    }
+
+    expect($hits)->toBeEmpty(
+        'Nog we/wij/ons/onze in artikel-/soort-JSON: '.implode(', ', $hits)
+    );
+});
