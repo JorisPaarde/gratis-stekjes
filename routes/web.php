@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Account\AanbodController;
+use App\Http\Controllers\Account\AanbodVerlengenController;
 use App\Http\Controllers\Account\ConversationController;
 use App\Http\Controllers\Account\InboxController;
 use App\Http\Controllers\Account\ProfileController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Api\ZoekenController as ApiZoekenController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\CronController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ZoekenController;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +26,10 @@ Route::get('/robots.txt', [PageController::class, 'robots'])->name('robots');
 Route::get('/aanbod', ZoekenController::class)->name('aanbod');
 Route::get('/api/zoeken', ApiZoekenController::class)->name('api.zoeken');
 Route::get('/api/partners', ApiPartnersController::class)->name('api.partners');
+
+Route::get('/cron', CronController::class)->name('cron');
+Route::get('/account/aanbod-verlengen', AanbodVerlengenController::class)
+    ->name('account.aanbod-verlengen');
 
 Route::middleware('guest')->group(function () {
     Route::get('/account/registreren', [RegisterController::class, 'create'])->name('account.registreren');
