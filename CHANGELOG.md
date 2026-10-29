@@ -9,6 +9,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.15.1] - 2026-10-29
+
+### Fixed
+
+- `/account/aanbod` gaf HTTP 500: Blade liet `@endif` plakken aan `verborgen` zonder woordgrens, waardoor de template niet compileerde.
+- Aanbod plaatsen via `POST /account/aanbod/nieuw` (`account.aanbod.store`); oude `POST /account/aanbod` blijft werken.
+
 ## [0.15.0] - 2026-10-29
 
 ### Added
@@ -16,6 +23,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - SEO-stadspagina’s **Gratis planten in [stad]** (`/gratis-planten/{slug}`) voor ~40 grootste gemeenten, plus overzicht `/gratis-planten` per provincie.
 - Brondata in `data/steden.json` (CI-validatie); per stad unieke intro, actueel aanbod binnen straal, kaartuitsnede, deelplekken in/bij de stad (uit `data/deelplekken.json`), nabije steden, FAQ + FAQPage-schema en canonical.
 - Sitemap-, footer- en homepage-link (“Gratis planten in jouw stad”).
+
 
 ## [0.14.1] - 2026-10-29
 
