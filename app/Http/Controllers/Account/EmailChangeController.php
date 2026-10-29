@@ -14,12 +14,9 @@ use App\Support\SafeMail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
-use Throwable;
 
 class EmailChangeController extends Controller
 {
@@ -87,15 +84,13 @@ class EmailChangeController extends Controller
             'pending_email' => $newEmail,
         ])->save();
 
-        $okNew = SafeMail::notify($user, new VerifyPendingEmailDutch($newEmail));
-        $okOld = true;
-        try {
-            Notification::route('mail', $oldEmail)
-                ->notify(new EmailChangeNoticeDutch($newEmail));
-        } catch (Throwable $e) {
-            $okOld = false;
-            Log::error(SafeMail::safeSummary($e));
-        }
+        // Bevestiging naar het nieuwe/pending adres — niet via $user->notify()
+        // (dat zou naar het huidige/oude adres gaan).
+        $okNew = SafeMail::toAddress(
+            $newEmail,
+            new VerifyPendingEmailDutch($newEmail, (int) $user->id)
+        );
+        $okOld = SafeMail::toAddress($oldEmail, new EmailChangeNoticeDutch($newEmail));
 
         if (! $okNew) {
             return redirect()

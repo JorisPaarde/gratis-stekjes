@@ -47,6 +47,16 @@ test('gegevensexport bevat user en aanbod zonder wachtwoord', function () {
     expect($data['aanbod'])->toHaveCount(1);
     expect(json_encode($data))->not->toContain('password');
     expect(json_encode($data))->not->toContain('remember_token');
+
+    $fileVersion = trim((string) file_get_contents(base_path('VERSION')));
+    expect($data['version'])->toBe($fileVersion)
+        ->and(config('site.version'))->toBe($fileVersion);
+});
+
+test('site.version komt uit VERSION-bestand', function () {
+    $fileVersion = trim((string) file_get_contents(base_path('VERSION')));
+    expect($fileVersion)->not->toBe('')
+        ->and(config('site.version'))->toBe($fileVersion);
 });
 
 test('account verwijderen wist user en aanbod', function () {

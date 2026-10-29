@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Support;
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Throwable;
 
 final class SafeMail
@@ -17,6 +18,22 @@ final class SafeMail
     {
         try {
             $notifiable->notify($notification);
+
+            return true;
+        } catch (Throwable $e) {
+            Log::error(self::safeSummary($e));
+
+            return false;
+        }
+    }
+
+    /**
+     * Verstuur on-demand naar een expliciet adres (niet via $user->email).
+     */
+    public static function toAddress(string $email, object $notification): bool
+    {
+        try {
+            Notification::route('mail', $email)->notify($notification);
 
             return true;
         } catch (Throwable $e) {
