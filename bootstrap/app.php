@@ -14,6 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->append(NoIndexHeader::class);
         $middleware->trustProxies(at: '*');
+        $middleware->redirectGuestsTo(fn () => route('account.inloggen'));
+        $middleware->redirectUsersTo(fn () => route('account.index'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -80,7 +80,10 @@ a:hover { color: var(--accent); }
 .site-nav a:hover, .site-nav a:focus-visible { background: rgba(47, 107, 69, 0.1); }
 .nav-cta {
   background: var(--leaf) !important; color: #fff !important;
+  border: 0; cursor: pointer; font: inherit; font-weight: 560;
+  padding: .45rem .6rem; border-radius: .6rem; text-decoration: none;
 }
+.nav-logout { display: inline; margin: 0; }
 @media (min-width: 880px) {
   .nav-toggle { display: none; }
   .site-nav {
