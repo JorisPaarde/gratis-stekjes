@@ -157,6 +157,12 @@ home = layout(
         <p class="teller" data-meedoen-teller hidden></p>
       </div>
     </section>
+    <section class="section wrap" aria-labelledby="nu-te-stekken-titel" data-nu-te-stekken hidden>
+      <h2 id="nu-te-stekken-titel">Nu te stekken</h2>
+      <p class="section-intro" data-nu-te-stekken-intro></p>
+      <div class="nu-te-stekken-grid" data-nu-te-stekken-lijst></div>
+      <p class="muted" data-nu-te-stekken-meer></p>
+    </section>
     <section class="section wrap">
       <h2>Verder kijken</h2>
       <div class="grid-cards">
@@ -275,6 +281,12 @@ aanbod = layout(
         </div>
       </div>
       <p class="muted" style="margin-top:1rem">Kaarttegels: © OpenStreetMap-bijdragers. Locaties via PDOK Locatieserver (benaderd).</p>
+    </section>
+    <section class="section wrap" aria-labelledby="nu-te-stekken-titel-aanbod" data-nu-te-stekken hidden>
+      <h2 id="nu-te-stekken-titel-aanbod">Nu te stekken</h2>
+      <p class="section-intro" data-nu-te-stekken-intro></p>
+      <div class="nu-te-stekken-grid" data-nu-te-stekken-lijst></div>
+      <p class="muted" data-nu-te-stekken-meer></p>
     </section>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -586,6 +598,7 @@ write(
         "api_zoeken": path("/api/zoeken.php"),
         "api_partners": path("/api/partners.php"),
         "api_teller": path("/api/teller.php"),
+        "api_nu_te_stekken": path("/api/nu-te-stekken.php"),
     }, ensure_ascii=False) + ";\n",
     encoding="utf-8",
 )

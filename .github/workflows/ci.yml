@@ -61,6 +61,9 @@ jobs:
       - name: PHP tests — invasieve module
         run: php tests/run.php
 
+      - name: PHP tests — Nu te stekken
+        run: php tests/nu-te-stekken.php
+
       - name: JS syntax check
         run: |
           for f in assets/js/*.js; do
