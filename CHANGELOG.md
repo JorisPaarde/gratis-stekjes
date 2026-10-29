@@ -9,6 +9,16 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.17.0] - 2026-10-29
+
+### Added
+
+- Uitnodiging voor organisaties: publieke pagina `/voor-organisaties`, aanmeldformulier (honeypot + rate limit + PDOK-geocoding), pending → admin goedkeuren/afwijzen; pas na goedkeuring zichtbaar op `/deelplekken` en stadspagina’s.
+- Bevestigingsmail aan de aanmelder + admin-melding via SafeMail (SMTP); geen mail naar derden buiten de aanmelder.
+- Organisatiepagina’s (`/organisaties`, `/organisaties/{slug}`) met korte feitelijke tekst en bronlink; koppeling naar deelplekken waar van toepassing.
+- `docs/uitnodigingen.md`: contactpunten + concept-uitnodigingstekst — **alleen voorbereiding, niets versturen**.
+- Deelplek-types `voedselbos` en `tuinvereniging`; footer- en deelplekken-links naar voor organisaties.
+
 ## [0.16.0] - 2026-10-29
 
 ### Added

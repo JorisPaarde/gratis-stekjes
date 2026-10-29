@@ -48,10 +48,18 @@ return [
         'ruilkast' => 'Ruilkast',
         'stekjesruilpunt' => 'Stekjesruilpunt',
         'zaadbibliotheek' => 'Zaadbibliotheek',
+        'voedselbos' => 'Voedselbos',
+        'tuinvereniging' => 'Tuinvereniging',
     ],
 
     /** Gedeeld beheerwachtwoord (session admin_ok). Leeg = /beheer uit. */
     'admin_password' => env('ADMIN_PASSWORD', ''),
+
+    /**
+     * Beheer-mailbox voor meldingen (o.a. nieuwe deelplek-aanmelding).
+     * Leeg = MAIL_FROM_ADDRESS. Geen derden; alleen interne admin-mail.
+     */
+    'admin_email' => env('ADMIN_EMAIL', env('MAIL_FROM_ADDRESS', '')),
 
     /** Dataminimalisatie / retentie (beleidstekst + toekomstige purge). */
     'inactive_account_months' => (int) env('INACTIVE_ACCOUNT_MONTHS', 12),

@@ -38,12 +38,18 @@ class DeelplekkenSeeder extends Seeder
                     'bron_url' => trim(mb_substr((string) $row['bron_url'], 0, 500)),
                     'geraadpleegd' => (string) $row['geraadpleegd'],
                     'visible' => true,
+                    'source' => Deelplek::SOURCE_SEED,
+                    'status' => Deelplek::STATUS_APPROVED,
                 ]
             );
         }
 
+        // Alleen geseede rijen opruimen; goedgekeurde/afgewezen aanmeldingen blijven staan.
         if ($slugs !== []) {
-            Deelplek::query()->whereNotIn('slug', $slugs)->delete();
+            Deelplek::query()
+                ->where('source', Deelplek::SOURCE_SEED)
+                ->whereNotIn('slug', $slugs)
+                ->delete();
         }
     }
 }

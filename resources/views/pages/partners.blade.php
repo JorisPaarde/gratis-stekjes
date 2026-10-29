@@ -61,6 +61,6 @@
     </article>
   </div>
 
-  <p class="partners-kaart-hint">Bezoeklocaties (plantenasiel, plantenbieb, ruilkast, …) staan op <a href="{{ route('deelplekken') }}">deelplekken</a> en op de <a href="{{ route('aanbod') }}">aanbodkaart</a>. Wil je een initiatief toevoegen? Dat kan later via <em>Initiatief aanmelden</em>.</p>
+  <p class="partners-kaart-hint">Bezoeklocaties (plantenasiel, plantenbieb, ruilkast, …) staan op <a href="{{ route('deelplekken') }}">deelplekken</a> en op de <a href="{{ route('aanbod') }}">aanbodkaart</a>. Meer over organisaties: <a href="{{ route('organisaties.index') }}">organisaties</a>. Zelf aanmelden: <a href="{{ route('voor-organisaties') }}">voor organisaties</a>.</p>
 </section>
 @endsection
