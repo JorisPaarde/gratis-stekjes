@@ -95,7 +95,8 @@ Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(functio
 });
 
 Route::get('/beheer', [BeheerLoginController::class, 'create'])->name('beheer.login');
-Route::post('/beheer', [BeheerLoginController::class, 'store']);
+Route::post('/beheer', [BeheerLoginController::class, 'store'])
+    ->middleware('throttle:5,1');
 Route::post('/beheer/uitloggen', [BeheerLoginController::class, 'destroy'])->name('beheer.logout');
 
 Route::middleware('admin')->prefix('beheer')->group(function () {

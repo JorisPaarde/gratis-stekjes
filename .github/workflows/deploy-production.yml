@@ -160,6 +160,7 @@ jobs:
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           SMTP_FROM: ${{ secrets.SMTP_FROM }}
           CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
           APP_KEY_SECRET: ${{ secrets.APP_KEY }}
         run: |
           set -euo pipefail
@@ -203,6 +204,7 @@ jobs:
             echo "MAIL_FROM_ADDRESS=${SMTP_FROM}"
             echo "MAIL_FROM_NAME=\"${NAME}\""
             echo "CRON_TOKEN=${CRON_TOKEN}"
+            echo "ADMIN_PASSWORD=${ADMIN_PASSWORD}"
           } > /tmp/stekjes.env
           scp -i ~/.ssh/deploy_key -P "${P:-22}" /tmp/stekjes.env "$U@$H:${APP}/.env"
           ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "chmod 600 '${APP}/.env'"
