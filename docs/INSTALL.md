@@ -1,42 +1,36 @@
 # Installatie (lokaal en server)
 
-Precieze stappen. Geen secrets, hostnamen of private paden in deze repo — die komen uit environment / GitHub Secrets.
+Geen secrets, hostnamen of private paden in deze repo.
 
 ## Lokaal (PHP 8.2 + SQLite)
 
-1. Kopieer `config.example.php` naar een pad **buiten** de webroot, of naar `config.php` in de projectroot (staat in `.gitignore`).
-2. Zet in die config minimaal:
-   - `db_driver` => `sqlite`
-   - `db_path` => pad naar een schrijfbaar `.sqlite`-bestand buiten de webroot
-   - `site_name`, `site_url` (bijv. `http://127.0.0.1:8080`)
-   - `session_secure` => `false` zonder HTTPS
-   - SMTP mag leeg; tests kunnen `STEKJES_MAIL_CAPTURE` gebruiken
-3. Bouw statische pagina’s:
-   ```sh
-   python3 scripts/build_site.py
-   python3 scripts/build_manifest.py
-   ```
-4. Migraties:
-   ```sh
-   export STEKJES_TEST_DB=/tmp/stekjes-dev.sqlite
-   # of wijs config naar sqlite
-   php scripts/migrate.php up
-   php scripts/migrate.php status
-   ```
-5. Start:
-   ```sh
-   php -S 127.0.0.1:8080 -t .
-   ```
-6. Cron (optioneel lokaal): `curl -H "X-Cron-Token: …" http://127.0.0.1:8080/cron.php` — stuurt herinneringsmails voor aanbod dat over ≤7 dagen verloopt. Op staging/prod doet de GitHub Actions-workflow `cron.yml` dit dagelijks.
+1. `composer install`
+2. `cp .env.example .env && php artisan key:generate`
+3. Zet `SITE_NAME` / `APP_NAME`, `APP_URL`, database (`DB_CONNECTION=sqlite` + `database/database.sqlite`).
+4. `php artisan migrate`
+5. `npm ci && npm run build`
+6. `php artisan serve`
 
-## Server (MySQL)
+## Server (cPanel-achtig, docroot ≠ Laravel `public/`)
 
-1. Deploy-workflow schrijft `config.php` **buiten** de document root (pad via secrets, bijv. sibling-map `…/stekjes-private/config.php`). Nooit in git.
-2. Secrets bevatten o.a. `SITE_NAME`, `BASE_URL`, `DB_*`, `SMTP_*`, `CRON_TOKEN`, `ADMIN_PASSWORD`, `DEPLOY_*`.
-3. Na code-sync: `php scripts/migrate.php up` (vanaf de docroot of met `STEKJES_CONFIG` gezet).
-4. Productie-deploy maakt eerst een `mysqldump` in de private map; zie `docs/ROLLBACK.md`.
-5. Cron: alleen via GitHub Actions → `cron.php` (geen cPanel-cron).
+CI bouwt vendor (no-dev) en Vite-assets. Layout via secrets:
 
-## Branches en releases
+| | Staging | Production (Environment `production`) |
+|---|---|---|
+| Docroot | `STAGING_DEPLOY_PATH` | `DEPLOY_PATH` |
+| App (buiten webroot) | `STAGING_APP_DIR` (default: sibling `…/stekjes-staging-app`) | `APP_DIR` (verplicht) |
 
-Zie `CONTRIBUTING.md` en `CHANGELOG.md`. Kern-PR’s → `staging`. Productie alleen via tag `v*.*.*` op `master`.
+Deploy-stappen:
+
+1. Rsync **app zonder `public/`** → app-map.
+2. Rsync **inhoud van `public/`** → docroot (`--delete`, excludes: `.well-known/`, `cgi-bin/`).
+3. Schrijf `index.php` in de docroot die `vendor/autoload.php` en `bootstrap/app.php` uit de app-map laadt, en `$app->usePublicPath(__DIR__)` zet zodat `asset()` / Vite-manifest de docroot gebruiken.
+4. `.env` in de app-map uit secrets. `APP_KEY`: uit secret, anders eenmalig op de server genereren en bewaren — nooit committen.
+5. `php artisan migrate --force` + config/route/view cache (in de app-map).
+6. Staging: `APP_ENV=staging` / `NOINDEX=true`. Productie: indexeerbaar.
+
+SSH/host: `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_PORT`, `DEPLOY_SSH_KEY`, `DEPLOY_KNOWN_HOSTS` (production Environment overschrijft repo-secrets met dezelfde naam).
+
+## Branches
+
+Feature-PR’s → `staging`. Productie via tag `v*.*.*` op `master`. PR’s naar `master` alleen vanaf `staging`.

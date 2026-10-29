@@ -1,35 +1,17 @@
-name: Invasieve-soorten tests
+name: Invasive data check
 
-# Losstaande CI voor de Unielijst-module (botst niet met deploy-workflows).
 on:
-  push:
-    paths:
-      - 'data/niet-aanbieden.json'
-      - 'php/lib/invasive.php'
-      - 'tests/**'
-      - 'niet-aanbieden.html'
-      - '.github/workflows/invasive-tests.yml'
   pull_request:
+  push:
+    branches: [staging, master]
     paths:
-      - 'data/niet-aanbieden.json'
-      - 'php/lib/invasive.php'
-      - 'tests/**'
-      - 'niet-aanbieden.html'
-      - '.github/workflows/invasive-tests.yml'
+      - "data/niet-aanbieden.json"
+      - ".github/workflows/invasive-tests.yml"
 
 jobs:
-  php:
+  validate-json:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: PHP installeren
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq php-cli
-          php -v
-      - name: Syntaxcheck (php -l)
-        run: |
-          php -l php/lib/invasive.php
-          php -l tests/run.php
-      - name: Unit tests
-        run: php tests/run.php
+      - name: JSON parseerbaar
+        run: python3 -c "import json; json.load(open('data/niet-aanbieden.json')); print('ok')"

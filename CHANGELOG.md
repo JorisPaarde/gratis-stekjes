@@ -5,21 +5,24 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ## [Unreleased]
 
+### Changed
+
+- Deploy-layout aangescherpt: app (zonder `public/`) → `APP_DIR` / `STAGING_APP_DIR`; inhoud `public/` → docroot; gegenereerde `index.php` zet `usePublicPath(__DIR__)` voor asset()/Vite. Docroot `--delete` excludes alleen `.well-known/` en `cgi-bin/`.
+
 ### Added
 
-- Blok **Nu te stekken** op home en aanbod/zoekpagina: maandkalender (Europe/Amsterdam) uit `data/nu-te-stekken.json`, met tips (stek/scheut/deling/zaad), bronnen en links naar bestaande stektips.
-- PHP-API `api/nu-te-stekken.php` + tests voor maandselectie inclusief jaargrens.
-- AVG (PR C): privacyverklaring aangescherpt, JSON-gegevensexport, account zelf verwijderen, helper-verwijderen via e-mail, retentie/purge (rate-limits, geocode-cache) via cron.
-- Aanbod verloopt na 60 dagen: 7 dagen van tevoren één herinneringsmail (SMTP) met eenmalige, ondertekende verlenglink; verlengen telt opnieuw 60 dagen. Verlopen items verdwijnen uit zoeken/kaart, blijven zichtbaar voor de eigenaar. Cron-job via `cron.php` + bestaande GitHub Actions-schedule.
-- Kern-webapp (PR A): accounts (registratie, double opt-in, login, wachtwoord-reset), profiel met benaderde locatie (PDOK), aanbod (vrije tekst + type), zoeken met kaart/lijst (Leaflet/OSM + haversine), berichten met wederzijds contact-akkoord, melden/blokkeren.
-- Helpers-aanmelding zonder volledig account; teller “X mensen doen al mee” met drempel.
-- Simpele admin (helpers, meldingen, partnermarkers-overzicht).
-- Anti-spam: honeypot, tijdsdrempel, rate-limit, CSRF, wegwerpmail-lijst (MIT).
-- PWA: manifest, iconen, service worker (shell-cache, geen API/berichten).
-- MySQL op server, SQLite in CI; versioned migraties; deploy/cron-workflows via secrets.
-- Documentatie: CONTRIBUTING, INSTALL, ROLLBACK.
-- Partnermarkers: admin CRUD (naam, type, plaats via PDOK, website, beschrijving), types partner/voedselbos/plantenasiel/plantenbieb/ruilkast met eigen markers + filter op de kaart/lijst, partnerspagina (Voedselbosbouw.org, MeerBomen Nu), migratie `0003_partner_marker_fields`.
+- (volgende PRs) accounts, aanbod/kaart, berichten, SEO-stad/soortpagina’s, beheer, cron.
 
-## [0.1.0] - TBD
+## [0.1.0] - 2026-10-29
 
-Eerste getagde release volgt na merge naar `master` en akkoord voor productie-tag.
+### Added
+
+- Laravel 12-basis (PHP 8.2): Blade, Vite-build in CI, MySQL op server, SQLite in tests, queue/session/cache via database-tabellen (standaard Laravel-migraties).
+- Gepolijste homepage: hero **Gratis planten**, waarom, Doe mee (CTAs gemarkeerd *binnenkort*), hoe het werkt, veilig delen / invasieve soorten-notitie, partners Voedselbosbouw.org en MeerBomen Nu (eigen woorden), optioneel “Nu te stekken” uit datafile, title/meta/canonical/OG + schema.org `WebSite`.
+- Privacyverklaring (statische Blade-port van de AVG-tekst).
+- Staging: `APP_ENV=staging` / `NOINDEX` → `X-Robots-Tag` + meta robots + `robots.txt` Disallow. Productie indexeerbaar.
+- Deploy: aparte private app-map per environment; `public/` → docroot met `index.php` naar de app; `.env` uit secrets; `APP_KEY` eenmalig op de server als secret ontbreekt; `migrate --force` + config/route/view-cache; acme-challenge en rsync-excludes behouden. Productie via GitHub Environment `production` (tag `v*.*.*`).
+
+### Changed
+
+- Runtime van plain PHP + statische HTML-build naar Laravel. SITE_NAME / APP_NAME configureerbaar (default Gratis planten); geen hardcoded domeinen in code of workflows.
