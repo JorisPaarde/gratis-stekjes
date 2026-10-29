@@ -9,6 +9,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.13.3] - 2026-10-29
+
+### Fixed
+
+- Deploy leest `.env`-waarden via `dotenv_env_get` (strip quotes), zodat legacy-reset niet meer faalt op `APP_ENV='staging'`.
+- Duidelijke foutmelding als de APP_ENV-check faalt.
+
 ## [0.13.2] - 2026-10-29
 
 ### Fixed

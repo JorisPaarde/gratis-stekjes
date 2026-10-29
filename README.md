@@ -15,7 +15,7 @@ Het doel is simpel: de wereld een stukje groener maken. Meer planten in meer tui
 - **Privacy eerst.** Op de kaart alleen een benaderde plek, nooit een adres of e-mailadres.
 - **Groen en eerlijk.** Invasieve soorten in Nederland horen er niet tussen.
 
-## Status (v0.13.2)
+## Status (v0.13.3)
 
 Laravel 12: accounts (registratie/double opt-in, login met onthoud mij, wachtwoord reset/wijzigen, e-mailwijziging met herbevestiging, AVG-export/wissen), aanbod, berichten, expiry-cron, initiatieven (`/initiatieven`, oude `/partners` → 301), nu-te-stekken, beheer, stektips + contentpagina’s + sitemap. Visuele stijl met bosgroen/mint/oranje-palet, hero-foto en iconenset (eigen teksten/beelden).
 

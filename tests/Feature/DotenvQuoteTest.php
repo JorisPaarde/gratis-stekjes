@@ -141,3 +141,48 @@ test('dotenv_unquote strip omringende quotes', function () {
     expect(proc_close($proc))->toBe(0);
     expect(trim($stdout))->toBe("base64:abc\nbase64:xyz");
 });
+
+test('dotenv_env_get leest single-quoted APP_ENV als staging', function () {
+    $script = dotenvQuoteScript();
+    $tmp = sys_get_temp_dir().'/dotenv-envget-'.getmypid().'-'.bin2hex(random_bytes(4));
+    mkdir($tmp);
+    $envPath = $tmp.'/.env';
+
+    $bash = <<<'BASH'
+set -euo pipefail
+source "$1"
+umask 077
+{
+  dotenv_line APP_ENV staging
+  dotenv_line APP_KEY "base64:abc123"
+} > "$2"
+printf '%s\n' "$(dotenv_env_get APP_ENV "$2")"
+printf '%s\n' "$(dotenv_env_get APP_KEY "$2")"
+APP_ENV_VAL="$(dotenv_env_get APP_ENV "$2")"
+if [ "$APP_ENV_VAL" != "staging" ]; then
+  echo "Legacy-reset geweigerd: APP_ENV moet staging zijn (gevonden: ${APP_ENV_VAL:-<leeg/afwezig>})." >&2
+  exit 1
+fi
+BASH;
+
+    $proc = proc_open(
+        ['bash', '-c', $bash, 'bash', $script, $envPath],
+        [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+        $pipes,
+        dirname(__DIR__, 2)
+    );
+    $stdout = stream_get_contents($pipes[1]);
+    $stderr = stream_get_contents($pipes[2]);
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+    expect(proc_close($proc))->toBe(0, $stderr ?: 'dotenv_env_get faalde');
+    expect(trim($stdout))->toBe("staging\nbase64:abc123");
+
+    // Zonder unquote zou de guard falen op 'staging'
+    $raw = trim((string) shell_exec('grep -E \'^APP_ENV=\' '.escapeshellarg($envPath).' | cut -d= -f2-'));
+    expect($raw)->toBe("'staging'");
+    expect($raw)->not->toBe('staging');
+
+    @unlink($envPath);
+    @rmdir($tmp);
+});

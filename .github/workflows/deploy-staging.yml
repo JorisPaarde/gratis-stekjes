@@ -148,9 +148,14 @@ jobs:
           # shellcheck source=scripts/dotenv-quote.sh
           source ./scripts/dotenv-quote.sh
           APP="$(tail -n1 /tmp/app_dir.txt)"
-          EXISTING_KEY_RAW=$(ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
-            "if [ -f '${APP}/.env' ]; then grep '^APP_KEY=' '${APP}/.env' | head -1 | cut -d= -f2-; fi" || true)
-          EXISTING_KEY="$(dotenv_unquote "${EXISTING_KEY_RAW}")"
+          EXISTING_KEY=$(ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s <<EOF || true
+          set -euo pipefail
+          if [ ! -f '${APP}/.env' ]; then exit 0; fi
+          # shellcheck source=scripts/dotenv-quote.sh
+          source '${APP}/scripts/dotenv-quote.sh'
+          dotenv_env_get APP_KEY '${APP}/.env'
+          EOF
+          )
           if [ -n "${APP_KEY_SECRET:-}" ]; then APP_KEY="$APP_KEY_SECRET"
           elif [ -n "${EXISTING_KEY:-}" ]; then APP_KEY="$EXISTING_KEY"
           else APP_KEY=$(php -r 'echo "base64:".base64_encode(random_bytes(32));'); fi
@@ -224,7 +229,13 @@ jobs:
           ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s <<EOF
           set -euo pipefail
           cd '${APP}'
-          test "\$(grep -E '^APP_ENV=' .env | cut -d= -f2-)" = "staging"
+          # shellcheck source=scripts/dotenv-quote.sh
+          source ./scripts/dotenv-quote.sh
+          APP_ENV_VAL="\$(dotenv_env_get APP_ENV .env)"
+          if [ "\$APP_ENV_VAL" != "staging" ]; then
+            echo "Legacy-reset geweigerd: APP_ENV moet staging zijn (gevonden: \${APP_ENV_VAL:-<leeg/afwezig>})." >&2
+            exit 1
+          fi
           mkdir -p storage/backups
           chmod 700 storage/backups
           php artisan staging:reset-legacy-schema --force
