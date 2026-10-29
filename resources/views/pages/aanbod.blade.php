@@ -12,12 +12,13 @@
     window.STEKJES_SITE = {
       api_zoeken: @json(route('api.zoeken')),
       api_partners: @json(route('api.partners')),
+      api_deelplekken: @json(route('api.deelplekken')),
       bericht_starten: @json(url('/account/bericht-starten')),
       api_nu_te_stekken: @json(route('api.nu-te-stekken')),
       bericht_binnenkort: false
     };
   </script>
-  @vite(['resources/css/aanbod.css', 'resources/css/nu-te-stekken.css'])
+  @vite(['resources/css/aanbod.css', 'resources/css/deelplekken.css', 'resources/css/nu-te-stekken.css'])
 @endpush
 
 @section('content')
@@ -49,13 +50,15 @@
     <label class="check"><input type="checkbox" data-partner-type="plantenasiel" checked> Plantenasiel</label>
     <label class="check"><input type="checkbox" data-partner-type="plantenbieb" checked> Plantenbieb</label>
     <label class="check"><input type="checkbox" data-partner-type="ruilkast" checked> Ruilkast</label>
+    <label class="check"><input type="checkbox" data-partner-type="stekjesruilpunt" checked> Stekjesruilpunt</label>
+    <label class="check"><input type="checkbox" data-partner-type="zaadbibliotheek" checked> Zaadbibliotheek</label>
   </fieldset>
 
   <div class="search-layout">
     <div id="kaart" role="img" aria-label="Kaart met benaderde ophaalplekken"></div>
     <div>
       <ul class="zoek-lijst" id="zoek-lijst"></ul>
-      <p class="muted" id="zoek-status">Vul een postcode of plaats in om aanbod te zoeken. Markers van initiatieven volgen in een volgende release.</p>
+      <p class="muted" id="zoek-status">Vul een postcode of plaats in om aanbod te zoeken. Deelplekken (plantenasiel, plantenbieb, …) staan hieronder.</p>
     </div>
   </div>
 

@@ -37,6 +37,17 @@ return [
         'plantenasiel' => 'Plantenasiel',
         'plantenbieb' => 'Plantenbieb',
         'ruilkast' => 'Ruilkast',
+        'stekjesruilpunt' => 'Stekjesruilpunt',
+        'zaadbibliotheek' => 'Zaadbibliotheek',
+    ],
+
+    /** Types voor landelijke deelplekken (/deelplekken). */
+    'deelplek_types' => [
+        'plantenasiel' => 'Plantenasiel',
+        'plantenbieb' => 'Plantenbieb',
+        'ruilkast' => 'Ruilkast',
+        'stekjesruilpunt' => 'Stekjesruilpunt',
+        'zaadbibliotheek' => 'Zaadbibliotheek',
     ],
 
     /** Gedeeld beheerwachtwoord (session admin_ok). Leeg = /beheer uit. */

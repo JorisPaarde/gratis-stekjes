@@ -14,12 +14,15 @@
   }).addTo(map);
   var aanbodLayer = L.layerGroup().addTo(map);
   var partnerLayer = L.layerGroup().addTo(map);
+  var deelplekLayer = L.layerGroup().addTo(map);
 
   var cfg = window.STEKJES_SITE || {};
   var api = cfg.api_zoeken || "/api/zoeken.php";
   var apiPartners = cfg.api_partners || "/api/partners.php";
+  var apiDeelplekken = cfg.api_deelplekken || "/api/deelplekken";
 
   var partnerItems = [];
+  var deelplekItems = [];
   var aanbodItems = [];
   var typeLabels = {
     partner: "Initiatief",
@@ -27,6 +30,8 @@
     plantenasiel: "Plantenasiel",
     plantenbieb: "Plantenbieb",
     ruilkast: "Ruilkast",
+    stekjesruilpunt: "Stekjesruilpunt",
+    zaadbibliotheek: "Zaadbibliotheek",
   };
 
   var markerColors = {
@@ -35,6 +40,8 @@
     plantenasiel: "#e8833a",
     plantenbieb: "#3d6b8a",
     ruilkast: "#6b4c2f",
+    stekjesruilpunt: "#5a6b3d",
+    zaadbibliotheek: "#8a6a3a",
   };
 
   function enabledPartnerTypes() {
@@ -59,6 +66,22 @@
       className: "partner-marker partner-marker--" + type,
       html:
         '<span class="partner-marker-dot" style="background:' +
+        color +
+        '" title="' +
+        escapeHtml(typeLabels[type] || type) +
+        '"></span>',
+      iconSize: [18, 18],
+      iconAnchor: [9, 9],
+      popupAnchor: [0, -8],
+    });
+  }
+
+  function deelplekIcon(type) {
+    var color = markerColors[type] || markerColors.partner;
+    return L.divIcon({
+      className: "deelplek-marker deelplek-marker--" + type,
+      html:
+        '<span class="deelplek-marker-dot" style="background:' +
         color +
         '" title="' +
         escapeHtml(typeLabels[type] || type) +
@@ -129,6 +152,72 @@
     return { count: visible.length, bounds: bounds };
   }
 
+  function renderDeelplekken() {
+    deelplekLayer.clearLayers();
+    var allowed = enabledPartnerTypes();
+    var bounds = [];
+    var visible = deelplekItems.filter(function (item) {
+      return allowed.indexOf(item.type) !== -1;
+    });
+
+    list.querySelectorAll('[data-kind="deelplek"]').forEach(function (el) {
+      el.remove();
+    });
+
+    visible.forEach(function (item) {
+      var li = document.createElement("li");
+      li.className = "zoek-item zoek-item--deelplek";
+      li.setAttribute("data-kind", "deelplek");
+      li.setAttribute("data-type", item.type || "");
+      var label = item.type_label || typeLabels[item.type] || item.type;
+      var bron =
+        item.bron_url
+          ? '<p><a href="' +
+            escapeHtml(item.bron_url) +
+            '" rel="noopener noreferrer" target="_blank">Bron</a></p>'
+          : "";
+      li.innerHTML =
+        '<span class="badge badge--' +
+        escapeHtml(item.type) +
+        '">' +
+        escapeHtml(label) +
+        "</span>" +
+        "<h3>" +
+        escapeHtml(item.naam) +
+        (item.plaats ? " · " + escapeHtml(item.plaats) : "") +
+        "</h3>" +
+        "<p>" +
+        escapeHtml(item.adres || item.plaats || "Deelplek") +
+        "</p>" +
+        bron;
+      list.appendChild(li);
+
+      var lon = item.lng != null ? item.lng : item.lon;
+      if (item.lat != null && lon != null) {
+        var popup =
+          "<strong>" +
+          escapeHtml(item.naam) +
+          "</strong><br>" +
+          escapeHtml(label) +
+          (item.plaats ? " · " + escapeHtml(item.plaats) : "");
+        if (item.adres) {
+          popup += "<br>" + escapeHtml(item.adres);
+        }
+        if (item.bron_url) {
+          popup +=
+            '<br><a href="' +
+            escapeHtml(item.bron_url) +
+            '" rel="noopener noreferrer" target="_blank">Bron</a>';
+        }
+        var m = L.marker([item.lat, lon], { icon: deelplekIcon(item.type) }).bindPopup(popup);
+        deelplekLayer.addLayer(m);
+        bounds.push([item.lat, lon]);
+      }
+    });
+
+    return { count: visible.length, bounds: bounds };
+  }
+
   function renderAanbodList(items) {
     list.querySelectorAll('[data-kind="aanbod"]').forEach(function (el) {
       el.remove();
@@ -168,7 +257,8 @@
   function refreshMarkers(fitPartners) {
     aanbodLayer.clearLayers();
     var partnerInfo = renderPartners();
-    var bounds = partnerInfo.bounds.slice();
+    var deelplekInfo = renderDeelplekken();
+    var bounds = partnerInfo.bounds.concat(deelplekInfo.bounds);
 
     if (showAanbod()) {
       aanbodItems.forEach(function (item) {
@@ -185,19 +275,20 @@
       renderAanbodList([]);
     }
 
+    var plekCount = partnerInfo.count + deelplekInfo.count;
     var parts = [];
     if (showAanbod() && aanbodItems.length) {
       parts.push(aanbodItems.length + " aanbod");
     }
-    if (partnerInfo.count) {
-      parts.push(partnerInfo.count + " plekken");
+    if (plekCount) {
+      parts.push(plekCount + " plekken");
     }
     if (!parts.length && !aanbodItems.length) {
       status.textContent =
-        partnerItems.length && !partnerInfo.count
+        (partnerItems.length || deelplekItems.length) && !plekCount
           ? "Geen markers voor de gekozen filters."
           : status.dataset.empty ||
-            "Vul een postcode of plaats in om aanbod te zoeken. Plekken (voedselbos e.d.) staan hieronder.";
+            "Vul een postcode of plaats in om aanbod te zoeken. Deelplekken staan hieronder.";
     } else if (parts.length) {
       status.textContent = parts.join(" · ");
     }
@@ -223,10 +314,39 @@
           typeLabels = Object.assign(typeLabels, data.types);
         }
         partnerItems = (data && data.items) || [];
-        refreshMarkers(partnerItems.length > 0 && aanbodItems.length === 0);
+        refreshMarkers(
+          (partnerItems.length > 0 || deelplekItems.length > 0) &&
+            aanbodItems.length === 0
+        );
       })
       .catch(function () {
         partnerItems = [];
+      });
+  }
+
+  function loadDeelplekken() {
+    return fetch(apiDeelplekken, {
+      credentials: "same-origin",
+      headers: { Accept: "application/json" },
+    })
+      .then(function (r) {
+        return r.json().then(function (data) {
+          if (!r.ok) throw new Error((data && data.error) || "Deelplekken laden mislukt");
+          return data;
+        });
+      })
+      .then(function (data) {
+        if (data && data.types) {
+          typeLabels = Object.assign(typeLabels, data.types);
+        }
+        deelplekItems = (data && data.items) || [];
+        refreshMarkers(
+          (partnerItems.length > 0 || deelplekItems.length > 0) &&
+            aanbodItems.length === 0
+        );
+      })
+      .catch(function () {
+        deelplekItems = [];
       });
   }
 
@@ -268,7 +388,7 @@
           status.dataset.empty = "";
         }
         refreshMarkers(true);
-        if (!aanbodItems.length && !partnerItems.length) {
+        if (!aanbodItems.length && !partnerItems.length && !deelplekItems.length) {
           status.textContent =
             "Nog geen aanbod in de buurt. Volgt binnenkort — of zet zelf iets online.";
         }
@@ -287,4 +407,5 @@
   }
 
   loadPartners();
+  loadDeelplekken();
 })();

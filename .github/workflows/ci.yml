@@ -48,6 +48,11 @@ jobs:
           npm ci
           npm run build
 
+      - name: Validate data JSON
+        run: |
+          python3 -c "import json; json.load(open('data/niet-aanbieden.json')); print('niet-aanbieden ok')"
+          python3 -c "import json; d=json.load(open('data/deelplekken.json')); assert 'plekken' in d and len(d['plekken'])>=30; print('deelplekken ok', len(d['plekken']))"
+
       - name: Pest tests
         run: |
           cp .env.example .env

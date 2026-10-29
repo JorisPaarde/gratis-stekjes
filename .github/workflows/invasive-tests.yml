@@ -6,6 +6,7 @@ on:
     branches: [staging, master]
     paths:
       - "data/niet-aanbieden.json"
+      - "data/deelplekken.json"
       - ".github/workflows/invasive-tests.yml"
 
 jobs:
@@ -14,4 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: JSON parseerbaar
-        run: python3 -c "import json; json.load(open('data/niet-aanbieden.json')); print('ok')"
+        run: |
+          python3 -c "import json; json.load(open('data/niet-aanbieden.json')); print('niet-aanbieden ok')"
+          python3 -c "import json; d=json.load(open('data/deelplekken.json')); assert 'plekken' in d and len(d['plekken'])>=30; print('deelplekken ok', len(d['plekken']))"
