@@ -31,7 +31,7 @@
 
   <div class="cta-panel" id="doe-mee">
     <h2>Doe mee</h2>
-    <p>Kies wat bij je past. Stekjes blijven gratis — geen verkoop. Account met e-mailbevestiging kan nu; zoeken en berichten volgen later.</p>
+    <p>Kies wat bij je past. Stekjes blijven gratis — geen verkoop. Account, aanbod en kaart staan klaar; berichten volgen later.</p>
     <div class="cta-choices">
       <a class="cta-choice" href="{{ route('account.registreren', ['rol' => 'uitdelen']) }}">
         <strong>Ik deel planten uit</strong>
@@ -39,7 +39,7 @@
       </a>
       <a class="cta-choice" href="{{ route('account.registreren', ['rol' => 'ophalen']) }}">
         <strong>Ik wil ophalen</strong>
-        <span>Account aanmaken; zoeken en berichten volgen later.</span>
+        <span>Account aanmaken en zoeken op de kaart.</span>
       </a>
       <div class="cta-choice cta-choice--soon">
         <strong>Ik help op een andere manier</strong>
@@ -60,7 +60,7 @@
     <li>Jullie spreken onderling een ophaalmoment af. Exacte adressen deel je zelf, als je dat wilt.</li>
     <li>Pas bij wederzijds akkoord zien jullie elkaars contactgegevens.</li>
   </ol>
-  <p class="muted">Kaart en berichten: <em>binnenkort</em>. Account met double opt-in staat klaar.</p>
+  <p class="muted">Berichten: <em>binnenkort</em>. Account, aanbod en kaart staan klaar.</p>
 </section>
 
 @if($nuTeStekken && count($nuTeStekken['groepen']))
@@ -119,7 +119,7 @@
     <div class="soft-card">
       <h3>Aanbod &amp; kaart</h3>
       <p>Zoeken op postcode of plaats.</p>
-      <p><span class="badge-soon">binnenkort</span></p>
+      <p><a href="{{ route('aanbod') }}">Naar de kaart</a></p>
     </div>
     <div class="soft-card">
       <h3>Stektips</h3>

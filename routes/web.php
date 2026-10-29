@@ -2,16 +2,25 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Account\AanbodController;
+use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\Api\PartnersController as ApiPartnersController;
+use App\Http\Controllers\Api\ZoekenController as ApiZoekenController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ZoekenController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/robots.txt', [PageController::class, 'robots'])->name('robots');
+
+Route::get('/aanbod', ZoekenController::class)->name('aanbod');
+Route::get('/api/zoeken', ApiZoekenController::class)->name('api.zoeken');
+Route::get('/api/partners', ApiPartnersController::class)->name('api.partners');
 
 Route::middleware('guest')->group(function () {
     Route::get('/account/registreren', [RegisterController::class, 'create'])->name('account.registreren');
@@ -34,6 +43,14 @@ Route::post('/account/uitloggen', [LoginController::class, 'destroy'])
     ->middleware('auth')
     ->name('account.uitloggen');
 
-Route::get('/account', [AccountController::class, 'index'])
-    ->middleware(['auth', 'verified:account.bevestiging-nodig'])
-    ->name('account.index');
+Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(function () {
+    Route::get('/account', [AccountController::class, 'index'])->name('account.index');
+
+    Route::get('/account/profiel', [ProfileController::class, 'edit'])->name('account.profiel');
+    Route::post('/account/profiel', [ProfileController::class, 'update']);
+
+    Route::get('/account/aanbod', [AanbodController::class, 'index'])->name('account.aanbod');
+    Route::post('/account/aanbod', [AanbodController::class, 'store']);
+    Route::post('/account/aanbod/{aanbod}/verlengen', [AanbodController::class, 'renew'])
+        ->name('account.aanbod.renew');
+});

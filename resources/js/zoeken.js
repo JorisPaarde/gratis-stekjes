@@ -152,11 +152,13 @@
         "<p>" +
         escapeHtml(item.tekst) +
         "</p>" +
-        '<p><a class="btn btn-secondary" href="/account/bericht-starten.php?aanbod_id=' +
-        encodeURIComponent(item.id) +
-        "&user_id=" +
-        encodeURIComponent(item.user_id) +
-        '">Stuur bericht</a></p>';
+        (cfg.bericht_binnenkort
+          ? '<p class="muted"><em>Bericht sturen: binnenkort</em></p>'
+          : '<p><a class="btn btn-secondary" href="/account/bericht-starten?aanbod_id=' +
+            encodeURIComponent(item.id) +
+            "&user_id=" +
+            encodeURIComponent(item.user_id) +
+            '">Stuur bericht</a></p>');
       list.insertBefore(li, list.firstChild);
     });
   }
