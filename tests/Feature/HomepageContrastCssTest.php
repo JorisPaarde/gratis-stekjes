@@ -83,6 +83,24 @@ test('homepage-tekstkleuren halen WCAG AA op lichte achtergrond', function () {
     expect(contrastRatio('#1a1210', '#f4cfc2'))->toBeGreaterThanOrEqual(4.5); // ink op peach-sectie
 });
 
+test('hero- en sectievlakken (teal/peach) halen WCAG AA', function () {
+    // Hero: lead/CTA op donkere teal-scrim; merkblok wit op coral
+    expect(contrastRatio('#f5faf3', '#16555c'))->toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#ffffff', '#b84f40'))->toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#ffffff', '#16555c'))->toBeGreaterThanOrEqual(4.5);
+
+    // section--teal (#e6f3f4): koppen + body
+    expect(contrastRatio('#16555c', '#e6f3f4'))->toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#1f6b74', '#e6f3f4'))->toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#1a1210', '#e6f3f4'))->toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#4a4540', '#e6f3f4'))->toBeGreaterThanOrEqual(4.5);
+
+    // section--peach (#f4cfc2): coral-deep kop + ink
+    expect(contrastRatio('#9a3f32', '#f4cfc2'))->toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#1a1210', '#f4cfc2'))->toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#4a4540', '#f4cfc2'))->toBeGreaterThanOrEqual(4.5);
+});
+
 test('rise-animatie alleen bij no-preference; reduced-motion forceert zichtbaarheid', function () {
     $css = file_get_contents(base_path('resources/css/site.css'));
 
