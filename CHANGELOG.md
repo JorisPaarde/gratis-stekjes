@@ -7,6 +7,8 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
+- Blok **Nu te stekken** op home en aanbod/zoekpagina: maandkalender (Europe/Amsterdam) uit `data/nu-te-stekken.json`, met tips (stek/scheut/deling/zaad), bronnen en links naar bestaande stektips.
+- PHP-API `api/nu-te-stekken.php` + tests voor maandselectie inclusief jaargrens.
 - AVG (PR C): privacyverklaring aangescherpt, JSON-gegevensexport, account zelf verwijderen, helper-verwijderen via e-mail, retentie/purge (rate-limits, geocode-cache) via cron.
 - Aanbod verloopt na 60 dagen: 7 dagen van tevoren één herinneringsmail (SMTP) met eenmalige, ondertekende verlenglink; verlengen telt opnieuw 60 dagen. Verlopen items verdwijnen uit zoeken/kaart, blijven zichtbaar voor de eigenaar. Cron-job via `cron.php` + bestaande GitHub Actions-schedule.
 - Kern-webapp (PR A): accounts (registratie, double opt-in, login, wachtwoord-reset), profiel met benaderde locatie (PDOK), aanbod (vrije tekst + type), zoeken met kaart/lijst (Leaflet/OSM + haversine), berichten met wederzijds contact-akkoord, melden/blokkeren.

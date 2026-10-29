@@ -1,0 +1,396 @@
+{
+  "meta": {
+    "titel": "Nu te stekken — maandkalender",
+    "omschrijving": "Per kalendermaand (Europe/Amsterdam) groepen planten die in die periode gangbaar te vermeerderen zijn, met een korte tip. Alleen entries met gangbare, verifieerbare tuinadviesbronnen. Geen gokwerk.",
+    "timezone": "Europe/Amsterdam",
+    "geraadpleegd": "2026-10-29"
+  },
+  "maanden": {
+    "1": {
+      "naam": "januari",
+      "groepen": [
+        {
+          "id": "jan-houtstek-bessen",
+          "titel": "Winterstek van bessenstruiken",
+          "methode": "stek",
+          "tip": "Neem potlooddikke, eenjarige takken zonder zacht topje. Stek van circa 20 cm; onder net onder een knop, boven recht. Zet ongeveer twee derde in grond of pot. Niet bij strenge vorst of aanhoudende regen.",
+          "bron": {
+            "naam": "RHS — Hardwood cuttings",
+            "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
+          },
+          "planten": [
+            {"naam": "Zwarte bes", "slug": "zwarte-bes"},
+            {"naam": "Rode bes", "slug": "rode-bes"},
+            {"naam": "Jostabes", "slug": "jostabes"},
+            {"naam": "Zwarte vlier", "slug": "zwarte-vlier"}
+          ]
+        },
+        {
+          "id": "jan-houtstek-houtachtig",
+          "titel": "Winterstek van wilg, druif en klimmers",
+          "methode": "stek",
+          "tip": "Houtstekken van de slapende groei van dit seizoen: mid-herfst tot late winter. Wilg wortelt bijzonder makkelijk; druif (Vitis) hoort bij de standaard houtstek-kandidaten.",
+          "bron": {
+            "naam": "RHS — Hardwood cuttings",
+            "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
+          },
+          "planten": [
+            {"naam": "Wilg", "slug": "wilg"},
+            {"naam": "Druif", "slug": "druif"},
+            {"naam": "Herfstolijfwilg", "slug": "herfstolijfwilg"}
+          ]
+        }
+      ]
+    },
+    "2": {
+      "naam": "februari",
+      "groepen": [
+        {
+          "id": "feb-laatste-houtstek",
+          "titel": "Laatste kans op winterstek",
+          "methode": "stek",
+          "tip": "Februari is vaak de laatste maand voor houtstek van bladverliezende struiken (o.a. Ribes, Salix, Elaeagnus), vóór de knoppen uitlopen. Vermijd strenge vorst.",
+          "bron": {
+            "naam": "RHS — February trees and shrubs",
+            "url": "https://www.rhs.org.uk/advice/in-month/february/trees-shrubs"
+          },
+          "planten": [
+            {"naam": "Zwarte bes", "slug": "zwarte-bes"},
+            {"naam": "Rode bes", "slug": "rode-bes"},
+            {"naam": "Jostabes", "slug": "jostabes"},
+            {"naam": "Wilg", "slug": "wilg"},
+            {"naam": "Druif", "slug": "druif"},
+            {"naam": "Zwarte vlier", "slug": "zwarte-vlier"},
+            {"naam": "Herfstolijfwilg", "slug": "herfstolijfwilg"},
+            {"naam": "Kiwibes", "slug": "kiwibes"}
+          ]
+        }
+      ]
+    },
+    "3": {
+      "naam": "maart",
+      "groepen": [
+        {
+          "id": "mrt-deling-kruiden",
+          "titel": "Delen van munt en winterharde kruiden",
+          "methode": "deling",
+          "tip": "In het voorjaar kun je gevestigde pollen munt (en vergelijkbare winterharde kruiden) delen: snijd de kluit in stukken met scheuten én wortels en pot ze op.",
+          "bron": {
+            "naam": "RHS — How to grow mint",
+            "url": "https://www.rhs.org.uk/herbs/mint/grow-your-own"
+          },
+          "planten": [
+            {"naam": "Munt", "slug": "munt"}
+          ]
+        },
+        {
+          "id": "mrt-scheut-kruiden",
+          "titel": "Voorjaarsscheuten van salie en rozemarijn",
+          "methode": "scheut",
+          "tip": "Neem in de late lente stekken van struikachtige kruiden zoals salie en rozemarijn (heelstek / jonge scheut). Houd ze vochtig tot ze wortelen.",
+          "bron": {
+            "naam": "RHS — Propagating herbs",
+            "url": "https://www.rhs.org.uk/propagation/propagating-herbs"
+          },
+          "planten": [
+            {"naam": "Salie", "slug": "salie"},
+            {"naam": "Rozemarijn", "slug": "rozemarijn"}
+          ]
+        }
+      ]
+    },
+    "4": {
+      "naam": "april",
+      "groepen": [
+        {
+          "id": "apr-zachtstek",
+          "titel": "Zachtstek van struiken en vaste planten",
+          "methode": "scheut",
+          "tip": "April tot juni: neem zachte, buigzame scheuttops van dit seizoen. Geschikt voor veel bladverliezende struiken (o.a. hortensia, vlinderstruik) en vaste planten. Pot op vóór midzomer zodat ze de winter overleven.",
+          "bron": {
+            "naam": "RHS — Softwood cuttings",
+            "url": "https://www.rhs.org.uk/propagation/softwood-cuttings"
+          },
+          "planten": [
+            {"naam": "Hortensia", "slug": null},
+            {"naam": "Vlinderstruik", "slug": null},
+            {"naam": "Fuchsia", "slug": null}
+          ]
+        },
+        {
+          "id": "apr-munt-water",
+          "titel": "Muntstek in water of stekgrond",
+          "methode": "stek",
+          "tip": "Neem zachte scheuten in het voorjaar; stengels wortelen ook makkelijk in een potje water en kun je daarna oppotten.",
+          "bron": {
+            "naam": "RHS — How to grow mint",
+            "url": "https://www.rhs.org.uk/herbs/mint/grow-your-own"
+          },
+          "planten": [
+            {"naam": "Munt", "slug": "munt"}
+          ]
+        }
+      ]
+    },
+    "5": {
+      "naam": "mei",
+      "groepen": [
+        {
+          "id": "mei-zachtstek",
+          "titel": "Hoogseizoen zachtstek",
+          "methode": "scheut",
+          "tip": "Mei valt midden in het zachtstekseizoen (apr–jun). Kies gezonde, net niet te zachte tops; stek snel na knippen en houd luchtvochtigheid hoog.",
+          "bron": {
+            "naam": "RHS — Softwood cuttings",
+            "url": "https://www.rhs.org.uk/propagation/softwood-cuttings"
+          },
+          "planten": [
+            {"naam": "Hortensia", "slug": null},
+            {"naam": "Vlinderstruik", "slug": null},
+            {"naam": "Salie", "slug": "salie"}
+          ]
+        },
+        {
+          "id": "mei-kamerplanten",
+          "titel": "Kamerplanten delen via stengelstek",
+          "methode": "stek",
+          "tip": "Beste periode: late lente of vroege zomer. Knip 8–10 cm net onder een bladknoop, verwijder onderste blader, zet in water of stekgrond (o.a. Epipremnum, Tradescantia).",
+          "bron": {
+            "naam": "RHS — How to take cuttings from houseplants",
+            "url": "https://www.rhs.org.uk/plants/types/houseplants/how-to-take-cuttings-from-houseplants"
+          },
+          "planten": [
+            {"naam": "Scindapsus / Epipremnum", "slug": null},
+            {"naam": "Tradescantia", "slug": null}
+          ]
+        }
+      ]
+    },
+    "6": {
+      "naam": "juni",
+      "groepen": [
+        {
+          "id": "jun-zachtstek-einde",
+          "titel": "Nog zachtstek, start halfverhout",
+          "methode": "scheut",
+          "tip": "Tot vroeg in de zomer nog zachtstek. Latere stekken van kruiden en struiken gaan richting halfverhoute stek: basis net iets steviger, top nog flexibel.",
+          "bron": {
+            "naam": "RHS — Softwood cuttings",
+            "url": "https://www.rhs.org.uk/propagation/softwood-cuttings"
+          },
+          "planten": [
+            {"naam": "Munt", "slug": "munt"},
+            {"naam": "Salie", "slug": "salie"},
+            {"naam": "Rozemarijn", "slug": "rozemarijn"}
+          ]
+        },
+        {
+          "id": "jun-zaad-eenjarig",
+          "titel": "Nog zaaien van eenjarige kruiden",
+          "methode": "zaad",
+          "tip": "Basilicum, koriander, dille en peterselie kun je in het groeiseizoen om de paar weken zaaien, tot augustus. Ideaal om later stekjes of zaailingen te delen.",
+          "bron": {
+            "naam": "RHS — Propagating herbs",
+            "url": "https://www.rhs.org.uk/propagation/propagating-herbs"
+          },
+          "planten": [
+            {"naam": "Basilicum", "slug": null},
+            {"naam": "Koriander", "slug": null},
+            {"naam": "Peterselie", "slug": null}
+          ]
+        }
+      ]
+    },
+    "7": {
+      "naam": "juli",
+      "groepen": [
+        {
+          "id": "jul-halfverhout",
+          "titel": "Halfverhoute stek van rozemarijn en struiken",
+          "methode": "stek",
+          "tip": "Late zomer: halfverhoute stek van rozemarijn (of heelstek in het voorjaar). Neem 10–15 cm van deels verhoute groei; stekgrond licht vochtig houden.",
+          "bron": {
+            "naam": "RHS — Propagating herbs",
+            "url": "https://www.rhs.org.uk/propagation/propagating-herbs"
+          },
+          "planten": [
+            {"naam": "Rozemarijn", "slug": "rozemarijn"}
+          ]
+        },
+        {
+          "id": "jul-munt-zomer",
+          "titel": "Zomerstek van munt",
+          "methode": "stek",
+          "tip": "Munt neemt in de zomer goed zachtstek; stengels in water wortelen snel. Handig om overschot te delen.",
+          "bron": {
+            "naam": "RHS — Propagating herbs",
+            "url": "https://www.rhs.org.uk/propagation/propagating-herbs"
+          },
+          "planten": [
+            {"naam": "Munt", "slug": "munt"}
+          ]
+        }
+      ]
+    },
+    "8": {
+      "naam": "augustus",
+      "groepen": [
+        {
+          "id": "aug-aardbei-uitlopers",
+          "titel": "Aardbei via uitlopers",
+          "methode": "stek",
+          "tip": "In de late zomer: zet een plantje van een uitloper vast in grond of een potje, houd vochtig, en knip los zodra er nieuw blad en wortels zijn.",
+          "bron": {
+            "naam": "RHS — How to grow strawberries",
+            "url": "https://www.rhs.org.uk/fruit/strawberries/grow-your-own"
+          },
+          "planten": [
+            {"naam": "Aardbei", "slug": "aardbei"}
+          ]
+        },
+        {
+          "id": "aug-rozemarijn-semi",
+          "titel": "Halfverhoute rozemarijnstek",
+          "methode": "stek",
+          "tip": "Augustus past bij semi-rijpe / late-zomerstek van rozemarijn. Kies gezonde, niet-bloeiende scheuten.",
+          "bron": {
+            "naam": "RHS — Propagating herbs",
+            "url": "https://www.rhs.org.uk/propagation/propagating-herbs"
+          },
+          "planten": [
+            {"naam": "Rozemarijn", "slug": "rozemarijn"}
+          ]
+        }
+      ]
+    },
+    "9": {
+      "naam": "september",
+      "groepen": [
+        {
+          "id": "sep-aardbei",
+          "titel": "Nog aardbei-uitlopers vastzetten",
+          "methode": "stek",
+          "tip": "Tot in september kun je uitlopers laten wortelen en daarna losknippen. Goed moment om jonge planten door te geven.",
+          "bron": {
+            "naam": "RHS — How to grow strawberries",
+            "url": "https://www.rhs.org.uk/fruit/strawberries/grow-your-own"
+          },
+          "planten": [
+            {"naam": "Aardbei", "slug": "aardbei"}
+          ]
+        },
+        {
+          "id": "sep-deling-najaar",
+          "titel": "Najaarsdeling van vaste planten",
+          "methode": "deling",
+          "tip": "Veel kruidachtige vaste planten kun je in het voorjaar of najaar delen: elk stuk met minstens één scheut en eigen wortels.",
+          "bron": {
+            "naam": "RHS — Propagation techniques (division)",
+            "url": "https://www.rhs.org.uk/propagation/techniques"
+          },
+          "planten": [
+            {"naam": "Vaste planten (algemeen)", "slug": null},
+            {"naam": "Munt", "slug": "munt"}
+          ]
+        },
+        {
+          "id": "sep-framboos",
+          "titel": "Framboos delen of afleggen",
+          "methode": "deling",
+          "tip": "Framboos (Rubus idaeus) kun je van najaar tot vroeg voorjaar delen, of vanaf late zomer afleggen. Kies gezond uitgangsmateriaal.",
+          "bron": {
+            "naam": "RHS — Rubus idaeus (propagation)",
+            "url": "https://www.rhs.org.uk/plants/16137/rubus-idaeus/details"
+          },
+          "planten": [
+            {"naam": "Framboos", "slug": "framboos"}
+          ]
+        }
+      ]
+    },
+    "10": {
+      "naam": "oktober",
+      "groepen": [
+        {
+          "id": "okt-start-houtstek",
+          "titel": "Start winterstek na bladval",
+          "methode": "stek",
+          "tip": "Vanaf mid-herfst (na bladval) begint het houtstekseizoen. Kruisbes en herfstolijfwilg passen goed in oktober–november; vermijd strenge vorst.",
+          "bron": {
+            "naam": "RHS — Hardwood cuttings",
+            "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
+          },
+          "planten": [
+            {"naam": "Kruisbes", "slug": "kruisbes"},
+            {"naam": "Herfstolijfwilg", "slug": "herfstolijfwilg"},
+            {"naam": "Zwarte bes", "slug": "zwarte-bes"},
+            {"naam": "Rode bes", "slug": "rode-bes"}
+          ]
+        },
+        {
+          "id": "okt-deling",
+          "titel": "Nog delen in het najaar",
+          "methode": "deling",
+          "tip": "Najaarsdeling blijft mogelijk zolang de grond bewerkbaar is: vaste planten met scheut én wortel opsplitsen.",
+          "bron": {
+            "naam": "RHS — Propagation techniques (division)",
+            "url": "https://www.rhs.org.uk/propagation/techniques"
+          },
+          "planten": [
+            {"naam": "Vaste planten (algemeen)", "slug": null}
+          ]
+        }
+      ]
+    },
+    "11": {
+      "naam": "november",
+      "groepen": [
+        {
+          "id": "nov-houtstek-hoofd",
+          "titel": "Hoogseizoen winterstek",
+          "methode": "stek",
+          "tip": "November is klassiek houtstekweer: bessen, vlier, wilg, druif. Fig en moerbei: meerjarig hout in een pot, bij voorkeur vóór de eerste strenge vorst.",
+          "bron": {
+            "naam": "RHS — Hardwood cuttings",
+            "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
+          },
+          "planten": [
+            {"naam": "Zwarte bes", "slug": "zwarte-bes"},
+            {"naam": "Rode bes", "slug": "rode-bes"},
+            {"naam": "Jostabes", "slug": "jostabes"},
+            {"naam": "Zwarte vlier", "slug": "zwarte-vlier"},
+            {"naam": "Wilg", "slug": "wilg"},
+            {"naam": "Druif", "slug": "druif"},
+            {"naam": "Vijg", "slug": "vijg"},
+            {"naam": "Moerbei", "slug": "moerbei"},
+            {"naam": "Kiwibes", "slug": "kiwibes"},
+            {"naam": "Herfstolijfwilg", "slug": "herfstolijfwilg"}
+          ]
+        }
+      ]
+    },
+    "12": {
+      "naam": "december",
+      "groepen": [
+        {
+          "id": "dec-houtstek",
+          "titel": "Doorwerken met winterstek",
+          "methode": "stek",
+          "tip": "Door de winter door kun je houtstek blijven nemen van slapende struiken en klimmers, zolang het niet streng vriest. Potlooddik, twee derde diep, knoppen boven.",
+          "bron": {
+            "naam": "RHS — Hardwood cuttings",
+            "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
+          },
+          "planten": [
+            {"naam": "Zwarte bes", "slug": "zwarte-bes"},
+            {"naam": "Rode bes", "slug": "rode-bes"},
+            {"naam": "Jostabes", "slug": "jostabes"},
+            {"naam": "Wilg", "slug": "wilg"},
+            {"naam": "Druif", "slug": "druif"},
+            {"naam": "Zwarte vlier", "slug": "zwarte-vlier"}
+          ]
+        }
+      ]
+    }
+  }
+}
