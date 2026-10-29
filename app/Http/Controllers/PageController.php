@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Services\Kennisbank;
 use App\Services\NuTeStekken;
 use App\Services\Organisaties;
 use App\Services\Steden;
@@ -62,7 +63,7 @@ class PageController extends Controller
         return response($body, 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
     }
 
-    public function sitemap(Stektips $stektips, Steden $steden, Organisaties $organisaties): Response
+    public function sitemap(Stektips $stektips, Steden $steden, Organisaties $organisaties, Kennisbank $kennisbank): Response
     {
         $urls = [
             url('/'),
@@ -80,6 +81,9 @@ class PageController extends Controller
             route('invasieve-soorten'),
             route('gratis-planten.index'),
         ];
+        foreach ($kennisbank->all() as $artikel) {
+            $urls[] = route('stektips.artikel', ['slug' => $artikel['slug']]);
+        }
         foreach ($stektips->all() as $soort) {
             $urls[] = route('stektips.show', ['slug' => $soort['slug']]);
         }

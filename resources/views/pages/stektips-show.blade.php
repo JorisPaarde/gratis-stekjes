@@ -31,6 +31,22 @@
 
 @section('content')
 <section class="section wrap prose stektips-page">
+  @isset($breadcrumbs)
+  <nav class="stektips-breadcrumbs" aria-label="Broodkruimels">
+    <ol>
+      @foreach($breadcrumbs as $crumb)
+        <li>
+          @if(! $loop->last)
+            <a href="{{ $crumb['url'] }}">{{ $crumb['naam'] }}</a>
+          @else
+            <span aria-current="page">{{ $crumb['naam'] }}</span>
+          @endif
+        </li>
+      @endforeach
+    </ol>
+  </nav>
+  @endisset
+
   <h1 class="page-title">{{ $soort['naam'] }} stekken en gratis delen</h1>
   @if(!empty($soort['kort']))
     <p class="muted">{{ $soort['kort'] }}@if($categorie !== '') · {{ $categorie }}@endif</p>
@@ -68,6 +84,17 @@
       @foreach($verwanten as $verwant)
         <li>
           <a href="{{ route('stektips.show', ['slug' => $verwant['slug']]) }}">{{ $verwant['naam'] }}</a>
+        </li>
+      @endforeach
+    </ul>
+  @endif
+
+  @if(!empty($gerelateerdeArtikelen))
+    <h2 class="stektips-related-title">Gerelateerde artikelen</h2>
+    <ul class="stektips-related">
+      @foreach($gerelateerdeArtikelen as $artikel)
+        <li>
+          <a href="{{ route('stektips.artikel', ['slug' => $artikel['slug']]) }}">{{ $artikel['titel'] }}</a>
         </li>
       @endforeach
     </ul>
