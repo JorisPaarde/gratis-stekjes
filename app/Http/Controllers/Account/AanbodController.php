@@ -107,6 +107,17 @@ class AanbodController extends Controller
             ->with('status', 'Aanbod verlengd met '.$ttl.' dagen.');
     }
 
+    public function destroy(Request $request, Aanbod $aanbod): RedirectResponse
+    {
+        abort_unless($aanbod->user_id === $request->user()->id, 403);
+
+        $aanbod->delete();
+
+        return redirect()
+            ->route('account.aanbod')
+            ->with('status', 'Aanbod verwijderd.');
+    }
+
     /** @return array{type: string, tekst: string, gratis_akkoord: mixed} */
     private function validatedAanbod(Request $request): array
     {
