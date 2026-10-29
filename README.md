@@ -17,7 +17,7 @@ Het doel is simpel: de wereld een stukje groener maken. Meer planten in meer tui
 
 ## Status (v0.11.2)
 
-Laravel 12: accounts, aanbod, berichten, expiry-cron, partners, nu-te-stekken, AVG-export/wissen + beheer, stektips + contentpagina’s + sitemap. Visuele stijl met bosgroen/mint/oranje-palet, hero-foto en iconenset (eigen teksten/beelden).
+Laravel 12: accounts, aanbod, berichten, expiry-cron, initiatieven (`/initiatieven`, oude `/partners` → 301), nu-te-stekken, AVG-export/wissen + beheer, stektips + contentpagina’s + sitemap. Visuele stijl met bosgroen/mint/oranje-palet, hero-foto en iconenset (eigen teksten/beelden).
 
 ## Stack
 

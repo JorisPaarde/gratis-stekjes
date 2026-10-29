@@ -1,5 +1,5 @@
 /**
- * Component styles for /partners.
+ * Component styles for /initiatieven (interne CSS-prefix partners-* blijft).
  * Uses site CSS variables; keep edits here — not in site.css — to limit merge conflicts.
  */
 .partners-page .partners-stack {

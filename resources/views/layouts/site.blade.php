@@ -39,7 +39,7 @@
         <a href="{{ route('aanbod') }}"><x-icon name="kaart" :size="16" /> Aanbod</a>
         <a href="{{ route('stektips.index') }}"><x-icon name="stekje" :size="16" /> Stektips</a>
         <a href="{{ route('hulpmiddelen') }}"><x-icon name="plant" :size="16" /> Hulpmiddelen</a>
-        <a href="{{ route('partners') }}"><x-icon name="partner" :size="16" /> Partners</a>
+        <a href="{{ route('partners') }}"><x-icon name="initiatief" :size="16" /> Initiatieven</a>
         <a href="{{ route('over') }}"><x-icon name="hart" :size="16" /> Over</a>
         <a href="{{ route('privacy') }}"><x-icon name="check" :size="16" /> Privacy</a>
         @auth
@@ -71,6 +71,7 @@
         <a href="{{ route('over') }}">Over</a>
         <a href="{{ route('stektips.index') }}">Stektips</a>
         <a href="{{ route('aanbod') }}">Aanbod</a>
+        <a href="{{ route('partners') }}">Initiatieven</a>
         @auth
           <a href="{{ route('account.index') }}">Account</a>
         @else

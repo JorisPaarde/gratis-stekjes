@@ -1,4 +1,4 @@
-/* Zoeken: kaart + lijst + partnermarkers. */
+/* Zoeken: kaart + lijst + initiatief-/kaartmarkers. */
 (function () {
   var form = document.getElementById("zoek-form");
   var list = document.getElementById("zoek-lijst");
@@ -22,7 +22,7 @@
   var partnerItems = [];
   var aanbodItems = [];
   var typeLabels = {
-    partner: "Partner",
+    partner: "Initiatief",
     voedselbos: "Voedselbos",
     plantenasiel: "Plantenasiel",
     plantenbieb: "Plantenbieb",
