@@ -1,0 +1,3267 @@
+{
+  "meta": {
+    "omschrijving": "Plantensoorten voor autocomplete bij stekje aanbieden. Basis: 48 stektips-soorten (met slug naar /stektips/{slug}). Uitgebreid met gangbare tuin-, kamer- en moestuinplanten die in Nederland gedeeld worden. Geen soorten van de EU-Unielijst invasieve exoten.",
+    "aantal": 337,
+    "met_stektips_pagina": 48
+  },
+  "soorten": [
+    {
+      "id": 1,
+      "naam": "Aardbei",
+      "latijn": "Fragaria × ananassa",
+      "synoniemen": [
+        "Aardbeienplant",
+        "Aardbeien"
+      ],
+      "slug": "aardbei",
+      "categorie": "eetbaar"
+    },
+    {
+      "id": 2,
+      "naam": "Aloe vera",
+      "latijn": "Aloe vera",
+      "synoniemen": [
+        "Aloë",
+        "Aloe"
+      ],
+      "slug": "aloe-vera",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 3,
+      "naam": "Anthurium",
+      "latijn": "Anthurium",
+      "synoniemen": [
+        "Flamingobloem"
+      ],
+      "slug": "anthurium",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 4,
+      "naam": "Begonia",
+      "latijn": "Begonia",
+      "synoniemen": [],
+      "slug": "begonia",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 5,
+      "naam": "Calathea",
+      "latijn": "Goeppertia",
+      "synoniemen": [
+        "Goeppertia"
+      ],
+      "slug": "calathea",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 6,
+      "naam": "Dahlia",
+      "latijn": "Dahlia",
+      "synoniemen": [],
+      "slug": "dahlia",
+      "categorie": "sier"
+    },
+    {
+      "id": 7,
+      "naam": "Dieffenbachia",
+      "latijn": "Dieffenbachia",
+      "synoniemen": [
+        "Difenbachia"
+      ],
+      "slug": "dieffenbachia",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 8,
+      "naam": "Druif",
+      "latijn": "Vitis vinifera",
+      "synoniemen": [
+        "Druivenplant",
+        "Wijnstok"
+      ],
+      "slug": "druif",
+      "categorie": "eetbaar"
+    },
+    {
+      "id": 9,
+      "naam": "Echeveria",
+      "latijn": "Echeveria",
+      "synoniemen": [],
+      "slug": "echeveria",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 10,
+      "naam": "Framboos",
+      "latijn": "Rubus idaeus",
+      "synoniemen": [
+        "Frambozenstruik",
+        "Frambozen"
+      ],
+      "slug": "framboos",
+      "categorie": "eetbaar"
+    },
+    {
+      "id": 11,
+      "naam": "Fuchsia",
+      "latijn": "Fuchsia",
+      "synoniemen": [
+        "Bellenplant"
+      ],
+      "slug": "fuchsia",
+      "categorie": "sier"
+    },
+    {
+      "id": 12,
+      "naam": "Graslelie",
+      "latijn": "Chlorophytum comosum",
+      "synoniemen": [
+        "Chlorophytum",
+        "Chlorophytum comosum",
+        "Groenlelie"
+      ],
+      "slug": "graslelie",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 13,
+      "naam": "Herfstolijfwilg",
+      "latijn": "Elaeagnus umbellata",
+      "synoniemen": [
+        "Herfstolijf",
+        "Elaeagnus umbellata"
+      ],
+      "slug": "herfstolijfwilg",
+      "categorie": "eetbaar"
+    },
+    {
+      "id": 14,
+      "naam": "Hortensia",
+      "latijn": "Hydrangea",
+      "synoniemen": [
+        "Hydrangea",
+        "Boerenhortensia"
+      ],
+      "slug": "hortensia",
+      "categorie": "sier"
+    },
+    {
+      "id": 15,
+      "naam": "Hosta",
+      "latijn": "Hosta",
+      "synoniemen": [
+        "Hartlelie"
+      ],
+      "slug": "hosta",
+      "categorie": "sier"
+    },
+    {
+      "id": 16,
+      "naam": "Huislook",
+      "latijn": "Sempervivum",
+      "synoniemen": [
+        "Sempervivum",
+        "Donderblad"
+      ],
+      "slug": "huislook",
+      "categorie": "sier"
+    },
+    {
+      "id": 17,
+      "naam": "Jadeplant",
+      "latijn": "Crassula ovata",
+      "synoniemen": [
+        "Geldboom",
+        "Crassula ovata"
+      ],
+      "slug": "jadeplant",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 18,
+      "naam": "Jostabes",
+      "latijn": "Ribes × nidigrolaria",
+      "synoniemen": [
+        "Josta"
+      ],
+      "slug": "jostabes",
+      "categorie": "eetbaar"
+    },
+    {
+      "id": 19,
+      "naam": "Kaaps viooltje",
+      "latijn": "Streptocarpus ionanthus",
+      "synoniemen": [
+        "Saintpaulia",
+        "Kaapsviooltje"
+      ],
+      "slug": "kaaps-viooltje",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 20,
+      "naam": "Kalanchoë",
+      "latijn": "Kalanchoe",
+      "synoniemen": [
+        "Kalanchoë"
+      ],
+      "slug": "kalanchoe",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 21,
+      "naam": "Kerstcactus",
+      "latijn": "Schlumbergera",
+      "synoniemen": [
+        "Schlumbergera",
+        "Lidcactus"
+      ],
+      "slug": "kerstcactus",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 22,
+      "naam": "Kettinghart",
+      "latijn": "Ceropegia woodii",
+      "synoniemen": [
+        "Ceropegia woodii",
+        "Hartenketting"
+      ],
+      "slug": "kettinghart",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 23,
+      "naam": "Kiwibes",
+      "latijn": "Actinidia arguta",
+      "synoniemen": [
+        "Actinidia arguta"
+      ],
+      "slug": "kiwibes",
+      "categorie": "eetbaar"
+    },
+    {
+      "id": 24,
+      "naam": "Kruisbes",
+      "latijn": "Ribes uva-crispa",
+      "synoniemen": [
+        "Stekelbes"
+      ],
+      "slug": "kruisbes",
+      "categorie": "eetbaar"
+    },
+    {
+      "id": 25,
+      "naam": "Lavendel",
+      "latijn": "Lavandula",
+      "synoniemen": [
+        "Lavandula",
+        "Lavandula angustifolia"
+      ],
+      "slug": "lavendel",
+      "categorie": "kruid"
+    },
+    {
+      "id": 26,
+      "naam": "Lepelplant",
+      "latijn": "Spathiphyllum",
+      "synoniemen": [
+        "Spathiphyllum",
+        "Vredeslelie"
+      ],
+      "slug": "lepelplant",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 27,
+      "naam": "Moerbei",
+      "latijn": "Morus",
+      "synoniemen": [
+        "Moerbeiboom"
+      ],
+      "slug": "moerbei",
+      "categorie": "eetbaar"
+    },
+    {
+      "id": 28,
+      "naam": "Monstera",
+      "latijn": "Monstera deliciosa",
+      "synoniemen": [
+        "Gatenplant",
+        "Monstera deliciosa"
+      ],
+      "slug": "monstera",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 29,
+      "naam": "Munt",
+      "latijn": "Mentha",
+      "synoniemen": [
+        "Mentha",
+        "Pepermunt",
+        "Crossemunt"
+      ],
+      "slug": "munt",
+      "categorie": "kruid"
+    },
+    {
+      "id": 30,
+      "naam": "Geranium",
+      "latijn": "Pelargonium",
+      "synoniemen": [
+        "Pelargonium",
+        "Hanggeranium",
+        "Tuingeranium"
+      ],
+      "slug": "pelargonium",
+      "categorie": "sier"
+    },
+    {
+      "id": 31,
+      "naam": "Peperomia",
+      "latijn": "Peperomia",
+      "synoniemen": [
+        "Radiatorplant"
+      ],
+      "slug": "peperomia",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 32,
+      "naam": "Philodendron",
+      "latijn": "Philodendron",
+      "synoniemen": [],
+      "slug": "philodendron",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 33,
+      "naam": "Pannenkoekplant",
+      "latijn": "Pilea peperomioides",
+      "synoniemen": [
+        "Pannenkoekenplant",
+        "Pilea peperomioides"
+      ],
+      "slug": "pilea",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 34,
+      "naam": "Pothos",
+      "latijn": "Epipremnum aureum",
+      "synoniemen": [
+        "Epipremnum",
+        "Epipremnum aureum",
+        "Duivelsklimop"
+      ],
+      "slug": "pothos",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 35,
+      "naam": "Rode bes",
+      "latijn": "Ribes rubrum",
+      "synoniemen": [
+        "Aalbes",
+        "Rode bes"
+      ],
+      "slug": "rode-bes",
+      "categorie": "eetbaar"
+    },
+    {
+      "id": 36,
+      "naam": "Rozemarijn",
+      "latijn": "Salvia rosmarinus",
+      "synoniemen": [
+        "Salvia rosmarinus",
+        "Rosmarinus officinalis"
+      ],
+      "slug": "rozemarijn",
+      "categorie": "kruid"
+    },
+    {
+      "id": 37,
+      "naam": "Rubberplant",
+      "latijn": "Ficus elastica",
+      "synoniemen": [
+        "Ficus elastica",
+        "Rubberboom"
+      ],
+      "slug": "rubberplant",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 38,
+      "naam": "Salie",
+      "latijn": "Salvia officinalis",
+      "synoniemen": [
+        "Salvia officinalis",
+        "Keukensalie"
+      ],
+      "slug": "salie",
+      "categorie": "kruid"
+    },
+    {
+      "id": 39,
+      "naam": "Sanseveria",
+      "latijn": "Dracaena trifasciata",
+      "synoniemen": [
+        "Vrouwentong",
+        "Sansevieria",
+        "Dracaena trifasciata"
+      ],
+      "slug": "sanseveria",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 40,
+      "naam": "Scindapsus",
+      "latijn": "Scindapsus pictus",
+      "synoniemen": [
+        "Satijnpothos",
+        "Scindapsus pictus"
+      ],
+      "slug": "scindapsus",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 41,
+      "naam": "Sedum",
+      "latijn": "Sedum",
+      "synoniemen": [
+        "Vetkruid"
+      ],
+      "slug": "sedum",
+      "categorie": "sier"
+    },
+    {
+      "id": 42,
+      "naam": "Syngonium",
+      "latijn": "Syngonium podophyllum",
+      "synoniemen": [
+        "Pijlpuntplant",
+        "Syngonium podophyllum"
+      ],
+      "slug": "syngonium",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 43,
+      "naam": "Tradescantia",
+      "latijn": "Tradescantia",
+      "synoniemen": [
+        "Eendagsbloem"
+      ],
+      "slug": "tradescantia",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 44,
+      "naam": "Vijg",
+      "latijn": "Ficus carica",
+      "synoniemen": [
+        "Vijgenboom",
+        "Ficus carica"
+      ],
+      "slug": "vijg",
+      "categorie": "eetbaar"
+    },
+    {
+      "id": 45,
+      "naam": "Wilg",
+      "latijn": "Salix",
+      "synoniemen": [
+        "Wilgenboom",
+        "Katwilg"
+      ],
+      "slug": "wilg",
+      "categorie": "sier"
+    },
+    {
+      "id": 46,
+      "naam": "Zamioculcas",
+      "latijn": "Zamioculcas zamiifolia",
+      "synoniemen": [
+        "ZZ-plant",
+        "Zamioculcas zamiifolia"
+      ],
+      "slug": "zamioculcas",
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 47,
+      "naam": "Zwarte bes",
+      "latijn": "Ribes nigrum",
+      "synoniemen": [
+        "Zwarte bes",
+        "Cassissbes"
+      ],
+      "slug": "zwarte-bes",
+      "categorie": "eetbaar"
+    },
+    {
+      "id": 48,
+      "naam": "Zwarte vlier",
+      "latijn": "Sambucus nigra",
+      "synoniemen": [
+        "Vlier",
+        "Gewone vlier",
+        "Sambucus nigra"
+      ],
+      "slug": "zwarte-vlier",
+      "categorie": "eetbaar"
+    },
+    {
+      "id": 49,
+      "naam": "Vioolbladplant",
+      "latijn": "Ficus lyrata",
+      "synoniemen": [
+        "Ficus lyrata"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 50,
+      "naam": "Treurvijg",
+      "latijn": "Ficus benjamina",
+      "synoniemen": [
+        "Ficus benjamina",
+        "Benjaminvijg"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 51,
+      "naam": "Dracaena",
+      "latijn": "Dracaena marginata",
+      "synoniemen": [
+        "Drakenbloedboom",
+        "Dracaena marginata"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 52,
+      "naam": "Geurige dracaena",
+      "latijn": "Dracaena fragrans",
+      "synoniemen": [
+        "Dracaena fragrans"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 53,
+      "naam": "Yucca",
+      "latijn": "Yucca elephantipes",
+      "synoniemen": [
+        "Palmlelie",
+        "Yucca elephantipes"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 54,
+      "naam": "Olifantenvoet",
+      "latijn": "Beaucarnea recurvata",
+      "synoniemen": [
+        "Beaucarnea",
+        "Flesboom"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 55,
+      "naam": "Aglaonema",
+      "latijn": "Aglaonema",
+      "synoniemen": [
+        "Chinese evergroen"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 56,
+      "naam": "Alocasia",
+      "latijn": "Alocasia",
+      "synoniemen": [
+        "Olifantenoor"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 57,
+      "naam": "Gebedsplant",
+      "latijn": "Maranta leuconeura",
+      "synoniemen": [
+        "Maranta"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 58,
+      "naam": "Ctenanthe",
+      "latijn": "Ctenanthe",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 59,
+      "naam": "Stromanthe",
+      "latijn": "Stromanthe thalia",
+      "synoniemen": [
+        "Stromanthe"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 60,
+      "naam": "Lijmplant",
+      "latijn": "Aspidistra elatior",
+      "synoniemen": [
+        "Aspidistra",
+        "Ijzerplant"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 61,
+      "naam": "Vingersboom",
+      "latijn": "Schefflera arboricola",
+      "synoniemen": [
+        "Schefflera",
+        "Parapluplant"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 62,
+      "naam": "Apenmaskerplant",
+      "latijn": "Monstera adansonii",
+      "synoniemen": [
+        "Monstera adansonii"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 63,
+      "naam": "Mini-monstera",
+      "latijn": "Rhaphidophora tetrasperma",
+      "synoniemen": [
+        "Rhaphidophora tetrasperma"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 64,
+      "naam": "Hartbladige philodendron",
+      "latijn": "Philodendron hederaceum",
+      "synoniemen": [
+        "Philodendron scandens"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 65,
+      "naam": "Boomphilodendron",
+      "latijn": "Thaumatophyllum bipinnatifidum",
+      "synoniemen": [
+        "Philodendron selloum"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 66,
+      "naam": "Wasbloem",
+      "latijn": "Hoya carnosa",
+      "synoniemen": [
+        "Hoya",
+        "Wasplant"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 67,
+      "naam": "Hartjesplant",
+      "latijn": "Hoya kerrii",
+      "synoniemen": [
+        "Hoya kerrii"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 68,
+      "naam": "Erwtenplant",
+      "latijn": "Curio rowleyanus",
+      "synoniemen": [
+        "Senecio rowleyanus",
+        "Ketting-erwten"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 69,
+      "naam": "Bananenketting",
+      "latijn": "Curio radicans",
+      "synoniemen": [
+        "Senecio radicans"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 70,
+      "naam": "Aluminiumplant",
+      "latijn": "Pilea cadierei",
+      "synoniemen": [
+        "Pilea cadierei"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 71,
+      "naam": "Paradijsvogelbloem",
+      "latijn": "Strelitzia reginae",
+      "synoniemen": [
+        "Strelitzia"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 72,
+      "naam": "Witte paradijsvogelbloem",
+      "latijn": "Strelitzia nicolai",
+      "synoniemen": [
+        "Strelitzia nicolai"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 73,
+      "naam": "Caladium",
+      "latijn": "Caladium bicolor",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 74,
+      "naam": "Stippelbegonia",
+      "latijn": "Begonia maculata",
+      "synoniemen": [
+        "Begonia maculata"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 75,
+      "naam": "Bladbegonia",
+      "latijn": "Begonia rex",
+      "synoniemen": [
+        "Begonia rex"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 76,
+      "naam": "Wonderstruik",
+      "latijn": "Codiaeum variegatum",
+      "synoniemen": [
+        "Croton"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 77,
+      "naam": "Krulvaren",
+      "latijn": "Nephrolepis exaltata",
+      "synoniemen": [
+        "Nephrolepis",
+        "Zwaardvaren"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 78,
+      "naam": "Nestvaren",
+      "latijn": "Asplenium nidus",
+      "synoniemen": [
+        "Asplenium nidus"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 79,
+      "naam": "Venushaar",
+      "latijn": "Adiantum",
+      "synoniemen": [
+        "Adiantum"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 80,
+      "naam": "Vlinderorchidee",
+      "latijn": "Phalaenopsis",
+      "synoniemen": [
+        "Kamerorchidee",
+        "Phalaenopsis"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 81,
+      "naam": "Dendrobium",
+      "latijn": "Dendrobium",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 82,
+      "naam": "Cymbidium",
+      "latijn": "Cymbidium",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 83,
+      "naam": "Schoonmoederstoel",
+      "latijn": "Echinocactus grusonii",
+      "synoniemen": [
+        "Echinocactus grusonii"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 84,
+      "naam": "Schijfcactus",
+      "latijn": "Opuntia",
+      "synoniemen": [
+        "Opuntia",
+        "Vijgcactus"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 85,
+      "naam": "Haworthia",
+      "latijn": "Haworthia",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 86,
+      "naam": "Gasteria",
+      "latijn": "Gasteria",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 87,
+      "naam": "Levende steentjes",
+      "latijn": "Lithops",
+      "synoniemen": [
+        "Lithops"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 88,
+      "naam": "Aeonium",
+      "latijn": "Aeonium",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 89,
+      "naam": "Mozaïekplant",
+      "latijn": "Fittonia albivenis",
+      "synoniemen": [
+        "Fittonia",
+        "Zenuwplant"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 90,
+      "naam": "Sproetenplant",
+      "latijn": "Hypoestes phyllostachya",
+      "synoniemen": [
+        "Hypoestes"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 91,
+      "naam": "Siernetel",
+      "latijn": "Coleus scutellarioides",
+      "synoniemen": [
+        "Coleus"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 92,
+      "naam": "Babytranen",
+      "latijn": "Soleirolia soleirolii",
+      "synoniemen": [
+        "Iers mos",
+        "Soleirolia"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 93,
+      "naam": "Clivia",
+      "latijn": "Clivia miniata",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 94,
+      "naam": "Ridderster",
+      "latijn": "Hippeastrum",
+      "synoniemen": [
+        "Amaryllis",
+        "Hippeastrum"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 95,
+      "naam": "Kamer-cyclaam",
+      "latijn": "Cyclamen persicum",
+      "synoniemen": [
+        "Cyclamen"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 96,
+      "naam": "Madagaskarjasmijn",
+      "latijn": "Stephanotis floribunda",
+      "synoniemen": [
+        "Stephanotis"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 97,
+      "naam": "Bergpalm",
+      "latijn": "Chamaedorea elegans",
+      "synoniemen": [
+        "Chamaedorea"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 98,
+      "naam": "Goudpalm",
+      "latijn": "Dypsis lutescens",
+      "synoniemen": [
+        "Arecapalm",
+        "Areca"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 99,
+      "naam": "Kentiapalm",
+      "latijn": "Howea forsteriana",
+      "synoniemen": [
+        "Kentia"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 100,
+      "naam": "Dwergdadelpalm",
+      "latijn": "Phoenix roebelenii",
+      "synoniemen": [
+        "Phoenix roebelenii"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 101,
+      "naam": "Vederpalm",
+      "latijn": "Cycas revoluta",
+      "synoniemen": [
+        "Cycas",
+        "Sagopalm"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 102,
+      "naam": "Ezelsstaart",
+      "latijn": "Sedum morganianum",
+      "synoniemen": [
+        "Sedum morganianum"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 103,
+      "naam": "Spookplant",
+      "latijn": "Graptopetalum paraguayense",
+      "synoniemen": [
+        "Graptopetalum"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 104,
+      "naam": "Watermeloenpeperomia",
+      "latijn": "Peperomia argyreia",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 105,
+      "naam": "Golfpeperomia",
+      "latijn": "Peperomia caperata",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 106,
+      "naam": "Pauwplant",
+      "latijn": "Goeppertia makoyana",
+      "synoniemen": [
+        "Calathea makoyana"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 107,
+      "naam": "Rattlesnake-calathea",
+      "latijn": "Goeppertia insignis",
+      "synoniemen": [
+        "Calathea lancifolia"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 108,
+      "naam": "Klimvijg",
+      "latijn": "Ficus pumila",
+      "synoniemen": [
+        "Ficus pumila"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 109,
+      "naam": "Bootplant",
+      "latijn": "Tradescantia spathacea",
+      "synoniemen": [
+        "Rhoeo"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 110,
+      "naam": "Zebra-eendagsbloem",
+      "latijn": "Tradescantia zebrina",
+      "synoniemen": [
+        "Tradescantia zebrina"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 111,
+      "naam": "Purperen eendagsbloem",
+      "latijn": "Tradescantia pallida",
+      "synoniemen": [
+        "Setcreasea"
+      ],
+      "slug": null,
+      "categorie": "kamerplant"
+    },
+    {
+      "id": 112,
+      "naam": "Roos",
+      "latijn": "Rosa",
+      "synoniemen": [
+        "Rozenstruik",
+        "Klimroos"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 113,
+      "naam": "Pioenroos",
+      "latijn": "Paeonia lactiflora",
+      "synoniemen": [
+        "Pioen",
+        "Paeonia"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 114,
+      "naam": "Pluimhortensia",
+      "latijn": "Hydrangea paniculata",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 115,
+      "naam": "Annabelle-hortensia",
+      "latijn": "Hydrangea arborescens",
+      "synoniemen": [
+        "Hydrangea Annabelle"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 116,
+      "naam": "Klimhortensia",
+      "latijn": "Hydrangea anomala subsp. petiolaris",
+      "synoniemen": [
+        "Hydrangea petiolaris"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 117,
+      "naam": "Vlinderstruik",
+      "latijn": "Buddleja davidii",
+      "synoniemen": [
+        "Buddleja"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 118,
+      "naam": "Sering",
+      "latijn": "Syringa vulgaris",
+      "synoniemen": [
+        "Syringa"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 119,
+      "naam": "Forsythia",
+      "latijn": "Forsythia × intermedia",
+      "synoniemen": [
+        "Chinees klokje"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 120,
+      "naam": "Weigela",
+      "latijn": "Weigela florida",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 121,
+      "naam": "Spirea",
+      "latijn": "Spiraea",
+      "synoniemen": [
+        "Spiraea",
+        "Bruidsbloem"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 122,
+      "naam": "Deutzia",
+      "latijn": "Deutzia",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 123,
+      "naam": "Rhododendron",
+      "latijn": "Rhododendron",
+      "synoniemen": [
+        "Rododendron"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 124,
+      "naam": "Azalea",
+      "latijn": "Rhododendron",
+      "synoniemen": [
+        "Japanse azalea"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 125,
+      "naam": "Camelia",
+      "latijn": "Camellia japonica",
+      "synoniemen": [
+        "Camellia"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 126,
+      "naam": "Magnolia",
+      "latijn": "Magnolia",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 127,
+      "naam": "Japanse sierkers",
+      "latijn": "Prunus serrulata",
+      "synoniemen": [
+        "Sierkers"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 128,
+      "naam": "Krentenboompje",
+      "latijn": "Amelanchier lamarckii",
+      "synoniemen": [
+        "Amelanchier"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 129,
+      "naam": "Sierappel",
+      "latijn": "Malus",
+      "synoniemen": [
+        "Sierappelboom"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 130,
+      "naam": "Gele kornoelje",
+      "latijn": "Cornus mas",
+      "synoniemen": [
+        "Cornus mas"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 131,
+      "naam": "Rode kornoelje",
+      "latijn": "Cornus sanguinea",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 132,
+      "naam": "Gelderse roos",
+      "latijn": "Viburnum opulus",
+      "synoniemen": [
+        "Sneeuwbal"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 133,
+      "naam": "Wintersneeuwbal",
+      "latijn": "Viburnum tinus",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 134,
+      "naam": "Clematis",
+      "latijn": "Clematis",
+      "synoniemen": [
+        "Bosrank"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 135,
+      "naam": "Klimop",
+      "latijn": "Hedera helix",
+      "synoniemen": [
+        "Hedera"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 136,
+      "naam": "Blauweregen",
+      "latijn": "Wisteria sinensis",
+      "synoniemen": [
+        "Wisteria"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 137,
+      "naam": "Passiebloem",
+      "latijn": "Passiflora caerulea",
+      "synoniemen": [
+        "Passiflora"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 138,
+      "naam": "Kamperfoelie",
+      "latijn": "Lonicera",
+      "synoniemen": [
+        "Lonicera"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 139,
+      "naam": "Trompetklimmer",
+      "latijn": "Campsis radicans",
+      "synoniemen": [
+        "Campsis"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 140,
+      "naam": "Wilde wingerd",
+      "latijn": "Parthenocissus quinquefolia",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 141,
+      "naam": "Japanse wingerd",
+      "latijn": "Parthenocissus tricuspidata",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 142,
+      "naam": "Buxus",
+      "latijn": "Buxus sempervirens",
+      "synoniemen": [
+        "Palmboompje"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 143,
+      "naam": "Taxus",
+      "latijn": "Taxus baccata",
+      "synoniemen": [
+        "Venijnboom"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 144,
+      "naam": "Hulst",
+      "latijn": "Ilex aquifolium",
+      "synoniemen": [
+        "Ilex"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 145,
+      "naam": "Liguster",
+      "latijn": "Ligustrum vulgare",
+      "synoniemen": [
+        "Ligustrum"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 146,
+      "naam": "Beukenhaag",
+      "latijn": "Fagus sylvatica",
+      "synoniemen": [
+        "Beuk"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 147,
+      "naam": "Haagbeuk",
+      "latijn": "Carpinus betulus",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 148,
+      "naam": "Laurierkers",
+      "latijn": "Prunus laurocerasus",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 149,
+      "naam": "Portugese laurierkers",
+      "latijn": "Prunus lusitanica",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 150,
+      "naam": "Glansmispel",
+      "latijn": "Photinia × fraseri",
+      "synoniemen": [
+        "Photinia",
+        "Red robin"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 151,
+      "naam": "Skimmia",
+      "latijn": "Skimmia japonica",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 152,
+      "naam": "Rotsheide",
+      "latijn": "Pieris japonica",
+      "synoniemen": [
+        "Pieris"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 153,
+      "naam": "Struikheide",
+      "latijn": "Calluna vulgaris",
+      "synoniemen": [
+        "Calluna",
+        "Heide"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 154,
+      "naam": "Dopheide",
+      "latijn": "Erica",
+      "synoniemen": [
+        "Erica"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 155,
+      "naam": "Lavandula",
+      "latijn": "Lavandula angustifolia",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 156,
+      "naam": "Zonnehoed",
+      "latijn": "Echinacea purpurea",
+      "synoniemen": [
+        "Echinacea",
+        "Rode zonnehoed"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 157,
+      "naam": "Rudbeckia",
+      "latijn": "Rudbeckia fulgida",
+      "synoniemen": [
+        "Zonnehoed geel"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 158,
+      "naam": "Aster",
+      "latijn": "Symphyotrichum",
+      "synoniemen": [
+        "Herfstaster"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 159,
+      "naam": "Guldenroede",
+      "latijn": "Solidago",
+      "synoniemen": [
+        "Solidago"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 160,
+      "naam": "Zonnekruid",
+      "latijn": "Helenium",
+      "synoniemen": [
+        "Helenium"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 161,
+      "naam": "Meisjesogen",
+      "latijn": "Coreopsis",
+      "synoniemen": [
+        "Coreopsis"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 162,
+      "naam": "Duizendblad",
+      "latijn": "Achillea millefolium",
+      "synoniemen": [
+        "Achillea"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 163,
+      "naam": "Vrouwenmantel",
+      "latijn": "Alchemilla mollis",
+      "synoniemen": [
+        "Alchemilla"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 164,
+      "naam": "Purperklokje",
+      "latijn": "Heuchera",
+      "synoniemen": [
+        "Heuchera"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 165,
+      "naam": "Vergeet-mij-nietje",
+      "latijn": "Myosotis",
+      "synoniemen": [
+        "Myosotis"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 166,
+      "naam": "Sleutelbloem",
+      "latijn": "Primula",
+      "synoniemen": [
+        "Primula"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 167,
+      "naam": "Kerstroos",
+      "latijn": "Helleborus niger",
+      "synoniemen": [
+        "Helleborus"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 168,
+      "naam": "Lentenroos",
+      "latijn": "Helleborus orientalis",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 169,
+      "naam": "Schoenlappersplant",
+      "latijn": "Bergenia cordifolia",
+      "synoniemen": [
+        "Bergenia"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 170,
+      "naam": "Astilbe",
+      "latijn": "Astilbe",
+      "synoniemen": [
+        "Prachtspirea"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 171,
+      "naam": "Ooievaarsbek",
+      "latijn": "Geranium",
+      "synoniemen": [
+        "Tuingeranium (vaste)"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 172,
+      "naam": "Bloedooievaarsbek",
+      "latijn": "Geranium sanguineum",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 173,
+      "naam": "Klokjesbloem",
+      "latijn": "Campanula",
+      "synoniemen": [
+        "Campanula"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 174,
+      "naam": "Vingerhoedskruid",
+      "latijn": "Digitalis purpurea",
+      "synoniemen": [
+        "Digitalis"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 175,
+      "naam": "Akelei",
+      "latijn": "Aquilegia vulgaris",
+      "synoniemen": [
+        "Aquilegia"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 176,
+      "naam": "Ridderspoor",
+      "latijn": "Delphinium",
+      "synoniemen": [
+        "Delphinium"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 177,
+      "naam": "Lupine",
+      "latijn": "Lupinus",
+      "synoniemen": [
+        "Lupinus"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 178,
+      "naam": "Vlambloem",
+      "latijn": "Phlox paniculata",
+      "synoniemen": [
+        "Phlox"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 179,
+      "naam": "Kattenkruid",
+      "latijn": "Nepeta",
+      "synoniemen": [
+        "Nepeta",
+        "Catnip"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 180,
+      "naam": "IJzerhard",
+      "latijn": "Verbena bonariensis",
+      "synoniemen": [
+        "Verbena bonariensis"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 181,
+      "naam": "Bossalie",
+      "latijn": "Salvia nemorosa",
+      "synoniemen": [
+        "Salvia nemorosa"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 182,
+      "naam": "Goudsbloem",
+      "latijn": "Calendula officinalis",
+      "synoniemen": [
+        "Calendula"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 183,
+      "naam": "Afrikaan",
+      "latijn": "Tagetes",
+      "synoniemen": [
+        "Tagetes"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 184,
+      "naam": "Stokroos",
+      "latijn": "Alcea rosea",
+      "synoniemen": [
+        "Alcea"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 185,
+      "naam": "Kaasjeskruid",
+      "latijn": "Malva sylvestris",
+      "synoniemen": [
+        "Malva"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 186,
+      "naam": "Margriet",
+      "latijn": "Leucanthemum vulgare",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 187,
+      "naam": "Grote margriet",
+      "latijn": "Leucanthemum × superbum",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 188,
+      "naam": "Zonnebloem",
+      "latijn": "Helianthus annuus",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 189,
+      "naam": "Cosmea",
+      "latijn": "Cosmos bipinnatus",
+      "synoniemen": [
+        "Cosmos"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 190,
+      "naam": "Zinnia",
+      "latijn": "Zinnia elegans",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 191,
+      "naam": "Petunia",
+      "latijn": "Petunia",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 192,
+      "naam": "Vlijtig liesje",
+      "latijn": "Impatiens walleriana",
+      "synoniemen": [
+        "Impatiens"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 193,
+      "naam": "Lobelia",
+      "latijn": "Lobelia erinus",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 194,
+      "naam": "Oost-Indische kers",
+      "latijn": "Tropaeolum majus",
+      "synoniemen": [
+        "Tropaeolum"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 195,
+      "naam": "Korenbloem",
+      "latijn": "Centaurea cyanus",
+      "synoniemen": [
+        "Centaurea"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 196,
+      "naam": "Klaproos",
+      "latijn": "Papaver rhoeas",
+      "synoniemen": [
+        "Papaver"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 197,
+      "naam": "Oosterse papaver",
+      "latijn": "Papaver orientale",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 198,
+      "naam": "Juffertje-in-het-groen",
+      "latijn": "Nigella damascena",
+      "synoniemen": [
+        "Nigella"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 199,
+      "naam": "Siererwt",
+      "latijn": "Lathyrus odoratus",
+      "synoniemen": [
+        "Lathyrus"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 200,
+      "naam": "Gebroken hartje",
+      "latijn": "Lamprocapnos spectabilis",
+      "synoniemen": [
+        "Dicentra"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 201,
+      "naam": "Longkruid",
+      "latijn": "Pulmonaria",
+      "synoniemen": [
+        "Pulmonaria"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 202,
+      "naam": "Lelietje-van-dalen",
+      "latijn": "Convallaria majalis",
+      "synoniemen": [
+        "Meiklokje"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 203,
+      "naam": "Maagdenpalm",
+      "latijn": "Vinca minor",
+      "synoniemen": [
+        "Vinca"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 204,
+      "naam": "Elfenbloem",
+      "latijn": "Epimedium",
+      "synoniemen": [
+        "Epimedium"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 205,
+      "naam": "Zeeuws knoopje",
+      "latijn": "Astrantia major",
+      "synoniemen": [
+        "Astrantia"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 206,
+      "naam": "Kruisdistel",
+      "latijn": "Eryngium",
+      "synoniemen": [
+        "Eryngium"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 207,
+      "naam": "Kogeldistel",
+      "latijn": "Echinops ritro",
+      "synoniemen": [
+        "Echinops"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 208,
+      "naam": "Kattestaart",
+      "latijn": "Lythrum salicaria",
+      "synoniemen": [
+        "Lythrum"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 209,
+      "naam": "Moerasspirea",
+      "latijn": "Filipendula ulmaria",
+      "synoniemen": [
+        "Filipendula"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 210,
+      "naam": "Rijkbloeiende duizendknoop",
+      "latijn": "Persicaria amplexicaulis",
+      "synoniemen": [
+        "Persicaria amplexicaulis"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 211,
+      "naam": "Prachtsedum",
+      "latijn": "Hylotelephium spectabile",
+      "synoniemen": [
+        "Sedum spectabile"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 212,
+      "naam": "Muurpeper",
+      "latijn": "Sedum acre",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 213,
+      "naam": "Blauwkussen",
+      "latijn": "Aubrieta",
+      "synoniemen": [
+        "Aubrieta"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 214,
+      "naam": "Steenbreek",
+      "latijn": "Saxifraga",
+      "synoniemen": [
+        "Saxifraga"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 215,
+      "naam": "Daglelie",
+      "latijn": "Hemerocallis",
+      "synoniemen": [
+        "Hemerocallis"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 216,
+      "naam": "Iris",
+      "latijn": "Iris",
+      "synoniemen": [
+        "Lis"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 217,
+      "naam": "Lelie",
+      "latijn": "Lilium",
+      "synoniemen": [
+        "Lelies"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 218,
+      "naam": "Gladiool",
+      "latijn": "Gladiolus",
+      "synoniemen": [
+        "Zwaardlelie"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 219,
+      "naam": "Tulp",
+      "latijn": "Tulipa",
+      "synoniemen": [
+        "Tulpen"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 220,
+      "naam": "Narcis",
+      "latijn": "Narcissus",
+      "synoniemen": [
+        "Narcissen"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 221,
+      "naam": "Hyacint",
+      "latijn": "Hyacinthus orientalis",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 222,
+      "naam": "Krokus",
+      "latijn": "Crocus",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 223,
+      "naam": "Blauwe druifjes",
+      "latijn": "Muscari",
+      "synoniemen": [
+        "Muscari"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 224,
+      "naam": "Sneeuwklokje",
+      "latijn": "Galanthus nivalis",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 225,
+      "naam": "Winterakoniet",
+      "latijn": "Eranthis hyemalis",
+      "synoniemen": [
+        "Eranthis"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 226,
+      "naam": "Sterhyacint",
+      "latijn": "Scilla siberica",
+      "synoniemen": [
+        "Scilla"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 227,
+      "naam": "Sneeuwroem",
+      "latijn": "Scilla forbesii",
+      "synoniemen": [
+        "Chionodoxa"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 228,
+      "naam": "Sierui",
+      "latijn": "Allium",
+      "synoniemen": [
+        "Allium"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 229,
+      "naam": "Afrikaanse lelie",
+      "latijn": "Agapanthus",
+      "synoniemen": [
+        "Agapanthus"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 230,
+      "naam": "Vuurpijl",
+      "latijn": "Kniphofia",
+      "synoniemen": [
+        "Kniphofia"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 231,
+      "naam": "Montbretia",
+      "latijn": "Crocosmia",
+      "synoniemen": [
+        "Crocosmia"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 232,
+      "naam": "Canna",
+      "latijn": "Canna",
+      "synoniemen": [
+        "Indisch bloemriet"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 233,
+      "naam": "Kaapse margriet",
+      "latijn": "Osteospermum",
+      "synoniemen": [
+        "Osteospermum"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 234,
+      "naam": "IJsplant",
+      "latijn": "Delosperma cooperi",
+      "synoniemen": [
+        "Delosperma"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 235,
+      "naam": "Prachtriet",
+      "latijn": "Miscanthus sinensis",
+      "synoniemen": [
+        "Miscanthus"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 236,
+      "naam": "Lampenpoetsersgras",
+      "latijn": "Pennisetum alopecuroides",
+      "synoniemen": [
+        "Pennisetum"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 237,
+      "naam": "Blauw schapengras",
+      "latijn": "Festuca glauca",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 238,
+      "naam": "Zegge",
+      "latijn": "Carex",
+      "synoniemen": [
+        "Carex"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 239,
+      "naam": "Niet-woekerende bamboe",
+      "latijn": "Fargesia",
+      "synoniemen": [
+        "Fargesia"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 240,
+      "naam": "Jasmijn",
+      "latijn": "Jasminum officinale",
+      "synoniemen": [
+        "Jasminum"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 241,
+      "naam": "Smeerwortel",
+      "latijn": "Symphytum officinale",
+      "synoniemen": [
+        "Comfrey"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 242,
+      "naam": "Brandnetel",
+      "latijn": "Urtica dioica",
+      "synoniemen": [
+        "Grote brandnetel"
+      ],
+      "slug": null,
+      "categorie": "tuin"
+    },
+    {
+      "id": 243,
+      "naam": "Tomaat",
+      "latijn": "Solanum lycopersicum",
+      "synoniemen": [
+        "Tomatenplant"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 244,
+      "naam": "Cherrytomaat",
+      "latijn": "Solanum lycopersicum var. cerasiforme",
+      "synoniemen": [
+        "Keratomeat"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 245,
+      "naam": "Paprika",
+      "latijn": "Capsicum annuum",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 246,
+      "naam": "Chilipeper",
+      "latijn": "Capsicum frutescens",
+      "synoniemen": [
+        "Peper",
+        "Spaanse peper"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 247,
+      "naam": "Aubergine",
+      "latijn": "Solanum melongena",
+      "synoniemen": [
+        "Eiervrucht"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 248,
+      "naam": "Komkommer",
+      "latijn": "Cucumis sativus",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 249,
+      "naam": "Courgette",
+      "latijn": "Cucurbita pepo",
+      "synoniemen": [
+        "Zucchini"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 250,
+      "naam": "Pompoen",
+      "latijn": "Cucurbita maxima",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 251,
+      "naam": "Butternut",
+      "latijn": "Cucurbita moschata",
+      "synoniemen": [
+        "Butternutpompoen"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 252,
+      "naam": "Meloen",
+      "latijn": "Cucumis melo",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 253,
+      "naam": "Sla",
+      "latijn": "Lactuca sativa",
+      "synoniemen": [
+        "Kropsla"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 254,
+      "naam": "Rucola",
+      "latijn": "Eruca vesicaria",
+      "synoniemen": [
+        "Raketsla"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 255,
+      "naam": "Andijvie",
+      "latijn": "Cichorium endivia",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 256,
+      "naam": "Witlof",
+      "latijn": "Cichorium intybus",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 257,
+      "naam": "Spinazie",
+      "latijn": "Spinacia oleracea",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 258,
+      "naam": "Snijbiet",
+      "latijn": "Beta vulgaris subsp. vulgaris",
+      "synoniemen": [
+        "Warmoes"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 259,
+      "naam": "Boerenkool",
+      "latijn": "Brassica oleracea var. sabellica",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 260,
+      "naam": "Spruitkool",
+      "latijn": "Brassica oleracea var. gemmifera",
+      "synoniemen": [
+        "Spruitjes"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 261,
+      "naam": "Bloemkool",
+      "latijn": "Brassica oleracea var. botrytis",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 262,
+      "naam": "Broccoli",
+      "latijn": "Brassica oleracea var. italica",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 263,
+      "naam": "Witte kool",
+      "latijn": "Brassica oleracea var. capitata",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 264,
+      "naam": "Rode kool",
+      "latijn": "Brassica oleracea var. capitata f. rubra",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 265,
+      "naam": "Savooiekool",
+      "latijn": "Brassica oleracea var. sabauda",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 266,
+      "naam": "Paksoi",
+      "latijn": "Brassica rapa subsp. chinensis",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 267,
+      "naam": "Koolrabi",
+      "latijn": "Brassica oleracea var. gongylodes",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 268,
+      "naam": "Radijs",
+      "latijn": "Raphanus sativus",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 269,
+      "naam": "Rode biet",
+      "latijn": "Beta vulgaris",
+      "synoniemen": [
+        "Biet"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 270,
+      "naam": "Wortel",
+      "latijn": "Daucus carota",
+      "synoniemen": [
+        "Peen"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 271,
+      "naam": "Pastinaak",
+      "latijn": "Pastinaca sativa",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 272,
+      "naam": "Knolselderij",
+      "latijn": "Apium graveolens var. rapaceum",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 273,
+      "naam": "Bleekselderij",
+      "latijn": "Apium graveolens var. dulce",
+      "synoniemen": [
+        "Selderij"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 274,
+      "naam": "Venkel",
+      "latijn": "Foeniculum vulgare",
+      "synoniemen": [
+        "Knolvenkel"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 275,
+      "naam": "Prei",
+      "latijn": "Allium porrum",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 276,
+      "naam": "Ui",
+      "latijn": "Allium cepa",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 277,
+      "naam": "Sjalot",
+      "latijn": "Allium cepa Aggregatum Group",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 278,
+      "naam": "Knoflook",
+      "latijn": "Allium sativum",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 279,
+      "naam": "Lente-ui",
+      "latijn": "Allium fistulosum",
+      "synoniemen": [
+        "Bosui"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 280,
+      "naam": "Bieslook",
+      "latijn": "Allium schoenoprasum",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 281,
+      "naam": "Aardappel",
+      "latijn": "Solanum tuberosum",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 282,
+      "naam": "Zoete aardappel",
+      "latijn": "Ipomoea batatas",
+      "synoniemen": [
+        "Bataat"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 283,
+      "naam": "Suikermais",
+      "latijn": "Zea mays",
+      "synoniemen": [
+        "Mais"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 284,
+      "naam": "Doperwt",
+      "latijn": "Pisum sativum",
+      "synoniemen": [
+        "Erwt"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 285,
+      "naam": "Peul",
+      "latijn": "Pisum sativum var. saccharatum",
+      "synoniemen": [
+        "Peulen"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 286,
+      "naam": "Tuinboon",
+      "latijn": "Vicia faba",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 287,
+      "naam": "Sperzieboon",
+      "latijn": "Phaseolus vulgaris",
+      "synoniemen": [
+        "Prinsessenboon"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 288,
+      "naam": "Stokboon",
+      "latijn": "Phaseolus vulgaris",
+      "synoniemen": [
+        "Staakboon"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 289,
+      "naam": "Pronkboon",
+      "latijn": "Phaseolus coccineus",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 290,
+      "naam": "Rabarber",
+      "latijn": "Rheum rhabarbarum",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 291,
+      "naam": "Asperge",
+      "latijn": "Asparagus officinalis",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 292,
+      "naam": "Artisjok",
+      "latijn": "Cynara cardunculus",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 293,
+      "naam": "Aardpeer",
+      "latijn": "Helianthus tuberosus",
+      "synoniemen": [
+        "Topinamboer"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 294,
+      "naam": "Mierikswortel",
+      "latijn": "Armoracia rusticana",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 295,
+      "naam": "Appelboom",
+      "latijn": "Malus domestica",
+      "synoniemen": [
+        "Appel"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 296,
+      "naam": "Pereboom",
+      "latijn": "Pyrus communis",
+      "synoniemen": [
+        "Peer"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 297,
+      "naam": "Pruimenboom",
+      "latijn": "Prunus domestica",
+      "synoniemen": [
+        "Pruim"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 298,
+      "naam": "Kersenboom",
+      "latijn": "Prunus avium",
+      "synoniemen": [
+        "Kers",
+        "Zoete kers"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 299,
+      "naam": "Zure kers",
+      "latijn": "Prunus cerasus",
+      "synoniemen": [
+        "Morel"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 300,
+      "naam": "Perzikboom",
+      "latijn": "Prunus persica",
+      "synoniemen": [
+        "Perzik"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 301,
+      "naam": "Abrikozenboom",
+      "latijn": "Prunus armeniaca",
+      "synoniemen": [
+        "Abrikoos"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 302,
+      "naam": "Kweepeer",
+      "latijn": "Cydonia oblonga",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 303,
+      "naam": "Walnoot",
+      "latijn": "Juglans regia",
+      "synoniemen": [
+        "Okkernoot"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 304,
+      "naam": "Hazelaar",
+      "latijn": "Corylus avellana",
+      "synoniemen": [
+        "Hazelnoot"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 305,
+      "naam": "Tamme kastanje",
+      "latijn": "Castanea sativa",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 306,
+      "naam": "Olijfboom",
+      "latijn": "Olea europaea",
+      "synoniemen": [
+        "Olijf"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 307,
+      "naam": "Citroenboom",
+      "latijn": "Citrus limon",
+      "synoniemen": [
+        "Citroen"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 308,
+      "naam": "Sinaasappelboom",
+      "latijn": "Citrus sinensis",
+      "synoniemen": [
+        "Sinaasappel"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 309,
+      "naam": "Blauwe bes",
+      "latijn": "Vaccinium corymbosum",
+      "synoniemen": [
+        "Blueberry"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 310,
+      "naam": "Bosbes",
+      "latijn": "Vaccinium myrtillus",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 311,
+      "naam": "Cranberry",
+      "latijn": "Vaccinium macrocarpon",
+      "synoniemen": [
+        "Grote veenbes"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 312,
+      "naam": "Braam",
+      "latijn": "Rubus fruticosus",
+      "synoniemen": [
+        "Bramen"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 313,
+      "naam": "Japanse wijnbes",
+      "latijn": "Rubus phoenicolasius",
+      "synoniemen": [
+        "Wijnbes"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 314,
+      "naam": "Bosaardbei",
+      "latijn": "Fragaria vesca",
+      "synoniemen": [
+        "Maandaardbei"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 315,
+      "naam": "Kiwi",
+      "latijn": "Actinidia deliciosa",
+      "synoniemen": [
+        "Actinidia deliciosa"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 316,
+      "naam": "Basilicum",
+      "latijn": "Ocimum basilicum",
+      "synoniemen": [
+        "Basielkruid"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 317,
+      "naam": "Peterselie",
+      "latijn": "Petroselinum crispum",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 318,
+      "naam": "Koriander",
+      "latijn": "Coriandrum sativum",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 319,
+      "naam": "Dille",
+      "latijn": "Anethum graveolens",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 320,
+      "naam": "Dragon",
+      "latijn": "Artemisia dracunculus",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 321,
+      "naam": "Tijm",
+      "latijn": "Thymus vulgaris",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 322,
+      "naam": "Citroentijm",
+      "latijn": "Thymus citriodorus",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 323,
+      "naam": "Oregano",
+      "latijn": "Origanum vulgare",
+      "synoniemen": [
+        "Wilde marjolein"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 324,
+      "naam": "Marjolein",
+      "latijn": "Origanum majorana",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 325,
+      "naam": "Citroenmelisse",
+      "latijn": "Melissa officinalis",
+      "synoniemen": [
+        "Melisse"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 326,
+      "naam": "Laurier",
+      "latijn": "Laurus nobilis",
+      "synoniemen": [
+        "Laurierboom"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 327,
+      "naam": "Lavas",
+      "latijn": "Levisticum officinale",
+      "synoniemen": [
+        "Maggikruid"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 328,
+      "naam": "Kervel",
+      "latijn": "Anthriscus cerefolium",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 329,
+      "naam": "Zuring",
+      "latijn": "Rumex acetosa",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 330,
+      "naam": "Borage",
+      "latijn": "Borago officinalis",
+      "synoniemen": [
+        "Komkommerkruid"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 331,
+      "naam": "Kamille",
+      "latijn": "Matricaria chamomilla",
+      "synoniemen": [
+        "Echte kamille"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 332,
+      "naam": "Stevia",
+      "latijn": "Stevia rebaudiana",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 333,
+      "naam": "Citroenverbena",
+      "latijn": "Aloysia citrodora",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 334,
+      "naam": "Bonkruid",
+      "latijn": "Satureja hortensis",
+      "synoniemen": [
+        "Satureja"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 335,
+      "naam": "Gember",
+      "latijn": "Zingiber officinale",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 336,
+      "naam": "Kurkuma",
+      "latijn": "Curcuma longa",
+      "synoniemen": [
+        "Geelwortel"
+      ],
+      "slug": null,
+      "categorie": "moestuin"
+    },
+    {
+      "id": 337,
+      "naam": "Citroengras",
+      "latijn": "Cymbopogon citratus",
+      "synoniemen": [],
+      "slug": null,
+      "categorie": "moestuin"
+    }
+  ]
+}
