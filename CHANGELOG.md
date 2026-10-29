@@ -5,6 +5,10 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ## [Unreleased]
 
+### Changed
+
+- Deploy-layout aangescherpt: app (zonder `public/`) → `APP_DIR` / `STAGING_APP_DIR`; inhoud `public/` → docroot; gegenereerde `index.php` zet `usePublicPath(__DIR__)` voor asset()/Vite. Docroot `--delete` excludes alleen `.well-known/` en `cgi-bin/`.
+
 ### Added
 
 - (volgende PRs) accounts, aanbod/kaart, berichten, SEO-stad/soortpagina’s, beheer, cron.

@@ -42,9 +42,15 @@ Uitgebreider: [`docs/INSTALL.md`](docs/INSTALL.md). Branches: [`CONTRIBUTING.md`
 
 ### Deploy
 
-CI: `composer install --no-dev --optimize-autoloader` en `npm ci && npm run build`. App naar een **private map per environment** (staging en productie raken elkaar niet); inhoud van `public/` naar de docroot, met `index.php` die naar de app wijst. Secrets en paden staan alleen in GitHub Secrets / Environments — niet in deze publieke repo.
+CI: `composer install --no-dev --optimize-autoloader` en `npm ci && npm run build`.
 
-Productie: tag `v*.*.*` (of dispatch) in environment `production`. Staging: push naar `staging`.
+- **Docroot** = `DEPLOY_PATH` / `STAGING_DEPLOY_PATH` (cPanel main domain; niet verplaatsbaar)
+- **App** = `APP_DIR` / `STAGING_APP_DIR` (buiten webroot; staging default sibling `stekjes-staging-app`)
+- Rsync app **zonder** `public/` → app-map; inhoud `public/` → docroot
+- Gegenereerde `index.php` in de docroot laadt de app en zet `usePublicPath(__DIR__)` (Vite/asset)
+- Docroot `--delete` excludes: `.well-known/`, `cgi-bin/`
+
+Secrets en paden alleen in GitHub Secrets / Environments. Productie: tag `v*.*.*` in environment `production`. Staging: push naar `staging`.
 
 ## Licentie
 

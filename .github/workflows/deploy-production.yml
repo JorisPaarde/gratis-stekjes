@@ -1,7 +1,10 @@
 name: Deploy production
 
-# Semver-tag v*.*.* op master-lijn, of workflow_dispatch met tag.
-# Draait in GitHub Environment "production" (environment-secrets overschrijven repo-secrets).
+# Layout (waarden uit GitHub Environment "production" secrets, geen hardcodes):
+#   docroot = DEPLOY_PATH  (cPanel main-domain docroot)
+#   app     = APP_DIR      (buiten webroot)
+# App (zonder public/) → APP_DIR; inhoud public/ → docroot; index.php wijst naar de app
+# en zet public path = docroot (asset()/Vite).
 on:
   push:
     tags: ["v*.*.*"]
@@ -54,8 +57,8 @@ jobs:
       - name: Secrets aanwezig?
         id: chk
         run: |
-          if [ -z "$H" ] || [ -z "$U" ] || [ -z "$D" ] || [ -z "${{ secrets.DEPLOY_SSH_KEY }}" ]; then
-            echo "Production-secrets ontbreken."
+          if [ -z "$H" ] || [ -z "$U" ] || [ -z "$D" ] || [ -z "${APP_DIR_SECRET}" ] || [ -z "${{ secrets.DEPLOY_SSH_KEY }}" ]; then
+            echo "Production-secrets ontbreken (DEPLOY_* / APP_DIR)."
             echo "skip=1" >> "$GITHUB_OUTPUT"
           fi
 
@@ -92,52 +95,53 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
 
-      - name: acme-challenge + private app-map
+      - name: acme-challenge + app-map
         if: steps.chk.outputs.skip != '1'
         run: |
           set -euo pipefail
           ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "mkdir -p '${D%/}/.well-known/acme-challenge'"
-          # APP_DIR secret, of sibling van docroot (afgeleid op de server — geen hardcoded pad in de repo)
-          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s <<EOF > /tmp/private_path.txt
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s <<EOF > /tmp/app_dir.txt
           set -euo pipefail
-          DOC='${D%/}'
-          if [ -n '${APP_DIR_SECRET}' ]; then
-            PRIV='${APP_DIR_SECRET}'
-          else
-            PRIV="\$(dirname "\$DOC")/gratisplanten-app"
-          fi
-          mkdir -p "\$PRIV"/storage "\$PRIV"/bootstrap/cache
-          chmod 700 "\$PRIV"
-          printf '%s\n' "\$PRIV"
+          APP='${APP_DIR_SECRET}'
+          mkdir -p "\$APP"/storage/framework/{cache,sessions,views} "\$APP"/storage/logs "\$APP"/bootstrap/cache
+          chmod 700 "\$APP"
+          printf '%s\n' "\$APP"
           EOF
-          tail -n1 /tmp/private_path.txt
+          tail -n1 /tmp/app_dir.txt
 
-      - name: Rsync app + public
+      - name: Rsync app (zonder public/) → APP_DIR
         if: steps.chk.outputs.skip != '1'
         run: |
-          PRIV="$(tail -n1 /tmp/private_path.txt)"
+          APP="$(tail -n1 /tmp/app_dir.txt)"
           rsync -rlz --delete \
             --exclude='.git/' --exclude='.github/' --exclude='node_modules/' \
-            --exclude='tests/' --exclude='.env' --exclude='.env.*' \
+            --exclude='tests/' --exclude='public/' \
+            --exclude='.env' --exclude='.env.*' \
             --exclude='storage/logs/*' --exclude='storage/framework/cache/*' \
             --exclude='storage/framework/sessions/*' --exclude='storage/framework/views/*' \
             -e "ssh -i ~/.ssh/deploy_key -p ${P:-22}" \
-            ./ "$U@$H:${PRIV}/"
+            ./ "$U@$H:${APP}/"
+
+      - name: Rsync public/ → docroot + index.php
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          set -euo pipefail
+          APP="$(tail -n1 /tmp/app_dir.txt)"
+          DOC="${D%/}"
           cat > /tmp/public-index.php <<EOF
           <?php
           define('LARAVEL_START', microtime(true));
-          require '${PRIV}/vendor/autoload.php';
-          \$app = require_once '${PRIV}/bootstrap/app.php';
+          require '${APP}/vendor/autoload.php';
+          \$app = require_once '${APP}/bootstrap/app.php';
+          \$app->usePublicPath(__DIR__);
           \$app->handleRequest(Illuminate\\Http\\Request::capture());
           EOF
           sed -i 's/^          //' /tmp/public-index.php
           rsync -rlz --delete \
             --exclude='.well-known/' --exclude='cgi-bin/' \
-            --exclude='stekjes-staging-app/' --exclude='stekjes-production-app/' \
-            --exclude='stekjes-private/' --exclude='gratisplanten-app/' \
             -e "ssh -i ~/.ssh/deploy_key -p ${P:-22}" \
-            ./public/ "$U@$H:${D%/}/"
-          scp -i ~/.ssh/deploy_key -P "${P:-22}" /tmp/public-index.php "$U@$H:${D%/}/index.php"
+            ./public/ "$U@$H:${DOC}/"
+          scp -i ~/.ssh/deploy_key -P "${P:-22}" /tmp/public-index.php "$U@$H:${DOC}/index.php"
 
       - name: Schrijf .env + migrate + cache
         if: steps.chk.outputs.skip != '1'
@@ -158,9 +162,9 @@ jobs:
           APP_KEY_SECRET: ${{ secrets.APP_KEY }}
         run: |
           set -euo pipefail
-          PRIV="$(tail -n1 /tmp/private_path.txt)"
+          APP="$(tail -n1 /tmp/app_dir.txt)"
           EXISTING_KEY=$(ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
-            "if [ -f '${PRIV}/.env' ]; then grep '^APP_KEY=' '${PRIV}/.env' | head -1 | cut -d= -f2-; fi" || true)
+            "if [ -f '${APP}/.env' ]; then grep '^APP_KEY=' '${APP}/.env' | head -1 | cut -d= -f2-; fi" || true)
           if [ -n "${APP_KEY_SECRET:-}" ]; then APP_KEY="$APP_KEY_SECRET"
           elif [ -n "${EXISTING_KEY:-}" ]; then APP_KEY="$EXISTING_KEY"
           else APP_KEY=$(php -r 'echo "base64:".base64_encode(random_bytes(32));'); fi
@@ -199,11 +203,11 @@ jobs:
             echo "MAIL_FROM_NAME=\"${NAME}\""
             echo "CRON_TOKEN=${CRON_TOKEN}"
           } > /tmp/stekjes.env
-          scp -i ~/.ssh/deploy_key -P "${P:-22}" /tmp/stekjes.env "$U@$H:${PRIV}/.env"
-          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "chmod 600 '${PRIV}/.env'"
+          scp -i ~/.ssh/deploy_key -P "${P:-22}" /tmp/stekjes.env "$U@$H:${APP}/.env"
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "chmod 600 '${APP}/.env'"
           ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s <<EOF
           set -euo pipefail
-          cd '${PRIV}'
+          cd '${APP}'
           mkdir -p storage/framework/{cache,sessions,views} storage/logs bootstrap/cache
           chmod -R ug+rwx storage bootstrap/cache
           php artisan migrate --force
