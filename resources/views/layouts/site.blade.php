@@ -72,6 +72,7 @@
         <a href="{{ route('over') }}">Over</a>
         <a href="{{ route('stektips.index') }}">Stektips</a>
         <a href="{{ route('aanbod') }}">Aanbod</a>
+        <a href="{{ route('gratis-planten.index') }}">Gratis planten in jouw stad</a>
         <a href="{{ route('invasieve-soorten') }}">Invasieve soorten</a>
         <a href="{{ route('partners') }}">Initiatieven</a>
         <a href="{{ route('deelplekken') }}">Deelplekken</a>

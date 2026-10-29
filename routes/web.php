@@ -27,6 +27,7 @@ use App\Http\Controllers\Beheer\DashboardController as BeheerDashboardController
 use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
 use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\CronController;
+use App\Http\Controllers\GratisPlantenController;
 use App\Http\Controllers\InvasieveSoortenController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PartnersController;
@@ -53,6 +54,11 @@ Route::get('/doe-mee', [ContentPageController::class, 'doeMee'])->name('doe-mee'
 Route::get('/invasieve-soorten', InvasieveSoortenController::class)->name('invasieve-soorten');
 Route::get('/stektips', [StektipsController::class, 'index'])->name('stektips.index');
 Route::get('/stektips/{slug}', [StektipsController::class, 'show'])->name('stektips.show');
+
+Route::get('/gratis-planten', [GratisPlantenController::class, 'index'])->name('gratis-planten.index');
+Route::get('/gratis-planten/{stad}', [GratisPlantenController::class, 'show'])
+    ->where('stad', '[a-z0-9]+(?:-[a-z0-9]+)*')
+    ->name('gratis-planten.show');
 
 Route::get('/aanbod', ZoekenController::class)->name('aanbod');
 Route::get('/api/zoeken', ApiZoekenController::class)->name('api.zoeken');
