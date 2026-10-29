@@ -9,6 +9,21 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.11.0] - 2026-10-29
+
+### Added
+
+- Hero-foto (Pexels, Anna Avilova) als WebP 640/1280/1920 met `srcset`/`sizes`.
+- Iconenset: Lucide (ISC) + eigen planticonen; Blade-component `<x-icon name="…" />`.
+- Interne `/stijlgids` (noindex, niet in nav/sitemap) met kleuren- en iconenoverzicht.
+- `docs/LICENSE-LUCIDE.md`; licenties bijgewerkt in `docs/afbeeldingen-licenties.md`.
+
+### Changed
+
+- Palet: bosgroen `#1F4D2B`, mint `#E6F2E1`, oranje `#E8833A` (CTA’s met donkere tekst voor AA).
+- Teal/peach/coral verwijderd uit tokens, component-CSS, SVG’s en theme-kleuren.
+- Contrasttests afgestemd op het nieuwe palet; VERSION **0.11.0**.
+
 ## [0.10.0] - 2026-10-29
 
 ### Added

@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/partners', PartnersController::class)->name('partners');
+Route::get('/stijlgids', [PageController::class, 'stijlgids'])->name('stijlgids');
 Route::get('/robots.txt', [PageController::class, 'robots'])->name('robots');
 Route::get('/sitemap.xml', [PageController::class, 'sitemap'])->name('sitemap');
 

@@ -37,7 +37,7 @@
 
 .beheer-table th {
   font-weight: 700;
-  color: var(--leaf-deep, #16555c);
+  color: var(--leaf-deep, #163820);
 }
 
 .beheer-actions {
@@ -51,7 +51,7 @@
   background: none;
   border: 0;
   padding: 0;
-  color: var(--leaf-deep, #16555c);
+  color: var(--leaf-deep, #163820);
   text-decoration: underline;
   cursor: pointer;
   font: inherit;

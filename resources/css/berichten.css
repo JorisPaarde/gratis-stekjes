@@ -18,7 +18,7 @@
 }
 
 .bubble.me {
-  background: rgba(31, 107, 116, 0.12);
+  background: rgba(31, 77, 43, 0.12);
 }
 
 .bubble p {
@@ -28,7 +28,7 @@
 
 .safety {
   background: #fff8e8;
-  border: 1px solid rgba(184, 79, 64, 0.35);
+  border: 1px solid rgba(232, 131, 58, 0.45);
   border-radius: 0.85rem;
   padding: 0.9rem 1rem;
   color: var(--warn, #7a3b12);
@@ -37,7 +37,7 @@
 
 .contact-box {
   background: var(--card, rgba(255, 252, 246, 0.92));
-  border: 1px dashed var(--leaf, #1f6b74);
+  border: 1px dashed var(--leaf, #1f4d2b);
   border-radius: 0.85rem;
   padding: 1rem;
   max-width: 40rem;
@@ -48,7 +48,7 @@
   font-family: var(--font-display, Georgia, serif);
   font-size: 1.2rem;
   margin: 0 0 0.5rem;
-  color: var(--leaf-deep, #16555c);
+  color: var(--leaf-deep, #163820);
 }
 
 .inbox-list {
@@ -69,7 +69,7 @@
 .inbox-item a {
   font-weight: 560;
   text-decoration: none;
-  color: var(--leaf-deep, #16555c);
+  color: var(--leaf-deep, #163820);
 }
 
 .inbox-item a:hover {

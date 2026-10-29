@@ -18,7 +18,7 @@
   border-radius: var(--radius, 1rem);
   border: 1px solid var(--line, rgba(26, 18, 16, 0.12));
   overflow: hidden;
-  background: var(--bg-2, #e6f3f4);
+  background: var(--bg-2, #e6f2e1);
 }
 
 .zoek-lijst {
@@ -40,7 +40,7 @@
 .zoek-item h3 {
   margin: 0 0 0.25rem;
   font-size: 1.05rem;
-  color: var(--leaf-deep, #16555c);
+  color: var(--leaf-deep, #163820);
 }
 
 .zoek-item p {

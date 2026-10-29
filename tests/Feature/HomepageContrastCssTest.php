@@ -57,7 +57,7 @@ test('cta-panel houdt donkere achtergrond met lichte tekst (geen witte-op-licht 
 
     $bg = cssLastDecl($css, '.cta-panel', 'background');
     expect($bg)->not->toBeNull();
-    expect($bg)->toContain('#1f6b74');
+    expect($bg)->toContain('#1f4d2b');
     expect($bg)->not->toContain('var(--card)');
 
     $color = cssLastDecl($css, '.cta-panel', 'color');
@@ -66,39 +66,33 @@ test('cta-panel houdt donkere achtergrond met lichte tekst (geen witte-op-licht 
     $h2 = cssLastDecl($css, '.cta-panel h2', 'color');
     expect($h2)->toBe('#fff');
 
-    // Panel body text on teal ≥ AA
-    expect(contrastRatio('#e8f2e4', '#1f6b74'))->toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#ffffff', '#1f6b74'))->toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#ffe2b8', '#1f6b74'))->toBeGreaterThanOrEqual(4.5);
+    // Panel body text on forest ≥ AA
+    expect(contrastRatio('#e8f2e4', '#1f4d2b'))->toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#ffffff', '#1f4d2b'))->toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#ffe2b8', '#1f4d2b'))->toBeGreaterThanOrEqual(4.5);
 });
 
 test('homepage-tekstkleuren halen WCAG AA op lichte achtergrond', function () {
-    // Tokens uit :root — hard gecheckt zodat een lichte accent-kleur niet terugkruipt als bodytekst.
     expect(contrastRatio('#1a1210', '#ffffff'))->toBeGreaterThanOrEqual(4.5); // ink
-    expect(contrastRatio('#4a4540', '#ffffff'))->toBeGreaterThanOrEqual(4.5); // ink-soft
-    expect(contrastRatio('#16555c', '#ffffff'))->toBeGreaterThanOrEqual(4.5); // teal-deep
-    expect(contrastRatio('#9a3f32', '#f7f3ee'))->toBeGreaterThanOrEqual(4.5); // accent-text
-    expect(contrastRatio('#7a3b12', '#fff4e6'))->toBeGreaterThanOrEqual(4.5); // warn on warn-card
-    expect(contrastRatio('#ffffff', '#b84f40'))->toBeGreaterThanOrEqual(4.5); // wit op coral knop/titelblok
-    expect(contrastRatio('#1a1210', '#f4cfc2'))->toBeGreaterThanOrEqual(4.5); // ink op peach-sectie
+    expect(contrastRatio('#3d4a3f', '#ffffff'))->toBeGreaterThanOrEqual(4.5); // ink-soft
+    expect(contrastRatio('#1f4d2b', '#ffffff'))->toBeGreaterThanOrEqual(4.5); // forest
+    expect(contrastRatio('#8a4514', '#e6f2e1'))->toBeGreaterThanOrEqual(4.5); // accent-text op mint
+    expect(contrastRatio('#7a3b12', '#fff4e6'))->toBeGreaterThanOrEqual(4.5); // warn
+    // Oranje knoppen: donkere tekst (wit op #e8833a faalt AA)
+    expect(contrastRatio('#ffffff', '#e8833a'))->toBeLessThan(4.5);
+    expect(contrastRatio('#1a1210', '#e8833a'))->toBeGreaterThanOrEqual(4.5);
 });
 
-test('hero- en sectievlakken (teal/peach) halen WCAG AA', function () {
-    // Hero: lead/CTA op donkere teal-scrim; merkblok wit op coral
-    expect(contrastRatio('#f5faf3', '#16555c'))->toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#ffffff', '#b84f40'))->toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#ffffff', '#16555c'))->toBeGreaterThanOrEqual(4.5);
+test('hero- en mint-secties halen WCAG AA', function () {
+    // Hero titelblok: wit op bosgroen
+    expect(contrastRatio('#ffffff', '#1f4d2b'))->toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#f5faf3', '#163820'))->toBeGreaterThanOrEqual(4.5); // lead op scrim
+    expect(contrastRatio('#ffffff', '#163820'))->toBeGreaterThanOrEqual(4.5);
 
-    // section--teal (#e6f3f4): koppen + body
-    expect(contrastRatio('#16555c', '#e6f3f4'))->toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#1f6b74', '#e6f3f4'))->toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#1a1210', '#e6f3f4'))->toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#4a4540', '#e6f3f4'))->toBeGreaterThanOrEqual(4.5);
-
-    // section--peach (#f4cfc2): coral-deep kop + ink
-    expect(contrastRatio('#9a3f32', '#f4cfc2'))->toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#1a1210', '#f4cfc2'))->toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#4a4540', '#f4cfc2'))->toBeGreaterThanOrEqual(4.5);
+    // section--mint
+    expect(contrastRatio('#1f4d2b', '#e6f2e1'))->toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#1a1210', '#e6f2e1'))->toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#3d4a3f', '#e6f2e1'))->toBeGreaterThanOrEqual(4.5);
 });
 
 test('rise-animatie alleen bij no-preference; reduced-motion forceert zichtbaarheid', function () {
@@ -124,10 +118,14 @@ test('fonts zijn self-hosted (geen Google Fonts CDN in layout)', function () {
     expect(file_exists(public_path('fonts/passion-one-latin-700-normal.woff2')))->toBeTrue();
 });
 
-test('palette-tokens volgen design-stijl (teal/coral)', function () {
+test('palette-tokens volgen design-stijl (bosgroen/mint/oranje)', function () {
     $css = file_get_contents(base_path('resources/css/site.css'));
-    expect($css)->toContain('--teal: #1f6b74');
-    expect($css)->toContain('--coral: #b84f40');
+    expect($css)->toContain('--forest: #1f4d2b');
+    expect($css)->toContain('--mint: #e6f2e1');
+    expect($css)->toContain('--orange: #e8833a');
+    expect($css)->toContain('--orange-text: #1a1210');
+    expect($css)->not->toContain('--teal: #1f6b74');
+    expect($css)->not->toContain('--peach: #f4cfc2');
     expect($css)->toContain('"Passion One"');
     expect($css)->toContain('"Titillium Web"');
 });
