@@ -73,12 +73,35 @@ test('aanbod plant-filter werkt zonder JS en api accepteert plant', function () 
         ->assertJsonStructure(['meta', 'items']);
 });
 
+test('stektips-overzicht toont alle vijf pillarkaarten', function () {
+    $kb = app(Kennisbank::class);
+    $meta = $kb->pillarMeta();
+    expect($meta)->toHaveCount(5);
+
+    $html = $this->get(route('stektips.index'))
+        ->assertOk()
+        ->getContent();
+
+    foreach ($meta as $pillarSlug => $pillar) {
+        $hubUrl = route('stektips.artikel', ['slug' => $pillar['hub_slug']]);
+        expect($html)->toContain($hubUrl)
+            ->and($html)->toContain($pillar['naam']);
+        expect($kb->find($pillar['hub_slug']))->not->toBeNull()
+            ->and($kb->find($pillar['hub_slug'])['is_pillar'] ?? false)->toBeTrue()
+            ->and($kb->find($pillar['hub_slug'])['pillar'] ?? '')->toBe($pillarSlug);
+    }
+
+    expect($html)->toContain(route('stektips.artikel', ['slug' => 'permacultuur-gilde-voedselbos']))
+        ->and($html)->toContain('Permacultuur');
+});
+
 test('pijlers en top-seo-paginas laden onder 500 met bronnen', function () {
     $slugs = [
         'stekken',
         'snoeien',
         'natuurlijk-bewortelen',
         'vermeerderen',
+        'permacultuur-gilde-voedselbos',
         'hortensia-snoeien',
         'vlinderstruik-snoeien',
         'vlinderstruik-stekken',
@@ -102,5 +125,20 @@ test('pijlers en top-seo-paginas laden onder 500 met bronnen', function () {
 
     $xml = $this->get(route('sitemap'))->assertOk()->getContent();
     expect($xml)->toContain(route('stektips.artikel', ['slug' => 'hortensia-snoeien']))
-        ->and($xml)->toContain(route('stektips.artikel', ['slug' => 'snoeien']));
+        ->and($xml)->toContain(route('stektips.artikel', ['slug' => 'snoeien']))
+        ->and($xml)->toContain(route('stektips.artikel', ['slug' => 'permacultuur-gilde-voedselbos']));
+});
+
+test('snoeikalender op pijler Snoeien heeft twaalf maandregels', function () {
+    $html = $this->get(route('stektips.artikel', ['slug' => 'snoeien']))
+        ->assertOk()
+        ->assertSee('Snoeikalender', false)
+        ->getContent();
+
+    foreach ([
+        'Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni',
+        'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December',
+    ] as $maand) {
+        expect($html)->toContain($maand);
+    }
 });

@@ -1,17 +1,22 @@
 {
     "slug": "permacultuur-gilde-voedselbos",
-    "titel": "Permacultuur-gilde en vermeerderen voor het voedselbos",
+    "titel": "Permacultuur",
     "samenvatting": "Plant in lagen en gildes; vermeerder wat lokaal aanslaat met stek, scheuren, afleggen en zaad. Deel de overvloed.",
+    "meta_description": "Permacultuur: gildes, voedselboslagen en vermeerderen met stek, scheuren en afleggen. Deel surplus via Gratis planten.",
     "zoekwoorden": [
+        "permacultuur",
         "permacultuur gilde",
         "voedselbos stekken",
         "plantengilde",
         "voedselbos vermeerderen",
-        "permacultuur stekken"
+        "permacultuur stekken",
+        "permacultuur moestuin"
     ],
     "categorieen": [
         "permacultuur"
     ],
+    "pillar": "permacultuur",
+    "is_pillar": true,
     "gerelateerde_soorten": [
         "zwarte-bes",
         "framboos",
@@ -44,6 +49,14 @@
         },
         {
             "type": "h2",
+            "tekst": "Gilde en voedselbos"
+        },
+        {
+            "type": "p",
+            "tekst": "Permacultuur-gilde en vermeerderen voor het voedselbos starten klein: één fruitstruik met ondersteunende kruiden en bodembedekkers. Wat aanslaat, stek of scheur je en geef je door — zonder koopdruk."
+        },
+        {
+            "type": "h2",
             "tekst": "Vermeerderen in de praktijk"
         },
         {
@@ -71,6 +84,5 @@
         }
     ],
     "duurzamer_alternatief": null,
-    "howto": false,
-    "pillar": "permacultuur"
+    "howto": false
 }
