@@ -8,7 +8,11 @@ declare(strict_types=1);
 
 function stekjes_site_name(): string
 {
-    return (string) (stekjes_config()['site_name'] ?? 'Gratis stekjes');
+    $name = trim((string) (stekjes_config()['site_name'] ?? ''));
+    if ($name === '') {
+        $name = trim((string) (getenv('SITE_NAME') ?: ''));
+    }
+    return $name !== '' ? $name : 'Site';
 }
 
 function stekjes_site_base_url(): string

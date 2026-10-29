@@ -1,4 +1,4 @@
-/* Gratis stekjes — v0.1.0 */
+/* site — v0.1.0 */
 (function () {
   var toggle = document.querySelector("[data-nav-toggle]");
   var nav = document.querySelector("[data-nav]");

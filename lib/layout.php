@@ -23,7 +23,7 @@ function stekjes_render_header(array $opts = []): void
 {
     $site = stekjes_site_name();
     $title = isset($opts['title']) ? $opts['title'] . ' · ' . $site : $site;
-    $desc = $opts['description'] ?? 'Gratis stekjes weggeven en ophalen in Nederland. De enige tegenprestatie is een praatje.';
+    $desc = $opts['description'] ?? (stekjes_config()['description'] ?? 'Planten gratis delen en ophalen. De enige tegenprestatie is een praatje.');
     $canonical = stekjes_abs_url($opts['canonical_path'] ?? '/');
     $user = function_exists('stekjes_current_user') ? stekjes_current_user() : null;
     $formStarted = (string) time();
@@ -84,7 +84,7 @@ function stekjes_render_footer(): void
   </main>
   <footer class="site-footer">
     <div class="wrap footer-inner">
-      <p><strong><?= stekjes_e($site) ?></strong> — gratis stekjes, een praatje als enige prijs.</p>
+      <p><strong><?= stekjes_e($site) ?></strong> — planten delen, een praatje als enige prijs.</p>
       <p class="footer-links">
         <a href="<?= stekjes_e(stekjes_path('/privacy/')) ?>">Privacy</a>
         <a href="<?= stekjes_e(stekjes_path('/over/')) ?>">Over</a>

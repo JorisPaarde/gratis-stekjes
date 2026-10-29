@@ -35,7 +35,11 @@ jobs:
           coverage: none
 
       - name: Build static pages + manifest
+        env:
+          SITE_NAME: ${{ secrets.SITE_NAME }}
+          BASE_URL: http://127.0.0.1
         run: |
+          export SITE_NAME="${SITE_NAME:-CI build}"
           python3 scripts/build_site.py
           python3 scripts/build_manifest.py
 

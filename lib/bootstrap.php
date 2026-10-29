@@ -45,7 +45,7 @@ function stekjes_config(): array
             $config['mail']['smtp_pass'] = 'test';
             $config['admin_password'] = 'test-admin';
             $config['cron_token'] = 'test-cron-token';
-            $config['site_name'] = getenv('SITE_NAME') ?: ($config['site_name'] ?? 'Gratis stekjes');
+            $config['site_name'] = getenv('SITE_NAME') ?: ($config['site_name'] ?? 'Test');
             $config['site_url'] = rtrim(getenv('BASE_URL') ?: ($config['site_url'] ?? 'http://127.0.0.1'), '/');
         }
         return $config;
