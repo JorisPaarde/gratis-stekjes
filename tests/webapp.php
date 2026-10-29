@@ -193,12 +193,10 @@ $searchFresh = stekjes_search_aanbod(null, null, false);
 $idsFresh = array_map(static fn ($i) => (int) $i['id'], $searchFresh['items']);
 ok(in_array($aid, $idsFresh, true), 'non-expired aanbod in search');
 
-// Te vroeg voor herinnering (nog >7 dagen)
 @unlink($mailFile);
 $early = stekjes_job_expiry_reminders();
 ok($early['sent'] === 0, 'no reminder more than 7 days before expiry');
 
-// 7 dagen vóór verloop
 stekjes_set_fake_time($t0 + (STEKJES_AANBOD_TTL_DAYS - STEKJES_AANBOD_REMINDER_DAYS) * 86400);
 @unlink($mailFile);
 $rem1 = stekjes_job_expiry_reminders();
@@ -223,7 +221,6 @@ $rem2 = stekjes_job_expiry_reminders();
 ok($rem2['sent'] === 0 && $rem2['skipped'] === 0, 'idempotent: no second reminder mail');
 ok(!is_file($mailFile) || trim((string) file_get_contents($mailFile)) === '', 'no double mail file content');
 
-// Verlopen: uit zoeken, wel zichtbaar voor eigenaar
 stekjes_set_fake_time($t0 + (STEKJES_AANBOD_TTL_DAYS + 1) * 86400);
 $searchGone = stekjes_search_aanbod(null, null, false);
 $idsGone = array_map(static fn ($i) => (int) $i['id'], $searchGone['items']);
@@ -233,7 +230,6 @@ $ownerRow->execute([$aid, (int) $alice['id']]);
 $owned = $ownerRow->fetch();
 ok($owned && stekjes_aanbod_is_expired($owned), 'owner still sees expired row');
 
-// Token nog geldig (14 dagen vanaf reminder) → verlengen
 $renewed = stekjes_renew_aanbod_by_token($renewToken);
 ok(!empty($renewed['ok']), 'renew by signed token');
 $rowRenewed = $pdo->query('SELECT * FROM aanbod WHERE id=' . $aid)->fetch();
@@ -252,7 +248,6 @@ ok(empty($reuse['ok']), 'renew token cannot be reused');
 $forged = stekjes_renew_aanbod_by_token(preg_replace('/\.[a-f0-9]+$/', '.0000000000000000', $renewToken) ?? '');
 ok(empty($forged['ok']), 'forged signature rejected');
 
-// Eigenaar-verlenging (CSRF) na opnieuw laten verlopen
 stekjes_set_fake_time(stekjes_time() + (STEKJES_AANBOD_TTL_DAYS + 2) * 86400);
 ok(stekjes_aanbod_is_expired($pdo->query('SELECT * FROM aanbod WHERE id=' . $aid)->fetch()), 'expired again for owner renew');
 $post['csrf'] = stekjes_csrf_token();
@@ -261,10 +256,39 @@ ok(!empty($ownerRenew['ok']), 'owner can renew expired aanbod');
 $searchOwner = stekjes_search_aanbod(null, null, false);
 ok(in_array($aid, array_map(static fn ($i) => (int) $i['id'], $searchOwner['items']), true), 'owner-renewed visible in search');
 
-// Cron-token constant-time pad (functie bereikbaar; 403 zonder token wordt in endpoint gedaan)
 ok(hash_equals('test-cron-token', (string) stekjes_config()['cron_token']), 'cron token from test config');
 
 stekjes_set_fake_time(null);
+
+// --- AVG export / delete / purge (na expiry-tests; wist alice) ---
+$export = stekjes_export_user_data((int) $alice['id']);
+ok(!array_key_exists('password_hash', $export['user']), 'export has no password_hash');
+ok(!isset($export['user']['confirm_token']), 'export has no confirm_token');
+ok(($export['user']['email'] ?? '') === 'alice@example.com', 'export contains own email');
+$json = json_encode($export);
+ok(is_string($json) && !str_contains($json, 'password_hash'), 'export JSON has no password_hash string');
+
+$pdo->exec("INSERT INTO rate_limits (ip_hash, action, created_at) VALUES ('abc', 'search', " . (time() - 999999) . ")");
+$purged = stekjes_purge_rate_limits();
+ok($purged >= 1, 'purge_rate_limits deletes old rows');
+
+$post['csrf'] = stekjes_csrf_token();
+$post['bevestig'] = 'verwijder';
+$del = stekjes_delete_user_account((int) $alice['id'], $post);
+ok(!empty($del['ok']), 'delete account');
+$gone = $pdo->query("SELECT COUNT(*) FROM users WHERE email='alice@example.com'")->fetchColumn();
+ok((int) $gone === 0, 'user row removed');
+
+$post['csrf'] = stekjes_csrf_token();
+$post['form_started'] = (string) (time() - 10);
+$hr = stekjes_request_helper_delete('chris@example.com', $post);
+ok(!empty($hr['ok']), 'helper delete request');
+$ht = $pdo->query("SELECT confirm_token FROM helpers WHERE email='chris@example.com'")->fetchColumn();
+ok(is_string($ht) && $ht !== '', 'helper delete token set');
+$hd = stekjes_confirm_helper_delete((string) $ht);
+ok(!empty($hd['ok']), 'helper delete confirm');
+$hc = $pdo->query("SELECT COUNT(*) FROM helpers WHERE email='chris@example.com'")->fetchColumn();
+ok((int) $hc === 0, 'helper removed');
 
 echo "\n$passed passed, $failed failed\n";
 exit($failed > 0 ? 1 : 0);
