@@ -3,7 +3,10 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Account\AanbodController;
+use App\Http\Controllers\Account\ConversationController;
+use App\Http\Controllers\Account\InboxController;
 use App\Http\Controllers\Account\ProfileController;
+use App\Http\Controllers\Account\StartConversationController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Api\PartnersController as ApiPartnersController;
 use App\Http\Controllers\Api\ZoekenController as ApiZoekenController;
@@ -53,4 +56,12 @@ Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(functio
     Route::post('/account/aanbod', [AanbodController::class, 'store']);
     Route::post('/account/aanbod/{aanbod}/verlengen', [AanbodController::class, 'renew'])
         ->name('account.aanbod.renew');
+
+    Route::get('/account/inbox', InboxController::class)->name('account.inbox');
+    Route::get('/account/bericht-starten', StartConversationController::class)
+        ->name('account.bericht-starten');
+    Route::get('/account/gesprek/{gesprek}', [ConversationController::class, 'show'])
+        ->name('account.gesprek');
+    Route::post('/account/gesprek/{gesprek}', [ConversationController::class, 'store'])
+        ->name('account.gesprek.store');
 });

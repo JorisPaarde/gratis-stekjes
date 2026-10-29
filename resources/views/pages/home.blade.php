@@ -31,7 +31,7 @@
 
   <div class="cta-panel" id="doe-mee">
     <h2>Doe mee</h2>
-    <p>Kies wat bij je past. Stekjes blijven gratis — geen verkoop. Account, aanbod en kaart staan klaar; berichten volgen later.</p>
+    <p>Kies wat bij je past. Stekjes blijven gratis — geen verkoop. Account, aanbod, kaart en berichten staan klaar.</p>
     <div class="cta-choices">
       <a class="cta-choice" href="{{ route('account.registreren', ['rol' => 'uitdelen']) }}">
         <strong>Ik deel planten uit</strong>
@@ -60,7 +60,7 @@
     <li>Jullie spreken onderling een ophaalmoment af. Exacte adressen deel je zelf, als je dat wilt.</li>
     <li>Pas bij wederzijds akkoord zien jullie elkaars contactgegevens.</li>
   </ol>
-  <p class="muted">Berichten: <em>binnenkort</em>. Account, aanbod en kaart staan klaar.</p>
+  <p class="muted">Account, aanbod, kaart en berichten staan klaar.</p>
 </section>
 
 @if($nuTeStekken && count($nuTeStekken['groepen']))

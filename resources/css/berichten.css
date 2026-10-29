@@ -1,0 +1,87 @@
+/**
+ * Component styles for inbox / gesprek.
+ * Uses site CSS variables; keep edits here — not in site.css.
+ */
+.page-berichten .chat,
+.chat {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 40rem;
+}
+
+.bubble {
+  background: #fff;
+  border: 1px solid var(--line, rgba(31, 77, 50, 0.14));
+  border-radius: 0.9rem;
+  padding: 0.75rem 0.9rem;
+  color: var(--ink, #1c2e22);
+}
+
+.bubble.me {
+  background: rgba(47, 107, 69, 0.08);
+}
+
+.bubble p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.safety {
+  background: #fff8e8;
+  border: 1px solid rgba(196, 107, 45, 0.35);
+  border-radius: 0.85rem;
+  padding: 0.9rem 1rem;
+  color: var(--warn, #7a3b12);
+  max-width: 40rem;
+}
+
+.contact-box {
+  background: var(--card, rgba(255, 252, 246, 0.92));
+  border: 1px dashed var(--leaf, #2f6b45);
+  border-radius: 0.85rem;
+  padding: 1rem;
+  max-width: 40rem;
+  color: var(--ink, #1c2e22);
+}
+
+.contact-box h2 {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 1.2rem;
+  margin: 0 0 0.5rem;
+  color: var(--leaf-deep, #1f4d32);
+}
+
+.inbox-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.inbox-item {
+  background: var(--card, rgba(255, 252, 246, 0.92));
+  border: 1px solid var(--line, rgba(31, 77, 50, 0.14));
+  border-radius: 0.85rem;
+  padding: 0.9rem 1rem;
+}
+
+.inbox-item a {
+  font-weight: 560;
+  text-decoration: none;
+  color: var(--leaf-deep, #1f4d32);
+}
+
+.inbox-item a:hover {
+  color: var(--accent-text, #8a4a1a);
+}
+
+.flash-error {
+  border-color: rgba(139, 30, 30, 0.3);
+  color: var(--danger, #8b1e1e);
+  background: #fff;
+  margin: 1rem 0 0;
+  padding: 0.75rem 1rem;
+  border-radius: 0.7rem;
+  border: 1px solid rgba(139, 30, 30, 0.3);
+}

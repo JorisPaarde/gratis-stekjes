@@ -20,9 +20,9 @@
     <p>
       <a href="{{ route('account.profiel') }}">Profiel</a>
       · <a href="{{ route('account.aanbod') }}">Mijn aanbod</a>
+      · <a href="{{ route('account.inbox') }}">Inbox</a>
       · <a href="{{ route('aanbod') }}">Kaart</a>
     </p>
-    <p class="muted">Berichten: <em>binnenkort</em>.</p>
   </div>
 
   <p style="margin-top:1.25rem">
