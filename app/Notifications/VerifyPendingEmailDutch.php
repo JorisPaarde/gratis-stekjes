@@ -33,8 +33,6 @@ class VerifyPendingEmailDutch extends Notification
             ->greeting('Hoi,')
             ->line('Bevestig je nieuwe e-mailadres bij '.$site.' via deze knop:')
             ->action('Nieuw e-mailadres bevestigen', $url)
-            ->line('Of kopieer deze link in je browser:')
-            ->line($url)
             ->line('Heb je dit niet aangevraagd? Negeer deze mail — je huidige adres blijft actief.')
             ->salutation('Groet,'.PHP_EOL.'Joris ('.$site.')');
     }

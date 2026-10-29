@@ -92,22 +92,27 @@ test('niet-bevestigd account stuurt naar bevestigingsscherm met resend', functio
         ->assertSee('Bevestig je e-mail', false);
 });
 
-test('bevestigingsmail opnieuw sturen is throttled met wachttijd', function () {
+test('bevestigingsmail opnieuw: 5 snelle resends sturen maar 1 mail', function () {
     Notification::fake();
     $user = User::factory()->unverified()->create(['email' => 'resend@example.com']);
 
-    for ($i = 0; $i < 6; $i++) {
-        $this->post(route('account.bevestiging-opnieuw'), ['email' => $user->email])
-            ->assertRedirect();
+    for ($i = 0; $i < 5; $i++) {
+        $this->from(route('account.bevestiging-nodig'))
+            ->post(route('account.bevestiging-opnieuw'), ['email' => $user->email])
+            ->assertRedirect(route('account.bevestiging-nodig'));
     }
 
-    $this->from(route('account.bevestiging-nodig'))
-        ->post(route('account.bevestiging-opnieuw'), ['email' => $user->email])
-        ->assertRedirect(route('account.bevestiging-nodig'))
-        ->assertSessionHasErrors('email');
+    Notification::assertSentToTimes($user, VerifyEmailDutch::class, 1);
+
+    $last = $this->from(route('account.bevestiging-nodig'))
+        ->post(route('account.bevestiging-opnieuw'), ['email' => $user->email]);
+
+    $last->assertRedirect(route('account.bevestiging-nodig'))
+        ->assertSessionHasErrors('email')
+        ->assertSessionHasInput('email', $user->email);
 
     $message = session('errors')->first('email');
-    expect($message)->toContain('Te veel pogingen');
+    expect($message)->toContain('opnieuw een mail laten sturen');
     expect($message)->toMatch('/seconde|minuut/');
 });
 
@@ -171,18 +176,21 @@ test('wachtwoord vergeten stuurt mail zonder enumeratie', function () {
     Notification::fake();
     $user = User::factory()->create(['email' => 'reset@example.com']);
 
-    $this->post(route('account.wachtwoord.vergeten'), accountSecForm([
-        'email' => $user->email,
-    ]))
+    $this->withServerVariables(['REMOTE_ADDR' => '10.0.0.10'])
+        ->post(route('account.wachtwoord.vergeten'), accountSecForm([
+            'email' => $user->email,
+        ]))
         ->assertRedirect()
         ->assertSessionHas('status');
 
     Notification::assertSentTo($user, ResetPasswordDutch::class);
 
     Notification::fake();
-    $this->post(route('account.wachtwoord.vergeten'), accountSecForm([
-        'email' => 'bestaat-niet@example.com',
-    ]))
+    // Ander IP: mail-throttle is ook per IP (1/60 s).
+    $this->withServerVariables(['REMOTE_ADDR' => '10.0.0.11'])
+        ->post(route('account.wachtwoord.vergeten'), accountSecForm([
+            'email' => 'bestaat-niet@example.com',
+        ]))
         ->assertRedirect()
         ->assertSessionHas('status');
 
@@ -190,21 +198,22 @@ test('wachtwoord vergeten stuurt mail zonder enumeratie', function () {
     expect(session('status'))->toBe(__('passwords.sent'));
 });
 
-test('wachtwoordreset-aanvraag is throttled', function () {
-    for ($i = 0; $i < 3; $i++) {
-        $this->post(route('account.wachtwoord.vergeten'), accountSecForm([
-            'email' => 'reset-throttle@example.com',
-        ]));
-    }
+test('wachtwoordreset-aanvraag is throttled (max 1 per 60 s)', function () {
+    Notification::fake();
+
+    $this->post(route('account.wachtwoord.vergeten'), accountSecForm([
+        'email' => 'reset-throttle@example.com',
+    ]))->assertRedirect()->assertSessionHas('status');
 
     $this->from(route('account.wachtwoord.vergeten'))
         ->post(route('account.wachtwoord.vergeten'), accountSecForm([
             'email' => 'reset-throttle@example.com',
         ]))
         ->assertRedirect(route('account.wachtwoord.vergeten'))
-        ->assertSessionHasErrors('email');
+        ->assertSessionHasErrors('email')
+        ->assertSessionHasInput('email', 'reset-throttle@example.com');
 
-    expect(session('errors')->first('email'))->toContain('Te veel pogingen');
+    expect(session('errors')->first('email'))->toContain('opnieuw een mail laten sturen');
 });
 
 test('wachtwoord resetten via token werkt', function () {
@@ -289,6 +298,35 @@ test('e-mail wijzigen stuurt bevestiging naar nieuw en melding naar oud', functi
     Notification::assertSentOnDemand(EmailChangeNoticeDutch::class);
 });
 
+test('e-mailwijziging is throttled (max 1 per 60 s)', function () {
+    Notification::fake();
+    $user = User::factory()->create([
+        'email' => 'throttle-oud@example.com',
+        'password' => accountSecPassword(),
+    ]);
+
+    $this->actingAs($user)
+        ->post(route('account.email'), [
+            'email' => 'throttle-nieuw@example.com',
+            'password' => accountSecPassword(),
+        ])
+        ->assertRedirect(route('account.email'));
+
+    $user->forceFill(['pending_email' => null])->save();
+
+    $this->actingAs($user)
+        ->from(route('account.email'))
+        ->post(route('account.email'), [
+            'email' => 'throttle-nieuw-2@example.com',
+            'password' => accountSecPassword(),
+        ])
+        ->assertRedirect(route('account.email'))
+        ->assertSessionHasErrors('email');
+
+    expect(session('errors')->first('email'))->toContain('opnieuw een mail laten sturen');
+    Notification::assertSentToTimes($user, VerifyPendingEmailDutch::class, 1);
+});
+
 test('e-mailwijziging wordt actief na signed bevestigingslink', function () {
     $user = User::factory()->create([
         'email' => 'voor@example.com',
@@ -371,4 +409,38 @@ test('verificatiemail heeft Nederlandse onderwerp met sitenaam', function () {
         return str_contains($mail->subject, 'Gratis planten')
             && str_contains($mail->subject, 'Bevestig');
     });
+});
+
+test('accountmails: NL footer/subcopy, link één keer met word-break', function () {
+    config(['site.name' => 'Gratis planten', 'app.name' => 'Gratis planten']);
+
+    $user = User::factory()->unverified()->create(['email' => 'template@example.com']);
+
+    $cases = [
+        (new VerifyEmailDutch)->toMail($user),
+        (new ResetPasswordDutch('test-token'))->toMail($user),
+        (new VerifyPendingEmailDutch('nieuw@example.com'))->toMail($user),
+    ];
+
+    foreach ($cases as $mail) {
+        $html = (string) $mail->render();
+
+        expect($html)->toContain('gratis planten delen, nooit verkopen')
+            ->and($html)->not->toContain('All rights reserved')
+            ->and($html)->not->toContain("If you're having trouble")
+            ->and($html)->toContain('Als de knop')
+            ->and($html)->toContain('break-all')
+            ->and($html)->not->toContain('Of kopieer deze link');
+
+        // Knop (href) + subcopy (zichtbare link); geen derde body-regel met dezelfde URL.
+        $encodedUrl = e($mail->actionUrl);
+        $urlCount = substr_count($html, $encodedUrl);
+        expect($urlCount)->toBeLessThanOrEqual(3);
+        expect($urlCount)->toBeGreaterThanOrEqual(2);
+    }
+
+    $noticeHtml = (string) (new EmailChangeNoticeDutch('nieuw@example.com'))->toMail($user)->render();
+    expect($noticeHtml)->toContain('gratis planten delen, nooit verkopen')
+        ->and($noticeHtml)->not->toContain('All rights reserved')
+        ->and($noticeHtml)->not->toContain("If you're having trouble");
 });

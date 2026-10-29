@@ -6,14 +6,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Support\FormGuard;
+use App\Support\MailThrottle;
 use App\Support\SafeMail;
-use App\Support\ThrottleMessage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Throwable;
 
@@ -51,14 +49,12 @@ class ForgotPasswordController extends Controller
         }
 
         $email = strtolower(trim((string) $request->input('email')));
-        $throttleKey = 'password-reset:'.Str::lower($email).'|'.$request->ip();
-
-        if (RateLimiter::tooManyAttempts($throttleKey, 3)) {
+        $throttle = MailThrottle::attempt('password-reset', $email, $request);
+        if (! $throttle['ok']) {
             return back()
                 ->withInput($request->only('email'))
-                ->withErrors(['email' => ThrottleMessage::forKey($throttleKey)]);
+                ->withErrors(['email' => $throttle['message']]);
         }
-        RateLimiter::hit($throttleKey, 60);
 
         try {
             // Geen enumeratie: altijd dezelfde succesmelding (behalve throttle / mailstoring).
@@ -71,6 +67,8 @@ class ForgotPasswordController extends Controller
                 ->with('status', 'De resetmail lukte niet. Probeer het zo opnieuw.');
         }
 
-        return back()->with('status', __('passwords.sent'));
+        return back()
+            ->withInput($request->only('email'))
+            ->with('status', __('passwords.sent'));
     }
 }

@@ -9,6 +9,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.13.4] - 2026-10-29
+
+### Fixed
+
+- Mail opnieuw versturen (bevestiging, wachtwoord-vergeten, e-mailwijziging): max 1 per 60 s en 5 per uur per adres én per IP, met NL-wachttijdmelding en e-mailveld blijft gevuld.
+- Accountmails: Nederlandse subcopy/footer; actielink één keer met `word-break: break-all` (geen dubbele URL meer).
+
 ## [0.13.3] - 2026-10-29
 
 ### Fixed
