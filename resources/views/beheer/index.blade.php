@@ -31,7 +31,7 @@
 
   <h2 id="deelplek-aanmeldingen">Deelplek-aanmeldingen</h2>
   <p class="muted">Aanmeldingen via <a href="{{ route('voor-organisaties.aanmelden') }}">/voor-organisaties/aanmelden</a>. Pas na goedkeuring zichtbaar op deelplekken en stadspagina’s. Contact-e-mail is niet publiek.</p>
-  @if($pendingDeelplekken->isEmpty())
+  @if(count($pendingDeelplekken) === 0)
     <p class="muted">Geen aanmeldingen in afwachting.</p>
   @else
     <div class="beheer-table-wrap">
@@ -159,7 +159,7 @@
   <h2 id="meldingen">Meldingen</h2>
   @if(!$hasReportsTable)
     <p class="muted">Meldingentabel volgt met de berichten-release. Daarna verschijnen openstaande meldingen hier.</p>
-  @elseif($reports->isEmpty())
+  @elseif(count($reports) === 0)
     <div class="empty-state" role="status">
       <p>Geen openstaande meldingen. Nieuwe meldingen verschijnen hier zodra iemand iets signaleert.</p>
     </div>

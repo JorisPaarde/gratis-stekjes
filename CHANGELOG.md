@@ -9,6 +9,19 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.22.2] - 2026-10-29
+
+### Fixed
+
+- `/account/aanbod`: empty-check via `count()` (array- en Collection-veilig); Blade-syntax blijft zonder aan-tekst geplakte `@endif` (regreszie van staging-log 17:34).
+- `/organisaties/{slug}`: controller geeft altijd een Support Collection; view gebruikt `count($deelplekken)` i.p.v. `isNotEmpty()` (voorkomt 500 bij kale array, staging-log 18:09).
+- Zelfde Collection/array-veilige `count()`-checks in inbox- en beheer-views; mailtemplate expiry zonder aan woord geplakte `@if`.
+
+### Added
+
+- CI + Pest: `php artisan view:cache` compileert alle Blade-views (syntaxfouten falen in CI).
+- Feature-tests: `/account/aanbod` met/zonder aanbod; organisatiepagina met/zonder deelplekken.
+
 ## [0.22.1] - 2026-10-29
 
 ### Changed
