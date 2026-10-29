@@ -1,0 +1,75 @@
+{
+    "titel": "Olijfboom snoeien",
+    "samenvatting": "Olijfboom snoeien wanneer: licht in het voorjaar (maart–april). Houd de kroon open; binnen of in pot vaak harder om te beperken.",
+    "meta_description": "Olijfboom snoeien wanneer: licht in het voorjaar (maart–april). Houd de kroon open; binnen of in pot vaak harder om te beperken.",
+    "zoekwoorden": [
+        "olijfboom snoeien",
+        "olijfboom snoeien wanneer",
+        "olijvenboompje snoeien",
+        "olijf snoeien"
+    ],
+    "categorieen": [
+        "snoeien"
+    ],
+    "pillar": "snoeien",
+    "gerelateerde_soorten": [],
+    "seizoenen": [
+        "lente"
+    ],
+    "maanden": [
+        3,
+        4
+    ],
+    "niveau": "beginner",
+    "locatie": "buiten",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Olijf (Olea europaea) houdt van zon en scherpe drainage. Snoeien is vooral vormgeven en licht in de kroon laten: de RHS plaatst olijf in pruning group 1 (lichte snoei) en noemt onder glas voorjaarssnoei om de maat te houden."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer?"
+        },
+        {
+            "type": "p",
+            "tekst": "Maart–april, na vorst. Vermijd zware snoei in de herfst: nieuwe scheuten rijpen niet meer af vóór de winter."
+        },
+        {
+            "type": "h2",
+            "tekst": "Hoe"
+        },
+        {
+            "type": "ol",
+            "items": [
+                "Verwijder dood, ziek of kruisend hout.",
+                "Dun dichte delen zodat licht de binnenkant bereikt.",
+                "In pot of kas: knip langer terug om hoogte te beperken; nooit meer dan ongeveer een derde van de kroon in één keer.",
+                "Draag handschoenen: sap en stekels kunnen irriteren."
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Halfrijpe zomerstekken zijn de thuisroute om te vermeerderen — zie olijfboom stekken. In Nederland is winterbescherming vaak belangrijker dan perfecte snoei."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — Olea europaea (common olive)",
+            "url": "https://www.rhs.org.uk/plants/11735/olea-europaea-f/details"
+        },
+        {
+            "titel": "RHS — Semi-ripe cuttings",
+            "url": "https://www.rhs.org.uk/propagation/semi-ripe-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": true,
+    "seo": {
+        "plant": "olijfboom",
+        "rol": "snoeien",
+        "stek_type": "artikel",
+        "stek_slug": "olijfboom-stekken"
+    },
+    "slug": "olijfboom-snoeien"
+}

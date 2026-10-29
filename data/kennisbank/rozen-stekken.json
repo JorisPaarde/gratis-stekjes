@@ -1,0 +1,83 @@
+{
+    "titel": "Rozen stekken",
+    "samenvatting": "Rozen stekken: softwood in voorjaar of winterhoutstek in najaar/winter. Goedkoop delen; let op kweekrecht.",
+    "meta_description": "Rozen stekken: softwood in voorjaar of winterhoutstek in najaar/winter. Goedkoop delen; let op kweekrecht.",
+    "zoekwoorden": [
+        "rozen stekken",
+        "roos stekken",
+        "rozen stekken in aardappel"
+    ],
+    "categorieen": [
+        "stekken"
+    ],
+    "pillar": "stekken",
+    "gerelateerde_soorten": [],
+    "seizoenen": [
+        "lente",
+        "zomer",
+        "herfst",
+        "winter"
+    ],
+    "maanden": [
+        3,
+        4,
+        5,
+        6,
+        10,
+        11,
+        12,
+        1,
+        2
+    ],
+    "niveau": "beginner",
+    "locatie": "buiten",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "De RHS noemt softwood tipstekken in vroeg tot mid-voorjaar als makkelijkste route (wortels in ±2 maanden) en hardwood van mid-herfst tot late winter als geduldige optie. “In een aardappel” is een folkloretruc — betrouwbaarder is stekgrond met drainage."
+        },
+        {
+            "type": "h2",
+            "tekst": "Softwood (lente)"
+        },
+        {
+            "type": "ol",
+            "items": [
+                "Neem niet-bloeiende tip van dit jaar, 8–12 cm, onder een knoop.",
+                "Onderste blad weg; steek in stekgrond; vochtig en licht houden.",
+                "Na beworteling afharden en een jaar opkweken vóór uitplanten."
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Winterhout"
+        },
+        {
+            "type": "p",
+            "tekst": "Stevige scheuten van dit jaar, 15–25 cm, twee derde in de grond of diepe pot. Vergeet ze tot het volgende seizoen, behalve water in droge perioden."
+        },
+        {
+            "type": "p",
+            "tekst": "Gebruik bij voorkeur wilgenwater i.p.v. stekpoeder. Geënte rozen kunnen anders presteren dan de moeder; plantbreeders’ rights verbieden soms vermeerdering voor verkoop — delen onderling voor eigen tuin is de geest van dit platform."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — How to grow roses",
+            "url": "https://www.rhs.org.uk/plants/roses/growing-guide"
+        },
+        {
+            "titel": "RHS — Hardwood cuttings",
+            "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": true,
+    "seo": {
+        "plant": "rozen",
+        "rol": "stekken",
+        "aanbod_plant": "rozen",
+        "wilgenwater": true
+    },
+    "slug": "rozen-stekken"
+}

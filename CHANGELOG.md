@@ -9,6 +9,21 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.20.0] - 2026-10-29
+
+### Added
+
+- SEO-pijlers op `/stektips`: Stekken, Snoeien (+ snoeikalender), Natuurlijk bewortelen, Permacultuur, Vermeerderen overig — afgestemd op `docs/seo/stektips-keywords.md`.
+- Top-pagina’s: hortensia/vlinderstruik/lavendel/olijfboom/rozen/vijg snoeien (+ stekken waar geen soortpagina); pijlers stekken & snoeien; monstera stekken in water; stekpoeder↔wilgenwater via pijler Natuurlijk bewortelen.
+- Verplichte interne links: snoei→stek, stek→wilgenwater + `/aanbod?plant=X`; feature-test `KennisbankSeoLinksTest`.
+- Aanbod: query `plant` filtert op aanbodtekst (server-side + API); `q` blijft postcode/plaats.
+
+### Changed
+
+- Kennisbank-categorieën hernoemd naar de vijf pijlers; bestaande artikelslugs ongewijzigd (geen breaking redirects).
+- Soortpagina’s hortensia/lavendel/monstera/vijg dienen als stekpagina (geen dubbele content).
+- Kennisbank-artikelen in ik-vorm (geen we/wij/ons/onze); test dekt `data/kennisbank/*.json`, `soorten/*.json` en `data/stektips.json`.
+
 ## [0.19.1] - 2026-10-29
 
 ### Changed

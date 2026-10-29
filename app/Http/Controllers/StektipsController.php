@@ -73,11 +73,15 @@ class StektipsController extends Controller
             static fn (array $a, array $b): int => strcmp($a['titel'], $b['titel'])
         );
 
+        $hasActiveFilters = $queryForCanonical !== [];
+        $pillars = $hasActiveFilters ? [] : $kennisbank->pillars();
+
         return view('pages.stektips-index', [
             'title' => 'Stektips & kennisbank',
-            'metaDescription' => 'Kennisbank over stekken, snoeien, seizoenen en permacultuur — plus 48 soortpagina’s. Filter en zoek zonder JavaScript.',
+            'metaDescription' => 'Kennisbank over stekken, snoeien, natuurlijk bewortelen en permacultuur — plus 48 soortpagina’s. Filter en zoek zonder JavaScript.',
             'canonical' => route('stektips.index', $queryForCanonical),
             'entries' => $entries,
+            'pillars' => $pillars,
             'artikelenCount' => count($artikelen),
             'soortenCount' => count($soorten),
             'totalCount' => count($entries),
@@ -100,13 +104,13 @@ class StektipsController extends Controller
                 'buiten' => 'Buiten',
                 'beide' => 'Binnen & buiten',
             ],
-            'hasActiveFilters' => $queryForCanonical !== [],
+            'hasActiveFilters' => $hasActiveFilters,
             'schema' => [
                 '@context' => 'https://schema.org',
                 '@type' => 'CollectionPage',
                 'name' => 'Stektips & kennisbank',
                 'url' => route('stektips.index'),
-                'description' => 'Kennisbank over stekken en 48 soortpagina’s.',
+                'description' => 'Kennisbank over stekken, snoeien en 48 soortpagina’s.',
                 'inLanguage' => 'nl-NL',
             ],
         ]);
@@ -138,22 +142,38 @@ class StektipsController extends Controller
         }
 
         $categoryLabels = $kennisbank->categoryLabels();
+        $meta = (string) ($artikel['meta_description'] ?? $artikel['samenvatting'] ?? $artikel['titel']);
+        $pillarSlug = (string) ($artikel['pillar'] ?? ($artikel['categorieen'][0] ?? ''));
+        $breadcrumbs = [
+            ['naam' => 'Home', 'url' => route('home')],
+            ['naam' => 'Stektips', 'url' => route('stektips.index')],
+        ];
+        if ($pillarSlug !== '' && empty($artikel['is_pillar']) && isset($categoryLabels[$pillarSlug])) {
+            $hub = collect($kennisbank->pillars())->first(
+                static fn (array $p): bool => ($p['pillar'] ?? '') === $pillarSlug || ($p['slug'] ?? '') === $pillarSlug
+            );
+            if (is_array($hub)) {
+                $breadcrumbs[] = [
+                    'naam' => $categoryLabels[$pillarSlug],
+                    'url' => route('stektips.artikel', ['slug' => $hub['slug']]),
+                ];
+            }
+        }
+        $breadcrumbs[] = ['naam' => (string) $artikel['titel'], 'url' => $url];
 
         return view('pages.stektips-artikel', [
             'title' => (string) $artikel['titel'],
-            'metaDescription' => (string) ($artikel['samenvatting'] ?? $artikel['titel']),
+            'metaDescription' => $meta,
             'canonical' => $url,
             'artikel' => $artikel,
             'categoryLabels' => $categoryLabels,
             'gerelateerdeSoorten' => $gerelateerdeSoorten,
             'gerelateerdeArtikelen' => $kennisbank->relatedArticles($artikel),
+            'kinderen' => $kennisbank->childrenOf($artikel),
             'duurzamer' => $duurzamer,
+            'seoCtas' => $this->seoCtasForArtikel($artikel, $kennisbank),
             'schema' => $kennisbank->articleSchema($artikel, $url),
-            'breadcrumbs' => [
-                ['naam' => 'Home', 'url' => route('home')],
-                ['naam' => 'Stektips', 'url' => route('stektips.index')],
-                ['naam' => (string) $artikel['titel'], 'url' => $url],
-            ],
+            'breadcrumbs' => $breadcrumbs,
         ]);
     }
 
@@ -174,6 +194,9 @@ class StektipsController extends Controller
         $metaLatijn = ($latijn !== '' && $latijn !== 'Volgt binnenkort') ? " ({$latijn})" : '';
         $metaKort = $kort !== '' ? $kort.'. ' : '';
         $url = route('stektips.show', ['slug' => $slug]);
+        $hub = $kennisbank->soortHub($slug);
+        $aanbodPlant = is_array($hub) ? (string) ($hub['aanbod_plant'] ?? $naam) : $naam;
+        $aanbodUrl = route('aanbod', ['plant' => $aanbodPlant]);
 
         return view('pages.stektips-show', [
             'title' => $naam.' stekken en gratis delen',
@@ -182,13 +205,84 @@ class StektipsController extends Controller
             'soort' => $soort,
             'verwanten' => $stektips->related($soort),
             'gerelateerdeArtikelen' => $kennisbank->articlesForSoort($slug),
-            'aanbodUrl' => route('aanbod'),
+            'aanbodUrl' => $aanbodUrl,
+            'seoCtas' => $this->seoCtasForSoort($slug, $naam, $kennisbank),
             'breadcrumbs' => [
                 ['naam' => 'Home', 'url' => route('home')],
                 ['naam' => 'Stektips', 'url' => route('stektips.index')],
+                ['naam' => 'Stekken', 'url' => route('stektips.artikel', ['slug' => 'stekken'])],
                 ['naam' => $naam, 'url' => $url],
             ],
         ]);
+    }
+
+    /**
+     * @param  array<string, mixed>  $artikel
+     * @return array<string, mixed>
+     */
+    private function seoCtasForArtikel(array $artikel, Kennisbank $kennisbank): array
+    {
+        $seo = $artikel['seo'] ?? [];
+        if (! is_array($seo) || $seo === []) {
+            return [];
+        }
+
+        $ctas = [];
+        $plant = (string) ($seo['plant'] ?? '');
+        $plantLabel = $plant !== '' ? ucfirst(str_replace('-', ' ', $plant)) : '';
+        $ctas['plant_label'] = $plantLabel;
+
+        $rol = (string) ($seo['rol'] ?? '');
+        if ($rol === 'snoeien') {
+            $stekType = (string) ($seo['stek_type'] ?? 'artikel');
+            $stekSlug = (string) ($seo['stek_slug'] ?? '');
+            if ($stekSlug !== '') {
+                $ctas['stek_url'] = $stekType === 'soort'
+                    ? route('stektips.show', ['slug' => $stekSlug])
+                    : route('stektips.artikel', ['slug' => $stekSlug]);
+                $ctas['stek_label'] = $plantLabel !== '' ? $plantLabel.' stekken' : 'Stekpagina';
+            }
+            $aanbodPlant = (string) ($seo['aanbod_plant'] ?? $plant);
+            if ($aanbodPlant !== '') {
+                $ctas['aanbod_plant'] = $aanbodPlant;
+            }
+        }
+
+        if ($rol === 'stekken' || ! empty($seo['wilgenwater'])) {
+            $ctas['wilgenwater_url'] = route('stektips.artikel', ['slug' => 'wilgenwater']);
+            $aanbodPlant = (string) ($seo['aanbod_plant'] ?? $plant);
+            if ($aanbodPlant !== '') {
+                $ctas['aanbod_url'] = route('aanbod', ['plant' => $aanbodPlant]);
+                $ctas['aanbod_plant'] = $aanbodPlant;
+            }
+        }
+
+        return $ctas;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function seoCtasForSoort(string $slug, string $naam, Kennisbank $kennisbank): array
+    {
+        $hub = $kennisbank->soortHub($slug);
+        if ($hub === null) {
+            return [];
+        }
+
+        $ctas = [
+            'plant_label' => $naam,
+            'wilgenwater_url' => route('stektips.artikel', ['slug' => 'wilgenwater']),
+            'aanbod_url' => route('aanbod', ['plant' => (string) ($hub['aanbod_plant'] ?? $naam)]),
+            'aanbod_plant' => (string) ($hub['aanbod_plant'] ?? $naam),
+        ];
+        $snoei = $hub['snoei_slug'] ?? null;
+        if (is_string($snoei) && $snoei !== '' && $kennisbank->find($snoei) !== null) {
+            $ctas['snoei_url'] = route('stektips.artikel', ['slug' => $snoei]);
+            $ctas['snoei_label'] = $naam.' snoeien';
+        }
+
+        return $ctas;
     }
 
     /**

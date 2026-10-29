@@ -1,0 +1,84 @@
+{
+    "titel": "Natuurlijk bewortelen",
+    "samenvatting": "Van stekpoeder naar wilgenwater: wat synthetisch IBA doet, wanneer je het niet nodig hebt, en hoe je gratis wiltrekken maakt.",
+    "meta_description": "Stekpoeder uitgelegd en het duurzame alternatief wilgenwater. Natuurlijk bewortelen zonder webshop-first advies.",
+    "zoekwoorden": [
+        "stekpoeder",
+        "stekpoeder alternatief",
+        "wilgenwater",
+        "wilgenwater maken",
+        "stekpoeder maken",
+        "natuurlijk stekhormoon"
+    ],
+    "categorieen": [
+        "natuurlijk-bewortelen"
+    ],
+    "pillar": "natuurlijk-bewortelen",
+    "is_pillar": true,
+    "gerelateerde_soorten": [
+        "wilg",
+        "lavendel"
+    ],
+    "seizoenen": [
+        "lente",
+        "zomer"
+    ],
+    "maanden": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+    ],
+    "niveau": "beginner",
+    "locatie": "beide",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Zoek je op “stekpoeder”, dan vind je vooral webshops. Deze pijler legt uit wat het doet — en stuurt door naar wilgenwater en goede stekpraktijk, passend bij gratis delen."
+        },
+        {
+            "type": "h2",
+            "tekst": "Eerst dit"
+        },
+        {
+            "type": "ol",
+            "items": [
+                "Juiste seizoen en methode (zie pijler Stekken).",
+                "Luchtige, peat-free stekgrond.",
+                "Wilgenwater als milde, gratis stimulans.",
+                "Pas daarna eventueel stekpoeder bij hardnekkige houtige soorten."
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Pagina’s in deze pijler"
+        },
+        {
+            "type": "p",
+            "tekst": "Lees stekpoeder voor een eerlijke infopagina (geen koopdruk) en wilgenwater voor het recept. Beide artikelen verwijzen naar elkaar."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "NYBG — organic rooting hormone / willow water",
+            "url": "https://libanswers.nybg.org/faq/223060"
+        },
+        {
+            "titel": "WUR edepot — Biologisch stekpoeder in de maak",
+            "url": "https://edepot.wur.nl/461419"
+        },
+        {
+            "titel": "RHS — Hardwood cuttings",
+            "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": "wilgenwater",
+    "howto": false,
+    "child_slugs": [
+        "stekpoeder",
+        "wilgenwater"
+    ],
+    "slug": "natuurlijk-bewortelen"
+}

@@ -21,7 +21,7 @@ final class Kennisbank
 
         foreach ($files as $path) {
             $base = basename($path);
-            if ($base === 'categories.json') {
+            if (in_array($base, ['categories.json', 'soort-hubs.json'], true)) {
                 continue;
             }
             $row = $this->decodeFile($path);
@@ -92,6 +92,65 @@ final class Kennisbank
         }
 
         return $labels;
+    }
+
+    /**
+     * SEO-/CTA-hubs voor soortpagina’s die als stekpagina dienen.
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    public function soortHubs(): array
+    {
+        $path = ($this->directory ?? base_path('data/kennisbank')).'/soort-hubs.json';
+        if (! is_readable($path)) {
+            return [];
+        }
+        $data = json_decode((string) file_get_contents($path), true);
+
+        return is_array($data) ? $data : [];
+    }
+
+    /** @return array<string, mixed>|null */
+    public function soortHub(string $soortSlug): ?array
+    {
+        $hub = $this->soortHubs()[$soortSlug] ?? null;
+
+        return is_array($hub) ? $hub : null;
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     */
+    public function pillars(): array
+    {
+        return array_values(array_filter(
+            $this->all(),
+            static fn (array $a): bool => ! empty($a['is_pillar'])
+        ));
+    }
+
+    /**
+     * @param  array<string, mixed>  $artikel
+     * @return list<array<string, mixed>>
+     */
+    public function childrenOf(array $artikel): array
+    {
+        $slugs = $artikel['child_slugs'] ?? [];
+        if (! is_array($slugs)) {
+            return [];
+        }
+        $out = [];
+        foreach ($slugs as $slug) {
+            if (! is_string($slug)) {
+                continue;
+            }
+            $found = $this->find($slug);
+            if ($found !== null) {
+                $out[] = $found;
+            }
+        }
+
+        return $out;
     }
 
     /**

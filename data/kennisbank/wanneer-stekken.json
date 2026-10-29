@@ -1,58 +1,85 @@
 {
-  "slug": "wanneer-stekken",
-  "titel": "Wanneer stekken? Seizoenskalender",
-  "samenvatting": "Softwood lente–vroege zomer, halfrijp nazomer, winterhout mid-herfst tot late winter. Timing bepaalt succes meer dan gadgets.",
-  "zoekwoorden": [
-    "wanneer stekken",
-    "stekken seizoen",
-    "stekkalender",
-    "beste tijd om te stekken",
-    "maand stekken"
-  ],
-  "categorieen": ["timing-seizoen", "stekmethoden"],
-  "gerelateerde_soorten": ["lavendel", "rozemarijn", "zwarte-bes", "hortensia", "fuchsia"],
-  "seizoenen": ["lente", "zomer", "herfst", "winter"],
-  "maanden": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-  "niveau": "beginner",
-  "locatie": "beide",
-  "inhoud": [
-    {
-      "type": "p",
-      "tekst": "De RHS deelt stektijden helder in. Gebruik dit als kapstok; per soort blijft de soortpagina leidend."
-    },
-    {
-      "type": "h2",
-      "tekst": "Kalender"
-    },
-    {
-      "type": "ul",
-      "items": [
-        "April–juni: kop-/scheutstek (softwood) — zachte topjes, vaste planten en veel struiken.",
-        "Juli–september: halfrijpe stek (semi-ripe) — basis stevig, tip nog zacht; kruiden, groenblijvers, veel heesters.",
-        "Mid-herfst–late winter: winterhoutstek — na bladval, buiten strenge vorst; bessen, wilg, vijg, veel bladverliezers.",
-        "Lente of herfst: scheuren van vaste planten; afleggen in lente of herfst.",
-        "Lente–vroege zomer: bladstek voor kamerplanten en succulenten."
-      ]
-    },
-    {
-      "type": "p",
-      "tekst": "Permacultuur: werk met wat het seizoen geeft. Winterstek vraagt weinig warmte; zomerstek vraagt schaduw en vocht. Plan snoei zo dat er stekmateriaal overblijft om te delen."
-    }
-  ],
-  "bronnen": [
-    {
-      "titel": "RHS — Softwood cuttings (apr–jun)",
-      "url": "https://www.rhs.org.uk/propagation/softwood-cuttings"
-    },
-    {
-      "titel": "RHS — Semi-ripe cuttings (jul–sep)",
-      "url": "https://www.rhs.org.uk/propagation/semi-ripe-cuttings"
-    },
-    {
-      "titel": "RHS — Hardwood cuttings (mid-herfst–late winter)",
-      "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
-    }
-  ],
-  "duurzamer_alternatief": null,
-  "howto": false
+    "slug": "wanneer-stekken",
+    "titel": "Wanneer stekken? Seizoenskalender",
+    "samenvatting": "Softwood lente–vroege zomer, halfrijp nazomer, winterhout mid-herfst tot late winter. Timing bepaalt succes meer dan gadgets.",
+    "zoekwoorden": [
+        "wanneer stekken",
+        "stekken seizoen",
+        "stekkalender",
+        "beste tijd om te stekken",
+        "maand stekken"
+    ],
+    "categorieen": [
+        "stekken"
+    ],
+    "gerelateerde_soorten": [
+        "lavendel",
+        "rozemarijn",
+        "zwarte-bes",
+        "hortensia",
+        "fuchsia"
+    ],
+    "seizoenen": [
+        "lente",
+        "zomer",
+        "herfst",
+        "winter"
+    ],
+    "maanden": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+    ],
+    "niveau": "beginner",
+    "locatie": "beide",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "De RHS deelt stektijden helder in. Gebruik dit als kapstok; per soort blijft de soortpagina leidend."
+        },
+        {
+            "type": "h2",
+            "tekst": "Kalender"
+        },
+        {
+            "type": "ul",
+            "items": [
+                "April–juni: kop-/scheutstek (softwood) — zachte topjes, vaste planten en veel struiken.",
+                "Juli–september: halfrijpe stek (semi-ripe) — basis stevig, tip nog zacht; kruiden, groenblijvers, veel heesters.",
+                "Mid-herfst–late winter: winterhoutstek — na bladval, buiten strenge vorst; bessen, wilg, vijg, veel bladverliezers.",
+                "Lente of herfst: scheuren van vaste planten; afleggen in lente of herfst.",
+                "Lente–vroege zomer: bladstek voor kamerplanten en succulenten."
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Permacultuur: werk met wat het seizoen geeft. Winterstek vraagt weinig warmte; zomerstek vraagt schaduw en vocht. Plan snoei zo dat er stekmateriaal overblijft om te delen."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — Softwood cuttings (apr–jun)",
+            "url": "https://www.rhs.org.uk/propagation/softwood-cuttings"
+        },
+        {
+            "titel": "RHS — Semi-ripe cuttings (jul–sep)",
+            "url": "https://www.rhs.org.uk/propagation/semi-ripe-cuttings"
+        },
+        {
+            "titel": "RHS — Hardwood cuttings (mid-herfst–late winter)",
+            "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": false,
+    "pillar": "stekken"
 }

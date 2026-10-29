@@ -1,0 +1,114 @@
+{
+    "titel": "Snoeien",
+    "samenvatting": "Snoeien wanneer, snoeikalender per maand, en hoe je snoeisel tot stekjes maakt. Van hortensia tot vijg.",
+    "meta_description": "Snoeien: wanneer snoeien, snoeikalender (februari, maart, …) en plantpagina’s. Maak van snoeiafval gratis stekjes.",
+    "zoekwoorden": [
+        "snoeien",
+        "snoeien wanneer",
+        "snoeikalender",
+        "snoeien februari",
+        "snoeien maart",
+        "planten snoeien"
+    ],
+    "categorieen": [
+        "snoeien"
+    ],
+    "pillar": "snoeien",
+    "is_pillar": true,
+    "gerelateerde_soorten": [
+        "hortensia",
+        "lavendel",
+        "vijg"
+    ],
+    "seizoenen": [
+        "winter",
+        "lente",
+        "zomer",
+        "herfst"
+    ],
+    "maanden": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+    ],
+    "niveau": "beginner",
+    "locatie": "buiten",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Snoeien houdt planten gezond en in model. Op dit platform telt vooral wat je met het snoeisel doet: stekken en delen in plaats van de container."
+        },
+        {
+            "type": "h2",
+            "tekst": "Snoeien wanneer? Vuistregels"
+        },
+        {
+            "type": "ul",
+            "items": [
+                "Bloeit op nieuw hout (vlinderstruik, veel rozen): snoei in late winter / vroeg voorjaar.",
+                "Bloeit op oud hout (bolhortensia, sering): snoei spaarzaam en op het juiste moment — anders geen bloei.",
+                "Vijg en fruit: volg de soortpagina; vaak voorjaar + zomerpinch.",
+                "Lavendel: na de bloei in late zomer, niet in oud kaal hout."
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Snoeikalender (NL, indicatief)"
+        },
+        {
+            "type": "ul",
+            "items": [
+                "Januari–februari: plannen; vorstvrij snoeien van winterharde struiken die op nieuw hout bloeien; winterhoutstek nemen.",
+                "Maart: piekmaand — hortensia (typeafhankelijk), vlinderstruik, lavendel-correctie, olijf, rozen, vijg (na vorst).",
+                "April–mei: nazorg, hagen later; zomerstekken voorbereiden.",
+                "Juni–augustus: zomerpinch (vijg), halfrijpe stek van snoeisel, lavendel na bloei.",
+                "September–november: lichte vormsnoei; winterhout voorbereiden; snoeikalender-piek voor “snoeien” als zoekterm in november.",
+                "December: alleen dood hout, tenzij mild en soortgeschikt."
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Van snoei naar stek"
+        },
+        {
+            "type": "p",
+            "tekst": "Elke snoeipagina hieronder linkt naar stekken van dezelfde plant. Gebruik wilgenwater en deel surplus via het aanbod. Zie ook snoeiafval als stek."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — Hydrangea pruning",
+            "url": "https://www.rhs.org.uk/plants/hydrangea/pruning-guide"
+        },
+        {
+            "titel": "RHS — How to grow buddlejas",
+            "url": "https://www.rhs.org.uk/plants/buddleja/growing-guide"
+        },
+        {
+            "titel": "RHS — Softwood cuttings (snoeien stimuleert stekmateriaal)",
+            "url": "https://www.rhs.org.uk/propagation/softwood-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": false,
+    "snoeikalender": true,
+    "child_slugs": [
+        "hortensia-snoeien",
+        "vlinderstruik-snoeien",
+        "lavendel-snoeien",
+        "olijfboom-snoeien",
+        "rozen-snoeien",
+        "vijg-snoeien",
+        "snoeiafval-als-stek"
+    ],
+    "slug": "snoeien"
+}

@@ -27,13 +27,18 @@ class ZoekenController extends Controller
             $type = null;
         }
 
+        $plant = trim((string) $request->query('plant', ''));
+        if (mb_strlen($plant) > 80) {
+            $plant = mb_substr($plant, 0, 80);
+        }
+
         $key = 'search:'.$request->ip();
         if (RateLimiter::tooManyAttempts($key, 60)) {
             return response()->json(['error' => 'Te vaak gezocht. Probeer later opnieuw.'], 429);
         }
         RateLimiter::hit($key, 3600);
 
-        $result = $search->search($q, $type, true);
+        $result = $search->search($q, $type, true, $plant !== '' ? $plant : null);
 
         $payload = [
             'meta' => $result['meta'],

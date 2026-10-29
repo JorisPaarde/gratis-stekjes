@@ -11,7 +11,22 @@
 @section('content')
 <section class="section wrap stektips-page">
   <h1 class="page-title">Stektips &amp; kennisbank</h1>
-  <p class="section-intro">Artikelen over stekmethoden, timing, wortelbevordering en permacultuur, plus soortpagina’s. Filter en zoek werken zonder JavaScript. Soorten van de EU-Unielijst invasieve exoten horen hier niet tussen.</p>
+  <p class="section-intro">Vijf pijlers: stekken, snoeien, natuurlijk bewortelen, permacultuur en vermeerderen — plus 48 soortpagina’s. Filter en zoek werken zonder JavaScript.</p>
+
+  @if(!empty($pillars))
+    <nav class="stektips-pillars" aria-label="Kennisbank-pijlers">
+      <ul class="stektips-pillar-list">
+        @foreach($pillars as $pillar)
+          <li>
+            <a class="soft-card stektips-pillar-card" href="{{ route('stektips.artikel', ['slug' => $pillar['slug']]) }}">
+              <h2 class="stektips-entry-title">{{ $pillar['titel'] }}</h2>
+              <p>{{ \Illuminate\Support\Str::limit((string) ($pillar['samenvatting'] ?? ''), 120) }}</p>
+            </a>
+          </li>
+        @endforeach
+      </ul>
+    </nav>
+  @endif
 
   <form class="form stektips-filters" method="get" action="{{ route('stektips.index') }}" role="search">
     <div class="stektips-filter-grid">

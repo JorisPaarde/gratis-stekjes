@@ -357,9 +357,18 @@
   }
 
   form.addEventListener("submit", function (ev) {
-    ev.preventDefault();
-    var q = document.getElementById("zoek-q").value.trim();
+    var qEl = document.getElementById("zoek-q");
+    var plantEl = document.getElementById("zoek-plant");
+    var q = qEl ? qEl.value.trim() : "";
+    var plant =
+      (plantEl && plantEl.value.trim()) ||
+      (cfg.plant_filter ? String(cfg.plant_filter) : "");
     var type = document.getElementById("zoek-type").value;
+    // Zonder plaats: server-side plantfilter (werkt zonder JS / progressive enhancement)
+    if (!q) {
+      return;
+    }
+    ev.preventDefault();
     status.textContent = "Zoeken…";
     aanbodItems = [];
     aanbodLayer.clearLayers();
@@ -367,7 +376,13 @@
       el.remove();
     });
 
-    var url = api + "?q=" + encodeURIComponent(q) + "&type=" + encodeURIComponent(type);
+    var url =
+      api +
+      "?q=" +
+      encodeURIComponent(q) +
+      "&type=" +
+      encodeURIComponent(type) +
+      (plant ? "&plant=" + encodeURIComponent(plant) : "");
     fetch(url, { credentials: "same-origin", headers: { Accept: "application/json" } })
       .then(function (r) {
         return r.json().then(function (data) {

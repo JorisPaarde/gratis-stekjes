@@ -1,62 +1,82 @@
 {
-  "slug": "wilgenwater",
-  "titel": "Wilgenwater maken: natuurlijk stekhormoon",
-  "samenvatting": "Maak zelf een milde wortelstimulans van wilgentwijgen. Helpt soms, is geen garantie — en past bij gratis stekken delen.",
-  "zoekwoorden": [
-    "wilgenwater",
-    "wilgenwater maken",
-    "natuurlijk stekhormoon",
-    "stekhormoon zelf maken",
-    "IBA wilg"
-  ],
-  "categorieen": ["wortelbevordering", "permacultuur"],
-  "gerelateerde_soorten": ["wilg", "herfstolijfwilg", "lavendel"],
-  "seizoenen": ["lente", "zomer", "herfst"],
-  "maanden": [3, 4, 5, 6, 7, 8, 9],
-  "niveau": "beginner",
-  "locatie": "buiten",
-  "inhoud": [
-    {
-      "type": "p",
-      "tekst": "Wilgenwater is water waarin verse wilgentwijgen hebben getrokken. Wilgenwortelen zelf heel makkelijk; in de twijgen zitten stoffen die beworteling kunnen ondersteunen (onder meer natuurlijke auxines en salicylzuur). Het is een toegankelijke, goedkope aanpak — geen industriële stekpoeder."
-    },
-    {
-      "type": "h2",
-      "tekst": "Zo maak je wilgenwater"
-    },
-    {
-      "type": "ol",
-      "items": [
-        "Knip of verzamel potlooddunne, verse wilgentwijgen (ongeveer twee koppen vol).",
-        "Verwijder blad en knip de twijgen in stukjes van ongeveer 2–8 cm; korter geeft meer snijvlak.",
-        "Giet er heet of kokend water over (circa 2 liter) of zet de stukken 24–48 uur in koud (regen)water.",
-        "Zeef na 24 uur (tot 48 uur). De vloeistof lijkt op zwakke thee.",
-        "Week stekken een nacht in wilgenwater, of geef de net gezette stekken er een keer mee water."
-      ]
-    },
-    {
-      "type": "h2",
-      "tekst": "Wat mag je verwachten?"
-    },
-    {
-      "type": "p",
-      "tekst": "Onderzoek en tuinexpertise laten zien dat wilgenextracten beworteling soms versnellen of verbeteren, vooral bij makkelijke of halfhoutige stekken. De concentratie hormoon is laag en onbekend: het is geen vervanging van commercieel IBA-stekpoeder bij lastige houtige soorten. Bewaar koel in een afgesloten pot (maximaal een paar weken); vers is meestal beter."
-    },
-    {
-      "type": "p",
-      "tekst": "Op Gratis planten gebruiken we wilgenwater graag bij proeven (zoals herfstolijfwilg) omdat je het zelf kunt maken van snoeihout — circulair en gratis om door te geven."
-    }
-  ],
-  "bronnen": [
-    {
-      "titel": "NYBG Plant Information — organic rooting hormone / willow water",
-      "url": "https://libanswers.nybg.org/faq/223060"
-    },
-    {
-      "titel": "RHS — Hardwood cuttings (Salix wortelt makkelijk uit winterhout)",
-      "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
-    }
-  ],
-  "duurzamer_alternatief": null,
-  "howto": true
+    "slug": "wilgenwater",
+    "titel": "Wilgenwater maken: natuurlijk stekhormoon",
+    "samenvatting": "Maak zelf een milde wortelstimulans van wilgentwijgen. Helpt soms, is geen garantie — en past bij gratis stekken delen.",
+    "zoekwoorden": [
+        "wilgenwater",
+        "wilgenwater maken",
+        "natuurlijk stekhormoon",
+        "stekhormoon zelf maken",
+        "IBA wilg"
+    ],
+    "categorieen": [
+        "natuurlijk-bewortelen",
+        "permacultuur"
+    ],
+    "gerelateerde_soorten": [
+        "wilg",
+        "herfstolijfwilg",
+        "lavendel"
+    ],
+    "seizoenen": [
+        "lente",
+        "zomer",
+        "herfst"
+    ],
+    "maanden": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+    ],
+    "niveau": "beginner",
+    "locatie": "buiten",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Wilgenwater is water waarin verse wilgentwijgen hebben getrokken. Wilgenwortelen zelf heel makkelijk; in de twijgen zitten stoffen die beworteling kunnen ondersteunen (onder meer natuurlijke auxines en salicylzuur). Het is een toegankelijke, goedkope aanpak — geen industriële stekpoeder."
+        },
+        {
+            "type": "h2",
+            "tekst": "Zo maak je wilgenwater"
+        },
+        {
+            "type": "ol",
+            "items": [
+                "Knip of verzamel potlooddunne, verse wilgentwijgen (ongeveer twee koppen vol).",
+                "Verwijder blad en knip de twijgen in stukjes van ongeveer 2–8 cm; korter geeft meer snijvlak.",
+                "Giet er heet of kokend water over (circa 2 liter) of zet de stukken 24–48 uur in koud (regen)water.",
+                "Zeef na 24 uur (tot 48 uur). De vloeistof lijkt op zwakke thee.",
+                "Week stekken een nacht in wilgenwater, of geef de net gezette stekken er een keer mee water."
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Wat mag je verwachten?"
+        },
+        {
+            "type": "p",
+            "tekst": "Onderzoek en tuinexpertise laten zien dat wilgenextracten beworteling soms versnellen of verbeteren, vooral bij makkelijke of halfhoutige stekken. De concentratie hormoon is laag en onbekend: het is geen vervanging van commercieel IBA-stekpoeder bij lastige houtige soorten. Bewaar koel in een afgesloten pot (maximaal een paar weken); vers is meestal beter."
+        },
+        {
+            "type": "p",
+            "tekst": "Ik gebruik wilgenwater graag bij mijn proeven (zoals herfstolijfwilg) omdat je het zelf kunt maken van snoeihout — circulair en gratis om door te geven."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "NYBG Plant Information — organic rooting hormone / willow water",
+            "url": "https://libanswers.nybg.org/faq/223060"
+        },
+        {
+            "titel": "RHS — Hardwood cuttings (Salix wortelt makkelijk uit winterhout)",
+            "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": true,
+    "pillar": "natuurlijk-bewortelen"
 }

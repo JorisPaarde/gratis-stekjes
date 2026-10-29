@@ -1,0 +1,74 @@
+{
+    "titel": "Vermeerderen overig",
+    "samenvatting": "Scheuren, afleggen en enten naast stekken. Handig in permacultuur en voedselbos wanneer stekken niet de beste route is.",
+    "meta_description": "Planten vermeerderen door scheuren, afleggen en enten. Aanvulling op stekken in de kennisbank van Gratis planten.",
+    "zoekwoorden": [
+        "vermeerderen",
+        "planten scheuren",
+        "afleggen",
+        "enten",
+        "planten afleggen"
+    ],
+    "categorieen": [
+        "vermeerderen"
+    ],
+    "pillar": "vermeerderen",
+    "is_pillar": true,
+    "gerelateerde_soorten": [
+        "hosta",
+        "aardbei",
+        "framboos"
+    ],
+    "seizoenen": [
+        "lente",
+        "herfst"
+    ],
+    "maanden": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+    ],
+    "niveau": "beginner",
+    "locatie": "buiten",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Niet alles hoeft een stekje te zijn. Scheuren en afleggen zijn vaak zekerder; enten (volume hoog in zoekdata) is specialistischer en hier vooral ter verwijzing."
+        },
+        {
+            "type": "h2",
+            "tekst": "Scheuren en afleggen"
+        },
+        {
+            "type": "p",
+            "tekst": "Zie het artikel scheuren en afleggen voor vaste planten, hosta, aardbei-uitlopers en tip layering bij bramen/framboos."
+        },
+        {
+            "type": "h2",
+            "tekst": "Enten"
+        },
+        {
+            "type": "p",
+            "tekst": "Enten en oculeren vragen oefening en onderstam. Voor de meeste deelacties op dit platform zijn stek, scheuren of afleggen passender. Zaaien is een apart thema (hoog volume) en geen kerndoel van de stektips-kennisbank."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — Perennials: dividing",
+            "url": "https://www.rhs.org.uk/plants/types/perennials/dividing"
+        },
+        {
+            "titel": "RHS — Layering plants",
+            "url": "https://www.rhs.org.uk/propagation/layering"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": false,
+    "child_slugs": [
+        "scheuren-en-afleggen"
+    ],
+    "slug": "vermeerderen"
+}

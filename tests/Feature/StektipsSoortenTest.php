@@ -18,7 +18,7 @@ test('elke soortpagina laadt met 200 en SEO-titel', function () {
         $this->get(route('stektips.show', ['slug' => $slug]))
             ->assertOk()
             ->assertSee($naam.' stekken en gratis delen', false)
-            ->assertSee('Zoek '.$naam.' in het aanbod', false)
+            ->assertSee('Gratis '.$naam.'-stekjes in je buurt', false)
             ->assertSee((string) $soort['latijn'], false);
     }
 });
