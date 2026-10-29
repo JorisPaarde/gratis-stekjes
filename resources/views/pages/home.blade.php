@@ -111,6 +111,7 @@
       <p class="muted">Geen bezoeklocatie op onze kaart.</p>
     </article>
   </div>
+  <p><a href="{{ route('partners') }}">Alle partners en links</a> · plekken met bezoeklocatie op de <a href="{{ route('aanbod') }}">kaart</a>.</p>
 </section>
 
 <section class="section wrap" aria-labelledby="verder-titel">

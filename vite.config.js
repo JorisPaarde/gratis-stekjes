@@ -8,6 +8,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/css/aanbod.css',
                 'resources/css/berichten.css',
+                'resources/css/partners.css',
                 'resources/js/app.js',
                 'resources/js/zoeken.js',
             ],

@@ -16,11 +16,13 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PartnersController;
 use App\Http\Controllers\ZoekenController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
+Route::get('/partners', PartnersController::class)->name('partners');
 Route::get('/robots.txt', [PageController::class, 'robots'])->name('robots');
 
 Route::get('/aanbod', ZoekenController::class)->name('aanbod');
