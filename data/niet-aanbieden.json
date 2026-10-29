@@ -1,0 +1,361 @@
+{
+  "meta": {
+    "titel": "EU-Unielijst invasieve plantensoorten (NL-relevant)",
+    "omschrijving": "Plantensoorten op de Unielijst van invasieve uitheemse soorten (Verordening (EU) nr. 1143/2014 en Uitvoeringsverordening (EU) 2016/1141, laatst gewijzigd door (EU) 2025/1422) zoals door de NVWA gepubliceerd onder terrestrische planten en water-/oeverplanten. Alleen soorten die in die bronnen zijn teruggevonden.",
+    "geraadpleegd": "2026-10-29",
+    "bronnen": [
+      {
+        "naam": "NVWA — Unielijst invasieve exoten",
+        "url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten"
+      },
+      {
+        "naam": "EUR-Lex — geconsolideerde Uitvoeringsverordening (EU) 2016/1141 (02016R1141-20250807)",
+        "url": "https://eur-lex.europa.eu/legal-content/NL/TXT/?uri=CELEX:02016R1141-20250807"
+      },
+      {
+        "naam": "EUR-Lex — Uitvoeringsverordening (EU) 2025/1422",
+        "url": "https://eur-lex.europa.eu/eli/reg_impl/2025/1422/oj"
+      },
+      {
+        "naam": "Verordening (EU) nr. 1143/2014",
+        "url": "https://eur-lex.europa.eu/eli/reg/2014/1143/oj"
+      }
+    ],
+    "niet_opgenomen": [
+      "Mariene soorten op de Unielijst (Nanozostera japonica / Japans dwergzeegras, Rugulopteryx okamurae) staan bij de NVWA onder 'Andere mariene soorten', niet bij de plantencategorieën voor tuin/oever; weggelaten omdat ze niet relevant zijn voor stekjesaanbod.",
+      "Dieren op de Unielijst zijn bewust weggelaten (alleen planten).",
+      "Directe HTTP-download van EUR-Lex HTML/PDF gaf vanuit deze omgeving HTTP 202 zonder inhoud; wetenschappelijke namen zijn geverifieerd via de NVWA-pagina plus de geconsolideerde annextekst van CELEX 02016R1141-20250807 (o.a. via openbare mirrors/zoekindex van die CELEX-tekst) en de NVWA-Nederlandse namen."
+    ]
+  },
+  "soorten": [
+    {
+      "wetenschappelijke_naam": "Koenigia polystachya",
+      "nederlandse_naam": "Afghaanse duizendknoop",
+      "synoniemen": ["Persicaria wallichii"],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Andropogon virginicus",
+      "nederlandse_naam": "Amerikaans bezemgras",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Reynoutria × bohemica",
+      "nederlandse_naam": "Basterdduizendknoop",
+      "synoniemen": ["Reynoutria x bohemica", "Fallopia x bohemica", "Fallopia × bohemica"],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Cardiospermum grandiflorum",
+      "nederlandse_naam": "Ballonrank",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Acacia mearnsii",
+      "nederlandse_naam": "Bleekgele acacia",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Celastrus orbiculatus",
+      "nederlandse_naam": "Boomwurger",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Lespedeza cuneata",
+      "nederlandse_naam": "Chinese struikklaver",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Delairea odorata",
+      "nederlandse_naam": "Klimopkruiskruid",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Cenchrus setaceus",
+      "nederlandse_naam": "Fraai lampenpoetsersgras",
+      "synoniemen": ["Pennisetum setaceum"],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Gunnera tinctoria",
+      "nederlandse_naam": "Gewone gunnera",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Persicaria perfoliata",
+      "nederlandse_naam": "Gestekelde duizendknoop",
+      "synoniemen": ["Polygonum perfoliatum"],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Hakea sericea",
+      "nederlandse_naam": "Hakea",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Ailanthus altissima",
+      "nederlandse_naam": "Hemelboom",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Cortaderia jubata",
+      "nederlandse_naam": "Hoog pampagras",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Reynoutria japonica",
+      "nederlandse_naam": "Japanse duizendknoop",
+      "synoniemen": ["Fallopia japonica"],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Lygodium japonicum",
+      "nederlandse_naam": "Japanse klimvaren",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Microstegium vimineum",
+      "nederlandse_naam": "Japans steltgras",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Pueraria montana var. lobata",
+      "nederlandse_naam": "Kudzu",
+      "synoniemen": ["Pueraria lobata", "Pueraria montana"],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Prosopis juliflora",
+      "nederlandse_naam": "Mesquite",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Humulus scandens",
+      "nederlandse_naam": "Oosterse hop",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Broussonetia papyrifera",
+      "nederlandse_naam": "Papiermoerbei",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Heracleum persicum",
+      "nederlandse_naam": "Perzische berenklauw",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Impatiens glandulifera",
+      "nederlandse_naam": "Reuzenbalsemien",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Heracleum mantegazzianum",
+      "nederlandse_naam": "Reuzenberenklauw",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Ehrharta calycina",
+      "nederlandse_naam": "Roze rimpelgras",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Reynoutria sachalinensis",
+      "nederlandse_naam": "Sachalinse duizendknoop",
+      "synoniemen": ["Fallopia sachalinensis"],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Parthenium hysterophorus",
+      "nederlandse_naam": "Schijnambrosia",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Heracleum sosnowskyi",
+      "nederlandse_naam": "Sosnowsky's berenklauw",
+      "synoniemen": ["Sosnowskys berenklauw"],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Baccharis halimifolia",
+      "nederlandse_naam": "Struikaster",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Triadica sebifera",
+      "nederlandse_naam": "Talgboom",
+      "synoniemen": ["Sapium sebiferum"],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Acacia saligna",
+      "nederlandse_naam": "Wilgacacia",
+      "synoniemen": ["Acacia cyanophylla"],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Asclepias syriaca",
+      "nederlandse_naam": "Zijdeplant",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Alternanthera philoxeroides",
+      "nederlandse_naam": "Alligatorkruid",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Salvinia molesta",
+      "nederlandse_naam": "Grote vlotvaren",
+      "synoniemen": ["Salvinia adnata"],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Hydrocotyle ranunculoides",
+      "nederlandse_naam": "Grote waternavel",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Ludwigia peploides",
+      "nederlandse_naam": "Kleine waterteunisbloem",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Lysichiton americanus",
+      "nederlandse_naam": "Moeraslantaarn",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Myriophyllum heterophyllum",
+      "nederlandse_naam": "Ongelijkbladig vederkruid",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Myriophyllum aquaticum",
+      "nederlandse_naam": "Parelvederkruid",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Gymnocoronis spilanthoides",
+      "nederlandse_naam": "Smalle theeplant",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Elodea nuttallii",
+      "nederlandse_naam": "Smalle waterpest",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Lagarosiphon major",
+      "nederlandse_naam": "Verspreidbladige waterpest",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Crassula helmsii",
+      "nederlandse_naam": "Watercrassula",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Pistia stratiotes",
+      "nederlandse_naam": "Watersla",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Pontederia crassipes",
+      "nederlandse_naam": "Waterhyacint",
+      "synoniemen": ["Eichhornia crassipes"],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Ludwigia grandiflora",
+      "nederlandse_naam": "Waterteunisbloem",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "wetenschappelijke_naam": "Cabomba caroliniana",
+      "nederlandse_naam": "Waterwaaier",
+      "synoniemen": [],
+      "bron_url": "https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten",
+      "geraadpleegd": "2026-10-29"
+    }
+  ]
+}

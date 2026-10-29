@@ -1,0 +1,35 @@
+name: Invasieve-soorten tests
+
+# Losstaande CI voor de Unielijst-module (botst niet met deploy-workflows).
+on:
+  push:
+    paths:
+      - 'data/niet-aanbieden.json'
+      - 'php/lib/invasive.php'
+      - 'tests/**'
+      - 'niet-aanbieden.html'
+      - '.github/workflows/invasive-tests.yml'
+  pull_request:
+    paths:
+      - 'data/niet-aanbieden.json'
+      - 'php/lib/invasive.php'
+      - 'tests/**'
+      - 'niet-aanbieden.html'
+      - '.github/workflows/invasive-tests.yml'
+
+jobs:
+  php:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP installeren
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq php-cli
+          php -v
+      - name: Syntaxcheck (php -l)
+        run: |
+          php -l php/lib/invasive.php
+          php -l tests/run.php
+      - name: Unit tests
+        run: php tests/run.php
