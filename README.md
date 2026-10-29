@@ -15,9 +15,10 @@ Het doel is simpel: de wereld een stukje groener maken. Meer planten in meer tui
 - **Privacy eerst.** Op de kaart alleen een benaderde plek, nooit een adres of e-mailadres.
 - **Groen en eerlijk.** Invasieve soorten in Nederland horen er niet tussen.
 
-## Status (v0.6.0)
+## Status (v0.7.0)
 
-Laravel 12: accounts, aanbod/kaart/zoeken, berichten, expiry-cron, partnermarkers-API + `/partners`. Admin/AVG/SEO volgen.
+Laravel 12: accounts, aanbod/kaart/zoeken, berichten, expiry-cron, partners, plus “Nu te stekken”-maandkalender. Admin/AVG/SEO volgen.
+
 
 ## Stack
 
