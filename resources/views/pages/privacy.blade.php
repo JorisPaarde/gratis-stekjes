@@ -10,7 +10,7 @@
 
   <p class="flash flash-warn" role="status"><strong>Concept – nog niet definitief.</strong> Joris leest deze tekst na vóór livegang. Waar juridische gegevens nog ontbreken, staat <em>[in te vullen door Joris]</em>.</p>
 
-  <p>Deze verklaring beschrijft welke persoonsgegevens {{ config('site.name') }} (gratisplanten.nl) verwerkt, waarom, hoe lang, en welke rechten je hebt. We houden het dicht bij wat de applicatie echt doet.</p>
+  <p>Deze verklaring beschrijft welke persoonsgegevens {{ config('site.name') }} (gratisplanten.nl) verwerkt, waarom, hoe lang, en welke rechten je hebt. Ik houd het dicht bij wat de applicatie echt doet.</p>
 
   <h2>Verwerkingsverantwoordelijke</h2>
   <p>
@@ -21,7 +21,7 @@
     Post- of bezoekadres: <em>[in te vullen door Joris]</em>
   </p>
 
-  <h2>Welke gegevens we verwerken</h2>
+  <h2>Welke gegevens ik verwerk</h2>
   <ul class="list-plain">
     <li><strong>Account:</strong> e-mailadres, wachtwoord (alleen als hash), voornaam of bijnaam, optioneel telefoonnummer, benaderde locatie (label zoals postcode-4 of plaats, plus afgeronde coördinaten). Optioneel een tijdelijk nieuw e-mailadres bij e-mailwijziging (<code>pending_email</code>) tot bevestiging.</li>
     <li><strong>Aanbod:</strong> type (uitdelen of ophalen), vrije tekst, zichtbaarheid, verloopdatum en (intern) verlengtoken bij herinneringsmails.</li>
@@ -44,7 +44,7 @@
   <ul class="list-plain">
     <li>E-mail — niet zichtbaar voor anderen, tenzij jullie in een gesprek beide “ja” kiezen voor verder contact</li>
     <li>Optioneel telefoonnummer (zelfde regel)</li>
-    <li>Exacte adressen en exacte coördinaten: die slaan we niet op in het gebruikersprofiel; exacte ophaaladressen deel je zelf buiten of in een bericht als je dat wilt</li>
+    <li>Exacte adressen en exacte coördinaten: die sla ik niet op in het gebruikersprofiel; exacte ophaaladressen deel je zelf buiten of in een bericht als je dat wilt</li>
     <li>Contact-e-mail bij organisatie-aanmeldingen</li>
     <li>Wachtwoorden (alleen hash), meldingen en beheerwachtwoord-sessie</li>
   </ul>
@@ -66,7 +66,7 @@
 
   <h2>Bewaren en dataminimalisatie</h2>
   <ul class="list-plain">
-    <li>We bewaren alleen wat nodig is voor bovenstaande doelen.</li>
+    <li>Ik bewaar alleen wat nodig is voor bovenstaande doelen.</li>
     <li><strong>Aanbod:</strong> standaard zichtbaar tot {{ (int) config('stekjes.aanbod_ttl_days', 60) }} dagen (verlengbaar via herinneringsmail); verlopen aanbod verdwijnt uit zoeken/kaart.</li>
     <li><strong>Geocode-cache:</strong> max. {{ (int) config('stekjes.geocode_cache_retention_days', 90) }} dagen; oudere rijen worden door de cron-job opgeschoond.</li>
     <li><strong>Rate-limits / cache:</strong> korte TTL (uren tot dagen), geen aparte “IP-database”.</li>
@@ -79,16 +79,16 @@
   <ul class="list-plain">
     <li>Bevestigingsmails, wachtwoordreset, e-mailwijziging, “je hebt een nieuw bericht” (zonder berichtinhoud of andermans adres) en aanbod-herinneringen gaan via SMTP (eigen mailbox; typisch Hoasted).</li>
     <li>Organisatie-aanmelders krijgen een bevestiging; de beheerder een interne melding. Geen mail naar derden buiten de aanmelder.</li>
-    <li>Gegevens staan op eigen hosting in de EU. Mail verloopt via de geconfigureerde SMTP-provider.</li>
+    <li>Gegevens staan op hosting in de EU die ik beheer. Mail verloopt via de geconfigureerde SMTP-provider.</li>
   </ul>
 
   <h2>Kaart en derden</h2>
-  <p>De aanbodkaart gebruikt Leaflet met tegels van OpenStreetMap. Zoeklocaties via de gratis PDOK Locatieserver; resultaten cachen we lokaal. Op de kaart alleen benaderde punten. OpenStreetMap/PDOK ontvangen daarbij de gebruikelijke technische verzoeken van je browser of onze server (geen accountgegevens van {{ config('site.name') }}).</p>
+  <p>De aanbodkaart gebruikt Leaflet met tegels van OpenStreetMap. Zoeklocaties via de gratis PDOK Locatieserver; resultaten cache ik lokaal. Op de kaart alleen benaderde punten. OpenStreetMap/PDOK ontvangen daarbij de gebruikelijke technische verzoeken van je browser of mijn server (geen accountgegevens van {{ config('site.name') }}).</p>
 
   <h2>Melden en blokkeren</h2>
   <p>Je kunt een gebruiker melden of blokkeren. Meldingen worden opgeslagen voor de beheerder. Er is geen openbare moderatiewachtrij.</p>
 
   <h2>Wijzigingen</h2>
-  <p>Versie van deze site: {{ config('site.version') }}. Datum van deze concepttekst: 29 oktober 2026. Definitieve vaststellingsdatum: <em>[in te vullen door Joris]</em>. Bij inhoudelijke wijzigingen werken we deze pagina bij.</p>
+  <p>Versie van deze site: {{ config('site.version') }}. Datum van deze concepttekst: 29 oktober 2026. Definitieve vaststellingsdatum: <em>[in te vullen door Joris]</em>. Bij inhoudelijke wijzigingen werk ik deze pagina bij.</p>
 </section>
 @endsection

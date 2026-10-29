@@ -60,24 +60,32 @@ test('Volgt binnenkort komt niet voor in views, data of soorten', function () {
     );
 });
 
-test('privacy, over en initiatieven tonen geen Volgt binnenkort', function () {
-    $this->get(route('privacy'))
-        ->assertOk()
-        ->assertSee('Concept – nog niet definitief', false)
-        ->assertSee('info@jpwebcreation.nl', false)
-        ->assertSee('[in te vullen door Joris]', false)
-        ->assertDontSee('Volgt binnenkort', false);
+test('privacy, over en initiatieven tonen geen Volgt binnenkort en geen we/wij/ons/onze', function () {
+    $pages = [
+        'privacy' => $this->get(route('privacy'))
+            ->assertOk()
+            ->assertSee('Concept – nog niet definitief', false)
+            ->assertSee('info@jpwebcreation.nl', false)
+            ->assertSee('[in te vullen door Joris]', false)
+            ->assertDontSee('Volgt binnenkort', false),
+        'over' => $this->get(route('over'))
+            ->assertOk()
+            ->assertSee('Joris Paardekooper', false)
+            ->assertSee('zonder reclame', false)
+            ->assertDontSee('Volgt binnenkort', false),
+        'initiatieven' => $this->get(route('partners'))
+            ->assertOk()
+            ->assertSee('Stekjesroute', false)
+            ->assertSee('plantenruilkasten', false)
+            ->assertSee('Zadenbibliotheek Nederland', false)
+            ->assertDontSee('Volgt binnenkort', false),
+    ];
 
-    $this->get(route('over'))
-        ->assertOk()
-        ->assertSee('Joris Paardekooper', false)
-        ->assertSee('zonder reclame', false)
-        ->assertDontSee('Volgt binnenkort', false);
-
-    $this->get(route('partners'))
-        ->assertOk()
-        ->assertSee('Stekjesroute', false)
-        ->assertSee('plantenruilkasten', false)
-        ->assertSee('Zadenbibliotheek Nederland', false)
-        ->assertDontSee('Volgt binnenkort', false);
+    foreach ($pages as $label => $response) {
+        $text = html_entity_decode(strip_tags($response->getContent()), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        expect(preg_match('/\b(we|wij|ons|onze)\b/iu', $text))->toBe(
+            0,
+            "Pagina {$label} bevat nog we/wij/ons/onze in de tekstinhoud."
+        );
+    }
 });

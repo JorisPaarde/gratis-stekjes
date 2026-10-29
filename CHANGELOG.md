@@ -17,6 +17,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Over (`/over`): wie (Joris), waarom (delen i.p.v. weggooien/kopen), hoe het werkt, gratis en zonder reclame.
 - Initiatieven (`/initiatieven`): feitelijke korte beschrijvingen i.p.v. “Volgt binnenkort” (o.a. Stekjesroute, Velt, Zadenbibliotheek, Voedsel uit het Bos, Netwerk Voedselbosbouw, Permacultuur Nederland, Eetbaargoed).
 - Feature-test faalt als “Volgt binnenkort” nog in views/data/soorten staat (inclusief stektips-data); lege stektip-rijen worden verborgen i.p.v. die placeholder.
+- Privacy, over en initiatieven in strikte ik-vorm (geen we/wij/ons/onze); test controleert dat op die drie pagina’s.
 
 ## [0.19.0] - 2026-10-29
 

@@ -11,18 +11,18 @@
 @section('content')
 <section class="section wrap partners-page">
   <h1 class="page-title">Initiatieven</h1>
-  <p class="section-intro">Hieronder staan initiatieven waar we naar linken — plantenasiels, plantenbiebs, ruilkasten, voedselbossen en meer. Geen officiële partnerschappen; het zijn plekken en organisaties rondom gratis planten delen. Teksten zijn kort en feitelijk, gebaseerd op hun eigen websites.</p>
+  <p class="section-intro">Hieronder staan initiatieven waar ik naar link — plantenasiels, plantenbiebs, ruilkasten, voedselbossen en meer. Geen officiële partnerschappen; het zijn plekken en organisaties rondom gratis planten delen. Teksten zijn kort en feitelijk, gebaseerd op hun eigen websites.</p>
 
   <div class="stack partners-stack">
     <article class="soft-card">
       <h2><a href="https://voedselbosbouw.org/" rel="noopener noreferrer">Voedselbosbouw.org</a></h2>
-      <p>Stichting Voedselbosbouw Nederland begeleidt boeren en grondeigenaren bij agrarische voedselbossen, deelt kennis en lobbyt voor deze vorm van landbouw. Wij richten ons op stekjes van mens tot mens; zij op het bredere voedselbos-verhaal.</p>
-      <p class="muted">Geen bezoeklocatie op onze kaart; zie hun eigen site.</p>
+      <p>Stichting Voedselbosbouw Nederland begeleidt boeren en grondeigenaren bij agrarische voedselbossen, deelt kennis en lobbyt voor deze vorm van landbouw. Ik richt me op stekjes van mens tot mens; zij op het bredere voedselbos-verhaal.</p>
+      <p class="muted">Geen bezoeklocatie op mijn kaart; zie hun eigen site.</p>
     </article>
     <article class="soft-card">
       <h2><a href="https://meerbomen.nu/" rel="noopener noreferrer">MeerBomen Nu</a></h2>
-      <p>Landelijk initiatief dat kansarme zaailingen redt en gratis tweede-kansbomen en -struiken uitdeelt via bomenhubs en vrijwilligers. Het verschil met ons: zij doen bomen en acties, wij stekjes van mens tot mens.</p>
-      <p class="muted">Geen bezoeklocatie op onze kaart.</p>
+      <p>Landelijk initiatief dat kansarme zaailingen redt en gratis tweede-kansbomen en -struiken uitdeelt via bomenhubs en vrijwilligers. Het verschil met mij: zij doen bomen en acties, ik stekjes van mens tot mens.</p>
+      <p class="muted">Geen bezoeklocatie op mijn kaart.</p>
     </article>
   </div>
 
@@ -41,7 +41,7 @@
     <article class="soft-card">
       <h3><a href="https://zadenbibliotheeknederland.nl/" rel="noopener noreferrer">Zadenbibliotheek Nederland</a></h3>
       <p>Netwerk van zadenbibliotheken waar je zaden kosteloos kunt lenen, ruilen en inbrengen. Lokale collecties verschillen per locatie.</p>
-      <p class="muted">Zaden; wij doen stekjes.</p>
+      <p class="muted">Zaden; ik doe stekjes.</p>
     </article>
     <article class="soft-card">
       <h3><a href="https://voedseluithetbos.nl/" rel="noopener noreferrer">Voedsel uit het Bos</a></h3>
