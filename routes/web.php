@@ -122,6 +122,8 @@ Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(functio
         ->name('account.aanbod.store');
     Route::post('/account/aanbod/{aanbod}/verlengen', [AanbodController::class, 'renew'])
         ->name('account.aanbod.renew');
+    Route::delete('/account/aanbod/{aanbod}', [AanbodController::class, 'destroy'])
+        ->name('account.aanbod.destroy');
     Route::post('/account/aanbod/{aanbod}', [AanbodController::class, 'update'])
         ->name('account.aanbod.update');
     // Oude POST /account/aanbod (vóór /nieuw) → zelfde store-action.

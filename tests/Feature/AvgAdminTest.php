@@ -63,14 +63,17 @@ test('account verwijderen wist user en aanbod', function () {
     $user = User::factory()->create([
         'email_verified_at' => now(),
         'active' => true,
+        'locatie_label' => '2011',
+        'lat' => 52.381,
+        'lon' => 4.637,
     ]);
-    Aanbod::query()->create([
+    $aanbodId = Aanbod::query()->create([
         'user_id' => $user->id,
         'type' => 'ophalen',
         'tekst' => 'Zoek basilicum',
         'visible' => true,
         'expires_at' => now()->addDays(10),
-    ]);
+    ])->id;
 
     $plain = implode('-', ['TestOnly', 'Avg', 'Delete', '9']);
     $user->forceFill(['password' => $plain])->save();
@@ -80,6 +83,7 @@ test('account verwijderen wist user en aanbod', function () {
         ->assertRedirect(route('home'));
 
     expect(User::query()->whereKey($user->id)->exists())->toBeFalse();
+    expect(Aanbod::query()->whereKey($aanbodId)->exists())->toBeFalse();
     expect(Aanbod::query()->count())->toBe(0);
 });
 

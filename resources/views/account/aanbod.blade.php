@@ -95,6 +95,11 @@
               @csrf
               <button class="btn btn-secondary" type="submit">Nog {{ (int) config('stekjes.aanbod_ttl_days', 60) }} dagen verlengen</button>
             </form>
+            <form method="post" action="{{ route('account.aanbod.destroy', $row) }}" onsubmit="return confirm('Weet je het zeker?');">
+              @csrf
+              @method('DELETE')
+              <button class="btn btn-secondary" type="submit">Verwijderen</button>
+            </form>
           @endif
         </li>
       @endforeach
