@@ -78,7 +78,7 @@ test('homepage-tekstkleuren halen WCAG AA op lichte achtergrond', function () {
     expect(contrastRatio('#3d4a3f', '#ffffff'))->toBeGreaterThanOrEqual(4.5); // ink-soft
     expect(contrastRatio('#1f4d2b', '#ffffff'))->toBeGreaterThanOrEqual(4.5); // forest
     expect(contrastRatio('#8a4514', '#e6f2e1'))->toBeGreaterThanOrEqual(4.5); // accent-text op mint
-    expect(contrastRatio('#1a1210', '#fff1e4'))->toBeGreaterThanOrEqual(4.5); // warn-card ink
+    expect(contrastRatio('#1a1210', '#ffffff'))->toBeGreaterThanOrEqual(4.5); // warn-card ink op wit
     // Oranje knoppen: donkere tekst (wit op #e8833a faalt AA)
     expect(contrastRatio('#ffffff', '#e8833a'))->toBeLessThan(4.5);
     expect(contrastRatio('#1a1210', '#e8833a'))->toBeGreaterThanOrEqual(4.5);
@@ -97,15 +97,20 @@ test('page-title is wit op bosgroen (niet overschreven door .section h1)', funct
     expect(contrastRatio('#ffffff', '#1f4d2b'))->toBeGreaterThanOrEqual(4.5);
 });
 
-test('warn-card gebruikt nieuw palet (geen peach/rood-bruin)', function () {
+test('warn-card is wit met oranje linkerrand (geen peach)', function () {
     $css = file_get_contents(base_path('resources/css/site.css'));
     $bg = cssLastDecl($css, '.warn-card', 'background');
     $color = cssLastDecl($css, '.warn-card', 'color');
-    expect($bg)->toBe('var(--warn-bg)');
+    $borderLeft = cssLastDecl($css, '.warn-card', 'border-left');
+    expect($bg)->toBe('#fff');
     expect($color)->toBe('var(--ink)');
-    expect($css)->not->toContain('background: #fff4e6');
-    expect($css)->toContain('--warn-bg: #fff1e4');
-    expect(contrastRatio('#1a1210', '#fff1e4'))->toBeGreaterThanOrEqual(4.5);
+    expect($borderLeft)->toMatch('/4px\s+solid\s+var\(--orange\)/');
+    expect($css)->toContain('--warn-bg: #ffffff');
+    expect($css)->not->toContain('#fff1e4');
+    expect($css)->not->toContain('#fff4e6');
+    expect($css)->not->toContain('background: #ffe');
+    expect(file_get_contents(base_path('resources/css/berichten.css')))->not->toContain('#fff1e4');
+    expect(contrastRatio('#1a1210', '#ffffff'))->toBeGreaterThanOrEqual(4.5);
 });
 
 test('header: nowrap + hamburger tot 1200px; iconen verborgen op desktop', function () {
@@ -117,6 +122,17 @@ test('header: nowrap + hamburger tot 1200px; iconen verborgen op desktop', funct
     expect($css)->toMatch('/\.nav-cta\s*\{[^}]*white-space:\s*nowrap/s');
     expect($css)->toMatch('/min-width:\s*1200px[\s\S]*?\.nav-toggle\s*\{\s*display:\s*none/');
     expect($css)->toMatch('/min-width:\s*1200px[\s\S]*?\.site-nav \.icon\s*\{\s*display:\s*none/');
+});
+
+test('nav-toggle display:none op desktop wordt niet overschreven door icons-regel', function () {
+    $css = file_get_contents(base_path('resources/css/site.css'));
+
+    // Icons-groep mag .nav-toggle niet meer zetten (anders wint die over @media display:none).
+    expect($css)->not->toMatch('/\.site-nav a,\s*\.nav-toggle/');
+    expect($css)->not->toMatch('/\.nav-toggle,\s*\.btn/');
+
+    // Laatste .nav-toggle display-declaratie in het bestand moet none zijn (uit ≥1200px-media).
+    expect(cssLastDecl($css, '.nav-toggle', 'display'))->toBe('none');
 });
 
 test('hero- en mint-secties halen WCAG AA', function () {

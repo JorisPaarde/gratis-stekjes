@@ -1,4 +1,4 @@
-/* site styles — v0.11.0 — bosgroen/mint/oranje, Passion One + Titillium Web */
+/* site styles — v0.11.2 — bosgroen/mint/oranje, Passion One + Titillium Web */
 :root {
   --bg: #ffffff;
   --bg-2: #e6f2e1;
@@ -21,7 +21,7 @@
   --card: #ffffff;
   --line: rgba(26, 18, 16, 0.12);
   --warn: #1f4d2b;
-  --warn-bg: #fff1e4;
+  --warn-bg: #ffffff;
   --ok: #1f5a38;
   --danger: #8b1e1e;
   --radius: 0.85rem;
@@ -502,7 +502,8 @@ h1.page-title {
 .bubble.me { background: var(--bg-mint); }
 .safety {
   background: var(--warn-bg);
-  border: 1px solid rgba(232, 131, 58, 0.45);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--orange);
   border-radius: .85rem;
   padding: .9rem 1rem;
   color: var(--ink);
@@ -563,8 +564,9 @@ h1.page-title {
   color: var(--accent-text); text-transform: lowercase;
 }
 .warn-card {
-  border-color: rgba(232, 131, 58, 0.45);
-  background: var(--warn-bg);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--orange);
   color: var(--ink);
   font-size: 1rem;
 }
@@ -595,8 +597,8 @@ h1.page-title {
   .nav-soon { font-size: .8rem; text-transform: uppercase; letter-spacing: 0.02em; }
 }
 
-/* Icons */
-.site-nav a, .nav-toggle, .btn, .nav-cta {
+/* Icons — geen .nav-toggle hier: die heeft eigen display; media 1200px zet display:none. */
+.site-nav a, .btn, .nav-cta {
   display: inline-flex;
   align-items: center;
   gap: .4rem;
