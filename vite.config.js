@@ -18,6 +18,8 @@ export default defineConfig({
                 'resources/js/zoeken.js',
                 'resources/js/deelplekken.js',
                 'resources/js/stad-kaart.js',
+                'resources/js/plantsoort-autocomplete.js',
+                'resources/css/plantsoort-autocomplete.css',
             ],
             refresh: true,
         }),

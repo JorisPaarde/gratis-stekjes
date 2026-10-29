@@ -16,6 +16,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Api\DeelplekkenController as ApiDeelplekkenController;
 use App\Http\Controllers\Api\NuTeStekkenController as ApiNuTeStekkenController;
 use App\Http\Controllers\Api\PartnersController as ApiPartnersController;
+use App\Http\Controllers\Api\PlantensoortenController as ApiPlantensoortenController;
 use App\Http\Controllers\Api\ZoekenController as ApiZoekenController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
@@ -83,6 +84,9 @@ Route::get('/api/zoeken', ApiZoekenController::class)->name('api.zoeken');
 Route::get('/api/partners', ApiPartnersController::class)->name('api.partners');
 Route::get('/api/deelplekken', ApiDeelplekkenController::class)->name('api.deelplekken');
 Route::get('/api/nu-te-stekken', ApiNuTeStekkenController::class)->name('api.nu-te-stekken');
+Route::get('/api/plantensoorten', ApiPlantensoortenController::class)
+    ->middleware('throttle:plantensoorten-zoek')
+    ->name('api.plantensoorten');
 
 Route::get('/cron', CronController::class)->name('cron');
 Route::get('/account/aanbod-verlengen', AanbodVerlengenController::class)

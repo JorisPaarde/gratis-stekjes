@@ -44,6 +44,7 @@ function auditPublicGetRoutes(): array
         '/api/partners',
         '/api/deelplekken',
         '/api/nu-te-stekken',
+        '/api/plantensoorten?q=munt',
         '/account/registreren',
         '/account/inloggen',
         '/account/wachtwoord-vergeten',

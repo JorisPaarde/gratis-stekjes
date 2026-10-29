@@ -9,6 +9,17 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.22.0] - 2026-10-29
+
+### Added
+
+- Autocomplete voor plantensoort bij stekje aanbieden: catalogus `data/plantensoorten.json` (48 stektips + gangbare NL tuin-/kamer-/moestuinplanten), JSON-zoekendpoint `/api/plantensoorten` (named rate limit 60/min per IP), toegankelijke combobox (WAI-ARIA), optionele koppeling `aanbod.plantensoort_id` (suggestie of exacte server-side match op naam/synoniem/Latijn; vrije invoer blijft mogelijk).
+- Pest-tests voor endpoint, koppeling, vrije invoer, invasieve check en rate limit.
+
+### Changed
+
+- Aanbodformulier: plantensoort-veld met progressive enhancement (zonder JS gewoon tekstveld); invasieve-soortencheck dekt gekozen suggesties, synoniemen, Latijnse namen en vrije invoer.
+
 ## [0.21.0] - 2026-10-29
 
 ### Added

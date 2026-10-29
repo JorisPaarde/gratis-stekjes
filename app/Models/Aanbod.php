@@ -21,6 +21,7 @@ class Aanbod extends Model
         'user_id',
         'type',
         'tekst',
+        'plantensoort_id',
         'visible',
         'expires_at',
         'expiry_reminder_sent_at',
@@ -31,6 +32,7 @@ class Aanbod extends Model
     protected function casts(): array
     {
         return [
+            'plantensoort_id' => 'integer',
             'visible' => 'boolean',
             'expires_at' => 'datetime',
             'expiry_reminder_sent_at' => 'datetime',

@@ -4,10 +4,14 @@
 @section('meta_description', $metaDescription)
 @section('canonical', $canonical)
 
+@push('head')
+  @vite(['resources/css/plantsoort-autocomplete.css'])
+@endpush
+
 @section('content')
 <section class="section wrap">
   <h1 class="page-title">Mijn aanbod</h1>
-  <p class="section-intro">Vrije tekst over wat je hebt of zoekt. Aanbod staat {{ (int) config('stekjes.aanbod_ttl_days', 60) }} dagen in zoeken en op de kaart; daarna blijft het hier zichtbaar zodat je kunt verlengen.</p>
+  <p class="section-intro">Kies een plantensoort of typ vrij wat je hebt of zoekt. Aanbod staat {{ (int) config('stekjes.aanbod_ttl_days', 60) }} dagen in zoeken en op de kaart; daarna blijft het hier zichtbaar zodat je kunt verlengen.</p>
   <p class="muted"><x-icon name="waarschuwing" :size="16" /> Geen invasieve soorten (EU-Unielijst). <a href="{{ $invasieveUitlegUrl }}">Meer uitleg</a>.</p>
 
   @if($errors->any())
@@ -23,9 +27,39 @@
         <option value="ophalen" @selected(old('type') === 'ophalen')>Ik zoek / wil ophalen</option>
       </select>
     </label>
-    <label>Wat heb je of zoek je? *
-      <textarea name="tekst" id="aanbod-tekst" required maxlength="2000" placeholder="Bijv. zwarte bessenstekken, vanaf november, zaterdagochtend" data-invasieve-input>{{ old('tekst') }}</textarea>
-    </label>
+    <div
+      class="plantsoort-autocomplete"
+      data-plantsoort-autocomplete
+      data-plantsoort-url="{{ $plantensoortenZoekUrl }}"
+    >
+      <label for="aanbod-tekst">Plantensoort *
+        <span class="hint">Typ een naam; ik toon suggesties. Staat jouw soort er niet bij? Typ dan vrij verder.</span>
+        <input
+          type="text"
+          name="tekst"
+          id="aanbod-tekst"
+          required
+          maxlength="2000"
+          placeholder="Bijv. Monstera of munt"
+          value="{{ old('tekst') }}"
+          data-invasieve-input
+          data-plantsoort-input
+          aria-autocomplete="list"
+          aria-controls="aanbod-plantsoort-listbox"
+          aria-expanded="false"
+          autocomplete="off"
+        >
+      </label>
+      <input type="hidden" name="plantensoort_id" value="{{ old('plantensoort_id') }}" data-plantsoort-id>
+      <ul
+        id="aanbod-plantsoort-listbox"
+        class="plantsoort-listbox"
+        role="listbox"
+        hidden
+        data-plantsoort-listbox
+      ></ul>
+      <p class="visually-hidden" role="status" aria-live="polite" data-plantsoort-status></p>
+    </div>
     <p class="error" hidden data-invasieve-hint role="status"></p>
     <label class="checkbox">
       <input type="checkbox" name="gratis_akkoord" value="1" required @checked(old('gratis_akkoord'))>
@@ -74,9 +108,37 @@
                   <option value="ophalen" @selected(old('type', $row->type) === 'ophalen')>Ik zoek / wil ophalen</option>
                 </select>
               </label>
-              <label>Tekst *
-                <textarea name="tekst" required maxlength="2000" data-invasieve-input>{{ old('tekst', $row->tekst) }}</textarea>
-              </label>
+              <div
+                class="plantsoort-autocomplete"
+                data-plantsoort-autocomplete
+                data-plantsoort-url="{{ $plantensoortenZoekUrl }}"
+              >
+                <label for="aanbod-tekst-{{ $row->id }}">Plantensoort *
+                  <input
+                    type="text"
+                    name="tekst"
+                    id="aanbod-tekst-{{ $row->id }}"
+                    required
+                    maxlength="2000"
+                    value="{{ old('tekst', $row->tekst) }}"
+                    data-invasieve-input
+                    data-plantsoort-input
+                    aria-autocomplete="list"
+                    aria-controls="aanbod-plantsoort-listbox-{{ $row->id }}"
+                    aria-expanded="false"
+                    autocomplete="off"
+                  >
+                </label>
+                <input type="hidden" name="plantensoort_id" value="{{ old('plantensoort_id', $row->plantensoort_id) }}" data-plantsoort-id>
+                <ul
+                  id="aanbod-plantsoort-listbox-{{ $row->id }}"
+                  class="plantsoort-listbox"
+                  role="listbox"
+                  hidden
+                  data-plantsoort-listbox
+                ></ul>
+                <p class="visually-hidden" role="status" aria-live="polite" data-plantsoort-status></p>
+              </div>
               <p class="error" hidden data-invasieve-hint role="status"></p>
               <input type="hidden" name="edit_id" value="{{ $row->id }}">
               <label class="checkbox">
@@ -118,6 +180,7 @@
 @endsection
 
 @push('scripts')
+@vite(['resources/js/plantsoort-autocomplete.js'])
 <script>
 (function () {
   var terms = @json($invasieveTerms);
