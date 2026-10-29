@@ -7,7 +7,7 @@
 @section('content')
 <section class="section wrap">
   <h1 class="page-title">Wachtwoord vergeten</h1>
-  <p class="section-intro">Vul je e-mailadres in. Als het bij ons bekend is, sturen we een link om een nieuw wachtwoord in te stellen.</p>
+  <p class="section-intro">Vul je e-mailadres in. Als het bij mij bekend is, stuur ik een link om een nieuw wachtwoord in te stellen.</p>
 
   @if($errors->any())
     <p class="error" role="alert">{{ $errors->first() }}</p>

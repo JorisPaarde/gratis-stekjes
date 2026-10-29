@@ -16,7 +16,7 @@
   <h2>Wat kun je wel doen?</h2>
   <ul>
     <li>Deel inheemse of niet-invasieve tuin- en kamerplanten, bessenstruiken en kruiden.</li>
-    <li>Twijfel je over een soort? Bied hem niet aan en check de NVWA of onze lijst hieronder.</li>
+    <li>Twijfel je over een soort? Bied hem niet aan en check de NVWA of mijn lijst hieronder.</li>
     <li>Heb je een Unielijst-plant in de tuin? Verwijder die veilig volgens lokale adviezen — geef hem niet door.</li>
   </ul>
 

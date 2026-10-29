@@ -108,10 +108,10 @@
 <section class="section section--mint" id="veiligheid" aria-labelledby="veilig-titel">
   <div class="wrap">
     <h2 id="veilig-titel">Veilig delen</h2>
-    <p class="section-intro">Niet alles hoort op een deelplatform. We vragen je om invasieve soorten in Nederland niet aan te bieden.</p>
+    <p class="section-intro">Niet alles hoort op een deelplatform. Ik vraag je om invasieve soorten in Nederland niet aan te bieden.</p>
     <div class="soft-card warn-card">
       <p><x-icon name="waarschuwing" :size="20" /> Sommige planten staan op de EU-Unielijst van invasieve uitheemse soorten (NVWA). Die horen hier niet tussen — ook niet “even een stekje voor de leuk”.</p>
-      <p>Bij het plaatsen van aanbod controleren we op deze soorten. Twijfel je? Bied het dan niet aan.</p>
+      <p>Bij het plaatsen van aanbod controleer ik op deze soorten. Twijfel je? Bied het dan niet aan.</p>
       <p><a href="{{ route('invasieve-soorten') }}">Lijst en uitleg invasieve soorten</a></p>
     </div>
   </div>
@@ -119,17 +119,17 @@
 
 <section class="section wrap" id="initiatieven" aria-labelledby="initiatieven-titel">
   <h2 id="initiatieven-titel">Initiatieven</h2>
-  <p class="section-intro">Een paar initiatieven waar we naar linken — in onze eigen woorden, zonder beloftes over officiële samenwerking.</p>
+  <p class="section-intro">Een paar initiatieven waar ik naar link — in mijn eigen woorden, zonder beloftes over officiële samenwerking.</p>
   <div class="stack partners-stack">
     <article class="soft-card">
       <h3><a href="https://voedselbosbouw.org/" rel="noopener noreferrer">Voedselbosbouw.org</a></h3>
-      <p>Stichting Voedselbosbouw Nederland deelt kennis en praktijk rond voedselbossen. Wij richten ons op stekjes en planten van mens tot mens; zij op het bredere voedselbos-verhaal.</p>
-      <p class="muted">Geen bezoeklocatie op onze kaart — zie hun eigen site.</p>
+      <p>Stichting Voedselbosbouw Nederland deelt kennis en praktijk rond voedselbossen. Ik richt me op stekjes en planten van mens tot mens; zij op het bredere voedselbos-verhaal.</p>
+      <p class="muted">Geen bezoeklocatie op mijn kaart — zie hun eigen site.</p>
     </article>
     <article class="soft-card">
       <h3><a href="https://meerbomen.nu/" rel="noopener noreferrer">MeerBomen Nu</a></h3>
-      <p>MeerBomen Nu zet zich in voor meer bomen. Het verschil met ons: zij doen bomen en acties, wij gratis stekjes en planten tussen buren.</p>
-      <p class="muted">Geen bezoeklocatie op onze kaart.</p>
+      <p>MeerBomen Nu zet zich in voor meer bomen. Het verschil met mij: zij doen bomen en acties, ik gratis stekjes en planten tussen buren.</p>
+      <p class="muted">Geen bezoeklocatie op mijn kaart.</p>
     </article>
   </div>
   <p><a href="{{ route('partners') }}">Alle initiatieven en links</a> · <a href="{{ route('deelplekken') }}">deelplekken bij jou in de buurt</a> · ook op de <a href="{{ route('aanbod') }}">kaart</a>.</p>
@@ -161,7 +161,7 @@
       </div>
       <div class="soft-card">
         <h3>Privacy</h3>
-        <p>Wat we wel en niet bewaren.</p>
+        <p>Wat ik wel en niet bewaar.</p>
         <p><a href="{{ route('privacy') }}">Lees de verklaring</a></p>
       </div>
     </div>

@@ -158,3 +158,69 @@ test('kennisbank-artikelen en soort-JSON bevatten geen we/wij/ons/onze', functio
         'Nog we/wij/ons/onze in artikel-/soort-JSON: '.implode(', ', $hits)
     );
 });
+
+/**
+ * Zichtbare sitetekst in Blade-views: geen “We hebben …” / “wij”.
+ * Alleen zichtbare tekst (Blade/HTML eruit) om false positives in
+ * attributen, directives en scripts te vermijden.
+ */
+test('views bevatten geen We hebben of wij in zichtbare tekst', function () {
+    $root = resource_path('views');
+    $hits = [];
+
+    $iterator = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($root, FilesystemIterator::SKIP_DOTS)
+    );
+
+    /** @var SplFileInfo $file */
+    foreach ($iterator as $file) {
+        if (! $file->isFile()) {
+            continue;
+        }
+        $name = $file->getFilename();
+        if (! str_ends_with($name, '.blade.php') && ! str_ends_with($name, '.php')) {
+            continue;
+        }
+
+        $contents = @file_get_contents($file->getPathname());
+        if ($contents === false) {
+            continue;
+        }
+
+        // Blade- en HTML-commentaren weg.
+        $text = preg_replace('/\{\{--.*?--\}\}/s', ' ', $contents) ?? $contents;
+        $text = preg_replace('/<!--.*?-->/s', ' ', $text) ?? $text;
+        // Scripts/styles (niet zichtbaar) weg.
+        $text = preg_replace('/<script\b[^>]*>.*?<\/script>/is', ' ', $text) ?? $text;
+        $text = preg_replace('/<style\b[^>]*>.*?<\/style>/is', ' ', $text) ?? $text;
+        // Blade-echo’s en -directives: geen zichtbare proza.
+        $text = preg_replace('/\{\{\{.*?\}\}\}/s', ' ', $text) ?? $text;
+        $text = preg_replace('/\{\{.*?\}\}/s', ' ', $text) ?? $text;
+        $text = preg_replace('/\{!!.*?!!\}/s', ' ', $text) ?? $text;
+        $text = preg_replace('/@[a-zA-Z]+(\s*\([^;]*\))?;?/s', ' ', $text) ?? $text;
+        // HTML-tags weg; houd tekstinhoud.
+        $text = preg_replace('/<[^>]+>/', ' ', $text) ?? $text;
+        $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $text = preg_replace('/\s+/u', ' ', $text) ?? $text;
+
+        $rel = str_replace(base_path().DIRECTORY_SEPARATOR, '', $file->getPathname());
+
+        if (preg_match('/\bWe hebben\b/u', $text) === 1) {
+            $hits[] = $rel.' (We hebben)';
+        }
+        if (preg_match('/\bwij\b/iu', $text) === 1) {
+            $hits[] = $rel.' (wij)';
+        }
+    }
+
+    expect($hits)->toBeEmpty(
+        'Nog We hebben / wij in zichtbare view-tekst: '.implode(', ', $hits)
+    );
+});
+
+test('bevestiging-nodig is ik-vorm', function () {
+    $this->get(route('account.bevestiging-nodig'))
+        ->assertOk()
+        ->assertSee('Ik heb je een bevestigingslink gestuurd', false)
+        ->assertDontSee('We hebben je', false);
+});

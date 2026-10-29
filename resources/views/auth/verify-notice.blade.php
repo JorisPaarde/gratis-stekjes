@@ -7,7 +7,7 @@
 @section('content')
 <section class="section wrap prose">
   <h1 class="page-title">Bevestig je e-mail</h1>
-  <p>We hebben je een bevestigingslink gestuurd. Klik die link om verder te gaan. Geen mail? Kijk in je spamfolder of stuur hieronder opnieuw.</p>
+  <p>Ik heb je een bevestigingslink gestuurd. Klik die link om verder te gaan. Geen mail? Kijk in je spamfolder of stuur hieronder opnieuw.</p>
 
   @if($errors->any())
     <p class="error" role="alert">{{ $errors->first() }}</p>

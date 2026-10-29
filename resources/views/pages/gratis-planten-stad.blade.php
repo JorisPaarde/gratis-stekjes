@@ -104,7 +104,7 @@
         @endforeach
       </ul>
     @else
-      <p class="section-intro">Geen bekende vaste deelplek binnen ~{{ (int) $stad['straal_km'] }} km in onze openbare lijst. Elders in {{ $stad['provincie'] }} of landelijk wel mogelijk.</p>
+      <p class="section-intro">Geen bekende vaste deelplek binnen ~{{ (int) $stad['straal_km'] }} km in mijn openbare lijst. Elders in {{ $stad['provincie'] }} of landelijk wel mogelijk.</p>
     @endif
     <p>
       <a href="{{ route('deelplekken', ['plaats' => $stad['naam']]) }}">Deelplekken bij {{ $stad['naam'] }}</a>

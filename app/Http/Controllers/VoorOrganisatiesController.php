@@ -46,7 +46,7 @@ class VoorOrganisatiesController extends Controller
         if ($request->isBot()) {
             return redirect()
                 ->route('voor-organisaties.aanmelden')
-                ->with('status', 'Bedankt. We hebben je aanmelding ontvangen en kijken ernaar.');
+                ->with('status', 'Bedankt. Ik heb je aanmelding ontvangen en kijk ernaar.');
         }
 
         $key = 'deelplek-aanmelden:'.$request->ip();
@@ -74,6 +74,6 @@ class VoorOrganisatiesController extends Controller
 
         return redirect()
             ->route('voor-organisaties.aanmelden')
-            ->with('status', 'Bedankt. We hebben je aanmelding ontvangen en kijken ernaar. Je krijgt een bevestiging per e-mail.');
+            ->with('status', 'Bedankt. Ik heb je aanmelding ontvangen en kijk ernaar. Je krijgt een bevestiging per e-mail.');
     }
 }

@@ -40,6 +40,35 @@ test('search: begint-met vóór bevat, accentongevoelig', function () {
     expect(collect($latijn)->pluck('naam')->all())->toContain('Munt');
 });
 
+test('search ranking: exacte naam, naam-prefix, syn/lat-prefix, dan bevat', function () {
+    $monst = $this->planten->search('monst', 10);
+    expect($monst)->not->toBeEmpty()
+        ->and($monst[0]['naam'])->toBe('Monstera');
+
+    $namen = collect($monst)->pluck('naam')->all();
+    $posMonstera = array_search('Monstera', $namen, true);
+    $posApen = array_search('Apenmaskerplant', $namen, true);
+    expect($posMonstera)->toBeInt()
+        ->and($posApen)->toBeInt()
+        ->and($posMonstera)->toBeLessThan($posApen);
+
+    $exact = $this->planten->search('Monstera', 5);
+    expect($exact[0]['naam'])->toBe('Monstera')
+        ->and($exact[0]['match'])->toBeNull();
+});
+
+test('search geeft match-veld bij synoniem-treffer', function () {
+    $items = $this->planten->search('gatenplant', 5);
+    $monstera = collect($items)->firstWhere('naam', 'Monstera');
+    expect($monstera)->not->toBeNull()
+        ->and($monstera['match'])->toBe('Gatenplant');
+
+    $viaNaam = $this->planten->search('Monstera', 5);
+    $row = collect($viaNaam)->firstWhere('naam', 'Monstera');
+    expect($row)->not->toBeNull()
+        ->and($row['match'])->toBeNull();
+});
+
 test('resolveExact matcht naam, synoniem en latijn', function () {
     expect($this->planten->resolveExact('Monstera')['id'] ?? null)->toBeInt()
         ->and($this->planten->resolveExact('gatenplant')['naam'] ?? null)->toBe('Monstera')

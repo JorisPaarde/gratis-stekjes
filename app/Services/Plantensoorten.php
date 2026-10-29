@@ -48,9 +48,10 @@ final class Plantensoorten
 
     /**
      * Zoek op Nederlandse naam, synoniem of Latijnse naam.
-     * Begint-met eerst, daarna bevat; accent- en hoofdletterongevoelig.
+     * Ranking: exacte naam → naam begint-met → synoniem/Latijn begint-met → bevat.
+     * Accent- en hoofdletterongevoelig. Bij synoniem-match: veld `match` = dat synoniem.
      *
-     * @return list<array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, url: ?string}>
+     * @return list<array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, url: ?string, match: ?string}>
      */
     public function search(string $query, int $limit = 10): array
     {
@@ -60,43 +61,65 @@ final class Plantensoorten
         }
 
         $limit = max(1, min(25, $limit));
-        $starts = [];
-        $contains = [];
+
+        /** @var array<int, list<array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, url: ?string, match: ?string}>> $buckets */
+        $buckets = [
+            0 => [], // exacte naam
+            1 => [], // naam begint-met
+            2 => [], // synoniem of Latijn begint-met
+            3 => [], // bevat
+        ];
 
         foreach ($this->rows() as $row) {
-            $fields = array_merge(
-                [$row['naam_norm'], $row['latijn_norm']],
-                $row['syn_norms']
-            );
+            $naamNorm = $row['naam_norm'];
+            $latijnNorm = $row['latijn_norm'];
+            $synNorms = $row['syn_norms'];
 
-            $isStart = false;
-            $isContain = false;
-            foreach ($fields as $field) {
-                if ($field === '') {
-                    continue;
-                }
-                if (str_starts_with($field, $q)) {
-                    $isStart = true;
-                    break;
-                }
-                if (str_contains($field, $q)) {
-                    $isContain = true;
+            $rank = null;
+            $match = null;
+
+            if ($naamNorm !== '' && $naamNorm === $q) {
+                $rank = 0;
+            } elseif ($naamNorm !== '' && str_starts_with($naamNorm, $q)) {
+                $rank = 1;
+            } else {
+                $synStart = $this->firstMatchingSynonym($row, $q, 'starts');
+                $latijnStarts = $latijnNorm !== '' && str_starts_with($latijnNorm, $q);
+
+                if ($synStart !== null || $latijnStarts) {
+                    $rank = 2;
+                    $match = $synStart;
+                } else {
+                    $naamContains = $naamNorm !== '' && str_contains($naamNorm, $q);
+                    $latijnContains = $latijnNorm !== '' && str_contains($latijnNorm, $q);
+                    $synContains = $this->firstMatchingSynonym($row, $q, 'contains');
+
+                    if ($naamContains || $latijnContains || $synContains !== null) {
+                        $rank = 3;
+                        if (! $naamContains) {
+                            $match = $synContains;
+                        }
+                    }
                 }
             }
 
-            if ($isStart) {
-                $starts[] = $row;
-            } elseif ($isContain) {
-                $contains[] = $row;
+            if ($rank === null) {
+                continue;
             }
+
+            $public = $this->toPublic($row);
+            $public['match'] = $match;
+            $buckets[$rank][] = $public;
         }
 
-        usort($starts, $this->sortByNaam(...));
-        usort($contains, $this->sortByNaam(...));
+        foreach ($buckets as &$bucket) {
+            usort($bucket, $this->sortByNaam(...));
+        }
+        unset($bucket);
 
-        $merged = array_slice(array_merge($starts, $contains), 0, $limit);
+        $merged = array_merge($buckets[0], $buckets[1], $buckets[2], $buckets[3]);
 
-        return array_map(fn (array $row) => $this->toPublic($row), $merged);
+        return array_slice($merged, 0, $limit);
     }
 
     /**
@@ -231,6 +254,29 @@ final class Plantensoorten
         }
 
         return $this->cache = $rows;
+    }
+
+    /**
+     * Eerste synoniem waarvan de genormaliseerde vorm begint met of de term bevat.
+     *
+     * @param  array{synoniemen: list<string>, syn_norms: list<string>}  $row
+     * @param  'starts'|'contains'  $mode
+     */
+    private function firstMatchingSynonym(array $row, string $q, string $mode): ?string
+    {
+        foreach ($row['syn_norms'] as $i => $synNorm) {
+            if ($synNorm === '') {
+                continue;
+            }
+            $hit = $mode === 'starts'
+                ? str_starts_with($synNorm, $q)
+                : str_contains($synNorm, $q);
+            if ($hit) {
+                return $row['synoniemen'][$i] ?? null;
+            }
+        }
+
+        return null;
     }
 
     /**

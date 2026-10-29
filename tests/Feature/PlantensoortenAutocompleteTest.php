@@ -21,7 +21,7 @@ function plantsoortUser(array $extra = []): User
 test('zoek-endpoint vindt op Nederlandse naam, synoniem en Latijn', function () {
     $byNaam = $this->getJson(route('api.plantensoorten', ['q' => 'Monstera']))
         ->assertOk()
-        ->assertJsonStructure(['items' => [['id', 'naam', 'latijn', 'synoniemen', 'url']]])
+        ->assertJsonStructure(['items' => [['id', 'naam', 'latijn', 'synoniemen', 'url', 'match']]])
         ->json('items');
     expect(collect($byNaam)->pluck('naam')->all())->toContain('Monstera');
 
@@ -29,11 +29,29 @@ test('zoek-endpoint vindt op Nederlandse naam, synoniem en Latijn', function () 
         ->assertOk()
         ->json('items');
     expect(collect($syn)->pluck('naam')->all())->toContain('Monstera');
+    $monsteraViaSyn = collect($syn)->firstWhere('naam', 'Monstera');
+    expect($monsteraViaSyn['match'])->toBe('Gatenplant');
 
     $lat = $this->getJson(route('api.plantensoorten', ['q' => 'Monstera del']))
         ->assertOk()
         ->json('items');
     expect(collect($lat)->pluck('naam')->all())->toContain('Monstera');
+});
+
+test('zoek-endpoint ranking: Monstera vóór Apenmaskerplant bij monst', function () {
+    $items = $this->getJson(route('api.plantensoorten', ['q' => 'monst']))
+        ->assertOk()
+        ->json('items');
+
+    expect($items)->not->toBeEmpty()
+        ->and($items[0]['naam'])->toBe('Monstera');
+
+    $namen = collect($items)->pluck('naam')->all();
+    $posMonstera = array_search('Monstera', $namen, true);
+    $posApen = array_search('Apenmaskerplant', $namen, true);
+    expect($posMonstera)->toBeInt()
+        ->and($posApen)->toBeInt()
+        ->and($posMonstera)->toBeLessThan($posApen);
 });
 
 test('zoek-endpoint is accent- en hoofdletterongevoelig en max 10', function () {
@@ -274,4 +292,21 @@ test('autocomplete-JS blijft binnen CSP (self + connect-src self)', function () 
     expect($csp)->toContain("connect-src 'self'")
         ->and($csp)->toContain("script-src 'self' https://unpkg.com")
         ->and($response->getContent())->toContain('data-plantsoort-url="/api/plantensoorten"');
+});
+
+test('autocomplete-JS: geen markering bij openen, ArrowDown/Enter-gedrag', function () {
+    $js = (string) file_get_contents(base_path('resources/js/plantsoort-autocomplete.js'));
+
+    expect($js)->toContain('clearActive');
+    expect($js)->toContain("activeIndex = -1");
+    expect($js)->toContain('removeAttribute(\'aria-activedescendant\')');
+    // Bij openen (render) geen auto-markering van eerste optie.
+    expect($js)->toContain('clearActive();');
+    expect($js)->not->toMatch('/setActive\(activeIndex\s*>=\s*0\s*\?\s*activeIndex\s*:\s*0\)/');
+    // Eerste ArrowDown vanaf geen markering → index 0.
+    expect($js)->toContain('setActive(activeIndex < 0 ? 0 : activeIndex + 1)');
+    // Enter zonder markering kiest niets.
+    expect($js)->toContain('open && activeIndex >= 0 && items[activeIndex]');
+    // Synoniem-match tonen in suggestie.
+    expect($js)->toContain("item.naam + ' · ' + item.match");
 });

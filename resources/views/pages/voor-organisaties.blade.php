@@ -20,7 +20,7 @@
   <p><a class="btn" href="{{ route('voor-organisaties.aanmelden') }}">Plek aanmelden</a></p>
 
   <h2>Organisaties op deze site</h2>
-  <p>Hieronder staan organisaties waar we al naar linken, op basis van openbare bronnen. Mis je jezelf? Meld je plek aan.</p>
+  <p>Hieronder staan organisaties waar ik al naar link, op basis van openbare bronnen. Mis je jezelf? Meld je plek aan.</p>
   <ul>
     @foreach($organisaties as $org)
       <li>

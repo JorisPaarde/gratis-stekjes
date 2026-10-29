@@ -9,6 +9,15 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.22.1] - 2026-10-29
+
+### Changed
+
+- Plantensoort-zoekranking: exacte naam → naam begint-met → synoniem/Latijn begint-met → bevat (bijv. `monst` zet Monstera vóór Apenmaskerplant).
+- Autocomplete: bij openen geen optie gemarkeerd; eerste ArrowDown markeert de eerste; Enter zonder markering laat vrije invoer staan.
+- Synoniem-treffer toont het synoniem in de suggestie (`match`-veld in `/api/plantensoorten`).
+- Sitetekst in ik-vorm (o.a. `/account/bevestiging-nodig`: “Ik heb je … gestuurd”); test faalt op zichtbaar “We hebben” / “wij” in views.
+
 ## [0.22.0] - 2026-10-29
 
 ### Added
