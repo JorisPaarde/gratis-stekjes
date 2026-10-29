@@ -1,0 +1,55 @@
+name: Deploy staging
+
+# Elke push naar staging deployt automatisch naar de stagingomgeving.
+# Tijdelijk zet hij placeholder/ neer (voor SSL); de kern-PR vervangt dit door de echte build.
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      H: ${{ secrets.DEPLOY_HOST }}
+      U: ${{ secrets.DEPLOY_USER }}
+      P: ${{ secrets.DEPLOY_PORT }}
+      D: ${{ secrets.STAGING_DEPLOY_PATH }}
+      BASE: ${{ secrets.STAGING_BASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Secrets aanwezig?
+        id: chk
+        run: |
+          if [ -z "$H" ] || [ -z "$U" ] || [ -z "$D" ]; then echo "Staging-secrets ontbreken, deploy overgeslagen."; echo "skip=1" >> "$GITHUB_OUTPUT"; fi
+      - name: SSH instellen
+        if: steps.chk.outputs.skip != '1'
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+      - name: acme-challenge map aanmaken
+        if: steps.chk.outputs.skip != '1'
+        run: ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "mkdir -p '${D%/}/.well-known/acme-challenge'"
+      - name: Uploaden
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          rsync -rlz --delete \
+            --exclude='.well-known/' --exclude='cgi-bin/' \
+            --exclude='config.php' --exclude='data/' \
+            -e "ssh -i ~/.ssh/deploy_key -p ${P:-22}" \
+            placeholder/ "$U@$H:${D%/}/"
+      - name: Controle
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          curl -sS -o /dev/null -w 'staging http %{http_code}\n' "http://${BASE#*://}/" || true
+          curl -sSI "http://${BASE#*://}/" | grep -i '^x-robots-tag' || echo "LET OP: geen X-Robots-Tag"
