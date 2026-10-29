@@ -33,6 +33,8 @@ return Application::configure(basePath: dirname(__DIR__))
                 return response()->json(['message' => $message], 429, $e->getHeaders());
             }
 
-            return response($message, 429, $e->getHeaders());
+            return response()
+                ->view('errors.429', ['exception' => new TooManyRequestsHttpException($retry, $message)], 429)
+                ->withHeaders($e->getHeaders());
         });
     })->create();

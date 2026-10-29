@@ -10,7 +10,11 @@
   <p class="section-intro">Gratis meedoen. Stekjes blijven gratis — geen verkoop. Na registratie bevestig je je e-mail (double opt-in).</p>
 
   @if($errors->any())
-    <p class="error" role="alert">{{ $errors->first() }}</p>
+    <ul class="error-list" role="alert">
+      @foreach($errors->all() as $error)
+        <li class="error">{{ $error }}</li>
+      @endforeach
+    </ul>
   @endif
 
   <form class="form" method="post" action="{{ route('account.registreren') }}" novalidate>

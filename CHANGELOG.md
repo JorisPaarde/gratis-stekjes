@@ -9,6 +9,18 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.13.1] - 2026-10-29
+
+### Fixed
+
+- Registratie crasht niet meer (500) als SMTP faalt: account blijft bestaan, NL-waarschuwing + resend.
+- Opnieuw registreren / resend voor onbevestigde accounts (zelfde wachtwoord) stuurt opnieuw een bevestigingsmail.
+- Deploy schrijft `MAIL_SCHEME` (Laravel 12; `smtps`/`smtp`) i.p.v. genegeerde `MAIL_ENCRYPTION`; `MAIL_FROM` valt terug op `SMTP_USER` (Hoasted).
+- Registratievalidatie toont alle fouten tegelijk.
+- Gestylede Nederlandse foutpagina’s: 404, 419, 429, 500.
+- Cron verwerkt database-queue (`queue:work --stop-when-empty`).
+- Workflow `staging-tail-exceptions` (handmatig, geredigeerde ERROR-regels).
+
 ## [0.13.0] - 2026-10-29
 
 ### Added

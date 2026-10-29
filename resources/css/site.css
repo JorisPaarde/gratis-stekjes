@@ -409,7 +409,10 @@ h1.page-title {
   border: 1px solid var(--line); background: #fff;
 }
 .flash-ok { border-color: rgba(31,90,56,.3); color: var(--ok); }
+.flash-warn { border-color: rgba(232,131,58,.45); color: var(--ink); background: #fff8f1; }
 .flash-error { border-color: rgba(139,30,30,.3); color: var(--danger); }
+.error-list { list-style: disc; margin: 0 0 1rem 1.25rem; padding: 0; }
+.error-list .error { margin: .25rem 0; }
 
 .grid-cards {
   display: grid; gap: 1rem;

@@ -6,6 +6,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\VerifyEmailDutch;
+use App\Support\SafeMail;
 use App\Support\ThrottleMessage;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\RedirectResponse;
@@ -69,9 +71,17 @@ class VerifyEmailController extends Controller
         }
         RateLimiter::hit($throttleKey, 60);
 
+        $mailOk = true;
         $user = User::query()->where('email', $email)->where('active', true)->first();
         if ($user && ! $user->hasVerifiedEmail()) {
-            $user->sendEmailVerificationNotification();
+            $mailOk = SafeMail::notify($user, new VerifyEmailDutch);
+        }
+
+        if (! $mailOk) {
+            return back()
+                ->withInput(['email' => $email])
+                ->with('status', 'De bevestigingsmail lukte niet. Probeer het zo opnieuw, of probeer later.')
+                ->with('status_level', 'warn');
         }
 
         return back()->with('status', 'Als dit adres bij ons bekend is en nog niet bevestigd, sturen we opnieuw een link.');
