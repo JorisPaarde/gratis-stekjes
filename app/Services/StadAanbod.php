@@ -62,8 +62,8 @@ final class StadAanbod
     }
 
     /**
-     * Deelplekken binnen straal uit data/deelplekken.json (bron van waarheid).
-     * Valt terug op DB alleen als JSON ontbreekt maar de tabel wél data heeft.
+     * Deelplekken binnen straal: JSON (geseede plekken) plus goedgekeurde
+     * aanmeldingen uit de database. Pending/afgewezen blijven buiten beeld.
      *
      * @param  array{lat: float, lng: float, straal_km: float, naam?: string}  $stad
      * @return list<array<string, mixed>>
@@ -71,11 +71,88 @@ final class StadAanbod
     public function deelplekkenWithin(array $stad): array
     {
         $fromJson = $this->deelplekkenFromJson($stad);
-        if ($fromJson !== [] || $this->deelplekkenJsonReadable()) {
+        if ($fromJson === [] && ! $this->deelplekkenJsonReadable()) {
+            return $this->deelplekkenFromDatabase($stad) ?? [];
+        }
+
+        $fromAanmeldingen = $this->approvedAanmeldingenWithin($stad);
+        if ($fromAanmeldingen === []) {
             return $fromJson;
         }
 
-        return $this->deelplekkenFromDatabase($stad) ?? [];
+        $seen = [];
+        foreach ($fromJson as $item) {
+            $key = mb_strtolower(($item['naam'] ?? '').'|'.($item['plaats'] ?? ''), 'UTF-8');
+            $seen[$key] = true;
+        }
+        foreach ($fromAanmeldingen as $item) {
+            $key = mb_strtolower(($item['naam'] ?? '').'|'.($item['plaats'] ?? ''), 'UTF-8');
+            if (isset($seen[$key])) {
+                continue;
+            }
+            $fromJson[] = $item;
+            $seen[$key] = true;
+        }
+
+        usort($fromJson, static fn ($a, $b) => ($a['afstand_km'] ?? 999) <=> ($b['afstand_km'] ?? 999));
+
+        return $fromJson;
+    }
+
+    /**
+     * @param  array{lat: float, lng: float, straal_km: float}  $stad
+     * @return list<array<string, mixed>>
+     */
+    private function approvedAanmeldingenWithin(array $stad): array
+    {
+        if (! class_exists(\App\Models\Deelplek::class)) {
+            return [];
+        }
+        try {
+            if (! Schema::hasTable('deelplekken')) {
+                return [];
+            }
+        } catch (\Throwable) {
+            return [];
+        }
+
+        $lat = (float) $stad['lat'];
+        $lng = (float) $stad['lng'];
+        $straal = (float) $stad['straal_km'];
+        $labels = $this->deelplekken->typeLabels();
+
+        try {
+            $rows = \App\Models\Deelplek::query()
+                ->visible()
+                ->where('source', \App\Models\Deelplek::SOURCE_AANMELDING)
+                ->get();
+        } catch (\Throwable) {
+            return [];
+        }
+
+        $out = [];
+        foreach ($rows as $row) {
+            $rlat = (float) $row->lat;
+            $rlng = (float) $row->lng;
+            $km = Geo::haversineKm($lat, $lng, $rlat, $rlng);
+            if ($km > $straal) {
+                continue;
+            }
+            $type = (string) $row->type;
+            $out[] = [
+                'naam' => (string) $row->naam,
+                'type' => $type,
+                'type_label' => $labels[$type] ?? $type,
+                'plaats' => (string) $row->plaats,
+                'provincie' => (string) $row->provincie,
+                'lat' => Geo::roundCoord($rlat),
+                'lng' => Geo::roundCoord($rlng),
+                'afstand_km' => round($km, 1),
+                'bron_url' => (string) $row->bron_url,
+            ];
+        }
+
+        return $out;
     }
 
     private function deelplekkenJsonReadable(): bool

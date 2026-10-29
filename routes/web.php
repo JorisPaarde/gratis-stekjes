@@ -29,9 +29,11 @@ use App\Http\Controllers\CronController;
 use App\Http\Controllers\DeelplekkenController;
 use App\Http\Controllers\GratisPlantenController;
 use App\Http\Controllers\InvasieveSoortenController;
+use App\Http\Controllers\OrganisatieController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PartnersController;
 use App\Http\Controllers\StektipsController;
+use App\Http\Controllers\VoorOrganisatiesController;
 use App\Http\Controllers\ZoekenController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +41,15 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/initiatieven', PartnersController::class)->name('partners');
 Route::get('/deelplekken', DeelplekkenController::class)->name('deelplekken');
+Route::get('/voor-organisaties', [VoorOrganisatiesController::class, 'index'])->name('voor-organisaties');
+Route::get('/voor-organisaties/aanmelden', [VoorOrganisatiesController::class, 'create'])
+    ->name('voor-organisaties.aanmelden');
+Route::post('/voor-organisaties/aanmelden', [VoorOrganisatiesController::class, 'store'])
+    ->middleware('throttle:10,1');
+Route::get('/organisaties', [OrganisatieController::class, 'index'])->name('organisaties.index');
+Route::get('/organisaties/{slug}', [OrganisatieController::class, 'show'])
+    ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+    ->name('organisaties.show');
 Route::redirect('/partners', '/initiatieven', 301);
 Route::get('/partners/{path}', function (string $path) {
     return redirect('/initiatieven/'.$path, 301);
@@ -152,4 +163,8 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::post('/markers', [BeheerDashboardController::class, 'saveMarker'])->name('beheer.markers.save');
     Route::post('/markers/verwijderen', [BeheerDashboardController::class, 'deleteMarker'])->name('beheer.markers.delete');
     Route::post('/meldingen/afgehandeld', [BeheerDashboardController::class, 'markReportHandled'])->name('beheer.reports.handled');
+    Route::post('/deelplekken/goedkeuren', [BeheerDashboardController::class, 'approveDeelplek'])
+        ->name('beheer.deelplekken.approve');
+    Route::post('/deelplekken/afwijzen', [BeheerDashboardController::class, 'rejectDeelplek'])
+        ->name('beheer.deelplekken.reject');
 });

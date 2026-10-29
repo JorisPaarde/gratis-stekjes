@@ -76,6 +76,7 @@
         <a href="{{ route('invasieve-soorten') }}">Invasieve soorten</a>
         <a href="{{ route('partners') }}">Initiatieven</a>
         <a href="{{ route('deelplekken') }}">Deelplekken</a>
+        <a href="{{ route('voor-organisaties') }}">Voor organisaties</a>
         @auth
           <a href="{{ route('account.index') }}">Account</a>
         @else
