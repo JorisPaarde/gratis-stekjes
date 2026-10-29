@@ -27,7 +27,7 @@
 
 @section('content')
 <section class="section wrap prose stektips-page">
-  <h1>{{ $soort['naam'] }}</h1>
+  <h1 class="page-title">{{ $soort['naam'] }}</h1>
   @if(!empty($soort['kort']))
     <p class="muted">{{ $soort['kort'] }}</p>
   @endif

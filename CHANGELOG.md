@@ -9,6 +9,20 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.10.0] - 2026-10-29
+
+### Added
+
+- Design documentatie: `docs/design-stijl.md` (palet, fonts, sectie-/knop-/kaartpatronen) en `docs/afbeeldingen-licenties.md`.
+- Self-hosted webfonts **Passion One** + **Titillium Web** (OFL) onder `public/fonts/`.
+- Eigen SVG-illustraties: hero-achtergrond, golfscheiders, stekje-icoon.
+
+### Changed
+
+- Visuele stijl naar meerbomen.nu-achtig ritme: teal/coral/peach, witte rustvlakken, pill-knoppen, display-koppen, full-bleed hero, genummerde stappen, afwisselende sectievlakken — zonder hun logo/teksten/foto’s.
+- Layout en bestaande Blade-pagina’s (home, privacy, auth, account + contentpagina’s) bijgewerkt; Google Fonts CDN verwijderd.
+- Theme/PWA-kleuren en contrasttests afgestemd op nieuwe tokens (WCAG AA).
+
 ## [0.9.1] - 2026-10-29
 
 ### Fixed
@@ -62,18 +76,20 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Melden en blokkeren; rate limit op berichten; `NewMessageMail` via SMTP (geen berichtinhoud, geen andermans adres).
 - Component-CSS `resources/css/berichten.css`.
 
+
 ## [0.3.0] - 2026-10-29
 
 ### Added
 
-- Profiel met benaderde locatie (PDOK + `geocode_cache`, coördinaten afgerond).
-- Mijn aanbod: plaatsen (uitdelen/ophalen), 60 dagen geldig, handmatig verlengen.
-- Publiek `/aanbod`: Leaflet-kaart + zoeken op postcode/plaats; API `/api/zoeken` (afstand, geen e-mail/telefoon).
-- Component-CSS `resources/css/aanbod.css` (site-variabelen); partners-API stub tot partners-PR.
+- Design documentatie: `docs/design-stijl.md` (palet, fonts, sectie-/knop-/kaartpatronen) en `docs/afbeeldingen-licenties.md`.
+- Self-hosted webfonts **Passion One** + **Titillium Web** (OFL) onder `public/fonts/`.
+- Eigen SVG-illustraties: hero-achtergrond, golfscheiders, stekje-icoon.
 
 ### Changed
 
-- Navigatie/homepage linken naar aanbod & kaart.
+- Visuele stijl naar meerbomen.nu-achtig ritme: teal/coral/peach, witte rustvlakken, pill-knoppen, display-koppen, full-bleed hero, genummerde stappen, afwisselende sectievlakken — zonder hun logo/teksten/foto’s.
+- Layout, homepage, privacy, auth- en accountpagina’s bijgewerkt; Google Fonts CDN verwijderd.
+- Theme/PWA-kleuren en contrasttests afgestemd op nieuwe tokens (WCAG AA).
 
 ## [0.2.0] - 2026-10-29
 

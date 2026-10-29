@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 720" width="1440" height="720" role="img" aria-hidden="true">
+  <title>Gestileerde bladeren en stekjes</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#16555C"/>
+      <stop offset="55%" stop-color="#1F6B74"/>
+      <stop offset="100%" stop-color="#246F78"/>
+    </linearGradient>
+  </defs>
+  <rect width="1440" height="720" fill="url(#sky)"/>
+  <!-- soft ground -->
+  <ellipse cx="720" cy="780" rx="900" ry="220" fill="#16555C" opacity="0.55"/>
+  <!-- leaf silhouettes (left) -->
+  <g fill="#E6F3F4" opacity="0.14">
+    <path d="M120 520c40-120 120-200 200-240-20 90-10 180 40 260-80-10-160 10-240-20z"/>
+    <path d="M280 560c30-90 90-150 150-180-10 70-5 140 25 200-60-5-120 10-175-20z"/>
+    <path d="M980 500c-50-130-140-210-230-250 30 95 20 190-30 275 85-5 170 15 260-25z"/>
+    <path d="M1180 540c-35-100-100-165-170-195 15 75 10 150-20 215 65-8 130 8 190-20z"/>
+  </g>
+  <!-- stem + leaf cluster center-right -->
+  <g stroke="#F4CFC2" stroke-width="3" fill="none" opacity="0.35">
+    <path d="M720 640c10-80 5-160-20-230"/>
+    <path d="M700 470c-40-30-90-40-130-25"/>
+    <path d="M705 510c40-25 95-30 140-10"/>
+    <path d="M710 430c-25-45-20-95 10-130"/>
+  </g>
+  <g fill="#B84F40" opacity="0.28">
+    <ellipse cx="560" cy="450" rx="48" ry="22" transform="rotate(-25 560 450)"/>
+    <ellipse cx="820" cy="490" rx="52" ry="24" transform="rotate(20 820 490)"/>
+    <ellipse cx="700" cy="360" rx="40" ry="18" transform="rotate(-5 700 360)"/>
+  </g>
+  <!-- small cuttings dots -->
+  <g fill="#FFE2B8" opacity="0.4">
+    <circle cx="200" cy="200" r="4"/>
+    <circle cx="260" cy="160" r="3"/>
+    <circle cx="1240" cy="180" r="4"/>
+    <circle cx="1300" cy="230" r="3"/>
+    <circle cx="400" cy="120" r="3"/>
+    <circle cx="1100" cy="140" r="3"/>
+  </g>
+</svg>

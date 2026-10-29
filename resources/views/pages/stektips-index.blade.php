@@ -10,7 +10,7 @@
 
 @section('content')
 <section class="section wrap stektips-page">
-  <h1>Stektips</h1>
+  <h1 class="page-title">Stektips</h1>
   <p class="section-intro">Zestien soorten om mee te beginnen. De slagingskans is een eigen indicatie op basis van de bronnen in het plan; die geven geen percentages. Ontbrekende details: <em>Volgt binnenkort</em>.</p>
   <div class="grid-cards">
     @foreach($soorten as $s)

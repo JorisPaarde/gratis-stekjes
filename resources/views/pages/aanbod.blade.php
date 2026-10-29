@@ -22,7 +22,7 @@
 
 @section('content')
 <section class="section wrap">
-  <h1>Aanbod</h1>
+  <h1 class="page-title">Aanbod</h1>
   <p class="section-intro">Zoek op postcode (4 cijfers) of plaats in Nederland. Je ziet benaderde plekken op de kaart en een lijst gesorteerd op afstand. Exacte adressen staan niet op de site.</p>
 
   <form class="form" id="zoek-form" style="max-width:100%;margin-bottom:1rem">

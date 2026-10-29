@@ -6,7 +6,7 @@
 
 @section('content')
 <section class="section wrap prose">
-  <h1>Privacyverklaring</h1>
+  <h1 class="page-title">Privacyverklaring</h1>
   <p>Kort en duidelijk. Waar nog iets formeels moet worden ingevuld, staat <em>Volgt binnenkort</em>.</p>
 
   <h2>Verantwoordelijke</h2>

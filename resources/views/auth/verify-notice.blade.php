@@ -6,7 +6,7 @@
 
 @section('content')
 <section class="section wrap prose">
-  <h1>Check je inbox</h1>
+  <h1 class="page-title">Check je inbox</h1>
   <p>We hebben je een bevestigingslink gestuurd. Klik die link om verder te gaan. Geen mail? Kijk in je spamfolder.</p>
 
   @if($errors->any())

@@ -10,7 +10,7 @@
 
 @section('content')
 <section class="section wrap stektips-page">
-  <h1>Hulpmiddelen</h1>
+  <h1 class="page-title">Hulpmiddelen</h1>
   <div class="stack">
     <article class="soft-card">
       <h3>Wilgenwater</h3>

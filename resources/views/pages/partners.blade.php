@@ -10,7 +10,7 @@
 
 @section('content')
 <section class="section wrap partners-page">
-  <h1>Partners</h1>
+  <h1 class="page-title">Partners</h1>
   <p class="section-intro">Wij bouwen niet alles zelf. Hieronder staan initiatieven waar we naast willen staan. Waar we iets nog niet zeker weten, staat <em>Volgt binnenkort</em>.</p>
 
   <div class="stack partners-stack">
