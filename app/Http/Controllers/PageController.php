@@ -43,6 +43,15 @@ class PageController extends Controller
         ]);
     }
 
+    public function contact(): View
+    {
+        return view('pages.contact', [
+            'title' => 'Contact',
+            'metaDescription' => 'Contact met '.config('site.name').'.',
+            'canonical' => route('contact'),
+        ]);
+    }
+
     public function stijlgids(): View
     {
         return view('pages.stijlgids', [
@@ -73,7 +82,9 @@ class PageController extends Controller
             route('hulpmiddelen'),
             route('over'),
             route('privacy'),
+            route('contact'),
             route('partners'),
+
             route('deelplekken'),
             route('voor-organisaties'),
             route('voor-organisaties.aanmelden'),

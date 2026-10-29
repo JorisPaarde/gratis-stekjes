@@ -8,17 +8,19 @@
 <section class="section wrap prose">
   <h1 class="page-title">Privacyverklaring</h1>
 
-  <p class="flash flash-warn" role="status"><strong>Concept – nog niet definitief.</strong> Joris leest deze tekst na vóór livegang. Waar juridische gegevens nog ontbreken, staat <em>[in te vullen door Joris]</em>.</p>
+  <p class="flash flash-warn" role="status"><strong>Concept – nog niet definitief.</strong> Joris leest deze tekst na vóór livegang.</p>
 
   <p>Deze verklaring beschrijft welke persoonsgegevens {{ config('site.name') }} (gratisplanten.nl) verwerkt, waarom, hoe lang, en welke rechten je hebt. Ik houd het dicht bij wat de applicatie echt doet.</p>
 
   <h2>Verwerkingsverantwoordelijke</h2>
   <p>
-    {{ config('site.name') }} wordt gemaakt en beheerd door Joris Paardekooper (jpwebcreation).<br>
-    Contact over privacy: <a href="mailto:info@jpwebcreation.nl">info@jpwebcreation.nl</a>.<br>
-    Rechtsvorm / handelsnaam: <em>[in te vullen door Joris]</em><br>
-    KvK-nummer: <em>[in te vullen door Joris]</em><br>
-    Post- of bezoekadres: <em>[in te vullen door Joris]</em>
+    {{ config('site.name') }} is een project van <a href="https://jpwebcreation.nl" rel="noopener noreferrer">JP Web Creation</a>
+    (eenmanszaak van Joris Paardekooper Overman).<br>
+    Adres: Bernadottelaan 273, 2037 GR Haarlem<br>
+    KvK: 90397320<br>
+    Btw: NL004813310B95<br>
+    Telefoon: <a href="tel:+31621228884">06 21 22 88 84</a><br>
+    Contact: <a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a>
   </p>
 
   <h2>Welke gegevens ik verwerk</h2>
@@ -61,7 +63,8 @@
     <li><strong>Wissen (account):</strong> <a href="{{ route('account.verwijderen') }}">Account verwijderen</a> (bevestiging met wachtwoord). Daarmee verdwijnen account, aanbod, berichten/gesprekken, blokkades en jouw meldingen.</li>
     <li><strong>Wissen (helper zonder account):</strong> volgt wanneer helpers live gaan.</li>
     <li><strong>Rectificatie:</strong> via je accountprofiel (naam, telefoon, locatie, e-mailwijziging met herbevestiging).</li>
-    <li><strong>Bezwaar / klacht:</strong> mail <a href="mailto:info@jpwebcreation.nl">info@jpwebcreation.nl</a>. Je kunt ook een klacht indienen bij de Autoriteit Persoonsgegevens (<a href="https://www.autoriteitpersoonsgegevens.nl/" rel="noopener noreferrer">autoriteitpersoonsgegevens.nl</a>).</li>
+    <li><strong>Bezwaar / klacht:</strong> mail <a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a>. Je kunt ook een klacht indienen bij de Autoriteit Persoonsgegevens (<a href="https://www.autoriteitpersoonsgegevens.nl/" rel="noopener noreferrer">autoriteitpersoonsgegevens.nl</a>).</li>
+
   </ul>
 
   <h2>Bewaren en dataminimalisatie</h2>
@@ -89,6 +92,6 @@
   <p>Je kunt een gebruiker melden of blokkeren. Meldingen worden opgeslagen voor de beheerder. Er is geen openbare moderatiewachtrij.</p>
 
   <h2>Wijzigingen</h2>
-  <p>Versie van deze site: {{ config('site.version') }}. Datum van deze concepttekst: 29 oktober 2026. Definitieve vaststellingsdatum: <em>[in te vullen door Joris]</em>. Bij inhoudelijke wijzigingen werk ik deze pagina bij.</p>
+  <p>Versie van deze site: {{ config('site.version') }}. Datum van deze concepttekst: 29 oktober 2026. Bij inhoudelijke wijzigingen werk ik deze pagina bij.</p>
 </section>
 @endsection

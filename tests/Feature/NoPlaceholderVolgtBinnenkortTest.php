@@ -49,14 +49,19 @@ test('Volgt binnenkort komt niet voor in views, data of soorten', function () {
                 continue;
             }
 
+            $rel = str_replace(base_path().DIRECTORY_SEPARATOR, '', $path);
+
             if (str_contains($contents, 'Volgt binnenkort')) {
-                $hits[] = str_replace(base_path().DIRECTORY_SEPARATOR, '', $path);
+                $hits[] = $rel.' (Volgt binnenkort)';
+            }
+            if (str_contains($contents, '[in te vullen')) {
+                $hits[] = $rel.' ([in te vullen)';
             }
         }
     }
 
     expect($hits)->toBeEmpty(
-        'Nog “Volgt binnenkort” in: '.implode(', ', $hits)
+        'Nog placeholders in: '.implode(', ', $hits)
     );
 });
 
@@ -65,9 +70,19 @@ test('privacy, over en initiatieven tonen geen Volgt binnenkort en geen we/wij/o
         'privacy' => $this->get(route('privacy'))
             ->assertOk()
             ->assertSee('Concept – nog niet definitief', false)
-            ->assertSee('info@jpwebcreation.nl', false)
-            ->assertSee('[in te vullen door Joris]', false)
+            ->assertSee('JP Web Creation', false)
+            ->assertSee('https://jpwebcreation.nl', false)
+            ->assertSee('Bernadottelaan 273', false)
+            ->assertSee('90397320', false)
+            ->assertSee('NL004813310B95', false)
+            ->assertSee('info@gratisplanten.nl', false)
+            ->assertDontSee('info@jpwebcreation.nl', false)
+            ->assertDontSee('[in te vullen', false)
             ->assertDontSee('Volgt binnenkort', false),
+        'contact' => $this->get(route('contact'))
+            ->assertOk()
+            ->assertSee('info@gratisplanten.nl', false)
+            ->assertDontSee('info@jpwebcreation.nl', false),
         'over' => $this->get(route('over'))
             ->assertOk()
             ->assertSee('Joris Paardekooper', false)
@@ -88,6 +103,29 @@ test('privacy, over en initiatieven tonen geen Volgt binnenkort en geen we/wij/o
             "Pagina {$label} bevat nog we/wij/ons/onze in de tekstinhoud."
         );
     }
+});
+
+test('views bevatten geen info@jpwebcreation.nl als sitecontact', function () {
+    $hits = [];
+    $root = resource_path('views');
+    $iterator = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($root, FilesystemIterator::SKIP_DOTS)
+    );
+
+    /** @var SplFileInfo $file */
+    foreach ($iterator as $file) {
+        if (! $file->isFile()) {
+            continue;
+        }
+        $contents = @file_get_contents($file->getPathname());
+        if ($contents !== false && str_contains($contents, 'info@jpwebcreation.nl')) {
+            $hits[] = str_replace(base_path().DIRECTORY_SEPARATOR, '', $file->getPathname());
+        }
+    }
+
+    expect($hits)->toBeEmpty(
+        'Nog info@jpwebcreation.nl in views: '.implode(', ', $hits)
+    );
 });
 
 test('kennisbank-artikelen en soort-JSON bevatten geen we/wij/ons/onze', function () {
