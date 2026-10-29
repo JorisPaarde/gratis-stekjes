@@ -1,0 +1,39 @@
+/**
+ * Component styles for stektips / hulpmiddelen content pages.
+ * Keep edits here — not in site.css — to limit merge conflicts.
+ */
+.stektips-page .stektips-proef {
+  margin-top: 1.5rem;
+}
+
+.stektips-page .stektips-meer {
+  margin-top: 1.5rem;
+}
+
+.stektips-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.stektips-table th,
+.stektips-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.55rem 0.65rem;
+  border-bottom: 1px solid var(--line, rgba(31, 77, 50, 0.14));
+}
+
+.stektips-table th {
+  width: 38%;
+  color: var(--leaf-deep, #1f4d32);
+  font-weight: 700;
+}
+
+.stektips-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  margin-top: 1.5rem;
+}

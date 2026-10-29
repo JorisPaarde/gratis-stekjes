@@ -110,7 +110,7 @@
     <div class="soft-card">
       <h3>Stektips</h3>
       <p>Praktische tips per soort.</p>
-      <p><span class="badge-soon">binnenkort</span></p>
+      <p><a href="{{ route('stektips.index') }}">Bekijk stektips</a></p>
     </div>
     <div class="soft-card">
       <h3>Privacy</h3>

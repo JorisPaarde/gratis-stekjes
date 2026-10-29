@@ -19,9 +19,11 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Beheer\DashboardController as BeheerDashboardController;
 use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
+use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PartnersController;
+use App\Http\Controllers\StektipsController;
 use App\Http\Controllers\ZoekenController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +31,14 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/partners', PartnersController::class)->name('partners');
 Route::get('/robots.txt', [PageController::class, 'robots'])->name('robots');
+Route::get('/sitemap.xml', [PageController::class, 'sitemap'])->name('sitemap');
+
+Route::get('/hoe-werkt-het', [ContentPageController::class, 'hoeWerktHet'])->name('hoe-werkt-het');
+Route::get('/hulpmiddelen', [ContentPageController::class, 'hulpmiddelen'])->name('hulpmiddelen');
+Route::get('/over', [ContentPageController::class, 'over'])->name('over');
+Route::get('/doe-mee', [ContentPageController::class, 'doeMee'])->name('doe-mee');
+Route::get('/stektips', [StektipsController::class, 'index'])->name('stektips.index');
+Route::get('/stektips/{slug}', [StektipsController::class, 'show'])->name('stektips.show');
 
 Route::get('/aanbod', ZoekenController::class)->name('aanbod');
 Route::get('/api/zoeken', ApiZoekenController::class)->name('api.zoeken');

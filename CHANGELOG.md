@@ -7,7 +7,15 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- (volgende PRs) SEO-pagina’s / stektips.
+- (volgende PRs) restyle / polish.
+
+## [0.9.0] - 2026-10-29
+
+### Added
+
+- SEO-content: `/hoe-werkt-het`, `/hulpmiddelen`, `/over`, `/doe-mee` → registreren.
+- Stektips-index + 16 soortpagina’s uit `data/stektips.json`; component-CSS `stektips.css`.
+- `/sitemap.xml`; navigatie linkt naar stektips/hulpmiddelen/over.
 
 ## [0.8.0] - 2026-10-29
 
@@ -46,7 +54,6 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Berichten rond aanbod: inbox, gesprek starten, chatten; e-mail/telefoon alleen na wederzijds “ja”.
 - Melden en blokkeren; rate limit op berichten; `NewMessageMail` via SMTP (geen berichtinhoud, geen andermans adres).
 - Component-CSS `resources/css/berichten.css`.
-
 
 ## [0.3.0] - 2026-10-29
 
