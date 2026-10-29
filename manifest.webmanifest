@@ -1,7 +1,7 @@
 {
-  "name": "Gratis stekjes",
-  "short_name": "Gratis stekj",
-  "description": "Gratis stekjes weggeven en ophalen. De enige tegenprestatie is een praatje.",
+  "name": "CI build",
+  "short_name": "CI build",
+  "description": "Planten gratis delen en ophalen. De enige tegenprestatie is een praatje.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

@@ -11,12 +11,14 @@ declare(strict_types=1);
  */
 
 return [
-    'site_name' => getenv('SITE_NAME') ?: 'Gratis stekjes',
+    // Alleen via env/secrets — geen productnaam hardcoden
+    'site_name' => getenv('SITE_NAME') ?: '',
     'site_url' => rtrim(getenv('BASE_URL') ?: 'http://127.0.0.1', '/'),
     'base_path' => getenv('BASE_PATH') ?: '',
+    'description' => getenv('SITE_DESCRIPTION') ?: 'Planten gratis delen en ophalen. De enige tegenprestatie is een praatje.',
 
     'db_driver' => getenv('DB_DRIVER') ?: 'mysql',
-    'db_host' => getenv('DB_HOST') ?: '127.0.0.1',
+    'db_host' => getenv('DB_HOST') ?: 'localhost',
     'db_name' => getenv('DB_NAME') ?: '',
     'db_user' => getenv('DB_USER') ?: '',
     'db_pass' => getenv('DB_PASS') ?: '',
@@ -25,7 +27,7 @@ return [
 
     'mail' => [
         'from_email' => getenv('SMTP_FROM') ?: '',
-        'from_name' => getenv('SITE_NAME') ?: 'Gratis stekjes',
+        'from_name' => getenv('SITE_NAME') ?: '',
         'smtp_host' => getenv('SMTP_HOST') ?: '',
         'smtp_port' => (int) (getenv('SMTP_PORT') ?: 465),
         'smtp_encryption' => strtolower(getenv('SMTP_SECURE') ?: 'ssl'),

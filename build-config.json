@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
-  "site_name": "Gratis stekjes",
-  "site_url": "https://example.invalid",
+  "site_name": "",
+  "site_url": "http://127.0.0.1",
   "base_path": "",
-  "description": "Gratis stekjes weggeven en ophalen. De enige tegenprestatie is een praatje."
+  "description": "Planten gratis delen en ophalen. De enige tegenprestatie is een praatje."
 }

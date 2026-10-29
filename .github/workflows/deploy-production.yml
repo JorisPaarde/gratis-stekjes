@@ -142,11 +142,11 @@ jobs:
           umask 077
           php -r '
             $cfg = [
-              "site_name" => getenv("SITE_NAME") ?: "Gratis stekjes",
+              "site_name" => getenv("SITE_NAME") ?: "",
               "site_url" => rtrim(getenv("BASE_URL") ?: "", "/"),
               "base_path" => "",
               "db_driver" => "mysql",
-              "db_host" => getenv("DB_HOST") ?: "",
+              "db_host" => getenv("DB_HOST") ?: "localhost",
               "db_name" => getenv("DB_NAME") ?: "",
               "db_user" => getenv("DB_USER") ?: "",
               "db_pass" => getenv("DB_PASS") ?: "",
@@ -154,7 +154,7 @@ jobs:
               "db_path" => "",
               "mail" => [
                 "from_email" => getenv("SMTP_FROM") ?: "",
-                "from_name" => getenv("SITE_NAME") ?: "Gratis stekjes",
+                "from_name" => getenv("SITE_NAME") ?: "",
                 "smtp_host" => getenv("SMTP_HOST") ?: "",
                 "smtp_port" => (int) (getenv("SMTP_PORT") ?: 465),
                 "smtp_encryption" => strtolower(getenv("SMTP_SECURE") ?: "ssl"),
@@ -202,6 +202,18 @@ jobs:
       - name: Migraties
         if: steps.chk.outputs.skip != '1'
         run: |
-          PRIV="$(tail -n1 /tmp/private_path.txt)"
-          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
-            "cd '${D%/}' && STEKJES_CONFIG='${PRIV}/config.php' php scripts/migrate.php up"
+          set -euo pipefail
+          PRIV="$(tr -d '\r\n' < /tmp/private_path.txt)"
+          if [ -z "$PRIV" ]; then echo "Private pad ontbreekt" >&2; exit 1; fi
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s <<EOF
+          set -euo pipefail
+          CFG='${PRIV}/config.php'
+          DOC='${D%/}'
+          if [ ! -r "\$CFG" ]; then echo "config niet leesbaar" >&2; exit 1; fi
+          if ! php -m 2>/dev/null | grep -qi '^pdo_mysql\$'; then
+            echo "pdo_mysql ontbreekt in PHP CLI" >&2
+            exit 1
+          fi
+          cd "\$DOC"
+          STEKJES_CONFIG="\$CFG" php -d display_errors=stderr -d log_errors=0 scripts/migrate.php up
+          EOF

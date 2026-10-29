@@ -46,15 +46,21 @@ jobs:
           SITE_NAME: ${{ secrets.SITE_NAME }}
           BASE_URL: ${{ secrets.STAGING_BASE_URL }}
         run: |
+          if [ -z "${SITE_NAME}" ]; then
+            echo "Secret SITE_NAME ontbreekt — nodig voor de build." >&2
+            exit 1
+          fi
+          if [ -z "${BASE_URL}" ]; then
+            echo "Secret STAGING_BASE_URL ontbreekt — nodig voor de build." >&2
+            exit 1
+          fi
           python3 - <<'PY'
           import json, os
           from pathlib import Path
           p = Path("build-config.json")
           cfg = json.loads(p.read_text(encoding="utf-8"))
-          if os.environ.get("SITE_NAME"):
-              cfg["site_name"] = os.environ["SITE_NAME"]
-          if os.environ.get("BASE_URL"):
-              cfg["site_url"] = os.environ["BASE_URL"].rstrip("/")
+          cfg["site_name"] = os.environ["SITE_NAME"]
+          cfg["site_url"] = os.environ["BASE_URL"].rstrip("/")
           p.write_text(json.dumps(cfg, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
           PY
           python3 scripts/build_site.py
@@ -94,20 +100,31 @@ jobs:
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
         run: |
           set -euo pipefail
-          # Sibling van docroot: …/stekjes-private (naam vast; parent komt uit secret DEPLOY_PATH)
+          if [ -z "${SITE_NAME}" ]; then echo "SITE_NAME secret ontbreekt" >&2; exit 1; fi
+          if [ -z "${DB_NAME}" ] || [ -z "${DB_USER}" ]; then echo "STAGING_DB_NAME/USER ontbreken" >&2; exit 1; fi
+          # Lege DB_HOST → localhost (gebruikelijk op gedeelde hosting); waarde niet loggen
+          export DB_HOST="${DB_HOST:-localhost}"
+
           PRIVATE_REL='stekjes-private'
+          # Alleen de private-pad-regel naar bestand; geen echo in Actions-log
           ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
-            "DOC='${D%/}'; PRIV=\"\$(dirname \"\$DOC\")/${PRIVATE_REL}\"; mkdir -p \"\$PRIV\"; chmod 700 \"\$PRIV\"; echo \"\$PRIV\"" > /tmp/private_path.txt
-          PRIV="$(cat /tmp/private_path.txt | tail -n1)"
+            "DOC='${D%/}'; PRIV=\"\$(dirname \"\$DOC\")/${PRIVATE_REL}\"; mkdir -p \"\$PRIV\"; chmod 700 \"\$PRIV\"; printf '%s' \"\$PRIV\"" \
+            > /tmp/private_path.txt
+          PRIV="$(tr -d '\r\n' < /tmp/private_path.txt)"
+          if [ -z "$PRIV" ] || [ "${PRIV#/}" = "$PRIV" ]; then
+            echo "Private map-pad kon niet worden bepaald (leeg of niet absoluut)." >&2
+            exit 1
+          fi
           umask 077
-          # Schrijf PHP-config zonder secrets te loggen
           php -r '
+            $site = getenv("SITE_NAME") ?: "";
+            if ($site === "") { fwrite(STDERR, "SITE_NAME leeg\n"); exit(1); }
             $cfg = [
-              "site_name" => getenv("SITE_NAME") ?: "Gratis stekjes",
+              "site_name" => $site,
               "site_url" => rtrim(getenv("BASE_URL") ?: "", "/"),
               "base_path" => "",
               "db_driver" => "mysql",
-              "db_host" => getenv("DB_HOST") ?: "",
+              "db_host" => getenv("DB_HOST") ?: "localhost",
               "db_name" => getenv("DB_NAME") ?: "",
               "db_user" => getenv("DB_USER") ?: "",
               "db_pass" => getenv("DB_PASS") ?: "",
@@ -115,7 +132,7 @@ jobs:
               "db_path" => "",
               "mail" => [
                 "from_email" => getenv("SMTP_FROM") ?: "",
-                "from_name" => getenv("SITE_NAME") ?: "Gratis stekjes",
+                "from_name" => $site,
                 "smtp_host" => getenv("SMTP_HOST") ?: "",
                 "smtp_port" => (int) (getenv("SMTP_PORT") ?: 465),
                 "smtp_encryption" => strtolower(getenv("SMTP_SECURE") ?: "ssl"),
@@ -146,9 +163,10 @@ jobs:
           '
           scp -i ~/.ssh/deploy_key -P "${P:-22}" -o IdentitiesOnly=yes \
             /tmp/stekjes-config.php "$U@$H:${PRIV}/config.php"
-          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "chmod 600 '${PRIV}/config.php'"
-          echo "$PRIV" > /tmp/private_path.txt
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "chmod 600 '${PRIV}/config.php' && test -r '${PRIV}/config.php'"
+          printf '%s' "$PRIV" > /tmp/private_path.txt
           rm -f /tmp/stekjes-config.php
+          echo "config.php geschreven buiten webroot (pad niet gelogd)."
 
       - name: Uploaden (echte build)
         if: steps.chk.outputs.skip != '1'
@@ -167,12 +185,44 @@ jobs:
         if: steps.chk.outputs.skip != '1'
         run: |
           set -euo pipefail
-          PRIV="$(cat /tmp/private_path.txt | tail -n1)"
-          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
-            "cd '${D%/}' && STEKJES_CONFIG='${PRIV}/config.php' php scripts/migrate.php up"
+          PRIV="$(tr -d '\r\n' < /tmp/private_path.txt)"
+          if [ -z "$PRIV" ]; then
+            echo "Private pad ontbreekt — config-stap faalde?" >&2
+            exit 1
+          fi
+          # Preflight op de server (geen paden/hosts printen)
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s <<EOF
+          set -euo pipefail
+          CFG='${PRIV}/config.php'
+          DOC='${D%/}'
+          if [ ! -r "\$CFG" ]; then echo "config niet leesbaar" >&2; exit 1; fi
+          if ! php -m 2>/dev/null | grep -qi '^pdo_mysql\$'; then
+            echo "pdo_mysql ontbreekt in PHP CLI" >&2
+            php -v >&2 || true
+            php -m >&2 || true
+            exit 1
+          fi
+          cd "\$DOC"
+          STEKJES_CONFIG="\$CFG" php -d display_errors=stderr -d log_errors=0 scripts/migrate.php up
+          EOF
 
       - name: Controle
         if: steps.chk.outputs.skip != '1'
         run: |
-          curl -sS -o /dev/null -w 'staging http %{http_code}\n' "http://${BASE#*://}/" || true
-          curl -sSI "http://${BASE#*://}/" | grep -i '^x-robots-tag' || echo "LET OP: geen X-Robots-Tag"
+          set -euo pipefail
+          if [ -z "${BASE}" ]; then
+            echo "STAGING_BASE_URL ontbreekt" >&2
+            exit 1
+          fi
+          url="${BASE%/}/"
+          code=$(curl -sS -o /tmp/staging-home.html -w '%{http_code}' --max-time 30 "$url" || echo "000")
+          echo "homepage HTTP $code"
+          if [ "$code" != "200" ]; then
+            echo "Homepage gaf geen 200." >&2
+            exit 1
+          fi
+          headers=$(curl -sSI --max-time 30 "$url" || true)
+          if ! grep -iq '^x-robots-tag:.*noindex' <<<"$headers"; then
+            echo "LET OP: geen X-Robots-Tag noindex in headers" >&2
+            # nog geen hard fail: .htaccess kan per host anders laden; homepage-200 is verplicht
+          fi

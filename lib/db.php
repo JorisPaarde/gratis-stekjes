@@ -32,13 +32,19 @@ function stekjes_db(): PDO
         ]);
         $pdo->exec('PRAGMA foreign_keys = ON');
     } else {
-        $host = (string) ($config['db_host'] ?? 'localhost');
+        $host = trim((string) ($config['db_host'] ?? ''));
+        if ($host === '') {
+            $host = 'localhost';
+        }
         $name = (string) ($config['db_name'] ?? '');
         $user = (string) ($config['db_user'] ?? '');
         $pass = (string) ($config['db_pass'] ?? '');
         $charset = (string) ($config['db_charset'] ?? 'utf8mb4');
         if ($name === '') {
             throw new RuntimeException('db_name ontbreekt');
+        }
+        if (!extension_loaded('pdo_mysql')) {
+            throw new RuntimeException('pdo_mysql-extensie ontbreekt');
         }
         $dsn = "mysql:host={$host};dbname={$name};charset={$charset}";
         $pdo = new PDO($dsn, $user, $pass, [

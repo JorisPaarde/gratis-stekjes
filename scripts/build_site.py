@@ -1,19 +1,29 @@
 #!/usr/bin/env python3
-"""Bouw statische pagina's en stekpagina's uit build-config + soorten JSON. Versie 0.2.0"""
+"""Bouw statische pagina's en stekpagina's uit build-config + soorten JSON. Versie 0.1.0
+SITE_NAME / BASE_URL via env of build-config — geen productnaam hardcoden.
+"""
 
 from __future__ import annotations
 
 import json
-import re
+import os
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = json.loads((ROOT / "build-config.json").read_text(encoding="utf-8"))
-SITE = CONFIG["site_name"]
-URL = CONFIG["site_url"].rstrip("/")
+SITE = (os.environ.get("SITE_NAME") or CONFIG.get("site_name") or "").strip()
+URL = (os.environ.get("BASE_URL") or CONFIG.get("site_url") or "http://127.0.0.1").rstrip("/")
 BASE = CONFIG.get("base_path") or ""
-VER = CONFIG.get("version", "0.2.0")
-DESC = CONFIG.get("description", "")
+VER = CONFIG.get("version", "0.1.0")
+DESC = CONFIG.get("description") or "Planten gratis delen en ophalen. De enige tegenprestatie is een praatje."
+if not SITE:
+    # CI zonder secret: neutrale placeholder (geen productnaam)
+    if os.environ.get("CI") or os.environ.get("GITHUB_ACTIONS"):
+        SITE = "CI build"
+    else:
+        print("SITE_NAME ontbreekt (env of build-config.json).", file=sys.stderr)
+        sys.exit(1)
 
 
 def path(p: str) -> str:
@@ -79,7 +89,7 @@ def layout(title: str, body: str, canonical: str = "/", description: str | None 
   </main>
   <footer class="site-footer">
     <div class="wrap footer-inner">
-      <p><strong>{e(SITE)}</strong> — gratis stekjes, een praatje als enige prijs.</p>
+      <p><strong>{e(SITE)}</strong> — planten delen, een praatje als enige prijs.</p>
       <p class="footer-links">
         <a href="{e(path('/privacy/'))}">Privacy</a>
         <a href="{e(path('/over/'))}">Over</a>
