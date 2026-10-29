@@ -228,6 +228,7 @@ jobs:
           mkdir -p storage/framework/{cache,sessions,views} storage/logs bootstrap/cache
           chmod -R ug+rwx storage bootstrap/cache
           php artisan migrate --force
+          php artisan db:seed --class=DeelplekkenSeeder --force
           php artisan config:clear
           php artisan config:cache
           php artisan route:cache

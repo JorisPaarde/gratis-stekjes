@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.15.2] - 2026-10-29
+
+### Fixed
+
+- Deelplekken worden bij staging- en productie-deploy idempotent geladen (`db:seed --class=DeelplekkenSeeder --force` na migrate), zodat `/deelplekken` niet leeg blijft na een verse deploy.
+
 ## [0.15.1] - 2026-10-29
 
 ### Fixed

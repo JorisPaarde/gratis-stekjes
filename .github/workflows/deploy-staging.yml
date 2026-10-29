@@ -252,6 +252,7 @@ jobs:
           chmod 700 storage/backups
           chmod -R ug+rwx storage/framework storage/logs bootstrap/cache
           php artisan migrate --force
+          php artisan db:seed --class=DeelplekkenSeeder --force
           php artisan config:clear
           php artisan config:cache
           php artisan route:cache

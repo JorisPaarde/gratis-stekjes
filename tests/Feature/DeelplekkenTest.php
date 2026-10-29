@@ -92,3 +92,12 @@ test('seeder vult deelplekken uit JSON', function () {
     expect(Deelplek::query()->count())->toBe(31);
     expect(Deelplek::query()->where('slug', 'haarlem-plantenasiel')->exists())->toBeTrue();
 });
+
+test('herhaald seeden blijft bij 31 plekken zonder dubbelen', function () {
+    $this->seed(DeelplekkenSeeder::class);
+    $this->seed(DeelplekkenSeeder::class);
+
+    expect(Deelplek::query()->count())->toBe(31);
+    expect(Deelplek::query()->distinct()->count('slug'))->toBe(31);
+    expect(Deelplek::query()->where('slug', 'haarlem-plantenasiel')->count())->toBe(1);
+});
