@@ -46,7 +46,10 @@ return [
         'search' => ['max' => 120, 'window' => 3600],
         'password_reset' => ['max' => 5, 'window' => 3600],
     ],
-    'rate_limit_retention_seconds' => 172800,
+    // Dataminimalisatie / retentie (seconden of dagen)
+    'rate_limit_retention_seconds' => 172800, // 48 uur
+    'geocode_cache_retention_days' => 90,
+    'inactive_account_months' => 12, // beleidstekst; automatische purge volgt later indien gewenst
 
     'session_name' => 'stekjes_sess',
     'session_secure' => (getenv('SESSION_SECURE') ?: '1') === '1',

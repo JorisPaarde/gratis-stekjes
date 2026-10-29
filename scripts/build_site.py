@@ -343,38 +343,72 @@ privacy = layout(
     "Privacy",
     f"""
     <section class="section wrap prose">
-      <h1>Privacy</h1>
-      <p>Kort en duidelijk. Waar Joris iets moet invullen, staat <em>Volgt binnenkort</em>.</p>
+      <h1>Privacyverklaring</h1>
+      <p>Kort en duidelijk. Waar nog iets formeels moet worden ingevuld, staat <em>Volgt binnenkort</em>.</p>
+
+      <h2>Verantwoordelijke</h2>
+      <p>Volgt binnenkort (naam, adres, contact-e-mail).</p>
+
+      <h2>Welke gegevens</h2>
+      <ul class="list-plain">
+        <li><strong>Account:</strong> e-mail, wachtwoordhash, voornaam/bijnaam, optioneel telefoon, benaderde locatie (label + afgeronde coördinaten).</li>
+        <li><strong>Aanbod:</strong> type (uitdelen/ophalen) en vrije tekst.</li>
+        <li><strong>Berichten:</strong> inhoud van gesprekken tussen accounts.</li>
+        <li><strong>Helpers:</strong> naam, e-mail, vrije tekst “wat wil je doen?”, bevestigingsstatus.</li>
+        <li><strong>Technisch:</strong> gehashte IP’s voor rate-limits (geen IP in plaintext), geocode-cache van zoekopdrachten.</li>
+      </ul>
+
       <h2>Wat staat er publiek</h2>
       <ul class="list-plain">
         <li>Voornaam of bijnaam</li>
         <li>Wat je uitdeelt of zoekt (vrije tekst)</li>
         <li>Benaderde locatie (postcode-4 of plaats/wijk), nooit een straat of huisnummer</li>
       </ul>
+
       <h2>Wat blijft privé</h2>
       <ul class="list-plain">
-        <li>E-mailadres (nooit zichtbaar voor anderen, tenzij jullie in een gesprek beide “ja” kiezen voor verder contact)</li>
-        <li>Optioneel telefoonnummer in je profiel (zelfde regel: alleen bij wederzijds ja)</li>
-        <li>Exacte coördinaten of adressen — die slaan we niet op; locaties zijn afgerond</li>
+        <li>E-mail — niet zichtbaar voor anderen, tenzij jullie in een gesprek beide “ja” kiezen voor verder contact</li>
+        <li>Optioneel telefoonnummer (zelfde regel)</li>
+        <li>Exacte adressen en exacte coördinaten: die slaan we niet op</li>
       </ul>
-      <h2>Grondslag en bewaren</h2>
+
+      <h2>Doel en grondslag</h2>
       <ul class="list-plain">
-        <li>Grondslag is toestemming (vinkje + deze verklaring).</li>
-        <li>Verwijderen: volgt in een volgende update (zelf account + gegevens wissen). Tot die tijd: mail naar Volgt binnenkort.</li>
-        <li>Bewaartermijn: Volgt binnenkort. Inactieve accounts: voorstel 12 maanden zonder activiteit.</li>
+        <li>Doel: elkaar vinden om planten gratis uit te delen/op te halen, en (voor helpers) meedenken.</li>
+        <li>Grondslag: toestemming (vinkje bij aanmelden + deze verklaring).</li>
       </ul>
+
+      <h2>Jouw rechten</h2>
+      <ul class="list-plain">
+        <li><strong>Inzien / export:</strong> ingelogd via <a href="{e(path('/account/export.php'))}">Gegevens downloaden</a> (JSON).</li>
+        <li><strong>Wissen (account):</strong> <a href="{e(path('/account/verwijderen.php'))}">Account verwijderen</a>.</li>
+        <li><strong>Wissen (helper zonder account):</strong> <a href="{e(path('/helpers/verwijderen.php'))}">Helper-aanmelding verwijderen</a>.</li>
+        <li>Vragen of klachten: Volgt binnenkort (contact). Je kunt ook naar de Autoriteit Persoonsgegevens.</li>
+      </ul>
+
+      <h2>Bewaren en dataminimalisatie</h2>
+      <ul class="list-plain">
+        <li>We bewaren alleen wat nodig is voor bovenstaande doelen.</li>
+        <li>Rate-limitgegevens (gehashte IP’s): standaard max. 48 uur (configureerbaar).</li>
+        <li>Geocode-cache: standaard max. 90 dagen (configureerbaar).</li>
+        <li>Inactieve accounts: beleid voorstel 12 maanden zonder activiteit — Volgt binnenkort (automatische purge).</li>
+        <li>Geen trackingcookies. Geen externe formulierdienst.</li>
+      </ul>
+
       <h2>Mails en hosting</h2>
       <ul class="list-plain">
-        <li>Mails (bevestiging, wachtwoord, “je hebt een nieuw bericht”) gaan via de mailbox op eigen hosting (Hoasted SMTP), afzender configureerbaar in config — default info op het JP Web Creation-domein.</li>
-        <li>Gegevens staan op eigen hosting in de EU, zonder externe formulierdienst.</li>
-        <li>Geen trackingcookies. Bezoekers meten: alleen privacyvriendelijk zonder cookies, of helemaal niet.</li>
+        <li>Bevestigingsmails, wachtwoordreset en “je hebt een nieuw bericht” (zonder berichtinhoud of andermans adres) gaan via SMTP uit de config (eigen mailbox).</li>
+        <li>Gegevens staan op eigen hosting in de EU.</li>
       </ul>
-      <h2>Kaart</h2>
-      <p>De aanbodkaart gebruikt Leaflet met tegels van OpenStreetMap. Zoeklocaties worden gegeocodeerd via de gratis PDOK Locatieserver. Resultaten cachen we lokaal. Op de kaart staan alleen benaderde punten.</p>
+
+      <h2>Kaart en derden</h2>
+      <p>De aanbodkaart gebruikt Leaflet met tegels van OpenStreetMap. Zoeklocaties via de gratis PDOK Locatieserver; resultaten cachen we lokaal. Op de kaart alleen benaderde punten.</p>
+
       <h2>Melden en blokkeren</h2>
-      <p>Je kunt een gebruiker melden of blokkeren. Meldingen worden opgeslagen voor de beheerder. Er is geen openbare moderatiewachtrij.</p>
-      <h2>Verantwoordelijke</h2>
-      <p>Volgt binnenkort (naam, contact).</p>
+      <p>Je kunt een gebruiker melden of blokkeren. Meldingen worden opgeslagen voor de beheerder. Geen openbare moderatiewachtrij.</p>
+
+      <h2>Wijzigingen</h2>
+      <p>Volgt binnenkort (datum van deze versie).</p>
     </section>
     """,
     canonical="/privacy/",
