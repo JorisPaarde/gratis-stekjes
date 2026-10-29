@@ -10,6 +10,7 @@ export default defineConfig({
                 'resources/css/berichten.css',
                 'resources/css/partners.css',
                 'resources/css/nu-te-stekken.css',
+                'resources/css/admin.css',
                 'resources/js/app.js',
                 'resources/js/zoeken.js',
             ],
