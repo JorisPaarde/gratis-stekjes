@@ -83,6 +83,16 @@ test('beheer weigert zonder wachtwoord en accepteert juiste', function () {
     $this->get(route('beheer.index'))->assertOk()->assertSee('Partnermarkers', false);
 });
 
+test('beheerlogin is rate-limited', function () {
+    $wrong = implode('-', ['Wrong', 'Beheer', 'Attempt', '0']);
+    for ($i = 0; $i < 5; $i++) {
+        $this->post(route('beheer.login'), ['password' => $wrong]);
+    }
+
+    $this->post(route('beheer.login'), ['password' => $wrong])
+        ->assertStatus(429);
+});
+
 test('beheer kan partnermarker opslaan via geocode-cache', function () {
     GeocodeCache::query()->create([
         'query_key' => Geo::normalizeQuery('Utrecht'),

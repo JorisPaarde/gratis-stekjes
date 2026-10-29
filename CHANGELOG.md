@@ -9,6 +9,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.9.1] - 2026-10-29
+
+### Fixed
+
+- Deploy schrijft `ADMIN_PASSWORD` naar `.env` (via `env:`, zelfde patroon als `CRON_TOKEN`; waarde niet gelogd).
+- Beheerlogin `POST /beheer` rate-limited (`throttle:5,1`).
+
 ## [0.9.0] - 2026-10-29
 
 ### Added
