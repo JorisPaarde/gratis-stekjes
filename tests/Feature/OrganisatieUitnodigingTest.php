@@ -240,4 +240,18 @@ test('docs uitnodigingen bestaat en waarschuwt niet versturen', function () {
     expect($text)->toContain('NIET VERSTUREN');
     expect($text)->toContain('stichting@voedselbosbouw.org');
     expect($text)->toContain('/voor-organisaties/aanmelden');
+    expect($text)->toContain('op mijn site');
+    expect($text)->toContain('Pagina op Gratis planten');
+    expect($text)->not->toContain('op onze site');
+    expect($text)->not->toContain('| Onze pagina |');
+});
+
+test('aanmeldbevestiging is ik-vorm (afzender Joris)', function () {
+    $plek = new Deelplek(['naam' => 'Testplek']);
+    $mail = (new \App\Notifications\DeelplekAanmeldingBevestiging($plek))->toMail((object) []);
+    $lines = collect($mail->introLines)->implode(' ');
+    expect($lines)->toContain('Ik heb je aanmelding');
+    expect($lines)->toContain('zet ik de plek');
+    expect($lines)->not->toMatch('/\b[Ww]e\b/');
+    expect($lines)->not->toMatch('/\b[Ww]ij\b/');
 });

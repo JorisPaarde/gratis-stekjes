@@ -28,8 +28,8 @@ class DeelplekAanmeldingBevestiging extends Notification
         return (new MailMessage)
             ->subject('Aanmelding ontvangen: '.$naam)
             ->greeting('Hoi,')
-            ->line('We hebben je aanmelding voor “'.$naam.'” ontvangen.')
-            ->line('Na controle plaatsen we de plek op '.$site.' (deelplekken en eventueel stadspagina’s). Je hoort het als het rond is.')
+            ->line('Ik heb je aanmelding voor “'.$naam.'” ontvangen.')
+            ->line('Na controle zet ik de plek op '.$site.' (deelplekken en eventueel stadspagina’s). Je hoort het als het rond is.')
             ->line('Heb je dit niet zelf aangevraagd? Negeer deze mail.')
             ->salutation('Groet,'.PHP_EOL.'Joris ('.$site.')');
     }

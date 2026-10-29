@@ -21,7 +21,7 @@ Hoi,
 
 Ik ben Joris. Ik bouw Gratis planten: een site waar mensen gratis stekjes en planten aan elkaar uitdelen, met een praatje als enige tegenprestatie. Daarnaast verzamel ik deelplekken — plantenasiels, plantenbiebs, ruilkasten, voedselbossen en verenigingen — zodat mensen die in de buurt kunnen vinden.
 
-Over {naam} staat een korte, feitelijke pagina op onze site (alleen publieke info, met link naar jullie eigen website):
+Over {naam} staat een korte, feitelijke pagina op mijn site (alleen publieke info, met link naar jullie eigen website):
 {pagina-url}
 
 Als jullie willen, kun je je plek zelf aanmelden via dit formulier (na controle komt die op /deelplekken en eventueel op stadspagina’s):
@@ -39,7 +39,7 @@ Joris
 
 ## Contactpunten (publiek, controleerbaar)
 
-| Naam | Type | Plaats | Website | Publiek contact | Bron-URL | Onze pagina |
+| Naam | Type | Plaats | Website | Publiek contact | Bron-URL | Pagina op Gratis planten |
 |------|------|--------|---------|-----------------|----------|-------------|
 | Stichting Voedselbosbouw Nederland | voedselbos | Nederland | https://voedselbosbouw.org/ | stichting@voedselbosbouw.org; contactformulier op contactpagina | https://voedselbosbouw.org/contact/ | `/organisaties/voedselbosbouw` |
 | Netwerk Voedselbosbouw | voedselbos | Nederland | https://netwerkvoedselbosbouw.nl/ | voedselboskaart@gmail.com (kaart); privacycontact info@theplant.nl op hun privacyverklaring | https://netwerkvoedselbosbouw.nl/ · https://netwerkvoedselbosbouw.nl/privacyverklaring/ | `/organisaties/netwerk-voedselbosbouw` |
