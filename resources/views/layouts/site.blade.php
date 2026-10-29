@@ -39,7 +39,7 @@
         <a href="{{ route('home') }}#hoe-werkt-het">Hoe werkt het</a>
         <a href="{{ route('aanbod') }}">Aanbod</a>
         <span class="nav-soon" title="Volgt in een volgende release">Stektips <em>binnenkort</em></span>
-        <a href="{{ route('home') }}#partners">Partners</a>
+        <a href="{{ route('partners') }}">Partners</a>
         <a href="{{ route('privacy') }}">Privacy</a>
         @auth
           <a href="{{ route('account.index') }}">Account</a>

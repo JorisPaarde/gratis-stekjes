@@ -5,22 +5,22 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Services\PartnerMarkers;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
-/** Stub tot de partners-PR: lege markers zodat de zoekkaart geen 404 krijgt. */
 class PartnersController extends Controller
 {
-    public function __invoke(): JsonResponse
+    public function __invoke(Request $request, PartnerMarkers $partners): JsonResponse
     {
+        $type = trim((string) $request->query('type', ''));
+        if ($type !== '' && ! $partners->typeValid($type)) {
+            return response()->json(['error' => 'Onbekend type.'], 400);
+        }
+
         return response()->json([
-            'items' => [],
-            'types' => [
-                'partner' => 'Partner',
-                'voedselbos' => 'Voedselbos',
-                'plantenasiel' => 'Plantenasiel',
-                'plantenbieb' => 'Plantenbieb',
-                'ruilkast' => 'Ruilkast',
-            ],
+            'types' => $partners->typeLabels(),
+            'items' => $partners->listPublic($type !== '' ? $type : null),
         ]);
     }
 }

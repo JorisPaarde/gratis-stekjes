@@ -152,7 +152,7 @@ test('eigenaar kan aanbod verlengen', function () {
     expect($aanbod->fresh()->expires_at->greaterThan(now()->addDays(50)))->toBeTrue();
 });
 
-test('partners API stub is leeg', function () {
+test('partners API is leeg zonder markers', function () {
     $this->getJson(route('api.partners'))
         ->assertOk()
         ->assertJsonPath('items', []);

@@ -7,7 +7,15 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- (volgende PRs) partners-markers, nu te stekken, admin/AVG, SEO-pagina’s.
+- (volgende PRs) nu te stekken, admin/AVG, SEO-pagina’s.
+
+## [0.6.0] - 2026-10-29
+
+### Added
+
+- Tabel `partner_markers` + `/api/partners` (zichtbare markers, type-filter, afgeronde lat/lon, geen `bron`).
+- Partnerspagina `/partners` (Voedselbosbouw, MeerBomen Nu + overige links); component-CSS `resources/css/partners.css`.
+- Navigatie/homepage linken naar partnerspagina; kaartfilters blijven via bestaande `zoeken.js` / `aanbod.css`.
 
 ## [0.5.0] - 2026-10-29
 
