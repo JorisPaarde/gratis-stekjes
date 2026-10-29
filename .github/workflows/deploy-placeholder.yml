@@ -1,0 +1,46 @@
+name: Deploy placeholder
+
+# Alleen handmatig starten. Zet een noindex-placeholder op de server,
+# zodat de map .well-known/acme-challenge bestaat voor het SSL-certificaat.
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: SSH instellen
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+      - name: acme-challenge map aanmaken
+        env:
+          H: ${{ secrets.DEPLOY_HOST }}
+          U: ${{ secrets.DEPLOY_USER }}
+          P: ${{ secrets.DEPLOY_PORT }}
+          D: ${{ secrets.DEPLOY_PATH }}
+        run: ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "mkdir -p '${D%/}/.well-known/acme-challenge'"
+      - name: Placeholder uploaden
+        env:
+          H: ${{ secrets.DEPLOY_HOST }}
+          U: ${{ secrets.DEPLOY_USER }}
+          P: ${{ secrets.DEPLOY_PORT }}
+          D: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          rsync -rlvz --delete \
+            --exclude='.well-known/' --exclude='cgi-bin/' \
+            --exclude='config.php' --exclude='data/' \
+            -e "ssh -i ~/.ssh/deploy_key -p ${P:-22}" \
+            placeholder/ "$U@$H:${D%/}/"
+      - name: Controle
+        run: curl -sS -o /dev/null -w '%{http_code}\n' http://stekjes.jpwebcreation.nl/ || true
