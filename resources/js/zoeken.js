@@ -128,7 +128,7 @@
         (item.plaats ? " · " + escapeHtml(item.plaats) : "") +
         "</h3>" +
         "<p>" +
-        escapeHtml(item.beschrijving || "Volgt binnenkort") +
+        escapeHtml(item.beschrijving || "") +
         "</p>" +
         link;
       list.appendChild(li);

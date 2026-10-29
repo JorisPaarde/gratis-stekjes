@@ -9,6 +9,15 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.19.1] - 2026-10-29
+
+### Changed
+
+- Privacy (`/privacy`): volledige concept-AVG-verklaring op basis van wat de app doet (accounts, aanbod, berichten, organisatie-aanmeldingen, sessies/rate-limits, geocode-cache, SMTP/Hoasted, retentie/cron, export/wissen); zichtbaar gemarkeerd als **Concept – nog niet definitief**; KvK/adres als `[in te vullen door Joris]`.
+- Over (`/over`): wie (Joris), waarom (delen i.p.v. weggooien/kopen), hoe het werkt, gratis en zonder reclame.
+- Initiatieven (`/initiatieven`): feitelijke korte beschrijvingen i.p.v. “Volgt binnenkort” (o.a. Stekjesroute, Velt, Zadenbibliotheek, Voedsel uit het Bos, Netwerk Voedselbosbouw, Permacultuur Nederland, Eetbaargoed).
+- Feature-test faalt als “Volgt binnenkort” nog in views/data/soorten staat (inclusief stektips-data); lege stektip-rijen worden verborgen i.p.v. die placeholder.
+
 ## [0.19.0] - 2026-10-29
 
 ### Added
