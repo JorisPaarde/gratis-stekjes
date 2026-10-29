@@ -87,7 +87,7 @@ function stekjes_form_too_fast(array $post, ?int $minSeconds = null): bool
     if ($started <= 0) {
         return true;
     }
-    return (time() - $started) < $min;
+    return (stekjes_time() - $started) < $min;
 }
 
 function stekjes_rate_limit_hit(string $action): bool
@@ -98,7 +98,7 @@ function stekjes_rate_limit_hit(string $action): bool
     $window = (int) $rules['window'];
     $hash = stekjes_ip_hash();
     $pdo = stekjes_db();
-    $since = time() - $window;
+    $since = stekjes_time() - $window;
     $stmt = $pdo->prepare('SELECT COUNT(*) FROM rate_limits WHERE ip_hash = ? AND action = ? AND created_at >= ?');
     $stmt->execute([$hash, $action, $since]);
     $count = (int) $stmt->fetchColumn();
@@ -109,9 +109,9 @@ function stekjes_rate_limit_record(string $action): void
 {
     $pdo = stekjes_db();
     $stmt = $pdo->prepare('INSERT INTO rate_limits (ip_hash, action, created_at) VALUES (?, ?, ?)');
-    $stmt->execute([stekjes_ip_hash(), $action, time()]);
+    $stmt->execute([stekjes_ip_hash(), $action, stekjes_time()]);
     // opruimen oud
-    $pdo->prepare('DELETE FROM rate_limits WHERE created_at < ?')->execute([time() - 86400 * 2]);
+    $pdo->prepare('DELETE FROM rate_limits WHERE created_at < ?')->execute([stekjes_time() - 86400 * 2]);
 }
 
 function stekjes_random_token(int $bytes = 32): string
@@ -119,9 +119,39 @@ function stekjes_random_token(int $bytes = 32): string
     return bin2hex(random_bytes($bytes));
 }
 
+/**
+ * Huidige unix-tijd. Tests: stekjes_set_fake_time() of STEKJES_FAKE_TIME.
+ */
+function stekjes_time(): int
+{
+    if (isset($GLOBALS['stekjes_fake_time']) && is_int($GLOBALS['stekjes_fake_time'])) {
+        return $GLOBALS['stekjes_fake_time'];
+    }
+    $env = getenv('STEKJES_FAKE_TIME');
+    if (is_string($env) && $env !== '' && ctype_digit($env)) {
+        return (int) $env;
+    }
+    return time();
+}
+
+/** Zet of wis nep-tijd voor tests (null = echte klok). */
+function stekjes_set_fake_time(?int $timestamp): void
+{
+    if ($timestamp === null) {
+        unset($GLOBALS['stekjes_fake_time']);
+        return;
+    }
+    $GLOBALS['stekjes_fake_time'] = $timestamp;
+}
+
 function stekjes_now(): string
 {
-    return gmdate('c');
+    return gmdate('c', stekjes_time());
+}
+
+function stekjes_now_plus_days(int $days): string
+{
+    return gmdate('c', stekjes_time() + ($days * 86400));
 }
 
 function stekjes_json_response(array $data, int $status = 200): void

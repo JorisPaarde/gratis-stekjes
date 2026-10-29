@@ -173,5 +173,98 @@ $post['form_started'] = (string) (time() - 10);
 $bad = stekjes_register('x@mailinator.com', 'wachtwoord123', 'X', $post);
 ok(empty($bad['ok']), 'disposable email rejected');
 
+// --- aanbod expiry / reminder / renew (fake time) ---
+$mailFile = getenv('STEKJES_MAIL_CAPTURE');
+$t0 = 1_700_000_000; // vaste epoch voor reproduceerbare tests
+stekjes_set_fake_time($t0);
+$post['csrf'] = stekjes_csrf_token();
+$post['form_started'] = (string) ($t0 - 10);
+$post['gratis_akkoord'] = '1';
+$post['website'] = '';
+
+$aanExp = stekjes_create_aanbod((int) $alice['id'], 'uitdelen', 'Tomatenstekken voor expiry-test', $post);
+ok(!empty($aanExp['ok']) && !empty($aanExp['id']), 'create aanbod with expiry');
+$aid = (int) ($aanExp['id'] ?? 0);
+$rowExp = $pdo->query('SELECT * FROM aanbod WHERE id=' . $aid)->fetch();
+$expectedExp = gmdate('c', $t0 + STEKJES_AANBOD_TTL_DAYS * 86400);
+ok(($rowExp['expires_at'] ?? '') === $expectedExp, 'expires_at = now + 60 days');
+
+$searchFresh = stekjes_search_aanbod(null, null, false);
+$idsFresh = array_map(static fn ($i) => (int) $i['id'], $searchFresh['items']);
+ok(in_array($aid, $idsFresh, true), 'non-expired aanbod in search');
+
+// Te vroeg voor herinnering (nog >7 dagen)
+@unlink($mailFile);
+$early = stekjes_job_expiry_reminders();
+ok($early['sent'] === 0, 'no reminder more than 7 days before expiry');
+
+// 7 dagen vóór verloop
+stekjes_set_fake_time($t0 + (STEKJES_AANBOD_TTL_DAYS - STEKJES_AANBOD_REMINDER_DAYS) * 86400);
+@unlink($mailFile);
+$rem1 = stekjes_job_expiry_reminders();
+ok($rem1['sent'] === 1, 'reminder sent once in window');
+$mailRaw = is_file($mailFile) ? file_get_contents($mailFile) : '';
+ok($mailRaw !== false && $mailRaw !== '', 'reminder mail captured');
+$mailLines = array_values(array_filter(explode("\n", (string) $mailRaw)));
+$lastMail = $mailLines ? json_decode((string) end($mailLines), true) : null;
+ok(is_array($lastMail) && ($lastMail['to'] ?? '') === 'alice@example.com', 'reminder to owner');
+ok(is_string($lastMail['body'] ?? null) && str_contains($lastMail['body'], 'Verleng met één klik'), 'reminder body ik-vorm verlengen');
+ok(!str_contains(strtolower($lastMail['body'] ?? ''), 'resend'), 'no resend mention');
+preg_match('/token=([a-f0-9]+\.[a-f0-9]+)/', (string) ($lastMail['body'] ?? ''), $tm);
+$renewToken = $tm[1] ?? '';
+ok($renewToken !== '' && stekjes_verify_renew_token_signature($renewToken), 'signed renew token in mail');
+
+$rowAfterMail = $pdo->query('SELECT expiry_reminder_sent_at, renew_token FROM aanbod WHERE id=' . $aid)->fetch();
+ok(!empty($rowAfterMail['expiry_reminder_sent_at']), 'mail-sent recorded on aanbod');
+ok(($rowAfterMail['renew_token'] ?? '') === $renewToken, 'renew token stored');
+
+@unlink($mailFile);
+$rem2 = stekjes_job_expiry_reminders();
+ok($rem2['sent'] === 0 && $rem2['skipped'] === 0, 'idempotent: no second reminder mail');
+ok(!is_file($mailFile) || trim((string) file_get_contents($mailFile)) === '', 'no double mail file content');
+
+// Verlopen: uit zoeken, wel zichtbaar voor eigenaar
+stekjes_set_fake_time($t0 + (STEKJES_AANBOD_TTL_DAYS + 1) * 86400);
+$searchGone = stekjes_search_aanbod(null, null, false);
+$idsGone = array_map(static fn ($i) => (int) $i['id'], $searchGone['items']);
+ok(!in_array($aid, $idsGone, true), 'expired aanbod hidden from search');
+$ownerRow = $pdo->prepare('SELECT * FROM aanbod WHERE id = ? AND user_id = ?');
+$ownerRow->execute([$aid, (int) $alice['id']]);
+$owned = $ownerRow->fetch();
+ok($owned && stekjes_aanbod_is_expired($owned), 'owner still sees expired row');
+
+// Token nog geldig (14 dagen vanaf reminder) → verlengen
+$renewed = stekjes_renew_aanbod_by_token($renewToken);
+ok(!empty($renewed['ok']), 'renew by signed token');
+$rowRenewed = $pdo->query('SELECT * FROM aanbod WHERE id=' . $aid)->fetch();
+$expectedNew = gmdate('c', stekjes_time() + STEKJES_AANBOD_TTL_DAYS * 86400);
+ok(($rowRenewed['expires_at'] ?? '') === $expectedNew, 'renew adds 60 days from now');
+ok($rowRenewed['renew_token'] === null || $rowRenewed['renew_token'] === '', 'token single-use cleared');
+ok($rowRenewed['expiry_reminder_sent_at'] === null || $rowRenewed['expiry_reminder_sent_at'] === '', 'reminder flag reset after renew');
+
+$searchBack = stekjes_search_aanbod(null, null, false);
+$idsBack = array_map(static fn ($i) => (int) $i['id'], $searchBack['items']);
+ok(in_array($aid, $idsBack, true), 'renewed aanbod back in search');
+
+$reuse = stekjes_renew_aanbod_by_token($renewToken);
+ok(empty($reuse['ok']), 'renew token cannot be reused');
+
+$forged = stekjes_renew_aanbod_by_token(preg_replace('/\.[a-f0-9]+$/', '.0000000000000000', $renewToken) ?? '');
+ok(empty($forged['ok']), 'forged signature rejected');
+
+// Eigenaar-verlenging (CSRF) na opnieuw laten verlopen
+stekjes_set_fake_time(stekjes_time() + (STEKJES_AANBOD_TTL_DAYS + 2) * 86400);
+ok(stekjes_aanbod_is_expired($pdo->query('SELECT * FROM aanbod WHERE id=' . $aid)->fetch()), 'expired again for owner renew');
+$post['csrf'] = stekjes_csrf_token();
+$ownerRenew = stekjes_renew_aanbod_as_owner((int) $alice['id'], $aid, $post);
+ok(!empty($ownerRenew['ok']), 'owner can renew expired aanbod');
+$searchOwner = stekjes_search_aanbod(null, null, false);
+ok(in_array($aid, array_map(static fn ($i) => (int) $i['id'], $searchOwner['items']), true), 'owner-renewed visible in search');
+
+// Cron-token constant-time pad (functie bereikbaar; 403 zonder token wordt in endpoint gedaan)
+ok(hash_equals('test-cron-token', (string) stekjes_config()['cron_token']), 'cron token from test config');
+
+stekjes_set_fake_time(null);
+
 echo "\n$passed passed, $failed failed\n";
 exit($failed > 0 ? 1 : 0);

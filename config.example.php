@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * Voorbeeldconfig. Op de server schrijft de deploy-workflow dit bestand
  * BUITEN de webroot (pad via secrets), chmod 600. Nooit committen.
- * Versie: 0.1.0
+ * Versie: 0.2.0
  *
  * SITE_NAME en BASE_URL alleen hier / via environment — nergens hardcoded in de app.
  */

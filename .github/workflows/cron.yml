@@ -1,7 +1,7 @@
 name: Daily cron
 
-# Roept /cron.php aan met CRON_TOKEN. Doet niets nuttigs tot de site live is
-# (mislukte curl → job slaagt met skip-melding).
+# Roept /cron.php aan met CRON_TOKEN (herinneringsmails voor verlopend aanbod).
+# Mislukte curl terwijl de site nog niet bereikbaar is → job slaagt met skip-melding.
 on:
   schedule:
     - cron: "15 5 * * *"

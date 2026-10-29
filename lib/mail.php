@@ -176,3 +176,27 @@ function stekjes_mail_helper_confirm(string $email, string $token): bool
     $body = "Hoi,\n\nBevestig je aanmelding als helper bij $site via deze link:\n$url\n\nHeb je je niet aangemeld? Negeer deze mail.\n\nGroet,\nJoris ($site)\n";
     return stekjes_send_mail($email, 'Bevestig je helper-aanmelding bij ' . $site, $body);
 }
+
+/**
+ * Herinnering: over 7 dagen verdwijnt aanbod uit zoeken/kaart. Eenklik-verlenglink.
+ * Tekst in ik-vorm; alleen SITE_NAME / BASE_URL via config-helpers.
+ */
+function stekjes_mail_aanbod_expiry_reminder(string $email, string $token, string $tekstPreview = ''): bool
+{
+    $site = stekjes_site_name();
+    $url = stekjes_site_url('/account/aanbod-verlengen.php?token=' . rawurlencode($token));
+    $snippet = trim($tekstPreview);
+    if (function_exists('mb_substr')) {
+        $snippet = mb_substr($snippet, 0, 80);
+    } else {
+        $snippet = substr($snippet, 0, 80);
+    }
+    $over = $snippet !== '' ? ' ("' . $snippet . '")' : '';
+    $body = "Hoi,\n\n"
+        . "Over een week haal ik je aanbod$over van de kaart en uit zoeken op $site.\n"
+        . "Wil je het nog 60 dagen laten staan? Verleng met één klik:\n"
+        . "$url\n\n"
+        . "De link is eenmalig en tijdelijk geldig.\n\n"
+        . "Groet,\nJoris ($site)\n";
+    return stekjes_send_mail($email, 'Over een week verdwijnt je aanbod op ' . $site, $body);
+}

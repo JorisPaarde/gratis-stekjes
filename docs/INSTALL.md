@@ -27,6 +27,7 @@ Precieze stappen. Geen secrets, hostnamen of private paden in deze repo — die 
    ```sh
    php -S 127.0.0.1:8080 -t .
    ```
+6. Cron (optioneel lokaal): `curl -H "X-Cron-Token: …" http://127.0.0.1:8080/cron.php` — stuurt herinneringsmails voor aanbod dat over ≤7 dagen verloopt. Op staging/prod doet de GitHub Actions-workflow `cron.yml` dit dagelijks.
 
 ## Server (MySQL)
 
@@ -34,6 +35,7 @@ Precieze stappen. Geen secrets, hostnamen of private paden in deze repo — die 
 2. Secrets bevatten o.a. `SITE_NAME`, `BASE_URL`, `DB_*`, `SMTP_*`, `CRON_TOKEN`, `ADMIN_PASSWORD`, `DEPLOY_*`.
 3. Na code-sync: `php scripts/migrate.php up` (vanaf de docroot of met `STEKJES_CONFIG` gezet).
 4. Productie-deploy maakt eerst een `mysqldump` in de private map; zie `docs/ROLLBACK.md`.
+5. Cron: alleen via GitHub Actions → `cron.php` (geen cPanel-cron).
 
 ## Branches en releases
 

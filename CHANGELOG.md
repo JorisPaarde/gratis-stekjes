@@ -7,6 +7,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
+- Aanbod verloopt na 60 dagen: 7 dagen van tevoren één herinneringsmail (SMTP) met eenmalige, ondertekende verlenglink; verlengen telt opnieuw 60 dagen. Verlopen items verdwijnen uit zoeken/kaart, blijven zichtbaar voor de eigenaar. Cron-job via `cron.php` + bestaande GitHub Actions-schedule.
 - Kern-webapp (PR A): accounts (registratie, double opt-in, login, wachtwoord-reset), profiel met benaderde locatie (PDOK), aanbod (vrije tekst + type), zoeken met kaart/lijst (Leaflet/OSM + haversine), berichten met wederzijds contact-akkoord, melden/blokkeren.
 - Helpers-aanmelding zonder volledig account; teller “X mensen doen al mee” met drempel.
 - Simpele admin (helpers, meldingen, partnermarkers-overzicht).
