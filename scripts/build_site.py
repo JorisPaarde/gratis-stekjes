@@ -77,7 +77,7 @@ def layout(title: str, body: str, canonical: str = "/", description: str | None 
         <a href="{e(path('/aanbod/'))}">Aanbod</a>
         <a href="{e(path('/stektips/'))}">Stektips</a>
         <a href="{e(path('/hulpmiddelen/'))}">Hulpmiddelen</a>
-        <a href="{e(path('/links/'))}">Links</a>
+        <a href="{e(path('/links/'))}">Partners</a>
         <a href="{e(path('/over/'))}">Over</a>
         <a class="nav-cta" href="{e(path('/doe-mee/'))}">Doe mee</a>
         <a href="{e(path('/account/inloggen.php'))}">Inloggen</a>
@@ -247,7 +247,7 @@ aanbod = layout(
           <label>Postcode of plaats
             <input type="text" name="q" id="zoek-q" maxlength="120" placeholder="Bijv. 2011 of Haarlem" required>
           </label>
-          <label>Type
+          <label>Aanbodtype
             <select name="type" id="zoek-type">
               <option value="">Alles</option>
               <option value="uitdelen">Uitdelen</option>
@@ -257,12 +257,21 @@ aanbod = layout(
           <button class="btn" type="submit">Zoeken</button>
         </div>
       </form>
+      <fieldset class="marker-filters" id="marker-filters">
+        <legend>Toon op kaart en in lijst</legend>
+        <label class="check"><input type="checkbox" data-aanbod checked> Aanbod</label>
+        <label class="check"><input type="checkbox" data-partner-type="partner" checked> Partner</label>
+        <label class="check"><input type="checkbox" data-partner-type="voedselbos" checked> Voedselbos</label>
+        <label class="check"><input type="checkbox" data-partner-type="plantenasiel" checked> Plantenasiel</label>
+        <label class="check"><input type="checkbox" data-partner-type="plantenbieb" checked> Plantenbieb</label>
+        <label class="check"><input type="checkbox" data-partner-type="ruilkast" checked> Ruilkast</label>
+      </fieldset>
       <div class="search-layout">
-        <div id="kaart" role="img" aria-label="Kaart met benaderde ophaalplekken"></div>
+        <div id="kaart" role="img" aria-label="Kaart met benaderde ophaalplekken en partnermarkers"></div>
         <div>
           <h2 class="visually-hidden" style="position:absolute;left:-9999px">Resultaten</h2>
           <ul class="zoek-lijst" id="zoek-lijst"></ul>
-          <p class="muted" id="zoek-status">Vul een postcode of plaats in om te zoeken.</p>
+          <p class="muted" id="zoek-status">Plekken (voedselbos e.d.) laden automatisch. Vul een postcode of plaats in om aanbod te zoeken.</p>
         </div>
       </div>
       <p class="muted" style="margin-top:1rem">Kaarttegels: © OpenStreetMap-bijdragers. Locaties via PDOK Locatieserver (benaderd).</p>
@@ -293,36 +302,61 @@ hulp = layout(
 )
 write("hulpmiddelen/index.html", hulp)
 
-partners = [
-    ("Stekjesroute", "Kaart van ruilkasten voor planten in NL en BE", "Daar wordt geruild, hier is het gratis met een praatje", "https://stekjesroute.com/"),
-    ("Velt", "Zaden- en plantenruilbeurzen, gesloten beurs", "Eenmalige evenementen, wij werken het hele seizoen", "https://velt.nu/zaden-en-plantenruilbeurzen"),
-    ("Zadenbibliotheek Nederland", "Zaden kosteloos lenen en ruilen", "Zaden, wij doen stekjes", "https://zadenbibliotheeknederland.nl/"),
-    ("Voedsel uit het Bos", "Vereniging met een voedselboskaart, kennisbank en prikbord", "Belangrijkste partner voor de doelgroep", "https://voedseluithetbos.nl/"),
-    ("Stichting Voedselbosbouw Nederland", "Werkt aan agrarische voedselbossen: boeren begeleiden, kennis delen en ruimte maken voor landbouw mét natuur.", "Professioneel voedselboswerk; wij blijven bij stekjes van mens tot mens.", "https://voedselbosbouw.org/"),
-    ("MeerBomen Nu", "Vrijwilligers redden jonge bomen en struiken en delen ze gratis uit via hubs in het land.", "Zij doen bomen (en zaailingen) op schaal; wij stekjes van eetbare planten, direct tussen mensen.", "https://meerbomen.nu/"),
-    ("Netwerk Voedselbosbouw", "Opvolger van de Green Deal Voedselbossen, met een kaart", "Professionals", "https://netwerkvoedselbosbouw.nl/"),
-    ("Permacultuur Nederland", "Kennis en een grote Facebookgroep", "Plek om het project te delen", "https://www.permacultuurnederland.org/"),
-    ("Eetbaargoed", "Kwekerij voor eetbare planten en voedselbossen (Vaassen)", "Soortenlijst als inspiratie; mogelijk een partner", "https://www.eetbaargoed.nl/"),
-]
 links_body = f"""
     <section class="section wrap">
-      <h1>Links en partners</h1>
-      <p class="section-intro">Er bestaat al veel. Dit project hoeft dat niet te vervangen; het verwijst ernaar. Een kort stukje per initiatief volgt of staat hieronder.</p>
-      <div class="grid-cards">
-"""
-for naam, wat, verschil, href in partners:
-    links_body += f"""
+      <h1>Partners</h1>
+      <p class="section-intro">Wij bouwen niet alles zelf. Hieronder staan initiatieven waar we naast willen staan. Waar we iets nog niet zeker weten, staat <em>Volgt binnenkort</em>.</p>
+
+      <div class="stack" style="margin-bottom:2rem">
         <article class="soft-card">
-          <h3><a href="{e(href)}" rel="noopener noreferrer">{e(naam)}</a></h3>
-          <p>{e(wat)}</p>
-          <p class="muted">{e(verschil)}</p>
+          <h2><a href="https://voedselbosbouw.org/" rel="noopener noreferrer">Voedselbosbouw.org</a></h2>
+          <p>Stichting Voedselbosbouw Nederland — een plek voor kennis en praktijk rond voedselbossen. Volgt binnenkort: hoe we precies samenwerken of naar elkaar verwijzen.</p>
+          <p class="muted">Geen bezoeklocatie op onze kaart; zie hun eigen site.</p>
         </article>
-"""
-links_body += """
+        <article class="soft-card">
+          <h2><a href="https://meerbomen.nu/" rel="noopener noreferrer">MeerBomen Nu</a></h2>
+          <p>Zij zetten zich in voor bomen. Het verschil met ons: zij doen bomen, wij doen stekjes van mens tot mens.</p>
+          <p class="muted">Volgt binnenkort: eventuele concrete samenwerking. Geen bezoeklocatie op onze kaart.</p>
+        </article>
+      </div>
+
+      <h2>Andere links</h2>
+      <p class="section-intro">Losse verwijzingen. Teksten mogen later scherper.</p>
+      <div class="grid-cards">
+        <article class="soft-card">
+          <h3><a href="https://stekjesroute.com/" rel="noopener noreferrer">Stekjesroute</a></h3>
+          <p>Volgt binnenkort</p>
+          <p class="muted">Daar ruilen; hier gratis met een praatje.</p>
+        </article>
+        <article class="soft-card">
+          <h3><a href="https://velt.nu/zaden-en-plantenruilbeurzen" rel="noopener noreferrer">Velt</a></h3>
+          <p>Volgt binnenkort</p>
+        </article>
+        <article class="soft-card">
+          <h3><a href="https://zadenbibliotheeknederland.nl/" rel="noopener noreferrer">Zadenbibliotheek Nederland</a></h3>
+          <p>Volgt binnenkort</p>
+          <p class="muted">Zaden; wij doen stekjes.</p>
+        </article>
+        <article class="soft-card">
+          <h3><a href="https://voedseluithetbos.nl/" rel="noopener noreferrer">Voedsel uit het Bos</a></h3>
+          <p>Volgt binnenkort</p>
+        </article>
+        <article class="soft-card">
+          <h3><a href="https://netwerkvoedselbosbouw.nl/" rel="noopener noreferrer">Netwerk Voedselbosbouw</a></h3>
+          <p>Volgt binnenkort</p>
+        </article>
+        <article class="soft-card">
+          <h3><a href="https://www.permacultuurnederland.org/" rel="noopener noreferrer">Permacultuur Nederland</a></h3>
+          <p>Volgt binnenkort</p>
+        </article>
+        <article class="soft-card">
+          <h3><a href="https://www.eetbaargoed.nl/" rel="noopener noreferrer">Eetbaargoed</a></h3>
+          <p>Volgt binnenkort</p>
+        </article>
       </div>
     </section>
 """
-write("links/index.html", layout("Links en partners", links_body, canonical="/links/"))
+write("links/index.html", layout("Partners", links_body, canonical="/links/"))
 
 over = layout(
     "Over",
@@ -550,6 +584,7 @@ write(
         "base_path": BASE,
         "version": VER,
         "api_zoeken": path("/api/zoeken.php"),
+        "api_partners": path("/api/partners.php"),
         "api_teller": path("/api/teller.php"),
     }, ensure_ascii=False) + ";\n",
     encoding="utf-8",

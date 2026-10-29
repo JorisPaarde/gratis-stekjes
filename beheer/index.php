@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Simpele admin: helperslijst, meldingen, basis voor partnermarkers (later).
+ * Simpele admin: helperslijst, meldingen, CRUD voor partnermarkers.
  * Geen moderatiewachtrij / regiomoderators.
  */
 
@@ -50,9 +50,59 @@ if (empty($_SESSION['admin_ok'])) {
 }
 
 $pdo = stekjes_db();
+$markerError = null;
+$editId = isset($_GET['edit']) ? (int) $_GET['edit'] : 0;
+$editing = $editId > 0 ? stekjes_admin_get_partner_marker($editId) : null;
+
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && isset($_POST['marker_action'])) {
+    if (!stekjes_verify_csrf($_POST['csrf'] ?? null)) {
+        $markerError = 'Sessie verlopen. Probeer opnieuw.';
+    } else {
+        $action = (string) $_POST['marker_action'];
+        if ($action === 'delete') {
+            $delId = (int) ($_POST['id'] ?? 0);
+            $res = stekjes_delete_partner_marker($delId);
+            if (!empty($res['ok'])) {
+                stekjes_flash_set('ok', 'Marker verwijderd.');
+                stekjes_redirect(stekjes_path('/beheer/'));
+            }
+            $markerError = $res['error'] ?? 'Verwijderen mislukt.';
+        } elseif ($action === 'save') {
+            $saveId = isset($_POST['id']) && $_POST['id'] !== '' ? (int) $_POST['id'] : null;
+            $res = stekjes_save_partner_marker($saveId, [
+                'naam' => (string) ($_POST['naam'] ?? ''),
+                'type' => (string) ($_POST['type'] ?? ''),
+                'plaats' => (string) ($_POST['plaats'] ?? ''),
+                'beschrijving' => (string) ($_POST['beschrijving'] ?? ''),
+                'url' => (string) ($_POST['url'] ?? ''),
+                'bron' => (string) ($_POST['bron'] ?? ''),
+                'visible' => !empty($_POST['visible']),
+            ], true);
+            if (!empty($res['ok'])) {
+                stekjes_flash_set('ok', $saveId ? 'Marker bijgewerkt.' : 'Marker toegevoegd.');
+                stekjes_redirect(stekjes_path('/beheer/'));
+            }
+            $markerError = $res['error'] ?? 'Opslaan mislukt.';
+            $editing = [
+                'id' => $saveId ?? 0,
+                'naam' => (string) ($_POST['naam'] ?? ''),
+                'type' => (string) ($_POST['type'] ?? 'partner'),
+                'plaats' => (string) ($_POST['plaats'] ?? ''),
+                'beschrijving' => (string) ($_POST['beschrijving'] ?? ''),
+                'url' => (string) ($_POST['url'] ?? ''),
+                'bron' => (string) ($_POST['bron'] ?? ''),
+                'visible' => !empty($_POST['visible']) ? 1 : 0,
+                'lat' => $editing['lat'] ?? '',
+                'lon' => $editing['lon'] ?? '',
+            ];
+        }
+    }
+}
+
 $helpers = $pdo->query('SELECT id, naam, email, wat, confirmed_at, created_at FROM helpers ORDER BY created_at DESC')->fetchAll();
 $reports = $pdo->query('SELECT id, reporter_id, reported_user_id, conversation_id, reason, created_at, handled FROM reports ORDER BY created_at DESC LIMIT 100')->fetchAll();
-$markers = $pdo->query('SELECT id, naam, lat, lon, url, bron, visible FROM partner_markers ORDER BY id')->fetchAll();
+$markers = stekjes_admin_list_partner_markers();
+$typeLabels = stekjes_partner_type_labels();
 
 stekjes_render_header(['title' => 'Beheer']);
 ?>
@@ -92,20 +142,80 @@ stekjes_render_header(['title' => 'Beheer']);
     </tbody>
   </table>
 
-  <h2>Partnermarkers</h2>
-  <p class="muted">Basis voor markers op de kaart. Beheer/CRUD volgt van een andere agent. Nu alleen overzicht.</p>
+  <h2 id="markers">Partnermarkers</h2>
+  <p class="muted">Voeg plekken toe die op de aanbodkaart verschijnen: partner, voedselbos, plantenasiel, plantenbieb of ruilkast. Coördinaten komen benaderd via PDOK op basis van plaats of postcode-4. Organisaties zonder bezoeklocatie horen op de <a href="<?= stekjes_e(stekjes_path('/links/')) ?>">partnerspagina</a>, niet als marker.</p>
+
+  <?php if ($markerError): ?>
+    <p class="error" role="alert"><?= stekjes_e($markerError) ?></p>
+  <?php endif; ?>
+
+  <form class="form" method="post" style="max-width:36rem;margin-bottom:1.5rem">
+    <?= stekjes_csrf_field() ?>
+    <input type="hidden" name="marker_action" value="save">
+    <?php if ($editing && !empty($editing['id'])): ?>
+      <input type="hidden" name="id" value="<?= (int) $editing['id'] ?>">
+      <p><strong>Marker bewerken #<?= (int) $editing['id'] ?></strong>
+        · <a href="<?= stekjes_e(stekjes_path('/beheer/')) ?>">Annuleren</a></p>
+    <?php else: ?>
+      <p><strong>Nieuwe marker</strong></p>
+    <?php endif; ?>
+    <label>Naam *
+      <input name="naam" required maxlength="160" value="<?= stekjes_e((string) ($editing['naam'] ?? '')) ?>">
+    </label>
+    <label>Type *
+      <select name="type" required>
+        <?php foreach ($typeLabels as $val => $label): ?>
+          <option value="<?= stekjes_e($val) ?>"<?= (($editing['type'] ?? 'partner') === $val) ? ' selected' : '' ?>><?= stekjes_e($label) ?></option>
+        <?php endforeach; ?>
+      </select>
+    </label>
+    <label>Plaats of postcode-4 *
+      <input name="plaats" required maxlength="120" value="<?= stekjes_e((string) ($editing['plaats'] ?? '')) ?>" placeholder="Bijv. 2011 of Haarlem">
+      <span class="hint">We geocoderen via PDOK; op de kaart staat alleen een benaderd punt.</span>
+    </label>
+    <label>Website (optioneel)
+      <input name="url" type="url" maxlength="500" value="<?= stekjes_e((string) ($editing['url'] ?? '')) ?>" placeholder="https://…">
+    </label>
+    <label>Korte beschrijving
+      <textarea name="beschrijving" maxlength="500" rows="3"><?= stekjes_e((string) ($editing['beschrijving'] ?? '')) ?></textarea>
+    </label>
+    <label>Bron / notitie (intern, optioneel)
+      <input name="bron" maxlength="500" value="<?= stekjes_e((string) ($editing['bron'] ?? '')) ?>">
+    </label>
+    <label class="checkbox">
+      <input type="checkbox" name="visible" value="1"<?= !isset($editing['visible']) || !empty($editing['visible']) ? ' checked' : '' ?>>
+      Zichtbaar op de kaart
+    </label>
+    <?php if ($editing && isset($editing['lat'], $editing['lon']) && $editing['lat'] !== '' && $editing['lon'] !== ''): ?>
+      <p class="muted">Huidige benaderde coördinaten: <?= stekjes_e((string) $editing['lat']) ?>, <?= stekjes_e((string) $editing['lon']) ?></p>
+    <?php endif; ?>
+    <button class="btn" type="submit"><?= ($editing && !empty($editing['id'])) ? 'Opslaan' : 'Toevoegen' ?></button>
+  </form>
+
   <table class="table">
-    <thead><tr><th>Naam</th><th>Lat/Lon</th><th>Bron</th><th>Zichtbaar</th></tr></thead>
+    <thead><tr><th>Naam</th><th>Type</th><th>Plaats</th><th>Lat/Lon</th><th>Zichtbaar</th><th></th></tr></thead>
     <tbody>
     <?php foreach ($markers as $m): ?>
       <tr>
         <td><?= stekjes_e((string) $m['naam']) ?></td>
+        <td><?= stekjes_e($typeLabels[(string) $m['type']] ?? (string) $m['type']) ?></td>
+        <td><?= stekjes_e((string) $m['plaats']) ?></td>
         <td><?= stekjes_e((string) $m['lat']) ?>, <?= stekjes_e((string) $m['lon']) ?></td>
-        <td><?= stekjes_e((string) $m['bron']) ?></td>
         <td><?= !empty($m['visible']) ? 'ja' : 'nee' ?></td>
+        <td style="white-space:nowrap">
+          <a href="<?= stekjes_e(stekjes_path('/beheer/?edit=' . (int) $m['id'])) ?>">Bewerken</a>
+          <form method="post" style="display:inline" onsubmit="return confirm('Marker verwijderen?');">
+            <?= stekjes_csrf_field() ?>
+            <input type="hidden" name="marker_action" value="delete">
+            <input type="hidden" name="id" value="<?= (int) $m['id'] ?>">
+            <button class="btn btn-secondary" type="submit" style="padding:.2rem .5rem;font-size:.85rem">Verwijderen</button>
+          </form>
+        </td>
       </tr>
     <?php endforeach; ?>
-    <?php if (!$markers): ?><tr><td colspan="4">Nog geen markers. Stichting Voedselbosbouw en MeerBomen Nu staan op de <a href="<?= stekjes_e(stekjes_path('/links/')) ?>">partnerspagina</a> (geen bezoeklocatie gevonden voor markers).</td></tr><?php endif; ?>
+    <?php if (!$markers): ?>
+      <tr><td colspan="6">Nog geen markers. Stichting Voedselbosbouw en MeerBomen Nu staan op de <a href="<?= stekjes_e(stekjes_path('/links/')) ?>">partnerspagina</a> (geen bezoeklocatie gevonden voor markers).</td></tr>
+    <?php endif; ?>
     </tbody>
   </table>
 </section>

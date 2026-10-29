@@ -260,6 +260,97 @@ ok(hash_equals('test-cron-token', (string) stekjes_config()['cron_token']), 'cro
 
 stekjes_set_fake_time(null);
 
+// --- partner markers (0003 fields + CRUD, geen netwerk) ---
+$cols = $pdo->query('PRAGMA table_info(partner_markers)')->fetchAll();
+$colNames = array_map(static fn ($c) => (string) $c['name'], $cols);
+ok(in_array('type', $colNames, true), 'partner_markers has type column');
+ok(in_array('plaats', $colNames, true), 'partner_markers has plaats column');
+ok(in_array('beschrijving', $colNames, true), 'partner_markers has beschrijving column');
+
+$pdo->prepare('INSERT OR REPLACE INTO geocode_cache (query_key, lat, lon, label, cached_at) VALUES (?,?,?,?,?)')
+    ->execute(['utrecht', 52.09, 5.12, 'Utrecht', stekjes_now()]);
+$pdo->prepare('INSERT OR REPLACE INTO geocode_cache (query_key, lat, lon, label, cached_at) VALUES (?,?,?,?,?)')
+    ->execute(['wageningen', 51.97, 5.67, 'Wageningen', stekjes_now()]);
+
+$m1 = stekjes_save_partner_marker(null, [
+    'naam' => 'Demo voedselbos',
+    'type' => 'voedselbos',
+    'plaats' => 'Wageningen',
+    'beschrijving' => 'Korte testbeschrijving',
+    'url' => 'https://example.invalid/voedselbos',
+    'bron' => 'test',
+    'visible' => true,
+], false);
+ok(!empty($m1['ok']), 'create voedselbos marker');
+$mid = (int) ($m1['id'] ?? 0);
+ok($mid > 0, 'marker id assigned');
+
+$mBad = stekjes_save_partner_marker(null, [
+    'naam' => 'X',
+    'type' => 'niet-bestaand',
+    'plaats' => 'Utrecht',
+    'beschrijving' => '',
+    'url' => '',
+    'visible' => true,
+], false);
+ok(empty($mBad['ok']), 'invalid partner type rejected');
+
+$m2 = stekjes_save_partner_marker(null, [
+    'naam' => 'Ruilkast park',
+    'type' => 'ruilkast',
+    'plaats' => 'Utrecht',
+    'beschrijving' => '',
+    'url' => '',
+    'visible' => true,
+], false);
+ok(!empty($m2['ok']), 'create ruilkast marker');
+
+$mHidden = stekjes_save_partner_marker(null, [
+    'naam' => 'Verborgen plantenbieb',
+    'type' => 'plantenbieb',
+    'plaats' => 'Haarlem',
+    'beschrijving' => 'niet publiek',
+    'url' => '',
+    'visible' => false,
+], false);
+ok(!empty($mHidden['ok']), 'create hidden marker');
+
+$public = stekjes_list_partner_markers(null);
+ok(count($public) === 2, 'list shows 2 visible markers');
+$types = array_column($public, 'type');
+sort($types);
+ok($types === ['ruilkast', 'voedselbos'], 'visible types are voedselbos+ruilkast');
+
+$onlyBos = stekjes_list_partner_markers('voedselbos');
+ok(count($onlyBos) === 1 && $onlyBos[0]['naam'] === 'Demo voedselbos', 'filter type voedselbos');
+
+$upd = stekjes_save_partner_marker($mid, [
+    'naam' => 'Demo voedselbos bijgewerkt',
+    'type' => 'voedselbos',
+    'plaats' => 'Wageningen',
+    'beschrijving' => 'Bijgewerkt',
+    'url' => 'https://example.invalid/voedselbos',
+    'bron' => 'test',
+    'visible' => true,
+], false);
+ok(!empty($upd['ok']), 'update marker');
+$got = stekjes_admin_get_partner_marker($mid);
+ok($got && $got['naam'] === 'Demo voedselbos bijgewerkt', 'updated name persisted');
+ok($got && (string) $got['beschrijving'] === 'Bijgewerkt', 'updated description persisted');
+
+$del = stekjes_delete_partner_marker((int) ($m2['id'] ?? 0));
+ok(!empty($del['ok']), 'delete marker');
+ok(count(stekjes_list_partner_markers(null)) === 1, 'one visible marker after delete');
+
+foreach (stekjes_list_partner_markers(null) as $pubRow) {
+    try {
+        stekjes_assert_no_sensitive($pubRow, false);
+        ok(true, 'public partner marker has no sensitive leak');
+    } catch (Throwable $e) {
+        ok(false, 'partner sensitive: ' . $e->getMessage());
+    }
+}
+
 // --- AVG export / delete / purge (na expiry-tests; wist alice) ---
 $export = stekjes_export_user_data((int) $alice['id']);
 ok(!array_key_exists('password_hash', $export['user']), 'export has no password_hash');

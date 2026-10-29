@@ -203,6 +203,9 @@ CREATE TABLE IF NOT EXISTS helpers (
 CREATE TABLE IF NOT EXISTS partner_markers (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   naam TEXT NOT NULL,
+  type TEXT NOT NULL DEFAULT 'partner' CHECK(type IN ('partner','voedselbos','plantenasiel','plantenbieb','ruilkast')),
+  plaats TEXT NOT NULL DEFAULT '',
+  beschrijving TEXT NOT NULL DEFAULT '',
   lat REAL NOT NULL,
   lon REAL NOT NULL,
   url TEXT NOT NULL DEFAULT '',
@@ -389,6 +392,21 @@ function stekjes_sqlite_apply_migration(PDO $pdo, string $version): void
         }
         $pdo->exec('CREATE UNIQUE INDEX IF NOT EXISTS uq_aanbod_renew_token ON aanbod (renew_token)');
         $pdo->exec('CREATE INDEX IF NOT EXISTS idx_aanbod_expires ON aanbod (expires_at)');
+    }
+
+    if ($version === '0003_partner_marker_fields') {
+        $cols = $pdo->query('PRAGMA table_info(partner_markers)')->fetchAll(PDO::FETCH_ASSOC) ?: [];
+        $names = array_column($cols, 'name');
+        if (!in_array('type', $names, true)) {
+            $pdo->exec("ALTER TABLE partner_markers ADD COLUMN type TEXT NOT NULL DEFAULT 'partner'");
+        }
+        if (!in_array('plaats', $names, true)) {
+            $pdo->exec("ALTER TABLE partner_markers ADD COLUMN plaats TEXT NOT NULL DEFAULT ''");
+        }
+        if (!in_array('beschrijving', $names, true)) {
+            $pdo->exec("ALTER TABLE partner_markers ADD COLUMN beschrijving TEXT NOT NULL DEFAULT ''");
+        }
+        $pdo->exec('CREATE INDEX IF NOT EXISTS idx_partner_markers_type_visible ON partner_markers (type, visible)');
     }
 }
 

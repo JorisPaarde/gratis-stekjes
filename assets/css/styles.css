@@ -256,6 +256,50 @@ a:hover { color: var(--accent); }
   padding: .15rem .45rem; border-radius: .4rem;
   background: rgba(47,107,69,.12); color: var(--leaf-deep);
 }
+.badge--partner { background: rgba(47,107,69,.14); color: #1f4d32; }
+.badge--voedselbos { background: rgba(31,77,50,.18); color: #143624; }
+.badge--plantenasiel { background: rgba(196,107,45,.16); color: #7a3b12; }
+.badge--plantenbieb { background: rgba(61,107,138,.16); color: #23445a; }
+.badge--ruilkast { background: rgba(107,76,47,.16); color: #4a3420; }
+
+.marker-filters {
+  border: 1px solid var(--line);
+  border-radius: .85rem;
+  padding: .75rem 1rem;
+  margin: 0 0 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem 1rem;
+  background: rgba(255,252,246,.55);
+}
+.marker-filters legend {
+  padding: 0 .35rem;
+  font-weight: 700;
+  font-size: .9rem;
+}
+.marker-filters .check {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  font-size: .92rem;
+  margin: 0;
+}
+
+.partner-marker {
+  background: transparent;
+  border: 0;
+}
+.partner-marker-dot {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(28, 46, 34, 0.35);
+}
+.zoek-item--partner {
+  border-style: dashed;
+}
 
 .chat {
   display: grid; gap: .75rem; max-width: 40rem;

@@ -66,4 +66,5 @@ require_once __DIR__ . '/aanbod.php';
 require_once __DIR__ . '/messages.php';
 require_once __DIR__ . '/helpers.php';
 require_once __DIR__ . '/avg.php';
+require_once __DIR__ . '/partners.php';
 require_once __DIR__ . '/layout.php';

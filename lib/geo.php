@@ -103,8 +103,16 @@ function stekjes_geocode(string $query, bool $allowNetwork = true): ?array
         $label = trim($query);
     }
 
-    $ins = $pdo->prepare('INSERT OR REPLACE INTO geocode_cache (query_key, lat, lon, label, cached_at) VALUES (?, ?, ?, ?, ?)');
-    $ins->execute([$key, $lat, $lon, $label, stekjes_now()]);
+    if (stekjes_db_driver() === 'sqlite') {
+        $ins = $pdo->prepare('INSERT OR REPLACE INTO geocode_cache (query_key, lat, lon, label, cached_at) VALUES (?, ?, ?, ?, ?)');
+        $ins->execute([$key, $lat, $lon, $label, stekjes_now()]);
+    } else {
+        $ins = $pdo->prepare(
+            'INSERT INTO geocode_cache (query_key, lat, lon, label, cached_at) VALUES (?, ?, ?, ?, ?)
+             ON DUPLICATE KEY UPDATE lat = VALUES(lat), lon = VALUES(lon), label = VALUES(label), cached_at = VALUES(cached_at)'
+        );
+        $ins->execute([$key, $lat, $lon, $label, stekjes_now()]);
+    }
 
     return ['lat' => $lat, 'lon' => $lon, 'label' => $label];
 }
