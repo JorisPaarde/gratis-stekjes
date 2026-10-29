@@ -40,6 +40,7 @@
         <a href="{{ route('stektips.index') }}"><x-icon name="stekje" :size="16" /> Stektips</a>
         <a href="{{ route('hulpmiddelen') }}"><x-icon name="plant" :size="16" /> Hulpmiddelen</a>
         <a href="{{ route('partners') }}"><x-icon name="initiatief" :size="16" /> Initiatieven</a>
+        <a href="{{ route('deelplekken') }}"><x-icon name="locatie" :size="16" /> Deelplekken</a>
         <a href="{{ route('over') }}"><x-icon name="hart" :size="16" /> Over</a>
         <a href="{{ route('privacy') }}"><x-icon name="check" :size="16" /> Privacy</a>
         @auth
@@ -73,6 +74,7 @@
         <a href="{{ route('aanbod') }}">Aanbod</a>
         <a href="{{ route('invasieve-soorten') }}">Invasieve soorten</a>
         <a href="{{ route('partners') }}">Initiatieven</a>
+        <a href="{{ route('deelplekken') }}">Deelplekken</a>
         @auth
           <a href="{{ route('account.index') }}">Account</a>
         @else

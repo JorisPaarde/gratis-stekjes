@@ -13,9 +13,11 @@ use App\Http\Controllers\Account\PasswordController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\StartConversationController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\Api\DeelplekkenController as ApiDeelplekkenController;
 use App\Http\Controllers\Api\NuTeStekkenController as ApiNuTeStekkenController;
 use App\Http\Controllers\Api\PartnersController as ApiPartnersController;
 use App\Http\Controllers\Api\ZoekenController as ApiZoekenController;
+use App\Http\Controllers\DeelplekkenController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -35,6 +37,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/initiatieven', PartnersController::class)->name('partners');
+Route::get('/deelplekken', DeelplekkenController::class)->name('deelplekken');
 Route::redirect('/partners', '/initiatieven', 301);
 Route::get('/partners/{path}', function (string $path) {
     return redirect('/initiatieven/'.$path, 301);
@@ -54,6 +57,7 @@ Route::get('/stektips/{slug}', [StektipsController::class, 'show'])->name('stekt
 Route::get('/aanbod', ZoekenController::class)->name('aanbod');
 Route::get('/api/zoeken', ApiZoekenController::class)->name('api.zoeken');
 Route::get('/api/partners', ApiPartnersController::class)->name('api.partners');
+Route::get('/api/deelplekken', ApiDeelplekkenController::class)->name('api.deelplekken');
 Route::get('/api/nu-te-stekken', ApiNuTeStekkenController::class)->name('api.nu-te-stekken');
 
 Route::get('/cron', CronController::class)->name('cron');

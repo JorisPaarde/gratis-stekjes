@@ -132,7 +132,7 @@
       <p class="muted">Geen bezoeklocatie op onze kaart.</p>
     </article>
   </div>
-  <p><a href="{{ route('partners') }}">Alle initiatieven en links</a> · plekken met bezoeklocatie op de <a href="{{ route('aanbod') }}">kaart</a>.</p>
+  <p><a href="{{ route('partners') }}">Alle initiatieven en links</a> · <a href="{{ route('deelplekken') }}">deelplekken bij jou in de buurt</a> · ook op de <a href="{{ route('aanbod') }}">kaart</a>.</p>
 </section>
 
 <section class="section section--cream" aria-labelledby="verder-titel">
@@ -143,6 +143,11 @@
         <h3>Aanbod &amp; kaart</h3>
         <p>Zoeken op postcode of plaats.</p>
         <p><a href="{{ route('aanbod') }}">Naar de kaart</a></p>
+      </div>
+      <div class="soft-card">
+        <h3>Deelplekken</h3>
+        <p>Plantenasiel, plantenbieb of ruilkast in de buurt.</p>
+        <p><a href="{{ route('deelplekken') }}">Bekijk deelplekken</a></p>
       </div>
       <div class="soft-card">
         <h3>Stektips</h3>

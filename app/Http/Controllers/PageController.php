@@ -71,6 +71,7 @@ class PageController extends Controller
             route('over'),
             route('privacy'),
             route('partners'),
+            route('deelplekken'),
             route('invasieve-soorten'),
         ];
         foreach ($stektips->all() as $soort) {

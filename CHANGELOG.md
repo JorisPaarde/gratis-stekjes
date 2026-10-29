@@ -9,6 +9,14 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.14.0] - 2026-10-29
+
+### Added
+
+- Landelijk overzicht **deelplekken** (`/deelplekken`): plantenasiels, plantenbiebs, ruilkasten, stekjesruilpunten en zaadbibliotheken, met filter op type/provincie/plaats, bronlink per plek en markers (ruit-icoon) op de aanbodkaart.
+- Brondata in `data/deelplekken.json` (CI-validatie) + migratie/seeder `deelplekken`.
+- Sitemap, navigatie, footer en homepage-link; SEO-title/description over plantenasiel/plantenbieb/ruilkast bij jou in de buurt.
+
 ## [0.13.5] - 2026-10-29
 
 ### Added
