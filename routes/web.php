@@ -39,6 +39,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/initiatieven', PartnersController::class)->name('partners');
 Route::get('/deelplekken', DeelplekkenController::class)->name('deelplekken');
 Route::get('/voor-organisaties', [VoorOrganisatiesController::class, 'index'])->name('voor-organisaties');

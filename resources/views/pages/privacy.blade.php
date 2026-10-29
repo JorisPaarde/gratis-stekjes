@@ -14,8 +14,13 @@
 
   <h2>Verwerkingsverantwoordelijke</h2>
   <p>
-    {{ config('site.name') }} is een project van <a href="https://jpwebcreation.nl" rel="noopener noreferrer">JP Web Creation</a>.<br>
-    Contact: <a href="mailto:info@jpwebcreation.nl">info@jpwebcreation.nl</a>.
+    {{ config('site.name') }} is een project van <a href="https://jpwebcreation.nl" rel="noopener noreferrer">JP Web Creation</a>
+    (eenmanszaak van Joris Paardekooper Overman).<br>
+    Adres: Bernadottelaan 273, 2037 GR Haarlem<br>
+    KvK: 90397320<br>
+    Btw: NL004813310B95<br>
+    Telefoon: <a href="tel:+31621228884">06 21 22 88 84</a><br>
+    Contact: <a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a>
   </p>
 
   <h2>Welke gegevens ik verwerk</h2>
@@ -58,7 +63,8 @@
     <li><strong>Wissen (account):</strong> <a href="{{ route('account.verwijderen') }}">Account verwijderen</a> (bevestiging met wachtwoord). Daarmee verdwijnen account, aanbod, berichten/gesprekken, blokkades en jouw meldingen.</li>
     <li><strong>Wissen (helper zonder account):</strong> volgt wanneer helpers live gaan.</li>
     <li><strong>Rectificatie:</strong> via je accountprofiel (naam, telefoon, locatie, e-mailwijziging met herbevestiging).</li>
-    <li><strong>Bezwaar / klacht:</strong> mail <a href="mailto:info@jpwebcreation.nl">info@jpwebcreation.nl</a>. Je kunt ook een klacht indienen bij de Autoriteit Persoonsgegevens (<a href="https://www.autoriteitpersoonsgegevens.nl/" rel="noopener noreferrer">autoriteitpersoonsgegevens.nl</a>).</li>
+    <li><strong>Bezwaar / klacht:</strong> mail <a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a>. Je kunt ook een klacht indienen bij de Autoriteit Persoonsgegevens (<a href="https://www.autoriteitpersoonsgegevens.nl/" rel="noopener noreferrer">autoriteitpersoonsgegevens.nl</a>).</li>
+
   </ul>
 
   <h2>Bewaren en dataminimalisatie</h2>

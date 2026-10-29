@@ -11,9 +11,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ## [0.20.1] - 2026-10-29
 
+### Added
+
+- Contactpagina `/contact` + footerlink; sitemap en config `site.contact_email` (default `info@gratisplanten.nl`).
+
 ### Changed
 
-- Privacy: verwerkingsverantwoordelijke zonder KvK/adres/handelsnaam-placeholders — project van [JP Web Creation](https://jpwebcreation.nl), contact `info@jpwebcreation.nl`; concept-banner zonder verwijzing naar ontbrekende juridische gegevens; geen `[in te vullen` meer in views.
+- Privacy: verwerkingsverantwoordelijke met openbare JP Web Creation-gegevens (adres, KvK, btw, telefoon) van jpwebcreation.nl; concept-banner zonder placeholders; sitecontact overal `info@gratisplanten.nl` (geen `info@jpwebcreation.nl` in views); mail-from default idem.
 
 ## [0.20.0] - 2026-10-29
 

@@ -24,6 +24,7 @@ function auditPublicGetRoutes(): array
     $routes = [
         '/',
         '/privacy',
+        '/contact',
         '/initiatieven',
         '/deelplekken',
         '/voor-organisaties',

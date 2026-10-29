@@ -69,6 +69,7 @@
       <p><strong>{{ $siteName }}</strong> — planten delen, een praatje als enige prijs.</p>
       <p class="footer-links">
         <a href="{{ route('privacy') }}">Privacy</a>
+        <a href="{{ route('contact') }}">Contact</a>
         <a href="{{ route('over') }}">Over</a>
         <a href="{{ route('stektips.index') }}">Stektips</a>
         <a href="{{ route('aanbod') }}">Aanbod</a>
@@ -83,7 +84,11 @@
           <a href="{{ route('account.registreren') }}">Doe mee</a>
         @endauth
       </p>
-      <p class="footer-meta">Versie {{ config('site.version') }}@if($noindex) · noindex @endif</p>
+      <p class="footer-meta">
+        <a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a>
+        · Versie {{ config('site.version') }}@if($noindex) · noindex @endif
+      </p>
+
     </div>
   </footer>
   @stack('scripts')
