@@ -1,7 +1,7 @@
 name: Deploy staging
 
-# Push naar staging → rsync van de echte sitebuild.
-# Skip als deploy-secrets ontbreken. Geen hostnamen/paden gehardcode: alles via secrets.
+# Push naar staging → composer + Vite build, rsync app buiten webroot, public/ naar docroot.
+# Secrets (repo-level): DEPLOY_*, STAGING_DEPLOY_PATH, STAGING_DB_*, STAGING_BASE_URL, SMTP_*, …
 on:
   push:
     branches: [staging]
@@ -37,34 +37,22 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.2"
-          extensions: mbstring
+          extensions: mbstring, curl, xml, zip, bcmath, intl
           coverage: none
 
-      - name: Build site + manifest
+      - name: Setup Node
         if: steps.chk.outputs.skip != '1'
-        env:
-          SITE_NAME: ${{ secrets.SITE_NAME }}
-          BASE_URL: ${{ secrets.STAGING_BASE_URL }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Build
+        if: steps.chk.outputs.skip != '1'
         run: |
-          if [ -z "${SITE_NAME}" ]; then
-            echo "Secret SITE_NAME ontbreekt — nodig voor de build." >&2
-            exit 1
-          fi
-          if [ -z "${BASE_URL}" ]; then
-            echo "Secret STAGING_BASE_URL ontbreekt — nodig voor de build." >&2
-            exit 1
-          fi
-          python3 - <<'PY'
-          import json, os
-          from pathlib import Path
-          p = Path("build-config.json")
-          cfg = json.loads(p.read_text(encoding="utf-8"))
-          cfg["site_name"] = os.environ["SITE_NAME"]
-          cfg["site_url"] = os.environ["BASE_URL"].rstrip("/")
-          p.write_text(json.dumps(cfg, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-          PY
-          python3 scripts/build_site.py
-          python3 scripts/build_manifest.py
+          composer install --no-dev --optimize-autoloader --no-interaction
+          npm ci
+          npm run build
 
       - name: SSH instellen
         if: steps.chk.outputs.skip != '1'
@@ -81,7 +69,49 @@ jobs:
         if: steps.chk.outputs.skip != '1'
         run: ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "mkdir -p '${D%/}/.well-known/acme-challenge'"
 
-      - name: Private map + config.php buiten webroot
+      - name: Private app-map (staging, apart van productie)
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          set -euo pipefail
+          PRIVATE_REL='stekjes-staging-app'
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
+            "DOC='${D%/}'; PRIV=\"\$(dirname \"\$DOC\")/${PRIVATE_REL}\"; mkdir -p \"\$PRIV\"/storage \"\$PRIV\"/bootstrap/cache; chmod 700 \"\$PRIV\"; echo \"\$PRIV\"" \
+            > /tmp/private_path.txt
+          tail -n1 /tmp/private_path.txt
+
+      - name: Rsync Laravel-app → private map
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          PRIV="$(tail -n1 /tmp/private_path.txt)"
+          rsync -rlz --delete \
+            --exclude='.git/' --exclude='.github/' --exclude='node_modules/' \
+            --exclude='tests/' --exclude='.env' --exclude='.env.*' \
+            --exclude='storage/logs/*' --exclude='storage/framework/cache/*' \
+            --exclude='storage/framework/sessions/*' --exclude='storage/framework/views/*' \
+            -e "ssh -i ~/.ssh/deploy_key -p ${P:-22}" \
+            ./ "$U@$H:${PRIV}/"
+
+      - name: Rsync public/ → docroot + index.php naar app
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          PRIV="$(tail -n1 /tmp/private_path.txt)"
+          cat > /tmp/public-index.php <<EOF
+          <?php
+          define('LARAVEL_START', microtime(true));
+          require '${PRIV}/vendor/autoload.php';
+          \$app = require_once '${PRIV}/bootstrap/app.php';
+          \$app->handleRequest(Illuminate\\Http\\Request::capture());
+          EOF
+          sed -i 's/^          //' /tmp/public-index.php
+          rsync -rlz --delete \
+            --exclude='.well-known/' --exclude='cgi-bin/' \
+            --exclude='stekjes-staging-app/' --exclude='stekjes-production-app/' \
+            --exclude='stekjes-private/' --exclude='gratisplanten-app/' \
+            -e "ssh -i ~/.ssh/deploy_key -p ${P:-22}" \
+            ./public/ "$U@$H:${D%/}/"
+          scp -i ~/.ssh/deploy_key -P "${P:-22}" /tmp/public-index.php "$U@$H:${D%/}/index.php"
+
+      - name: Schrijf .env uit secrets
         if: steps.chk.outputs.skip != '1'
         env:
           SITE_NAME: ${{ secrets.SITE_NAME }}
@@ -97,132 +127,75 @@ jobs:
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           SMTP_FROM: ${{ secrets.SMTP_FROM }}
           CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
-          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          APP_KEY_SECRET: ${{ secrets.APP_KEY }}
         run: |
           set -euo pipefail
-          if [ -z "${SITE_NAME}" ]; then echo "SITE_NAME secret ontbreekt" >&2; exit 1; fi
-          if [ -z "${DB_NAME}" ] || [ -z "${DB_USER}" ]; then echo "STAGING_DB_NAME/USER ontbreken" >&2; exit 1; fi
-          # Lege DB_HOST → localhost (gebruikelijk op gedeelde hosting); waarde niet loggen
-          export DB_HOST="${DB_HOST:-localhost}"
-
-          PRIVATE_REL='stekjes-private'
-          # Alleen de private-pad-regel naar bestand; geen echo in Actions-log
-          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
-            "DOC='${D%/}'; PRIV=\"\$(dirname \"\$DOC\")/${PRIVATE_REL}\"; mkdir -p \"\$PRIV\"; chmod 700 \"\$PRIV\"; printf '%s' \"\$PRIV\"" \
-            > /tmp/private_path.txt
-          PRIV="$(tr -d '\r\n' < /tmp/private_path.txt)"
-          if [ -z "$PRIV" ] || [ "${PRIV#/}" = "$PRIV" ]; then
-            echo "Private map-pad kon niet worden bepaald (leeg of niet absoluut)." >&2
-            exit 1
-          fi
+          PRIV="$(tail -n1 /tmp/private_path.txt)"
+          EXISTING_KEY=$(ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
+            "if [ -f '${PRIV}/.env' ]; then grep '^APP_KEY=' '${PRIV}/.env' | head -1 | cut -d= -f2-; fi" || true)
+          if [ -n "${APP_KEY_SECRET:-}" ]; then APP_KEY="$APP_KEY_SECRET"
+          elif [ -n "${EXISTING_KEY:-}" ]; then APP_KEY="$EXISTING_KEY"
+          else APP_KEY=$(php -r 'echo "base64:".base64_encode(random_bytes(32));'); fi
+          NAME="${SITE_NAME:-Gratis planten}"
+          ENC=$(echo "${SMTP_SECURE:-ssl}" | tr '[:upper:]' '[:lower:]')
           umask 077
-          php -r '
-            $site = getenv("SITE_NAME") ?: "";
-            if ($site === "") { fwrite(STDERR, "SITE_NAME leeg\n"); exit(1); }
-            $cfg = [
-              "site_name" => $site,
-              "site_url" => rtrim(getenv("BASE_URL") ?: "", "/"),
-              "base_path" => "",
-              "db_driver" => "mysql",
-              "db_host" => getenv("DB_HOST") ?: "localhost",
-              "db_name" => getenv("DB_NAME") ?: "",
-              "db_user" => getenv("DB_USER") ?: "",
-              "db_pass" => getenv("DB_PASS") ?: "",
-              "db_charset" => "utf8mb4",
-              "db_path" => "",
-              "mail" => [
-                "from_email" => getenv("SMTP_FROM") ?: "",
-                "from_name" => $site,
-                "smtp_host" => getenv("SMTP_HOST") ?: "",
-                "smtp_port" => (int) (getenv("SMTP_PORT") ?: 465),
-                "smtp_encryption" => strtolower(getenv("SMTP_SECURE") ?: "ssl"),
-                "smtp_user" => getenv("SMTP_USER") ?: "",
-                "smtp_pass" => getenv("SMTP_PASS") ?: "",
-              ],
-              "admin_password" => getenv("ADMIN_PASSWORD") ?: "",
-              "cron_token" => getenv("CRON_TOKEN") ?: "",
-              "form_min_seconds" => 3,
-              "rate_limit" => [
-                "register" => ["max" => 5, "window" => 3600],
-                "login" => ["max" => 20, "window" => 3600],
-                "message" => ["max" => 60, "window" => 3600],
-                "search" => ["max" => 120, "window" => 3600],
-                "password_reset" => ["max" => 5, "window" => 3600],
-              ],
-              "rate_limit_retention_seconds" => 172800,
-              "session_name" => "stekjes_sess",
-              "session_secure" => true,
-              "pdok_url" => "https://api.pdok.nl/bzk/locatieserver/search/v3_1/free",
-              "coord_decimals" => 3,
-              "meedoen_teller_drempel" => 25,
-              "theme_color" => "#2f6b45",
-              "background_color" => "#eef4ea",
-              "private_path" => "",
-            ];
-            file_put_contents("/tmp/stekjes-config.php", "<?php\ndeclare(strict_types=1);\nreturn " . var_export($cfg, true) . ";\n");
-          '
-          scp -i ~/.ssh/deploy_key -P "${P:-22}" -o IdentitiesOnly=yes \
-            /tmp/stekjes-config.php "$U@$H:${PRIV}/config.php"
-          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "chmod 600 '${PRIV}/config.php' && test -r '${PRIV}/config.php'"
-          printf '%s' "$PRIV" > /tmp/private_path.txt
-          rm -f /tmp/stekjes-config.php
-          echo "config.php geschreven buiten webroot (pad niet gelogd)."
+          {
+            echo "APP_NAME=\"${NAME}\""
+            echo "SITE_NAME=\"${NAME}\""
+            echo "APP_ENV=staging"
+            echo "APP_KEY=${APP_KEY}"
+            echo "APP_DEBUG=false"
+            echo "APP_URL=${BASE_URL}"
+            echo "NOINDEX=true"
+            echo "APP_LOCALE=nl"
+            echo "APP_FALLBACK_LOCALE=nl"
+            echo "LOG_CHANNEL=stack"
+            echo "LOG_LEVEL=error"
+            echo "DB_CONNECTION=mysql"
+            echo "DB_HOST=${DB_HOST}"
+            echo "DB_PORT=3306"
+            echo "DB_DATABASE=${DB_NAME}"
+            echo "DB_USERNAME=${DB_USER}"
+            echo "DB_PASSWORD=${DB_PASS}"
+            echo "SESSION_DRIVER=database"
+            echo "SESSION_SECURE_COOKIE=true"
+            echo "QUEUE_CONNECTION=database"
+            echo "CACHE_STORE=database"
+            echo "MAIL_MAILER=smtp"
+            echo "MAIL_HOST=${SMTP_HOST}"
+            echo "MAIL_PORT=${SMTP_PORT:-465}"
+            echo "MAIL_USERNAME=${SMTP_USER}"
+            echo "MAIL_PASSWORD=${SMTP_PASS}"
+            echo "MAIL_ENCRYPTION=${ENC}"
+            echo "MAIL_FROM_ADDRESS=${SMTP_FROM}"
+            echo "MAIL_FROM_NAME=\"${NAME}\""
+            echo "CRON_TOKEN=${CRON_TOKEN}"
+          } > /tmp/stekjes.env
+          scp -i ~/.ssh/deploy_key -P "${P:-22}" /tmp/stekjes.env "$U@$H:${PRIV}/.env"
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "chmod 600 '${PRIV}/.env'"
+          rm -f /tmp/stekjes.env
 
-      - name: Uploaden (echte build)
+      - name: Migrate + cache
         if: steps.chk.outputs.skip != '1'
         run: |
-          rsync -rlz --delete \
-            --exclude='.well-known/' --exclude='cgi-bin/' \
-            --exclude='config.php' --exclude='data/' \
-            --exclude='.git/' --exclude='.github/' \
-            --exclude='tests/' --exclude='docs/' \
-            --exclude='placeholder/' --exclude='*.md' \
-            --exclude='migrations/*.down.sql' \
-            -e "ssh -i ~/.ssh/deploy_key -p ${P:-22}" \
-            ./ "$U@$H:${D%/}/"
-
-      - name: Migraties
-        if: steps.chk.outputs.skip != '1'
-        run: |
-          set -euo pipefail
-          PRIV="$(tr -d '\r\n' < /tmp/private_path.txt)"
-          if [ -z "$PRIV" ]; then
-            echo "Private pad ontbreekt — config-stap faalde?" >&2
-            exit 1
-          fi
-          # Preflight op de server (geen paden/hosts printen)
+          PRIV="$(tail -n1 /tmp/private_path.txt)"
           ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s <<EOF
           set -euo pipefail
-          CFG='${PRIV}/config.php'
-          DOC='${D%/}'
-          if [ ! -r "\$CFG" ]; then echo "config niet leesbaar" >&2; exit 1; fi
-          if ! php -m 2>/dev/null | grep -qi '^pdo_mysql\$'; then
-            echo "pdo_mysql ontbreekt in PHP CLI" >&2
-            php -v >&2 || true
-            php -m >&2 || true
-            exit 1
-          fi
-          cd "\$DOC"
-          STEKJES_CONFIG="\$CFG" php -d display_errors=stderr -d log_errors=0 scripts/migrate.php up
+          cd '${PRIV}'
+          mkdir -p storage/framework/{cache,sessions,views} storage/logs bootstrap/cache
+          chmod -R ug+rwx storage bootstrap/cache
+          php artisan migrate --force
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
           EOF
 
       - name: Controle
         if: steps.chk.outputs.skip != '1'
         run: |
           set -euo pipefail
-          if [ -z "${BASE}" ]; then
-            echo "STAGING_BASE_URL ontbreekt" >&2
-            exit 1
-          fi
-          url="${BASE%/}/"
-          code=$(curl -sS -o /tmp/staging-home.html -w '%{http_code}' --max-time 30 "$url" || echo "000")
-          echo "homepage HTTP $code"
-          if [ "$code" != "200" ]; then
-            echo "Homepage gaf geen 200." >&2
-            exit 1
-          fi
-          headers=$(curl -sSI --max-time 30 "$url" || true)
-          if ! grep -iq '^x-robots-tag:.*noindex' <<<"$headers"; then
-            echo "LET OP: geen X-Robots-Tag noindex in headers" >&2
-            # nog geen hard fail: .htaccess kan per host anders laden; homepage-200 is verplicht
-          fi
+          code=$(curl -sS -o /tmp/home.html -w '%{http_code}' "${BASE%/}/" || echo 000)
+          echo "staging http ${code}"
+          test "$code" = "200"
+          grep -q 'Gratis planten' /tmp/home.html
+          curl -sSI "${BASE%/}/" | grep -i '^x-robots-tag' || echo "LET OP: geen X-Robots-Tag"

@@ -1,7 +1,6 @@
 name: Daily cron
 
-# Roept /cron.php aan met CRON_TOKEN (herinneringsmails voor verlopend aanbod).
-# Mislukte curl terwijl de site nog niet bereikbaar is → job slaagt met skip-melding.
+# Placeholder tot het cron-endpoint in een latere PR landt. Faalt niet soft op 404.
 on:
   schedule:
     - cron: "15 5 * * *"
@@ -23,10 +22,10 @@ jobs:
           fi
           code=$(curl -sS -o /tmp/cron-out.txt -w '%{http_code}' \
             -H "X-Cron-Token: ${CRON_TOKEN}" \
-            "${BASE%/}/cron.php" || true)
+            "${BASE%/}/cron" || true)
           echo "HTTP $code"
           if [ "$code" = "000" ] || [ "$code" = "404" ] || [ "$code" = "502" ] || [ "$code" = "503" ]; then
-            echo "Site nog niet bereikbaar of endpoint ontbreekt — ok voor nu."
+            echo "Endpoint nog niet beschikbaar — ok voor PR1."
             exit 0
           fi
           if [ "$code" != "200" ]; then
