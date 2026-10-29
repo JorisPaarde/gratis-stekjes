@@ -11,7 +11,7 @@
 
 @section('content')
 <section class="section wrap">
-  <h1>Inbox</h1>
+  <h1 class="page-title">Inbox</h1>
 
   @if(session('error'))
     <p class="flash-error" role="alert">{{ session('error') }}</p>

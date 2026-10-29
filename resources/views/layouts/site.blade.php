@@ -21,9 +21,6 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
   <link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
   <link rel="icon" href="{{ asset('assets/icons/icon-192.png') }}" sizes="192x192">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;560;700&display=swap" rel="stylesheet">
   @isset($schema)
   <script type="application/ld+json">{!! json_encode($schema, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES) !!}</script>
   @endisset

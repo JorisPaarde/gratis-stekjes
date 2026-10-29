@@ -12,7 +12,7 @@
 @section('content')
 @php($andere = $view['andere'])
 <section class="section wrap">
-  <h1>Gesprek met {{ $andere['voornaam'] }}</h1>
+  <h1 class="page-title">Gesprek met {{ $andere['voornaam'] }}</h1>
 
   @if(session('error'))
     <p class="flash-error" role="alert">{{ session('error') }}</p>

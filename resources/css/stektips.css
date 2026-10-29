@@ -21,12 +21,12 @@
   text-align: left;
   vertical-align: top;
   padding: 0.55rem 0.65rem;
-  border-bottom: 1px solid var(--line, rgba(31, 77, 50, 0.14));
+  border-bottom: 1px solid var(--line, rgba(26, 18, 16, 0.12));
 }
 
 .stektips-table th {
   width: 38%;
-  color: var(--leaf-deep, #1f4d32);
+  color: var(--leaf-deep, #16555c);
   font-weight: 700;
 }
 

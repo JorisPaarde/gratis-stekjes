@@ -6,7 +6,7 @@
 
 @section('content')
 <section class="section wrap">
-  <h1>Account maken</h1>
+  <h1 class="page-title">Account maken</h1>
   <p class="section-intro">Gratis meedoen. Stekjes blijven gratis — geen verkoop. Na registratie bevestig je je e-mail (double opt-in).</p>
 
   @if($errors->any())
