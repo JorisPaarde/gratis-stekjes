@@ -7,7 +7,14 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- (volgende PRs) expiry/cron-mails, partners-markers, nu te stekken, admin/AVG, SEO-pagina’s.
+- (volgende PRs) partners-markers, nu te stekken, admin/AVG, SEO-pagina’s.
+
+## [0.5.0] - 2026-10-29
+
+### Added
+
+- Beveiligd `/cron` (`X-Cron-Token`): herinneringsmails 7 dagen vóór aanbod-verloop + geocode-cache purge.
+- Eenklik `/account/aanbod-verlengen?token=` (ondertekend, eenmalig); GitHub Actions daily cron wijst naar `/cron`.
 
 ## [0.4.0] - 2026-10-29
 

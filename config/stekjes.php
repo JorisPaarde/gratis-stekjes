@@ -17,4 +17,16 @@ return [
 
     /** Aanbod zichtbaar in zoeken/kaart (dagen). */
     'aanbod_ttl_days' => 60,
+
+    /** Herinneringsmail zoveel dagen vóór expires_at. */
+    'aanbod_reminder_days' => 7,
+
+    /** Geldigheid eenklik-verlengtoken (dagen). */
+    'aanbod_renew_token_days' => 14,
+
+    /** Geocode-cache opruimen na zoveel dagen. */
+    'geocode_cache_retention_days' => (int) env('GEOCODE_CACHE_RETENTION_DAYS', 90),
+
+    /** Gedeeld secret voor /cron (header X-Cron-Token). */
+    'cron_token' => env('CRON_TOKEN', ''),
 ];
