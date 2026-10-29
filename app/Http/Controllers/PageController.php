@@ -40,6 +40,15 @@ class PageController extends Controller
         ]);
     }
 
+    public function stijlgids(): View
+    {
+        return view('pages.stijlgids', [
+            'title' => 'Stijlgids',
+            'metaDescription' => 'Interne stijlgids (kleuren en iconen) van '.config('site.name').'.',
+            'canonical' => url('/stijlgids'),
+        ]);
+    }
+
     public function robots(): Response
     {
         if (config('site.noindex') || app()->environment('staging')) {

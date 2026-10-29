@@ -30,8 +30,8 @@
   };
 
   var markerColors = {
-    partner: "#1f6b74",
-    voedselbos: "#16555c",
+    partner: "#1f4d2b",
+    voedselbos: "#163820",
     plantenasiel: "#c46b2d",
     plantenbieb: "#3d6b8a",
     ruilkast: "#6b4c2f",

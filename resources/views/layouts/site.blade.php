@@ -31,24 +31,26 @@
   <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="{{ route('home') }}">{{ $siteName }}</a>
-      <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="hoofdmenu" data-nav-toggle>Menu</button>
+      <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="hoofdmenu" data-nav-toggle>
+        <x-icon name="menu" :size="18" /> Menu
+      </button>
       <nav id="hoofdmenu" class="site-nav" data-nav>
-        <a href="{{ route('hoe-werkt-het') }}">Hoe werkt het</a>
-        <a href="{{ route('aanbod') }}">Aanbod</a>
-        <a href="{{ route('stektips.index') }}">Stektips</a>
-        <a href="{{ route('hulpmiddelen') }}">Hulpmiddelen</a>
-        <a href="{{ route('partners') }}">Partners</a>
-        <a href="{{ route('over') }}">Over</a>
-        <a href="{{ route('privacy') }}">Privacy</a>
+        <a href="{{ route('hoe-werkt-het') }}"><x-icon name="info" :size="16" /> Hoe werkt het</a>
+        <a href="{{ route('aanbod') }}"><x-icon name="kaart" :size="16" /> Aanbod</a>
+        <a href="{{ route('stektips.index') }}"><x-icon name="stekje" :size="16" /> Stektips</a>
+        <a href="{{ route('hulpmiddelen') }}"><x-icon name="plant" :size="16" /> Hulpmiddelen</a>
+        <a href="{{ route('partners') }}"><x-icon name="partner" :size="16" /> Partners</a>
+        <a href="{{ route('over') }}"><x-icon name="hart" :size="16" /> Over</a>
+        <a href="{{ route('privacy') }}"><x-icon name="check" :size="16" /> Privacy</a>
         @auth
-          <a href="{{ route('account.index') }}">Account</a>
+          <a href="{{ route('account.index') }}"><x-icon name="gebruiker" :size="16" /> Account</a>
           <form class="nav-logout" method="post" action="{{ route('account.uitloggen') }}">
             @csrf
             <button type="submit" class="nav-cta">Uitloggen</button>
           </form>
         @else
-          <a href="{{ route('account.inloggen') }}">Inloggen</a>
-          <a class="nav-cta" href="{{ route('account.registreren') }}">Doe mee</a>
+          <a href="{{ route('account.inloggen') }}"><x-icon name="gebruiker" :size="16" /> Inloggen</a>
+          <a class="nav-cta" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="16" /> Doe mee</a>
         @endauth
       </nav>
     </div>

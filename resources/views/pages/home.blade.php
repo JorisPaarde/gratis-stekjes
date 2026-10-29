@@ -12,22 +12,33 @@
 @section('content')
 <section class="hero" aria-labelledby="hero-titel">
   <div class="hero-media" aria-hidden="true">
-    <img
-      src="{{ asset('assets/illustrations/hero-planten.svg') }}"
-      alt=""
-      width="1440"
-      height="720"
-      decoding="async"
-      fetchpriority="high"
-    >
+    <picture>
+      <source
+        type="image/webp"
+        srcset="
+          {{ asset('assets/images/hero/hero-stekjes-640.webp') }} 640w,
+          {{ asset('assets/images/hero/hero-stekjes-1280.webp') }} 1280w,
+          {{ asset('assets/images/hero/hero-stekjes-1920.webp') }} 1920w
+        "
+        sizes="100vw"
+      >
+      <img
+        src="{{ asset('assets/images/hero/hero-stekjes-1280.webp') }}"
+        alt=""
+        width="1280"
+        height="853"
+        decoding="async"
+        fetchpriority="high"
+      >
+    </picture>
   </div>
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-inner">
     <h1 id="hero-titel" class="hero-brand">{{ config('site.name') }}</h1>
     <p class="hero-lead">Gratis planten en stekjes delen met mensen in de buurt. Je haalt ze alleen fysiek op; de enige ‘prijs’ is een praatje. Heel Nederland mag meedoen.</p>
     <div class="hero-actions">
-      <a class="btn" href="#doe-mee">Doe mee</a>
-      <a class="btn btn-on-dark" href="#hoe-werkt-het">Hoe werkt het</a>
+      <a class="btn" href="#doe-mee"><x-icon name="plant" :size="18" /> Doe mee</a>
+      <a class="btn btn-on-dark" href="#hoe-werkt-het"><x-icon name="info" :size="18" /> Hoe werkt het</a>
     </div>
   </div>
 </section>
@@ -74,9 +85,9 @@
   </div>
 </section>
 
-<section class="section section--teal" id="hoe-werkt-het" aria-labelledby="hoe-titel">
+<section class="section section--mint" id="hoe-werkt-het" aria-labelledby="hoe-titel">
   <div class="wrap">
-    <img class="section-figure" src="{{ asset('assets/illustrations/step-stekje.svg') }}" alt="" width="64" height="64" decoding="async" loading="lazy">
+    <p class="section-figure" aria-hidden="true" style="color:var(--forest)"><x-icon name="stekje" :size="40" /></p>
     <h2 id="hoe-titel">Hoe werkt het</h2>
     <p class="section-intro">Drie spelregels: <strong>gratis</strong>, alleen <strong>fysiek ophalen</strong>, en de enige tegenprestatie is een <strong>praatje</strong>.</p>
     <ol class="steps">
@@ -94,12 +105,12 @@
   @include('partials.nu-te-stekken', ['nuTeStekken' => $nuTeStekken, 'headingId' => 'nu-te-stekken-titel'])
 @endif
 
-<section class="section section--peach" id="veiligheid" aria-labelledby="veilig-titel">
+<section class="section section--mint" id="veiligheid" aria-labelledby="veilig-titel">
   <div class="wrap">
     <h2 id="veilig-titel">Veilig delen</h2>
     <p class="section-intro">Niet alles hoort op een deelplatform. We vragen je om invasieve soorten in Nederland niet aan te bieden.</p>
     <div class="soft-card warn-card">
-      <p>Sommige planten staan op de EU-Unielijst van invasieve uitheemse soorten (NVWA). Die horen hier niet tussen — ook niet “even een stekje voor de leuk”.</p>
+      <p><x-icon name="waarschuwing" :size="20" /> Sommige planten staan op de EU-Unielijst van invasieve uitheemse soorten (NVWA). Die horen hier niet tussen — ook niet “even een stekje voor de leuk”.</p>
       <p>De volledige waarschuwingslijst met bronnen komt mee in een volgende release. Twijfel je? Bied het dan niet aan.</p>
       <p><span class="badge-soon">Lijst binnenkort</span></p>
     </div>
