@@ -26,7 +26,7 @@ Deploy-stappen:
 2. Rsync **inhoud van `public/`** → docroot (`--delete`, excludes: `.well-known/`, `cgi-bin/`).
 3. Schrijf `index.php` in de docroot die `vendor/autoload.php` en `bootstrap/app.php` uit de app-map laadt, en `$app->usePublicPath(__DIR__)` zet zodat `asset()` / Vite-manifest de docroot gebruiken.
 4. `.env` in de app-map uit secrets. `APP_KEY`: uit secret, anders eenmalig op de server genereren en bewaren — nooit committen.
-5. `php artisan migrate --force` + config/route/view cache (in de app-map).
+5. `php artisan migrate --force`, daarna `php artisan db:seed --class=DeelplekkenSeeder --force` (idempotent upsert), plus config/route/view cache (in de app-map).
 6. Staging: `APP_ENV=staging` / `NOINDEX=true`. Productie: indexeerbaar.
 
 SSH/host: `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_PORT`, `DEPLOY_SSH_KEY`, `DEPLOY_KNOWN_HOSTS` (production Environment overschrijft repo-secrets met dezelfde naam).
