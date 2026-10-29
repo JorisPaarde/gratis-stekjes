@@ -1,0 +1,243 @@
+name: Deploy staging
+
+# Layout (waarden uit secrets, geen hardcodes):
+#   docroot = STAGING_DEPLOY_PATH
+#   app     = STAGING_APP_DIR (anders sibling …/stekjes-staging-app, afgeleid op de server)
+# App (zonder public/) → APP_DIR; inhoud public/ → docroot; index.php wijst naar de app
+# en zet public path = docroot (asset()/Vite).
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      H: ${{ secrets.DEPLOY_HOST }}
+      U: ${{ secrets.DEPLOY_USER }}
+      P: ${{ secrets.DEPLOY_PORT }}
+      D: ${{ secrets.STAGING_DEPLOY_PATH }}
+      BASE: ${{ secrets.STAGING_BASE_URL }}
+      APP_DIR_SECRET: ${{ secrets.STAGING_APP_DIR }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Secrets aanwezig?
+        id: chk
+        run: |
+          if [ -z "$H" ] || [ -z "$U" ] || [ -z "$D" ] || [ -z "${{ secrets.DEPLOY_SSH_KEY }}" ]; then
+            echo "Staging-secrets ontbreken, deploy overgeslagen."
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup PHP 8.2
+        if: steps.chk.outputs.skip != '1'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, curl, xml, zip, bcmath, intl
+          coverage: none
+
+      - name: Setup Node
+        if: steps.chk.outputs.skip != '1'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Build
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          composer install --no-dev --optimize-autoloader --no-interaction
+          npm ci
+          npm run build
+
+      - name: SSH instellen
+        if: steps.chk.outputs.skip != '1'
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: acme-challenge + app-map
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "mkdir -p '${D%/}/.well-known/acme-challenge'"
+          # STAGING_APP_DIR, of staging-specifieke sibling van de docroot (afgeleid op de server)
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s <<EOF > /tmp/app_dir.txt
+          set -euo pipefail
+          DOC='${D%/}'
+          if [ -n '${APP_DIR_SECRET}' ]; then
+            APP='${APP_DIR_SECRET}'
+          else
+            APP="\$(dirname "\$DOC")/stekjes-staging-app"
+          fi
+          mkdir -p "\$APP"/storage/framework/{cache,sessions,views} "\$APP"/storage/logs "\$APP"/storage/backups "\$APP"/bootstrap/cache
+          chmod 700 "\$APP" "\$APP"/storage/backups
+          printf '%s\n' "\$APP"
+          EOF
+          tail -n1 /tmp/app_dir.txt
+
+      - name: Rsync app (zonder public/) → APP_DIR
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          APP="$(tail -n1 /tmp/app_dir.txt)"
+          rsync -rlz --delete \
+            --exclude='.git/' --exclude='.github/' --exclude='node_modules/' \
+            --exclude='tests/' --exclude='public/' \
+            --exclude='.env' --exclude='.env.*' \
+            --exclude='storage/logs/*' --exclude='storage/framework/cache/*' \
+            --exclude='storage/framework/sessions/*' --exclude='storage/framework/views/*' \
+            --exclude='storage/backups/' \
+            -e "ssh -i ~/.ssh/deploy_key -p ${P:-22}" \
+            ./ "$U@$H:${APP}/"
+
+      - name: Rsync public/ → docroot + index.php
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          set -euo pipefail
+          APP="$(tail -n1 /tmp/app_dir.txt)"
+          DOC="${D%/}"
+          # index.php in docroot: laadt de app en zet public path = docroot (asset/Vite)
+          cat > /tmp/public-index.php <<EOF
+          <?php
+          define('LARAVEL_START', microtime(true));
+          require '${APP}/vendor/autoload.php';
+          \$app = require_once '${APP}/bootstrap/app.php';
+          \$app->usePublicPath(__DIR__);
+          \$app->handleRequest(Illuminate\\Http\\Request::capture());
+          EOF
+          sed -i 's/^          //' /tmp/public-index.php
+          rsync -rlz --delete \
+            --exclude='.well-known/' --exclude='cgi-bin/' \
+            -e "ssh -i ~/.ssh/deploy_key -p ${P:-22}" \
+            ./public/ "$U@$H:${DOC}/"
+          scp -i ~/.ssh/deploy_key -P "${P:-22}" /tmp/public-index.php "$U@$H:${DOC}/index.php"
+
+      - name: Schrijf .env uit secrets
+        if: steps.chk.outputs.skip != '1'
+        env:
+          SITE_NAME: ${{ secrets.SITE_NAME }}
+          BASE_URL: ${{ secrets.STAGING_BASE_URL }}
+          DB_HOST: ${{ secrets.STAGING_DB_HOST }}
+          DB_NAME: ${{ secrets.STAGING_DB_NAME }}
+          DB_USER: ${{ secrets.STAGING_DB_USER }}
+          DB_PASS: ${{ secrets.STAGING_DB_PASS }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
+          CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
+          APP_KEY_SECRET: ${{ secrets.APP_KEY }}
+        run: |
+          set -euo pipefail
+          APP="$(tail -n1 /tmp/app_dir.txt)"
+          EXISTING_KEY=$(ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
+            "if [ -f '${APP}/.env' ]; then grep '^APP_KEY=' '${APP}/.env' | head -1 | cut -d= -f2-; fi" || true)
+          if [ -n "${APP_KEY_SECRET:-}" ]; then APP_KEY="$APP_KEY_SECRET"
+          elif [ -n "${EXISTING_KEY:-}" ]; then APP_KEY="$EXISTING_KEY"
+          else APP_KEY=$(php -r 'echo "base64:".base64_encode(random_bytes(32));'); fi
+          NAME="${SITE_NAME:-Gratis planten}"
+          ENC=$(echo "${SMTP_SECURE:-ssl}" | tr '[:upper:]' '[:lower:]')
+          umask 077
+          {
+            echo "APP_NAME=\"${NAME}\""
+            echo "SITE_NAME=\"${NAME}\""
+            echo "APP_ENV=staging"
+            echo "APP_KEY=${APP_KEY}"
+            echo "APP_DEBUG=false"
+            echo "APP_URL=${BASE_URL}"
+            echo "NOINDEX=true"
+            echo "APP_LOCALE=nl"
+            echo "APP_FALLBACK_LOCALE=nl"
+            echo "LOG_CHANNEL=stack"
+            echo "LOG_LEVEL=error"
+            echo "DB_CONNECTION=mysql"
+            echo "DB_HOST=${DB_HOST}"
+            echo "DB_PORT=3306"
+            echo "DB_DATABASE=${DB_NAME}"
+            echo "DB_USERNAME=${DB_USER}"
+            echo "DB_PASSWORD=${DB_PASS}"
+            echo "SESSION_DRIVER=file"
+            echo "SESSION_SECURE_COOKIE=true"
+            echo "QUEUE_CONNECTION=database"
+            echo "CACHE_STORE=file"
+            echo "MAIL_MAILER=smtp"
+            echo "MAIL_HOST=${SMTP_HOST}"
+            echo "MAIL_PORT=${SMTP_PORT:-465}"
+            echo "MAIL_USERNAME=${SMTP_USER}"
+            echo "MAIL_PASSWORD=${SMTP_PASS}"
+            echo "MAIL_ENCRYPTION=${ENC}"
+            echo "MAIL_FROM_ADDRESS=${SMTP_FROM}"
+            echo "MAIL_FROM_NAME=\"${NAME}\""
+            echo "CRON_TOKEN=${CRON_TOKEN}"
+          } > /tmp/stekjes.env
+          scp -i ~/.ssh/deploy_key -P "${P:-22}" /tmp/stekjes.env "$U@$H:${APP}/.env"
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "chmod 600 '${APP}/.env'"
+          rm -f /tmp/stekjes.env
+
+      # Staging-only: never copy this step to deploy-production.yml.
+      # Detects plain-PHP schema (schema_migrations, or users without Laravel
+      # migration 0001_01_01_000000_create_users_table) → mysqldump backup under
+      # storage/backups/ (outside webroot) → drop all tables → migrate continues.
+      - name: Legacy schema reset (staging eenmalig)
+        if: steps.chk.outputs.skip != '1'
+        env:
+          DB_HOST: ${{ secrets.STAGING_DB_HOST }}
+          DB_NAME: ${{ secrets.STAGING_DB_NAME }}
+          DB_USER: ${{ secrets.STAGING_DB_USER }}
+          DB_PASS: ${{ secrets.STAGING_DB_PASS }}
+        run: |
+          set -euo pipefail
+          if [ -z "${DB_HOST:-}" ] || [ -z "${DB_NAME:-}" ] || [ -z "${DB_USER:-}" ] || [ -z "${DB_PASS:-}" ]; then
+            echo "STAGING_DB_* secrets ontbreken; legacy-reset geweigerd."
+            exit 1
+          fi
+          APP="$(tail -n1 /tmp/app_dir.txt)"
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s <<EOF
+          set -euo pipefail
+          cd '${APP}'
+          test "\$(grep -E '^APP_ENV=' .env | cut -d= -f2-)" = "staging"
+          mkdir -p storage/backups
+          chmod 700 storage/backups
+          php artisan staging:reset-legacy-schema --force
+          EOF
+
+      - name: Migrate + cache
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          APP="$(tail -n1 /tmp/app_dir.txt)"
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s <<EOF
+          set -euo pipefail
+          cd '${APP}'
+          mkdir -p storage/framework/{cache,sessions,views} storage/logs storage/backups bootstrap/cache
+          chmod 700 storage/backups
+          chmod -R ug+rwx storage/framework storage/logs bootstrap/cache
+          php artisan migrate --force
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+          EOF
+
+      - name: Controle
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          set -euo pipefail
+          code=$(curl -sS -o /tmp/home.html -w '%{http_code}' "${BASE%/}/" || echo 000)
+          echo "staging http ${code}"
+          test "$code" = "200"
+          grep -q 'Gratis planten' /tmp/home.html
+          curl -sSI "${BASE%/}/" | grep -i '^x-robots-tag' || echo "LET OP: geen X-Robots-Tag"

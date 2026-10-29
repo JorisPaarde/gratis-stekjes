@@ -1,0 +1,35 @@
+name: Daily cron
+
+# Placeholder tot het cron-endpoint in een latere PR landt. Faalt niet soft op 404.
+on:
+  schedule:
+    - cron: "15 5 * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cron-endpoint
+        env:
+          BASE: ${{ secrets.BASE_URL }}
+          CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${BASE:-}" ] || [ -z "${CRON_TOKEN:-}" ]; then
+            echo "BASE_URL of CRON_TOKEN ontbreekt — overgeslagen."
+            exit 0
+          fi
+          code=$(curl -sS -o /tmp/cron-out.txt -w '%{http_code}' \
+            -H "X-Cron-Token: ${CRON_TOKEN}" \
+            "${BASE%/}/cron" || true)
+          echo "HTTP $code"
+          if [ "$code" = "000" ] || [ "$code" = "404" ] || [ "$code" = "502" ] || [ "$code" = "503" ]; then
+            echo "Endpoint nog niet beschikbaar — ok voor PR1."
+            exit 0
+          fi
+          if [ "$code" != "200" ]; then
+            echo "Onverwachte status"
+            head -c 200 /tmp/cron-out.txt || true
+            exit 1
+          fi

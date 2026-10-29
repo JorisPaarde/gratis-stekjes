@@ -1,0 +1,17 @@
+name: Invasive data check
+
+on:
+  pull_request:
+  push:
+    branches: [staging, master]
+    paths:
+      - "data/niet-aanbieden.json"
+      - ".github/workflows/invasive-tests.yml"
+
+jobs:
+  validate-json:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: JSON parseerbaar
+        run: python3 -c "import json; json.load(open('data/niet-aanbieden.json')); print('ok')"

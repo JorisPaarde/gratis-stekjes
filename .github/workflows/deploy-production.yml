@@ -1,0 +1,227 @@
+name: Deploy production
+
+# Layout (waarden uit GitHub Environment "production" secrets, geen hardcodes):
+#   docroot = DEPLOY_PATH  (cPanel main-domain docroot)
+#   app     = APP_DIR      (buiten webroot)
+# App (zonder public/) → APP_DIR; inhoud public/ → docroot; index.php wijst naar de app
+# en zet public path = docroot (asset()/Vite).
+on:
+  push:
+    tags: ["v*.*.*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Bestaande tag om te herdeployen (bijv. v0.1.0)"
+        required: true
+        type: string
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      H: ${{ secrets.DEPLOY_HOST }}
+      U: ${{ secrets.DEPLOY_USER }}
+      P: ${{ secrets.DEPLOY_PORT }}
+      D: ${{ secrets.DEPLOY_PATH }}
+      BASE: ${{ secrets.BASE_URL }}
+      APP_DIR_SECRET: ${{ secrets.APP_DIR }}
+    steps:
+      - name: Resolve ref
+        id: ref
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "ref=${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "ref=${{ github.ref }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.ref.outputs.ref }}
+
+      - name: Alleen tags vanaf master-lijn
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          git fetch origin master --depth=50
+          if ! git merge-base --is-ancestor HEAD origin/master && ! git merge-base --is-ancestor origin/master HEAD; then
+            echo "Tag lijkt niet op master-historie; stop."
+            exit 1
+          fi
+
+      - name: Secrets aanwezig?
+        id: chk
+        run: |
+          if [ -z "$H" ] || [ -z "$U" ] || [ -z "$D" ] || [ -z "${APP_DIR_SECRET}" ] || [ -z "${{ secrets.DEPLOY_SSH_KEY }}" ]; then
+            echo "Production-secrets ontbreken (DEPLOY_* / APP_DIR)."
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup PHP 8.2
+        if: steps.chk.outputs.skip != '1'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, curl, xml, zip, bcmath, intl
+          coverage: none
+
+      - name: Setup Node
+        if: steps.chk.outputs.skip != '1'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Build
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          composer install --no-dev --optimize-autoloader --no-interaction
+          npm ci
+          npm run build
+
+      - name: SSH instellen
+        if: steps.chk.outputs.skip != '1'
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: acme-challenge + app-map
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "mkdir -p '${D%/}/.well-known/acme-challenge'"
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s <<EOF > /tmp/app_dir.txt
+          set -euo pipefail
+          APP='${APP_DIR_SECRET}'
+          mkdir -p "\$APP"/storage/framework/{cache,sessions,views} "\$APP"/storage/logs "\$APP"/bootstrap/cache
+          chmod 700 "\$APP"
+          printf '%s\n' "\$APP"
+          EOF
+          tail -n1 /tmp/app_dir.txt
+
+      - name: Rsync app (zonder public/) → APP_DIR
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          APP="$(tail -n1 /tmp/app_dir.txt)"
+          rsync -rlz --delete \
+            --exclude='.git/' --exclude='.github/' --exclude='node_modules/' \
+            --exclude='tests/' --exclude='public/' \
+            --exclude='.env' --exclude='.env.*' \
+            --exclude='storage/logs/*' --exclude='storage/framework/cache/*' \
+            --exclude='storage/framework/sessions/*' --exclude='storage/framework/views/*' \
+            -e "ssh -i ~/.ssh/deploy_key -p ${P:-22}" \
+            ./ "$U@$H:${APP}/"
+
+      - name: Rsync public/ → docroot + index.php
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          set -euo pipefail
+          APP="$(tail -n1 /tmp/app_dir.txt)"
+          DOC="${D%/}"
+          cat > /tmp/public-index.php <<EOF
+          <?php
+          define('LARAVEL_START', microtime(true));
+          require '${APP}/vendor/autoload.php';
+          \$app = require_once '${APP}/bootstrap/app.php';
+          \$app->usePublicPath(__DIR__);
+          \$app->handleRequest(Illuminate\\Http\\Request::capture());
+          EOF
+          sed -i 's/^          //' /tmp/public-index.php
+          rsync -rlz --delete \
+            --exclude='.well-known/' --exclude='cgi-bin/' \
+            -e "ssh -i ~/.ssh/deploy_key -p ${P:-22}" \
+            ./public/ "$U@$H:${DOC}/"
+          scp -i ~/.ssh/deploy_key -P "${P:-22}" /tmp/public-index.php "$U@$H:${DOC}/index.php"
+
+      - name: Schrijf .env + migrate + cache
+        if: steps.chk.outputs.skip != '1'
+        env:
+          SITE_NAME: ${{ secrets.SITE_NAME }}
+          BASE_URL: ${{ secrets.BASE_URL }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
+          CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
+          APP_KEY_SECRET: ${{ secrets.APP_KEY }}
+        run: |
+          set -euo pipefail
+          APP="$(tail -n1 /tmp/app_dir.txt)"
+          EXISTING_KEY=$(ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
+            "if [ -f '${APP}/.env' ]; then grep '^APP_KEY=' '${APP}/.env' | head -1 | cut -d= -f2-; fi" || true)
+          if [ -n "${APP_KEY_SECRET:-}" ]; then APP_KEY="$APP_KEY_SECRET"
+          elif [ -n "${EXISTING_KEY:-}" ]; then APP_KEY="$EXISTING_KEY"
+          else APP_KEY=$(php -r 'echo "base64:".base64_encode(random_bytes(32));'); fi
+          NAME="${SITE_NAME:-Gratis planten}"
+          ENC=$(echo "${SMTP_SECURE:-ssl}" | tr '[:upper:]' '[:lower:]')
+          umask 077
+          {
+            echo "APP_NAME=\"${NAME}\""
+            echo "SITE_NAME=\"${NAME}\""
+            echo "APP_ENV=production"
+            echo "APP_KEY=${APP_KEY}"
+            echo "APP_DEBUG=false"
+            echo "APP_URL=${BASE_URL}"
+            echo "NOINDEX=false"
+            echo "APP_LOCALE=nl"
+            echo "APP_FALLBACK_LOCALE=nl"
+            echo "LOG_CHANNEL=stack"
+            echo "LOG_LEVEL=error"
+            echo "DB_CONNECTION=mysql"
+            echo "DB_HOST=${DB_HOST}"
+            echo "DB_PORT=3306"
+            echo "DB_DATABASE=${DB_NAME}"
+            echo "DB_USERNAME=${DB_USER}"
+            echo "DB_PASSWORD=${DB_PASS}"
+            echo "SESSION_DRIVER=database"
+            echo "SESSION_SECURE_COOKIE=true"
+            echo "QUEUE_CONNECTION=database"
+            echo "CACHE_STORE=database"
+            echo "MAIL_MAILER=smtp"
+            echo "MAIL_HOST=${SMTP_HOST}"
+            echo "MAIL_PORT=${SMTP_PORT:-465}"
+            echo "MAIL_USERNAME=${SMTP_USER}"
+            echo "MAIL_PASSWORD=${SMTP_PASS}"
+            echo "MAIL_ENCRYPTION=${ENC}"
+            echo "MAIL_FROM_ADDRESS=${SMTP_FROM}"
+            echo "MAIL_FROM_NAME=\"${NAME}\""
+            echo "CRON_TOKEN=${CRON_TOKEN}"
+          } > /tmp/stekjes.env
+          scp -i ~/.ssh/deploy_key -P "${P:-22}" /tmp/stekjes.env "$U@$H:${APP}/.env"
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "chmod 600 '${APP}/.env'"
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s <<EOF
+          set -euo pipefail
+          cd '${APP}'
+          mkdir -p storage/framework/{cache,sessions,views} storage/logs bootstrap/cache
+          chmod -R ug+rwx storage bootstrap/cache
+          php artisan migrate --force
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+          EOF
+          rm -f /tmp/stekjes.env
+
+      - name: Controle
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          set -euo pipefail
+          code=$(curl -sS -o /tmp/home.html -w '%{http_code}' "${BASE%/}/" || echo 000)
+          echo "production http ${code}"
+          test "$code" = "200"
+          grep -q 'Gratis planten' /tmp/home.html
