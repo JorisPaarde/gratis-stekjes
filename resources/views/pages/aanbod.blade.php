@@ -13,10 +13,11 @@
       api_zoeken: @json(route('api.zoeken')),
       api_partners: @json(route('api.partners')),
       bericht_starten: @json(url('/account/bericht-starten')),
+      api_nu_te_stekken: @json(route('api.nu-te-stekken')),
       bericht_binnenkort: false
     };
   </script>
-  @vite(['resources/css/aanbod.css'])
+  @vite(['resources/css/aanbod.css', 'resources/css/nu-te-stekken.css'])
 @endpush
 
 @section('content')
@@ -66,6 +67,10 @@
     @endauth
   </p>
 </section>
+
+@if(!empty($nuTeStekken) && count($nuTeStekken['groepen']))
+  @include('partials.nu-te-stekken', ['nuTeStekken' => $nuTeStekken, 'headingId' => 'nu-te-stekken-titel-aanbod'])
+@endif
 @endsection
 
 @push('scripts')

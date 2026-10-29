@@ -7,7 +7,38 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- (volgende PRs) partners-markers, nu te stekken, admin/AVG, SEO-pagina’s.
+- (volgende PRs) restyle / polish.
+
+## [0.9.0] - 2026-10-29
+
+### Added
+
+- SEO-content: `/hoe-werkt-het`, `/hulpmiddelen`, `/over`, `/doe-mee` → registreren.
+- Stektips-index + 16 soortpagina’s uit `data/stektips.json`; component-CSS `stektips.css`.
+- `/sitemap.xml`; navigatie linkt naar stektips/hulpmiddelen/over.
+
+## [0.8.0] - 2026-10-29
+
+### Added
+
+- AVG: JSON-export (`/account/export`) en account verwijderen (`/account/verwijderen`); privacyverklaring bijgewerkt.
+- Beheer `/beheer` (session + `ADMIN_PASSWORD`): CRUD partnermarkers (PDOK), meldingen-afhandeling wanneer `reports` bestaat.
+- Component-CSS `admin.css`.
+
+## [0.7.0] - 2026-10-29
+
+### Added
+
+- Service + `/api/nu-te-stekken` voor maandkalender uit `data/nu-te-stekken.json` (Europe/Amsterdam).
+- “Nu te stekken”-blok op home en aanbod (methode, tip, planten, bron); component-CSS `resources/css/nu-te-stekken.css`.
+
+## [0.6.0] - 2026-10-29
+
+### Added
+
+- Tabel `partner_markers` + `/api/partners` (zichtbare markers, type-filter, afgeronde lat/lon, geen `bron`).
+- Partnerspagina `/partners` (Voedselbosbouw, MeerBomen Nu + overige links); component-CSS `resources/css/partners.css`.
+- Navigatie/homepage linken naar partnerspagina; kaartfilters blijven via bestaande `zoeken.js` / `aanbod.css`.
 
 ## [0.5.0] - 2026-10-29
 

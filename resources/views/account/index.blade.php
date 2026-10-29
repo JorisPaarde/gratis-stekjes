@@ -23,6 +23,10 @@
       · <a href="{{ route('account.inbox') }}">Inbox</a>
       · <a href="{{ route('aanbod') }}">Kaart</a>
     </p>
+    <p>
+      <a href="{{ route('account.export') }}">Gegevens downloaden (JSON)</a>
+      · <a href="{{ route('account.verwijderen') }}">Account verwijderen</a>
+    </p>
   </div>
 
   <p style="margin-top:1.25rem">

@@ -5,6 +5,10 @@
 @section('canonical', $canonical)
 @section('body_class', 'page-home')
 
+@push('head')
+  @vite(['resources/css/nu-te-stekken.css'])
+@endpush
+
 @section('content')
 <section class="hero wrap">
   <h1 class="hero-brand">{{ config('site.name') }}</h1>
@@ -64,26 +68,7 @@
 </section>
 
 @if($nuTeStekken && count($nuTeStekken['groepen']))
-<section class="section wrap nu-te-stekken" aria-labelledby="nu-te-stekken-titel">
-  <h2 id="nu-te-stekken-titel">Nu te stekken — {{ $nuTeStekken['maand_naam'] }}</h2>
-  <p class="section-intro">{{ $nuTeStekken['intro'] }}</p>
-  <div class="nu-te-stekken-grid">
-    @foreach($nuTeStekken['groepen'] as $groep)
-      <article class="soft-card">
-        <h3>{{ $groep['titel'] ?? '' }}</h3>
-        @if(!empty($groep['tip']))
-          <p class="muted">{{ $groep['tip'] }}</p>
-        @endif
-        <ul>
-          @foreach(($groep['planten'] ?? []) as $p)
-            <li>{{ $p['naam'] ?? '' }}</li>
-          @endforeach
-        </ul>
-      </article>
-    @endforeach
-  </div>
-  <p class="muted">Uitgebreide stekpagina’s per soort: <em>binnenkort</em>.</p>
-</section>
+  @include('partials.nu-te-stekken', ['nuTeStekken' => $nuTeStekken, 'headingId' => 'nu-te-stekken-titel'])
 @endif
 
 <section class="section wrap" id="veiligheid" aria-labelledby="veilig-titel">
@@ -111,6 +96,7 @@
       <p class="muted">Geen bezoeklocatie op onze kaart.</p>
     </article>
   </div>
+  <p><a href="{{ route('partners') }}">Alle partners en links</a> · plekken met bezoeklocatie op de <a href="{{ route('aanbod') }}">kaart</a>.</p>
 </section>
 
 <section class="section wrap" aria-labelledby="verder-titel">
@@ -124,7 +110,7 @@
     <div class="soft-card">
       <h3>Stektips</h3>
       <p>Praktische tips per soort.</p>
-      <p><span class="badge-soon">binnenkort</span></p>
+      <p><a href="{{ route('stektips.index') }}">Bekijk stektips</a></p>
     </div>
     <div class="soft-card">
       <h3>Privacy</h3>

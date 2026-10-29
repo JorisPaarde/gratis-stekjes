@@ -258,59 +258,6 @@ a:hover { color: var(--accent); }
 .soft-card h3 { margin: 0 0 .35rem; font-family: var(--font-display); font-size: 1.15rem; }
 .soft-card p { margin: 0; color: var(--ink-soft); }
 
-.nu-te-stekken-grid {
-  display: grid; gap: 1rem;
-  grid-template-columns: 1fr;
-  margin: 0 0 1rem;
-}
-@media (min-width: 720px) {
-  .nu-te-stekken-grid { grid-template-columns: repeat(2, 1fr); }
-}
-.nu-te-stekken-card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 1.1rem 1.15rem 1.2rem;
-  box-shadow: var(--shadow);
-  opacity: 1;
-  transform: none;
-}
-.nu-te-stekken-card h3 {
-  font-family: var(--font-display);
-  font-size: 1.2rem; margin: 0 0 .45rem; color: var(--leaf-deep);
-}
-.nu-te-stekken-card > p { margin: 0 0 .75rem; color: var(--ink-soft); font-size: .98rem; }
-.nu-te-stekken-methode { margin: 0 0 .55rem !important; }
-.nu-te-stekken-planten {
-  display: flex; flex-wrap: wrap; gap: .45rem .55rem;
-  margin: 0 0 .65rem !important;
-}
-.nu-te-stekken-plant {
-  display: inline-block;
-  text-decoration: none;
-  font-weight: 560;
-  font-size: .92rem;
-  color: var(--leaf-deep);
-  background: rgba(47, 107, 69, 0.1);
-  border-radius: .45rem;
-  padding: .2rem .55rem;
-}
-.nu-te-stekken-plant:hover, .nu-te-stekken-plant:focus-visible {
-  background: rgba(47, 107, 69, 0.18);
-  color: var(--accent);
-}
-.nu-te-stekken-plant.is-plain {
-  color: var(--ink-soft);
-  background: rgba(28, 46, 34, 0.06);
-  font-weight: 500;
-}
-.nu-te-stekken-bron {
-  margin: 0 !important;
-  font-size: .85rem;
-  color: var(--ink-soft);
-}
-.nu-te-stekken-bron a { font-weight: 560; }
-
 .search-layout {
   display: grid; gap: 1rem;
 }
@@ -421,10 +368,6 @@ a:hover { color: var(--accent); }
   .waarom-card:nth-child(2) { animation-delay: .08s; }
   .waarom-card:nth-child(3) { animation-delay: .16s; }
   .cta-panel { animation: rise .9s ease both; }
-  .nu-te-stekken-card {
-    animation: rise .75s ease both;
-    animation-delay: calc(var(--i, 0) * .07s);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -432,7 +375,7 @@ a:hover { color: var(--accent); }
     animation: none !important; transition: none !important;
     scroll-behavior: auto !important;
   }
-  .hero, .waarom-card, .cta-panel, .nu-te-stekken-card {
+  .hero, .waarom-card, .cta-panel {
     opacity: 1 !important; transform: none !important;
   }
 }
@@ -463,7 +406,6 @@ a:hover { color: var(--accent); }
 .grid-cards { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
 .list-plain { padding-left: 1.2rem; color: var(--ink); }
 .list-plain li { margin: .4rem 0; }
-.nu-te-stekken-grid { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); margin-top: 1rem; }
 .partners-stack { display: grid; gap: 1rem; }
 .stack { display: grid; gap: 1rem; }
 .prose h2 { margin-top: 1.75rem; }

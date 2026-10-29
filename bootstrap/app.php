@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AdminAuth;
 use App\Http\Middleware\NoIndexHeader;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -14,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->append(NoIndexHeader::class);
         $middleware->trustProxies(at: '*');
+        $middleware->alias([
+            'admin' => AdminAuth::class,
+        ]);
         $middleware->redirectGuestsTo(fn () => route('account.inloggen'));
         $middleware->redirectUsersTo(fn () => route('account.index'));
     })

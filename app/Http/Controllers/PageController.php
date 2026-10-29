@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
+use App\Services\NuTeStekken;
+use App\Services\Stektips;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class PageController extends Controller
 {
-    public function home(): View
+    public function home(NuTeStekken $calendar): View
     {
         $site = config('site.name');
 
@@ -18,7 +19,7 @@ class PageController extends Controller
             'title' => $site,
             'metaDescription' => config('site.description'),
             'canonical' => url('/'),
-            'nuTeStekken' => $this->nuTeStekkenBlock(),
+            'nuTeStekken' => $calendar->blockForViews(),
             'schema' => [
                 '@context' => 'https://schema.org',
                 '@type' => 'WebSite',
@@ -50,36 +51,29 @@ class PageController extends Controller
         return response($body, 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
     }
 
-    /** @return array{maand_naam: string, intro: string, groepen: list<array<string, mixed>>}|null */
-    private function nuTeStekkenBlock(): ?array
+    public function sitemap(Stektips $stektips): Response
     {
-        $path = base_path('data/nu-te-stekken.json');
-        if (! is_readable($path)) {
-            return null;
-        }
-
-        $data = json_decode((string) file_get_contents($path), true);
-        if (! is_array($data)) {
-            return null;
-        }
-
-        $when = Carbon::now('Europe/Amsterdam');
-        $month = (int) $when->month;
-        $block = $data['maanden'][(string) $month] ?? $data['maanden'][$month] ?? null;
-        if (! is_array($block)) {
-            return null;
-        }
-
-        $namen = [
-            1 => 'januari', 2 => 'februari', 3 => 'maart', 4 => 'april',
-            5 => 'mei', 6 => 'juni', 7 => 'juli', 8 => 'augustus',
-            9 => 'september', 10 => 'oktober', 11 => 'november', 12 => 'december',
+        $urls = [
+            url('/'),
+            route('hoe-werkt-het'),
+            route('aanbod'),
+            route('stektips.index'),
+            route('hulpmiddelen'),
+            route('over'),
+            route('privacy'),
+            route('partners'),
         ];
+        foreach ($stektips->all() as $soort) {
+            $urls[] = route('stektips.show', ['slug' => $soort['slug']]);
+        }
 
-        return [
-            'maand_naam' => $namen[$month] ?? (string) $month,
-            'intro' => (string) ($block['intro'] ?? 'Planten die in deze maand gangbaar te vermeerderen zijn.'),
-            'groepen' => is_array($block['groepen'] ?? null) ? $block['groepen'] : [],
-        ];
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
+        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
+        foreach ($urls as $loc) {
+            $xml .= '  <url><loc>'.e($loc).'</loc></url>'."\n";
+        }
+        $xml .= '</urlset>'."\n";
+
+        return response($xml, 200, ['Content-Type' => 'application/xml; charset=UTF-8']);
     }
 }

@@ -29,4 +29,19 @@ return [
 
     /** Gedeeld secret voor /cron (header X-Cron-Token). */
     'cron_token' => env('CRON_TOKEN', ''),
+
+    /** Types voor partnermarkers op de kaart. */
+    'partner_types' => [
+        'partner' => 'Partner',
+        'voedselbos' => 'Voedselbos',
+        'plantenasiel' => 'Plantenasiel',
+        'plantenbieb' => 'Plantenbieb',
+        'ruilkast' => 'Ruilkast',
+    ],
+
+    /** Gedeeld beheerwachtwoord (session admin_ok). Leeg = /beheer uit. */
+    'admin_password' => env('ADMIN_PASSWORD', ''),
+
+    /** Dataminimalisatie / retentie (beleidstekst + toekomstige purge). */
+    'inactive_account_months' => (int) env('INACTIVE_ACCOUNT_MONTHS', 12),
 ];

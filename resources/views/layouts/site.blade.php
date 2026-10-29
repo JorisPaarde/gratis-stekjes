@@ -36,10 +36,12 @@
       <a class="brand" href="{{ route('home') }}">{{ $siteName }}</a>
       <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="hoofdmenu" data-nav-toggle>Menu</button>
       <nav id="hoofdmenu" class="site-nav" data-nav>
-        <a href="{{ route('home') }}#hoe-werkt-het">Hoe werkt het</a>
+        <a href="{{ route('hoe-werkt-het') }}">Hoe werkt het</a>
         <a href="{{ route('aanbod') }}">Aanbod</a>
-        <span class="nav-soon" title="Volgt in een volgende release">Stektips <em>binnenkort</em></span>
-        <a href="{{ route('home') }}#partners">Partners</a>
+        <a href="{{ route('stektips.index') }}">Stektips</a>
+        <a href="{{ route('hulpmiddelen') }}">Hulpmiddelen</a>
+        <a href="{{ route('partners') }}">Partners</a>
+        <a href="{{ route('over') }}">Over</a>
         <a href="{{ route('privacy') }}">Privacy</a>
         @auth
           <a href="{{ route('account.index') }}">Account</a>
@@ -67,6 +69,8 @@
       <p><strong>{{ $siteName }}</strong> — planten delen, een praatje als enige prijs.</p>
       <p class="footer-links">
         <a href="{{ route('privacy') }}">Privacy</a>
+        <a href="{{ route('over') }}">Over</a>
+        <a href="{{ route('stektips.index') }}">Stektips</a>
         <a href="{{ route('aanbod') }}">Aanbod</a>
         @auth
           <a href="{{ route('account.index') }}">Account</a>
