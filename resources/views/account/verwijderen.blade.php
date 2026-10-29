@@ -14,8 +14,8 @@
   @endif
   <form class="form" method="post" action="{{ route('account.verwijderen') }}">
     @csrf
-    <label>Typ <strong>verwijder</strong> om te bevestigen
-      <input name="bevestig" required autocomplete="off" value="{{ old('bevestig') }}">
+    <label>Bevestig met je wachtwoord
+      <input type="password" name="password" required maxlength="200" autocomplete="current-password">
     </label>
     <button class="btn" type="submit">Account definitief verwijderen</button>
   </form>

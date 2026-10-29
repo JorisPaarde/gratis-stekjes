@@ -23,15 +23,21 @@ class DeleteAccountController extends Controller
 
     public function destroy(Request $request, AvgService $avg): RedirectResponse
     {
+        $request->validate([
+            'password' => ['required', 'string'],
+        ], [
+            'password.required' => 'Bevestig met je wachtwoord.',
+        ]);
+
         $result = $avg->deleteUserAccount(
             $request->user(),
-            (string) $request->input('bevestig', '')
+            (string) $request->input('password', '')
         );
 
         if (empty($result['ok'])) {
             return back()->withErrors([
-                'bevestig' => $result['error'] ?? 'Verwijderen mislukt.',
-            ])->withInput();
+                'password' => $result['error'] ?? 'Verwijderen mislukt.',
+            ]);
         }
 
         return redirect()

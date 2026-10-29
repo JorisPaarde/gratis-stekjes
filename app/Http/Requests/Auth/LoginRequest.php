@@ -21,6 +21,7 @@ class LoginRequest extends FormRequest
         return [
             'email' => ['required', 'string', 'email:filter', 'max:254'],
             'password' => ['required', 'string', 'max:200'],
+            'remember' => ['nullable', 'boolean'],
             'website' => ['nullable', 'string', 'max:200'],
             'form_started' => ['required', 'integer'],
             'next' => ['nullable', 'string', 'max:200'],

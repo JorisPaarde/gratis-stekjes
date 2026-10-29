@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Notifications\ResetPasswordDutch;
 use App\Notifications\VerifyEmailDutch;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -20,6 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'name',
         'email',
+        'pending_email',
         'password',
         'active',
         'telefoon',
@@ -50,6 +52,11 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new VerifyEmailDutch);
     }
 
+    public function sendPasswordResetNotification(#[\SensitiveParameter] $token): void
+    {
+        $this->notify(new ResetPasswordDutch($token));
+    }
+
     public function isActive(): bool
     {
         return (bool) $this->active;
@@ -60,6 +67,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->lat !== null
             && $this->lon !== null
             && trim((string) $this->locatie_label) !== '';
+    }
+
+    public function hasPendingEmail(): bool
+    {
+        return trim((string) $this->pending_email) !== '';
     }
 
     public function aanbod(): HasMany
