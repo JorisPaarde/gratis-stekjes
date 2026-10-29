@@ -37,7 +37,8 @@ class AanbodController extends Controller
             'formStarted' => time(),
             'invasieveTerms' => $invasieve->termsForClient(),
             'invasieveUitlegUrl' => route('invasieve-soorten'),
-            'plantensoortenZoekUrl' => route('api.plantensoorten'),
+            // Relatief pad: CSP connect-src 'self' (geen cross-origin fetch).
+            'plantensoortenZoekUrl' => '/api/plantensoorten',
         ]);
     }
 

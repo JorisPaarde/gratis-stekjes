@@ -2,6 +2,9 @@
  * Toegankelijke plantsoort-combobox (WAI-ARIA APG).
  * Debounced fetch, AbortController, pijltjes/Enter/Escape/Tab.
  * Zonder JS blijft het een gewoon tekstveld.
+ *
+ * CSP: alleen Vite-bundle ('self') + fetch naar eigen domein (connect-src 'self').
+ * Geen externe scripts/CDN.
  */
 (function () {
   var DEBOUNCE_MS = 280;

@@ -13,8 +13,8 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- Autocomplete voor plantensoort bij stekje aanbieden: catalogus `data/plantensoorten.json` (48 stektips + gangbare NL tuin-/kamer-/moestuinplanten), JSON-zoekendpoint `/api/plantensoorten` (named rate limit 60/min per IP), toegankelijke combobox (WAI-ARIA), optionele koppeling `aanbod.plantensoort_id` (suggestie of exacte server-side match op naam/synoniem/Latijn; vrije invoer blijft mogelijk).
-- Pest-tests voor endpoint, koppeling, vrije invoer, invasieve check en rate limit.
+- Autocomplete voor plantensoort bij stekje aanbieden: catalogus `data/plantensoorten.json` (48 stektips + gangbare NL tuin-/kamer-/moestuinplanten), JSON-zoekendpoint `/api/plantensoorten` (named rate limit 60/min per IP), toegankelijke combobox (WAI-ARIA), optionele koppeling `aanbod.plantensoort_id` (suggestie of exacte server-side match op naam/synoniem/Latijn; vrije invoer blijft mogelijk). Vite-JS + fetch naar eigen domein (CSP `connect-src 'self'`; geen externe scripts behalve bestaande unpkg-toelating).
+- Pest-tests voor endpoint, koppeling, vrije invoer, invasieve check, rate limit en CSP-compatibiliteit.
 
 ### Changed
 

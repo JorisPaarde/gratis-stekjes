@@ -255,5 +255,23 @@ test('aanbodpagina toont plantensoort-veld met combobox-markup', function () {
         ->assertSee('name="tekst"', false)
         ->assertSee('name="plantensoort_id"', false)
         ->assertSee('role="listbox"', false)
-        ->assertSee(route('api.plantensoorten'), false);
+        ->assertSee('/api/plantensoorten', false);
+});
+
+test('autocomplete-JS blijft binnen CSP (self + connect-src self)', function () {
+    $js = file_get_contents(base_path('resources/js/plantsoort-autocomplete.js'));
+    expect($js)->not->toBeFalse();
+    expect($js)->not->toMatch('/https?:\\/\\/(?!localhost)/');
+    expect($js)->not->toContain('unpkg.com');
+    expect($js)->toContain('fetch(url');
+
+    $user = plantsoortUser();
+    $response = $this->actingAs($user)
+        ->get(route('account.aanbod'))
+        ->assertOk();
+
+    $csp = (string) $response->headers->get('Content-Security-Policy');
+    expect($csp)->toContain("connect-src 'self'")
+        ->and($csp)->toContain("script-src 'self' https://unpkg.com")
+        ->and($response->getContent())->toContain('data-plantsoort-url="/api/plantensoorten"');
 });
