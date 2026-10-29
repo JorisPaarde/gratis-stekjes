@@ -46,7 +46,8 @@ Route::get('/voor-organisaties', [VoorOrganisatiesController::class, 'index'])->
 Route::get('/voor-organisaties/aanmelden', [VoorOrganisatiesController::class, 'create'])
     ->name('voor-organisaties.aanmelden');
 Route::post('/voor-organisaties/aanmelden', [VoorOrganisatiesController::class, 'store'])
-    ->middleware('throttle:10,1');
+    ->middleware('throttle:10,1')
+    ->name('voor-organisaties.aanmelden.store');
 Route::get('/organisaties', [OrganisatieController::class, 'index'])->name('organisaties.index');
 Route::get('/organisaties/{slug}', [OrganisatieController::class, 'show'])
     ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
@@ -101,6 +102,7 @@ Route::middleware('guest')->group(function () {
     Route::get('/account/wachtwoord-reset/{token}', [ResetPasswordController::class, 'create'])
         ->name('account.wachtwoord.reset');
     Route::post('/account/wachtwoord-reset', [ResetPasswordController::class, 'store'])
+        ->middleware('throttle:10,1')
         ->name('account.wachtwoord.reset.store');
 });
 

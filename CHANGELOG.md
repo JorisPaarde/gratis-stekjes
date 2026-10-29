@@ -9,6 +9,23 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.21.0] - 2026-10-29
+
+### Added
+
+- AVG-inventaris (`docs/avg-inventaris.md`) op basis van code/migraties/config, met gaten gemarkeerd.
+- Security-headers middleware: HTTPS-afdwingen op staging/productie, HSTS (≥1 jaar + includeSubDomains), CSP, X-Content-Type-Options, Referrer-Policy, X-Frame-Options, Permissions-Policy; sessiecookies secure+httponly+samesite.
+- Versleutelde opslag (Laravel encrypted casts) voor berichtinhoud, telefoon, deelplek-contact-e-mail en meldingsreden; e-mail blijft plaintext (login/uniek) — gemotiveerd in inventaris.
+- Log-processor `MaskPersonalDataProcessor` maskeert e-mail/IP in logs.
+- Artisan `backup:database-encrypted` + `docs/backups.md` (server-cron/off-site opslag blijft open punt).
+- Rate-limit op aanbod plaatsen; throttle op wachtwoord-reset-POST.
+
+### Changed
+
+- Privacyverklaring sluit aan op inventaris (gegevens, grondslag, cookies, derden, rechten met links naar export/wissen); JP Web Creation + KvK/btw + concept-banner; ik-vorm. Geen privéadres/telefoon op de site (in lijn met 0.20.3).
+- Account wissen ruimt ook password-reset-tokens en sessies op; export bevat `fotos[]` (leeg zolang geen upload) en ontsleutelde berichten via Eloquent.
+- Deelplek-aanmelding slaat geen straatadres op (alleen postcode-4 + plaats; coords afgerond).
+
 ## [0.20.3] - 2026-10-29
 
 ### Changed
@@ -39,6 +56,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 ### Changed
 
 - Privacy: verwerkingsverantwoordelijke met openbare JP Web Creation-gegevens (adres, KvK, btw, telefoon) van jpwebcreation.nl; concept-banner zonder placeholders; sitecontact overal `info@gratisplanten.nl` (geen `info@jpwebcreation.nl` in views); mail-from default idem.
+
 
 ## [0.20.0] - 2026-10-29
 

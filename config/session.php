@@ -169,7 +169,14 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE'),
+    // Staging/productie: Secure tenzij SESSION_SECURE_COOKIE expliciet false.
+    'secure' => filter_var(
+        env(
+            'SESSION_SECURE_COOKIE',
+            in_array(env('APP_ENV'), ['production', 'staging'], true) ? 'true' : 'false'
+        ),
+        FILTER_VALIDATE_BOOL
+    ),
 
     /*
     |--------------------------------------------------------------------------

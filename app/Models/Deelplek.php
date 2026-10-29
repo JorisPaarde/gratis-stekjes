@@ -48,6 +48,7 @@ class Deelplek extends Model
             'lng' => 'float',
             'geraadpleegd' => 'date',
             'visible' => 'boolean',
+            'contact_email' => 'encrypted',
             'privacy_at' => 'datetime',
             'reviewed_at' => 'datetime',
         ];

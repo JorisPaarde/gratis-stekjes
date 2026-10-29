@@ -9,8 +9,10 @@ use App\Models\Aanbod;
 use App\Rules\GeenInvasieveSoort;
 use App\Services\InvasieveSoorten;
 use App\Support\FormGuard;
+use App\Support\ThrottleMessage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\View\View;
 
 class AanbodController extends Controller
@@ -50,6 +52,13 @@ class AanbodController extends Controller
             return back()->withInput()->withErrors(['tekst' => 'Even geduld, het formulier ging te snel.']);
         }
 
+        $throttleKey = 'aanbod-store:'.$user->id;
+        if (RateLimiter::tooManyAttempts($throttleKey, 20)) {
+            return back()
+                ->withInput()
+                ->withErrors(['tekst' => ThrottleMessage::forKey($throttleKey)]);
+        }
+
         $data = $this->validatedAanbod($request);
 
         $ttl = (int) config('stekjes.aanbod_ttl_days', 60);
@@ -60,6 +69,7 @@ class AanbodController extends Controller
             'visible' => true,
             'expires_at' => now()->addDays($ttl),
         ]);
+        RateLimiter::hit($throttleKey, 3600);
 
         return redirect()
             ->route('account.aanbod')

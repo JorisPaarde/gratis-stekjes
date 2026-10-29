@@ -153,3 +153,17 @@ test('privacy pagina linkt naar export en verwijderen', function () {
         ->assertDontSee('info@jpwebcreation.nl', false)
         ->assertDontSee('[in te vullen', false);
 });
+
+test('beheer overzicht redirect zonder admin-sessie', function () {
+    config(['stekjes.admin_password' => adminTestPassphrase()]);
+
+    $this->get(route('beheer.index'))
+        ->assertRedirect(route('beheer.login'));
+});
+
+test('beheer geeft 503 zonder ADMIN_PASSWORD', function () {
+    config(['stekjes.admin_password' => '']);
+
+    $this->get(route('beheer.login'))
+        ->assertStatus(503);
+});

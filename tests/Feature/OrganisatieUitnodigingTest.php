@@ -175,6 +175,9 @@ test('aanmeldformulier maakt pending plek die niet publiek zichtbaar is', functi
     expect($plek->visible)->toBeFalse();
     expect($plek->source)->toBe(Deelplek::SOURCE_AANMELDING);
     expect($plek->contact_email)->toBe('aanmelder@example.org');
+    // AVG: geen exact straatadres in opslag.
+    expect($plek->adres)->not->toContain('Neude');
+    expect($plek->adres)->toContain('Utrecht');
 
     $this->get(route('deelplekken'))
         ->assertOk()

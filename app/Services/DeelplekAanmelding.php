@@ -51,12 +51,10 @@ final class DeelplekAanmelding
             return ['ok' => false, 'error' => 'Adres of plaats niet gevonden. Probeer een postcode of woonplaats (PDOK).'];
         }
 
-        $adresRegel = $adres;
-        if ($postcode !== '') {
-            $adresRegel = trim($adres.($adres !== '' ? ', ' : '').$postcode.' '.$plaats);
-        } elseif ($adres === '') {
-            $adresRegel = $plaats;
-        }
+        // AVG: geen exact straatadres opslaan — alleen postcode-4 + plaats (coords al afgerond).
+        $pc4 = substr(preg_replace('/\D/', '', $postcode) ?? '', 0, 4);
+        $adresRegel = trim(($pc4 !== '' ? $pc4.' ' : '').$plaats);
+        // $adres blijft alleen in de geocode-query hierboven; niet in de database.
 
         $slug = $this->uniqueSlug($naam, $plaats);
 

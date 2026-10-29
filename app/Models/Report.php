@@ -22,6 +22,7 @@ class Report extends Model
     protected function casts(): array
     {
         return [
+            'reason' => 'encrypted',
             'handled' => 'boolean',
             'created_at' => 'datetime',
         ];

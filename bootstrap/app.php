@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AdminAuth;
 use App\Http\Middleware\NoIndexHeader;
+use App\Http\Middleware\SecurityHeaders;
 use App\Support\ThrottleMessage;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -17,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->append(NoIndexHeader::class);
+        $middleware->append(SecurityHeaders::class);
         $middleware->trustProxies(at: '*');
         $middleware->alias([
             'admin' => AdminAuth::class,

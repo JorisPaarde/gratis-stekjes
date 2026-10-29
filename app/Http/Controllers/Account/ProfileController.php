@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 use App\Services\PdokGeocoder;
+use App\Support\Geo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -53,8 +54,9 @@ class ProfileController extends Controller
             'name' => trim($data['voornaam']),
             'telefoon' => trim((string) ($data['telefoon'] ?? '')),
             'locatie_label' => $label,
-            'lat' => $geo['lat'],
-            'lon' => $geo['lon'],
+            // Dubbele afronding: geocoder rondt al af; hier hard afdwingen voor opslag.
+            'lat' => Geo::roundCoord((float) $geo['lat']),
+            'lon' => Geo::roundCoord((float) $geo['lon']),
         ]);
 
         return redirect()
