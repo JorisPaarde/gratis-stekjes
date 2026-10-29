@@ -9,6 +9,17 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.20.3] - 2026-10-29
+
+### Changed
+
+- Privéadres (Bernadottelaan 273, 2037 GR Haarlem) en telefoon (06 21 22 88 84 / tel:+316…) verwijderd van privacy en overal elders; KvK 90397320, btw NL004813310B95, JP Web Creation en `info@gratisplanten.nl` blijven.
+- Footer toont KvK en btw (zichtbaar op homepage en overige pagina’s).
+
+### Added
+
+- Pest-test scant views/content-JSON/config op Bernadottelaan en privételefoon-schrijfwijzen; HTTP-test checkt `/` en `/privacy`.
+
 ## [0.20.2] - 2026-10-29
 
 ### Fixed

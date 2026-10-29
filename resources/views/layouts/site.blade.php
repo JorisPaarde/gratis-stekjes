@@ -86,6 +86,7 @@
       </p>
       <p class="footer-meta">
         <a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a>
+        · KvK 90397320 · btw NL004813310B95
         · Versie {{ config('site.version') }}@if($noindex) · noindex @endif
       </p>
 

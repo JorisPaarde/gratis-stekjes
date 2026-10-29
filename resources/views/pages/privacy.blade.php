@@ -16,10 +16,8 @@
   <p>
     {{ config('site.name') }} is een project van <a href="https://jpwebcreation.nl" rel="noopener noreferrer">JP Web Creation</a>
     (eenmanszaak van Joris Paardekooper Overman).<br>
-    Adres: Bernadottelaan 273, 2037 GR Haarlem<br>
     KvK: 90397320<br>
     Btw: NL004813310B95<br>
-    Telefoon: <a href="tel:+31621228884">06 21 22 88 84</a><br>
     Contact: <a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a>
   </p>
 

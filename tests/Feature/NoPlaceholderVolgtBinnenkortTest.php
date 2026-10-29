@@ -72,10 +72,12 @@ test('privacy, over en initiatieven tonen geen Volgt binnenkort en geen we/wij/o
             ->assertSee('Concept – nog niet definitief', false)
             ->assertSee('JP Web Creation', false)
             ->assertSee('https://jpwebcreation.nl', false)
-            ->assertSee('Bernadottelaan 273', false)
             ->assertSee('90397320', false)
             ->assertSee('NL004813310B95', false)
             ->assertSee('info@gratisplanten.nl', false)
+            ->assertDontSee('Bernadottelaan', false)
+            ->assertDontSee('06 21 22 88 84', false)
+            ->assertDontSee('tel:+31621228884', false)
             ->assertDontSee('info@jpwebcreation.nl', false)
             ->assertDontSee('[in te vullen', false)
             ->assertDontSee('Volgt binnenkort', false),
