@@ -1,0 +1,9 @@
+config.php
+/data/*.sqlite
+/data/*.sqlite3
+*.sqlite
+*.sqlite3
+.DS_Store
+*.log
+/artifacts/
+/.phpunit.result.cache
