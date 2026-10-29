@@ -12,6 +12,7 @@ use App\Services\Stektips;
 use Database\Seeders\DeelplekkenSeeder;
 use Database\Seeders\DemoSeeder;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Crawl-achtige statuscontrole: elke publieke + ingelogde route moet < 500 geven
@@ -135,27 +136,43 @@ test('route-audit gevuld: publiek + account + beheer < 500', function () {
 });
 
 test('organisaties/{slug} blijft < 500 met config:cache + route:cache en APP_DEBUG=false', function () {
-    Artisan::call('db:seed', ['--class' => DeelplekkenSeeder::class]);
+    // Bestand-sqlite i.p.v. :memory:, anders verdwijnt het schema bij config:cache / nieuwe PDO.
+    $dbPath = database_path('route-audit-cache-test.sqlite');
+    if (is_file($dbPath)) {
+        unlink($dbPath);
+    }
+    touch($dbPath);
 
-    $previousDebug = (bool) config('app.debug');
-    $previousEnvDebug = getenv('APP_DEBUG');
+    $prevDebug = (bool) config('app.debug');
+    config([
+        'app.debug' => false,
+        'database.default' => 'sqlite',
+        'database.connections.sqlite.database' => $dbPath,
+    ]);
+    putenv('APP_DEBUG=false');
+    putenv('DB_CONNECTION=sqlite');
+    putenv('DB_DATABASE='.$dbPath);
+    $_ENV['APP_DEBUG'] = 'false';
+    $_ENV['DB_CONNECTION'] = 'sqlite';
+    $_ENV['DB_DATABASE'] = $dbPath;
+    $_SERVER['APP_DEBUG'] = 'false';
+    $_SERVER['DB_CONNECTION'] = 'sqlite';
+    $_SERVER['DB_DATABASE'] = $dbPath;
 
     try {
-        // Productie-achtig: geen debug, gecachte config + routes (zoals staging deploy).
-        putenv('APP_DEBUG=false');
-        $_ENV['APP_DEBUG'] = 'false';
-        $_SERVER['APP_DEBUG'] = 'false';
-        config(['app.debug' => false]);
+        DB::purge('sqlite');
+        DB::reconnect('sqlite');
 
-        Artisan::call('config:cache');
-        Artisan::call('route:cache');
-
-        // Kernel opnieuw met gecachte routes/config.
-        $this->refreshApplication();
-        config(['app.debug' => false]);
+        $this->artisan('config:cache')->assertSuccessful();
+        $this->artisan('route:cache')->assertSuccessful();
+        DB::purge('sqlite');
+        DB::reconnect('sqlite');
+        $this->artisan('migrate', ['--force' => true])->assertSuccessful();
+        $this->seed(DeelplekkenSeeder::class);
 
         $orgs = app(Organisaties::class)->all();
         expect($orgs)->not->toBeEmpty();
+        expect(collect($orgs)->pluck('slug'))->toContain('velt');
 
         foreach ($orgs as $org) {
             $path = '/organisaties/'.$org['slug'];
@@ -168,18 +185,12 @@ test('organisaties/{slug} blijft < 500 met config:cache + route:cache en APP_DEB
         $this->get('/voor-organisaties')->assertOk();
         $this->get('/organisaties')->assertOk();
     } finally {
-        Artisan::call('config:clear');
-        Artisan::call('route:clear');
-        if ($previousEnvDebug === false) {
-            putenv('APP_DEBUG');
-            unset($_ENV['APP_DEBUG'], $_SERVER['APP_DEBUG']);
-        } else {
-            putenv('APP_DEBUG='.$previousEnvDebug);
-            $_ENV['APP_DEBUG'] = $previousEnvDebug;
-            $_SERVER['APP_DEBUG'] = $previousEnvDebug;
+        $this->artisan('config:clear');
+        $this->artisan('route:clear');
+        config(['app.debug' => $prevDebug]);
+        if (is_file($dbPath)) {
+            unlink($dbPath);
         }
-        $this->refreshApplication();
-        config(['app.debug' => $previousDebug]);
     }
 });
 
