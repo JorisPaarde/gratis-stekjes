@@ -1,0 +1,28 @@
+{
+    "hortensia": {
+        "snoei_slug": "hortensia-snoeien",
+        "aanbod_plant": "hortensia",
+        "wilgenwater": true,
+        "extra_artikelen": []
+    },
+    "lavendel": {
+        "snoei_slug": "lavendel-snoeien",
+        "aanbod_plant": "lavendel",
+        "wilgenwater": true,
+        "extra_artikelen": []
+    },
+    "monstera": {
+        "snoei_slug": null,
+        "aanbod_plant": "monstera",
+        "wilgenwater": true,
+        "extra_artikelen": [
+            "monstera-stekken-in-water"
+        ]
+    },
+    "vijg": {
+        "snoei_slug": "vijg-snoeien",
+        "aanbod_plant": "vijg",
+        "wilgenwater": true,
+        "extra_artikelen": []
+    }
+}

@@ -1,50 +1,69 @@
 {
-  "slug": "bladstek",
-  "titel": "Bladstek: nieuwe planten uit één blad",
-  "samenvatting": "Geschikt voor veel kamerplanten en vetplanten. Heel blad of bladdeel in luchtige stekgrond; niet te nat.",
-  "zoekwoorden": [
-    "bladstek",
-    "blad stekken",
-    "stekken van blad",
-    "leaf cuttings",
-    "sanseveria stekken"
-  ],
-  "categorieen": ["stekmethoden"],
-  "gerelateerde_soorten": ["sanseveria", "begonia", "kaaps-viooltje", "peperomia", "echeveria", "jadeplant", "kalanchoe"],
-  "seizoenen": ["lente", "zomer"],
-  "maanden": [3, 4, 5, 6],
-  "niveau": "beginner",
-  "locatie": "binnen",
-  "inhoud": [
-    {
-      "type": "p",
-      "tekst": "Bij bladstek gebruik je een heel blad of een bladdeel. De RHS noemt dit vooral voor tere kamerplanten en succulenten: onder meer begonia, kaaps viooltje / streptocarpus, peperomia, sanseveria, echeveria, kalanchoë en jadeplant (Crassula)."
-    },
-    {
-      "type": "h2",
-      "tekst": "Praktisch"
-    },
-    {
-      "type": "ul",
-      "items": [
-        "Kies gezond, volgroeid blad zonder schade of plaag.",
-        "Heel blad met steel: basis net in de stekgrond (kaaps viooltje, peperomia).",
-        "Bladdeel: snijd bij sanseveria horizontale stukjes (± 5 cm) met de onderkant naar beneden; bij begonia kun je nerven inkerven of vierkantjes met nerf vastzetten.",
-        "Succulenten: snijvlak eerst een dag laten indrogen (callus) voor je plant.",
-        "Medium: peat-free zaai-/stekgrond of mix met scherp zand; licht vochtig, hoge luchtvochtigheid, ± 20 °C, geen felle zon."
-      ]
-    },
-    {
-      "type": "p",
-      "tekst": "Te nat = rotten. Lucht regelmatig en verwijder bedorven blad. Plantjes pas oppotten als ze groot genoeg zijn om zelfstandig te groeien — ideaal om gratis door te geven."
-    }
-  ],
-  "bronnen": [
-    {
-      "titel": "RHS — Leaf cuttings",
-      "url": "https://www.rhs.org.uk/propagation/leaf-cuttings"
-    }
-  ],
-  "duurzamer_alternatief": null,
-  "howto": true
+    "slug": "bladstek",
+    "titel": "Bladstek: nieuwe planten uit één blad",
+    "samenvatting": "Geschikt voor veel kamerplanten en vetplanten. Heel blad of bladdeel in luchtige stekgrond; niet te nat.",
+    "zoekwoorden": [
+        "bladstek",
+        "blad stekken",
+        "stekken van blad",
+        "leaf cuttings",
+        "sanseveria stekken"
+    ],
+    "categorieen": [
+        "stekken"
+    ],
+    "gerelateerde_soorten": [
+        "sanseveria",
+        "begonia",
+        "kaaps-viooltje",
+        "peperomia",
+        "echeveria",
+        "jadeplant",
+        "kalanchoe"
+    ],
+    "seizoenen": [
+        "lente",
+        "zomer"
+    ],
+    "maanden": [
+        3,
+        4,
+        5,
+        6
+    ],
+    "niveau": "beginner",
+    "locatie": "binnen",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Bij bladstek gebruik je een heel blad of een bladdeel. De RHS noemt dit vooral voor tere kamerplanten en succulenten: onder meer begonia, kaaps viooltje / streptocarpus, peperomia, sanseveria, echeveria, kalanchoë en jadeplant (Crassula)."
+        },
+        {
+            "type": "h2",
+            "tekst": "Praktisch"
+        },
+        {
+            "type": "ul",
+            "items": [
+                "Kies gezond, volgroeid blad zonder schade of plaag.",
+                "Heel blad met steel: basis net in de stekgrond (kaaps viooltje, peperomia).",
+                "Bladdeel: snijd bij sanseveria horizontale stukjes (± 5 cm) met de onderkant naar beneden; bij begonia kun je nerven inkerven of vierkantjes met nerf vastzetten.",
+                "Succulenten: snijvlak eerst een dag laten indrogen (callus) voor je plant.",
+                "Medium: peat-free zaai-/stekgrond of mix met scherp zand; licht vochtig, hoge luchtvochtigheid, ± 20 °C, geen felle zon."
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Te nat = rotten. Lucht regelmatig en verwijder bedorven blad. Plantjes pas oppotten als ze groot genoeg zijn om zelfstandig te groeien — ideaal om gratis door te geven."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — Leaf cuttings",
+            "url": "https://www.rhs.org.uk/propagation/leaf-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": true,
+    "pillar": "stekken"
 }

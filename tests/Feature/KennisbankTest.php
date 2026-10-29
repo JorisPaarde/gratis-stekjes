@@ -47,7 +47,7 @@ test('stektips overzicht filtert en zoekt server-side onder 500', function () {
     $zoek->assertSee('Wilgenwater maken', false)
         ->assertDontSee('Winterhoutstek', false);
 
-    $cat = $this->get(route('stektips.index', ['categorie' => 'wortelbevordering']))->assertOk();
+    $cat = $this->get(route('stektips.index', ['categorie' => 'natuurlijk-bewortelen']))->assertOk();
     expect($cat->getStatusCode())->toBeLessThan(500);
     $cat->assertSee('Wilgenwater', false)
         ->assertSee('Stekpoeder', false)

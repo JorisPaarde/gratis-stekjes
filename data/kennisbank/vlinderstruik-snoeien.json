@@ -1,0 +1,75 @@
+{
+    "titel": "Vlinderstruik snoeien",
+    "samenvatting": "Snoeien vlinderstruik (Buddleja): hard terug in maart–half april tot een laag gestel. Bloei zit op nieuw hout.",
+    "meta_description": "Snoeien vlinderstruik (Buddleja): hard terug in maart–half april tot een laag gestel. Bloei zit op nieuw hout.",
+    "zoekwoorden": [
+        "snoei vlinderstruik",
+        "vlinderstruik snoeien",
+        "vlinderstruik snoeien wanneer",
+        "snoei buddleja"
+    ],
+    "categorieen": [
+        "snoeien"
+    ],
+    "pillar": "snoeien",
+    "gerelateerde_soorten": [],
+    "seizoenen": [
+        "lente"
+    ],
+    "maanden": [
+        3,
+        4
+    ],
+    "niveau": "beginner",
+    "locatie": "buiten",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "De klassieke vlinderstruik (Buddleja davidii) bloeit op takken die in de vroege zomer groeien. Daarom mag je hard snoeien zonder de zomerbloei te verliezen — anders dan bij bolhortensia."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer?"
+        },
+        {
+            "type": "p",
+            "tekst": "Volgens de RHS: vroeg voorjaar, late maart tot mid-april. Wacht tot de ergste vorst voorbij is, maar snoei vóór de sterke voorjaarsgroei."
+        },
+        {
+            "type": "h2",
+            "tekst": "Hoe"
+        },
+        {
+            "type": "ol",
+            "items": [
+                "Snoei terug tot een laag, vast gestel van stevige takken (vaak 30–60 cm).",
+                "Verwijder dode, dunne of kruisende stukken.",
+                "Bij een stamvorm: knip de kroon hard terug tot boven op de stam.",
+                "Na de bloei kun je uitgebloeide pluimen wegknippen voor een nette plant (soms een tweede kleine golf)."
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Van het snoeisel maak je makkelijk stekken: zie vlinderstruik stekken. Deel surplus gratis via het aanbod."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — How to grow buddlejas",
+            "url": "https://www.rhs.org.uk/plants/buddleja/growing-guide"
+        },
+        {
+            "titel": "RHS — Semi-ripe cuttings",
+            "url": "https://www.rhs.org.uk/propagation/semi-ripe-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": true,
+    "seo": {
+        "plant": "vlinderstruik",
+        "rol": "snoeien",
+        "stek_type": "artikel",
+        "stek_slug": "vlinderstruik-stekken"
+    },
+    "slug": "vlinderstruik-snoeien"
+}

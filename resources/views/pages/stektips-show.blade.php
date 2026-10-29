@@ -58,6 +58,8 @@
     </aside>
   @endif
 
+  @include('partials.stektips-seo-ctas', ['seoCtas' => $seoCtas ?? []])
+
   <div class="table-scroll" role="region" aria-label="Stektips-tabel" tabindex="0">
     <table class="table stektips-table">
       <tbody>
@@ -101,7 +103,7 @@
   @endif
 
   <p class="stektips-actions">
-    <a class="btn" href="{{ $aanbodUrl }}">Zoek {{ $soort['naam'] }} in het aanbod</a>
+    <a class="btn" href="{{ $aanbodUrl }}">Gratis {{ $soort['naam'] }}-stekjes in je buurt</a>
     <a class="btn btn-secondary" href="{{ route('account.registreren') }}">Doe mee</a>
     <a href="{{ route('stektips.index') }}">Alle stektips</a>
   </p>

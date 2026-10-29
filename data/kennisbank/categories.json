@@ -1,31 +1,61 @@
 {
-  "categorieen": [
-    {
-      "slug": "stekmethoden",
-      "naam": "Stekmethoden"
-    },
-    {
-      "slug": "snoeien",
-      "naam": "Snoeien"
-    },
-    {
-      "slug": "timing-seizoen",
-      "naam": "Timing & seizoen"
-    },
-    {
-      "slug": "wortelbevordering",
-      "naam": "Wortelbevordering"
-    },
-    {
-      "slug": "permacultuur",
-      "naam": "Permacultuur"
-    },
-    {
-      "slug": "zaden-delen",
-      "naam": "Zaden & delen"
+    "categorieen": [
+        {
+            "slug": "stekken",
+            "naam": "Stekken"
+        },
+        {
+            "slug": "snoeien",
+            "naam": "Snoeien"
+        },
+        {
+            "slug": "natuurlijk-bewortelen",
+            "naam": "Natuurlijk bewortelen"
+        },
+        {
+            "slug": "permacultuur",
+            "naam": "Permacultuur"
+        },
+        {
+            "slug": "vermeerderen",
+            "naam": "Vermeerderen overig"
+        }
+    ],
+    "niveaus": [
+        "beginner",
+        "gevorderd"
+    ],
+    "locaties": [
+        "binnen",
+        "buiten",
+        "beide"
+    ],
+    "seizoenen": [
+        "lente",
+        "zomer",
+        "herfst",
+        "winter"
+    ],
+    "pillars": {
+        "stekken": {
+            "hub_slug": "stekken",
+            "naam": "Stekken"
+        },
+        "snoeien": {
+            "hub_slug": "snoeien",
+            "naam": "Snoeien"
+        },
+        "natuurlijk-bewortelen": {
+            "hub_slug": "natuurlijk-bewortelen",
+            "naam": "Natuurlijk bewortelen"
+        },
+        "permacultuur": {
+            "hub_slug": "permacultuur-gilde-voedselbos",
+            "naam": "Permacultuur"
+        },
+        "vermeerderen": {
+            "hub_slug": "vermeerderen",
+            "naam": "Vermeerderen overig"
+        }
     }
-  ],
-  "niveaus": ["beginner", "gevorderd"],
-  "locaties": ["binnen", "buiten", "beide"],
-  "seizoenen": ["lente", "zomer", "herfst", "winter"]
 }

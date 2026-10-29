@@ -1,54 +1,74 @@
 {
-  "slug": "stekgrond-zelf-maken",
-  "titel": "Stekgrond zelf maken (turfarm / peat-free)",
-  "samenvatting": "Luchtige, arme mix zonder (nieuwe) turf: potgrond zeven, scherp zand of grit bijmengen. Drainage voorkomt rotten.",
-  "zoekwoorden": [
-    "stekgrond zelf maken",
-    "stekgrond recept",
-    "peat-free stekgrond",
-    "stekgrond zonder turf",
-    "stekmedium"
-  ],
-  "categorieen": ["stekmethoden", "permacultuur", "wortelbevordering"],
-  "gerelateerde_soorten": ["lavendel", "rozemarijn", "hortensia", "monstera"],
-  "seizoenen": ["lente", "zomer", "herfst"],
-  "maanden": [3, 4, 5, 6, 7, 8, 9],
-  "niveau": "beginner",
-  "locatie": "beide",
-  "inhoud": [
-    {
-      "type": "p",
-      "tekst": "Stekgrond moet luchtig, schoon en voedselarm zijn: wortels willen zuurstof en geen zware mest. De RHS adviseert voor stekken specifieke peat-free zaai-/stekmixen, of een mengsel van vrij drainage potgrond met scherp zand of grit (vaak ongeveer fifty-fifty bij klimmers en halfrijpe stekken)."
-    },
-    {
-      "type": "h2",
-      "tekst": "Eenvoudig recept"
-    },
-    {
-      "type": "ol",
-      "items": [
-        "Neem peat-free potgrond of tuinaarde zonder verse mest; zeef grof materiaal eruit.",
-        "Meng 1 deel grond met 1 deel scherp zand of fijn grit (geen bouwzand met zout).",
-        "Vul schone, hergebruikte bakjes met drainagegaten; druk niet keihard aan.",
-        "Maak met een stokje een gat, zet de stek, geef aan en laat uitlekken.",
-        "Houd licht vochtig: peat-free kan droog lijken aan de oppervlakte terwijl het dieper nog nat is — check met je vinger."
-      ]
-    },
-    {
-      "type": "p",
-      "tekst": "Vermijd verse compost of mest in stekgrond (zouten, schimmels). Zodra er wortels zijn, kun je oppotten in rijkere mix. Zo bespaar je turf, plastic zakken en transport — en kun je meer stekken kwijt om gratis te delen."
-    }
-  ],
-  "bronnen": [
-    {
-      "titel": "RHS — Ten top tips for peat-free success",
-      "url": "https://www.rhs.org.uk/advice/peat/for-gardeners/peat-free-tips"
-    },
-    {
-      "titel": "RHS — Climbers: taking cuttings (50% compost + 50% scherp zand)",
-      "url": "https://www.rhs.org.uk/plants/types/climbers/cuttings"
-    }
-  ],
-  "duurzamer_alternatief": null,
-  "howto": true
+    "slug": "stekgrond-zelf-maken",
+    "titel": "Stekgrond zelf maken (turfarm / peat-free)",
+    "samenvatting": "Luchtige, arme mix zonder (nieuwe) turf: potgrond zeven, scherp zand of grit bijmengen. Drainage voorkomt rotten.",
+    "zoekwoorden": [
+        "stekgrond zelf maken",
+        "stekgrond recept",
+        "peat-free stekgrond",
+        "stekgrond zonder turf",
+        "stekmedium"
+    ],
+    "categorieen": [
+        "stekken"
+    ],
+    "gerelateerde_soorten": [
+        "lavendel",
+        "rozemarijn",
+        "hortensia",
+        "monstera"
+    ],
+    "seizoenen": [
+        "lente",
+        "zomer",
+        "herfst"
+    ],
+    "maanden": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+    ],
+    "niveau": "beginner",
+    "locatie": "beide",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Stekgrond moet luchtig, schoon en voedselarm zijn: wortels willen zuurstof en geen zware mest. De RHS adviseert voor stekken specifieke peat-free zaai-/stekmixen, of een mengsel van vrij drainage potgrond met scherp zand of grit (vaak ongeveer fifty-fifty bij klimmers en halfrijpe stekken)."
+        },
+        {
+            "type": "h2",
+            "tekst": "Eenvoudig recept"
+        },
+        {
+            "type": "ol",
+            "items": [
+                "Neem peat-free potgrond of tuinaarde zonder verse mest; zeef grof materiaal eruit.",
+                "Meng 1 deel grond met 1 deel scherp zand of fijn grit (geen bouwzand met zout).",
+                "Vul schone, hergebruikte bakjes met drainagegaten; druk niet keihard aan.",
+                "Maak met een stokje een gat, zet de stek, geef aan en laat uitlekken.",
+                "Houd licht vochtig: peat-free kan droog lijken aan de oppervlakte terwijl het dieper nog nat is — check met je vinger."
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Vermijd verse compost of mest in stekgrond (zouten, schimmels). Zodra er wortels zijn, kun je oppotten in rijkere mix. Zo bespaar je turf, plastic zakken en transport — en kun je meer stekken kwijt om gratis te delen."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — Ten top tips for peat-free success",
+            "url": "https://www.rhs.org.uk/advice/peat/for-gardeners/peat-free-tips"
+        },
+        {
+            "titel": "RHS — Climbers: taking cuttings (50% compost + 50% scherp zand)",
+            "url": "https://www.rhs.org.uk/plants/types/climbers/cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": true,
+    "pillar": "stekken"
 }

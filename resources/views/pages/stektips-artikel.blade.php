@@ -59,6 +59,8 @@
     </aside>
   @endif
 
+  @include('partials.stektips-seo-ctas', ['seoCtas' => $seoCtas ?? []])
+
   <div class="stektips-artikel-body">
     @foreach($artikel['inhoud'] ?? [] as $block)
       @php $type = $block['type'] ?? ''; @endphp
@@ -81,6 +83,17 @@
       @endif
     @endforeach
   </div>
+
+  @if(!empty($kinderen))
+    <h2 class="stektips-related-title">In deze pijler</h2>
+    <ul class="stektips-related">
+      @foreach($kinderen as $kind)
+        <li>
+          <a href="{{ route('stektips.artikel', ['slug' => $kind['slug']]) }}">{{ $kind['titel'] }}</a>
+        </li>
+      @endforeach
+    </ul>
+  @endif
 
   @if(!empty($artikel['bronnen']))
     <h2 class="stektips-related-title">Bronnen</h2>

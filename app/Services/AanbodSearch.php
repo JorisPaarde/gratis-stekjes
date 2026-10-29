@@ -14,7 +14,7 @@ final class AanbodSearch
     /**
      * @return array{meta: ?array{zoek_lat: float, zoek_lon: float, zoek_label: string}, items: list<array<string, mixed>>}
      */
-    public function search(?string $query, ?string $typeFilter, bool $allowNetwork = true): array
+    public function search(?string $query, ?string $typeFilter, bool $allowNetwork = true, ?string $plant = null): array
     {
         $rows = Aanbod::query()
             ->publiclyListed()
@@ -33,6 +33,18 @@ final class AanbodSearch
             ->get();
 
         $items = $rows->map(fn (Aanbod $a) => $this->toPublicItem($a))->all();
+
+        $plantNeedle = mb_strtolower(trim((string) $plant), 'UTF-8');
+        if ($plantNeedle !== '') {
+            $items = array_values(array_filter(
+                $items,
+                static function (array $item) use ($plantNeedle): bool {
+                    $tekst = mb_strtolower((string) ($item['tekst'] ?? ''), 'UTF-8');
+
+                    return str_contains($tekst, $plantNeedle);
+                }
+            ));
+        }
 
         $q = trim((string) $query);
         if ($q !== '') {

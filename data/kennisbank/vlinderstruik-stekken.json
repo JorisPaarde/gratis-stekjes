@@ -1,0 +1,69 @@
+{
+    "titel": "Vlinderstruik stekken",
+    "samenvatting": "Vlinderstruik stekken met halfrijpe of zachte stek in zomer; wortelt makkelijk. Gebruik wilgenwater i.p.v. stekpoeder.",
+    "meta_description": "Vlinderstruik stekken met halfrijpe of zachte stek in zomer; wortelt makkelijk. Gebruik wilgenwater i.p.v. stekpoeder.",
+    "zoekwoorden": [
+        "vlinderstruik stekken",
+        "buddleja stekken",
+        "vlinderstruik stekje"
+    ],
+    "categorieen": [
+        "stekken"
+    ],
+    "pillar": "stekken",
+    "gerelateerde_soorten": [],
+    "seizoenen": [
+        "zomer",
+        "herfst"
+    ],
+    "maanden": [
+        6,
+        7,
+        8,
+        9
+    ],
+    "niveau": "beginner",
+    "locatie": "buiten",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Vlinderstruik (Buddleja) laat zich volgens de RHS goed vermeerderen: softwood/greenwood in vroege zomer, halfrijpe stek vanaf midzomer, en desnoods winterhout."
+        },
+        {
+            "type": "h2",
+            "tekst": "Halfrijpe stek (meest praktisch)"
+        },
+        {
+            "type": "ol",
+            "items": [
+                "Neem 10–15 cm van dit seizoenshout: basis stevig, tip nog zacht.",
+                "Knip onder een knoop, onderste blad weg.",
+                "Steek in peat-free stekgrond met scherp zand; houd vochtig onder een zak of bak.",
+                "Optioneel: week in wilgenwater i.p.v. synthetisch stekpoeder."
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Plant uit wanneer geworteld en afgehard. Deel extra stekjes gratis in je buurt."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — How to grow buddlejas",
+            "url": "https://www.rhs.org.uk/plants/buddleja/growing-guide"
+        },
+        {
+            "titel": "RHS — Semi-ripe cuttings",
+            "url": "https://www.rhs.org.uk/propagation/semi-ripe-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": true,
+    "seo": {
+        "plant": "vlinderstruik",
+        "rol": "stekken",
+        "aanbod_plant": "vlinderstruik",
+        "wilgenwater": true
+    },
+    "slug": "vlinderstruik-stekken"
+}

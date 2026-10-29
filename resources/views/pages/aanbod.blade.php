@@ -15,7 +15,8 @@
       api_deelplekken: @json(route('api.deelplekken')),
       bericht_starten: @json(url('/account/bericht-starten')),
       api_nu_te_stekken: @json(route('api.nu-te-stekken')),
-      bericht_binnenkort: false
+      bericht_binnenkort: false,
+      plant_filter: @json($plant ?? '')
     };
   </script>
   @vite(['resources/css/aanbod.css', 'resources/css/deelplekken.css', 'resources/css/nu-te-stekken.css'])
@@ -23,15 +24,25 @@
 
 @section('content')
 <section class="section wrap">
-  <h1 class="page-title">Aanbod</h1>
-  <p class="section-intro">Zoek op postcode (4 cijfers) of plaats in Nederland. Je ziet benaderde plekken op de kaart en een lijst gesorteerd op afstand. Exacte adressen staan niet op de site.</p>
+  <h1 class="page-title">@if(!empty($plant))Aanbod: {{ $plant }}@else Aanbod @endif</h1>
+  <p class="section-intro">
+    @if(!empty($plant))
+      Filter op <strong>{{ $plant }}</strong> in aanbodteksten.
+      Vul een postcode of plaats in om dichtbij te zoeken. Exacte adressen staan niet op de site.
+    @else
+      Zoek op postcode (4 cijfers) of plaats in Nederland. Je ziet benaderde plekken op de kaart en een lijst gesorteerd op afstand. Exacte adressen staan niet op de site.
+    @endif
+  </p>
 
-  <form class="form" id="zoek-form" style="max-width:100%;margin-bottom:1rem">
+  <form class="form" id="zoek-form" method="get" action="{{ route('aanbod') }}" style="max-width:100%;margin-bottom:1rem">
     <div style="display:grid;gap:.75rem;grid-template-columns:1fr;align-items:end">
-      <label>Postcode of plaats
-        <input type="text" name="q" id="zoek-q" maxlength="120" placeholder="Bijv. 2011 of Haarlem" required>
+      <label for="zoek-q">Postcode of plaats
+        <input type="text" name="q" id="zoek-q" maxlength="120" placeholder="Bijv. 2011 of Haarlem" @if(empty($plant)) required @endif>
       </label>
-      <label>Aanbodtype
+      <label for="zoek-plant">Plant / stekje
+        <input type="text" name="plant" id="zoek-plant" maxlength="80" value="{{ $plant ?? '' }}" placeholder="Bijv. hortensia">
+      </label>
+      <label for="zoek-type">Aanbodtype
         <select name="type" id="zoek-type">
           <option value="">Alles</option>
           <option value="uitdelen">Uitdelen</option>
@@ -41,6 +52,25 @@
       <button class="btn" type="submit">Zoeken</button>
     </div>
   </form>
+
+  @if(!empty($plant) && isset($plantItems))
+    <section class="stektips-plant-aanbod" aria-labelledby="plant-aanbod-titel">
+      <h2 id="plant-aanbod-titel" class="stektips-related-title">Treffers voor “{{ $plant }}” (zonder plaats)</h2>
+      @if(count($plantItems) === 0)
+        <p class="empty-state" role="status">Nog geen openbaar aanbod met “{{ $plant }}”. <a href="{{ route('account.registreren') }}">Doe mee</a> om zelf te delen, of zoek op plaats hierboven.</p>
+      @else
+        <ul class="zoek-lijst">
+          @foreach($plantItems as $item)
+            <li class="zoek-item">
+              <strong>{{ $item['voornaam'] ?? '' }}</strong>
+              <span class="muted"> · {{ $item['locatie_label'] ?? '' }} · {{ $item['type'] ?? '' }}</span>
+              <p>{{ $item['tekst'] ?? '' }}</p>
+            </li>
+          @endforeach
+        </ul>
+      @endif
+    </section>
+  @endif
 
   <fieldset class="marker-filters" id="marker-filters">
     <legend>Toon op kaart en in lijst</legend>

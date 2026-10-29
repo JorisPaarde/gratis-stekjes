@@ -7,10 +7,11 @@ use App\Services\Kennisbank;
 test('kennisbank filtert op categorie seizoen en zoekterm', function () {
     $kb = new Kennisbank(dirname(__DIR__, 2).'/data/kennisbank');
 
-    $wortel = $kb->filter(['categorie' => 'wortelbevordering']);
+    $wortel = $kb->filter(['categorie' => 'natuurlijk-bewortelen']);
     $slugs = collect($wortel)->pluck('slug');
     expect($slugs)->toContain('wilgenwater')
-        ->and($slugs)->toContain('stekpoeder');
+        ->and($slugs)->toContain('stekpoeder')
+        ->and($slugs)->toContain('natuurlijk-bewortelen');
 
     $winter = $kb->filter(['seizoen' => 'winter']);
     expect(collect($winter)->pluck('slug'))->toContain('winterhoutstek');
