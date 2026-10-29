@@ -8,17 +8,14 @@
 <section class="section wrap prose">
   <h1 class="page-title">Privacyverklaring</h1>
 
-  <p class="flash flash-warn" role="status"><strong>Concept – nog niet definitief.</strong> Joris leest deze tekst na vóór livegang. Waar juridische gegevens nog ontbreken, staat <em>[in te vullen door Joris]</em>.</p>
+  <p class="flash flash-warn" role="status"><strong>Concept – nog niet definitief.</strong> Joris leest deze tekst na vóór livegang.</p>
 
   <p>Deze verklaring beschrijft welke persoonsgegevens {{ config('site.name') }} (gratisplanten.nl) verwerkt, waarom, hoe lang, en welke rechten je hebt. Ik houd het dicht bij wat de applicatie echt doet.</p>
 
   <h2>Verwerkingsverantwoordelijke</h2>
   <p>
-    {{ config('site.name') }} wordt gemaakt en beheerd door Joris Paardekooper (jpwebcreation).<br>
-    Contact over privacy: <a href="mailto:info@jpwebcreation.nl">info@jpwebcreation.nl</a>.<br>
-    Rechtsvorm / handelsnaam: <em>[in te vullen door Joris]</em><br>
-    KvK-nummer: <em>[in te vullen door Joris]</em><br>
-    Post- of bezoekadres: <em>[in te vullen door Joris]</em>
+    {{ config('site.name') }} is een project van <a href="https://jpwebcreation.nl" rel="noopener noreferrer">JP Web Creation</a>.<br>
+    Contact: <a href="mailto:info@jpwebcreation.nl">info@jpwebcreation.nl</a>.
   </p>
 
   <h2>Welke gegevens ik verwerk</h2>
@@ -89,6 +86,6 @@
   <p>Je kunt een gebruiker melden of blokkeren. Meldingen worden opgeslagen voor de beheerder. Er is geen openbare moderatiewachtrij.</p>
 
   <h2>Wijzigingen</h2>
-  <p>Versie van deze site: {{ config('site.version') }}. Datum van deze concepttekst: 29 oktober 2026. Definitieve vaststellingsdatum: <em>[in te vullen door Joris]</em>. Bij inhoudelijke wijzigingen werk ik deze pagina bij.</p>
+  <p>Versie van deze site: {{ config('site.version') }}. Datum van deze concepttekst: 29 oktober 2026. Bij inhoudelijke wijzigingen werk ik deze pagina bij.</p>
 </section>
 @endsection

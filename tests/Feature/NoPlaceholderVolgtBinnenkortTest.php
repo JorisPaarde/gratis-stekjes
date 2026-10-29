@@ -49,14 +49,19 @@ test('Volgt binnenkort komt niet voor in views, data of soorten', function () {
                 continue;
             }
 
+            $rel = str_replace(base_path().DIRECTORY_SEPARATOR, '', $path);
+
             if (str_contains($contents, 'Volgt binnenkort')) {
-                $hits[] = str_replace(base_path().DIRECTORY_SEPARATOR, '', $path);
+                $hits[] = $rel.' (Volgt binnenkort)';
+            }
+            if (str_contains($contents, '[in te vullen')) {
+                $hits[] = $rel.' ([in te vullen)';
             }
         }
     }
 
     expect($hits)->toBeEmpty(
-        'Nog “Volgt binnenkort” in: '.implode(', ', $hits)
+        'Nog placeholders in: '.implode(', ', $hits)
     );
 });
 
@@ -65,8 +70,10 @@ test('privacy, over en initiatieven tonen geen Volgt binnenkort en geen we/wij/o
         'privacy' => $this->get(route('privacy'))
             ->assertOk()
             ->assertSee('Concept – nog niet definitief', false)
+            ->assertSee('JP Web Creation', false)
+            ->assertSee('https://jpwebcreation.nl', false)
             ->assertSee('info@jpwebcreation.nl', false)
-            ->assertSee('[in te vullen door Joris]', false)
+            ->assertDontSee('[in te vullen', false)
             ->assertDontSee('Volgt binnenkort', false),
         'over' => $this->get(route('over'))
             ->assertOk()

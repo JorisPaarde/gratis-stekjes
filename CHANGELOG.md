@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.20.1] - 2026-10-29
+
+### Changed
+
+- Privacy: verwerkingsverantwoordelijke zonder KvK/adres/handelsnaam-placeholders — project van [JP Web Creation](https://jpwebcreation.nl), contact `info@jpwebcreation.nl`; concept-banner zonder verwijzing naar ontbrekende juridische gegevens; geen `[in te vullen` meer in views.
+
 ## [0.20.0] - 2026-10-29
 
 ### Added
