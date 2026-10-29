@@ -30,7 +30,8 @@ class OrganisatieController extends Controller
         }
 
         $deelplekSlugs = $org['deelplek_slugs'] ?? [];
-        $deelplekkenRows = [];
+        // Altijd een Collection: de view roept isNotEmpty() aan (lege array → 500).
+        $deelplekkenRows = collect();
         if (is_array($deelplekSlugs) && $deelplekSlugs !== []) {
             $deelplekkenRows = Deelplek::query()
                 ->visible()
