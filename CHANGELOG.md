@@ -7,7 +7,20 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- (volgende PRs) aanbod/kaart/zoeken, berichten, admin, AVG-export/verwijderen, expiry/cron, partners, nu te stekken, SEO-pagina’s.
+- (volgende PRs) berichten, admin, AVG-export/verwijderen, expiry/cron-mails, partners-markers, nu te stekken, SEO-pagina’s.
+
+## [0.3.0] - 2026-10-29
+
+### Added
+
+- Profiel met benaderde locatie (PDOK + `geocode_cache`, coördinaten afgerond).
+- Mijn aanbod: plaatsen (uitdelen/ophalen), 60 dagen geldig, handmatig verlengen.
+- Publiek `/aanbod`: Leaflet-kaart + zoeken op postcode/plaats; API `/api/zoeken` (afstand, geen e-mail/telefoon).
+- Component-CSS `resources/css/aanbod.css` (site-variabelen); partners-API stub tot partners-PR.
+
+### Changed
+
+- Navigatie/homepage linken naar aanbod & kaart.
 
 ## [0.2.0] - 2026-10-29
 
