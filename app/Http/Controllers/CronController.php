@@ -8,6 +8,7 @@ use App\Services\AanbodExpiryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Artisan;
 use Throwable;
 
 class CronController extends Controller
@@ -22,7 +23,14 @@ class CronController extends Controller
         }
 
         try {
+            $queueExit = Artisan::call('queue:work', [
+                '--stop-when-empty' => true,
+                '--max-time' => 45,
+                '--tries' => 3,
+            ]);
+
             $jobs = [
+                'queue_work' => ['exit' => $queueExit],
                 'expiry_reminders' => $expiry->sendExpiryReminders(),
                 'purge_geocode_cache' => ['deleted' => $expiry->purgeGeocodeCache()],
             ];

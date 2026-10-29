@@ -6,13 +6,16 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Support\FormGuard;
+use App\Support\SafeMail;
 use App\Support\ThrottleMessage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Throwable;
 
 class ForgotPasswordController extends Controller
 {
@@ -57,8 +60,16 @@ class ForgotPasswordController extends Controller
         }
         RateLimiter::hit($throttleKey, 60);
 
-        // Geen enumeratie: altijd dezelfde succesmelding (behalve throttle).
-        Password::sendResetLink(['email' => $email]);
+        try {
+            // Geen enumeratie: altijd dezelfde succesmelding (behalve throttle / mailstoring).
+            Password::sendResetLink(['email' => $email]);
+        } catch (Throwable $e) {
+            Log::error(SafeMail::safeSummary($e));
+
+            return back()
+                ->withInput($request->only('email'))
+                ->with('status', 'De resetmail lukte niet. Probeer het zo opnieuw.');
+        }
 
         return back()->with('status', __('passwords.sent'));
     }

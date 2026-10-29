@@ -9,13 +9,16 @@ use App\Models\User;
 use App\Notifications\EmailChangeNoticeDutch;
 use App\Notifications\VerifyPendingEmailDutch;
 use App\Support\FormGuard;
+use App\Support\SafeMail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Throwable;
 
 class EmailChangeController extends Controller
 {
@@ -76,14 +79,32 @@ class EmailChangeController extends Controller
             'pending_email' => $newEmail,
         ])->save();
 
-        $user->notify(new VerifyPendingEmailDutch($newEmail));
+        $okNew = SafeMail::notify($user, new VerifyPendingEmailDutch($newEmail));
+        $okOld = true;
+        try {
+            Notification::route('mail', $oldEmail)
+                ->notify(new EmailChangeNoticeDutch($newEmail));
+        } catch (Throwable $e) {
+            $okOld = false;
+            Log::error(SafeMail::safeSummary($e));
+        }
 
-        Notification::route('mail', $oldEmail)
-            ->notify(new EmailChangeNoticeDutch($newEmail));
+        if (! $okNew) {
+            return redirect()
+                ->route('account.email')
+                ->with('status', 'Aanvraag opgeslagen, maar de bevestigingsmail naar het nieuwe adres lukte niet. Probeer het zo opnieuw.')
+                ->with('status_level', 'warn');
+        }
 
         return redirect()
             ->route('account.email')
-            ->with('status', 'Check je nieuwe inbox om het adres te bevestigen. Je oude adres blijft actief tot je bevestigt.');
+            ->with(
+                'status',
+                $okOld
+                    ? 'Check je nieuwe inbox om het adres te bevestigen. Je oude adres blijft actief tot je bevestigt.'
+                    : 'Bevestigingsmail naar het nieuwe adres is verstuurd. De melding naar je oude adres lukte niet.'
+            )
+            ->with('status_level', $okOld ? 'ok' : 'warn');
     }
 
     public function confirm(Request $request, int $id, string $hash): RedirectResponse

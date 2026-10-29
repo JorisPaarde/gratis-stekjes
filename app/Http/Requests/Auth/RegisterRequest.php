@@ -6,7 +6,6 @@ namespace App\Http\Requests\Auth;
 
 use App\Support\FormGuard;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Validator;
 
 class RegisterRequest extends FormRequest
@@ -22,7 +21,8 @@ class RegisterRequest extends FormRequest
         return [
             'voornaam' => ['required', 'string', 'max:80'],
             'email' => ['required', 'string', 'email:filter', 'max:254'],
-            'password' => ['required', 'string', 'confirmed', 'max:200', Password::min(10)],
+            // min:10 i.p.v. Password::min zodat password.min-bericht altijd meekomt naast confirmed.
+            'password' => ['required', 'string', 'confirmed', 'min:10', 'max:200'],
             'gratis_akkoord' => ['accepted'],
             'privacy' => ['accepted'],
             'website' => ['nullable', 'string', 'max:200'],

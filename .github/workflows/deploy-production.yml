@@ -172,6 +172,12 @@ jobs:
           else APP_KEY=$(php -r 'echo "base64:".base64_encode(random_bytes(32));'); fi
           NAME="${SITE_NAME:-Gratis planten}"
           ENC=$(echo "${SMTP_SECURE:-ssl}" | tr '[:upper:]' '[:lower:]')
+          case "${ENC}" in
+            ssl|smtps) MAIL_SCHEME=smtps ;;
+            tls|starttls) MAIL_SCHEME=smtp ;;
+            *) MAIL_SCHEME=smtps ;;
+          esac
+          MAIL_FROM="${SMTP_FROM:-${SMTP_USER}}"
           umask 077
           {
             echo "APP_NAME=\"${NAME}\""
@@ -196,12 +202,12 @@ jobs:
             echo "QUEUE_CONNECTION=database"
             echo "CACHE_STORE=database"
             echo "MAIL_MAILER=smtp"
+            echo "MAIL_SCHEME=${MAIL_SCHEME}"
             echo "MAIL_HOST=${SMTP_HOST}"
             echo "MAIL_PORT=${SMTP_PORT:-465}"
             echo "MAIL_USERNAME=${SMTP_USER}"
             echo "MAIL_PASSWORD=${SMTP_PASS}"
-            echo "MAIL_ENCRYPTION=${ENC}"
-            echo "MAIL_FROM_ADDRESS=${SMTP_FROM}"
+            echo "MAIL_FROM_ADDRESS=${MAIL_FROM}"
             echo "MAIL_FROM_NAME=\"${NAME}\""
             echo "CRON_TOKEN=${CRON_TOKEN}"
             echo "ADMIN_PASSWORD=${ADMIN_PASSWORD}"

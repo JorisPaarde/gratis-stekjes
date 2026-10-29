@@ -58,7 +58,7 @@
   <main id="inhoud">
     @if(session('status'))
       <div class="wrap" style="padding-top:1rem">
-        <p class="flash flash-ok" role="status">{{ session('status') }}</p>
+        <p class="flash {{ session('status_level') === 'warn' ? 'flash-warn' : 'flash-ok' }}" role="status">{{ session('status') }}</p>
       </div>
     @endif
     @yield('content')
