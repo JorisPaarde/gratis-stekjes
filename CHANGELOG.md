@@ -7,7 +7,14 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- (volgende PRs) nu te stekken, admin/AVG, SEO-pagina’s.
+- (volgende PRs) admin/AVG, SEO-pagina’s.
+
+## [0.7.0] - 2026-10-29
+
+### Added
+
+- Service + `/api/nu-te-stekken` voor maandkalender uit `data/nu-te-stekken.json` (Europe/Amsterdam).
+- “Nu te stekken”-blok op home en aanbod (methode, tip, planten, bron); component-CSS `resources/css/nu-te-stekken.css`.
 
 ## [0.6.0] - 2026-10-29
 
@@ -31,6 +38,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Berichten rond aanbod: inbox, gesprek starten, chatten; e-mail/telefoon alleen na wederzijds “ja”.
 - Melden en blokkeren; rate limit op berichten; `NewMessageMail` via SMTP (geen berichtinhoud, geen andermans adres).
 - Component-CSS `resources/css/berichten.css`.
+
 
 ## [0.3.0] - 2026-10-29
 
