@@ -7,7 +7,21 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- (volgende PRs) accounts (double opt-in), aanbod/kaart, berichten, SEO-stad/soortpagina’s, beheer, cron.
+- (volgende PRs) aanbod/kaart/zoeken, berichten, admin, AVG-export/verwijderen, expiry/cron, partners, nu te stekken, SEO-pagina’s.
+
+## [0.2.0] - 2026-10-29
+
+### Added
+
+- Accounts met **double opt-in**: registreren → bevestigingsmail → pas daarna inloggen/`/account`.
+- Routes: `/account/registreren`, `/account/inloggen`, `/account/uitloggen`, `/account/bevestiging-nodig`, signed `/account/bevestigen/{id}/{hash}`, `/account`.
+- Anti-abuse: CSRF, honeypot, minimale invultijd, rate limits, geen e-mailenumeratie, wegwerpdomeinen-lijst, wachtwoord ≥10, akkoord gratis + privacy.
+- Nederlandse verificatiemail (`VerifyEmailDutch`).
+
+### Changed
+
+- Homepage “Doe mee”: uitdelen/ophalen linken naar registreren; helper blijft *binnenkort*.
+- Navigatie: Inloggen / Doe mee of Account / Uitloggen.
 
 ## [0.1.2] - 2026-10-29
 

@@ -41,11 +41,25 @@
         <span class="nav-soon" title="Volgt in een volgende release">Stektips <em>binnenkort</em></span>
         <a href="{{ route('home') }}#partners">Partners</a>
         <a href="{{ route('privacy') }}">Privacy</a>
-        <a class="nav-cta" href="{{ route('home') }}#doe-mee">Doe mee</a>
+        @auth
+          <a href="{{ route('account.index') }}">Account</a>
+          <form class="nav-logout" method="post" action="{{ route('account.uitloggen') }}">
+            @csrf
+            <button type="submit" class="nav-cta">Uitloggen</button>
+          </form>
+        @else
+          <a href="{{ route('account.inloggen') }}">Inloggen</a>
+          <a class="nav-cta" href="{{ route('account.registreren') }}">Doe mee</a>
+        @endauth
       </nav>
     </div>
   </header>
   <main id="inhoud">
+    @if(session('status'))
+      <div class="wrap" style="padding-top:1rem">
+        <p class="flash flash-ok" role="status">{{ session('status') }}</p>
+      </div>
+    @endif
     @yield('content')
   </main>
   <footer class="site-footer">
@@ -53,7 +67,11 @@
       <p><strong>{{ $siteName }}</strong> — planten delen, een praatje als enige prijs.</p>
       <p class="footer-links">
         <a href="{{ route('privacy') }}">Privacy</a>
-        <a href="{{ route('home') }}#doe-mee">Doe mee</a>
+        @auth
+          <a href="{{ route('account.index') }}">Account</a>
+        @else
+          <a href="{{ route('account.registreren') }}">Doe mee</a>
+        @endauth
       </p>
       <p class="footer-meta">Versie {{ config('site.version') }}@if($noindex) · noindex @endif</p>
     </div>

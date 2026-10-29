@@ -31,18 +31,16 @@
 
   <div class="cta-panel" id="doe-mee">
     <h2>Doe mee</h2>
-    <p>Kies wat bij je past. Stekjes blijven gratis — geen verkoop. Account, zoeken en berichten komen in een volgende release.</p>
+    <p>Kies wat bij je past. Stekjes blijven gratis — geen verkoop. Account met e-mailbevestiging kan nu; zoeken en berichten volgen later.</p>
     <div class="cta-choices">
-      <div class="cta-choice cta-choice--soon">
+      <a class="cta-choice" href="{{ route('account.registreren', ['rol' => 'uitdelen']) }}">
         <strong>Ik deel planten uit</strong>
-        <span>Account en aanbod op de kaart.</span>
-        <span class="badge-soon">binnenkort</span>
-      </div>
-      <div class="cta-choice cta-choice--soon">
+        <span>Account aanmaken (e-mailbevestiging verplicht).</span>
+      </a>
+      <a class="cta-choice" href="{{ route('account.registreren', ['rol' => 'ophalen']) }}">
         <strong>Ik wil ophalen</strong>
-        <span>Zoeken in de buurt en een bericht sturen.</span>
-        <span class="badge-soon">binnenkort</span>
-      </div>
+        <span>Account aanmaken; zoeken en berichten volgen later.</span>
+      </a>
       <div class="cta-choice cta-choice--soon">
         <strong>Ik help op een andere manier</strong>
         <span>Tips, foto’s, een regio trekken — helper zonder volledig account.</span>
@@ -62,7 +60,7 @@
     <li>Jullie spreken onderling een ophaalmoment af. Exacte adressen deel je zelf, als je dat wilt.</li>
     <li>Pas bij wederzijds akkoord zien jullie elkaars contactgegevens.</li>
   </ol>
-  <p class="muted">Accounts, kaart en berichten: <em>binnenkort</em> op deze Laravel-versie.</p>
+  <p class="muted">Kaart en berichten: <em>binnenkort</em>. Account met double opt-in staat klaar.</p>
 </section>
 
 @if($nuTeStekken && count($nuTeStekken['groepen']))
