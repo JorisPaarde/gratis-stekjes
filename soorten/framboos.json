@@ -1,24 +1,24 @@
 {
-  "slug": "framboos",
-  "naam": "Framboos",
-  "latijn": "Rubus idaeus",
-  "waarom": "Volgt binnenkort",
-  "methode": "Worteluitlopers afsteken en verplanten",
-  "wanneer": "Herfst",
-  "welk_hout": "Volgt binnenkort",
-  "lengte_snit": "Volgt binnenkort",
-  "water_grond": "Volgt binnenkort",
-  "hulpmiddel": "Volgt binnenkort",
-  "kans": "Makkelijk",
-  "klaar": "Volgt binnenkort",
-  "ervaringen": "Volgt binnenkort",
-  "bronnen": "Volgt binnenkort",
-  "kort": "Worteluitlopers afsteken en verplanten",
-  "categorie": "eetbaar",
-  "licht": "Zon tot halfschaduw",
-  "water": "Gelijkmatig vochtig",
-  "verwanten": [
-    "aardbei"
-  ],
-  "waarschuwing": ""
+    "slug": "framboos",
+    "naam": "Framboos",
+    "latijn": "Rubus idaeus",
+    "waarom": "Volgt binnenkort",
+    "methode": "Worteluitlopers afsteken en verplanten",
+    "wanneer": "Herfst",
+    "welk_hout": "Volgt binnenkort",
+    "lengte_snit": "Volgt binnenkort",
+    "water_grond": "Volgt binnenkort",
+    "hulpmiddel": "Volgt binnenkort",
+    "kans": "Makkelijk",
+    "klaar": "Volgt binnenkort",
+    "ervaringen": "",
+    "bronnen": "RHS — Rubus idaeus (propagation) — https://www.rhs.org.uk/plants/16137/rubus-idaeus/details",
+    "kort": "Worteluitlopers afsteken en verplanten",
+    "categorie": "eetbaar",
+    "licht": "Zon tot halfschaduw",
+    "water": "Gelijkmatig vochtig",
+    "verwanten": [
+        "aardbei"
+    ],
+    "waarschuwing": ""
 }

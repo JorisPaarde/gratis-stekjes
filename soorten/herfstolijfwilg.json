@@ -1,24 +1,24 @@
 {
-  "slug": "herfstolijfwilg",
-  "naam": "Herfstolijfwilg",
-  "latijn": "Elaeagnus umbellata",
-  "waarom": "Volgt binnenkort",
-  "methode": "Winterstek of afleggen; zomerstek wordt afgeraden",
-  "wanneer": "Okt–feb",
-  "welk_hout": "Volgt binnenkort",
-  "lengte_snit": "Volgt binnenkort",
-  "water_grond": "Volgt binnenkort",
-  "hulpmiddel": "Volgt binnenkort",
-  "kans": "Lastig",
-  "klaar": "Volgt binnenkort",
-  "ervaringen": "Volgt binnenkort",
-  "bronnen": "Volgt binnenkort",
-  "kort": "Winterstek of afleggen; zomerstek wordt afgeraden",
-  "categorie": "eetbaar",
-  "licht": "Zon",
-  "water": "Matig",
-  "verwanten": [
-    "wilg"
-  ],
-  "waarschuwing": "Kan sterk uitzaaien; deel alleen bewust en houd de plant in de gaten."
+    "slug": "herfstolijfwilg",
+    "naam": "Herfstolijfwilg",
+    "latijn": "Elaeagnus umbellata",
+    "waarom": "Volgt binnenkort",
+    "methode": "Winterstek of afleggen; zomerstek wordt afgeraden",
+    "wanneer": "Okt–feb",
+    "welk_hout": "Volgt binnenkort",
+    "lengte_snit": "Volgt binnenkort",
+    "water_grond": "Volgt binnenkort",
+    "hulpmiddel": "Volgt binnenkort",
+    "kans": "Lastig",
+    "klaar": "Volgt binnenkort",
+    "ervaringen": "",
+    "bronnen": "RHS — Hardwood cuttings — https://www.rhs.org.uk/propagation/hardwood-cuttings; RHS — February trees and shrubs — https://www.rhs.org.uk/advice/in-month/february/trees-shrubs",
+    "kort": "Winterstek of afleggen; zomerstek wordt afgeraden",
+    "categorie": "eetbaar",
+    "licht": "Zon",
+    "water": "Matig",
+    "verwanten": [
+        "wilg"
+    ],
+    "waarschuwing": "Kan sterk uitzaaien; deel alleen bewust en houd de plant in de gaten."
 }

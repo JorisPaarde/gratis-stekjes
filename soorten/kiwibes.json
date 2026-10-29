@@ -1,24 +1,24 @@
 {
-  "slug": "kiwibes",
-  "naam": "Kiwibes",
-  "latijn": "Actinidia arguta",
-  "waarom": "Volgt binnenkort",
-  "methode": "Winterstek, of zomerstek onder hoge luchtvochtigheid",
-  "wanneer": "Nov of zomer",
-  "welk_hout": "Volgt binnenkort",
-  "lengte_snit": "Volgt binnenkort",
-  "water_grond": "Volgt binnenkort",
-  "hulpmiddel": "Volgt binnenkort",
-  "kans": "Gemiddeld",
-  "klaar": "Volgt binnenkort",
-  "ervaringen": "Volgt binnenkort",
-  "bronnen": "Volgt binnenkort",
-  "kort": "Winterstek, of zomerstek onder hoge luchtvochtigheid",
-  "categorie": "eetbaar",
-  "licht": "Zon tot lichte schaduw",
-  "water": "Gelijkmatig vochtig",
-  "verwanten": [
-    "druif"
-  ],
-  "waarschuwing": ""
+    "slug": "kiwibes",
+    "naam": "Kiwibes",
+    "latijn": "Actinidia arguta",
+    "waarom": "Volgt binnenkort",
+    "methode": "Winterstek, of zomerstek onder hoge luchtvochtigheid",
+    "wanneer": "Nov of zomer",
+    "welk_hout": "Volgt binnenkort",
+    "lengte_snit": "Volgt binnenkort",
+    "water_grond": "Volgt binnenkort",
+    "hulpmiddel": "Volgt binnenkort",
+    "kans": "Gemiddeld",
+    "klaar": "Volgt binnenkort",
+    "ervaringen": "",
+    "bronnen": "RHS — February trees and shrubs — https://www.rhs.org.uk/advice/in-month/february/trees-shrubs; RHS — Hardwood cuttings — https://www.rhs.org.uk/propagation/hardwood-cuttings",
+    "kort": "Winterstek, of zomerstek onder hoge luchtvochtigheid",
+    "categorie": "eetbaar",
+    "licht": "Zon tot lichte schaduw",
+    "water": "Gelijkmatig vochtig",
+    "verwanten": [
+        "druif"
+    ],
+    "waarschuwing": ""
 }

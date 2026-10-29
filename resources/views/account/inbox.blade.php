@@ -18,7 +18,10 @@
   @endif
 
   @if($rows->isEmpty())
-    <p class="muted">Nog geen gesprekken. Zoek <a href="{{ route('aanbod') }}">aanbod</a> en stuur een bericht.</p>
+    <div class="empty-state" role="status">
+      <p>Nog geen gesprekken. Zoek iets in de buurt en stuur een bericht — contactgegevens volgen pas na wederzijds akkoord.</p>
+      <p><a class="btn" href="{{ route('aanbod') }}">Zoek aanbod</a></p>
+    </div>
   @else
     <ul class="inbox-list">
       @foreach($rows as $r)

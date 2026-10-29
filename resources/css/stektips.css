@@ -10,10 +10,19 @@
   margin-top: 1.5rem;
 }
 
+.stektips-page .table-scroll {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1rem 0;
+}
+
 .stektips-table {
   width: 100%;
+  min-width: 18rem;
   border-collapse: collapse;
-  margin: 1rem 0;
+  margin: 0;
 }
 
 .stektips-table th,
@@ -22,12 +31,19 @@
   vertical-align: top;
   padding: 0.55rem 0.65rem;
   border-bottom: 1px solid var(--line, rgba(26, 18, 16, 0.12));
+  word-break: break-word;
 }
 
 .stektips-table th {
   width: 38%;
+  min-width: 7.5rem;
   color: var(--leaf-deep, #163820);
   font-weight: 700;
+}
+
+.stektips-proef a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }
 
 .stektips-actions {

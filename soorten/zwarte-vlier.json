@@ -1,24 +1,24 @@
 {
-  "slug": "zwarte-vlier",
-  "naam": "Zwarte vlier",
-  "latijn": "Sambucus nigra",
-  "waarom": "Volgt binnenkort",
-  "methode": "Winterstek van eenjarig hout",
-  "wanneer": "Nov–feb",
-  "welk_hout": "Volgt binnenkort",
-  "lengte_snit": "Volgt binnenkort",
-  "water_grond": "Volgt binnenkort",
-  "hulpmiddel": "Volgt binnenkort",
-  "kans": "Makkelijk",
-  "klaar": "Volgt binnenkort",
-  "ervaringen": "Volgt binnenkort",
-  "bronnen": "Volgt binnenkort",
-  "kort": "Winterstek van eenjarig hout",
-  "categorie": "eetbaar",
-  "licht": "Zon tot halfschaduw",
-  "water": "Vochtige grond verdraagt het goed",
-  "verwanten": [
-    "wilg"
-  ],
-  "waarschuwing": ""
+    "slug": "zwarte-vlier",
+    "naam": "Zwarte vlier",
+    "latijn": "Sambucus nigra",
+    "waarom": "Volgt binnenkort",
+    "methode": "Winterstek van eenjarig hout",
+    "wanneer": "Nov–feb",
+    "welk_hout": "Volgt binnenkort",
+    "lengte_snit": "Volgt binnenkort",
+    "water_grond": "Volgt binnenkort",
+    "hulpmiddel": "Volgt binnenkort",
+    "kans": "Makkelijk",
+    "klaar": "Volgt binnenkort",
+    "ervaringen": "",
+    "bronnen": "RHS — Hardwood cuttings — https://www.rhs.org.uk/propagation/hardwood-cuttings; RHS — February trees and shrubs — https://www.rhs.org.uk/advice/in-month/february/trees-shrubs",
+    "kort": "Winterstek van eenjarig hout",
+    "categorie": "eetbaar",
+    "licht": "Zon tot halfschaduw",
+    "water": "Vochtige grond verdraagt het goed",
+    "verwanten": [
+        "wilg"
+    ],
+    "waarschuwing": ""
 }

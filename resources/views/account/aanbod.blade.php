@@ -36,7 +36,10 @@
 
   <h2>Jouw items</h2>
   @if($mine->isEmpty())
-    <p class="muted">Nog niets geplaatst. Publiek zoeken: <a href="{{ route('aanbod') }}">aanbod &amp; kaart</a>.</p>
+    <div class="empty-state" role="status">
+      <p>Je hebt nog geen aanbod. Vul het formulier hierboven in, of bekijk eerst wat er in jouw buurt staat.</p>
+      <p><a class="btn btn-secondary" href="{{ route('aanbod') }}">Naar aanbod &amp; kaart</a></p>
+    </div>
   @else
     <ul class="zoek-lijst">
       @foreach($mine as $row)

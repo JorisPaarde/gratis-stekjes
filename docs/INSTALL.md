@@ -7,7 +7,7 @@ Geen secrets, hostnamen of private paden in deze repo.
 1. `composer install`
 2. `cp .env.example .env && php artisan key:generate`
 3. Zet `SITE_NAME` / `APP_NAME`, `APP_URL`, database (`DB_CONNECTION=sqlite` + `database/database.sqlite`).
-4. `php artisan migrate`
+4. `php artisan migrate --seed` (deelplekken). Optioneel demo-aanbod: `php artisan db:seed --class=DemoSeeder`
 5. `npm ci && npm run build`
 6. `php artisan serve`
 

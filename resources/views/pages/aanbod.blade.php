@@ -58,7 +58,7 @@
     <div id="kaart" role="img" aria-label="Kaart met benaderde ophaalplekken"></div>
     <div>
       <ul class="zoek-lijst" id="zoek-lijst"></ul>
-      <p class="muted" id="zoek-status">Vul een postcode of plaats in om aanbod te zoeken. Deelplekken (plantenasiel, plantenbieb, …) staan hieronder.</p>
+      <p class="muted empty-state" id="zoek-status" role="status">Vul een postcode of plaats in om aanbod te zoeken. Deelplekken (plantenasiel, plantenbieb, …) staan al op de kaart — of <a href="{{ route('account.registreren') }}">maak een account</a> om zelf iets te plaatsen.</p>
     </div>
   </div>
 
