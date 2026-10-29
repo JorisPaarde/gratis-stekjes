@@ -24,6 +24,10 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Mobiel: min. 44px touch targets op knoppen/nav; tabellen scrollen horizontaal i.p.v. layout te breken; overflow-x op body begrensd.
 - `DatabaseSeeder` seeded alleen nog verplichte deelplekken (demo-data via `DemoSeeder`).
 
+### Fixed
+
+- Route-audit: `/beheer` zonder `ADMIN_PASSWORD` is bewust HTTP 503 — test verwacht dat expliciet i.p.v. generiek <500 (CI faalde daarop).
+
 ## [0.17.1] - 2026-10-29
 
 ### Fixed

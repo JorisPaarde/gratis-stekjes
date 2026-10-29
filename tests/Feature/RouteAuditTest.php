@@ -45,7 +45,7 @@ function auditPublicGetRoutes(): array
         '/account/registreren',
         '/account/inloggen',
         '/account/wachtwoord-vergeten',
-        '/beheer',
+        // /beheer: bewust 503 zonder ADMIN_PASSWORD — apart geassert
         '/partners', // 301
     ];
 
@@ -66,17 +66,28 @@ function assertRouteStatusUnder500($test, string $path, int $max = 499): int
 {
     $response = $test->get($path);
     $status = $response->getStatusCode();
-    expect($status)->toBeLessThanOrEqual($max, "Route {$path} gaf HTTP {$status}");
+    expect($status)->toBeLessThanOrEqual(
+        $max,
+        "Route {$path} gaf HTTP {$status} (verwacht ≤ {$max})"
+    );
 
     return $status;
 }
 
 test('route-audit leeg: alle publieke routes < 500', function () {
     Artisan::call('db:seed', ['--class' => DeelplekkenSeeder::class]);
+    // CI/.env.example: geen ADMIN_PASSWORD → /beheer is bewust 503.
+    config(['stekjes.admin_password' => '']);
 
     foreach (auditPublicGetRoutes() as $path) {
         assertRouteStatusUnder500($this, $path);
     }
+
+    $beheerStatus = $this->get('/beheer')->getStatusCode();
+    expect($beheerStatus)->toBe(
+        503,
+        "Route /beheer zonder ADMIN_PASSWORD gaf HTTP {$beheerStatus} (verwacht 503)"
+    );
 
     // Verwachte 404
     $this->get('/stektips/onbestaand-slug-xyz')->assertNotFound();
@@ -108,7 +119,10 @@ test('route-audit gevuld: publiek + account + beheer < 500', function () {
 
     foreach ($accountRoutes as $path) {
         $status = $this->actingAs($user)->get($path)->getStatusCode();
-        expect($status)->toBeLessThanOrEqual(499, "Account-route {$path} gaf HTTP {$status}");
+        expect($status)->toBeLessThanOrEqual(
+            499,
+            "Account-route {$path} gaf HTTP {$status} (verwacht ≤ 499)"
+        );
     }
 
     $conv = Conversation::query()->first();
@@ -127,6 +141,11 @@ test('route-audit gevuld: publiek + account + beheer < 500', function () {
         ->assertRedirect();
 
     config(['stekjes.admin_password' => 'route-audit-admin-pass']);
+    $beheerLogin = $this->get('/beheer')->getStatusCode();
+    expect($beheerLogin)->toBe(
+        200,
+        "Route /beheer met ADMIN_PASSWORD gaf HTTP {$beheerLogin} (verwacht 200)"
+    );
     $this->withSession(['admin_ok' => true])
         ->get(route('beheer.index'))
         ->assertOk();
