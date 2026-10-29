@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 
-class VerifyEmailDutch extends VerifyEmail
+class VerifyEmailDutch extends VerifyEmail implements ShouldQueue
 {
+    use Queueable;
+
     public function toMail($notifiable): MailMessage
     {
         $url = $this->verificationUrl($notifiable);

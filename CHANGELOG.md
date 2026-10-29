@@ -9,6 +9,14 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.14.1] - 2026-10-29
+
+### Fixed
+
+- E-mailwijziging: bevestigingsmail gaat naar het nieuwe/pending adres (`Notification::route`), niet naar het oude via `$user->notify()`.
+- Accountmails (bevestiging, reset, e-mailwijziging, melding oud adres) staan op de database-queue (`ShouldQueue`); cron verwerkt `queue:work` al elke minuut.
+- Data-export en site lezen versie uit het `VERSION`-bestand (geen hardcoded `config/site.php`-string meer).
+
 ## [0.14.0] - 2026-10-29
 
 ### Added

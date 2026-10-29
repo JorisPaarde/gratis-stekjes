@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class ResetPasswordDutch extends ResetPassword
+class ResetPasswordDutch extends ResetPassword implements ShouldQueue
 {
+    use Queueable;
+
     public function toMail($notifiable): MailMessage
     {
         $url = $this->resetUrl($notifiable);

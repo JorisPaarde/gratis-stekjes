@@ -5,17 +5,21 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 
-class VerifyPendingEmailDutch extends Notification
+class VerifyPendingEmailDutch extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(public readonly string $pendingEmail) {}
+    public function __construct(
+        public readonly string $pendingEmail,
+        public readonly int $userId,
+    ) {}
 
     /** @return list<string> */
     public function via(object $notifiable): array
@@ -25,7 +29,7 @@ class VerifyPendingEmailDutch extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
-        $url = $this->verificationUrl($notifiable);
+        $url = $this->verificationUrl();
         $site = (string) config('site.name');
 
         return (new MailMessage)
@@ -37,13 +41,13 @@ class VerifyPendingEmailDutch extends Notification
             ->salutation('Groet,'.PHP_EOL.'Joris ('.$site.')');
     }
 
-    protected function verificationUrl(object $notifiable): string
+    protected function verificationUrl(): string
     {
         return URL::temporarySignedRoute(
             'account.email.bevestigen',
             Carbon::now()->addMinutes((int) Config::get('auth.verification.expire', 60)),
             [
-                'id' => $notifiable->getKey(),
+                'id' => $this->userId,
                 'hash' => sha1($this->pendingEmail),
             ]
         );

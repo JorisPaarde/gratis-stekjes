@@ -294,8 +294,24 @@ test('e-mail wijzigen stuurt bevestiging naar nieuw en melding naar oud', functi
     expect($user->fresh()->email)->toBe('oud@example.com');
     expect($user->fresh()->pending_email)->toBe('nieuw@example.com');
 
-    Notification::assertSentTo($user, VerifyPendingEmailDutch::class);
-    Notification::assertSentOnDemand(EmailChangeNoticeDutch::class);
+    // Bevestigingsmail gaat naar het nieuwe adres — nooit naar het oude via $user->notify().
+    Notification::assertNotSentTo($user, VerifyPendingEmailDutch::class);
+    Notification::assertNotSentTo($user, EmailChangeNoticeDutch::class);
+
+    Notification::assertSentOnDemand(VerifyPendingEmailDutch::class, function ($notification, $channels, $notifiable) use ($user) {
+        return $notifiable->routes['mail'] === 'nieuw@example.com'
+            && $notification->pendingEmail === 'nieuw@example.com'
+            && $notification->userId === (int) $user->id
+            && ! in_array('oud@example.com', $notifiable->routes, true);
+    });
+
+    Notification::assertSentOnDemand(EmailChangeNoticeDutch::class, function ($notification, $channels, $notifiable) {
+        return $notifiable->routes['mail'] === 'oud@example.com'
+            && $notification->newEmail === 'nieuw@example.com';
+    });
+
+    Notification::assertSentOnDemandTimes(VerifyPendingEmailDutch::class, 1);
+    Notification::assertSentOnDemandTimes(EmailChangeNoticeDutch::class, 1);
 });
 
 test('e-mailwijziging is throttled (max 1 per 60 s)', function () {
@@ -324,7 +340,7 @@ test('e-mailwijziging is throttled (max 1 per 60 s)', function () {
         ->assertSessionHasErrors('email');
 
     expect(session('errors')->first('email'))->toContain('opnieuw een mail laten sturen');
-    Notification::assertSentToTimes($user, VerifyPendingEmailDutch::class, 1);
+    Notification::assertSentOnDemandTimes(VerifyPendingEmailDutch::class, 1);
 });
 
 test('e-mailwijziging wordt actief na signed bevestigingslink', function () {
@@ -419,7 +435,7 @@ test('accountmails: NL footer/subcopy, link één keer met word-break', function
     $cases = [
         (new VerifyEmailDutch)->toMail($user),
         (new ResetPasswordDutch('test-token'))->toMail($user),
-        (new VerifyPendingEmailDutch('nieuw@example.com'))->toMail($user),
+        (new VerifyPendingEmailDutch('nieuw@example.com', (int) $user->id))->toMail($user),
     ];
 
     foreach ($cases as $mail) {
