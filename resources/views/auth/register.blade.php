@@ -15,7 +15,7 @@
 
   <form class="form" method="post" action="{{ route('account.registreren') }}" novalidate>
     @csrf
-    @include('partials.form-guard')
+    @include('partials.honeypot')
     <input type="hidden" name="rol" value="{{ $rol }}">
 
     <label>Voornaam of bijnaam *

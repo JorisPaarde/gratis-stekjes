@@ -14,7 +14,7 @@
 
   <form class="form" method="post" action="{{ route('account.inloggen') }}">
     @csrf
-    @include('partials.form-guard')
+    @include('partials.honeypot')
     <input type="hidden" name="next" value="{{ $next }}">
 
     <label>E-mail

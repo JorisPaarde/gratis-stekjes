@@ -68,6 +68,22 @@ test('registreren met bestaand e-mail geeft geen enumeratie en geen tweede user'
     Notification::assertNothingSent();
 });
 
+test('wegwerpmail uit domains.txt wordt geweigerd', function () {
+    $this->from(route('account.registreren'))
+        ->post(route('account.registreren'), authFormPayload([
+            'voornaam' => 'Tijdelijk',
+            'email' => 'iemand@mailinator.com',
+            'password' => authTestPassword(),
+            'password_confirmation' => authTestPassword(),
+            'gratis_akkoord' => '1',
+            'privacy' => '1',
+        ]))
+        ->assertRedirect(route('account.registreren'))
+        ->assertSessionHasErrors('email');
+
+    expect(User::query()->where('email', 'iemand@mailinator.com')->exists())->toBeFalse();
+});
+
 test('honeypot bij registratie is stil succes zonder user', function () {
     Notification::fake();
 
