@@ -62,8 +62,11 @@ test('account verwijderen wist user en aanbod', function () {
         'expires_at' => now()->addDays(10),
     ]);
 
+    $plain = implode('-', ['TestOnly', 'Avg', 'Delete', '9']);
+    $user->forceFill(['password' => $plain])->save();
+
     $this->actingAs($user)
-        ->post(route('account.verwijderen'), ['bevestig' => 'verwijder'])
+        ->post(route('account.verwijderen'), ['password' => $plain])
         ->assertRedirect(route('home'));
 
     expect(User::query()->whereKey($user->id)->exists())->toBeFalse();

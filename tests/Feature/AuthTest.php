@@ -128,8 +128,8 @@ test('inloggen faalt zonder e-mailbevestiging', function () {
             'password' => authTestPassword(),
             'next' => '/account',
         ]))
-        ->assertRedirect(route('account.inloggen'))
-        ->assertSessionHasErrors('email');
+        ->assertRedirect(route('account.bevestiging-nodig'))
+        ->assertSessionHas('status');
 
     $this->assertGuest();
 });

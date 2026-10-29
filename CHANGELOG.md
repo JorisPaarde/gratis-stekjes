@@ -9,6 +9,24 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.13.0] - 2026-10-29
+
+### Added
+
+- Wachtwoord vergeten / reset (Nederlandse mail, geen e-mailenumeratie).
+- Wachtwoord wijzigen (huidig wachtwoord vereist; andere sessies uitloggen).
+- E-mailadres wijzigen met herbevestiging: nieuw adres pas actief na link; melding naar oud adres.
+- “Onthoud mij” bij inloggen.
+- Nederlandse framework-vertalingen (`lang/nl`: auth, passwords, validation, pagination); `APP_LOCALE` default `nl`.
+- Throttle-meldingen met wachttijd (login, registratie, wachtwoordreset, verificatie opnieuw).
+- Mijn account-hub met overzicht van alle accountinstellingen.
+
+### Changed
+
+- Account verwijderen: wachtwoordbevestiging i.p.v. het woord “verwijder”.
+- Niet-bevestigde login → duidelijk bevestigingsscherm met resend-knop.
+- VERSION **0.13.0**.
+
 ## [0.12.0] - 2026-10-29
 
 ### Changed

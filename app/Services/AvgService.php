@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Support\Geo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
 final class AvgService
@@ -32,6 +33,7 @@ final class AvgService
             'user' => [
                 'id' => (int) $user->id,
                 'email' => (string) $user->email,
+                'pending_email' => (string) ($user->pending_email ?? ''),
                 'name' => (string) $user->name,
                 'telefoon' => (string) ($user->telefoon ?? ''),
                 'locatie_label' => (string) ($user->locatie_label ?? ''),
@@ -89,10 +91,10 @@ final class AvgService
     /**
      * @return array{ok: bool, error?: string}
      */
-    public function deleteUserAccount(User $user, string $confirm): array
+    public function deleteUserAccount(User $user, #[\SensitiveParameter] string $password): array
     {
-        if (mb_strtolower(trim($confirm)) !== 'verwijder') {
-            return ['ok' => false, 'error' => 'Typ het woord “verwijder” om te bevestigen.'];
+        if ($password === '' || ! Hash::check($password, $user->password)) {
+            return ['ok' => false, 'error' => 'Wachtwoord klopt niet.'];
         }
 
         $userId = (int) $user->id;

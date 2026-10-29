@@ -6,16 +6,20 @@ use App\Http\Controllers\Account\AanbodController;
 use App\Http\Controllers\Account\AanbodVerlengenController;
 use App\Http\Controllers\Account\ConversationController;
 use App\Http\Controllers\Account\DeleteAccountController;
+use App\Http\Controllers\Account\EmailChangeController;
 use App\Http\Controllers\Account\ExportController;
 use App\Http\Controllers\Account\InboxController;
+use App\Http\Controllers\Account\PasswordController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\StartConversationController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Api\NuTeStekkenController as ApiNuTeStekkenController;
 use App\Http\Controllers\Api\PartnersController as ApiPartnersController;
 use App\Http\Controllers\Api\ZoekenController as ApiZoekenController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Beheer\DashboardController as BeheerDashboardController;
 use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
@@ -60,16 +64,28 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/account/inloggen', [LoginController::class, 'create'])->name('account.inloggen');
     Route::post('/account/inloggen', [LoginController::class, 'store']);
+
+    Route::get('/account/wachtwoord-vergeten', [ForgotPasswordController::class, 'create'])
+        ->name('account.wachtwoord.vergeten');
+    Route::post('/account/wachtwoord-vergeten', [ForgotPasswordController::class, 'store']);
+
+    Route::get('/account/wachtwoord-reset/{token}', [ResetPasswordController::class, 'create'])
+        ->name('account.wachtwoord.reset');
+    Route::post('/account/wachtwoord-reset', [ResetPasswordController::class, 'store'])
+        ->name('account.wachtwoord.reset.store');
 });
 
 Route::get('/account/bevestiging-nodig', [VerifyEmailController::class, 'notice'])
     ->name('account.bevestiging-nodig');
 Route::post('/account/bevestiging-opnieuw', [VerifyEmailController::class, 'resend'])
-    ->middleware('throttle:6,1')
     ->name('account.bevestiging-opnieuw');
 Route::get('/account/bevestigen/{id}/{hash}', [VerifyEmailController::class, 'verify'])
     ->middleware(['signed', 'throttle:6,1'])
     ->name('account.bevestigen');
+
+Route::get('/account/email-bevestigen/{id}/{hash}', [EmailChangeController::class, 'confirm'])
+    ->middleware(['signed', 'throttle:6,1'])
+    ->name('account.email.bevestigen');
 
 Route::post('/account/uitloggen', [LoginController::class, 'destroy'])
     ->middleware('auth')
@@ -80,6 +96,14 @@ Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(functio
 
     Route::get('/account/profiel', [ProfileController::class, 'edit'])->name('account.profiel');
     Route::post('/account/profiel', [ProfileController::class, 'update']);
+
+    Route::get('/account/wachtwoord', [PasswordController::class, 'edit'])->name('account.wachtwoord');
+    Route::post('/account/wachtwoord', [PasswordController::class, 'update']);
+
+    Route::get('/account/email', [EmailChangeController::class, 'edit'])->name('account.email');
+    Route::post('/account/email', [EmailChangeController::class, 'update']);
+    Route::post('/account/email/annuleren', [EmailChangeController::class, 'cancel'])
+        ->name('account.email.annuleren');
 
     Route::get('/account/aanbod', [AanbodController::class, 'index'])->name('account.aanbod');
     Route::post('/account/aanbod', [AanbodController::class, 'store']);

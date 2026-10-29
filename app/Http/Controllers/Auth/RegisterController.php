@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use App\Support\ThrottleMessage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\View\View;
@@ -41,7 +42,7 @@ class RegisterController extends Controller
         if (RateLimiter::tooManyAttempts($key, 8)) {
             return back()
                 ->withInput($request->except('password', 'password_confirmation'))
-                ->withErrors(['email' => 'Te veel pogingen. Probeer later opnieuw.']);
+                ->withErrors(['email' => ThrottleMessage::forKey($key)]);
         }
         RateLimiter::hit($key, 3600);
 

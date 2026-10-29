@@ -23,11 +23,16 @@
     <label>Wachtwoord
       <input type="password" name="password" required maxlength="200" autocomplete="current-password">
     </label>
+    <label class="checkbox">
+      <input type="checkbox" name="remember" value="1" @checked(old('remember'))>
+      <span>Onthoud mij</span>
+    </label>
     <button class="btn" type="submit">Inloggen</button>
   </form>
 
   <p class="muted">
-    <a href="{{ route('account.registreren') }}">Account maken</a>
+    <a href="{{ route('account.wachtwoord.vergeten') }}">Wachtwoord vergeten?</a>
+    · <a href="{{ route('account.registreren') }}">Account maken</a>
     · <a href="{{ route('account.bevestiging-nodig') }}">Bevestigingsmail opnieuw</a>
   </p>
 </section>

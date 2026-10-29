@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
+use App\Support\ThrottleMessage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,12 +40,12 @@ class LoginController extends Controller
         }
 
         $email = strtolower(trim((string) $request->validated('email')));
-        $throttleKey = Str::lower($email).'|'.$request->ip();
+        $throttleKey = 'login:'.Str::lower($email).'|'.$request->ip();
 
         if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
             return back()
-                ->withInput($request->only('email', 'next'))
-                ->withErrors(['email' => 'Te veel pogingen. Probeer later opnieuw.']);
+                ->withInput($request->only('email', 'next', 'remember'))
+                ->withErrors(['email' => ThrottleMessage::forKey($throttleKey)]);
         }
         RateLimiter::hit($throttleKey, 60);
 
@@ -54,17 +55,19 @@ class LoginController extends Controller
             'password' => $request->validated('password'),
         ])) {
             return back()
-                ->withInput($request->only('email', 'next'))
-                ->withErrors(['email' => 'E-mail of wachtwoord klopt niet.']);
+                ->withInput($request->only('email', 'next', 'remember'))
+                ->withErrors(['email' => __('auth.failed')]);
         }
 
         if (! $user->hasVerifiedEmail()) {
-            return back()
-                ->withInput($request->only('email', 'next'))
-                ->withErrors(['email' => 'Bevestig eerst je e-mail via de link in je inbox.']);
+            return redirect()
+                ->route('account.bevestiging-nodig')
+                ->withInput(['email' => $email])
+                ->with('status', 'Bevestig eerst je e-mail via de link in je inbox. Geen mail ontvangen? Stuur hieronder opnieuw een bevestigingsmail.');
         }
 
-        Auth::login($user, false);
+        $remember = $request->boolean('remember');
+        Auth::login($user, $remember);
         $request->session()->regenerate();
         RateLimiter::clear($throttleKey);
 
