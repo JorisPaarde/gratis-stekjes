@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\NuTeStekken;
+use App\Services\Steden;
 use App\Services\Stektips;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
@@ -60,7 +61,7 @@ class PageController extends Controller
         return response($body, 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
     }
 
-    public function sitemap(Stektips $stektips): Response
+    public function sitemap(Stektips $stektips, Steden $steden): Response
     {
         $urls = [
             url('/'),
@@ -73,9 +74,13 @@ class PageController extends Controller
             route('partners'),
             route('deelplekken'),
             route('invasieve-soorten'),
+            route('gratis-planten.index'),
         ];
         foreach ($stektips->all() as $soort) {
             $urls[] = route('stektips.show', ['slug' => $soort['slug']]);
+        }
+        foreach ($steden->all() as $stad) {
+            $urls[] = route('gratis-planten.show', ['stad' => $stad['slug']]);
         }
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";

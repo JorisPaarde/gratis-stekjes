@@ -145,6 +145,11 @@
         <p><a href="{{ route('aanbod') }}">Naar de kaart</a></p>
       </div>
       <div class="soft-card">
+        <h3>Gratis planten in jouw stad</h3>
+        <p>Lokale pagina’s voor de grootste steden.</p>
+        <p><a href="{{ route('gratis-planten.index') }}">Kies je stad</a></p>
+      </div>
+      <div class="soft-card">
         <h3>Deelplekken</h3>
         <p>Plantenasiel, plantenbieb of ruilkast in de buurt.</p>
         <p><a href="{{ route('deelplekken') }}">Bekijk deelplekken</a></p>
