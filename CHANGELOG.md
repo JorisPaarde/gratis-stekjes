@@ -7,7 +7,15 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- (volgende PRs) berichten, admin, AVG-export/verwijderen, expiry/cron-mails, partners-markers, nu te stekken, SEO-pagina’s.
+- (volgende PRs) expiry/cron-mails, partners-markers, nu te stekken, admin/AVG, SEO-pagina’s.
+
+## [0.4.0] - 2026-10-29
+
+### Added
+
+- Berichten rond aanbod: inbox, gesprek starten, chatten; e-mail/telefoon alleen na wederzijds “ja”.
+- Melden en blokkeren; rate limit op berichten; `NewMessageMail` via SMTP (geen berichtinhoud, geen andermans adres).
+- Component-CSS `resources/css/berichten.css`.
 
 ## [0.3.0] - 2026-10-29
 

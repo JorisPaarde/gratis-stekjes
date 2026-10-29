@@ -12,7 +12,8 @@
     window.STEKJES_SITE = {
       api_zoeken: @json(route('api.zoeken')),
       api_partners: @json(route('api.partners')),
-      bericht_binnenkort: true
+      bericht_starten: @json(url('/account/bericht-starten')),
+      bericht_binnenkort: false
     };
   </script>
   @vite(['resources/css/aanbod.css'])
