@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.17.1] - 2026-10-29
+
+### Fixed
+
+- `/organisaties/{slug}` gaf HTTP 500 als een organisatie geen `deelplek_slugs` had (o.a. Velt): de view riep `isNotEmpty()` aan op een lege PHP-array i.p.v. een Collection. Controller geeft nu altijd een Collection; feature-test dekt alle slugs met `config:cache` + `route:cache` en `APP_DEBUG=false`.
+
 ## [0.17.0] - 2026-10-29
 
 ### Added

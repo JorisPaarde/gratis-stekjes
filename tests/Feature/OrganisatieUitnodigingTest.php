@@ -9,6 +9,7 @@ use App\Notifications\DeelplekAanmeldingBevestiging;
 use App\Services\Organisaties;
 use App\Support\Geo;
 use Database\Seeders\DeelplekkenSeeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\RateLimiter;
 
@@ -92,8 +93,72 @@ test('organisatiepagina toont feitelijke tekst bron en deelplek-koppeling', func
         ->assertSee('Bron', false)
         ->assertSee('deelplekken', false);
 
+    // Zonder deelplek_slugs: view moet Collection::isNotEmpty aankunnen (geen array → 500).
+    $this->get(route('organisaties.show', ['slug' => 'velt']))
+        ->assertOk()
+        ->assertSee('Velt Nederland', false)
+        ->assertSee('Geen bezoeklocatie', false);
+
     $this->get(route('organisaties.show', ['slug' => 'bestaat-niet']))
         ->assertNotFound();
+});
+
+test('alle organisatiepaginas 200 met config/route-cache en APP_DEBUG=false', function () {
+    // Bestand-sqlite i.p.v. :memory:, anders verdwijnt het schema bij config:cache / nieuwe PDO.
+    $dbPath = database_path('organisaties-cache-test.sqlite');
+    if (is_file($dbPath)) {
+        unlink($dbPath);
+    }
+    touch($dbPath);
+
+    $prevDebug = (bool) config('app.debug');
+    config([
+        'app.debug' => false,
+        'database.default' => 'sqlite',
+        'database.connections.sqlite.database' => $dbPath,
+    ]);
+    putenv('APP_DEBUG=false');
+    putenv('DB_CONNECTION=sqlite');
+    putenv('DB_DATABASE='.$dbPath);
+    $_ENV['APP_DEBUG'] = 'false';
+    $_ENV['DB_CONNECTION'] = 'sqlite';
+    $_ENV['DB_DATABASE'] = $dbPath;
+    $_SERVER['APP_DEBUG'] = 'false';
+    $_SERVER['DB_CONNECTION'] = 'sqlite';
+    $_SERVER['DB_DATABASE'] = $dbPath;
+
+    try {
+        DB::purge('sqlite');
+        DB::reconnect('sqlite');
+
+        // Deploy-achtig: config + routes gecached, debug uit (zoals staging).
+        $this->artisan('config:cache')->assertSuccessful();
+        $this->artisan('route:cache')->assertSuccessful();
+        DB::purge('sqlite');
+        DB::reconnect('sqlite');
+        $this->artisan('migrate', ['--force' => true])->assertSuccessful();
+        $this->seed(DeelplekkenSeeder::class);
+
+        $slugs = collect(app(Organisaties::class)->all())->pluck('slug')->filter()->values();
+        expect($slugs)->toContain('velt');
+        expect($slugs->count())->toBeGreaterThanOrEqual(10);
+
+        foreach ($slugs as $slug) {
+            $this->get('/organisaties/'.$slug)
+                ->assertOk()
+                ->assertDontSee('Er ging iets mis', false);
+        }
+
+        $this->get('/organisaties')->assertOk();
+        $this->get('/voor-organisaties')->assertOk();
+    } finally {
+        $this->artisan('config:clear');
+        $this->artisan('route:clear');
+        config(['app.debug' => $prevDebug]);
+        if (is_file($dbPath)) {
+            unlink($dbPath);
+        }
+    }
 });
 
 test('aanmeldformulier maakt pending plek die niet publiek zichtbaar is', function () {
