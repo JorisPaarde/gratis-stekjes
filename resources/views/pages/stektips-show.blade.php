@@ -64,13 +64,13 @@
         @foreach($fields as $key => $label)
           @php
             $waarde = $soort[$key] ?? null;
-            $isPlaceholder = is_string($waarde) && (trim($waarde) === '' || trim($waarde) === 'Volgt binnenkort');
-            $hideWhenEmpty = in_array($key, ['ervaringen', 'bronnen'], true);
+            $isEmpty = ! is_string($waarde) && ! is_numeric($waarde)
+                || (is_string($waarde) && trim($waarde) === '');
           @endphp
-          @if((is_string($waarde) || is_numeric($waarde)) && ! ($hideWhenEmpty && $isPlaceholder))
+          @if(! $isEmpty)
             <tr>
               <th scope="row">{{ $label }}</th>
-              <td>{{ $isPlaceholder ? 'Volgt binnenkort' : $waarde }}</td>
+              <td>{{ $waarde }}</td>
             </tr>
           @endif
         @endforeach

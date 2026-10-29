@@ -146,5 +146,7 @@ test('privacy pagina linkt naar export en verwijderen', function () {
     $this->get(route('privacy'))
         ->assertOk()
         ->assertSee(route('account.export'), false)
-        ->assertSee(route('account.verwijderen'), false);
+        ->assertSee(route('account.verwijderen'), false)
+        ->assertSee('Concept – nog niet definitief', false)
+        ->assertSee('info@jpwebcreation.nl', false);
 });
