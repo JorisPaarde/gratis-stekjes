@@ -83,7 +83,7 @@ test('voor-organisaties pagina en links vanuit footer en deelplekken', function 
         ->assertSee(route('voor-organisaties'), false);
 });
 
-test('organisatiepagina toont feitelijke tekst bron en deelplek-koppeling', function () {
+test('organisatiepagina met deelplekken rendert 200', function () {
     $this->seed(DeelplekkenSeeder::class);
 
     $this->get(route('organisaties.show', ['slug' => 'plantenasiel-haarlem']))
@@ -91,13 +91,17 @@ test('organisatiepagina toont feitelijke tekst bron en deelplek-koppeling', func
         ->assertSee('Plantenasiel Haarlem', false)
         ->assertSee('plantenasielhaarlem.nl', false)
         ->assertSee('Bron', false)
-        ->assertSee('deelplekken', false);
+        ->assertSee('Op de deelplekkenkaart', false)
+        ->assertDontSee('Geen bezoeklocatie', false);
+});
 
-    // Zonder deelplek_slugs: view moet Collection::isNotEmpty aankunnen (geen array → 500).
+test('organisatiepagina zonder deelplek_slugs rendert 200 (geen isNotEmpty op array)', function () {
+    // Lege deelplek-koppeling: controller geeft Collection; view gebruikt count() (array-veilig).
     $this->get(route('organisaties.show', ['slug' => 'velt']))
         ->assertOk()
         ->assertSee('Velt Nederland', false)
-        ->assertSee('Geen bezoeklocatie', false);
+        ->assertSee('Geen bezoeklocatie', false)
+        ->assertDontSee('Op de deelplekkenkaart', false);
 
     $this->get(route('organisaties.show', ['slug' => 'bestaat-niet']))
         ->assertNotFound();

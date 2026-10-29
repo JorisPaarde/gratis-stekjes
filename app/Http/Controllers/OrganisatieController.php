@@ -29,17 +29,15 @@ class OrganisatieController extends Controller
             abort(404);
         }
 
-        $deelplekSlugs = $org['deelplek_slugs'] ?? [];
-        // Altijd een Collection: de view roept isNotEmpty() aan (lege array → 500).
-        $deelplekkenRows = collect();
-        if (is_array($deelplekSlugs) && $deelplekSlugs !== []) {
-            $deelplekkenRows = Deelplek::query()
+        $deelplekSlugs = is_array($org['deelplek_slugs'] ?? null) ? $org['deelplek_slugs'] : [];
+        $deelplekkenRows = $deelplekSlugs === []
+            ? collect()
+            : collect(Deelplek::query()
                 ->visible()
                 ->whereIn('slug', $deelplekSlugs)
                 ->orderBy('plaats')
                 ->orderBy('naam')
-                ->get();
-        }
+                ->get());
 
         $naam = (string) $org['naam'];
         $kort = (string) ($org['kort'] ?? '');

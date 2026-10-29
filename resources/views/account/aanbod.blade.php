@@ -69,7 +69,7 @@
   </form>
 
   <h2>Jouw items</h2>
-  @if($mine->isEmpty())
+  @if(count($mine) === 0)
     <div class="empty-state" role="status">
       <p>Je hebt nog geen aanbod. Vul het formulier hierboven in, of bekijk eerst wat er in jouw buurt staat.</p>
       <p><a class="btn btn-secondary" href="{{ route('aanbod') }}">Naar aanbod &amp; kaart</a></p>

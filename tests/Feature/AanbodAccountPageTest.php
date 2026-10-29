@@ -28,16 +28,18 @@ test('GET account/aanbod zonder locatie redirect naar profiel (geen 500)', funct
         ->assertRedirect(route('account.profiel'));
 });
 
-test('GET account/aanbod met locatie toont formulier (200)', function () {
+test('GET account/aanbod zonder aanbod rendert empty-state (200)', function () {
     $user = aanbodPageUser();
 
     $this->actingAs($user)
         ->get(route('account.aanbod'))
         ->assertOk()
         ->assertSee('Mijn aanbod', false)
+        ->assertSee('Je hebt nog geen aanbod', false)
         ->assertSee('name="tekst"', false)
         ->assertSee('invasieve', false)
-        ->assertSee(route('invasieve-soorten'), false);
+        ->assertSee(route('invasieve-soorten'), false)
+        ->assertDontSee('Verwijderen', false);
 });
 
 test('GET account/aanbod met bestaand aanbod toont items (200)', function () {
@@ -56,7 +58,8 @@ test('GET account/aanbod met bestaand aanbod toont items (200)', function () {
         ->assertSee('Muntstekjes', false)
         ->assertSee('name="tekst"', false)
         ->assertSee('Verwijderen', false)
-        ->assertSee('Weet je het zeker?', false);
+        ->assertSee('Weet je het zeker?', false)
+        ->assertDontSee('Je hebt nog geen aanbod', false);
 });
 
 test('eigenaar kan eigen aanbod verwijderen; verdwijnt uit zoek-API en stadspagina', function () {

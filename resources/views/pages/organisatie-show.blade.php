@@ -17,7 +17,7 @@
     <a href="{{ $org['bron_url'] }}" rel="noopener noreferrer" target="_blank">Bron</a>
   </p>
 
-  @if($deelplekken->isNotEmpty())
+  @if(count($deelplekken) > 0)
     <h2>Op de deelplekkenkaart</h2>
     <ul>
       @foreach($deelplekken as $plek)

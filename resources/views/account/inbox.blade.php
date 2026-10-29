@@ -17,7 +17,7 @@
     <p class="flash-error" role="alert">{{ session('error') }}</p>
   @endif
 
-  @if($rows->isEmpty())
+  @if(count($rows) === 0)
     <div class="empty-state" role="status">
       <p>Nog geen gesprekken. Zoek iets in de buurt en stuur een bericht — contactgegevens volgen pas na wederzijds akkoord.</p>
       <p><a class="btn" href="{{ route('aanbod') }}">Zoek aanbod</a></p>
