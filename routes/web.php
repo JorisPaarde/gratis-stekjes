@@ -17,7 +17,6 @@ use App\Http\Controllers\Api\DeelplekkenController as ApiDeelplekkenController;
 use App\Http\Controllers\Api\NuTeStekkenController as ApiNuTeStekkenController;
 use App\Http\Controllers\Api\PartnersController as ApiPartnersController;
 use App\Http\Controllers\Api\ZoekenController as ApiZoekenController;
-use App\Http\Controllers\DeelplekkenController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -27,6 +26,7 @@ use App\Http\Controllers\Beheer\DashboardController as BeheerDashboardController
 use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
 use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\CronController;
+use App\Http\Controllers\DeelplekkenController;
 use App\Http\Controllers\GratisPlantenController;
 use App\Http\Controllers\InvasieveSoortenController;
 use App\Http\Controllers\PageController;
@@ -118,11 +118,14 @@ Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(functio
         ->name('account.email.annuleren');
 
     Route::get('/account/aanbod', [AanbodController::class, 'index'])->name('account.aanbod');
-    Route::post('/account/aanbod', [AanbodController::class, 'store']);
-    Route::post('/account/aanbod/{aanbod}', [AanbodController::class, 'update'])
-        ->name('account.aanbod.update');
+    Route::post('/account/aanbod/nieuw', [AanbodController::class, 'store'])
+        ->name('account.aanbod.store');
     Route::post('/account/aanbod/{aanbod}/verlengen', [AanbodController::class, 'renew'])
         ->name('account.aanbod.renew');
+    Route::post('/account/aanbod/{aanbod}', [AanbodController::class, 'update'])
+        ->name('account.aanbod.update');
+    // Oude POST /account/aanbod (vóór /nieuw) → zelfde store-action.
+    Route::post('/account/aanbod', [AanbodController::class, 'store']);
 
     Route::get('/account/inbox', InboxController::class)->name('account.inbox');
     Route::get('/account/bericht-starten', StartConversationController::class)

@@ -14,7 +14,7 @@
     <p class="error" role="alert">{{ $errors->first() }}</p>
   @endif
 
-  <form class="form" method="post" action="{{ route('account.aanbod') }}" data-invasieve-form>
+  <form class="form" method="post" action="{{ route('account.aanbod.store') }}" data-invasieve-form>
     @csrf
     @include('partials.honeypot')
     <label>Type *
@@ -40,15 +40,25 @@
   @else
     <ul class="zoek-lijst">
       @foreach($mine as $row)
-        @php($expired = $row->isExpired())
-        @php($editing = (int) old('edit_id', request('edit')) === (int) $row->id)
+        @php
+          $expired = $row->isExpired();
+          $editing = (int) old('edit_id', request('edit')) === (int) $row->id;
+        @endphp
         <li class="zoek-item">
           <span class="badge">{{ $row->type }}</span>
-          @if(!$row->visible || $expired)
+          @if(! $row->visible || $expired)
             <span class="muted">
-              (@if(!$row->visible)verborgen@endif
-              @if(!$row->visible && $expired), @endif
-              @if($expired)verlopen (niet meer in zoeken/kaart)@endif)
+              (
+              @if(! $row->visible)
+                verborgen
+              @endif
+              @if(! $row->visible && $expired)
+                ,
+              @endif
+              @if($expired)
+                verlopen (niet meer in zoeken/kaart)
+              @endif
+              )
             </span>
           @endif
           @if($editing)
@@ -75,7 +85,9 @@
             </form>
           @else
             <p>{{ $row->tekst }}</p>
-            <p class="muted">Geldig tot {{ $row->expires_at->timezone('Europe/Amsterdam')->format('d-m-Y') }}</p>
+            @if($row->expires_at)
+              <p class="muted">Geldig tot {{ $row->expires_at->timezone('Europe/Amsterdam')->format('d-m-Y') }}</p>
+            @endif
             <p>
               <a class="btn btn-secondary" href="{{ route('account.aanbod', ['edit' => $row->id]) }}">Wijzigen</a>
             </p>
