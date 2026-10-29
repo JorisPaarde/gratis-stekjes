@@ -6,6 +6,8 @@ namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 use App\Models\Aanbod;
+use App\Rules\GeenInvasieveSoort;
+use App\Services\InvasieveSoorten;
 use App\Support\FormGuard;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,7 +15,7 @@ use Illuminate\View\View;
 
 class AanbodController extends Controller
 {
-    public function index(Request $request): View|RedirectResponse
+    public function index(Request $request, InvasieveSoorten $invasieve): View|RedirectResponse
     {
         $user = $request->user();
         if (! $user->hasLocation()) {
@@ -29,6 +31,8 @@ class AanbodController extends Controller
             'user' => $user,
             'mine' => $user->aanbod()->latest()->get(),
             'formStarted' => time(),
+            'invasieveTerms' => $invasieve->termsForClient(),
+            'invasieveUitlegUrl' => route('invasieve-soorten'),
         ]);
     }
 
@@ -46,15 +50,7 @@ class AanbodController extends Controller
             return back()->withInput()->withErrors(['tekst' => 'Even geduld, het formulier ging te snel.']);
         }
 
-        $data = $request->validate([
-            'type' => ['required', 'in:uitdelen,ophalen'],
-            'tekst' => ['required', 'string', 'min:5', 'max:2000'],
-            'gratis_akkoord' => ['accepted'],
-        ], [
-            'type.required' => 'Kies uitdelen of ophalen.',
-            'tekst.min' => 'Schrijf kort wat je hebt of zoekt (minstens 5 tekens).',
-            'gratis_akkoord.accepted' => 'Je moet akkoord gaan: alleen gratis, geen verkoop.',
-        ]);
+        $data = $this->validatedAanbod($request);
 
         $ttl = (int) config('stekjes.aanbod_ttl_days', 60);
         Aanbod::query()->create([
@@ -68,6 +64,29 @@ class AanbodController extends Controller
         return redirect()
             ->route('account.aanbod')
             ->with('status', 'Aanbod geplaatst.');
+    }
+
+    public function update(Request $request, Aanbod $aanbod): RedirectResponse
+    {
+        abort_unless($aanbod->user_id === $request->user()->id, 403);
+
+        if (FormGuard::honeypotFilled($request->input('website'))) {
+            return redirect()->route('account.aanbod')->with('status', 'Aanbod bijgewerkt.');
+        }
+        if (FormGuard::submittedTooFast($request->input('form_started'))) {
+            return back()->withInput()->withErrors(['tekst' => 'Even geduld, het formulier ging te snel.']);
+        }
+
+        $data = $this->validatedAanbod($request);
+
+        $aanbod->update([
+            'type' => $data['type'],
+            'tekst' => trim($data['tekst']),
+        ]);
+
+        return redirect()
+            ->route('account.aanbod')
+            ->with('status', 'Aanbod bijgewerkt.');
     }
 
     public function renew(Request $request, Aanbod $aanbod): RedirectResponse
@@ -86,5 +105,19 @@ class AanbodController extends Controller
         return redirect()
             ->route('account.aanbod')
             ->with('status', 'Aanbod verlengd met '.$ttl.' dagen.');
+    }
+
+    /** @return array{type: string, tekst: string, gratis_akkoord: mixed} */
+    private function validatedAanbod(Request $request): array
+    {
+        return $request->validate([
+            'type' => ['required', 'in:uitdelen,ophalen'],
+            'tekst' => ['required', 'string', 'min:5', 'max:2000', new GeenInvasieveSoort],
+            'gratis_akkoord' => ['accepted'],
+        ], [
+            'type.required' => 'Kies uitdelen of ophalen.',
+            'tekst.min' => 'Schrijf kort wat je hebt of zoekt (minstens 5 tekens).',
+            'gratis_akkoord.accepted' => 'Je moet akkoord gaan: alleen gratis, geen verkoop.',
+        ]);
     }
 }
