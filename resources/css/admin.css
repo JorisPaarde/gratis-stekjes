@@ -50,9 +50,17 @@
 .beheer-page .linkish {
   background: none;
   border: 0;
-  padding: 0;
+  padding: 0.55rem 0;
+  min-height: 44px;
   color: var(--leaf-deep, #163820);
   text-decoration: underline;
   cursor: pointer;
   font: inherit;
+}
+
+.beheer-actions a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.55rem 0;
 }

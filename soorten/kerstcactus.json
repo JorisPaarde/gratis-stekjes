@@ -1,25 +1,25 @@
 {
-  "slug": "kerstcactus",
-  "naam": "Kerstcactus",
-  "latijn": "Schlumbergera",
-  "categorie": "kamerplant",
-  "waarom": "Lidstekken zijn eenvoudig te delen rond de bloei",
-  "methode": "Stek in aarde (lidstek)",
-  "wanneer": "Na de bloei of in het voorjaar",
-  "welk_hout": "1–3 bladleden",
-  "lengte_snit": "Lid draaien/breken; wond 1–2 dagen laten drogen",
-  "water_grond": "In luchtige potgrond; licht vochtig na het poten",
-  "licht": "Helder, geen felle middagzon",
-  "water": "Matig in de groei; spaarzamer na bloei",
-  "hulpmiddel": "Niet nodig",
-  "kans": "Makkelijk",
-  "klaar": "Bij stevige wortels en nieuwe leden",
-  "verwanten": [
-    "kalanchoe",
-    "echeveria"
-  ],
-  "waarschuwing": "",
-  "ervaringen": "Volgt binnenkort",
-  "bronnen": "Volgt binnenkort",
-  "kort": "Lidstek; wond laten drogen en poten"
+    "slug": "kerstcactus",
+    "naam": "Kerstcactus",
+    "latijn": "Schlumbergera",
+    "categorie": "kamerplant",
+    "waarom": "Lidstekken zijn eenvoudig te delen rond de bloei",
+    "methode": "Stek in aarde (lidstek)",
+    "wanneer": "Na de bloei of in het voorjaar",
+    "welk_hout": "1–3 bladleden",
+    "lengte_snit": "Lid draaien/breken; wond 1–2 dagen laten drogen",
+    "water_grond": "In luchtige potgrond; licht vochtig na het poten",
+    "licht": "Helder, geen felle middagzon",
+    "water": "Matig in de groei; spaarzamer na bloei",
+    "hulpmiddel": "Niet nodig",
+    "kans": "Makkelijk",
+    "klaar": "Bij stevige wortels en nieuwe leden",
+    "verwanten": [
+        "kalanchoe",
+        "echeveria"
+    ],
+    "waarschuwing": "",
+    "ervaringen": "",
+    "bronnen": "",
+    "kort": "Lidstek; wond laten drogen en poten"
 }

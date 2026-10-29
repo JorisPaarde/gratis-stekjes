@@ -1,24 +1,24 @@
 {
-  "slug": "aardbei",
-  "naam": "Aardbei",
-  "latijn": "Fragaria × ananassa",
-  "waarom": "Volgt binnenkort",
-  "methode": "Uitlopers vastzetten in grond of een potje, loszetten bij nieuw blad",
-  "wanneer": "Aug–sep",
-  "welk_hout": "Volgt binnenkort",
-  "lengte_snit": "Volgt binnenkort",
-  "water_grond": "Volgt binnenkort",
-  "hulpmiddel": "Volgt binnenkort",
-  "kans": "Makkelijk",
-  "klaar": "Volgt binnenkort",
-  "ervaringen": "Volgt binnenkort",
-  "bronnen": "Volgt binnenkort",
-  "kort": "Uitlopers vastzetten in grond of een potje, loszetten bij nieuw blad",
-  "categorie": "eetbaar",
-  "licht": "Zon",
-  "water": "Gelijkmatig vochtig",
-  "verwanten": [
-    "framboos"
-  ],
-  "waarschuwing": ""
+    "slug": "aardbei",
+    "naam": "Aardbei",
+    "latijn": "Fragaria × ananassa",
+    "waarom": "Volgt binnenkort",
+    "methode": "Uitlopers vastzetten in grond of een potje, loszetten bij nieuw blad",
+    "wanneer": "Aug–sep",
+    "welk_hout": "Volgt binnenkort",
+    "lengte_snit": "Volgt binnenkort",
+    "water_grond": "Volgt binnenkort",
+    "hulpmiddel": "Volgt binnenkort",
+    "kans": "Makkelijk",
+    "klaar": "Volgt binnenkort",
+    "ervaringen": "",
+    "bronnen": "RHS — How to grow strawberries — https://www.rhs.org.uk/fruit/strawberries/grow-your-own",
+    "kort": "Uitlopers vastzetten in grond of een potje, loszetten bij nieuw blad",
+    "categorie": "eetbaar",
+    "licht": "Zon",
+    "water": "Gelijkmatig vochtig",
+    "verwanten": [
+        "framboos"
+    ],
+    "waarschuwing": ""
 }

@@ -146,7 +146,11 @@
             </td>
           </tr>
         @empty
-          <tr><td colspan="5">Nog geen markers.</td></tr>
+          <tr><td colspan="5">
+            <div class="empty-state" role="status">
+              <p>Nog geen kaartmarkers. Voeg hierboven een initiatief, voedselbos of deelplek-marker toe, of bekijk de publieke <a href="{{ route('deelplekken') }}">deelplekken</a>.</p>
+            </div>
+          </td></tr>
         @endforelse
       </tbody>
     </table>
@@ -156,7 +160,9 @@
   @if(!$hasReportsTable)
     <p class="muted">Meldingentabel volgt met de berichten-release. Daarna verschijnen openstaande meldingen hier.</p>
   @elseif($reports->isEmpty())
-    <p class="muted">Geen meldingen.</p>
+    <div class="empty-state" role="status">
+      <p>Geen openstaande meldingen. Nieuwe meldingen verschijnen hier zodra iemand iets signaleert.</p>
+    </div>
   @else
     <div class="beheer-table-wrap">
       <table class="beheer-table">

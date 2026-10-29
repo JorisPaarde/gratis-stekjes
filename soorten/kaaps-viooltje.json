@@ -1,25 +1,25 @@
 {
-  "slug": "kaaps-viooltje",
-  "naam": "Kaaps viooltje",
-  "latijn": "Streptocarpus ionanthus",
-  "categorie": "kamerplant",
-  "waarom": "Klassieke vensterbankplant; bladstek is de gangbare methode",
-  "methode": "Bladstek in aarde",
-  "wanneer": "Lente–zomer",
-  "welk_hout": "Gezond jong blad met steeltje",
-  "lengte_snit": "Steeltje in stekgrond; blad rechtop of schuin",
-  "water_grond": "Luchtige stekgrond, licht vochtig; graag warm en luchtig",
-  "licht": "Helder, geen felle zon",
-  "water": "Matig; vermijd koud water op het blad",
-  "hulpmiddel": "Optioneel afdekken",
-  "kans": "Gemiddeld",
-  "klaar": "Als er plantjes aan de bladbasis verschijnen",
-  "verwanten": [
-    "begonia",
-    "peperomia"
-  ],
-  "waarschuwing": "",
-  "ervaringen": "Volgt binnenkort",
-  "bronnen": "Volgt binnenkort",
-  "kort": "Bladstek in luchtige stekgrond"
+    "slug": "kaaps-viooltje",
+    "naam": "Kaaps viooltje",
+    "latijn": "Streptocarpus ionanthus",
+    "categorie": "kamerplant",
+    "waarom": "Klassieke vensterbankplant; bladstek is de gangbare methode",
+    "methode": "Bladstek in aarde",
+    "wanneer": "Lente–zomer",
+    "welk_hout": "Gezond jong blad met steeltje",
+    "lengte_snit": "Steeltje in stekgrond; blad rechtop of schuin",
+    "water_grond": "Luchtige stekgrond, licht vochtig; graag warm en luchtig",
+    "licht": "Helder, geen felle zon",
+    "water": "Matig; vermijd koud water op het blad",
+    "hulpmiddel": "Optioneel afdekken",
+    "kans": "Gemiddeld",
+    "klaar": "Als er plantjes aan de bladbasis verschijnen",
+    "verwanten": [
+        "begonia",
+        "peperomia"
+    ],
+    "waarschuwing": "",
+    "ervaringen": "",
+    "bronnen": "",
+    "kort": "Bladstek in luchtige stekgrond"
 }

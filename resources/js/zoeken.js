@@ -383,14 +383,14 @@
         }
         if (!aanbodItems.length) {
           status.dataset.empty =
-            "Nog geen aanbod in de buurt. Volgt binnenkort — of zet zelf iets online.";
+            "Nog geen aanbod in de buurt. Bekijk deelplekken op de kaart, of zet zelf iets online via een account.";
         } else {
           status.dataset.empty = "";
         }
         refreshMarkers(true);
         if (!aanbodItems.length && !partnerItems.length && !deelplekItems.length) {
           status.textContent =
-            "Nog geen aanbod in de buurt. Volgt binnenkort — of zet zelf iets online.";
+            "Nog geen aanbod in de buurt. Bekijk deelplekken op de kaart, of zet zelf iets online via een account.";
         }
       })
       .catch(function (err) {

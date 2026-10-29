@@ -1,24 +1,24 @@
 {
-  "slug": "moerbei",
-  "naam": "Moerbei",
-  "latijn": "Morus",
-  "waarom": "Volgt binnenkort",
-  "methode": "Meerjarig hout in een pot van 1–2 L",
-  "wanneer": "Nov, vóór vorst",
-  "welk_hout": "Volgt binnenkort",
-  "lengte_snit": "Volgt binnenkort",
-  "water_grond": "Volgt binnenkort",
-  "hulpmiddel": "Volgt binnenkort",
-  "kans": "Gemiddeld",
-  "klaar": "Volgt binnenkort",
-  "ervaringen": "Volgt binnenkort",
-  "bronnen": "Volgt binnenkort",
-  "kort": "Meerjarig hout in een pot van 1–2 L",
-  "categorie": "eetbaar",
-  "licht": "Zon",
-  "water": "Matig",
-  "verwanten": [
-    "vijg"
-  ],
-  "waarschuwing": ""
+    "slug": "moerbei",
+    "naam": "Moerbei",
+    "latijn": "Morus",
+    "waarom": "Volgt binnenkort",
+    "methode": "Meerjarig hout in een pot van 1–2 L",
+    "wanneer": "Nov, vóór vorst",
+    "welk_hout": "Volgt binnenkort",
+    "lengte_snit": "Volgt binnenkort",
+    "water_grond": "Volgt binnenkort",
+    "hulpmiddel": "Volgt binnenkort",
+    "kans": "Gemiddeld",
+    "klaar": "Volgt binnenkort",
+    "ervaringen": "",
+    "bronnen": "RHS — Hardwood cuttings — https://www.rhs.org.uk/propagation/hardwood-cuttings",
+    "kort": "Meerjarig hout in een pot van 1–2 L",
+    "categorie": "eetbaar",
+    "licht": "Zon",
+    "water": "Matig",
+    "verwanten": [
+        "vijg"
+    ],
+    "waarschuwing": ""
 }

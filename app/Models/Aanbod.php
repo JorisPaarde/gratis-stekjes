@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\AanbodFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Aanbod extends Model
 {
+    /** @use HasFactory<AanbodFactory> */
+    use HasFactory;
+
     protected $table = 'aanbod';
 
     protected $fillable = [

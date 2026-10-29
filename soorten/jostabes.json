@@ -1,25 +1,25 @@
 {
-  "slug": "jostabes",
-  "naam": "Jostabes",
-  "latijn": "Ribes × nidigrolaria",
-  "waarom": "Volgt binnenkort",
-  "methode": "Winterstek, mag tot 1 m lang zijn",
-  "wanneer": "Nov–feb",
-  "welk_hout": "Volgt binnenkort",
-  "lengte_snit": "Volgt binnenkort",
-  "water_grond": "Volgt binnenkort",
-  "hulpmiddel": "Volgt binnenkort",
-  "kans": "Makkelijk",
-  "klaar": "Volgt binnenkort",
-  "ervaringen": "Volgt binnenkort",
-  "bronnen": "Volgt binnenkort",
-  "kort": "Winterstek, mag tot 1 m lang zijn",
-  "categorie": "eetbaar",
-  "licht": "Zon tot halfschaduw",
-  "water": "Gelijkmatig vochtig",
-  "verwanten": [
-    "zwarte-bes",
-    "rode-bes"
-  ],
-  "waarschuwing": ""
+    "slug": "jostabes",
+    "naam": "Jostabes",
+    "latijn": "Ribes × nidigrolaria",
+    "waarom": "Volgt binnenkort",
+    "methode": "Winterstek, mag tot 1 m lang zijn",
+    "wanneer": "Nov–feb",
+    "welk_hout": "Volgt binnenkort",
+    "lengte_snit": "Volgt binnenkort",
+    "water_grond": "Volgt binnenkort",
+    "hulpmiddel": "Volgt binnenkort",
+    "kans": "Makkelijk",
+    "klaar": "Volgt binnenkort",
+    "ervaringen": "",
+    "bronnen": "RHS — Hardwood cuttings — https://www.rhs.org.uk/propagation/hardwood-cuttings; RHS — February trees and shrubs — https://www.rhs.org.uk/advice/in-month/february/trees-shrubs",
+    "kort": "Winterstek, mag tot 1 m lang zijn",
+    "categorie": "eetbaar",
+    "licht": "Zon tot halfschaduw",
+    "water": "Gelijkmatig vochtig",
+    "verwanten": [
+        "zwarte-bes",
+        "rode-bes"
+    ],
+    "waarschuwing": ""
 }

@@ -1,25 +1,25 @@
 {
-  "slug": "rubberplant",
-  "naam": "Rubberplant",
-  "latijn": "Ficus elastica",
-  "categorie": "kamerplant",
-  "waarom": "Grote kamerplant; kop- of stengelstek met knoop",
-  "methode": "Stek in aarde of water (top-/stengelstek)",
-  "wanneer": "Lente–zomer",
-  "welk_hout": "Top of stengelstuk met minstens één knoop en blad",
-  "lengte_snit": "Onder een knoop; melksap afspoelen en wond even laten drogen",
-  "water_grond": "Luchtige potgrond of water tot wortels komen",
-  "licht": "Helder licht",
-  "water": "Matig; tussen gietbeurten laten opdrogen",
-  "hulpmiddel": "Optioneel stekpoeder",
-  "kans": "Gemiddeld",
-  "klaar": "Bij zichtbare wortels of nieuwe bladgroei",
-  "verwanten": [
-    "monstera",
-    "philodendron"
-  ],
-  "waarschuwing": "Melksap kan irriteren; handen wassen na het snijden.",
-  "ervaringen": "Volgt binnenkort",
-  "bronnen": "Volgt binnenkort",
-  "kort": "Topstek met knoop; melksap afspoelen"
+    "slug": "rubberplant",
+    "naam": "Rubberplant",
+    "latijn": "Ficus elastica",
+    "categorie": "kamerplant",
+    "waarom": "Grote kamerplant; kop- of stengelstek met knoop",
+    "methode": "Stek in aarde of water (top-/stengelstek)",
+    "wanneer": "Lente–zomer",
+    "welk_hout": "Top of stengelstuk met minstens één knoop en blad",
+    "lengte_snit": "Onder een knoop; melksap afspoelen en wond even laten drogen",
+    "water_grond": "Luchtige potgrond of water tot wortels komen",
+    "licht": "Helder licht",
+    "water": "Matig; tussen gietbeurten laten opdrogen",
+    "hulpmiddel": "Optioneel stekpoeder",
+    "kans": "Gemiddeld",
+    "klaar": "Bij zichtbare wortels of nieuwe bladgroei",
+    "verwanten": [
+        "monstera",
+        "philodendron"
+    ],
+    "waarschuwing": "Melksap kan irriteren; handen wassen na het snijden.",
+    "ervaringen": "",
+    "bronnen": "",
+    "kort": "Topstek met knoop; melksap afspoelen"
 }

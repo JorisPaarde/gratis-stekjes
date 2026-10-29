@@ -42,19 +42,25 @@
     </aside>
   @endif
 
-  <table class="table stektips-table">
-    <tbody>
-      @foreach($fields as $key => $label)
-        @php $waarde = $soort[$key] ?? null; @endphp
-        @if(is_string($waarde) || is_numeric($waarde))
-          <tr>
-            <th scope="row">{{ $label }}</th>
-            <td>{{ $waarde !== '' ? $waarde : 'Volgt binnenkort' }}</td>
-          </tr>
-        @endif
-      @endforeach
-    </tbody>
-  </table>
+  <div class="table-scroll" role="region" aria-label="Stektips-tabel" tabindex="0">
+    <table class="table stektips-table">
+      <tbody>
+        @foreach($fields as $key => $label)
+          @php
+            $waarde = $soort[$key] ?? null;
+            $isPlaceholder = is_string($waarde) && (trim($waarde) === '' || trim($waarde) === 'Volgt binnenkort');
+            $hideWhenEmpty = in_array($key, ['ervaringen', 'bronnen'], true);
+          @endphp
+          @if((is_string($waarde) || is_numeric($waarde)) && ! ($hideWhenEmpty && $isPlaceholder))
+            <tr>
+              <th scope="row">{{ $label }}</th>
+              <td>{{ $isPlaceholder ? 'Volgt binnenkort' : $waarde }}</td>
+            </tr>
+          @endif
+        @endforeach
+      </tbody>
+    </table>
+  </div>
 
   @if(!empty($verwanten))
     <h2 class="stektips-related-title">Verwante soorten</h2>

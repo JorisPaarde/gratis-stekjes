@@ -9,6 +9,25 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.17.2] - 2026-10-29
+
+### Added
+
+- Route-audit feature test: alle publieke routes + soort-/stad-/organisatiepagina’s (leeg) en account/beheer (gevuld via `DemoSeeder`) moeten HTTP-status onder 500 blijven; inclusief `/organisaties/{slug}` onder `config:cache` + `route:cache` met `APP_DEBUG=false`.
+- `AanbodFactory` + `DemoSeeder` voor lokale gevulde audits (gebruikers, aanbod, berichten).
+- Auditrapport `docs/audit-2026-10-29.md` + helper-scripts `scripts/audit-crawl.php` en `scripts/audit-mobile.mjs`.
+
+### Changed
+
+- Stektips: “Joris' eigen proef” linkt naar `/stektips/herfstolijfwilg`; Bronnen gevuld vanuit `nu-te-stekken` waar beschikbaar; lege Ervaringen/Bronnen-rijen worden verborgen i.p.v. “Volgt binnenkort”.
+- Vriendelijkere empty states voor zoeken zonder treffers, mijn aanbod, inbox en beheer-lijsten.
+- Mobiel: min. 44px touch targets op knoppen/nav; tabellen scrollen horizontaal i.p.v. layout te breken; overflow-x op body begrensd.
+- `DatabaseSeeder` seeded alleen nog verplichte deelplekken (demo-data via `DemoSeeder`).
+
+### Fixed
+
+- Route-audit: `/beheer` zonder `ADMIN_PASSWORD` is bewust HTTP 503 — test verwacht dat expliciet i.p.v. generiek <500 (CI faalde daarop).
+
 ## [0.17.1] - 2026-10-29
 
 ### Fixed

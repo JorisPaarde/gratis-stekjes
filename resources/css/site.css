@@ -88,9 +88,10 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .nav-cta:focus-visibl
   display: inline-flex; align-items: center; gap: .4rem;
   border: 1px solid var(--line);
   background: var(--card); border-radius: var(--radius-pill);
-  padding: .45rem .95rem; font: inherit; font-weight: 600;
+  padding: .55rem .95rem; font: inherit; font-weight: 600;
   cursor: pointer; color: var(--forest-deep);
   white-space: nowrap;
+  min-height: 44px;
 }
 .site-nav {
   display: none; flex-direction: column; gap: .35rem;
@@ -101,18 +102,22 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .nav-cta:focus-visibl
 .site-nav.is-open { display: flex; }
 .site-nav a {
   text-decoration: none; color: var(--forest-deep);
-  padding: .45rem .65rem; border-radius: .6rem; font-weight: 600;
+  padding: .55rem .65rem; border-radius: .6rem; font-weight: 600;
   letter-spacing: 0.02em;
   white-space: nowrap;
+  min-height: 44px;
+  box-sizing: border-box;
 }
 .site-nav a:hover, .site-nav a:focus-visible { background: var(--bg-mint); }
 .nav-cta {
   background: var(--orange) !important; color: var(--orange-text) !important;
   border: 0; cursor: pointer; font: inherit; font-weight: 700;
-  padding: .5rem .9rem !important; border-radius: var(--radius-pill) !important;
+  padding: .55rem .9rem !important; border-radius: var(--radius-pill) !important;
   text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase;
   font-size: .82rem !important;
   white-space: nowrap !important;
+  min-height: 44px;
+  box-sizing: border-box;
 }
 .nav-cta:hover, .nav-cta:focus-visible {
   background: var(--orange-hover) !important; color: var(--orange-text) !important;
@@ -130,7 +135,9 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .nav-cta:focus-visibl
     text-transform: uppercase;
     letter-spacing: 0.02em;
     padding: .4rem .45rem;
+    min-height: 0;
   }
+  .site-nav .nav-cta { min-height: 0; }
   /* Iconen alleen in het hamburgermenu; desktop blijft één regel. */
   .site-nav .icon { display: none; }
 }
@@ -315,6 +322,7 @@ h1.page-title {
   background: var(--orange); color: var(--orange-text);
   font: inherit; font-weight: 700;
   padding: .8rem 1.45rem;
+  min-height: 44px;
   border-radius: var(--radius-pill);
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -416,7 +424,7 @@ h1.page-title {
 
 .grid-cards {
   display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
 }
 .soft-card {
   background: var(--card);
@@ -530,6 +538,29 @@ h1.page-title {
 .table th, .table td {
   text-align: left; padding: .55rem .4rem;
   border-bottom: 1px solid var(--line); vertical-align: top;
+}
+.table-scroll {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.empty-state {
+  margin: 1rem 0;
+  padding: 1rem 1.1rem;
+  background: var(--bg-mint, #e6f2e1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius, 1rem);
+  color: var(--ink);
+}
+.empty-state p { margin: 0 0 .65rem; }
+.empty-state p:last-child { margin-bottom: 0; }
+.empty-state .btn { margin-top: .25rem; }
+
+html, body { overflow-x: hidden; }
+.wrap, .section, main { max-width: 100%; }
+img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
+  max-width: 100%;
 }
 
 @keyframes rise {
