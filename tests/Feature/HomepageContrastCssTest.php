@@ -15,7 +15,8 @@ function cssLastDecl(string $css, string $selector, string $property): ?string
     }
     $value = null;
     foreach ($blocks[1] as $body) {
-        if (preg_match('/'.preg_quote($property, '/').'\s*:\s*([^;}]+)/i', $body, $m)) {
+        // Geen match op border-color bij property "color"
+        if (preg_match('/(?<![\w-])'.preg_quote($property, '/').'\s*:\s*([^;}]+)/i', $body, $m)) {
             $value = trim($m[1]);
         }
     }
@@ -77,10 +78,45 @@ test('homepage-tekstkleuren halen WCAG AA op lichte achtergrond', function () {
     expect(contrastRatio('#3d4a3f', '#ffffff'))->toBeGreaterThanOrEqual(4.5); // ink-soft
     expect(contrastRatio('#1f4d2b', '#ffffff'))->toBeGreaterThanOrEqual(4.5); // forest
     expect(contrastRatio('#8a4514', '#e6f2e1'))->toBeGreaterThanOrEqual(4.5); // accent-text op mint
-    expect(contrastRatio('#7a3b12', '#fff4e6'))->toBeGreaterThanOrEqual(4.5); // warn
+    expect(contrastRatio('#1a1210', '#fff1e4'))->toBeGreaterThanOrEqual(4.5); // warn-card ink
     // Oranje knoppen: donkere tekst (wit op #e8833a faalt AA)
     expect(contrastRatio('#ffffff', '#e8833a'))->toBeLessThan(4.5);
     expect(contrastRatio('#1a1210', '#e8833a'))->toBeGreaterThanOrEqual(4.5);
+});
+
+test('page-title is wit op bosgroen (niet overschreven door .section h1)', function () {
+    $css = file_get_contents(base_path('resources/css/site.css'));
+
+    $color = cssLastDecl($css, '.page-title', 'color');
+    $bg = cssLastDecl($css, '.page-title', 'background');
+    expect($color)->toBe('#fff');
+    expect($bg)->toBe('var(--forest)');
+
+    // Specificiteit-guard: gecombineerde selector aanwezig
+    expect($css)->toMatch('/\.section\s+h1\.page-title/');
+    expect(contrastRatio('#ffffff', '#1f4d2b'))->toBeGreaterThanOrEqual(4.5);
+});
+
+test('warn-card gebruikt nieuw palet (geen peach/rood-bruin)', function () {
+    $css = file_get_contents(base_path('resources/css/site.css'));
+    $bg = cssLastDecl($css, '.warn-card', 'background');
+    $color = cssLastDecl($css, '.warn-card', 'color');
+    expect($bg)->toBe('var(--warn-bg)');
+    expect($color)->toBe('var(--ink)');
+    expect($css)->not->toContain('background: #fff4e6');
+    expect($css)->toContain('--warn-bg: #fff1e4');
+    expect(contrastRatio('#1a1210', '#fff1e4'))->toBeGreaterThanOrEqual(4.5);
+});
+
+test('header: nowrap + hamburger tot 1200px; iconen verborgen op desktop', function () {
+    $css = file_get_contents(base_path('resources/css/site.css'));
+    expect($css)->toContain('@media (min-width: 1200px)');
+    expect($css)->not->toContain('@media (min-width: 880px)');
+    expect($css)->toMatch('/\.brand\s*\{[^}]*white-space:\s*nowrap/s');
+    expect($css)->toMatch('/\.site-nav a\s*\{[^}]*white-space:\s*nowrap/s');
+    expect($css)->toMatch('/\.nav-cta\s*\{[^}]*white-space:\s*nowrap/s');
+    expect($css)->toMatch('/min-width:\s*1200px[\s\S]*?\.nav-toggle\s*\{\s*display:\s*none/');
+    expect($css)->toMatch('/min-width:\s*1200px[\s\S]*?\.site-nav \.icon\s*\{\s*display:\s*none/');
 });
 
 test('hero- en mint-secties halen WCAG AA', function () {
