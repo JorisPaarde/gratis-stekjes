@@ -17,11 +17,14 @@ class VerifyEmailDutch extends VerifyEmail
         $url = $this->verificationUrl($notifiable);
         $site = (string) config('site.name');
 
+        $hours = max(1, (int) ceil((int) Config::get('auth.verification.expire', 1440) / 60));
+
         return (new MailMessage)
             ->subject('Bevestig je aanmelding bij '.$site)
             ->greeting('Hoi,')
             ->line('Bevestig je aanmelding bij '.$site.' via deze knop:')
             ->action('E-mail bevestigen', $url)
+            ->line('Deze link is '.$hours.' uur geldig.')
             ->line('Heb je je niet aangemeld? Negeer deze mail.')
             ->salutation('Groet,'.PHP_EOL.'Joris ('.$site.')');
     }
@@ -30,7 +33,7 @@ class VerifyEmailDutch extends VerifyEmail
     {
         return URL::temporarySignedRoute(
             'account.bevestigen',
-            Carbon::now()->addMinutes((int) Config::get('auth.verification.expire', 60)),
+            Carbon::now()->addMinutes((int) Config::get('auth.verification.expire', 1440)),
             [
                 'id' => $notifiable->getKey(),
                 'hash' => sha1($notifiable->getEmailForVerification()),

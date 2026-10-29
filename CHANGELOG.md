@@ -9,6 +9,24 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.22.3] - 2026-10-29
+
+### Added
+
+- `mail_log`-tabel + model: na elke SafeMail-verzendpoging een regel (`type`, `ok`/`fail`, korte `safeSummary`-fout, optioneel `user_id`). Geen e-mailadres of andere persoonsgegevens.
+- Beheer: per gebruiker bevestigd ja/nee, laatste mailstatus (type/ok-fout/tijdstip Europe/Amsterdam) en knop “Bevestigingsmail opnieuw sturen” (POST+CSRF, admin, rate limit).
+- Cron purge van `mail_log` ouder dan 90 dagen (AVG-retentie).
+- Pest-regressie: dotenv-quote rondtrip voor waarde met `#` (`QUOTE_TEST_VALUE=voor#na`).
+
+### Changed
+
+- E-mailverificatie geldig 24 uur (`auth.verification.expire` 60 → 1440); bevestigingsmail noemt die geldigheid.
+- Deploy `.env`-schrijven (`scripts/dotenv-quote.sh`): double-quoted waarden met escape van `\`, `"` en `$` (i.p.v. single quotes), zodat `#`/spaties/`=`/`'` in secrets (o.a. `MAIL_PASSWORD`) correct blijven.
+
+### Fixed
+
+- SMTP-fouten na registratie blijven zichtbaar via `mail_log` / beheer (niet alleen `laravel.log`).
+
 ## [0.22.2] - 2026-10-29
 
 ### Fixed

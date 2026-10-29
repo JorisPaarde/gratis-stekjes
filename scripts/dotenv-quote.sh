@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# Veilige single-quoted dotenv-waarden voor phpdotenv v5.
+# Veilige double-quoted dotenv-waarden voor phpdotenv v5.
 # Gebruik: source scripts/dotenv-quote.sh
-#   dotenv_quote "$waarde"           → 'waarde' (stdout)
-#   dotenv_line KEY "$waarde"        → KEY='waarde'\n (stdout)
-# Nooit waarden loggen. Faalt (exit 1) bij newline of single quote.
+#   dotenv_quote "$waarde"           → "waarde" (stdout; \ " $ ge-escaped)
+#   dotenv_line KEY "$waarde"        → KEY="waarde"\n (stdout)
+# Nooit waarden loggen. Faalt (exit 1) bij newline/CR.
 
 dotenv_quote() {
   # Alleen via printf — geen echo (flags/backslashes).
@@ -11,18 +11,19 @@ dotenv_quote() {
     printf '%s\n' 'dotenv_quote: verwacht precies 1 argument' >&2
     return 1
   fi
-  # $1 mag leeg zijn (lege secret), maar geen newline/CR of single quote.
+  # $1 mag leeg zijn (lege secret), maar geen newline/CR.
   case $1 in
     *$'\n'*|*$'\r'*)
       printf '%s\n' 'dotenv_quote: waarde bevat newline/CR — geweigerd' >&2
       return 1
       ;;
-    *"'"*)
-      printf '%s\n' "dotenv_quote: waarde bevat single quote (') — geweigerd; kies een secret zonder '" >&2
-      return 1
-      ;;
   esac
-  printf "'%s'" "$1"
+  # Escape voor double-quoted dotenv: \, ", $ (voorkomt interpolatie / afkappen).
+  local escaped=$1
+  escaped=${escaped//\\/\\\\}
+  escaped=${escaped//\"/\\\"}
+  escaped=${escaped//\$/\\\$}
+  printf '"%s"' "$escaped"
 }
 
 dotenv_line() {
@@ -41,12 +42,16 @@ dotenv_line() {
 }
 
 # Strip omringende quotes van een .env-waarde (bij herlezen van APP_KEY e.d.).
+# Double-quoted: unescape \\ \" \$ (volgorde: eerst \\, dan \" en \$).
 dotenv_unquote() {
   local v=${1-}
   if [[ $v == \'*\' ]]; then
     v=${v:1:-1}
   elif [[ $v == \"*\" ]]; then
     v=${v:1:-1}
+    v=${v//\\\"/\"}
+    v=${v//\\\$/\$}
+    v=${v//\\\\/\\}
   fi
   printf '%s' "$v"
 }

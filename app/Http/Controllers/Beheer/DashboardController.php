@@ -6,13 +6,19 @@ namespace App\Http\Controllers\Beheer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Deelplek;
+use App\Models\MailLog;
 use App\Models\PartnerMarker;
+use App\Models\User;
+use App\Notifications\VerifyEmailDutch;
 use App\Services\DeelplekAanmelding;
 use App\Services\Deelplekken;
 use App\Services\PartnerMarkers;
+use App\Support\SafeMail;
+use App\Support\ThrottleMessage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
@@ -40,6 +46,28 @@ class DashboardController extends Controller
                 ->get();
         }
 
+        $users = collect();
+        if (Schema::hasTable('users')) {
+            $users = User::query()
+                ->orderByDesc('id')
+                ->limit(100)
+                ->get()
+                ->map(function (User $user) {
+                    $lastMail = null;
+                    if (Schema::hasTable('mail_log')) {
+                        $lastMail = MailLog::query()
+                            ->where('user_id', $user->id)
+                            ->orderByDesc('id')
+                            ->first();
+                    }
+
+                    return [
+                        'user' => $user,
+                        'last_mail' => $lastMail,
+                    ];
+                });
+        }
+
         return view('beheer.index', [
             'title' => 'Beheer',
             'metaDescription' => 'Beheer',
@@ -51,7 +79,40 @@ class DashboardController extends Controller
             'reports' => $reports,
             'hasReportsTable' => Schema::hasTable('reports'),
             'pendingDeelplekken' => $pendingDeelplekken,
+            'users' => $users,
         ]);
+    }
+
+    public function resendVerification(Request $request): RedirectResponse
+    {
+        $userId = (int) $request->input('user_id', 0);
+        $user = User::query()->find($userId);
+        if ($user === null) {
+            return back()->withErrors(['user' => 'Gebruiker niet gevonden.']);
+        }
+
+        if ($user->hasVerifiedEmail()) {
+            return back()->withErrors(['user' => 'Dit account is al bevestigd.']);
+        }
+
+        $key = 'beheer-verify-resend:'.$user->id;
+        if (RateLimiter::tooManyAttempts($key, 3)) {
+            return back()->withErrors([
+                'user' => ThrottleMessage::forSeconds(RateLimiter::availableIn($key)),
+            ]);
+        }
+        RateLimiter::hit($key, 600);
+
+        $ok = SafeMail::notify($user, new VerifyEmailDutch);
+        if (! $ok) {
+            return redirect()
+                ->route('beheer.index')
+                ->with('status', 'Bevestigingsmail inplannen mislukt voor gebruiker #'.$user->id.'.');
+        }
+
+        return redirect()
+            ->route('beheer.index')
+            ->with('status', 'Bevestigingsmail opnieuw gestuurd voor gebruiker #'.$user->id.'.');
     }
 
     public function approveDeelplek(Request $request, DeelplekAanmelding $aanmelding): RedirectResponse

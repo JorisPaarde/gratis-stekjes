@@ -179,4 +179,7 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
         ->name('beheer.deelplekken.approve');
     Route::post('/deelplekken/afwijzen', [BeheerDashboardController::class, 'rejectDeelplek'])
         ->name('beheer.deelplekken.reject');
+    Route::post('/gebruikers/bevestiging-opnieuw', [BeheerDashboardController::class, 'resendVerification'])
+        ->middleware('throttle:10,1')
+        ->name('beheer.users.resend-verification');
 });

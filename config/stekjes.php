@@ -27,6 +27,9 @@ return [
     /** Geocode-cache opruimen na zoveel dagen. */
     'geocode_cache_retention_days' => (int) env('GEOCODE_CACHE_RETENTION_DAYS', 90),
 
+    /** mail_log-regels opruimen na zoveel dagen (AVG-retentie; geen PII in de tabel). */
+    'mail_log_retention_days' => (int) env('MAIL_LOG_RETENTION_DAYS', 90),
+
     /** Gedeeld secret voor /cron (header X-Cron-Token). */
     'cron_token' => env('CRON_TOKEN', ''),
 

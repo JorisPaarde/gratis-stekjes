@@ -54,7 +54,8 @@ test('cron stuurt herinnering en purge geocode-cache', function () {
         ->assertOk()
         ->assertJsonPath('ok', true)
         ->assertJsonPath('jobs.expiry_reminders.sent', 1)
-        ->assertJsonPath('jobs.purge_geocode_cache.deleted', 1);
+        ->assertJsonPath('jobs.purge_geocode_cache.deleted', 1)
+        ->assertJsonPath('jobs.purge_mail_log.deleted', 0);
 
     Mail::assertSent(AanbodExpiryReminderMail::class);
     expect(Aanbod::query()->first()->renew_token)->not->toBeNull();
