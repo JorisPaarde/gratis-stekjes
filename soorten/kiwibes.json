@@ -1,7 +1,7 @@
 {
   "slug": "kiwibes",
   "naam": "Kiwibes",
-  "latijn": "Volgt binnenkort",
+  "latijn": "Actinidia arguta",
   "waarom": "Volgt binnenkort",
   "methode": "Winterstek, of zomerstek onder hoge luchtvochtigheid",
   "wanneer": "Nov of zomer",
@@ -13,5 +13,12 @@
   "klaar": "Volgt binnenkort",
   "ervaringen": "Volgt binnenkort",
   "bronnen": "Volgt binnenkort",
-  "kort": "Winterstek, of zomerstek onder hoge luchtvochtigheid"
+  "kort": "Winterstek, of zomerstek onder hoge luchtvochtigheid",
+  "categorie": "eetbaar",
+  "licht": "Zon tot lichte schaduw",
+  "water": "Gelijkmatig vochtig",
+  "verwanten": [
+    "druif"
+  ],
+  "waarschuwing": ""
 }

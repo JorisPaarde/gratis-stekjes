@@ -1,7 +1,7 @@
 {
   "slug": "herfstolijfwilg",
   "naam": "Herfstolijfwilg",
-  "latijn": "Volgt binnenkort",
+  "latijn": "Elaeagnus umbellata",
   "waarom": "Volgt binnenkort",
   "methode": "Winterstek of afleggen; zomerstek wordt afgeraden",
   "wanneer": "Okt–feb",
@@ -13,5 +13,12 @@
   "klaar": "Volgt binnenkort",
   "ervaringen": "Volgt binnenkort",
   "bronnen": "Volgt binnenkort",
-  "kort": "Winterstek of afleggen; zomerstek wordt afgeraden"
+  "kort": "Winterstek of afleggen; zomerstek wordt afgeraden",
+  "categorie": "eetbaar",
+  "licht": "Zon",
+  "water": "Matig",
+  "verwanten": [
+    "wilg"
+  ],
+  "waarschuwing": "Kan sterk uitzaaien; deel alleen bewust en houd de plant in de gaten."
 }

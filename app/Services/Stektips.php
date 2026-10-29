@@ -12,7 +12,7 @@ final class Stektips
         private readonly ?string $jsonPath = null,
     ) {}
 
-    /** @return list<array<string, string>> */
+    /** @return list<array<string, mixed>> */
     public function all(): array
     {
         $data = $this->load();
@@ -23,7 +23,7 @@ final class Stektips
         ));
     }
 
-    /** @return array<string, string>|null */
+    /** @return array<string, mixed>|null */
     public function find(string $slug): ?array
     {
         if (! preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $slug)) {
@@ -36,6 +36,31 @@ final class Stektips
         }
 
         return null;
+    }
+
+    /**
+     * @param  array<string, mixed>  $soort
+     * @return list<array<string, mixed>>
+     */
+    public function related(array $soort): array
+    {
+        $slugs = $soort['verwanten'] ?? [];
+        if (! is_array($slugs)) {
+            return [];
+        }
+
+        $related = [];
+        foreach ($slugs as $slug) {
+            if (! is_string($slug) || $slug === '') {
+                continue;
+            }
+            $found = $this->find($slug);
+            if ($found !== null) {
+                $related[] = $found;
+            }
+        }
+
+        return $related;
     }
 
     /** @return array{soorten: list<array<string, mixed>>} */

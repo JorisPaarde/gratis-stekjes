@@ -9,6 +9,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.16.0] - 2026-10-29
+
+### Added
+
+- Stektips uitgebreid met ~32 sier- en kamerplanten (o.a. monstera, pothos, sanseveria, pilea, vetplanten, geranium, fuchsia, hortensia, lavendel); licht/water, SEO-titel, verwante soorten, link naar aanbod.
+- Feature tests: elke soortpagina 200 + sitemap; geen EU-Unielijst-soorten in stektips (via `InvasieveSoorten` / `data/niet-aanbieden.json`).
+
 ## [0.15.4] - 2026-10-29
 
 ### Added
