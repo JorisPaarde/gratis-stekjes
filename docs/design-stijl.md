@@ -2,20 +2,21 @@
 
 Visuele richting: warm, organisch, activistisch-vriendelijk. Lettertypes en sectieritme blijven geïnspireerd op meerbomen.nu; **kleuren zijn eigen** (geen teal/peach/rood). Geen overname van hun logo, teksten of foto’s.
 
-## Kleurenpalet (v0.11.0)
+## Kleurenpalet (v0.11.2)
 
 | Token | Hex | Rol |
 |-------|-----|-----|
 | `--forest` / `--leaf` | `#1F4D2B` | Koppen, hero-titelblok, donkere vlakken, CTA-paneel |
 | `--forest-deep` | `#163820` | Hover / diepere bosgroen |
 | `--mint` / `--bg-mint` / `--bg-2` | `#E6F2E1` | Lichte achtergronden en sectievlakken |
-| `--orange` | `#E8833A` | Alleen CTA’s en knoppen |
+| `--orange` | `#E8833A` | CTA’s, knoppen, warn-card linkerrand/icoon |
 | `--orange-hover` | `#D4742E` | Hover op oranje knoppen |
 | `--orange-text` | `#1A1210` | Tekst op oranje (AA: ≈6.8:1 op `#E8833A`) |
 | `--ink` | `#1A1210` | Bodytekst |
 | `--ink-soft` | `#3D4A3F` | Secundaire tekst |
 | `--accent-text` | `#8A4514` | “binnenkort” e.d. op licht |
 | `--accent-on-dark` | `#FFE2B8` | Accent op bosgroen paneel |
+| `--warn-bg` | `#FFFFFF` | Waarschuwingsblok op mint (oranje linkerrand) |
 | `--bg` | `#FFFFFF` | Pagina-achtergrond |
 | `--card` | `#FFFFFF` | Kaarten/formulieren |
 
