@@ -84,6 +84,10 @@ CREATE TABLE IF NOT EXISTS aanbod (
   visible INTEGER NOT NULL DEFAULT 1,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL,
+  expires_at TEXT NOT NULL,
+  expiry_reminder_sent_at TEXT,
+  renew_token TEXT UNIQUE,
+  renew_token_expires TEXT,
   FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS conversations (
@@ -198,10 +202,13 @@ function migrate_up(PDO $pdo, string $dir, array $versions, string $driver): voi
             continue;
         }
         if ($driver === 'sqlite') {
-            // Schema al via bootstrap; markeer migratie
+            // 0001: schema via bootstrap. Latere migraties: sqlite-compat ALTER waar nodig.
+            if ($v !== '0001_init') {
+                stekjes_sqlite_apply_migration($pdo, $v);
+            }
             $pdo->prepare('INSERT INTO schema_migrations (version, applied_at) VALUES (?, ?)')
                 ->execute([$v, gmdate('c')]);
-            echo "applied $v (sqlite bootstrap)\n";
+            echo "applied $v (sqlite)\n";
             continue;
         }
         $file = "$dir/$v.up.sql";
@@ -267,4 +274,28 @@ function stekjes_sqlite_drop_all(PDO $pdo): void
         $pdo->exec("DROP TABLE IF EXISTS $t");
     }
     $pdo->exec('PRAGMA foreign_keys = ON');
+}
+
+/** Idempotente sqlite-aanpassingen voor migraties na 0001 (bootstrap heeft ze al). */
+function stekjes_sqlite_apply_migration(PDO $pdo, string $version): void
+{
+    if ($version === '0002_aanbod_expiry') {
+        $cols = $pdo->query('PRAGMA table_info(aanbod)')->fetchAll(PDO::FETCH_ASSOC);
+        $names = array_column($cols, 'name');
+        if (!in_array('expires_at', $names, true)) {
+            $pdo->exec('ALTER TABLE aanbod ADD COLUMN expires_at TEXT');
+            $pdo->exec("UPDATE aanbod SET expires_at = datetime(created_at, '+60 days') WHERE expires_at IS NULL OR expires_at = ''");
+        }
+        if (!in_array('expiry_reminder_sent_at', $names, true)) {
+            $pdo->exec('ALTER TABLE aanbod ADD COLUMN expiry_reminder_sent_at TEXT');
+        }
+        if (!in_array('renew_token', $names, true)) {
+            $pdo->exec('ALTER TABLE aanbod ADD COLUMN renew_token TEXT');
+        }
+        if (!in_array('renew_token_expires', $names, true)) {
+            $pdo->exec('ALTER TABLE aanbod ADD COLUMN renew_token_expires TEXT');
+        }
+        $pdo->exec('CREATE UNIQUE INDEX IF NOT EXISTS uq_aanbod_renew_token ON aanbod (renew_token)');
+        $pdo->exec('CREATE INDEX IF NOT EXISTS idx_aanbod_expires ON aanbod (expires_at)');
+    }
 }

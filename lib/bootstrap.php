@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 /**
  * Bootstrap: config + helpers. PHP 8.2+.
- * Versie: 0.1.0
+ * Versie: 0.2.0
  */
 
-const STEKJES_VERSION = '0.1.0';
+const STEKJES_VERSION = '0.2.0';
 
 function stekjes_config(): array
 {

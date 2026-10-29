@@ -9,6 +9,7 @@ declare(strict_types=1);
 const STEKJES_SENSITIVE_KEYS = [
     'email', 'password_hash', 'telefoon', 'confirm_token', 'reset_token',
     'reset_expires', 'smtp_pass', 'password', 'phone',
+    'renew_token', 'renew_token_expires', 'cron_token',
 ];
 
 /**
