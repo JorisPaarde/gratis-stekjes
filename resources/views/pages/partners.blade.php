@@ -10,19 +10,19 @@
 
 @section('content')
 <section class="section wrap partners-page">
-  <h1 class="page-title">Partners</h1>
-  <p class="section-intro">Wij bouwen niet alles zelf. Hieronder staan initiatieven waar we naast willen staan. Waar we iets nog niet zeker weten, staat <em>Volgt binnenkort</em>.</p>
+  <h1 class="page-title">Initiatieven</h1>
+  <p class="section-intro">Hieronder staan initiatieven waar we naar linken — plantenasiels, plantenbiebs, ruilkasten, voedselbossen en meer. Geen officiële partnerschappen; het zijn plekken en organisaties rondom gratis planten delen. Waar we iets nog niet zeker weten, staat <em>Volgt binnenkort</em>.</p>
 
   <div class="stack partners-stack">
     <article class="soft-card">
       <h2><a href="https://voedselbosbouw.org/" rel="noopener noreferrer">Voedselbosbouw.org</a></h2>
-      <p>Stichting Voedselbosbouw Nederland — een plek voor kennis en praktijk rond voedselbossen. Volgt binnenkort: hoe we precies samenwerken of naar elkaar verwijzen.</p>
+      <p>Stichting Voedselbosbouw Nederland — kennis en praktijk rond voedselbossen. Wij richten ons op stekjes van mens tot mens; zij op het bredere voedselbos-verhaal.</p>
       <p class="muted">Geen bezoeklocatie op onze kaart; zie hun eigen site.</p>
     </article>
     <article class="soft-card">
       <h2><a href="https://meerbomen.nu/" rel="noopener noreferrer">MeerBomen Nu</a></h2>
       <p>Zij zetten zich in voor bomen. Het verschil met ons: zij doen bomen, wij doen stekjes van mens tot mens.</p>
-      <p class="muted">Volgt binnenkort: eventuele concrete samenwerking. Geen bezoeklocatie op onze kaart.</p>
+      <p class="muted">Geen bezoeklocatie op onze kaart.</p>
     </article>
   </div>
 
@@ -61,6 +61,6 @@
     </article>
   </div>
 
-  <p class="partners-kaart-hint">Plekken met een bezoeklocatie (voedselbos, plantenbieb, ruilkast, …) staan op de <a href="{{ route('aanbod') }}">aanbodkaart</a>. Beheer van die markers volgt in de admin-PR.</p>
+  <p class="partners-kaart-hint">Plekken met een bezoeklocatie (voedselbos, plantenbieb, ruilkast, …) staan op de <a href="{{ route('aanbod') }}">aanbodkaart</a>. Wil je een initiatief toevoegen? Dat kan later via <em>Initiatief aanmelden</em>.</p>
 </section>
 @endsection

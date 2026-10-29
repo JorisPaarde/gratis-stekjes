@@ -29,7 +29,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
-Route::get('/partners', PartnersController::class)->name('partners');
+Route::get('/initiatieven', PartnersController::class)->name('partners');
+Route::redirect('/partners', '/initiatieven', 301);
+Route::get('/partners/{path}', function (string $path) {
+    return redirect('/initiatieven/'.$path, 301);
+})->where('path', '.*');
 Route::get('/stijlgids', [PageController::class, 'stijlgids'])->name('stijlgids');
 Route::get('/robots.txt', [PageController::class, 'robots'])->name('robots');
 Route::get('/sitemap.xml', [PageController::class, 'sitemap'])->name('sitemap');

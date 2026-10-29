@@ -26,8 +26,8 @@
     <p class="error" role="alert">{{ $errors->first('marker') }}</p>
   @endif
 
-  <h2 id="markers">Partnermarkers</h2>
-  <p class="muted">Plekken op de aanbodkaart: partner, voedselbos, plantenasiel, plantenbieb of ruilkast. Coördinaten via PDOK op plaats/postcode-4. Organisaties zonder bezoeklocatie horen op de partnerspagina, niet als marker.</p>
+  <h2 id="markers">Kaartmarkers</h2>
+  <p class="muted">Plekken op de aanbodkaart: initiatief, voedselbos, plantenasiel, plantenbieb of ruilkast. Coördinaten via PDOK op plaats/postcode-4. Organisaties zonder bezoeklocatie horen op de initiatievenpagina, niet als marker.</p>
 
   <form class="form beheer-marker-form" method="post" action="{{ route('beheer.markers.save') }}">
     @csrf

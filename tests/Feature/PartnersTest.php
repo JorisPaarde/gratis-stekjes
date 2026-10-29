@@ -5,12 +5,44 @@ declare(strict_types=1);
 use App\Models\PartnerMarker;
 use App\Support\Geo;
 
-test('partnerspagina laadt', function () {
-    $this->get(route('partners'))
+test('initiatievenpagina laadt op /initiatieven', function () {
+    $this->get('/initiatieven')
         ->assertOk()
+        ->assertSee('Initiatieven', false)
+        ->assertDontSee('>Partners<', false)
         ->assertSee('Voedselbosbouw.org', false)
         ->assertSee('MeerBomen Nu', false)
         ->assertSee('Stekjesroute', false);
+
+    $this->get(route('partners'))
+        ->assertOk()
+        ->assertSee('Initiatieven', false);
+});
+
+test('oude /partners URL geeft 301 naar /initiatieven', function () {
+    $this->get('/partners')
+        ->assertRedirect('/initiatieven')
+        ->assertStatus(301);
+
+    $this->get('/partners/voorbeeld')
+        ->assertRedirect('/initiatieven/voorbeeld')
+        ->assertStatus(301);
+});
+
+test('homepage toont Initiatieven en geen Partners', function () {
+    $this->get('/')
+        ->assertOk()
+        ->assertSee('Initiatieven', false)
+        ->assertSee('Alle initiatieven en links', false)
+        ->assertDontSee('>Partners<', false)
+        ->assertDontSee('Alle partners', false);
+});
+
+test('sitemap bevat /initiatieven en niet /partners', function () {
+    $xml = $this->get('/sitemap.xml')->assertOk()->getContent();
+
+    expect($xml)->toContain('/initiatieven');
+    expect($xml)->not->toContain('/partners');
 });
 
 test('partners API toont zichtbare markers met afgeronde coördinaten', function () {

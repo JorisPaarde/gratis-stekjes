@@ -117,22 +117,22 @@
   </div>
 </section>
 
-<section class="section wrap" id="partners" aria-labelledby="partners-titel">
-  <h2 id="partners-titel">Partners</h2>
-  <p class="section-intro">Wij bouwen niet alles zelf. Twee initiatieven waar we naast willen staan — in onze eigen woorden, zonder beloftes die we nog niet hard kunnen maken.</p>
+<section class="section wrap" id="initiatieven" aria-labelledby="initiatieven-titel">
+  <h2 id="initiatieven-titel">Initiatieven</h2>
+  <p class="section-intro">Een paar initiatieven waar we naar linken — in onze eigen woorden, zonder beloftes over officiële samenwerking.</p>
   <div class="stack partners-stack">
     <article class="soft-card">
       <h3><a href="https://voedselbosbouw.org/" rel="noopener noreferrer">Voedselbosbouw.org</a></h3>
-      <p>Stichting Voedselbosbouw Nederland deelt kennis en praktijk rond voedselbossen. Wij richten ons op stekjes en planten van mens tot mens; zij op het bredere voedselbos-verhaal. Hoe we precies naar elkaar verwijzen of samenwerken: volgt later.</p>
+      <p>Stichting Voedselbosbouw Nederland deelt kennis en praktijk rond voedselbossen. Wij richten ons op stekjes en planten van mens tot mens; zij op het bredere voedselbos-verhaal.</p>
       <p class="muted">Geen bezoeklocatie op onze kaart — zie hun eigen site.</p>
     </article>
     <article class="soft-card">
       <h3><a href="https://meerbomen.nu/" rel="noopener noreferrer">MeerBomen Nu</a></h3>
-      <p>MeerBomen Nu zet zich in voor meer bomen. Het verschil met ons: zij doen bomen en acties, wij gratis stekjes en planten tussen buren. Eventuele concrete samenwerking volgt later.</p>
+      <p>MeerBomen Nu zet zich in voor meer bomen. Het verschil met ons: zij doen bomen en acties, wij gratis stekjes en planten tussen buren.</p>
       <p class="muted">Geen bezoeklocatie op onze kaart.</p>
     </article>
   </div>
-  <p><a href="{{ route('partners') }}">Alle partners en links</a> · plekken met bezoeklocatie op de <a href="{{ route('aanbod') }}">kaart</a>.</p>
+  <p><a href="{{ route('partners') }}">Alle initiatieven en links</a> · plekken met bezoeklocatie op de <a href="{{ route('aanbod') }}">kaart</a>.</p>
 </section>
 
 <section class="section section--cream" aria-labelledby="verder-titel">

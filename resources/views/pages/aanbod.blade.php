@@ -44,7 +44,7 @@
   <fieldset class="marker-filters" id="marker-filters">
     <legend>Toon op kaart en in lijst</legend>
     <label class="check"><input type="checkbox" data-aanbod checked> Aanbod</label>
-    <label class="check"><input type="checkbox" data-partner-type="partner" checked> Partner</label>
+    <label class="check"><input type="checkbox" data-partner-type="partner" checked> Initiatief</label>
     <label class="check"><input type="checkbox" data-partner-type="voedselbos" checked> Voedselbos</label>
     <label class="check"><input type="checkbox" data-partner-type="plantenasiel" checked> Plantenasiel</label>
     <label class="check"><input type="checkbox" data-partner-type="plantenbieb" checked> Plantenbieb</label>
@@ -55,7 +55,7 @@
     <div id="kaart" role="img" aria-label="Kaart met benaderde ophaalplekken"></div>
     <div>
       <ul class="zoek-lijst" id="zoek-lijst"></ul>
-      <p class="muted" id="zoek-status">Vul een postcode of plaats in om aanbod te zoeken. Partnermarkers volgen in een volgende release.</p>
+      <p class="muted" id="zoek-status">Vul een postcode of plaats in om aanbod te zoeken. Markers van initiatieven volgen in een volgende release.</p>
     </div>
   </div>
 

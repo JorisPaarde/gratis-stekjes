@@ -28,7 +28,7 @@
     @foreach([
       'stekje','plant','zaad','boom','locatie','kaart','zoeken','bericht','gebruiker',
       'hart','delen','kalender','ophalen','info','waarschuwing','check','sluiten','menu',
-      'filter','plus','uitnodigen','partner',
+      'filter','plus','uitnodigen','initiatief',
     ] as $icon)
       <li class="soft-card" style="text-align:center;padding:1rem .75rem">
         <span style="display:inline-flex;color:var(--forest);margin-bottom:.5rem">

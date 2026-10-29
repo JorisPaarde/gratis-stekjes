@@ -24,7 +24,7 @@
         'filter' => '<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>',
         'plus' => '<path d="M5 12h14"/><path d="M12 5v14"/>',
         'uitnodigen' => '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/>',
-        'partner' => '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+        'initiatief' => '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
         'boom' => '<path d="M10 10v.2A3 3 0 0 1 8.9 16H5a3 3 0 0 1-1-5.8V10a3 3 0 0 1 6 0Z"/><path d="M7 16v6"/><path d="M13 19v3"/><path d="M12 19h8.3a1.7 1.7 0 0 0 1.5-2.5L19 12.2a1.7 1.7 0 0 0-1.5-.9h-1.8"/><path d="M15.2 12.2 13 8.4a1.7 1.7 0 0 0-2.9.1L8.2 13"/>',
         // —— Eigen planticonen (zelfde lijnstijl: 24 grid, stroke 2, round) ——
         'stekje' => '<path d="M12 21V9"/><path d="M12 13c-2.5-1.5-4.5-2.2-6-1.5"/><path d="M12 11c2.2-1.8 4.5-2.2 6-1.2"/><path d="M12 8c-1-2.5-.5-4.5 1-6"/><path d="M12 8c1.2-2.2 2.8-3.5 5-4"/><path d="M9 21h6"/>',
@@ -32,6 +32,8 @@
         'zaad' => '<ellipse cx="12" cy="13" rx="4.5" ry="7"/><path d="M12 6v14"/><path d="M9.5 10.5c1 .8 2.5.8 3.5 0"/><path d="M9.5 15c1 .8 2.5.8 3.5 0"/>',
         'ophalen' => '<path d="M8 13v5a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-5"/><path d="M7 13h10"/><path d="M12 3v7"/><path d="m9 7 3 3 3-3"/><path d="M5 11c0-1.5 1-2.5 2.5-2.5"/><path d="M19 11c0-1.5-1-2.5-2.5-2.5"/>',
     ];
+    // Alias: oude icoonnaam blijft werken
+    $paths['partner'] = $paths['initiatief'];
 
     $inner = $paths[$name] ?? null;
     $ariaHidden = $label ? 'false' : 'true';

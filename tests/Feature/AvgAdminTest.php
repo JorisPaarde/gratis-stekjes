@@ -80,7 +80,7 @@ test('beheer weigert zonder wachtwoord en accepteert juiste', function () {
     $this->post(route('beheer.login'), ['password' => adminTestPassphrase()])
         ->assertRedirect(route('beheer.index'));
 
-    $this->get(route('beheer.index'))->assertOk()->assertSee('Partnermarkers', false);
+    $this->get(route('beheer.index'))->assertOk()->assertSee('Kaartmarkers', false);
 });
 
 test('beheerlogin is rate-limited', function () {
