@@ -42,17 +42,5 @@ jobs:
             --exclude='config.php' --exclude='data/' \
             -e "ssh -i ~/.ssh/deploy_key -p ${P:-22}" \
             placeholder/ "$U@$H:${D%/}/"
-      - name: Controle + tijdelijke PHP-versiecheck
-        env:
-          H: ${{ secrets.DEPLOY_HOST }}
-          U: ${{ secrets.DEPLOY_USER }}
-          P: ${{ secrets.DEPLOY_PORT }}
-          D: ${{ secrets.DEPLOY_PATH }}
-        run: |
-          curl -sS -o /dev/null -w 'home http %{http_code}\n' http://stekjes.jpwebcreation.nl/ || true
-          N="v-$(openssl rand -hex 12).php"
-          S="ssh -i $HOME/.ssh/deploy_key -p ${P:-22} $U@$H"
-          $S "printf '%s' '<?php echo PHP_VERSION;' > '${D%/}/$N'"
-          echo "PHP web: $(curl -sS http://stekjes.jpwebcreation.nl/$N || true)"
-          $S "rm -f '${D%/}/$N'"
-          echo "PHP cli: $($S 'php -r "echo PHP_VERSION;"' || true)"
+      - name: Controle
+        run: curl -sS -o /dev/null -w 'home http %{http_code}\n' http://stekjes.jpwebcreation.nl/ || true
