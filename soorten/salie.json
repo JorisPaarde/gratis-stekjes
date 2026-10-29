@@ -1,8 +1,8 @@
 {
   "slug": "salie",
   "naam": "Salie",
-  "latijn": "Volgt binnenkort",
-  "waarom": "Volgt binnenkort",
+  "latijn": "Salvia officinalis",
+  "waarom": "Keukenkruid; halfverhoute stekken werken vaak goed",
   "methode": "Jonge scheuten in stekgrond, afdekken",
   "wanneer": "Voorjaar",
   "welk_hout": "Volgt binnenkort",
@@ -13,5 +13,14 @@
   "klaar": "Volgt binnenkort",
   "ervaringen": "Volgt binnenkort",
   "bronnen": "Volgt binnenkort",
-  "kort": "Jonge scheuten in stekgrond, afdekken"
+  "kort": "Jonge scheuten in stekgrond, afdekken",
+  "categorie": "kruid",
+  "licht": "Zon",
+  "water": "Matig; verdraagt drogere grond",
+  "verwanten": [
+    "rozemarijn",
+    "lavendel",
+    "munt"
+  ],
+  "waarschuwing": ""
 }

@@ -37,3 +37,26 @@
   align-items: center;
   margin-top: 1.5rem;
 }
+
+.stektips-waarschuwing {
+  margin: 1rem 0;
+}
+
+.stektips-related-title {
+  margin-top: 1.75rem;
+  font-size: 1.15rem;
+}
+
+.stektips-related {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+.stektips-related a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}

@@ -1,7 +1,7 @@
 {
   "slug": "zwarte-vlier",
   "naam": "Zwarte vlier",
-  "latijn": "Volgt binnenkort",
+  "latijn": "Sambucus nigra",
   "waarom": "Volgt binnenkort",
   "methode": "Winterstek van eenjarig hout",
   "wanneer": "Nov–feb",
@@ -13,5 +13,12 @@
   "klaar": "Volgt binnenkort",
   "ervaringen": "Volgt binnenkort",
   "bronnen": "Volgt binnenkort",
-  "kort": "Winterstek van eenjarig hout"
+  "kort": "Winterstek van eenjarig hout",
+  "categorie": "eetbaar",
+  "licht": "Zon tot halfschaduw",
+  "water": "Vochtige grond verdraagt het goed",
+  "verwanten": [
+    "wilg"
+  ],
+  "waarschuwing": ""
 }

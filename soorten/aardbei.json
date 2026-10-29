@@ -1,7 +1,7 @@
 {
   "slug": "aardbei",
   "naam": "Aardbei",
-  "latijn": "Volgt binnenkort",
+  "latijn": "Fragaria × ananassa",
   "waarom": "Volgt binnenkort",
   "methode": "Uitlopers vastzetten in grond of een potje, loszetten bij nieuw blad",
   "wanneer": "Aug–sep",
@@ -13,5 +13,12 @@
   "klaar": "Volgt binnenkort",
   "ervaringen": "Volgt binnenkort",
   "bronnen": "Volgt binnenkort",
-  "kort": "Uitlopers vastzetten in grond of een potje, loszetten bij nieuw blad"
+  "kort": "Uitlopers vastzetten in grond of een potje, loszetten bij nieuw blad",
+  "categorie": "eetbaar",
+  "licht": "Zon",
+  "water": "Gelijkmatig vochtig",
+  "verwanten": [
+    "framboos"
+  ],
+  "waarschuwing": ""
 }

@@ -1,7 +1,7 @@
 {
   "slug": "rode-bes",
   "naam": "Rode bes",
-  "latijn": "Volgt binnenkort",
+  "latijn": "Ribes rubrum",
   "waarom": "Volgt binnenkort",
   "methode": "Winterstek van 20 cm, kan in een pot; lichte vorst is geen probleem",
   "wanneer": "Nov–feb",
@@ -13,5 +13,14 @@
   "klaar": "Volgt binnenkort",
   "ervaringen": "Volgt binnenkort",
   "bronnen": "Volgt binnenkort",
-  "kort": "Winterstek van 20 cm, kan in een pot; lichte vorst is geen probleem"
+  "kort": "Winterstek van 20 cm, kan in een pot; lichte vorst is geen probleem",
+  "categorie": "eetbaar",
+  "licht": "Zon tot halfschaduw",
+  "water": "Gelijkmatig vochtig",
+  "verwanten": [
+    "zwarte-bes",
+    "jostabes",
+    "kruisbes"
+  ],
+  "waarschuwing": ""
 }

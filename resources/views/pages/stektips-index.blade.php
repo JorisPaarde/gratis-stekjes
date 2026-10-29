@@ -11,12 +11,12 @@
 @section('content')
 <section class="section wrap stektips-page">
   <h1 class="page-title">Stektips</h1>
-  <p class="section-intro">Zestien soorten om mee te beginnen. De slagingskans is een eigen indicatie op basis van de bronnen in het plan; die geven geen percentages. Ontbrekende details: <em>Volgt binnenkort</em>.</p>
+  <p class="section-intro">{{ $soortenCount }} soorten: eetbaar, kruiden, sier- en kamerplanten. De moeilijkheid is een eigen indicatie; bronnen geven geen percentages. Ontbrekende details: <em>Volgt binnenkort</em>. Soorten van de EU-Unielijst invasieve exoten horen hier niet tussen.</p>
   <div class="grid-cards">
     @foreach($soorten as $s)
       <a class="soft-card" href="{{ route('stektips.show', ['slug' => $s['slug']]) }}">
         <h3>{{ $s['naam'] }}</h3>
-        <p>{{ $s['wanneer'] ?? '' }} · {{ $s['kans'] ?? '' }}</p>
+        <p>{{ $s['wanneer'] ?? '' }} · {{ $s['kans'] ?? '' }}@if(!empty($s['categorie'])) · {{ $s['categorie'] }}@endif</p>
       </a>
     @endforeach
   </div>

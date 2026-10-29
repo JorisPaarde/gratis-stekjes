@@ -1,7 +1,7 @@
 {
   "slug": "vijg",
   "naam": "Vijg",
-  "latijn": "Volgt binnenkort",
+  "latijn": "Ficus carica",
   "waarom": "Volgt binnenkort",
   "methode": "Meerjarig hout direct in een pot van 1–2 L; de top afdekken met wondbalsem",
   "wanneer": "Nov, vóór vorst",
@@ -13,5 +13,12 @@
   "klaar": "Volgt binnenkort",
   "ervaringen": "Volgt binnenkort",
   "bronnen": "Volgt binnenkort",
-  "kort": "Meerjarig hout direct in een pot van 1–2 L; de top afdekken met wondbalsem"
+  "kort": "Meerjarig hout direct in een pot van 1–2 L; de top afdekken met wondbalsem",
+  "categorie": "eetbaar",
+  "licht": "Volle zon",
+  "water": "Matig; niet te nat in de winter",
+  "verwanten": [
+    "moerbei"
+  ],
+  "waarschuwing": ""
 }

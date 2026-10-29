@@ -13,5 +13,14 @@
   "klaar": "Najaar na het stekken",
   "ervaringen": "Volgt binnenkort",
   "bronnen": "Volgt binnenkort",
-  "kort": "Winterstek van 20 cm, in grond of pot"
+  "kort": "Winterstek van 20 cm, in grond of pot",
+  "categorie": "eetbaar",
+  "licht": "Zon tot halfschaduw",
+  "water": "Gelijkmatig vochtig",
+  "verwanten": [
+    "rode-bes",
+    "jostabes",
+    "kruisbes"
+  ],
+  "waarschuwing": ""
 }

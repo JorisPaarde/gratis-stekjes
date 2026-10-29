@@ -1,8 +1,8 @@
 {
   "slug": "rozemarijn",
   "naam": "Rozemarijn",
-  "latijn": "Volgt binnenkort",
-  "waarom": "Volgt binnenkort",
+  "latijn": "Salvia rosmarinus",
+  "waarom": "Mediterraan kruid; stekt het makkelijkst halfverhout",
   "methode": "Halfverhoute stek van 10–15 cm in stekgrond; 3–4 weken",
   "wanneer": "Late lente–zomer",
   "welk_hout": "Volgt binnenkort",
@@ -13,5 +13,14 @@
   "klaar": "Volgt binnenkort",
   "ervaringen": "Volgt binnenkort",
   "bronnen": "Volgt binnenkort",
-  "kort": "Halfverhoute stek van 10–15 cm in stekgrond; 3–4 weken"
+  "kort": "Halfverhoute stek van 10–15 cm in stekgrond; 3–4 weken",
+  "categorie": "kruid",
+  "licht": "Volle zon",
+  "water": "Matig; goede drainage",
+  "verwanten": [
+    "salie",
+    "lavendel",
+    "munt"
+  ],
+  "waarschuwing": ""
 }

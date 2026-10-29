@@ -1,7 +1,7 @@
 {
   "slug": "jostabes",
   "naam": "Jostabes",
-  "latijn": "Volgt binnenkort",
+  "latijn": "Ribes × nidigrolaria",
   "waarom": "Volgt binnenkort",
   "methode": "Winterstek, mag tot 1 m lang zijn",
   "wanneer": "Nov–feb",
@@ -13,5 +13,13 @@
   "klaar": "Volgt binnenkort",
   "ervaringen": "Volgt binnenkort",
   "bronnen": "Volgt binnenkort",
-  "kort": "Winterstek, mag tot 1 m lang zijn"
+  "kort": "Winterstek, mag tot 1 m lang zijn",
+  "categorie": "eetbaar",
+  "licht": "Zon tot halfschaduw",
+  "water": "Gelijkmatig vochtig",
+  "verwanten": [
+    "zwarte-bes",
+    "rode-bes"
+  ],
+  "waarschuwing": ""
 }

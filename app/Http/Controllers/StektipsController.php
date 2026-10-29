@@ -12,11 +12,15 @@ class StektipsController extends Controller
 {
     public function index(Stektips $stektips): View
     {
+        $soorten = $stektips->all();
+        $count = count($soorten);
+
         return view('pages.stektips-index', [
             'title' => 'Stektips',
-            'metaDescription' => 'Praktische stektips per soort — gratis planten delen.',
+            'metaDescription' => 'Stektips per soort — eetbaar, kruiden, sier- en kamerplanten gratis delen.',
             'canonical' => route('stektips.index'),
-            'soorten' => $stektips->all(),
+            'soorten' => $soorten,
+            'soortenCount' => $count,
         ]);
     }
 
@@ -27,11 +31,19 @@ class StektipsController extends Controller
             abort(404);
         }
 
+        $naam = (string) ($soort['naam'] ?? $slug);
+        $latijn = (string) ($soort['latijn'] ?? '');
+        $kort = (string) ($soort['kort'] ?? '');
+        $metaLatijn = ($latijn !== '' && $latijn !== 'Volgt binnenkort') ? " ({$latijn})" : '';
+        $metaKort = $kort !== '' ? $kort.'. ' : '';
+
         return view('pages.stektips-show', [
-            'title' => $soort['naam'],
-            'metaDescription' => ($soort['kort'] ?? $soort['naam']).' — stektip op '.config('site.name').'.',
+            'title' => $naam.' stekken en gratis delen',
+            'metaDescription' => $naam.$metaLatijn.' stekken en gratis delen. '.$metaKort.'Methode, wanneer, moeilijkheid, licht en water — zoek aanbod op '.config('site.name').'.',
             'canonical' => route('stektips.show', ['slug' => $slug]),
             'soort' => $soort,
+            'verwanten' => $stektips->related($soort),
+            'aanbodUrl' => route('aanbod'),
         ]);
     }
 }

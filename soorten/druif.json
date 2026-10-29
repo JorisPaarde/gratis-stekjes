@@ -1,7 +1,7 @@
 {
   "slug": "druif",
   "naam": "Druif",
-  "latijn": "Volgt binnenkort",
+  "latijn": "Vitis vinifera",
   "waarom": "Volgt binnenkort",
   "methode": "Winterstek: onder net onder een knop, boven 3 cm boven een knop",
   "wanneer": "Nov–feb",
@@ -13,5 +13,12 @@
   "klaar": "Volgt binnenkort",
   "ervaringen": "Volgt binnenkort",
   "bronnen": "Volgt binnenkort",
-  "kort": "Winterstek: onder net onder een knop, boven 3 cm boven een knop"
+  "kort": "Winterstek: onder net onder een knop, boven 3 cm boven een knop",
+  "categorie": "eetbaar",
+  "licht": "Volle zon",
+  "water": "Matig; goede drainage",
+  "verwanten": [
+    "kiwibes"
+  ],
+  "waarschuwing": ""
 }

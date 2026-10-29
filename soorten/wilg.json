@@ -1,7 +1,7 @@
 {
   "slug": "wilg",
   "naam": "Wilg",
-  "latijn": "Volgt binnenkort",
+  "latijn": "Salix",
   "waarom": "Volgt binnenkort",
   "methode": "Lange stekken (0,5–2 m) direct in de volle grond; ook de bron van wilgenwater",
   "wanneer": "Nov–feb",
@@ -13,5 +13,12 @@
   "klaar": "Volgt binnenkort",
   "ervaringen": "Volgt binnenkort",
   "bronnen": "Volgt binnenkort",
-  "kort": "Lange stekken (0,5–2 m) direct in de volle grond; ook de bron van wilgenwater"
+  "kort": "Lange stekken (0,5–2 m) direct in de volle grond; ook de bron van wilgenwater",
+  "categorie": "sier",
+  "licht": "Zon tot halfschaduw",
+  "water": "Houdt van vocht",
+  "verwanten": [
+    "zwarte-vlier"
+  ],
+  "waarschuwing": ""
 }

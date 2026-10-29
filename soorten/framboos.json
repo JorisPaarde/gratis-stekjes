@@ -1,7 +1,7 @@
 {
   "slug": "framboos",
   "naam": "Framboos",
-  "latijn": "Volgt binnenkort",
+  "latijn": "Rubus idaeus",
   "waarom": "Volgt binnenkort",
   "methode": "Worteluitlopers afsteken en verplanten",
   "wanneer": "Herfst",
@@ -13,5 +13,12 @@
   "klaar": "Volgt binnenkort",
   "ervaringen": "Volgt binnenkort",
   "bronnen": "Volgt binnenkort",
-  "kort": "Worteluitlopers afsteken en verplanten"
+  "kort": "Worteluitlopers afsteken en verplanten",
+  "categorie": "eetbaar",
+  "licht": "Zon tot halfschaduw",
+  "water": "Gelijkmatig vochtig",
+  "verwanten": [
+    "aardbei"
+  ],
+  "waarschuwing": ""
 }

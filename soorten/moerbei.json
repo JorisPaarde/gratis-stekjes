@@ -1,7 +1,7 @@
 {
   "slug": "moerbei",
   "naam": "Moerbei",
-  "latijn": "Volgt binnenkort",
+  "latijn": "Morus",
   "waarom": "Volgt binnenkort",
   "methode": "Meerjarig hout in een pot van 1–2 L",
   "wanneer": "Nov, vóór vorst",
@@ -13,5 +13,12 @@
   "klaar": "Volgt binnenkort",
   "ervaringen": "Volgt binnenkort",
   "bronnen": "Volgt binnenkort",
-  "kort": "Meerjarig hout in een pot van 1–2 L"
+  "kort": "Meerjarig hout in een pot van 1–2 L",
+  "categorie": "eetbaar",
+  "licht": "Zon",
+  "water": "Matig",
+  "verwanten": [
+    "vijg"
+  ],
+  "waarschuwing": ""
 }

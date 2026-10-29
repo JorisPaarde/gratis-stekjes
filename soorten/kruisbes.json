@@ -1,7 +1,7 @@
 {
   "slug": "kruisbes",
   "naam": "Kruisbes",
-  "latijn": "Volgt binnenkort",
+  "latijn": "Ribes uva-crispa",
   "waarom": "Volgt binnenkort",
   "methode": "Winterstek van 15–25 cm, of afleggen; later gestekt slaagt minder vaak",
   "wanneer": "Okt–nov",
@@ -13,5 +13,13 @@
   "klaar": "Volgt binnenkort",
   "ervaringen": "Volgt binnenkort",
   "bronnen": "Volgt binnenkort",
-  "kort": "Winterstek van 15–25 cm, of afleggen; later gestekt slaagt minder vaak"
+  "kort": "Winterstek van 15–25 cm, of afleggen; later gestekt slaagt minder vaak",
+  "categorie": "eetbaar",
+  "licht": "Zon tot halfschaduw",
+  "water": "Gelijkmatig vochtig",
+  "verwanten": [
+    "rode-bes",
+    "zwarte-bes"
+  ],
+  "waarschuwing": ""
 }

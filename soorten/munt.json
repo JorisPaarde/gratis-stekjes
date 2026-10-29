@@ -1,8 +1,8 @@
 {
   "slug": "munt",
   "naam": "Munt",
-  "latijn": "Volgt binnenkort",
-  "waarom": "Volgt binnenkort",
+  "latijn": "Mentha",
+  "waarom": "Kruid dat makkelijk deelt; zet in een pot om woekeren te beperken",
   "methode": "Top van 10 cm in water; na ongeveer een week wortels",
   "wanneer": "Lente–zomer",
   "welk_hout": "Volgt binnenkort",
@@ -13,5 +13,14 @@
   "klaar": "Volgt binnenkort",
   "ervaringen": "Volgt binnenkort",
   "bronnen": "Volgt binnenkort",
-  "kort": "Top van 10 cm in water; na ongeveer een week wortels"
+  "kort": "Top van 10 cm in water; na ongeveer een week wortels",
+  "categorie": "kruid",
+  "licht": "Zon tot halfschaduw",
+  "water": "Vochtig; groeit hard",
+  "verwanten": [
+    "salie",
+    "rozemarijn",
+    "lavendel"
+  ],
+  "waarschuwing": ""
 }
