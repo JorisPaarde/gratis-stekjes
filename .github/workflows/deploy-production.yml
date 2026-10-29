@@ -1,0 +1,207 @@
+name: Deploy production
+
+# Alleen bij semver-tag v*.*.* op master, of handmatige herdeploy van een tag.
+# Geen hostnamen in de workflow — alles via secrets / environment production.
+on:
+  push:
+    tags: ["v*.*.*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Bestaande tag om te herdeployen (bijv. v0.1.0)"
+        required: true
+        type: string
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      H: ${{ secrets.DEPLOY_HOST }}
+      U: ${{ secrets.DEPLOY_USER }}
+      P: ${{ secrets.DEPLOY_PORT }}
+      D: ${{ secrets.DEPLOY_PATH }}
+      BASE: ${{ secrets.BASE_URL }}
+    steps:
+      - name: Resolve ref
+        id: ref
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "ref=${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "ref=${{ github.ref }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.ref.outputs.ref }}
+
+      - name: Alleen tags vanaf master-lijn
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          git fetch origin master --depth=50
+          if ! git merge-base --is-ancestor HEAD origin/master && ! git merge-base --is-ancestor origin/master HEAD; then
+            echo "Tag lijkt niet op master-historie; stop."
+            exit 1
+          fi
+
+      - name: Secrets aanwezig?
+        id: chk
+        run: |
+          if [ -z "$H" ] || [ -z "$U" ] || [ -z "$D" ] || [ -z "${{ secrets.DEPLOY_SSH_KEY }}" ]; then
+            echo "Production-secrets ontbreken."
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup PHP 8.2
+        if: steps.chk.outputs.skip != '1'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring
+          coverage: none
+
+      - name: Build
+        if: steps.chk.outputs.skip != '1'
+        env:
+          SITE_NAME: ${{ secrets.SITE_NAME }}
+          BASE_URL: ${{ secrets.BASE_URL }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          p = Path("build-config.json")
+          cfg = json.loads(p.read_text(encoding="utf-8"))
+          if os.environ.get("SITE_NAME"):
+              cfg["site_name"] = os.environ["SITE_NAME"]
+          if os.environ.get("BASE_URL"):
+              cfg["site_url"] = os.environ["BASE_URL"].rstrip("/")
+          p.write_text(json.dumps(cfg, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
+          python3 scripts/build_site.py
+          python3 scripts/build_manifest.py
+
+      - name: SSH instellen
+        if: steps.chk.outputs.skip != '1'
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: acme-challenge + private map
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
+            "DOC='${D%/}'; mkdir -p \"\$DOC/.well-known/acme-challenge\"; PRIV=\"\$(dirname \"\$DOC\")/stekjes-private\"; mkdir -p \"\$PRIV/backups\"; chmod 700 \"\$PRIV\"; echo \"\$PRIV\"" \
+            > /tmp/private_path.txt
+
+      - name: mysqldump backup
+        if: steps.chk.outputs.skip != '1'
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+        run: |
+          set -euo pipefail
+          PRIV="$(tail -n1 /tmp/private_path.txt)"
+          STAMP=$(date -u +%Y%m%dT%H%M%SZ)
+          # dump op de server (credentials via env in remote command file, niet in logs)
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
+            "PRIV='${PRIV}'; STAMP='${STAMP}'; DB_HOST=$(printf %q "$DB_HOST"); DB_NAME=$(printf %q "$DB_NAME"); DB_USER=$(printf %q "$DB_USER"); DB_PASS=$(printf %q "$DB_PASS"); mysqldump -h \"\$DB_HOST\" -u \"\$DB_USER\" -p\"\$DB_PASS\" \"\$DB_NAME\" | gzip -c > \"\$PRIV/backups/pre-deploy-\$STAMP.sql.gz\""
+
+      - name: config.php buiten webroot
+        if: steps.chk.outputs.skip != '1'
+        env:
+          SITE_NAME: ${{ secrets.SITE_NAME }}
+          BASE_URL: ${{ secrets.BASE_URL }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
+          CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+        run: |
+          set -euo pipefail
+          PRIV="$(tail -n1 /tmp/private_path.txt)"
+          umask 077
+          php -r '
+            $cfg = [
+              "site_name" => getenv("SITE_NAME") ?: "Gratis stekjes",
+              "site_url" => rtrim(getenv("BASE_URL") ?: "", "/"),
+              "base_path" => "",
+              "db_driver" => "mysql",
+              "db_host" => getenv("DB_HOST") ?: "",
+              "db_name" => getenv("DB_NAME") ?: "",
+              "db_user" => getenv("DB_USER") ?: "",
+              "db_pass" => getenv("DB_PASS") ?: "",
+              "db_charset" => "utf8mb4",
+              "db_path" => "",
+              "mail" => [
+                "from_email" => getenv("SMTP_FROM") ?: "",
+                "from_name" => getenv("SITE_NAME") ?: "Gratis stekjes",
+                "smtp_host" => getenv("SMTP_HOST") ?: "",
+                "smtp_port" => (int) (getenv("SMTP_PORT") ?: 465),
+                "smtp_encryption" => strtolower(getenv("SMTP_SECURE") ?: "ssl"),
+                "smtp_user" => getenv("SMTP_USER") ?: "",
+                "smtp_pass" => getenv("SMTP_PASS") ?: "",
+              ],
+              "admin_password" => getenv("ADMIN_PASSWORD") ?: "",
+              "cron_token" => getenv("CRON_TOKEN") ?: "",
+              "form_min_seconds" => 3,
+              "rate_limit" => [
+                "register" => ["max" => 5, "window" => 3600],
+                "login" => ["max" => 20, "window" => 3600],
+                "message" => ["max" => 60, "window" => 3600],
+                "search" => ["max" => 120, "window" => 3600],
+                "password_reset" => ["max" => 5, "window" => 3600],
+              ],
+              "rate_limit_retention_seconds" => 172800,
+              "session_name" => "stekjes_sess",
+              "session_secure" => true,
+              "pdok_url" => "https://api.pdok.nl/bzk/locatieserver/search/v3_1/free",
+              "coord_decimals" => 3,
+              "meedoen_teller_drempel" => 25,
+              "theme_color" => "#2f6b45",
+              "background_color" => "#eef4ea",
+              "private_path" => "",
+            ];
+            file_put_contents("/tmp/stekjes-config.php", "<?php\ndeclare(strict_types=1);\nreturn " . var_export($cfg, true) . ";\n");
+          '
+          scp -i ~/.ssh/deploy_key -P "${P:-22}" -o IdentitiesOnly=yes /tmp/stekjes-config.php "$U@$H:${PRIV}/config.php"
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "chmod 600 '${PRIV}/config.php'"
+          rm -f /tmp/stekjes-config.php
+
+      - name: rsync
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          rsync -rlz --delete \
+            --exclude='.well-known/' --exclude='cgi-bin/' \
+            --exclude='config.php' --exclude='data/' \
+            --exclude='.git/' --exclude='.github/' \
+            --exclude='tests/' --exclude='docs/' \
+            --exclude='placeholder/' --exclude='*.md' \
+            -e "ssh -i ~/.ssh/deploy_key -p ${P:-22}" \
+            ./ "$U@$H:${D%/}/"
+
+      - name: Migraties
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          PRIV="$(tail -n1 /tmp/private_path.txt)"
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
+            "cd '${D%/}' && STEKJES_CONFIG='${PRIV}/config.php' php scripts/migrate.php up"

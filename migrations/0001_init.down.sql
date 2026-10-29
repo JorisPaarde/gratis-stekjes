@@ -1,0 +1,11 @@
+-- 0001_init.down.sql
+DROP TABLE IF EXISTS geocode_cache;
+DROP TABLE IF EXISTS rate_limits;
+DROP TABLE IF EXISTS partner_markers;
+DROP TABLE IF EXISTS helpers;
+DROP TABLE IF EXISTS reports;
+DROP TABLE IF EXISTS blocks;
+DROP TABLE IF EXISTS messages;
+DROP TABLE IF EXISTS conversations;
+DROP TABLE IF EXISTS aanbod;
+DROP TABLE IF EXISTS users;

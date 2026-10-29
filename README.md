@@ -27,14 +27,18 @@ Wat je nodig hebt:
 - MySQL/MariaDB (of SQLite om lokaal te testen)
 - Een mailbox met SMTP voor de bevestigingsmails
 
-Globaal gaat het zo (de precieze stappen staan in de docs zodra de eerste versie er is):
+Precieze stappen (kort):
 
-1. Clone de repo.
-2. Kopieer `config.example.php` naar een `config.php` buiten je webroot en vul je eigen sitenaam, adres, database en mailgegevens in. Zet die gegevens nooit in git.
-3. Draai de databasemigraties.
-4. Zet de bestanden op je hosting, of start lokaal met `php -S localhost:8000`.
+1. Clone de repo en gebruik **PHP 8.2+**.
+2. Kopieer `config.example.php` naar een `config.php` **buiten** de webroot (of zet `STEKJES_CONFIG` naar dat pad). Vul `site_name`, `site_url` / `BASE_URL`, database en SMTP in. Nooit committen.
+3. Bouw de statische pagina's: `python3 scripts/build_site.py && python3 scripts/build_manifest.py`
+4. Migraties: `php scripts/migrate.php up` (status: `php scripts/migrate.php status`)
+5. Lokaal: SQLite via `db_driver=sqlite` + `db_path`, daarna `php -S 127.0.0.1:8080 -t .`
+6. Productie/staging: MySQL; deploy-workflows schrijven config buiten de webroot uit secrets en draaien migraties.
 
-De naam en het webadres staan alleen in de config, dus je eigen versie een andere naam of een eigen domein geven kost één regel.
+Uitgebreider: [`docs/INSTALL.md`](docs/INSTALL.md), branchflow: [`CONTRIBUTING.md`](CONTRIBUTING.md), rollback: [`docs/ROLLBACK.md`](docs/ROLLBACK.md).
+
+De naam en het webadres staan alleen in de config — een ander domein is config + DNS, geen codewijziging.
 
 ## Licentie
 
