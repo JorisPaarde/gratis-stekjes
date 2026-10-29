@@ -7,7 +7,15 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- (volgende PRs) admin/AVG, SEO-pagina’s.
+- (volgende PRs) SEO-pagina’s / stektips.
+
+## [0.8.0] - 2026-10-29
+
+### Added
+
+- AVG: JSON-export (`/account/export`) en account verwijderen (`/account/verwijderen`); privacyverklaring bijgewerkt.
+- Beheer `/beheer` (session + `ADMIN_PASSWORD`): CRUD partnermarkers (PDOK), meldingen-afhandeling wanneer `reports` bestaat.
+- Component-CSS `admin.css`.
 
 ## [0.7.0] - 2026-10-29
 

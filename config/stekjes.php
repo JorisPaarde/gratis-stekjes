@@ -38,4 +38,10 @@ return [
         'plantenbieb' => 'Plantenbieb',
         'ruilkast' => 'Ruilkast',
     ],
+
+    /** Gedeeld beheerwachtwoord (session admin_ok). Leeg = /beheer uit. */
+    'admin_password' => env('ADMIN_PASSWORD', ''),
+
+    /** Dataminimalisatie / retentie (beleidstekst + toekomstige purge). */
+    'inactive_account_months' => (int) env('INACTIVE_ACCOUNT_MONTHS', 12),
 ];

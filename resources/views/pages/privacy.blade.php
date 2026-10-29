@@ -43,8 +43,8 @@
 
   <h2>Jouw rechten</h2>
   <ul class="list-plain">
-    <li><strong>Inzien / export:</strong> volgt wanneer accounts live gaan (JSON-export).</li>
-    <li><strong>Wissen (account):</strong> volgt wanneer accounts live gaan.</li>
+    <li><strong>Inzien / export:</strong> ingelogd via <a href="{{ route('account.export') }}">Gegevens downloaden</a> (JSON).</li>
+    <li><strong>Wissen (account):</strong> <a href="{{ route('account.verwijderen') }}">Account verwijderen</a>.</li>
     <li><strong>Wissen (helper zonder account):</strong> volgt wanneer helpers live gaan.</li>
     <li>Vragen of klachten: Volgt binnenkort (contact). Je kunt ook naar de Autoriteit Persoonsgegevens.</li>
   </ul>
@@ -52,9 +52,9 @@
   <h2>Bewaren en dataminimalisatie</h2>
   <ul class="list-plain">
     <li>We bewaren alleen wat nodig is voor bovenstaande doelen.</li>
-    <li>Rate-limitgegevens (gehashte IP’s): standaard max. 48 uur (configureerbaar).</li>
-    <li>Geocode-cache: standaard max. 90 dagen (configureerbaar).</li>
-    <li>Inactieve accounts: beleid voorstel 12 maanden zonder activiteit — Volgt binnenkort (automatische purge).</li>
+    <li>Rate-limits: Laravel cache-keys met korte TTL (geen plaintext-IP’s in de database).</li>
+    <li>Geocode-cache: standaard max. {{ (int) config('stekjes.geocode_cache_retention_days', 90) }} dagen (configureerbaar; purge via cron wanneer actief).</li>
+    <li>Inactieve accounts: beleid {{ (int) config('stekjes.inactive_account_months', 12) }} maanden zonder activiteit — automatische purge volgt later indien gewenst.</li>
     <li>Geen trackingcookies. Geen externe formulierdienst.</li>
   </ul>
 
