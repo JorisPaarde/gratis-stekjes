@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+use Illuminate\Support\Facades\Schema;
 
 test('homepage is 200 en toont merk Gratis planten', function () {
     config(['site.name' => 'Gratis planten', 'site.noindex' => false]);
@@ -20,6 +21,22 @@ test('homepage is 200 en toont merk Gratis planten', function () {
     $response->assertSee('application/ld+json', false);
     $response->assertSee('"@type":"WebSite"', false);
     $response->assertDontSee('mensen doen al mee', false);
+});
+
+test('homepage rendert zonder database-tabellen (alleen JSON/config)', function () {
+    // Bewijs: na droppen van álle tabellen blijft / 200 (session/cache=array in tests;
+    // staging deploy gebruikt file-drivers). Homepage leest alleen config + JSON.
+    Schema::disableForeignKeyConstraints();
+    foreach (Schema::getTableListing() as $table) {
+        $name = str_contains($table, '.') ? substr($table, strrpos($table, '.') + 1) : $table;
+        Schema::drop($name);
+    }
+    Schema::enableForeignKeyConstraints();
+    expect(Schema::getTableListing())->toBe([]);
+
+    $this->get('/')
+        ->assertOk()
+        ->assertSee('Gratis planten', false);
 });
 
 test('privacy pagina laadt', function () {
