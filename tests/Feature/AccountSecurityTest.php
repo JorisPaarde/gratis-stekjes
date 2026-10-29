@@ -283,6 +283,7 @@ test('e-mail wijzigen stuurt bevestiging naar nieuw en melding naar oud', functi
         'password' => accountSecPassword(),
     ]);
 
+    // HTTP-test draait app()->terminate() na de response → SafeMail afterResponse/terminating.
     $this->actingAs($user)
         ->post(route('account.email'), [
             'email' => 'nieuw@example.com',
@@ -293,6 +294,11 @@ test('e-mail wijzigen stuurt bevestiging naar nieuw en melding naar oud', functi
 
     expect($user->fresh()->email)->toBe('oud@example.com');
     expect($user->fresh()->pending_email)->toBe('nieuw@example.com');
+
+    // Geen database-queue: mails zijn al verstuurd zonder queue:work.
+    if (Schema::hasTable('jobs')) {
+        expect(DB::table('jobs')->count())->toBe(0);
+    }
 
     // Bevestigingsmail gaat naar het nieuwe adres — nooit naar het oude via $user->notify().
     Notification::assertNotSentTo($user, VerifyPendingEmailDutch::class);

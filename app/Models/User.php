@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Notifications\ResetPasswordDutch;
 use App\Notifications\VerifyEmailDutch;
+use App\Support\SafeMail;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -49,12 +50,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function sendEmailVerificationNotification(): void
     {
-        $this->notify(new VerifyEmailDutch);
+        SafeMail::notify($this, new VerifyEmailDutch);
     }
 
     public function sendPasswordResetNotification(#[\SensitiveParameter] $token): void
     {
-        $this->notify(new ResetPasswordDutch($token));
+        SafeMail::notify($this, new ResetPasswordDutch($token));
     }
 
     public function isActive(): bool

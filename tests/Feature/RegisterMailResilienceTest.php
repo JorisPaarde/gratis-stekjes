@@ -35,9 +35,10 @@ test('SafeMail redigeert gevoelige data in exceptionsamenvatting', function () {
         ->not->toContain('geheim');
 });
 
-test('registratie maakt account aan en redirect als notify faalt', function () {
+test('registratie maakt account aan zonder 500 als SMTP na response faalt', function () {
     $email = 'half-'.Str::lower(Str::random(8)).'@example.com';
 
+    // Mail gaat via terminating/afterResponse: SMTP-fout mag geen 500 geven.
     $this->mock(Dispatcher::class, function ($mock) {
         $mock->shouldReceive('send')->andThrow(new RuntimeException('SMTP down'));
     });
@@ -46,10 +47,8 @@ test('registratie maakt account aan en redirect als notify faalt', function () {
         'email' => $email,
     ]))
         ->assertRedirect(route('account.bevestiging-nodig'))
-        ->assertSessionHas('status')
-        ->assertSessionHas('status_level', 'warn');
+        ->assertSessionHas('status');
 
-    expect(session('status'))->toContain('bevestigingsmail lukte niet');
     expect(User::query()->where('email', $email)->exists())->toBeTrue();
     $this->assertGuest();
 });
@@ -80,10 +79,7 @@ test('bevestiging opnieuw vangt mailfout zonder 500', function () {
 
     $this->from(route('account.bevestiging-nodig'))
         ->post(route('account.bevestiging-opnieuw'), ['email' => $email])
-        ->assertRedirect(route('account.bevestiging-nodig'))
-        ->assertSessionHas('status_level', 'warn');
-
-    expect(session('status'))->toContain('lukte niet');
+        ->assertRedirect(route('account.bevestiging-nodig'));
 });
 
 test('registratie toont alle validatiefouten tegelijk', function () {

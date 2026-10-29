@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 
-class VerifyPendingEmailDutch extends Notification implements ShouldQueue
+class VerifyPendingEmailDutch extends Notification
 {
-    use Queueable;
-
     public function __construct(
         public readonly string $pendingEmail,
         public readonly int $userId,
