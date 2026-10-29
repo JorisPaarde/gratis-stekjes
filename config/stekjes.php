@@ -63,4 +63,10 @@ return [
 
     /** Dataminimalisatie / retentie (beleidstekst + toekomstige purge). */
     'inactive_account_months' => (int) env('INACTIVE_ACCOUNT_MONTHS', 12),
+
+    /**
+     * Sleutel voor versleutelde DB-backups (`php artisan backup:database-encrypted`).
+     * Liever aparte BACKUP_ENCRYPTION_KEY; valt terug op APP_KEY. Nooit committen.
+     */
+    'backup_encryption_key' => env('BACKUP_ENCRYPTION_KEY', env('APP_KEY', '')),
 ];

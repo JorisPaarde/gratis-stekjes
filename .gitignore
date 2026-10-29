@@ -28,3 +28,4 @@ README.legacy.md
 CHANGELOG.legacy.md
 /.phpunit.cache
 /database/*.sqlite
+/storage/backups

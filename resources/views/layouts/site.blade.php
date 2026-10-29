@@ -89,7 +89,6 @@
         · KvK 90397320 · btw NL004813310B95
         · Versie {{ config('site.version') }}@if($noindex) · noindex @endif
       </p>
-
     </div>
   </footer>
   @stack('scripts')

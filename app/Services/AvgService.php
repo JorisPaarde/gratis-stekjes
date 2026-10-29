@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Aanbod;
+use App\Models\Conversation;
+use App\Models\Message;
+use App\Models\Report;
 use App\Models\User;
 use App\Support\Geo;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +18,7 @@ use Illuminate\Support\Facades\Schema;
 final class AvgService
 {
     /**
-     * Export gebruikersgegevens (geen password/tokens).
+     * Export gebruikersgegevens (geen password/tokens). Foto-links: leeg zolang geen upload bestaat.
      *
      * @return array<string, mixed>
      */
@@ -44,24 +47,42 @@ final class AvgService
                 'active' => (bool) $user->active,
             ],
             'aanbod' => $aanbod,
+            // Geen gebruikersfoto-feature; placeholder zodat export-contract stabiel blijft.
+            'fotos' => [],
         ];
 
         if (Schema::hasTable('conversations')) {
-            $convs = DB::table('conversations')
+            $convs = Conversation::query()
                 ->where('user_a_id', $user->id)
                 ->orWhere('user_b_id', $user->id)
                 ->orderBy('id')
                 ->get();
-            $payload['conversations'] = $convs->map(fn ($c) => (array) $c)->all();
+            $payload['conversations'] = $convs->map(fn (Conversation $c) => [
+                'id' => $c->id,
+                'aanbod_id' => $c->aanbod_id,
+                'user_a_id' => $c->user_a_id,
+                'user_b_id' => $c->user_b_id,
+                'contact_a' => $c->contact_a,
+                'contact_b' => $c->contact_b,
+                'created_at' => optional($c->created_at)?->toIso8601String(),
+                'updated_at' => optional($c->updated_at)?->toIso8601String(),
+            ])->all();
             $convIds = $convs->pluck('id')->all();
 
             $messages = [];
             if ($convIds !== [] && Schema::hasTable('messages')) {
-                $messages = DB::table('messages')
+                $messages = Message::query()
                     ->whereIn('conversation_id', $convIds)
                     ->orderBy('created_at')
                     ->get()
-                    ->map(fn ($m) => (array) $m)
+                    ->map(fn (Message $m) => [
+                        'id' => $m->id,
+                        'conversation_id' => $m->conversation_id,
+                        'sender_id' => $m->sender_id,
+                        'body' => (string) $m->body,
+                        'read_at' => optional($m->read_at)?->toIso8601String(),
+                        'created_at' => optional($m->created_at)?->toIso8601String(),
+                    ])
                     ->all();
             }
             $payload['messages'] = $messages;
@@ -75,10 +96,18 @@ final class AvgService
                     ->all();
             }
             if (Schema::hasTable('reports')) {
-                $payload['reports_filed'] = DB::table('reports')
+                $payload['reports_filed'] = Report::query()
                     ->where('reporter_id', $user->id)
                     ->get()
-                    ->map(fn ($r) => (array) $r)
+                    ->map(fn (Report $r) => [
+                        'id' => $r->id,
+                        'reporter_id' => $r->reporter_id,
+                        'reported_user_id' => $r->reported_user_id,
+                        'conversation_id' => $r->conversation_id,
+                        'reason' => (string) $r->reason,
+                        'handled' => (bool) $r->handled,
+                        'created_at' => optional($r->created_at)?->toIso8601String(),
+                    ])
                     ->all();
             }
         }
@@ -98,6 +127,7 @@ final class AvgService
         }
 
         $userId = (int) $user->id;
+        $email = (string) $user->email;
 
         // Uitloggen vóór delete: Auth::logout() kan anders setRememberToken+save doen
         // en de zojuist verwijderde user weer wegschrijven.
@@ -107,7 +137,7 @@ final class AvgService
             request()->session()->regenerateToken();
         }
 
-        DB::transaction(function () use ($userId) {
+        DB::transaction(function () use ($userId, $email) {
             if (Schema::hasTable('conversations')) {
                 $ids = DB::table('conversations')
                     ->where('user_a_id', $userId)
@@ -134,6 +164,16 @@ final class AvgService
                     ->delete();
             }
             Aanbod::query()->where('user_id', $userId)->delete();
+
+            if (Schema::hasTable('password_reset_tokens')) {
+                DB::table('password_reset_tokens')->where('email', $email)->delete();
+            }
+            if (Schema::hasTable('sessions')) {
+                DB::table('sessions')->where('user_id', $userId)->delete();
+            }
+
+            // Geen gebruikersfoto’s op disk (feature ontbreekt); bij latere upload hier wissen.
+
             User::query()->whereKey($userId)->delete();
         });
 
