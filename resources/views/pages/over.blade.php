@@ -6,7 +6,7 @@
 
 @section('content')
 <section class="section wrap prose">
-  <h1>Over {{ config('site.name') }}</h1>
+  <h1 class="page-title">Over {{ config('site.name') }}</h1>
   <p>Ik ben Joris. Ik wil toetsen of mensen stekjes gaan uitdelen en ophalen — gratis, met een praatje als enige tegenprestatie. Eerst gericht op mensen die met voedselbossen en eetbare tuinen bezig zijn.</p>
   <p>De regio is open: heel Nederland. De sitenaam en het adres zijn configureerbaar; dit is de testfase (noindex op staging).</p>
   <p>Volgt binnenkort: meer over mij en dit project.</p>

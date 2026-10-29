@@ -6,7 +6,7 @@
 
 @section('content')
 <section class="section wrap">
-  <h1>Inloggen</h1>
+  <h1 class="page-title">Inloggen</h1>
 
   @if($errors->any())
     <p class="error" role="alert">{{ $errors->first() }}</p>

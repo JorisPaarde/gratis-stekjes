@@ -10,10 +10,30 @@
 @endpush
 
 @section('content')
-<section class="hero wrap">
-  <h1 class="hero-brand">{{ config('site.name') }}</h1>
-  <p class="hero-lead">Gratis planten en stekjes delen met mensen in de buurt. Je haalt ze alleen fysiek op; de enige ‘prijs’ is een praatje. Heel Nederland mag meedoen.</p>
+<section class="hero" aria-labelledby="hero-titel">
+  <div class="hero-media" aria-hidden="true">
+    <img
+      src="{{ asset('assets/illustrations/hero-planten.svg') }}"
+      alt=""
+      width="1440"
+      height="720"
+      decoding="async"
+      fetchpriority="high"
+    >
+  </div>
+  <div class="hero-scrim" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <h1 id="hero-titel" class="hero-brand">{{ config('site.name') }}</h1>
+    <p class="hero-lead">Gratis planten en stekjes delen met mensen in de buurt. Je haalt ze alleen fysiek op; de enige ‘prijs’ is een praatje. Heel Nederland mag meedoen.</p>
+    <div class="hero-actions">
+      <a class="btn" href="#doe-mee">Doe mee</a>
+      <a class="btn btn-on-dark" href="#hoe-werkt-het">Hoe werkt het</a>
+    </div>
+  </div>
 </section>
+<div class="hero-wave" aria-hidden="true">
+  <img src="{{ asset('assets/illustrations/wave-divider.svg') }}" alt="" width="1440" height="80" decoding="async" loading="lazy">
+</div>
 
 <section class="section wrap" aria-labelledby="waarom-titel">
   <h2 id="waarom-titel">Waarom?</h2>
@@ -54,30 +74,35 @@
   </div>
 </section>
 
-<section class="section wrap" id="hoe-werkt-het" aria-labelledby="hoe-titel">
-  <h2 id="hoe-titel">Hoe werkt het</h2>
-  <p class="section-intro">Drie spelregels: <strong>gratis</strong>, alleen <strong>fysiek ophalen</strong>, en de enige tegenprestatie is een <strong>praatje</strong>.</p>
-  <ol class="list-plain">
-    <li>Je maakt een account (of meldt je aan als helper).</li>
-    <li>Uitdelers zetten op de site wat ze gratis weggeven, met een benaderde plek (postcode of plaats) — nooit een straatadres.</li>
-    <li>Ophalers zoeken in de buurt en sturen een bericht via de site.</li>
-    <li>Jullie spreken onderling een ophaalmoment af. Exacte adressen deel je zelf, als je dat wilt.</li>
-    <li>Pas bij wederzijds akkoord zien jullie elkaars contactgegevens.</li>
-  </ol>
-  <p class="muted">Account, aanbod, kaart en berichten staan klaar.</p>
+<section class="section section--teal" id="hoe-werkt-het" aria-labelledby="hoe-titel">
+  <div class="wrap">
+    <img class="section-figure" src="{{ asset('assets/illustrations/step-stekje.svg') }}" alt="" width="64" height="64" decoding="async" loading="lazy">
+    <h2 id="hoe-titel">Hoe werkt het</h2>
+    <p class="section-intro">Drie spelregels: <strong>gratis</strong>, alleen <strong>fysiek ophalen</strong>, en de enige tegenprestatie is een <strong>praatje</strong>.</p>
+    <ol class="steps">
+      <li><span>Je maakt een account (of meldt je aan als helper).</span></li>
+      <li><span>Uitdelers zetten op de site wat ze gratis weggeven, met een benaderde plek (postcode of plaats) — nooit een straatadres.</span></li>
+      <li><span>Ophalers zoeken in de buurt en sturen een bericht via de site.</span></li>
+      <li><span>Jullie spreken onderling een ophaalmoment af. Exacte adressen deel je zelf, als je dat wilt.</span></li>
+      <li><span>Pas bij wederzijds akkoord zien jullie elkaars contactgegevens.</span></li>
+    </ol>
+    <p class="muted" style="margin-top:1.25rem">Account, aanbod, kaart en berichten staan klaar.</p>
+  </div>
 </section>
 
 @if($nuTeStekken && count($nuTeStekken['groepen']))
   @include('partials.nu-te-stekken', ['nuTeStekken' => $nuTeStekken, 'headingId' => 'nu-te-stekken-titel'])
 @endif
 
-<section class="section wrap" id="veiligheid" aria-labelledby="veilig-titel">
-  <h2 id="veilig-titel">Veilig delen</h2>
-  <p class="section-intro">Niet alles hoort op een deelplatform. We vragen je om invasieve soorten in Nederland niet aan te bieden.</p>
-  <div class="soft-card warn-card">
-    <p>Sommige planten staan op de EU-Unielijst van invasieve uitheemse soorten (NVWA). Die horen hier niet tussen — ook niet “even een stekje voor de leuk”.</p>
-    <p>De volledige waarschuwingslijst met bronnen komt mee in een volgende release. Twijfel je? Bied het dan niet aan.</p>
-    <p><span class="badge-soon">Lijst binnenkort</span></p>
+<section class="section section--peach" id="veiligheid" aria-labelledby="veilig-titel">
+  <div class="wrap">
+    <h2 id="veilig-titel">Veilig delen</h2>
+    <p class="section-intro">Niet alles hoort op een deelplatform. We vragen je om invasieve soorten in Nederland niet aan te bieden.</p>
+    <div class="soft-card warn-card">
+      <p>Sommige planten staan op de EU-Unielijst van invasieve uitheemse soorten (NVWA). Die horen hier niet tussen — ook niet “even een stekje voor de leuk”.</p>
+      <p>De volledige waarschuwingslijst met bronnen komt mee in een volgende release. Twijfel je? Bied het dan niet aan.</p>
+      <p><span class="badge-soon">Lijst binnenkort</span></p>
+    </div>
   </div>
 </section>
 
@@ -99,23 +124,25 @@
   <p><a href="{{ route('partners') }}">Alle partners en links</a> · plekken met bezoeklocatie op de <a href="{{ route('aanbod') }}">kaart</a>.</p>
 </section>
 
-<section class="section wrap" aria-labelledby="verder-titel">
-  <h2 id="verder-titel">Verder kijken</h2>
-  <div class="grid-cards">
-    <div class="soft-card">
-      <h3>Aanbod &amp; kaart</h3>
-      <p>Zoeken op postcode of plaats.</p>
-      <p><a href="{{ route('aanbod') }}">Naar de kaart</a></p>
-    </div>
-    <div class="soft-card">
-      <h3>Stektips</h3>
-      <p>Praktische tips per soort.</p>
-      <p><a href="{{ route('stektips.index') }}">Bekijk stektips</a></p>
-    </div>
-    <div class="soft-card">
-      <h3>Privacy</h3>
-      <p>Wat we wel en niet bewaren.</p>
-      <p><a href="{{ route('privacy') }}">Lees de verklaring</a></p>
+<section class="section section--cream" aria-labelledby="verder-titel">
+  <div class="wrap">
+    <h2 id="verder-titel">Verder kijken</h2>
+    <div class="grid-cards">
+      <div class="soft-card">
+        <h3>Aanbod &amp; kaart</h3>
+        <p>Zoeken op postcode of plaats.</p>
+        <p><a href="{{ route('aanbod') }}">Naar de kaart</a></p>
+      </div>
+      <div class="soft-card">
+        <h3>Stektips</h3>
+        <p>Praktische tips per soort.</p>
+        <p><a href="{{ route('stektips.index') }}">Bekijk stektips</a></p>
+      </div>
+      <div class="soft-card">
+        <h3>Privacy</h3>
+        <p>Wat we wel en niet bewaren.</p>
+        <p><a href="{{ route('privacy') }}">Lees de verklaring</a></p>
+      </div>
     </div>
   </div>
 </section>

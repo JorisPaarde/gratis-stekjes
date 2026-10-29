@@ -6,7 +6,7 @@
 
 @section('content')
 <section class="section wrap">
-  <h1>Hallo {{ $user->name }}</h1>
+  <h1 class="page-title">Hallo {{ $user->name }}</h1>
   <p class="section-intro">Je e-mail is bevestigd. Vul je locatie in en plaats gratis aanbod op de kaart.</p>
 
   <div class="soft-card">

@@ -6,7 +6,7 @@
 
 @section('content')
 <section class="section wrap prose">
-  <h1>Account verwijderen</h1>
+  <h1 class="page-title">Account verwijderen</h1>
   <p>Dit wist je account, aanbod en (indien aanwezig) gesprekken, berichten, blokkades en meldingen die bij jou horen. Dit kun je niet terugdraaien.</p>
   <p>Download eerst eventueel een <a href="{{ route('account.export') }}">gegevensexport (JSON)</a>.</p>
   @if($errors->any())

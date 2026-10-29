@@ -6,7 +6,7 @@
 
 @section('content')
 <section class="section wrap">
-  <h1>Mijn aanbod</h1>
+  <h1 class="page-title">Mijn aanbod</h1>
   <p class="section-intro">Vrije tekst over wat je hebt of zoekt. Aanbod staat {{ (int) config('stekjes.aanbod_ttl_days', 60) }} dagen in zoeken en op de kaart; daarna blijft het hier zichtbaar zodat je kunt verlengen.</p>
 
   @if($errors->any())

@@ -6,7 +6,7 @@
 
 @section('content')
 <section class="section wrap">
-  <h1>Profiel</h1>
+  <h1 class="page-title">Profiel</h1>
   <p class="section-intro">Publiek: voornaam/bijnaam en benaderde locatie (postcode-4 of plaats). Telefoon alleen later zichtbaar bij wederzijds “ja” in een gesprek.</p>
 
   @if($errors->any())

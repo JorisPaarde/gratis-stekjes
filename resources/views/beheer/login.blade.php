@@ -11,7 +11,7 @@
 
 @section('content')
 <section class="section wrap beheer-page">
-  <h1>Beheer</h1>
+  <h1 class="page-title">Beheer</h1>
   @if($errors->any())
     <p class="error" role="alert">{{ $errors->first() }}</p>
   @endif
