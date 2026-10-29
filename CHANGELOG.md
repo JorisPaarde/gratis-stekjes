@@ -16,6 +16,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - PWA: manifest, iconen, service worker (shell-cache, geen API/berichten).
 - MySQL op server, SQLite in CI; versioned migraties; deploy/cron-workflows via secrets.
 - Documentatie: CONTRIBUTING, INSTALL, ROLLBACK.
+- Partnermarkers: admin CRUD (naam, type, plaats via PDOK, website, beschrijving), types partner/voedselbos/plantenasiel/plantenbieb/ruilkast met eigen markers + filter op de kaart/lijst, partnerspagina (Voedselbosbouw.org, MeerBomen Nu), migratie `0003_partner_marker_fields`.
 
 ## [0.1.0] - TBD
 

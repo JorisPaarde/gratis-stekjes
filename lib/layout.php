@@ -57,7 +57,7 @@ function stekjes_render_header(array $opts = []): void
         <a href="<?= stekjes_e(stekjes_path('/aanbod/')) ?>">Aanbod</a>
         <a href="<?= stekjes_e(stekjes_path('/stektips/')) ?>">Stektips</a>
         <a href="<?= stekjes_e(stekjes_path('/hulpmiddelen/')) ?>">Hulpmiddelen</a>
-        <a href="<?= stekjes_e(stekjes_path('/links/')) ?>">Links</a>
+        <a href="<?= stekjes_e(stekjes_path('/links/')) ?>">Partners</a>
         <a href="<?= stekjes_e(stekjes_path('/over/')) ?>">Over</a>
         <?php if ($user): ?>
           <a href="<?= stekjes_e(stekjes_path('/account/inbox.php')) ?>">Inbox</a>
