@@ -50,3 +50,27 @@ dotenv_unquote() {
   fi
   printf '%s' "$v"
 }
+
+# Lees KEY uit een .env-bestand (default: .env) en strip quotes.
+# Gebruik: dotenv_env_get APP_ENV   of   dotenv_env_get APP_KEY /pad/naar/.env
+dotenv_env_get() {
+  if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
+    printf '%s\n' 'dotenv_env_get: verwacht KEY [bestand]' >&2
+    return 1
+  fi
+  local key=$1
+  local file=${2:-.env}
+  case $key in
+    ''|*[!A-Za-z0-9_]*)
+      printf '%s\n' 'dotenv_env_get: ongeldige KEY' >&2
+      return 1
+      ;;
+  esac
+  if [ ! -f "$file" ]; then
+    printf '%s\n' "dotenv_env_get: bestand ontbreekt" >&2
+    return 1
+  fi
+  local raw
+  raw=$(grep -E "^${key}=" "$file" | head -1 | cut -d= -f2- || true)
+  dotenv_unquote "$raw"
+}
