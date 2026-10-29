@@ -15,7 +15,7 @@ Het doel is simpel: de wereld een stukje groener maken. Meer planten in meer tui
 - **Privacy eerst.** Op de kaart alleen een benaderde plek, nooit een adres of e-mailadres.
 - **Groen en eerlijk.** Invasieve soorten in Nederland horen er niet tussen.
 
-## Status (v0.1.0)
+## Status (v0.1.1)
 
 Laravel 12-basis met gepolijste homepage en privacyverklaring. Accounts, aanbod/kaart, berichten en overige flows volgen in latere releases (*binnenkort* op de homepage).
 
@@ -23,7 +23,7 @@ Laravel 12-basis met gepolijste homepage en privacyverklaring. Accounts, aanbod/
 
 - Laravel 12, PHP 8.2+, Blade, Vite (build in CI — geen Node op de server)
 - MySQL op staging/productie, SQLite in tests
-- Mail via SMTP; queue/session/cache: database
+- Mail via SMTP; queue via database; staging session/cache: file (homepage DB-onafhankelijk)
 
 Weergavenaam: `SITE_NAME` / `APP_NAME` (default **Gratis planten**). Domein alleen via `APP_URL`.
 

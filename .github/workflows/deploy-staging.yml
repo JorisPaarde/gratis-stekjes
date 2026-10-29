@@ -83,8 +83,8 @@ jobs:
           else
             APP="\$(dirname "\$DOC")/stekjes-staging-app"
           fi
-          mkdir -p "\$APP"/storage/framework/{cache,sessions,views} "\$APP"/storage/logs "\$APP"/bootstrap/cache
-          chmod 700 "\$APP"
+          mkdir -p "\$APP"/storage/framework/{cache,sessions,views} "\$APP"/storage/logs "\$APP"/storage/backups "\$APP"/bootstrap/cache
+          chmod 700 "\$APP" "\$APP"/storage/backups
           printf '%s\n' "\$APP"
           EOF
           tail -n1 /tmp/app_dir.txt
@@ -99,6 +99,7 @@ jobs:
             --exclude='.env' --exclude='.env.*' \
             --exclude='storage/logs/*' --exclude='storage/framework/cache/*' \
             --exclude='storage/framework/sessions/*' --exclude='storage/framework/views/*' \
+            --exclude='storage/backups/' \
             -e "ssh -i ~/.ssh/deploy_key -p ${P:-22}" \
             ./ "$U@$H:${APP}/"
 
@@ -170,10 +171,10 @@ jobs:
             echo "DB_DATABASE=${DB_NAME}"
             echo "DB_USERNAME=${DB_USER}"
             echo "DB_PASSWORD=${DB_PASS}"
-            echo "SESSION_DRIVER=database"
+            echo "SESSION_DRIVER=file"
             echo "SESSION_SECURE_COOKIE=true"
             echo "QUEUE_CONNECTION=database"
-            echo "CACHE_STORE=database"
+            echo "CACHE_STORE=file"
             echo "MAIL_MAILER=smtp"
             echo "MAIL_HOST=${SMTP_HOST}"
             echo "MAIL_PORT=${SMTP_PORT:-465}"
@@ -188,6 +189,33 @@ jobs:
           ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "chmod 600 '${APP}/.env'"
           rm -f /tmp/stekjes.env
 
+      # Staging-only: never copy this step to deploy-production.yml.
+      # Detects plain-PHP schema (schema_migrations, or users without Laravel
+      # migration 0001_01_01_000000_create_users_table) → mysqldump backup under
+      # storage/backups/ (outside webroot) → drop all tables → migrate continues.
+      - name: Legacy schema reset (staging eenmalig)
+        if: steps.chk.outputs.skip != '1'
+        env:
+          DB_HOST: ${{ secrets.STAGING_DB_HOST }}
+          DB_NAME: ${{ secrets.STAGING_DB_NAME }}
+          DB_USER: ${{ secrets.STAGING_DB_USER }}
+          DB_PASS: ${{ secrets.STAGING_DB_PASS }}
+        run: |
+          set -euo pipefail
+          if [ -z "${DB_HOST:-}" ] || [ -z "${DB_NAME:-}" ] || [ -z "${DB_USER:-}" ] || [ -z "${DB_PASS:-}" ]; then
+            echo "STAGING_DB_* secrets ontbreken; legacy-reset geweigerd."
+            exit 1
+          fi
+          APP="$(tail -n1 /tmp/app_dir.txt)"
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s <<EOF
+          set -euo pipefail
+          cd '${APP}'
+          test "\$(grep -E '^APP_ENV=' .env | cut -d= -f2-)" = "staging"
+          mkdir -p storage/backups
+          chmod 700 storage/backups
+          php artisan staging:reset-legacy-schema --force
+          EOF
+
       - name: Migrate + cache
         if: steps.chk.outputs.skip != '1'
         run: |
@@ -195,8 +223,9 @@ jobs:
           ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s <<EOF
           set -euo pipefail
           cd '${APP}'
-          mkdir -p storage/framework/{cache,sessions,views} storage/logs bootstrap/cache
-          chmod -R ug+rwx storage bootstrap/cache
+          mkdir -p storage/framework/{cache,sessions,views} storage/logs storage/backups bootstrap/cache
+          chmod 700 storage/backups
+          chmod -R ug+rwx storage/framework storage/logs bootstrap/cache
           php artisan migrate --force
           php artisan config:cache
           php artisan route:cache

@@ -5,13 +5,20 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ## [Unreleased]
 
-### Changed
-
-- Deploy-layout aangescherpt: app (zonder `public/`) → `APP_DIR` / `STAGING_APP_DIR`; inhoud `public/` → docroot; gegenereerde `index.php` zet `usePublicPath(__DIR__)` voor asset()/Vite. Docroot `--delete` excludes alleen `.well-known/` en `cgi-bin/`.
-
 ### Added
 
 - (volgende PRs) accounts, aanbod/kaart, berichten, SEO-stad/soortpagina’s, beheer, cron.
+
+## [0.1.1] - 2026-10-29
+
+### Added
+
+- Staging-only legacy DB-reset in `deploy-staging.yml`: bij plain-PHP schema (`schema_migrations`, of `users` zonder Laravel-migratierij `0001_01_01_000000_create_users_table`) eerst mysqldump naar `storage/backups/legacy-<timestamp>.sql.gz` (chmod 600, buiten webroot), daarna alle tabellen droppen; daarna normaal `migrate --force`. Guards: `APP_ENV=staging` + `STAGING_DB_*` secrets. Nooit in productie-workflow.
+
+### Changed
+
+- Staging session/cache → `file` zodat de homepage geen DB nodig heeft om te renderen (queue blijft database).
+- Deploy-layout aangescherpt: app (zonder `public/`) → `APP_DIR` / `STAGING_APP_DIR`; inhoud `public/` → docroot; gegenereerde `index.php` zet `usePublicPath(__DIR__)` voor asset()/Vite. Docroot `--delete` excludes alleen `.well-known/` en `cgi-bin/`; rsync spaart `storage/backups/`.
 
 ## [0.1.0] - 2026-10-29
 
