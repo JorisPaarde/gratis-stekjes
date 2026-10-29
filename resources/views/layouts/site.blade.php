@@ -71,6 +71,7 @@
         <a href="{{ route('over') }}">Over</a>
         <a href="{{ route('stektips.index') }}">Stektips</a>
         <a href="{{ route('aanbod') }}">Aanbod</a>
+        <a href="{{ route('invasieve-soorten') }}">Invasieve soorten</a>
         <a href="{{ route('partners') }}">Initiatieven</a>
         @auth
           <a href="{{ route('account.index') }}">Account</a>

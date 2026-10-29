@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
     'name' => env('SITE_NAME', env('APP_NAME', 'Gratis planten')),
-    'version' => '0.13.3',
+    'version' => '0.13.5',
     'theme_color' => '#1f4d2b',
     'background_color' => '#e6f2e1',
     'description' => 'Gratis planten en stekjes weggeven en ophalen. De enige tegenprestatie is een praatje.',

@@ -9,6 +9,19 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.13.5] - 2026-10-29
+
+### Added
+
+- Controle op invasieve Unielijst-soorten bij aanbod plaatsen en wijzigen (server-side; optionele client-side tip tijdens typen).
+- Uitlegpagina `/invasieve-soorten` met de 47 NVWA terrestrische + water-/oeverplanten uit `data/niet-aanbieden.json`, in sitemap en footer.
+- Aanbod wijzigen (eigen items) met dezelfde validatie als plaatsen.
+
+### Changed
+
+- Homepage “Veilig delen”: link naar de lijst i.p.v. “Lijst binnenkort”.
+- VERSION **0.13.5**.
+
 ## [0.13.4] - 2026-10-29
 
 ### Fixed

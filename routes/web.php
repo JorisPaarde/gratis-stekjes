@@ -25,6 +25,7 @@ use App\Http\Controllers\Beheer\DashboardController as BeheerDashboardController
 use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
 use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\CronController;
+use App\Http\Controllers\InvasieveSoortenController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PartnersController;
 use App\Http\Controllers\StektipsController;
@@ -46,6 +47,7 @@ Route::get('/hoe-werkt-het', [ContentPageController::class, 'hoeWerktHet'])->nam
 Route::get('/hulpmiddelen', [ContentPageController::class, 'hulpmiddelen'])->name('hulpmiddelen');
 Route::get('/over', [ContentPageController::class, 'over'])->name('over');
 Route::get('/doe-mee', [ContentPageController::class, 'doeMee'])->name('doe-mee');
+Route::get('/invasieve-soorten', InvasieveSoortenController::class)->name('invasieve-soorten');
 Route::get('/stektips', [StektipsController::class, 'index'])->name('stektips.index');
 Route::get('/stektips/{slug}', [StektipsController::class, 'show'])->name('stektips.show');
 
@@ -107,6 +109,8 @@ Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(functio
 
     Route::get('/account/aanbod', [AanbodController::class, 'index'])->name('account.aanbod');
     Route::post('/account/aanbod', [AanbodController::class, 'store']);
+    Route::post('/account/aanbod/{aanbod}', [AanbodController::class, 'update'])
+        ->name('account.aanbod.update');
     Route::post('/account/aanbod/{aanbod}/verlengen', [AanbodController::class, 'renew'])
         ->name('account.aanbod.renew');
 

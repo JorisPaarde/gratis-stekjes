@@ -111,8 +111,8 @@
     <p class="section-intro">Niet alles hoort op een deelplatform. We vragen je om invasieve soorten in Nederland niet aan te bieden.</p>
     <div class="soft-card warn-card">
       <p><x-icon name="waarschuwing" :size="20" /> Sommige planten staan op de EU-Unielijst van invasieve uitheemse soorten (NVWA). Die horen hier niet tussen — ook niet “even een stekje voor de leuk”.</p>
-      <p>De volledige waarschuwingslijst met bronnen komt mee in een volgende release. Twijfel je? Bied het dan niet aan.</p>
-      <p><span class="badge-soon">Lijst binnenkort</span></p>
+      <p>Bij het plaatsen van aanbod controleren we op deze soorten. Twijfel je? Bied het dan niet aan.</p>
+      <p><a href="{{ route('invasieve-soorten') }}">Lijst en uitleg invasieve soorten</a></p>
     </div>
   </div>
 </section>
