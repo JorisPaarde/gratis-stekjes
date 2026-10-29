@@ -50,7 +50,7 @@
     <label>Contact-e-mail *
       <input type="email" name="contact_email" required maxlength="254" value="{{ old('contact_email') }}" autocomplete="email">
     </label>
-    <p class="hint">Dit adres gebruiken we alleen voor de bevestiging en bij vragen over je aanmelding. Het komt niet op de publieke kaart.</p>
+    <p class="hint">Dit adres gebruik ik alleen voor de bevestiging en bij vragen over je aanmelding. Het komt niet op de publieke kaart.</p>
 
     <label class="checkbox">
       <input type="checkbox" name="privacy" value="1" required @checked(old('privacy'))>

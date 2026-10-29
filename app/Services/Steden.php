@@ -137,7 +137,7 @@ final class Steden
             ],
             [
                 'vraag' => "Hoe ver zoekt deze pagina rond {$naam}?",
-                'antwoord' => "We tonen actueel aanbod binnen ongeveer {$straal} km van het centrum van {$naam}. Locaties op de kaart zijn benaderd (postcode of plaats), nooit een straatadres.",
+                'antwoord' => "Ik toon actueel aanbod binnen ongeveer {$straal} km van het centrum van {$naam}. Locaties op de kaart zijn benaderd (postcode of plaats), nooit een straatadres.",
             ],
             [
                 'vraag' => 'Hoe bied ik zelf iets aan?',
@@ -145,7 +145,7 @@ final class Steden
             ],
             [
                 'vraag' => 'Zijn er ook vaste deelplekken?',
-                'antwoord' => 'Als we openbare deelplekken (zoals plantenasiel, plantenbieb of ruilkast) in of bij deze stad kennen, tonen we die hier. Anders kun je landelijk zoeken op de aanbodkaart of de deelplekkenpagina — als die beschikbaar is.',
+                'antwoord' => 'Als ik openbare deelplekken (zoals plantenasiel, plantenbieb of ruilkast) in of bij deze stad ken, toon ik die hier. Anders kun je landelijk zoeken op de aanbodkaart of de deelplekkenpagina — als die beschikbaar is.',
             ],
         ];
     }

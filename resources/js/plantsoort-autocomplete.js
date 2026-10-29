@@ -3,6 +3,10 @@
  * Debounced fetch, AbortController, pijltjes/Enter/Escape/Tab.
  * Zonder JS blijft het een gewoon tekstveld.
  *
+ * Bij openen: geen optie gemarkeerd (aria-activedescendant leeg).
+ * Eerste ArrowDown markeert de eerste optie; Enter zonder markering kiest niets
+ * (vrije invoer blijft).
+ *
  * CSP: alleen Vite-bundle ('self') + fetch naar eigen domein (connect-src 'self').
  * Geen externe scripts/CDN.
  */
@@ -47,6 +51,16 @@
       return listbox.id + '-opt-' + i;
     }
 
+    function clearActive() {
+      activeIndex = -1;
+      input.removeAttribute('aria-activedescendant');
+      var options = listbox.querySelectorAll('[role="option"]');
+      options.forEach(function (opt) {
+        opt.setAttribute('aria-selected', 'false');
+        opt.classList.remove('is-active');
+      });
+    }
+
     function render() {
       listbox.innerHTML = '';
       if (!items.length) {
@@ -59,13 +73,17 @@
         var li = document.createElement('li');
         li.id = optionId(i);
         li.setAttribute('role', 'option');
-        li.setAttribute('aria-selected', i === activeIndex ? 'true' : 'false');
-        li.className = 'plantsoort-option' + (i === activeIndex ? ' is-active' : '');
+        li.setAttribute('aria-selected', 'false');
+        li.className = 'plantsoort-option';
         li.dataset.index = String(i);
 
         var naam = document.createElement('span');
         naam.className = 'plantsoort-option-naam';
-        naam.textContent = item.naam;
+        if (item.match) {
+          naam.textContent = item.naam + ' · ' + item.match;
+        } else {
+          naam.textContent = item.naam;
+        }
 
         var latijn = document.createElement('span');
         latijn.className = 'plantsoort-option-latijn';
@@ -84,14 +102,18 @@
 
       listbox.hidden = false;
       input.setAttribute('aria-expanded', 'true');
-      setActive(activeIndex >= 0 ? activeIndex : 0);
+      // Bij openen nog geen optie gemarkeerd.
+      clearActive();
       setStatus(items.length + (items.length === 1 ? ' suggestie' : ' suggesties'));
     }
 
     function setActive(index) {
       if (!items.length) {
-        activeIndex = -1;
-        input.removeAttribute('aria-activedescendant');
+        clearActive();
+        return;
+      }
+      if (index < 0) {
+        clearActive();
         return;
       }
       activeIndex = Math.max(0, Math.min(items.length - 1, index));
@@ -160,7 +182,7 @@
         .then(function (data) {
           if (!data) return;
           items = Array.isArray(data.items) ? data.items : [];
-          activeIndex = items.length ? 0 : -1;
+          activeIndex = -1;
           render();
         })
         .catch(function (err) {
@@ -191,16 +213,22 @@
           fetchSuggestions(input.value);
           return;
         }
+        // Eerste ArrowDown markeert de eerste optie (vanuit geen markering).
         setActive(activeIndex < 0 ? 0 : activeIndex + 1);
         return;
       }
       if (e.key === 'ArrowUp') {
         e.preventDefault();
         if (!open) return;
+        if (activeIndex < 0) {
+          setActive(items.length - 1);
+          return;
+        }
         setActive(activeIndex <= 0 ? items.length - 1 : activeIndex - 1);
         return;
       }
       if (e.key === 'Enter') {
+        // Enter zonder markering: niets kiezen, vrije invoer blijft.
         if (open && activeIndex >= 0 && items[activeIndex]) {
           e.preventDefault();
           choose(activeIndex);

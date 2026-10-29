@@ -20,7 +20,7 @@
     </label>
     <label>Postcode (4 cijfers) of plaats *
       <input name="locatie" required maxlength="120" value="{{ old('locatie', $user->locatie_label) }}" placeholder="Bijv. 2011 of Haarlem">
-      <span class="hint">We slaan alleen een afgeronde plek op, geen straatadres.</span>
+      <span class="hint">Ik sla alleen een afgeronde plek op, geen straatadres.</span>
     </label>
     <label>Telefoon (optioneel)
       <input name="telefoon" maxlength="40" value="{{ old('telefoon', $user->telefoon) }}" autocomplete="tel">

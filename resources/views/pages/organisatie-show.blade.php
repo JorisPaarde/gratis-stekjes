@@ -29,7 +29,7 @@
     </ul>
     <p><a href="{{ ($org['plaats'] ?? '') !== '' && ($org['plaats'] ?? '') !== 'Nederland' ? route('deelplekken', ['plaats' => $org['plaats']]) : route('deelplekken') }}">Bekijk deelplekken</a></p>
   @else
-    <p class="muted">Geen bezoeklocatie op onze <a href="{{ route('deelplekken') }}">deelplekkenkaart</a>; zie hun eigen site.</p>
+    <p class="muted">Geen bezoeklocatie op mijn <a href="{{ route('deelplekken') }}">deelplekkenkaart</a>; zie hun eigen site.</p>
   @endif
 
   <p class="muted">

@@ -83,6 +83,6 @@ class VerifyEmailController extends Controller
 
         return back()
             ->withInput(['email' => $email])
-            ->with('status', 'Als dit adres bij ons bekend is en nog niet bevestigd, sturen we opnieuw een link.');
+            ->with('status', 'Als dit adres bij mij bekend is en nog niet bevestigd, stuur ik opnieuw een link.');
     }
 }

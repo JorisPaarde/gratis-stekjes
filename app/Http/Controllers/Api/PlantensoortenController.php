@@ -36,6 +36,7 @@ class PlantensoortenController extends Controller
                     'latijn' => $item['latijn'],
                     'synoniemen' => $item['synoniemen'],
                     'url' => $url,
+                    'match' => $item['match'] ?? null,
                 ];
             }, $items),
         ]);
