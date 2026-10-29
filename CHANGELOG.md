@@ -9,6 +9,17 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.18.0] - 2026-10-29
+
+### Added
+
+- Stektip-velden gevuld voor alle 48 soorten (geen lege tipvelden / geen “Volgt binnenkort” meer op soortpagina’s); per soort ≥1 geverifieerde bron (o.a. RHS, WUR, Vlaco).
+- Unit-test `StektipsCompletenessTest`: faalt bij lege tipvelden, placeholdertekst of ontbrekende bron-URL; controleert sync `soorten/*.json` ↔ `data/stektips.json`.
+
+### Changed
+
+- Route-audit: monstera toont nu Bronnen (gevuld); Ervaringen blijven verborgen zolang leeg.
+
 ## [0.17.2] - 2026-10-29
 
 ### Added

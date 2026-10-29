@@ -221,9 +221,11 @@ test('stektips verbergt lege ervaringen/bronnen en linkt proef naar herfstolijfw
     $html = $this->get(route('stektips.show', ['slug' => 'monstera']))
         ->assertOk()
         ->getContent();
+    // Ervaringen blijven leeg (deelnemersinput) → rij verborgen
     expect($html)->not->toContain('Ervaringen deelnemers');
-    // monstera heeft geen bron uit nu-te-stekken → rij verborgen
-    expect($html)->not->toContain('>Bronnen<');
+    // Bronnen zijn voor alle soorten gevuld → rij zichtbaar
+    expect($html)->toContain('Bronnen');
+    expect($html)->toContain('RHS');
 
     $olijf = $this->get(route('stektips.show', ['slug' => 'herfstolijfwilg']))
         ->assertOk()
@@ -231,4 +233,6 @@ test('stektips verbergt lege ervaringen/bronnen en linkt proef naar herfstolijfw
     expect($olijf)->toContain('Bronnen');
     expect($olijf)->toContain('RHS');
     expect($olijf)->not->toContain('Ervaringen deelnemers');
+    // Gevulde tipvelden i.p.v. placeholder
+    expect($olijf)->not->toContain('Volgt binnenkort');
 });
