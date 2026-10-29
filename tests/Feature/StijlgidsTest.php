@@ -9,10 +9,12 @@ test('stijlgids laadt, is noindex en toont iconen', function () {
         ->assertSee('name="robots" content="noindex, nofollow"', false)
         ->assertSee('icon-stekje', false)
         ->assertSee('icon-waarschuwing', false)
+        ->assertSee('class="page-title"', false)
         ->getContent();
 
     expect($html)->toContain('Bosgroen');
     expect($html)->toContain('#1F4D2B');
+    expect($html)->toContain('<h1 class="page-title">Stijlgids</h1>');
 });
 
 test('stijlgids staat niet in sitemap of navigatie', function () {

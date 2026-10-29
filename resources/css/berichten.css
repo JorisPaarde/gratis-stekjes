@@ -27,12 +27,13 @@
 }
 
 .safety {
-  background: #fff8e8;
+  background: var(--warn-bg, #fff1e4);
   border: 1px solid rgba(232, 131, 58, 0.45);
   border-radius: 0.85rem;
   padding: 0.9rem 1rem;
-  color: var(--warn, #7a3b12);
+  color: var(--ink, #1a1210);
   max-width: 40rem;
+  font-size: 1rem;
 }
 
 .contact-box {

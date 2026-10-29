@@ -20,7 +20,8 @@
   --sage: #5a5b42;
   --card: #ffffff;
   --line: rgba(26, 18, 16, 0.12);
-  --warn: #7a3b12;
+  --warn: #1f4d2b;
+  --warn-bg: #fff1e4;
   --ok: #1f5a38;
   --danger: #8b1e1e;
   --radius: 0.85rem;
@@ -76,16 +77,20 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .nav-cta:focus-visibl
 }
 .brand {
   font-family: var(--font-display);
-  font-weight: 700; font-size: 1.55rem;
+  font-weight: 700; font-size: 1.35rem;
   text-decoration: none; color: var(--forest);
   letter-spacing: 0.01em;
   text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .nav-toggle {
-  display: inline-flex; border: 1px solid var(--line);
+  display: inline-flex; align-items: center; gap: .4rem;
+  border: 1px solid var(--line);
   background: var(--card); border-radius: var(--radius-pill);
   padding: .45rem .95rem; font: inherit; font-weight: 600;
   cursor: pointer; color: var(--forest-deep);
+  white-space: nowrap;
 }
 .site-nav {
   display: none; flex-direction: column; gap: .35rem;
@@ -98,26 +103,36 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .nav-cta:focus-visibl
   text-decoration: none; color: var(--forest-deep);
   padding: .45rem .65rem; border-radius: .6rem; font-weight: 600;
   letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 .site-nav a:hover, .site-nav a:focus-visible { background: var(--bg-mint); }
 .nav-cta {
   background: var(--orange) !important; color: var(--orange-text) !important;
   border: 0; cursor: pointer; font: inherit; font-weight: 700;
-  padding: .5rem 1rem !important; border-radius: var(--radius-pill) !important;
+  padding: .5rem .9rem !important; border-radius: var(--radius-pill) !important;
   text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase;
-  font-size: .88rem !important;
+  font-size: .82rem !important;
+  white-space: nowrap !important;
 }
 .nav-cta:hover, .nav-cta:focus-visible {
   background: var(--orange-hover) !important; color: var(--orange-text) !important;
 }
 .nav-logout { display: inline; margin: 0; }
-@media (min-width: 880px) {
+/* Volle nav pas wanneer er ruimte is; eronder alleen hamburger (geen parallelle Menu+nav). */
+@media (min-width: 1200px) {
   .nav-toggle { display: none; }
   .site-nav {
     display: flex; flex-direction: row; align-items: center;
-    position: static; padding: 0; background: transparent; border: 0; gap: .1rem;
+    position: static; padding: 0; background: transparent; border: 0; gap: 0;
   }
-  .site-nav a { font-size: .92rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .site-nav a {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    padding: .4rem .45rem;
+  }
+  /* Iconen alleen in het hamburgermenu; desktop blijft één regel. */
+  .site-nav .icon { display: none; }
 }
 
 /* —— Hero (full-bleed) —— */
@@ -196,7 +211,10 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .nav-cta:focus-visibl
 }
 .section-intro { max-width: 40rem; color: var(--ink-soft); margin: 0 0 1.5rem; font-size: 1.05rem; }
 
-.page-title {
+/* Specifieker dan `.section h1` zodat tekst niet bosgroen-op-bosgroen wordt. */
+.page-title,
+.section h1.page-title,
+h1.page-title {
   font-family: var(--font-display);
   font-size: clamp(2rem, 4vw, 2.8rem);
   text-transform: uppercase;
@@ -204,7 +222,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .nav-cta:focus-visibl
   color: #fff;
   background: var(--forest);
   display: inline-block;
-  padding: .3rem .65rem .4rem;
+  padding: .35rem .7rem .4rem;
   margin: 0 0 1rem;
   line-height: 1.05;
 }
@@ -439,7 +457,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .nav-cta:focus-visibl
 }
 .badge--partner { background: var(--bg-mint); color: var(--forest-deep); }
 .badge--voedselbos { background: rgba(90, 91, 66, 0.18); color: #3d3e2e; }
-.badge--plantenasiel { background: rgba(184, 79, 64, 0.16); color: #7a3b12; }
+.badge--plantenasiel { background: rgba(232, 131, 58, 0.18); color: #8a4514; }
 .badge--plantenbieb { background: rgba(31, 77, 43, 0.16); color: #163820; }
 .badge--ruilkast { background: rgba(90, 91, 66, 0.16); color: #4a3420; }
 
@@ -483,9 +501,13 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .nav-cta:focus-visibl
 }
 .bubble.me { background: var(--bg-mint); }
 .safety {
-  background: #fff8e8; border: 1px solid rgba(184, 79, 64, 0.35);
-  border-radius: .85rem; padding: .9rem 1rem; color: var(--warn);
+  background: var(--warn-bg);
+  border: 1px solid rgba(232, 131, 58, 0.45);
+  border-radius: .85rem;
+  padding: .9rem 1rem;
+  color: var(--ink);
   max-width: 40rem;
+  font-size: 1rem;
 }
 .contact-box {
   background: var(--card); border: 1px dashed var(--forest);
@@ -541,11 +563,23 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .nav-cta:focus-visibl
   color: var(--accent-text); text-transform: lowercase;
 }
 .warn-card {
-  border-color: rgba(122, 59, 18, 0.35);
-  background: #fff4e6;
-  color: var(--warn);
+  border-color: rgba(232, 131, 58, 0.45);
+  background: var(--warn-bg);
+  color: var(--ink);
+  font-size: 1rem;
 }
-.warn-card p { color: var(--warn); }
+.warn-card p {
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.55;
+  margin: 0 0 .65rem;
+}
+.warn-card p:last-child { margin-bottom: 0; }
+.warn-card .icon {
+  color: var(--orange);
+  margin-right: .35rem;
+  vertical-align: -0.2em;
+}
 
 .partners-stack { display: grid; gap: 1rem; }
 .prose h2 { margin-top: 1.75rem; }
@@ -557,10 +591,9 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .nav-cta:focus-visibl
 }
 .band-wave img { width: 100%; height: 100%; object-fit: cover; }
 
-@media (min-width: 880px) {
-  .nav-soon { font-size: .88rem; text-transform: uppercase; letter-spacing: 0.04em; }
+@media (min-width: 1200px) {
+  .nav-soon { font-size: .8rem; text-transform: uppercase; letter-spacing: 0.02em; }
 }
-
 
 /* Icons */
 .site-nav a, .nav-toggle, .btn, .nav-cta {
@@ -569,7 +602,6 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .nav-cta:focus-visibl
   gap: .4rem;
 }
 .icon { flex-shrink: 0; vertical-align: middle; }
-.warn-card .icon { margin-right: .25rem; vertical-align: -0.2em; }
 .hero-media picture,
 .hero-media img {
   width: 100%;
