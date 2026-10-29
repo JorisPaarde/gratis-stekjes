@@ -15,3 +15,10 @@ test('throttle melding met minuten en uren', function () {
     expect(ThrottleMessage::forSeconds(3600))->toBe('Te veel pogingen. Probeer het over 1 uur opnieuw.');
     expect(ThrottleMessage::forSeconds(7200))->toBe('Te veel pogingen. Probeer het over 2 uur opnieuw.');
 });
+
+test('mail-resend throttle melding is specifiek Nederlands', function () {
+    expect(ThrottleMessage::forMailResend(1))->toBe('Je kunt over 1 seconde opnieuw een mail laten sturen.');
+    expect(ThrottleMessage::forMailResend(45))->toBe('Je kunt over 45 seconden opnieuw een mail laten sturen.');
+    expect(ThrottleMessage::forMailResend(60))->toBe('Je kunt over 1 minuut opnieuw een mail laten sturen.');
+    expect(ThrottleMessage::forMailResend(3600))->toBe('Je kunt over 1 uur opnieuw een mail laten sturen.');
+});

@@ -20,8 +20,6 @@ class ResetPasswordDutch extends ResetPassword
             ->greeting('Hoi,')
             ->line('Je vroeg een nieuw wachtwoord aan bij '.$site.'. Gebruik de knop hieronder:')
             ->action('Nieuw wachtwoord instellen', $url)
-            ->line('Of kopieer deze link in je browser:')
-            ->line($url)
             ->line('Deze link is '.$minutes.' minuten geldig.')
             ->line('Heb je geen reset aangevraagd? Negeer deze mail.')
             ->salutation('Groet,'.PHP_EOL.'Joris ('.$site.')');

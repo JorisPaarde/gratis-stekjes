@@ -22,8 +22,6 @@ class VerifyEmailDutch extends VerifyEmail
             ->greeting('Hoi,')
             ->line('Bevestig je aanmelding bij '.$site.' via deze knop:')
             ->action('E-mail bevestigen', $url)
-            ->line('Of kopieer deze link in je browser:')
-            ->line($url)
             ->line('Heb je je niet aangemeld? Negeer deze mail.')
             ->salutation('Groet,'.PHP_EOL.'Joris ('.$site.')');
     }

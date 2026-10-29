@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Notifications\EmailChangeNoticeDutch;
 use App\Notifications\VerifyPendingEmailDutch;
 use App\Support\FormGuard;
+use App\Support\MailThrottle;
 use App\Support\SafeMail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -70,6 +71,13 @@ class EmailChangeController extends Controller
         if ($newEmail === strtolower((string) $user->email)) {
             throw ValidationException::withMessages([
                 'email' => 'Dit is al je huidige e-mailadres.',
+            ]);
+        }
+
+        $throttle = MailThrottle::attempt('email-change', $newEmail, $request);
+        if (! $throttle['ok']) {
+            throw ValidationException::withMessages([
+                'email' => $throttle['message'],
             ]);
         }
 

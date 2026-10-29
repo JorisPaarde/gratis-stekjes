@@ -7,14 +7,12 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Notifications\VerifyEmailDutch;
+use App\Support\MailThrottle;
 use App\Support\SafeMail;
-use App\Support\ThrottleMessage;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class VerifyEmailController extends Controller
@@ -63,13 +61,12 @@ class VerifyEmailController extends Controller
             return back()->withErrors(['email' => 'Vul een geldig e-mailadres in.']);
         }
 
-        $throttleKey = 'verify-resend:'.Str::lower($email).'|'.$request->ip();
-        if (RateLimiter::tooManyAttempts($throttleKey, 6)) {
+        $throttle = MailThrottle::attempt('verify', $email, $request);
+        if (! $throttle['ok']) {
             return back()
                 ->withInput(['email' => $email])
-                ->withErrors(['email' => ThrottleMessage::forKey($throttleKey)]);
+                ->withErrors(['email' => $throttle['message']]);
         }
-        RateLimiter::hit($throttleKey, 60);
 
         $mailOk = true;
         $user = User::query()->where('email', $email)->where('active', true)->first();
@@ -84,6 +81,8 @@ class VerifyEmailController extends Controller
                 ->with('status_level', 'warn');
         }
 
-        return back()->with('status', 'Als dit adres bij ons bekend is en nog niet bevestigd, sturen we opnieuw een link.');
+        return back()
+            ->withInput(['email' => $email])
+            ->with('status', 'Als dit adres bij ons bekend is en nog niet bevestigd, sturen we opnieuw een link.');
     }
 }
