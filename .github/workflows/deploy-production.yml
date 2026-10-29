@@ -119,6 +119,7 @@ jobs:
             --exclude='.env' --exclude='.env.*' \
             --exclude='storage/logs/*' --exclude='storage/framework/cache/*' \
             --exclude='storage/framework/sessions/*' --exclude='storage/framework/views/*' \
+            --exclude='storage/app/' --exclude='storage/backups/' \
             -e "ssh -i ~/.ssh/deploy_key -p ${P:-22}" \
             ./ "$U@$H:${APP}/"
 

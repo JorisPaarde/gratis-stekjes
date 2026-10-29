@@ -7,7 +7,19 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- (volgende PRs) accounts, aanbod/kaart, berichten, SEO-stad/soortpagina’s, beheer, cron.
+- (volgende PRs) accounts (double opt-in), aanbod/kaart, berichten, SEO-stad/soortpagina’s, beheer, cron.
+
+## [0.1.2] - 2026-10-29
+
+### Fixed
+
+- Homepage **Doe mee**-paneel: conflicterende CSS zette een lichte `--card`-achtergrond terwijl kop/tekst wit bleven (onleesbaar). Donker groen paneel + lichte tekst hersteld; zichtbaar zonder JS.
+- Motion: `rise`-animaties alleen bij `prefers-reduced-motion: no-preference`; basistoestand `opacity: 1` (geen opacity:0-start zonder fallback); reduced-motion forceert zichtbaarheid.
+- WCAG AA: `--accent-text` / `--accent-on-dark` voor kleine “binnenkort”-labels op licht en donker.
+
+### Changed
+
+- Deploy rsync: `storage/app/` (en productie ook `storage/backups/`) uitgesloten van `--delete`, zodat uploads/backups op de server blijven.
 
 ## [0.1.1] - 2026-10-29
 
