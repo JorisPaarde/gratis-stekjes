@@ -3,15 +3,17 @@ name: Migrate stekjes → prod (manual)
 # Eenmalige dataverhuis: oude SSH-staging (staging.stekjes) → gratisplanten_prod.
 # Handmatig only. NOOIT automatisch. Draait de legacy deploy-staging.yml NIET.
 #
-# Secrets (controleer vóór run dat SSH/DB nog naar OUDE staging wijzen, niet cPanel):
-#   Repo: DEPLOY_HOST, DEPLOY_USER, DEPLOY_PORT, DEPLOY_SSH_KEY, DEPLOY_KNOWN_HOSTS,
-#         DEPLOY_PATH (docroot), STAGING_APP_DIR (optioneel; anders sibling stekjes-staging-app),
-#         DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD  ← oude staging-DB
-#   Environment production: DEPLOY_TOKEN, PROD_BASE_URL
-#   DEPLOY_IMPORT_ENABLED: zet via deploy-prod-hook.yml workflow_dispatch
-#                          import_enabled=true (geen handmatige .env-edit)
+# GEEN `environment:` — production-env overschrijft anders repo-secrets met
+# oude plain-PHP prod waarden. Alleen repo-level secrets:
+#   SSH (oude staging): DEPLOY_HOST, DEPLOY_USER, DEPLOY_PORT, DEPLOY_SSH_KEY,
+#                       DEPLOY_KNOWN_HOSTS, DEPLOY_PATH
+#   APP_DIR: altijd sibling van DEPLOY_PATH → …/stekjes-staging-app
+#            (niet de cPanel app-staging secret — die is de nieuwe host)
+#   DB (optioneel, alleen mysqldump-fallback): DB_HOST, DB_NAME, DB_USER, DB_PASS
+#   Prod import: PROD_DEPLOY_TOKEN; BASE_URL default https://gratisplanten.nl
+#   DEPLOY_IMPORT_ENABLED: via deploy-prod-hook workflow_dispatch import_enabled
 #
-# Export blijft ALLEEN op de runner (geen artifact-upload). Logs: tabelnamen + counts.
+# Export blijft ALLEEN op de runner (geen artifact-upload). Logs: fingerprint + counts.
 on:
   workflow_dispatch:
     inputs:
@@ -40,19 +42,20 @@ permissions:
 jobs:
   migrate:
     runs-on: ubuntu-latest
-    environment: production
+    # Geen GitHub Environment — repo-level DEPLOY_*/DB_* moeten oude staging zijn.
     env:
       H: ${{ secrets.DEPLOY_HOST }}
       U: ${{ secrets.DEPLOY_USER }}
       P: ${{ secrets.DEPLOY_PORT }}
       D: ${{ secrets.DEPLOY_PATH }}
-      APP_DIR_SECRET: ${{ secrets.STAGING_APP_DIR }}
+      # Optioneel (mysqldump-fallback); artisan-export leest .env op de oude app.
       DB_HOST: ${{ secrets.DB_HOST }}
-      DB_DATABASE: ${{ secrets.DB_DATABASE }}
-      DB_USERNAME: ${{ secrets.DB_USERNAME }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-      PROD_BASE_URL: ${{ secrets.PROD_BASE_URL }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASS: ${{ secrets.DB_PASS }}
+      DEPLOY_TOKEN: ${{ secrets.PROD_DEPLOY_TOKEN }}
+      # Geen secret; override optioneel via repo-var PROD_BASE_URL.
+      BASE_URL: ${{ vars.PROD_BASE_URL }}
     steps:
       - name: Bevestiging VERHUIS
         run: |
@@ -68,7 +71,7 @@ jobs:
         run: |
           set -euo pipefail
           missing=0
-          for v in H U D DEPLOY_TOKEN PROD_BASE_URL; do
+          for v in H U D DEPLOY_TOKEN; do
             if [ -z "${!v:-}" ]; then
               echo "::error::Verplicht secret ontbreekt: ${v}"
               missing=1
@@ -78,18 +81,20 @@ jobs:
             echo "::error::Verplicht secret ontbreekt: DEPLOY_SSH_KEY"
             missing=1
           fi
-          for v in DB_HOST DB_DATABASE DB_USERNAME DB_PASSWORD; do
-            if [ -z "${!v:-}" ]; then
-              echo "::error::Verplicht secret ontbreekt: ${v} (oude staging-DB)"
-              missing=1
-            fi
-          done
+          if [ -z "${BASE_URL:-}" ]; then
+            BASE_URL='https://gratisplanten.nl'
+            echo "BASE_URL=${BASE_URL}" >> "$GITHUB_ENV"
+          fi
           if [ "$missing" -ne 0 ]; then
             exit 1
           fi
           echo "::add-mask::${DEPLOY_TOKEN}"
-          echo "::add-mask::${DB_PASSWORD}"
-          echo "::notice::Controleer handmatig: DEPLOY_HOST/DB_* wijzen naar OUDE staging.stekjes (niet cPanel gratisplanten)."
+          if [ -n "${DB_PASS:-}" ]; then
+            echo "::add-mask::${DB_PASS}"
+          fi
+          echo "::notice::Repo-level SSH-secrets → oude staging.stekjes (geen production-env)."
+          echo "::notice::Prod import: BASE_URL=${BASE_URL:-https://gratisplanten.nl} (token = PROD_DEPLOY_TOKEN)."
+          echo "::notice::DB_* optioneel (alleen mysqldump-fallback; artisan leest app-.env)."
 
       - uses: actions/checkout@v4
 
@@ -118,33 +123,26 @@ jobs:
             ssh-keyscan -p "${P:-22}" -H "$H" >> ~/.ssh/known_hosts 2>/dev/null || true
           fi
 
-      - name: Resolve APP_DIR op oude staging
+      - name: Resolve APP_DIR op oude staging (sibling van DEPLOY_PATH)
         id: app
         run: |
           set -euo pipefail
+          # Altijd afleiden van DEPLOY_PATH — niet de cPanel app-staging secret.
           ssh -i ~/.ssh/deploy_key -p "${P:-22}" -o StrictHostKeyChecking=yes "$U@$H" bash -s <<EOF > /tmp/app_dir.txt
           set -euo pipefail
           DOC='${D%/}'
-          if [ -n '${APP_DIR_SECRET}' ]; then
-            APP='${APP_DIR_SECRET}'
-          else
-            APP="\$(dirname "\$DOC")/stekjes-staging-app"
-          fi
-          test -d "\$APP" || { echo "APP_DIR ontbreekt" >&2; exit 1; }
+          APP="\$(dirname "\$DOC")/stekjes-staging-app"
+          test -d "\$APP" || { echo "APP_DIR ontbreekt (verwacht sibling stekjes-staging-app van DEPLOY_PATH)" >&2; exit 1; }
           printf '%s\n' "\$APP"
           EOF
-          APP="$(tail -n1 /tmp/app_dir.txt)"
           echo "app_dir_set=1" >> "$GITHUB_OUTPUT"
-          # Pad niet als notice (kan hostnamen bevatten); alleen OK.
-          echo "::notice::Oude staging APP_DIR opgelost."
+          echo "::notice::Oude staging APP_DIR afgeleid van DEPLOY_PATH (stekjes-staging-app)."
 
       - name: Fingerprint oude staging (VERSION + APP_URL-host, geen PII)
         id: fingerprint
         run: |
           set -euo pipefail
           APP="$(tail -n1 /tmp/app_dir.txt)"
-          # Alleen versie + hostnaam van APP_URL — geen e-mails/namen/DB-inhoud.
-          # Quoted heredoc ('EOF') zodat alleen via printf geïnjecteerde APP-pad expandt.
           ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s -- "$APP" <<'EOF' > /tmp/stekjes-fingerprint.txt
           set -euo pipefail
           APP="$1"
@@ -182,7 +180,7 @@ jobs:
           chmod 700 /tmp/stekjes-migrate
           EXPORT_MODE=""
 
-          # 1) Probeer export-command tijdelijk te plaatsen (Laravel auto-discover) en te draaien.
+          # 1) Artisan-export (leest .env van de oude app — DB_* secrets niet nodig).
           set +e
           scp -i ~/.ssh/deploy_key -P "${P:-22}" \
             app/Console/Commands/ExportStekjesData.php \
@@ -209,14 +207,19 @@ jobs:
               /tmp/stekjes-migrate/stekjes-export.zip
             ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
               "rm -rf '${REMOTE_OUT}'" || true
-            echo "::notice::Export via stekjes:export-data."
+            echo "::notice::Export via stekjes:export-data (app-.env)."
           else
             EXPORT_MODE=mysqldump
             echo "::notice::Artisan-export niet beschikbaar — mysqldump-fallback."
+            for v in DB_HOST DB_NAME DB_USER DB_PASS; do
+              if [ -z "${!v:-}" ]; then
+                echo "::error::Mysqldump-fallback vereist repo-secret ${v} (DB_HOST/DB_NAME/DB_USER/DB_PASS)."
+                exit 1
+              fi
+            done
             TABLES="users aanbod conversations messages blocks reports feedback mail_log geocode_cache partner_markers deelplekken"
-            # DB-wachtwoord alleen via env op remote, niet in process-list via CLI -p.
             ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
-              "export MYSQL_PWD=\$(printf '%s' '${DB_PASSWORD}'); mysqldump -h '${DB_HOST}' -u '${DB_USERNAME}' --single-transaction --no-tablespaces '${DB_DATABASE}' ${TABLES} > '${REMOTE_OUT}.sql'; chmod 600 '${REMOTE_OUT}.sql'; unset MYSQL_PWD"
+              "export MYSQL_PWD=\$(printf '%s' '${DB_PASS}'); mysqldump -h '${DB_HOST}' -u '${DB_USER}' --single-transaction --no-tablespaces '${DB_NAME}' ${TABLES} > '${REMOTE_OUT}.sql'; chmod 600 '${REMOTE_OUT}.sql'; unset MYSQL_PWD"
             scp -i ~/.ssh/deploy_key -P "${P:-22}" \
               "$U@$H:${REMOTE_OUT}.sql" /tmp/stekjes-migrate/dump.sql
             ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
@@ -228,7 +231,6 @@ jobs:
             shred -u /tmp/stekjes-migrate/dump.sql 2>/dev/null || rm -f /tmp/stekjes-migrate/dump.sql
           fi
 
-          # Ruim tijdelijke command-bestanden op de oude host op (best-effort).
           ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
             "rm -f '${APP}/app/Console/Commands/ExportStekjesData.php' '${APP}/app/Services/StekjesDataMigrator.php'" || true
 
@@ -236,7 +238,6 @@ jobs:
           BYTES="$(wc -c < /tmp/stekjes-migrate/stekjes-export.zip | tr -d ' ')"
           echo "::notice::Export package bytes=${BYTES} mode=${EXPORT_MODE}"
           echo "mode=${EXPORT_MODE}" >> "$GITHUB_OUTPUT"
-          # Counts zonder PII
           php -r '
             $z=new ZipArchive;
             if ($z->open("/tmp/stekjes-migrate/stekjes-export.zip") !== true) { fwrite(STDERR,"zip\n"); exit(1);} 
@@ -248,13 +249,11 @@ jobs:
 
       - name: Upload + import op prod (of dry-run)
         env:
-          BASE_URL: ${{ secrets.PROD_BASE_URL }}
           PACKAGE_PATH: /tmp/stekjes-migrate/stekjes-export.zip
           DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
           FORCE: ${{ inputs.force && '1' || '0' }}
         run: |
           set -euo pipefail
-          # Herhaal fingerprint bij dry-run naast counts (secrets-check).
           echo "::notice::source_VERSION=${{ steps.fingerprint.outputs.version }}"
           echo "::notice::source_APP_URL_host=${{ steps.fingerprint.outputs.app_url_host }}"
           chmod +x scripts/stekjes-import-upload.sh
