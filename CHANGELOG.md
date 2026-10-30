@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.24.9] - 2026-10-30
+
+### Fixed
+
+- `migrate-stekjes-to-prod.yml`: geen `environment: production` meer (env-secrets overschreven repo-SSH/DB met oude plain-PHP prod). Repo-level `DEPLOY_*` + optioneel `DB_HOST`/`DB_NAME`/`DB_USER`/`DB_PASS`; APP_DIR altijd sibling van `DEPLOY_PATH` (niet `STAGING_APP_DIR`/cPanel). Prod-auth via repo-secret `PROD_DEPLOY_TOKEN`, BASE_URL default `https://gratisplanten.nl`. Artisan-export leest oude app-`.env` (DB-secrets niet verplicht).
+
 ## [0.24.8] - 2026-10-30
 
 ### Fixed

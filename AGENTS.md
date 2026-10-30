@@ -82,24 +82,25 @@ Optioneel: `APP_KEY` — anders bestaande server-`.env` behouden, anders eenmali
 
 ### Eenmalige dataverhuis (oude staging.stekjes → gratisplanten_prod)
 
-**Niet draaien** tot prod de import-endpoints heeft (tag-deploy na merge) en je secrets hebt geverifieerd.
+Workflow **`migrate-stekjes-to-prod.yml` heeft geen `environment:`** — anders overschrijft environment `production` de repo-secrets met oude plain-PHP prod-waarden.
 
-| Bron | Secrets (repo-level, OUDE staging) |
-|------|-------------------------------------|
-| SSH | `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_PORT`, `DEPLOY_SSH_KEY`, `DEPLOY_KNOWN_HOSTS`, `DEPLOY_PATH` (+ optioneel `STAGING_APP_DIR`) |
-| DB | `DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` — moeten naar de **oude** staging-DB wijzen, niet naar cPanel `gratisplanten` |
+| Bron | Secrets (**repo-level**, OUDE staging) |
+|------|----------------------------------------|
+| SSH | `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_PORT`, `DEPLOY_SSH_KEY`, `DEPLOY_KNOWN_HOSTS`, `DEPLOY_PATH` |
+| APP_DIR | Altijd `$(dirname DEPLOY_PATH)/stekjes-staging-app` — **niet** `STAGING_APP_DIR` (die wijst naar cPanel) |
+| DB | Optioneel: `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS` (alleen mysqldump-fallback; artisan-export leest de oude app-`.env`) |
 
-| Doel | Secrets (environment `production`) |
-|------|-------------------------------------|
-| HTTPS import | `DEPLOY_TOKEN`, `PROD_BASE_URL` |
+| Doel | Secrets / URL (**repo-level**) |
+|------|--------------------------------|
+| HTTPS import | `PROD_DEPLOY_TOKEN` (= prod `DEPLOY_TOKEN`); BASE_URL default `https://gratisplanten.nl` (geen secret; optioneel repo-var `PROD_BASE_URL`) |
 
-`DEPLOY_IMPORT_ENABLED` zet je **niet** handmatig in `.env` (prod heeft geen shell). Via `deploy-prod-hook.yml` → `workflow_dispatch` → `import_enabled=true|false` (tag-pushes blijven `false`).
+`DEPLOY_IMPORT_ENABLED` via `deploy-prod-hook.yml` → `workflow_dispatch` → `import_enabled=true|false` (tag-pushes blijven `false`). `deploy-hook-upload.sh` schrijft `DEPLOY_TOKEN` + `DEPLOY_IMPORT_ENABLED` naar de prod-`.env`.
 
 **Run-stappen**
 
 1. Tag-deploy prod (import uit).
 2. `deploy-prod-hook` → `workflow_dispatch` met `import_enabled=true`.
-3. Dry-run: `Migrate stekjes → prod` → `confirm=VERHUIS`, `dry_run=true`. Check `count.*` / `dropped.*` én fingerprint `VERSION` + `APP_URL_host` (moet oude staging.stekjes zijn, geen PII).
+3. Dry-run: `Migrate stekjes → prod` → `confirm=VERHUIS`, `dry_run=true`. Check fingerprint `VERSION` + `APP_URL_host` (staging.stekjes) + `count.*` (geen PII).
 4. Import: zelfde migrate-workflow met `dry_run=false`.
 5. `deploy-prod-hook` → `workflow_dispatch` met `import_enabled=false`. Spot-check login/aanbod (geen mailblast).
 
