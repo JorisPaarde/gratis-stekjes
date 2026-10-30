@@ -21,6 +21,8 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 ### Changed
 
 - `AGENTS.md` / `.env.example`: secrets en stappen voor eenmalige VERHUIS gedocumenteerd.
+- `deploy-prod-hook.yml`: `workflow_dispatch` input `import_enabled` → env `IMPORT_ENABLED` → `DEPLOY_IMPORT_ENABLED` in `.env` (geen handmatige prod-`.env`-edit; tag-pushes blijven `false`).
+- Migrate dry-run logt fingerprint van oude staging: `VERSION` + `APP_URL`-host (geen PII) ter verificatie van repo-level `DB_*`/`DEPLOY_*`.
 
 ## [0.24.5] - 2026-10-30
 

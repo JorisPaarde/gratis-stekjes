@@ -9,6 +9,7 @@
 # Optioneel: SITE_NAME, SMTP_PORT, SMTP_SECURE, SMTP_FROM, APP_KEY, APP_ENV_NAME (staging|production)
 #            ARTIFACT_PATH (bestaande zip), RELEASE_ID, SKIP_SMOKE=1, SKIP_MIGRATE=1
 #            HOOK_PATH (default /deploy-hook.php)
+#            IMPORT_ENABLED (true|false → DEPLOY_IMPORT_ENABLED; default false)
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -209,8 +210,12 @@ umask 077
   dotenv_line ADMIN_PASSWORD "$ADMIN_PASSWORD"
   dotenv_line DEPLOY_TOKEN "$DEPLOY_TOKEN"
   dotenv_line DEPLOY_ENDPOINT_ENABLED "$DEPLOY_ENDPOINT_ENABLED_VAL"
-  # Import-endpoint alleen handmatig aanzetten tijdens VERHUIS; deploy houdt het uit.
-  dotenv_line DEPLOY_IMPORT_ENABLED false
+  # VERHUIS: workflow_dispatch import_enabled=true zet dit aan; tag-pushes laten IMPORT_ENABLED leeg → false.
+  case "$(printf '%s' "${IMPORT_ENABLED:-false}" | tr '[:upper:]' '[:lower:]')" in
+    1|true|yes) _IMPORT_ENABLED_VAL=true ;;
+    *) _IMPORT_ENABLED_VAL=false ;;
+  esac
+  dotenv_line DEPLOY_IMPORT_ENABLED "$_IMPORT_ENABLED_VAL"
 } > "$ENVFILE"
 
 # --- HTTP helpers ---

@@ -8,7 +8,8 @@ name: Migrate stekjes → prod (manual)
 #         DEPLOY_PATH (docroot), STAGING_APP_DIR (optioneel; anders sibling stekjes-staging-app),
 #         DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD  ← oude staging-DB
 #   Environment production: DEPLOY_TOKEN, PROD_BASE_URL
-#                          (+ DEPLOY_IMPORT_ENABLED=true moet op prod-.env staan)
+#   DEPLOY_IMPORT_ENABLED: zet via deploy-prod-hook.yml workflow_dispatch
+#                          import_enabled=true (geen handmatige .env-edit)
 #
 # Export blijft ALLEEN op de runner (geen artifact-upload). Logs: tabelnamen + counts.
 on:
@@ -137,6 +138,40 @@ jobs:
           # Pad niet als notice (kan hostnamen bevatten); alleen OK.
           echo "::notice::Oude staging APP_DIR opgelost."
 
+      - name: Fingerprint oude staging (VERSION + APP_URL-host, geen PII)
+        id: fingerprint
+        run: |
+          set -euo pipefail
+          APP="$(tail -n1 /tmp/app_dir.txt)"
+          # Alleen versie + hostnaam van APP_URL — geen e-mails/namen/DB-inhoud.
+          # Quoted heredoc ('EOF') zodat alleen via printf geïnjecteerde APP-pad expandt.
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s -- "$APP" <<'EOF' > /tmp/stekjes-fingerprint.txt
+          set -euo pipefail
+          APP="$1"
+          cd "$APP"
+          strip_quotes() { printf '%s' "$1" | tr -d "\"'" | tr -d '[:space:]'; }
+          VER=""
+          if [ -f VERSION ]; then VER="$(tr -d '[:space:]' < VERSION)"; fi
+          APP_URL=""
+          if [ -f .env ]; then
+            raw_url="$(grep -E '^APP_URL=' .env 2>/dev/null | head -1 | cut -d= -f2- || true)"
+            APP_URL="$(strip_quotes "${raw_url:-}")"
+          fi
+          HOST="unknown"
+          if [ -n "$APP_URL" ]; then
+            HOST="$(printf '%s' "$APP_URL" | sed -E 's|^[a-zA-Z][a-zA-Z0-9+.-]*://||; s|[/:].*||')"
+            [ -n "$HOST" ] || HOST="unknown"
+          fi
+          printf 'version=%s\n' "${VER:-unknown}"
+          printf 'app_url_host=%s\n' "$HOST"
+          EOF
+          VER="$(grep '^version=' /tmp/stekjes-fingerprint.txt | head -1 | cut -d= -f2-)"
+          HOST="$(grep '^app_url_host=' /tmp/stekjes-fingerprint.txt | head -1 | cut -d= -f2-)"
+          echo "version=${VER}" >> "$GITHUB_OUTPUT"
+          echo "app_url_host=${HOST}" >> "$GITHUB_OUTPUT"
+          echo "::notice::Oude staging fingerprint: VERSION=${VER} APP_URL_host=${HOST}"
+          echo "::notice::Verifieer: host moet naar staging.stekjes wijzen (niet gratisplanten/cPanel)."
+
       - name: Export op oude staging (artisan of mysqldump-fallback)
         id: export
         run: |
@@ -219,6 +254,9 @@ jobs:
           FORCE: ${{ inputs.force && '1' || '0' }}
         run: |
           set -euo pipefail
+          # Herhaal fingerprint bij dry-run naast counts (secrets-check).
+          echo "::notice::source_VERSION=${{ steps.fingerprint.outputs.version }}"
+          echo "::notice::source_APP_URL_host=${{ steps.fingerprint.outputs.app_url_host }}"
           chmod +x scripts/stekjes-import-upload.sh
           ./scripts/stekjes-import-upload.sh
 

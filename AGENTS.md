@@ -93,13 +93,15 @@ Optioneel: `APP_KEY` — anders bestaande server-`.env` behouden, anders eenmali
 |------|-------------------------------------|
 | HTTPS import | `DEPLOY_TOKEN`, `PROD_BASE_URL` |
 
-Op prod-`.env` tijdelijk `DEPLOY_IMPORT_ENABLED=true` (na VERHUIS weer `false`; gewone hook-deploys zetten hem op `false`).
+`DEPLOY_IMPORT_ENABLED` zet je **niet** handmatig in `.env` (prod heeft geen shell). Via `deploy-prod-hook.yml` → `workflow_dispatch` → `import_enabled=true|false` (tag-pushes blijven `false`).
 
 **Run-stappen**
 
-1. Dry-run: Actions → `Migrate stekjes → prod` → `confirm=VERHUIS`, `dry_run=true`. Controleer logs op `count.*` / `dropped.*` (geen namen/e-mails).
-2. Echte import: zelfde workflow met `dry_run=false` (alleen na geslaagde dry-run).
-3. Zet `DEPLOY_IMPORT_ENABLED=false` op prod; spot-check login/aanbod (geen mailblast).
+1. Tag-deploy prod (import uit).
+2. `deploy-prod-hook` → `workflow_dispatch` met `import_enabled=true`.
+3. Dry-run: `Migrate stekjes → prod` → `confirm=VERHUIS`, `dry_run=true`. Check `count.*` / `dropped.*` én fingerprint `VERSION` + `APP_URL_host` (moet oude staging.stekjes zijn, geen PII).
+4. Import: zelfde migrate-workflow met `dry_run=false`.
+5. `deploy-prod-hook` → `workflow_dispatch` met `import_enabled=false`. Spot-check login/aanbod (geen mailblast).
 
 ### Deploy-volgorde (staging)
 
