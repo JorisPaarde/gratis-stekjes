@@ -10,7 +10,7 @@
 @endpush
 
 @section('content')
-<section class="section wrap beheer-page">
+<section class="section wrap beheer-page beheer-feedback-page">
   <div class="beheer-header">
     <h1 class="page-title">Feedback</h1>
     <div class="beheer-actions">
@@ -43,7 +43,9 @@
           </div>
           <p class="beheer-feedback-body">{{ $item->body }}</p>
           <div class="beheer-feedback-card-footer">
-            <span class="beheer-feedback-status">{{ $item->isRead() ? 'gelezen' : 'nieuw' }}</span>
+            <span @class(['beheer-feedback-status', $item->isRead() ? 'is-gelezen' : 'is-nieuw'])>
+              {{ $item->isRead() ? 'gelezen' : 'nieuw' }}
+            </span>
             @unless($item->isRead())
               <form method="post" action="{{ route('beheer.feedback.read') }}">
                 @csrf
@@ -55,39 +57,6 @@
         </li>
       @endforeach
     </ul>
-
-    <div class="beheer-table-wrap beheer-feedback-table">
-      <table class="beheer-table">
-        <thead>
-          <tr>
-            <th>Datum</th>
-            <th>Pagina</th>
-            <th>Tekst</th>
-            <th>Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach($items as $item)
-            <tr @class(['beheer-feedback-unread' => ! $item->isRead()])>
-              <td>{{ $item->created_at?->timezone('Europe/Amsterdam')->format('d-m-Y H:i') }}</td>
-              <td><code>{{ $item->page_path }}</code></td>
-              <td class="beheer-feedback-body">{{ $item->body }}</td>
-              <td>{{ $item->isRead() ? 'gelezen' : 'nieuw' }}</td>
-              <td>
-                @unless($item->isRead())
-                  <form method="post" action="{{ route('beheer.feedback.read') }}">
-                    @csrf
-                    <input type="hidden" name="id" value="{{ $item->id }}">
-                    <button type="submit" class="linkish">Markeer gelezen</button>
-                  </form>
-                @endunless
-              </td>
-            </tr>
-          @endforeach
-        </tbody>
-      </table>
-    </div>
   @endif
 </section>
 @endsection

@@ -5,9 +5,9 @@
 @section('canonical', $canonical)
 
 @section('content')
-<section class="section wrap">
+<section class="section wrap feedback-page">
   <h1 class="page-title">Feedback</h1>
-  <p class="section-intro">Vertel me wat beter kan of wat je goed vindt. Ik lees alles zelf — geen mail, geen tracking.</p>
+  <p class="section-intro">Vertel me wat beter kan of wat je goed vindt. Ik lees alles zelf.</p>
 
   @if($errors->any())
     <p class="error" role="alert">{{ $errors->first() }}</p>
@@ -22,13 +22,13 @@
       <textarea
         id="feedback-body"
         name="body"
-        rows="6"
+        rows="7"
         maxlength="{{ $maxBody }}"
         required
         autofocus
       >{{ old('body') }}</textarea>
     </label>
-    <p class="muted">Maximaal {{ $maxBody }} tekens. Pagina: <code>{{ $pagePath }}</code></p>
+    <p class="muted feedback-form-meta">Maximaal {{ $maxBody }} tekens. Pagina: <code>{{ $pagePath }}</code></p>
 
     <div class="form-actions">
       <button class="btn" type="submit">Verstuur feedback</button>
