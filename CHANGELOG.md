@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.24.8] - 2026-10-30
+
+### Fixed
+
+- Staging-deploy faalde vóór upload: verify op `public/robots.txt` in de zip gebruikte regex `(^|/)public/robots.txt$`, maar `unzip -l` toont spaties vóór de naam (geen leading `/`) → false negative + harde fail. Nu check via `zipinfo -1` / `awk '{print $NF}'`, plus expliciete `zip … public/robots.txt` na het archiveren.
+
 ## [0.24.7] - 2026-10-30
 
 ### Fixed

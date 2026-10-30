@@ -142,11 +142,23 @@ if [ -z "$ARTIFACT" ] || [ ! -f "$ARTIFACT" ]; then
   (
     cd "$STAGE"
     zip -qr "$ARTIFACT" .
+    # Expliciet toevoegen/updaten (gitignore mag de check niet verwarren; zip neemt het gewoon mee).
+    zip -q "$ARTIFACT" public/robots.txt
   )
 fi
 
-# Bestaande ARTIFACT_PATH: zorg dat public/robots.txt in de zip zit (injecteer zo nodig).
-if ! unzip -l "$ARTIFACT" 2>/dev/null | grep -qE '(^|/)public/robots\.txt$'; then
+# True als public/robots.txt als zip-entry bestaat (unzip -l zet spaties vóór de naam — geen leading /).
+artifact_has_robots() {
+  local z=$1
+  # zipinfo -1 = alleen paden; fallback: laatste veld van unzip -l.
+  if command -v zipinfo >/dev/null 2>&1; then
+    zipinfo -1 "$z" 2>/dev/null | grep -Fxq 'public/robots.txt' && return 0
+  fi
+  unzip -l "$z" 2>/dev/null | awk '{print $NF}' | grep -Fxq 'public/robots.txt'
+}
+
+# Bestaande ARTIFACT_PATH of rare zip-omit: injecteer public/robots.txt.
+if ! artifact_has_robots "$ARTIFACT"; then
   notice "Artefact mist public/robots.txt — injecteren…"
   ROBOTS_INJECT="${WORKDIR}/robots-inject"
   mkdir -p "${ROBOTS_INJECT}/public"
@@ -157,7 +169,8 @@ if ! unzip -l "$ARTIFACT" 2>/dev/null | grep -qE '(^|/)public/robots\.txt$'; the
     zip -q "$ARTIFACT" public/robots.txt
   )
 fi
-unzip -l "$ARTIFACT" | grep -qE '(^|/)public/robots\.txt$' || die "Artefact bevat geen public/robots.txt."
+artifact_has_robots "$ARTIFACT" || die "Artefact bevat geen public/robots.txt."
+notice "Artefact bevat public/robots.txt."
 
 SIZE="$(wc -c < "$ARTIFACT" | tr -d ' ')"
 TOTAL_SHA="$(sha256sum "$ARTIFACT" | awk '{print $1}')"
