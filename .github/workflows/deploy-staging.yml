@@ -31,8 +31,15 @@ jobs:
       - name: Secrets aanwezig?
         id: chk
         run: |
+          # Schakelaar: bij STAGING_USE_CPANEL=1 alleen de nieuwe cPanel-workflow gebruiken.
+          USE_CPANEL="$(printf '%s' '${{ secrets.STAGING_USE_CPANEL }}' | tr '[:upper:]' '[:lower:]')"
+          if [ "$USE_CPANEL" = "1" ] || [ "$USE_CPANEL" = "true" ] || [ "$USE_CPANEL" = "yes" ]; then
+            echo "::notice::STAGING_USE_CPANEL gezet — SSH-deploy overgeslagen (zie deploy-staging-cpanel.yml)."
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           if [ -z "$H" ] || [ -z "$U" ] || [ -z "$D" ] || [ -z "${{ secrets.DEPLOY_SSH_KEY }}" ]; then
-            echo "Staging-secrets ontbreken, deploy overgeslagen."
+            echo "::notice::SSH staging-secrets ontbreken, SSH-deploy overgeslagen (cPanel-workflow kan nog draaien)."
             echo "skip=1" >> "$GITHUB_OUTPUT"
           fi
 

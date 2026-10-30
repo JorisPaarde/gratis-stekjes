@@ -11,25 +11,26 @@ Geen secrets, hostnamen of private paden in deze repo.
 5. `npm ci && npm run build`
 6. `php artisan serve`
 
-## Server (cPanel-achtig, docroot ≠ Laravel `public/`)
+## Server (cPanel: docroot ≠ Laravel-`public/`-map in de repo)
 
-CI bouwt vendor (no-dev) en Vite-assets. Layout via secrets:
+CI bouwt vendor (no-dev) en Vite-assets. Layout via secrets (zie ook `AGENTS.md`):
 
-| | Staging | Production (Environment `production`) |
+| | Staging (cPanel) | Production (Environment `production`) |
 |---|---|---|
-| Docroot | `STAGING_DEPLOY_PATH` | `DEPLOY_PATH` |
-| App (buiten webroot) | `STAGING_APP_DIR` (default: sibling `…/stekjes-staging-app`) | `APP_DIR` (verplicht) |
+| Docroot | `STAGING_DEPLOY_PATH` (subdomein-map zelf, niet `…/public`) | `DEPLOY_PATH` / later `public_html` |
+| App (buiten webroot) | `STAGING_APP_DIR` (bijv. `…/app-staging`) | `APP_DIR` / later `…/app-prod` |
+| Git-clone op server | `CPANEL_REPO_ROOT` → branch `deploy-staging` | later `repo-prod` → `master` |
 
-Deploy-stappen:
+**Staging cPanel-stappen** (`deploy-staging-cpanel.yml` + `scripts/cpanel-deploy.sh`):
 
-1. Rsync **app zonder `public/`** → app-map.
-2. Rsync **inhoud van `public/`** → docroot (`--delete`, excludes: `.well-known/`, `cgi-bin/`).
-3. Schrijf `index.php` in de docroot die `vendor/autoload.php` en `bootstrap/app.php` uit de app-map laadt, en `$app->usePublicPath(__DIR__)` zet zodat `asset()` / Vite-manifest de docroot gebruiken.
-4. `.env` in de app-map uit secrets. `APP_KEY`: uit secret, anders eenmalig op de server genereren en bewaren — nooit committen.
-5. `php artisan migrate --force`, daarna `php artisan db:seed --class=DeelplekkenSeeder --force` (idempotent upsert), plus config/route/view cache (in de app-map).
-6. Staging: `APP_ENV=staging` / `NOINDEX=true`. Productie: indexeerbaar.
+1. Build in CI; force-push artefact naar GitHub-branch `deploy-staging` (inclusief `.cpanel.yml` — **niet** op `staging`/`master`).
+2. UAPI `VersionControl::update` + `VersionControlDeployment::create` (`.cpanel.yml` rsynct app → `APP_DIR`, `public/` → docroot; behoud `.env`/storage/uploads).
+3. `index.php` in docroot met relatief pad (`../app-staging`) + `usePublicPath(__DIR__)`.
+4. `.env` via Fileman UAPI; `APP_KEY` behouden indien aanwezig.
+5. `POST /deploy/run` (Bearer `DEPLOY_TOKEN`) → migrate + DeelplekkenSeeder + caches.
+6. `APP_ENV=staging` / `NOINDEX=true`.
 
-SSH/host: `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_PORT`, `DEPLOY_SSH_KEY`, `DEPLOY_KNOWN_HOSTS` (production Environment overschrijft repo-secrets met dezelfde naam).
+Oude SSH-deploy blijft tot `STAGING_USE_CPANEL=1`. Productie-SSH: `DEPLOY_HOST`/`USER`/`PORT`/`SSH_KEY`/`KNOWN_HOSTS`.
 
 ## Branches
 

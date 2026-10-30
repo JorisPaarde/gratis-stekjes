@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AdminAuth;
+use App\Http\Middleware\CanonicalHostRedirect;
 use App\Http\Middleware\NoIndexHeader;
 use App\Http\Middleware\RecordPageView;
 use App\Http\Middleware\SecurityHeaders;
@@ -18,10 +19,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->append(CanonicalHostRedirect::class);
         $middleware->append(NoIndexHeader::class);
         $middleware->append(SecurityHeaders::class);
         $middleware->appendToGroup('web', RecordPageView::class);
         $middleware->trustProxies(at: '*');
+        $middleware->validateCsrfTokens(except: [
+            'deploy/run',
+        ]);
         $middleware->alias([
             'admin' => AdminAuth::class,
         ]);

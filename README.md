@@ -15,9 +15,9 @@ Het doel is simpel: de wereld een stukje groener maken. Meer planten in meer tui
 - **Privacy eerst.** Op de kaart alleen een benaderde plek, nooit een adres of e-mailadres.
 - **Groen en eerlijk.** Invasieve soorten in Nederland horen er niet tussen.
 
-## Status (v0.20.1)
+## Status (v0.24.3)
 
-Laravel 12: accounts (registratie/double opt-in, login met onthoud mij, wachtwoord reset/wijzigen, e-mailwijziging met herbevestiging, AVG-export/wissen), aanbod met controle op invasieve Unielijst-soorten, berichten, expiry-cron, initiatieven (`/initiatieven`, oude `/partners` → 301), deelplekken (`/deelplekken`), organisaties uitnodigen (`/voor-organisaties`, aanmelden + admin-goedkeuring, `/organisaties/{slug}`), stadspagina’s (`/gratis-planten`), nu-te-stekken, beheer, stektips + contentpagina’s + `/invasieve-soorten` + sitemap. Visuele stijl met bosgroen/mint/oranje-palet, hero-foto en iconenset (eigen teksten/beelden).
+Laravel 12: accounts (registratie/double opt-in, login met onthoud mij, wachtwoord reset/wijzigen, e-mailwijziging met herbevestiging, AVG-export/wissen), aanbod met controle op invasieve Unielijst-soorten, berichten, expiry-cron, initiatieven (`/initiatieven`, oude `/partners` → 301), deelplekken (`/deelplekken`), organisaties uitnodigen (`/voor-organisaties`, aanmelden + admin-goedkeuring, `/organisaties/{slug}`), stadspagina’s (`/gratis-planten`), nu-te-stekken, beheer, stektips + contentpagina’s + `/invasieve-soorten` + sitemap. Staging-deploy via cPanel Git + UAPI (branch `deploy-staging`). Visuele stijl met bosgroen/mint/oranje-palet, hero-foto en iconenset (eigen teksten/beelden).
 
 ## Stack
 
@@ -44,13 +44,13 @@ Uitgebreider: [`docs/INSTALL.md`](docs/INSTALL.md). Branches: [`CONTRIBUTING.md`
 
 CI: `composer install --no-dev --optimize-autoloader` en `npm ci && npm run build`.
 
-- **Docroot** = `DEPLOY_PATH` / `STAGING_DEPLOY_PATH` (cPanel main domain; niet verplaatsbaar)
-- **App** = `APP_DIR` / `STAGING_APP_DIR` (buiten webroot; staging default sibling `stekjes-staging-app`)
-- Rsync app **zonder** `public/` → app-map; inhoud `public/` → docroot
-- Gegenereerde `index.php` in de docroot laadt de app en zet `usePublicPath(__DIR__)` (Vite/asset)
-- Docroot `--delete` excludes: `.well-known/`, `cgi-bin/`
+**Staging (cPanel, geen SSH):** workflow `deploy-staging-cpanel.yml` bouwt en force-pusht naar branch `deploy-staging` (artefact + gegenereerde `.cpanel.yml` — die file staat **niet** op `staging`/`master`). cPanel-clone `repo-staging` trekt die branch; app → `STAGING_APP_DIR`, inhoud `public/` → docroot `STAGING_DEPLOY_PATH`, `index.php` wijst relatief naar de app-map. Daarna UAPI `.env` + `POST /deploy/run`. Details en secretlijst: [`AGENTS.md`](AGENTS.md). Bij Imunify-blokkade op `:2083`: `./scripts/cpanel-deploy.sh` vanaf een vaste machine.
 
-Secrets en paden alleen in GitHub Secrets / Environments. Productie: tag `v*.*.*` in environment `production`. Staging: push naar `staging`.
+**Staging (oude SSH, tijdelijk parallel):** `deploy-staging.yml`; uitzetten met secret `STAGING_USE_CPANEL=1`.
+
+**Productie (SSH, tags):** docroot `DEPLOY_PATH`, app `APP_DIR`. Zelfde layout-idee later via cPanel (`app-prod` + `public_html`). Parked `gratisstekjes.nl` → 301 naar `gratisplanten.nl`.
+
+Secrets alleen in GitHub Environments. Productie: tag `v*.*.*`. Staging: push naar `staging`.
 
 ## Licentie
 

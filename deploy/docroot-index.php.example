@@ -2,18 +2,18 @@
 
 /**
  * Voorbeeld van de index.php die deploy in de docroot zet.
- * Paden komen uit secrets (APP_DIR / STAGING_APP_DIR) — dit bestand
- * wordt niet zelf gedeployd; de workflow genereert het.
+ * Op staging: DOCROOT=/home/…/staging.gratisplanten.nl, APP=../app-staging
+ * Op productie (later): DOCROOT=/home/…/public_html, APP=../app-prod
+ * CI/cpanel-deploy-staging.sh genereert dit met realpath --relative-to.
  */
 define('LARAVEL_START', microtime(true));
 
-// Placeholder: absoluut pad naar de private app-map (buiten de webroot)
-require '/path/to/app/vendor/autoload.php';
+require __DIR__.'/../app-staging/vendor/autoload.php';
 
 /** @var \Illuminate\Foundation\Application $app */
-$app = require_once '/path/to/app/bootstrap/app.php';
+$app = require_once __DIR__.'/../app-staging/bootstrap/app.php';
 
-// Docroot = deze map (__DIR__), zodat asset() en Vite build/ manifest kloppen
+// Docroot = deze map (__DIR__), zodat asset() en Vite build/manifest kloppen
 $app->usePublicPath(__DIR__);
 
 $app->handleRequest(Illuminate\Http\Request::capture());

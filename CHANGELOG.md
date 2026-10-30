@@ -9,6 +9,19 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.24.3] - 2026-10-30
+
+### Added
+
+- Staging-deploy via cPanel Git Version Control + UAPI (workflow `deploy-staging-cpanel.yml`): build `vendor` + `public/build`, force-push naar branch `deploy-staging` met gegenereerde `.cpanel.yml` (niet op `staging`/`master`), `VersionControl::update`/`VersionControlDeployment`, `.env` via Fileman, `POST /deploy/run` (Bearer `DEPLOY_TOKEN`, hash_equals, rate limit, alleen staging of `DEPLOY_ENDPOINT_ENABLED`), smoke (200/noindex/versie).
+- `scripts/cpanel-deploy.sh` (handmatig / vaste machine bij Imunify-blokkade op `:2083`) met retries/backoff en duidelijke fout bij 403/non-JSON; `scripts/cpanel-deploy-staging.sh` voor cPanel deploy-tasks (app buiten docroot, `public/` → docroot, behoud `.env`/storage/uploads).
+- 301 van `gratisstekjes.nl` / `www.gratisstekjes.nl` → `https://gratisplanten.nl` (pad+query), middleware + `.htaccess`; uit op staging/local/testing.
+- `AGENTS.md` met cPanel-instellingen en GitHub secretnamen. Pest voor deploy-endpoint en canonical-host.
+
+### Changed
+
+- Oude SSH `deploy-staging.yml` blijft parallel; skip met notice zonder SSH-secrets of bij `STAGING_USE_CPANEL=1`.
+
 ## [0.24.2] - 2026-10-30
 
 ### Changed

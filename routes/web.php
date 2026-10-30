@@ -30,6 +30,7 @@ use App\Http\Controllers\Beheer\StatistiekenController as BeheerStatistiekenCont
 use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\CronController;
+use App\Http\Controllers\DeployController;
 use App\Http\Controllers\DeelplekkenController;
 use App\Http\Controllers\GratisPlantenController;
 use App\Http\Controllers\InvasieveSoortenController;
@@ -92,6 +93,9 @@ Route::get('/api/plantensoorten', ApiPlantensoortenController::class)
     ->name('api.plantensoorten');
 
 Route::get('/cron', CronController::class)->name('cron');
+Route::post('/deploy/run', DeployController::class)
+    ->middleware('throttle:10,1')
+    ->name('deploy.run');
 Route::get('/account/aanbod-verlengen', AanbodVerlengenController::class)
     ->name('account.aanbod-verlengen');
 

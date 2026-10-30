@@ -1,0 +1,163 @@
+name: Deploy staging (cPanel)
+
+# Bouwt vendor + public/build, pusht naar branch deploy-staging (cPanel-clone volgt die),
+# triggert UAPI VersionControl + Deployment, schrijft .env, POST /deploy/run, smoke.
+# Ontbrekende CPANEL_* → skip met notice (geen rode X). Gedeeltelijk → hard fail.
+# Handmatig: workflow_dispatch of ./scripts/cpanel-deploy.sh (andere IP i.v.m. Imunify).
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-staging-cpanel
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+      CPANEL_USER: ${{ secrets.CPANEL_USER }}
+      CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+      CPANEL_REPO_ROOT: ${{ secrets.CPANEL_REPO_ROOT }}
+      STAGING_APP_DIR: ${{ secrets.STAGING_APP_DIR }}
+      STAGING_DEPLOY_PATH: ${{ secrets.STAGING_DEPLOY_PATH }}
+      STAGING_BASE_URL: ${{ secrets.STAGING_BASE_URL }}
+      DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      CPANEL_BRANCH: deploy-staging
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Secrets aanwezig?
+        id: chk
+        run: |
+          set -euo pipefail
+          if [ -z "${CPANEL_HOST:-}" ] && [ -z "${CPANEL_USER:-}" ] && [ -z "${CPANEL_API_TOKEN:-}" ]; then
+            echo "::notice::cPanel-secrets ontbreken — deploy-staging-cpanel overgeslagen."
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          missing=0
+          for v in CPANEL_HOST CPANEL_USER CPANEL_API_TOKEN CPANEL_REPO_ROOT \
+                   STAGING_APP_DIR STAGING_DEPLOY_PATH STAGING_BASE_URL DEPLOY_TOKEN; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Verplicht secret ontbreekt: ${v}"
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            echo "::error::Gedeeltelijke cPanel-config — niets half gedaan."
+            exit 1
+          fi
+          echo "skip=0" >> "$GITHUB_OUTPUT"
+          echo "::add-mask::${CPANEL_API_TOKEN}"
+          echo "::add-mask::${DEPLOY_TOKEN}"
+
+      - name: Setup PHP 8.2
+        if: steps.chk.outputs.skip != '1'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, curl, xml, zip, bcmath, intl
+          coverage: none
+
+      - name: Setup Node
+        if: steps.chk.outputs.skip != '1'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Build (composer + vite)
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          set -euo pipefail
+          composer install --no-dev --optimize-autoloader --no-interaction
+          npm ci
+          npm run build
+          test -f public/build/manifest.json
+
+      - name: Push artefact naar deploy-staging
+        if: steps.chk.outputs.skip != '1'
+        env:
+          APP_DIR_SECRET: ${{ secrets.STAGING_APP_DIR }}
+          DOCROOT_SECRET: ${{ secrets.STAGING_DEPLOY_PATH }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          VER="$(tr -d '[:space:]' < VERSION)"
+          SHA="$(git rev-parse --short HEAD)"
+          SRC="$PWD"
+          WORK="$(mktemp -d)"
+
+          # Orphan + force-push: één commit op deploy-staging (placeholder mag herschreven).
+          # .cpanel.yml ALLEEN hier — nooit in staging/master (repo-prod volgt master).
+          git worktree add --detach "$WORK" HEAD
+          git -C "$WORK" checkout --orphan deploy-staging
+          find "$WORK" -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='node_modules/' \
+            --exclude='tests/' \
+            --exclude='.env' \
+            --exclude='.env.*' \
+            --exclude='.cpanel.yml' \
+            --exclude='.phpunit.result.cache' \
+            --exclude='phpunit.xml' \
+            --exclude='storage/logs/*' \
+            --exclude='storage/framework/cache/*' \
+            --exclude='storage/framework/sessions/*' \
+            --exclude='storage/framework/views/' \
+            --exclude='storage/app/*' \
+            --exclude='storage/backups/' \
+            "${SRC}/" "${WORK}/"
+
+          {
+            printf '%s\n' '---'
+            printf '%s\n' 'deployment:'
+            printf '%s\n' '  tasks:'
+            printf '%s\n' "    - export APP_DIR=${APP_DIR_SECRET}"
+            printf '%s\n' "    - export DOCROOT=${DOCROOT_SECRET}"
+            printf '%s\n' '    - /bin/bash ./scripts/cpanel-deploy-staging.sh'
+          } > "${WORK}/.cpanel.yml"
+
+          git -C "$WORK" add -A
+          git -C "$WORK" add -f vendor public/build .cpanel.yml scripts/cpanel-deploy-staging.sh
+          git -C "$WORK" commit -m "deploy-staging: ${VER} (${SHA})"
+          git -C "$WORK" push --force origin HEAD:deploy-staging
+          git worktree remove "$WORK" --force
+          # Zekerheid: geen .cpanel.yml achterlaten in de source-checkout.
+          rm -f "${SRC}/.cpanel.yml"
+          test ! -f "${SRC}/.cpanel.yml"
+
+      - name: cPanel UAPI deploy + .env + migrate + smoke
+        if: steps.chk.outputs.skip != '1'
+        env:
+          SITE_NAME: ${{ secrets.SITE_NAME }}
+          STAGING_DB_HOST: ${{ secrets.STAGING_DB_HOST }}
+          STAGING_DB_NAME: ${{ secrets.STAGING_DB_NAME }}
+          STAGING_DB_USER: ${{ secrets.STAGING_DB_USER }}
+          STAGING_DB_PASS: ${{ secrets.STAGING_DB_PASS }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
+          CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          APP_KEY: ${{ secrets.APP_KEY }}
+        run: |
+          set -euo pipefail
+          chmod +x scripts/cpanel-deploy.sh scripts/cpanel-deploy-staging.sh scripts/dotenv-quote.sh
+          ./scripts/cpanel-deploy.sh
