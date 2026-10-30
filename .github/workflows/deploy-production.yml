@@ -160,49 +160,65 @@ jobs:
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           SMTP_FROM: ${{ secrets.SMTP_FROM }}
           CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
           APP_KEY_SECRET: ${{ secrets.APP_KEY }}
         run: |
           set -euo pipefail
+          # shellcheck source=scripts/dotenv-quote.sh
+          source ./scripts/dotenv-quote.sh
           APP="$(tail -n1 /tmp/app_dir.txt)"
-          EXISTING_KEY=$(ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" \
-            "if [ -f '${APP}/.env' ]; then grep '^APP_KEY=' '${APP}/.env' | head -1 | cut -d= -f2-; fi" || true)
+          EXISTING_KEY=$(ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s <<EOF || true
+          set -euo pipefail
+          if [ ! -f '${APP}/.env' ]; then exit 0; fi
+          # shellcheck source=scripts/dotenv-quote.sh
+          source '${APP}/scripts/dotenv-quote.sh'
+          dotenv_env_get APP_KEY '${APP}/.env'
+          EOF
+          )
           if [ -n "${APP_KEY_SECRET:-}" ]; then APP_KEY="$APP_KEY_SECRET"
           elif [ -n "${EXISTING_KEY:-}" ]; then APP_KEY="$EXISTING_KEY"
           else APP_KEY=$(php -r 'echo "base64:".base64_encode(random_bytes(32));'); fi
           NAME="${SITE_NAME:-Gratis planten}"
-          ENC=$(echo "${SMTP_SECURE:-ssl}" | tr '[:upper:]' '[:lower:]')
+          ENC=$(printf '%s' "${SMTP_SECURE:-ssl}" | tr '[:upper:]' '[:lower:]')
+          case "${ENC}" in
+            ssl|smtps) MAIL_SCHEME=smtps ;;
+            tls|starttls) MAIL_SCHEME=smtp ;;
+            *) MAIL_SCHEME=smtps ;;
+          esac
+          MAIL_FROM="${SMTP_FROM:-${SMTP_USER}}"
           umask 077
           {
-            echo "APP_NAME=\"${NAME}\""
-            echo "SITE_NAME=\"${NAME}\""
-            echo "APP_ENV=production"
-            echo "APP_KEY=${APP_KEY}"
-            echo "APP_DEBUG=false"
-            echo "APP_URL=${BASE_URL}"
-            echo "NOINDEX=false"
-            echo "APP_LOCALE=nl"
-            echo "APP_FALLBACK_LOCALE=nl"
-            echo "LOG_CHANNEL=stack"
-            echo "LOG_LEVEL=error"
-            echo "DB_CONNECTION=mysql"
-            echo "DB_HOST=${DB_HOST}"
-            echo "DB_PORT=3306"
-            echo "DB_DATABASE=${DB_NAME}"
-            echo "DB_USERNAME=${DB_USER}"
-            echo "DB_PASSWORD=${DB_PASS}"
-            echo "SESSION_DRIVER=database"
-            echo "SESSION_SECURE_COOKIE=true"
-            echo "QUEUE_CONNECTION=database"
-            echo "CACHE_STORE=database"
-            echo "MAIL_MAILER=smtp"
-            echo "MAIL_HOST=${SMTP_HOST}"
-            echo "MAIL_PORT=${SMTP_PORT:-465}"
-            echo "MAIL_USERNAME=${SMTP_USER}"
-            echo "MAIL_PASSWORD=${SMTP_PASS}"
-            echo "MAIL_ENCRYPTION=${ENC}"
-            echo "MAIL_FROM_ADDRESS=${SMTP_FROM}"
-            echo "MAIL_FROM_NAME=\"${NAME}\""
-            echo "CRON_TOKEN=${CRON_TOKEN}"
+            dotenv_line APP_NAME "$NAME"
+            dotenv_line SITE_NAME "$NAME"
+            dotenv_line APP_ENV production
+            dotenv_line APP_KEY "$APP_KEY"
+            dotenv_line APP_DEBUG false
+            dotenv_line APP_URL "$BASE_URL"
+            dotenv_line NOINDEX false
+            dotenv_line APP_LOCALE nl
+            dotenv_line APP_FALLBACK_LOCALE nl
+            dotenv_line LOG_CHANNEL stack
+            dotenv_line LOG_LEVEL error
+            dotenv_line DB_CONNECTION mysql
+            dotenv_line DB_HOST "$DB_HOST"
+            dotenv_line DB_PORT 3306
+            dotenv_line DB_DATABASE "$DB_NAME"
+            dotenv_line DB_USERNAME "$DB_USER"
+            dotenv_line DB_PASSWORD "$DB_PASS"
+            dotenv_line SESSION_DRIVER database
+            dotenv_line SESSION_SECURE_COOKIE true
+            dotenv_line QUEUE_CONNECTION database
+            dotenv_line CACHE_STORE database
+            dotenv_line MAIL_MAILER smtp
+            dotenv_line MAIL_SCHEME "$MAIL_SCHEME"
+            dotenv_line MAIL_HOST "$SMTP_HOST"
+            dotenv_line MAIL_PORT "${SMTP_PORT:-465}"
+            dotenv_line MAIL_USERNAME "$SMTP_USER"
+            dotenv_line MAIL_PASSWORD "$SMTP_PASS"
+            dotenv_line MAIL_FROM_ADDRESS "$MAIL_FROM"
+            dotenv_line MAIL_FROM_NAME "$NAME"
+            dotenv_line CRON_TOKEN "$CRON_TOKEN"
+            dotenv_line ADMIN_PASSWORD "$ADMIN_PASSWORD"
           } > /tmp/stekjes.env
           scp -i ~/.ssh/deploy_key -P "${P:-22}" /tmp/stekjes.env "$U@$H:${APP}/.env"
           ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "chmod 600 '${APP}/.env'"
@@ -212,11 +228,14 @@ jobs:
           mkdir -p storage/framework/{cache,sessions,views} storage/logs bootstrap/cache
           chmod -R ug+rwx storage bootstrap/cache
           php artisan migrate --force
+          php artisan db:seed --class=DeelplekkenSeeder --force
+          php artisan config:clear
           php artisan config:cache
           php artisan route:cache
           php artisan view:cache
           EOF
           rm -f /tmp/stekjes.env
+          echo "Production .env geschreven (waarden niet gelogd)."
 
       - name: Controle
         if: steps.chk.outputs.skip != '1'

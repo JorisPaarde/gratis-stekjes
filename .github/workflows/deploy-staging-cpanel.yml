@@ -1,0 +1,120 @@
+name: Deploy staging (cPanel)
+
+# HTTPS deploy-hook (geen :2083 / UAPI). Bouwt vendor + Vite, zip't, chunked upload
+# naar /deploy-hook.php, daarna POST /deploy/run + smoke.
+# Ontbrekende verplichte secrets → skip met notice (geen rode X) alleen als HELE
+# hook-set ontbreekt; gedeeltelijk → hard fail. Hook 404 → ::error:: + INSTALL-stappen.
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-staging-cpanel
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      DEPLOY_HOOK_TOKEN: ${{ secrets.DEPLOY_HOOK_TOKEN }}
+      DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      STAGING_BASE_URL: ${{ secrets.STAGING_BASE_URL }}
+      STAGING_APP_DIR: /home/gratisplanten/app-staging
+      STAGING_DEPLOY_PATH: /home/gratisplanten/staging.gratisplanten.nl
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Secrets aanwezig?
+        id: chk
+        run: |
+          set -euo pipefail
+          if [ -z "${DEPLOY_HOOK_TOKEN:-}" ] && [ -z "${DEPLOY_TOKEN:-}" ] && [ -z "${STAGING_BASE_URL:-}" ]; then
+            echo "::notice::Deploy-hook secrets ontbreken — deploy-staging-cpanel overgeslagen. Zie deploy/hook/INSTALL.md."
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          missing=0
+          for v in DEPLOY_HOOK_TOKEN DEPLOY_TOKEN STAGING_BASE_URL; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Verplicht secret ontbreekt: ${v}"
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            echo "::error::Gedeeltelijke deploy-hook-config — niets half gedaan."
+            exit 1
+          fi
+          echo "skip=0" >> "$GITHUB_OUTPUT"
+          echo "::add-mask::${DEPLOY_HOOK_TOKEN}"
+          echo "::add-mask::${DEPLOY_TOKEN}"
+
+      - name: Setup PHP 8.2
+        if: steps.chk.outputs.skip != '1'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, curl, xml, zip, bcmath, intl
+          coverage: none
+
+      - name: Setup Node
+        if: steps.chk.outputs.skip != '1'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Build (composer + vite)
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          set -euo pipefail
+          composer install --no-dev --optimize-autoloader --no-interaction
+          npm ci
+          npm run build
+          test -f public/build/manifest.json
+          chmod +x scripts/write-robots-txt.sh
+          APP_ENV_NAME=staging ./scripts/write-robots-txt.sh
+          test -s public/robots.txt
+          grep -q 'Disallow: /' public/robots.txt
+          ! grep -q 'To customize, create a robots.txt' public/robots.txt
+          php -l deploy/hook/deploy-hook.php
+          php -l deploy/hook/lib.php
+
+      - name: Upload via HTTPS deploy-hook + migrate + smoke
+        if: steps.chk.outputs.skip != '1'
+        id: upload
+        env:
+          SITE_NAME: ${{ secrets.SITE_NAME }}
+          DB_HOST: ${{ secrets.STAGING_DB_HOST }}
+          DB_DATABASE: ${{ secrets.STAGING_DB_NAME }}
+          DB_USERNAME: ${{ secrets.STAGING_DB_USER }}
+          DB_PASSWORD: ${{ secrets.STAGING_DB_PASS }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
+          CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          APP_KEY: ${{ secrets.APP_KEY }}
+          BASE_URL: ${{ secrets.STAGING_BASE_URL }}
+          APP_ENV_NAME: staging
+        run: |
+          set -euo pipefail
+          chmod +x scripts/deploy-hook-upload.sh scripts/dotenv-quote.sh scripts/make-deploy-hook-config.sh
+          for v in DB_HOST DB_DATABASE DB_USERNAME DB_PASSWORD SMTP_HOST SMTP_USER SMTP_PASS CRON_TOKEN ADMIN_PASSWORD; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Verplicht secret/env ontbreekt: ${v}"
+              exit 1
+            fi
+          done
+          echo "::add-mask::${DB_PASSWORD}"
+          echo "::add-mask::${SMTP_PASS}"
+          echo "::add-mask::${ADMIN_PASSWORD}"
+          echo "::add-mask::${CRON_TOKEN}"
+          ./scripts/deploy-hook-upload.sh

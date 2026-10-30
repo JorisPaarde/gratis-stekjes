@@ -114,4 +114,17 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | E-mailverificatie
+    |--------------------------------------------------------------------------
+    |
+    | Geldigheid van de ondertekende bevestigingslink (minuten).
+    |
+    */
+
+    'verification' => [
+        'expire' => 1440,
+    ],
+
 ];

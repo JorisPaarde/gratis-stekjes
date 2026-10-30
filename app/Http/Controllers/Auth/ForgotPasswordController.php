@@ -1,0 +1,74 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use App\Support\FormGuard;
+use App\Support\MailThrottle;
+use App\Support\SafeMail;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Password;
+use Illuminate\View\View;
+use Throwable;
+
+class ForgotPasswordController extends Controller
+{
+    public function create(): View
+    {
+        return view('auth.forgot-password', [
+            'title' => 'Wachtwoord vergeten',
+            'metaDescription' => 'Vraag een wachtwoordreset aan bij '.config('site.name').'.',
+            'canonical' => route('account.wachtwoord.vergeten'),
+            'formStarted' => time(),
+        ]);
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'email' => ['required', 'string', 'email:filter', 'max:254'],
+            'website' => ['nullable', 'string', 'max:200'],
+            'form_started' => ['required', 'integer'],
+        ], [
+            'email.required' => 'Vul een geldig e-mailadres in.',
+            'email.email' => 'Vul een geldig e-mailadres in.',
+        ]);
+
+        if (FormGuard::honeypotFilled($request->input('website'))) {
+            return back()->with('status', __('passwords.sent'));
+        }
+
+        if (FormGuard::submittedTooFast($request->input('form_started'))) {
+            return back()
+                ->withInput($request->only('email'))
+                ->withErrors(['form_started' => 'Even geduld, het formulier ging te snel.']);
+        }
+
+        $email = strtolower(trim((string) $request->input('email')));
+        $throttle = MailThrottle::attempt('password-reset', $email, $request);
+        if (! $throttle['ok']) {
+            return back()
+                ->withInput($request->only('email'))
+                ->withErrors(['email' => $throttle['message']]);
+        }
+
+        try {
+            // Geen enumeratie: altijd dezelfde succesmelding (behalve throttle / mailstoring).
+            Password::sendResetLink(['email' => $email]);
+        } catch (Throwable $e) {
+            Log::error(SafeMail::safeSummary($e));
+
+            return back()
+                ->withInput($request->only('email'))
+                ->with('status', 'De resetmail lukte niet. Probeer het zo opnieuw.');
+        }
+
+        return back()
+            ->withInput($request->only('email'))
+            ->with('status', __('passwords.sent'));
+    }
+}

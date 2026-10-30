@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
+use App\Services\Kennisbank;
+use App\Services\NuTeStekken;
+use App\Services\Organisaties;
+use App\Services\Steden;
+use App\Services\Stektips;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class PageController extends Controller
 {
-    public function home(): View
+    public function home(NuTeStekken $calendar): View
     {
         $site = config('site.name');
 
@@ -18,7 +22,7 @@ class PageController extends Controller
             'title' => $site,
             'metaDescription' => config('site.description'),
             'canonical' => url('/'),
-            'nuTeStekken' => $this->nuTeStekkenBlock(),
+            'nuTeStekken' => $calendar->blockForViews(),
             'schema' => [
                 '@context' => 'https://schema.org',
                 '@type' => 'WebSite',
@@ -39,47 +43,83 @@ class PageController extends Controller
         ]);
     }
 
-    public function robots(): Response
+    public function contact(): View
     {
-        if (config('site.noindex') || app()->environment('staging')) {
-            $body = "User-agent: *\nDisallow: /\n";
-        } else {
-            $body = "User-agent: *\nAllow: /\nSitemap: ".url('/sitemap.xml')."\n";
-        }
-
-        return response($body, 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
+        return view('pages.contact', [
+            'title' => 'Contact',
+            'metaDescription' => 'Contact met '.config('site.name').'.',
+            'canonical' => route('contact'),
+        ]);
     }
 
-    /** @return array{maand_naam: string, intro: string, groepen: list<array<string, mixed>>}|null */
-    private function nuTeStekkenBlock(): ?array
+    public function stijlgids(): View
     {
-        $path = base_path('data/nu-te-stekken.json');
-        if (! is_readable($path)) {
-            return null;
+        return view('pages.stijlgids', [
+            'title' => 'Stijlgids',
+            'metaDescription' => 'Interne stijlgids (kleuren en iconen) van '.config('site.name').'.',
+            'canonical' => url('/stijlgids'),
+        ]);
+    }
+
+    /**
+     * Env-aware robots.txt-body (staging/noindex → disallow-all; production → allow + sitemap).
+     * Hergebruikt door de /robots.txt-route en door DeployController (statisch bestand in docroot).
+     */
+    public function robotsBody(): string
+    {
+        if (config('site.noindex') || app()->environment('staging')) {
+            return "User-agent: *\nDisallow: /\n";
         }
 
-        $data = json_decode((string) file_get_contents($path), true);
-        if (! is_array($data)) {
-            return null;
-        }
+        // Canonieke productie-URL (gelijk aan scripts/write-robots-txt.sh).
+        return "User-agent: *\nAllow: /\nSitemap: https://gratisplanten.nl/sitemap.xml\n";
+    }
 
-        $when = Carbon::now('Europe/Amsterdam');
-        $month = (int) $when->month;
-        $block = $data['maanden'][(string) $month] ?? $data['maanden'][$month] ?? null;
-        if (! is_array($block)) {
-            return null;
-        }
+    public function robots(): Response
+    {
+        return response($this->robotsBody(), 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
+    }
 
-        $namen = [
-            1 => 'januari', 2 => 'februari', 3 => 'maart', 4 => 'april',
-            5 => 'mei', 6 => 'juni', 7 => 'juli', 8 => 'augustus',
-            9 => 'september', 10 => 'oktober', 11 => 'november', 12 => 'december',
+    public function sitemap(Stektips $stektips, Steden $steden, Organisaties $organisaties, Kennisbank $kennisbank): Response
+    {
+        $urls = [
+            url('/'),
+            route('hoe-werkt-het'),
+            route('aanbod'),
+            route('stektips.index'),
+            route('hulpmiddelen'),
+            route('over'),
+            route('privacy'),
+            route('contact'),
+            route('partners'),
+
+            route('deelplekken'),
+            route('voor-organisaties'),
+            route('voor-organisaties.aanmelden'),
+            route('organisaties.index'),
+            route('invasieve-soorten'),
+            route('gratis-planten.index'),
         ];
+        foreach ($kennisbank->all() as $artikel) {
+            $urls[] = route('stektips.artikel', ['slug' => $artikel['slug']]);
+        }
+        foreach ($stektips->all() as $soort) {
+            $urls[] = route('stektips.show', ['slug' => $soort['slug']]);
+        }
+        foreach ($organisaties->all() as $org) {
+            $urls[] = route('organisaties.show', ['slug' => $org['slug']]);
+        }
+        foreach ($steden->all() as $stad) {
+            $urls[] = route('gratis-planten.show', ['stad' => $stad['slug']]);
+        }
 
-        return [
-            'maand_naam' => $namen[$month] ?? (string) $month,
-            'intro' => (string) ($block['intro'] ?? 'Planten die in deze maand gangbaar te vermeerderen zijn.'),
-            'groepen' => is_array($block['groepen'] ?? null) ? $block['groepen'] : [],
-        ];
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
+        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
+        foreach ($urls as $loc) {
+            $xml .= '  <url><loc>'.e($loc).'</loc></url>'."\n";
+        }
+        $xml .= '</urlset>'."\n";
+
+        return response($xml, 200, ['Content-Type' => 'application/xml; charset=UTF-8']);
     }
 }

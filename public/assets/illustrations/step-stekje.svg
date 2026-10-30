@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-hidden="true">
+  <title>Stekje</title>
+  <circle cx="32" cy="32" r="30" fill="#E6F2E1"/>
+  <path d="M32 48 V22" stroke="#1F4D2B" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M32 30 C22 26 16 20 14 14 C24 16 30 22 32 30 Z" fill="#E8833A"/>
+  <path d="M32 34 C42 30 48 24 50 18 C40 20 34 26 32 34 Z" fill="#1F4D2B"/>
+  <path d="M28 48 h8" stroke="#5A5B42" stroke-width="3" stroke-linecap="round"/>
+</svg>

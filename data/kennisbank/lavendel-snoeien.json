@@ -1,0 +1,83 @@
+{
+    "titel": "Lavendel snoeien",
+    "samenvatting": "Lavendel snoeien wanneer en hoe: jaarlijks na de bloei in late zomer licht inkorten. Niet in oud hout knippen.",
+    "meta_description": "Lavendel snoeien wanneer en hoe: jaarlijks na de bloei in late zomer licht inkorten. Niet in oud hout knippen.",
+    "zoekwoorden": [
+        "lavendel snoeien",
+        "lavendel snoeien wanneer",
+        "wanneer lavendel snoeien"
+    ],
+    "categorieen": [
+        "snoeien"
+    ],
+    "pillar": "snoeien",
+    "gerelateerde_soorten": [
+        "lavendel"
+    ],
+    "seizoenen": [
+        "lente",
+        "zomer",
+        "herfst"
+    ],
+    "maanden": [
+        3,
+        4,
+        8,
+        9
+    ],
+    "niveau": "beginner",
+    "locatie": "buiten",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Lavendel wordt houtig als je niet snoeit. De RHS raadt aan jaarlijks te trimmen vlak na de bloei in late zomer: steeltjes én ongeveer 2,5 cm bladgroei weg."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer snoeien?"
+        },
+        {
+            "type": "ul",
+            "items": [
+                "Hoofdsnoei: late zomer, net na de bloei.",
+                "Voorjaar: alleen lichte correctie bij vorstschade of rommelige groei.",
+                "Nooit diep in kaal, oud hout: lavendel loopt daar slecht opnieuw uit."
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Stappen"
+        },
+        {
+            "type": "ol",
+            "items": [
+                "Knip uitgebloeide bloemstelen weg.",
+                "Vorm de plant tot een compacte bol; houd groen blad staan.",
+                "Vervang oude, kale planten liever door stekken van jong materiaal."
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Snoeisel van jong, halfrijp hout is ideaal om te stekken — zie de soortpagina lavendel stekken."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — How to grow lavender",
+            "url": "https://www.rhs.org.uk/plants/lavender/growing-guide"
+        },
+        {
+            "titel": "RHS — Semi-ripe cuttings",
+            "url": "https://www.rhs.org.uk/propagation/semi-ripe-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": true,
+    "seo": {
+        "plant": "lavendel",
+        "rol": "snoeien",
+        "stek_type": "soort",
+        "stek_slug": "lavendel"
+    },
+    "slug": "lavendel-snoeien"
+}

@@ -1,0 +1,84 @@
+{
+    "slug": "stekpoeder",
+    "titel": "Stekpoeder: wanneer het helpt — en duurzamere opties",
+    "samenvatting": "Synthetisch IBA-stekpoeder versnelt beworteling bij lastige soorten. Voor veel makkelijke stekken is het overbodig; probeer eerst timing, goede stekgrond en wilgenwater.",
+    "zoekwoorden": [
+        "stekpoeder",
+        "wortelhormoon",
+        "IBA stekken",
+        "stekpoeder alternatief",
+        "natuurlijk stekpoeder"
+    ],
+    "categorieen": [
+        "natuurlijk-bewortelen"
+    ],
+    "gerelateerde_soorten": [
+        "lavendel",
+        "rozemarijn",
+        "hortensia",
+        "wilg"
+    ],
+    "seizoenen": [
+        "lente",
+        "zomer",
+        "herfst"
+    ],
+    "maanden": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+    ],
+    "niveau": "gevorderd",
+    "locatie": "beide",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Stekpoeder is meestal talk met een synthetisch auxine (vaak IBA, indolboterzuur). In de gangbare teelt helpt het stekken sneller en gelijkmatiger te wortelen — vooral bij moeilijk te stekken houtige gewassen. De RHS noemt hormone rooting compound als optie bij winterhoutstek."
+        },
+        {
+            "type": "h2",
+            "tekst": "Beperkingen en biologische context"
+        },
+        {
+            "type": "p",
+            "tekst": "In de biologische teelt zijn synthetische stekpoeders niet toegestaan. WUR-onderzoek zocht naar biologische formuleringen (onder meer natuurlijk IAA via bacteriën). Resultaten varieerden per gewas: soms dicht bij IBA, soms duidelijk minder. Conclusie voor thuis: stekpoeder is geen magie en geen must voor makkelijke soorten (wilg, munt, veel kamerplanten, veel bessen)."
+        },
+        {
+            "type": "h2",
+            "tekst": "Duurzamer eerst"
+        },
+        {
+            "type": "ol",
+            "items": [
+                "Juiste seizoen en methode (kalender).",
+                "Gezond, jong materiaal en schone snede.",
+                "Luchtige, peat-free stekgrond en vochtigheid zonder natte voeten.",
+                "Mild: wilgenwater als huisgemaakte stimulans.",
+                "Pas bij hardnekkige soorten: spaarzaam commercieel stekpoeder overwegen."
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Op Gratis planten geef ik de voorkeur aan methoden die je met snoeihout en hergebruikte bakjes kunt delen — zonder afhankelijkheid van wegwerpproducten."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "WUR edepot — Biologisch stekpoeder in de maak (IAA vs IBA)",
+            "url": "https://edepot.wur.nl/461419"
+        },
+        {
+            "titel": "RHS — Hardwood cuttings (hormone rooting compound als optie)",
+            "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": "wilgenwater",
+    "howto": false,
+    "pillar": "natuurlijk-bewortelen",
+    "seo": {
+        "hub": "natuurlijk-bewortelen"
+    }
+}

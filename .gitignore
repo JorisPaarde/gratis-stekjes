@@ -3,6 +3,8 @@
 .env
 .env.backup
 .env.production
+# Alleen op build-branch deploy-staging (nooit staging/master — repo-prod deelt master).
+.cpanel.yml
 .phpactor.json
 .phpunit.result.cache
 /.fleet
@@ -16,6 +18,8 @@
 /public/build
 /public/hot
 /public/storage
+# Geschreven door POST /deploy/run (docroot); niet committen.
+/public/robots.txt
 /storage/*.key
 /storage/pail
 /vendor
@@ -28,3 +32,4 @@ README.legacy.md
 CHANGELOG.legacy.md
 /.phpunit.cache
 /database/*.sqlite
+/storage/backups

@@ -1,0 +1,86 @@
+{
+    "titel": "Hortensia snoeien",
+    "samenvatting": "Wanneer en hoe je hortensia snoeit: bolhortensia licht in het vroege voorjaar, pluim- en Annabelle-types harder. Laat winterbloemkoppen zitten tot maart.",
+    "meta_description": "Wanneer en hoe je hortensia snoeit: bolhortensia licht in het vroege voorjaar, pluim- en Annabelle-types harder. Laat winterbloemkoppen zitten tot maart. Inclusief wanneer snoeien (piek februari–maart).",
+    "zoekwoorden": [
+        "hortensia snoeien",
+        "hortensia snoeien wanneer",
+        "snoei annabelle",
+        "stamhortensia snoeien"
+    ],
+    "categorieen": [
+        "snoeien"
+    ],
+    "pillar": "snoeien",
+    "gerelateerde_soorten": [
+        "hortensia"
+    ],
+    "seizoenen": [
+        "winter",
+        "lente"
+    ],
+    "maanden": [
+        2,
+        3,
+        4
+    ],
+    "niveau": "beginner",
+    "locatie": "buiten",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Hortensia snoeien is de meest gezochte snoeivraag in Nederland. Het hangt af van het type: bol- en lacecap-hortensia’s (Hydrangea macrophylla) bloeien op hout van vorig jaar; pluimhortensia (H. paniculata) en Annabelle-achtigen (H. arborescens) bloeien op nieuw hout."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer snoeien?"
+        },
+        {
+            "type": "p",
+            "tekst": "De RHS adviseert snoei meestal in late winter of vroeg voorjaar. Laat bij bolhortensia’s de oude bloemkoppen de hele winter zitten: ze beschermen de knoppen tegen vorst. Klimhortensia snoei je na de bloei in de zomer."
+        },
+        {
+            "type": "h2",
+            "tekst": "Bol- en lacecap-hortensia"
+        },
+        {
+            "type": "ol",
+            "items": [
+                "In maart: knip uitgebloeide koppen terug tot het eerste sterke knoppenpaar eronder.",
+                "Verwijder 1–2 oudste takken bij de basis voor vernieuwing.",
+                "Snoei niet alles tot de grond: dan mis je de bloei van die zomer."
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Pluimhortensia en Annabelle"
+        },
+        {
+            "type": "p",
+            "tekst": "Deze kun je in het voorjaar harder terugsnoeien tot een vast gestel van knoppen (soms tot 25–60 cm). Dat geeft grotere bloemtrossen op stevige scheuten."
+        },
+        {
+            "type": "p",
+            "tekst": "Gooi gezond snoeisel niet weg: halfverhoute zomerstekken wortelen goed. Zie hortensia stekken."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — Hydrangea pruning",
+            "url": "https://www.rhs.org.uk/plants/hydrangea/pruning-guide"
+        },
+        {
+            "titel": "RHS — Softwood cuttings",
+            "url": "https://www.rhs.org.uk/propagation/softwood-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": true,
+    "seo": {
+        "plant": "hortensia",
+        "rol": "snoeien",
+        "stek_type": "soort",
+        "stek_slug": "hortensia"
+    },
+    "slug": "hortensia-snoeien"
+}

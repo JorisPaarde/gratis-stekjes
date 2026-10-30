@@ -15,9 +15,9 @@ Het doel is simpel: de wereld een stukje groener maken. Meer planten in meer tui
 - **Privacy eerst.** Op de kaart alleen een benaderde plek, nooit een adres of e-mailadres.
 - **Groen en eerlijk.** Invasieve soorten in Nederland horen er niet tussen.
 
-## Status (v0.1.2)
+## Status (v0.24.8)
 
-Laravel 12-basis met gepolijste homepage en privacyverklaring. Accounts, aanbod/kaart, berichten en overige flows volgen in latere releases (*binnenkort* op de homepage).
+Laravel 12: accounts (registratie/double opt-in, login met onthoud mij, wachtwoord reset/wijzigen, e-mailwijziging met herbevestiging, AVG-export/wissen), aanbod met controle op invasieve Unielijst-soorten, berichten, expiry-cron, initiatieven (`/initiatieven`, oude `/partners` → 301), deelplekken (`/deelplekken`), organisaties uitnodigen (`/voor-organisaties`, aanmelden + admin-goedkeuring, `/organisaties/{slug}`), stadspagina’s (`/gratis-planten`), nu-te-stekken, beheer, stektips + contentpagina’s + `/invasieve-soorten` + sitemap. Staging-deploy via cPanel Git + UAPI (branch `deploy-staging`). Visuele stijl met bosgroen/mint/oranje-palet, hero-foto en iconenset (eigen teksten/beelden).
 
 ## Stack
 
@@ -44,13 +44,13 @@ Uitgebreider: [`docs/INSTALL.md`](docs/INSTALL.md). Branches: [`CONTRIBUTING.md`
 
 CI: `composer install --no-dev --optimize-autoloader` en `npm ci && npm run build`.
 
-- **Docroot** = `DEPLOY_PATH` / `STAGING_DEPLOY_PATH` (cPanel main domain; niet verplaatsbaar)
-- **App** = `APP_DIR` / `STAGING_APP_DIR` (buiten webroot; staging default sibling `stekjes-staging-app`)
-- Rsync app **zonder** `public/` → app-map; inhoud `public/` → docroot
-- Gegenereerde `index.php` in de docroot laadt de app en zet `usePublicPath(__DIR__)` (Vite/asset)
-- Docroot `--delete` excludes: `.well-known/`, `cgi-bin/`
+**Staging (cPanel, noshell):** workflow `deploy-staging-cpanel.yml` bouwt een zip en pusht die via HTTPS naar `/deploy-hook.php` (chunked; geen `:2083`). Daarna **`POST /deploy/run`** + smoke. Eenmalige install: [`deploy/hook/INSTALL.md`](deploy/hook/INSTALL.md). Secrets: [`AGENTS.md`](AGENTS.md).
 
-Secrets en paden alleen in GitHub Secrets / Environments. Productie: tag `v*.*.*` in environment `production`. Staging: push naar `staging`.
+**Oude SSH-deploy** (`deploy-staging.yml`): retired; alleen handmatig met `ALLOW_LEGACY_SSH_STAGING=1`. Legacy UAPI-scripts blijven voor handmatig allowlisted IP.
+
+**Productie:** `deploy-prod-hook.yml` (tags `v*.*.*`, environment `production`, secrets `PROD_*`). Oude SSH-workflow blijft bestaan tot de hook live is. Parked `gratisstekjes.nl` → 301 naar `gratisplanten.nl`.
+
+Secrets alleen in GitHub Environments. Staging: push naar `staging`.
 
 ## Licentie
 

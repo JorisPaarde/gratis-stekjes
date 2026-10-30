@@ -1,9 +1,19 @@
+# cPanel DirectoryIndex zet index.html vóór index.php; forceer Laravel front controller.
+DirectoryIndex index.php
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
 
     RewriteEngine On
+
+    # Geparkte alias → canonieke host (pad + query behouden).
+    # Middleware CanonicalHostRedirect is leidend (uit op staging/local);
+    # deze regels vangen requests af vóór PHP wanneer de parked domain
+    # op dezelfde docroot staat (public_html).
+    RewriteCond %{HTTP_HOST} ^(www\.)?gratisstekjes\.nl$ [NC]
+    RewriteRule ^ https://gratisplanten.nl%{REQUEST_URI} [L,R=301]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .

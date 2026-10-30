@@ -1,0 +1,79 @@
+{
+    "slug": "snoeiafval-als-stek",
+    "titel": "Snoeien en snoeiafval als stek",
+    "samenvatting": "Snoeihout hoeft niet de groencontainer in. Gebruik gezonde, niet-bloeiende scheuten als kop-, halfrijpe of winterstek.",
+    "zoekwoorden": [
+        "snoeiafval stekken",
+        "snoeihout stekken",
+        "stekken van snoei",
+        "snoeien en stekken",
+        "kringlooptuin stek"
+    ],
+    "categorieen": [
+        "snoeien",
+        "stekken"
+    ],
+    "gerelateerde_soorten": [
+        "lavendel",
+        "rozemarijn",
+        "hortensia",
+        "wilg",
+        "zwarte-vlier"
+    ],
+    "seizoenen": [
+        "lente",
+        "zomer",
+        "herfst",
+        "winter"
+    ],
+    "maanden": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+    ],
+    "niveau": "beginner",
+    "locatie": "buiten",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Snoeien en stekken horen bij elkaar. De RHS adviseert bij softwood-stekken om oudere planten hard te snoeien: nieuw groeiend hout wortelt sneller. Bij klimmers staat expliciet: knip geschikt materiaal bij het snoeien en bewaar het koel in een zak tot je de stekken maakt."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wat bewaren?"
+        },
+        {
+            "type": "ul",
+            "items": [
+                "Gezonde, typische scheuten — geen zieke, beschadigde of atypische stukken.",
+                "Bij voorkeur niet-bloeiende scheuten.",
+                "Match de methode aan het seizoen: kop-/scheutstek in lente, halfrijp in nazomer, winterhout na bladval.",
+                "Wilgentwijgen: naast stek ook grondstof voor wilgenwater."
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Wat je niet stekt, kan nog mulch, takkenril of compost worden (kringloop). Zo blijft biomassa op de plek in plaats van afvoer. Deel overtollige bewortelde stekken via Gratis planten — snoei wordt dan sociale oogst."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — Softwood cuttings (snoeien stimuleert stekmateriaal)",
+            "url": "https://www.rhs.org.uk/propagation/softwood-cuttings"
+        },
+        {
+            "titel": "RHS — Climbers: taking cuttings (materiaal bij snoei bewaren)",
+            "url": "https://www.rhs.org.uk/plants/types/climbers/cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": false,
+    "pillar": "snoeien"
+}

@@ -1,0 +1,203 @@
+{
+  "meta": {
+    "titel": "Organisaties rond gratis planten delen",
+    "omschrijving": "Korte, feitelijke pagina’s over publiek vindbare organisaties en initiatieven. Geen partnerschappen; alleen controleerbare info met bronlink. Contactgegevens voor uitnodigen staan alleen in docs/uitnodigingen.md (niet versturen).",
+    "geraadpleegd": "2026-10-29"
+  },
+  "organisaties": [
+    {
+      "slug": "voedselbosbouw",
+      "naam": "Stichting Voedselbosbouw Nederland",
+      "type": "voedselbos",
+      "plaats": "Nederland",
+      "website": "https://voedselbosbouw.org/",
+      "bron_url": "https://voedselbosbouw.org/contact/",
+      "kort": "Stichting die kennis en praktijk rond voedselbossen in Nederland stimuleert. Geen bezoeklocatie op hun site; wel postadres en contact via de stichting.",
+      "deelplek_slugs": []
+    },
+    {
+      "slug": "netwerk-voedselbosbouw",
+      "naam": "Netwerk Voedselbosbouw",
+      "type": "voedselbos",
+      "plaats": "Nederland",
+      "website": "https://netwerkvoedselbosbouw.nl/",
+      "bron_url": "https://netwerkvoedselbosbouw.nl/",
+      "kort": "Netwerk rond voedselbosprofessionals (boer, ontwerper, kweker, investeerder, beleid), voortgekomen uit de Green Deal Voedselbossen. Publiceert o.a. een voedselbossenkaart.",
+      "deelplek_slugs": []
+    },
+    {
+      "slug": "voedsel-uit-het-bos",
+      "naam": "Vereniging Voedsel uit het Bos",
+      "type": "voedselbos",
+      "plaats": "Utrecht",
+      "website": "https://voedseluithetbos.nl/",
+      "bron_url": "https://voedseluithetbos.nl/contact/",
+      "kort": "Vereniging (sinds oktober 2023) gericht op opleidingen, kennis en community rond goed aangelegde en beheerde voedselbossen in Nederland.",
+      "deelplek_slugs": []
+    },
+    {
+      "slug": "meerbomen-nu",
+      "naam": "MeerBomen Nu",
+      "type": "initiatief",
+      "plaats": "Nederland",
+      "website": "https://meerbomen.nu/",
+      "bron_url": "https://meerbomen.nu/",
+      "kort": "Landelijk initiatief dat zaailingen redt en gratis tweede-kansbomen en -struiken uitdeelt via bomenhubs en vrijwilligers. Geen stekjes-deelplek; wel verwant groen delen.",
+      "deelplek_slugs": []
+    },
+    {
+      "slug": "stekjesroute",
+      "naam": "Stekjesroute",
+      "type": "initiatief",
+      "plaats": "Nederland",
+      "website": "https://stekjesroute.com/",
+      "bron_url": "https://stekjesroute.com/pages/contact/",
+      "kort": "Platform voor plantenruilkasten in Nederland en België. Exacte kastadressen staan vaak achter login; openbaar gemelde plekken kunnen op onze deelplekkenkaart staan.",
+      "deelplek_slugs": ["delft-mekelpark-ruilkast", "groesbeek-happy-stekkie"]
+    },
+    {
+      "slug": "velt",
+      "naam": "Velt Nederland",
+      "type": "tuinvereniging",
+      "plaats": "Nederland",
+      "website": "https://velt.nu/velt-nederland",
+      "bron_url": "https://velt.nu/velt-nederland",
+      "kort": "Velt ondersteunt lokale groepen rond ecologisch tuinieren, koken en leven, inclusief zaden- en plantenruilbeurzen. Contact voor Nederland via info.nederland@velt.nu (publiek op hun site).",
+      "deelplek_slugs": []
+    },
+    {
+      "slug": "zadenbibliotheek-nederland",
+      "naam": "Zadenbibliotheek Nederland",
+      "type": "zaadbibliotheek",
+      "plaats": "Leeuwarden",
+      "website": "https://zadenbibliotheeknederland.nl/",
+      "bron_url": "https://zadenbibliotheeknederland.nl/contact/",
+      "kort": "Stichting die zadenbibliotheken ondersteunt en zichtbaar maakt. Lokale locaties (bibliotheken e.d.) staan waar mogelijk op onze deelplekkenkaart.",
+      "deelplek_slugs": [
+        "alkmaar-zadenbieb-centrum",
+        "alkmaar-zadenbieb-de-mare",
+        "nijmegen-hatert-zadenbibliotheek"
+      ]
+    },
+    {
+      "slug": "permacultuur-nederland",
+      "naam": "Permacultuur Nederland",
+      "type": "initiatief",
+      "plaats": "Nederland",
+      "website": "https://www.permacultuurnederland.org/",
+      "bron_url": "http://www.permacultuurnederland.org/wp/contact-en-netwerk/",
+      "kort": "Website en netwerk rond permacultuur in Nederland, met kennisdeling en verwijzing naar de landelijke Facebook-groep.",
+      "deelplek_slugs": []
+    },
+    {
+      "slug": "eetbaargoed",
+      "naam": "Eetbaargoed",
+      "type": "initiatief",
+      "plaats": "Vaassen",
+      "website": "https://www.eetbaargoed.nl/",
+      "bron_url": "https://www.eetbaargoed.nl/",
+      "kort": "Kwekerij gericht op bijzondere eetbare planten (o.a. honingbes). Bezoek alleen op afspraak volgens hun site; geen plantenasiel op onze kaart.",
+      "deelplek_slugs": []
+    },
+    {
+      "slug": "plantenasiel-haarlem",
+      "naam": "Plantenasiel Haarlem",
+      "type": "plantenasiel",
+      "plaats": "Haarlem",
+      "website": "https://plantenasielhaarlem.nl/",
+      "bron_url": "https://plantenasielhaarlem.nl/contact/",
+      "kort": "Plantenasiel in wijkcentrum Alleman (Jan Sluijterslaan 11). Open o.a. dinsdagavond volgens hun contactsite; planten brengen en ophalen.",
+      "deelplek_slugs": ["haarlem-plantenasiel"]
+    },
+    {
+      "slug": "plantenasiel-zeist",
+      "naam": "Plantenasiel Zeist",
+      "type": "plantenasiel",
+      "plaats": "Zeist",
+      "website": "https://www.plantenasielzeist.nl/",
+      "bron_url": "https://www.plantenasielzeist.nl/plantenasielen/",
+      "kort": "Netwerk van plantenasielen in en rond Zeist (o.a. De Boswerf, De Dieptetuin, De Brink, Lab Lou, Weggeefwinkel) plus een locatie in Den Dolder. Tuinplanten brengen en gratis halen tijdens openingstijden.",
+      "deelplek_slugs": [
+        "zeist-boswerf",
+        "zeist-dieptetuin",
+        "zeist-de-brink",
+        "zeist-lab-lou",
+        "zeist-weggeefwinkel",
+        "den-dolder-eigen-oogst"
+      ]
+    },
+    {
+      "slug": "plantenhuis-utrecht",
+      "naam": "Het Plantenhuis (Plantenasiel Utrecht)",
+      "type": "plantenasiel",
+      "plaats": "Utrecht",
+      "website": "https://www.plantenasiel.nl/",
+      "bron_url": "https://www.plantenasiel.nl/",
+      "kort": "Plantenasiel in Bibliotheek Neude (Neude 11, Utrecht). Gericht op kamerplanten die een nieuw thuis zoeken; openingstijden staan op hun site.",
+      "deelplek_slugs": ["utrecht-plantenhuis"]
+    },
+    {
+      "slug": "plant-voor-plant",
+      "naam": "Plant voor Plant (MEC Maarssen)",
+      "type": "plantenasiel",
+      "plaats": "Maarssen",
+      "website": "https://plantvoorplant.nl/",
+      "bron_url": "https://plantvoorplant.nl/andere-plantenasiels/",
+      "kort": "Plantenasiel / plant-voor-plant-initiatief bij MEC Maarssen (Reigerskamp). Verwijst ook naar andere plantenasiels in de regio.",
+      "deelplek_slugs": ["maarssen-plant-voor-plant"]
+    },
+    {
+      "slug": "plantaardig-middelburg",
+      "naam": "Plantaardig Middelburg",
+      "type": "plantenasiel",
+      "plaats": "Middelburg",
+      "website": "https://plantaardigmiddelburg.nl/",
+      "bron_url": "https://plantaardigmiddelburg.nl/meer/",
+      "kort": "Stadstuinwinkel aan de Zusterstraat met plantenasiel: kamerplanten innemen en een nieuw plekje zoeken. Openingstijden en contact op hun site.",
+      "deelplek_slugs": ["middelburg-plantaardig"]
+    },
+    {
+      "slug": "plantenasiel-leiden",
+      "naam": "Plantenasiel Leiden",
+      "type": "plantenasiel",
+      "plaats": "Leiden",
+      "website": "https://www.gagoed.nl/plantenasiel-leiden/",
+      "bron_url": "https://www.gagoed.nl/plantenasiel-leiden/",
+      "kort": "Plantenasiel in Broedplaats Hazewind (Hazewindsteeg 2, Leiden), vermeld via Goed Leiden / GA Goed.",
+      "deelplek_slugs": ["leiden-plantenasiel"]
+    },
+    {
+      "slug": "plantenasiel-houten",
+      "naam": "Plantenasiel Houten",
+      "type": "plantenasiel",
+      "plaats": "Houten",
+      "website": "https://www.uitinhouten.nl/organisaties/90/plantenasiel-houten/",
+      "bron_url": "https://www.uitinhouten.nl/organisaties/90/plantenasiel-houten/",
+      "kort": "Plantenasiel bij De Krachtfabriek (Dijkhoeve 1, Houten), vermeld via Uit in Houten.",
+      "deelplek_slugs": ["houten-plantenasiel"]
+    },
+    {
+      "slug": "zadenbibliotheek-utrecht",
+      "naam": "Zadenbibliotheek Utrecht",
+      "type": "zaadbibliotheek",
+      "plaats": "Utrecht",
+      "website": "https://zadenbibliotheekutrecht.nl/",
+      "bron_url": "https://zadenbibliotheekutrecht.nl/Contact/",
+      "kort": "Lokale zadenbibliotheek bij tuindersvereniging Ons Genot (2e Polderweg 5, Utrecht).",
+      "deelplek_slugs": ["utrecht-zadenbibliotheek"]
+    },
+    {
+      "slug": "eetbaar-fryslan",
+      "naam": "Eetbaar Fryslân",
+      "type": "initiatief",
+      "plaats": "Leeuwarden",
+      "website": "https://eetbaarfryslan.frl/",
+      "bron_url": "https://eetbaarfryslan.frl/locatie/zadenbibliotheek-leeuwarden-fonteinland/",
+      "kort": "Platform rond eetbaar groen in Fryslân; publiceert o.a. locaties van zadenbibliotheken in Leeuwarden.",
+      "deelplek_slugs": [
+        "leeuwarden-zadenbieb-fonteinland",
+        "leeuwarden-zadenbieb-dbieb"
+      ]
+    }
+  ]
+}

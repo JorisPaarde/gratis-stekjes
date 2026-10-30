@@ -4,11 +4,47 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#1f4d2b">
   <title>Offline</title>
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <style>
+    :root {
+      --ink: #1a1210;
+      --forest: #1f4d2b;
+      --orange: #e8833a;
+      --orange-text: #1a1210;
+      --bg: #e6f2e1;
+    }
+    body {
+      margin: 0;
+      font-family: "Titillium Web", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.55;
+    }
+    .wrap { width: min(100% - 2rem, 42rem); margin: 3rem auto; }
+    h1 {
+      font-family: "Passion One", Georgia, serif;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--forest);
+      display: inline-block;
+      padding: .3rem .65rem;
+    }
+    .btn {
+      display: inline-flex;
+      background: var(--orange);
+      color: var(--orange-text);
+      text-decoration: none;
+      font-weight: 700;
+      padding: .75rem 1.3rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+  </style>
 </head>
 <body>
-  <main class="wrap section prose">
+  <main class="wrap">
     <h1>Je bent offline</h1>
     <p>Deze pagina staat in de cache. Account, berichten en zoeken werken alleen online.</p>
     <p><a class="btn" href="/">Naar home</a></p>

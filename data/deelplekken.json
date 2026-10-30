@@ -1,0 +1,467 @@
+{
+  "meta": {
+    "titel": "Deelplekken voor planten in Nederland",
+    "omschrijving": "Publiek vindbare plantenasiels, plantenbiebs, ruilkasten, stekjesruilpunten en zaadbibliotheken. Alleen plekken met een in een bron teruggevonden bezoekadres of duidelijke plaatsaanduiding; coördinaten via PDOK/OpenStreetMap op dat adres.",
+    "geraadpleegd": "2026-10-29",
+    "bronnen": [
+      {
+        "naam": "Plantenasiel Haarlem (contact)",
+        "url": "https://plantenasielhaarlem.nl/contact/"
+      },
+      {
+        "naam": "Plantenasiel Zeist — locaties",
+        "url": "https://www.plantenasielzeist.nl/plantenasielen/"
+      },
+      {
+        "naam": "Het Plantenhuis / Plantenasiel Utrecht",
+        "url": "https://www.plantenasiel.nl/"
+      },
+      {
+        "naam": "Plant voor Plant Maarssen",
+        "url": "https://plantvoorplant.nl/andere-plantenasiels/"
+      },
+      {
+        "naam": "Vrijwilligers Centrum Wageningen — Plantenasiel",
+        "url": "https://www.vcwageningen.nl/o/Thuis-Wageningen/activiteiten/Vrijwilliger-Plantenasiel/96106"
+      },
+      {
+        "naam": "Goed Leiden — Plantenasiel Leiden",
+        "url": "https://www.gagoed.nl/plantenasiel-leiden/"
+      },
+      {
+        "naam": "'t Brierke — Plantenasiel Eindhoven (De Mortel)",
+        "url": "https://www.brierke.nl/202604/plant.html"
+      },
+      {
+        "naam": "Uit in Houten — Plantenasiel Houten",
+        "url": "https://www.uitinhouten.nl/organisaties/90/plantenasiel-houten/"
+      },
+      {
+        "naam": "Plantaardig Middelburg",
+        "url": "https://plantaardigmiddelburg.nl/meer/"
+      },
+      {
+        "naam": "Plantleven — plantenbieb/ruilkast-meldingen",
+        "url": "https://plantleven.nl/plantenbieb-plantenasiel-nederland-belgie/"
+      },
+      {
+        "naam": "Bewonersorganisatie Leidschenveen — Plantenbieb",
+        "url": "https://www.bewonersorganisatieleidschenveen.nl/index32022.asp?nr=202204261716"
+      },
+      {
+        "naam": "Zadenbibliotheek Nederland — Alkmaar",
+        "url": "https://zadenbibliotheeknederland.nl/zadenbibliotheken-in-alkmaar-in-het-zonnetje/"
+      },
+      {
+        "naam": "Eetbaar Fryslân — zadenbibliotheken Leeuwarden",
+        "url": "https://eetbaarfryslan.frl/locatie/zadenbibliotheek-leeuwarden-fonteinland/"
+      },
+      {
+        "naam": "Zadenbibliotheek Utrecht",
+        "url": "https://zadenbibliotheekutrecht.nl/Contact/"
+      },
+      {
+        "naam": "Groningse bibliotheken — Zadenbibliotheek",
+        "url": "https://www.groningsebibliotheken.nl/collectie/zadenbibliotheek.html"
+      },
+      {
+        "naam": "Natuurlijk Noorden — Zadenbibliotheek Fryslân (Joure)",
+        "url": "https://www.natuurlijknoorden.nl/friesland/natuur-buiten-friesland/zadenbibliotheek-fryslan/"
+      },
+      {
+        "naam": "Zadenbibliotheek Nederland — Nijmegen Hatert",
+        "url": "https://zadenbibliotheeknederland.nl/zadenbibliotheek-nijmegen/"
+      },
+      {
+        "naam": "Plantenasiel 050 Groningen (adresvermelding)",
+        "url": "https://nlandmaps.com/plantenasiel-groningen-i7973370.html"
+      }
+    ],
+    "niet_opgenomen": [
+      "Plantenasiel Amsterdam: geen openbaar bezoekadres (contact via Instagram/Facebook).",
+      "Plantenasiel Maastricht: website gaf HTTP 500; geen betrouwbaar bezoekadres gevonden.",
+      "Plantenasiel Alkmaar / Plantastico: domein plantenasielalkmaar.nl te koop; conflicterende adressen in directories.",
+      "Plantenasiel Zwolle (Focus): alleen nieuws uit 2020 over Zerboltstraat; actuele status onzeker.",
+      "Plantbeu Rotterdam/Eindhoven: genoemd in oudere media, geen actueel bezoekadres gevonden.",
+      "Stekjesroute-ruilkasten: exacte adressen vaak achter login; alleen openbaar gemelde adressen opgenomen.",
+      "Belgische plantenasiels: buiten scope (Nederland).",
+      "Mama Botanica / Mevrouw Monstera-lijsten: alleen stadsnamen zonder adres — niet gebruikt als enige bron voor een plek.",
+      "Plantenasiel Oosterhout: alleen aggregatorvermelding zonder primaire bron met adres.",
+      "Zadenbibliotheek Hoeksche Waard: domein stond geparkeerd tijdens controle."
+    ]
+  },
+  "plekken": [
+    {
+      "id": "haarlem-plantenasiel",
+      "naam": "Plantenasiel Haarlem",
+      "type": "plantenasiel",
+      "plaats": "Haarlem",
+      "provincie": "Noord-Holland",
+      "adres": "Jan Sluijterslaan 11 (wijkcentrum Alleman), 2033 TM Haarlem",
+      "lat": 52.377503,
+      "lng": 4.664929,
+      "bron_url": "https://plantenasielhaarlem.nl/contact/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "zeist-boswerf",
+      "naam": "Plantenasiel Zeist — De Boswerf",
+      "type": "plantenasiel",
+      "plaats": "Zeist",
+      "provincie": "Utrecht",
+      "adres": "Prins Bernhardlaan 3 (Bezoekerscentrum De Boswerf), Zeist",
+      "lat": 52.084342,
+      "lng": 5.261313,
+      "bron_url": "https://www.plantenasielzeist.nl/plantenasielen/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "zeist-dieptetuin",
+      "naam": "Plantenasiel Zeist — De Dieptetuin",
+      "type": "plantenasiel",
+      "plaats": "Zeist",
+      "provincie": "Utrecht",
+      "adres": "Van Tetslaan (naast Huize Valckenbosch), Zeist",
+      "lat": 52.098838,
+      "lng": 5.251459,
+      "bron_url": "https://www.plantenasielzeist.nl/plantenasielen/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "zeist-de-brink",
+      "naam": "Plantenasiel Zeist — Kinderboerderij De Brink",
+      "type": "plantenasiel",
+      "plaats": "Zeist",
+      "provincie": "Utrecht",
+      "adres": "Kroostweg 7, 3704 EA Zeist",
+      "lat": 52.087089,
+      "lng": 5.227789,
+      "bron_url": "https://www.plantenasielzeist.nl/plantenasielen/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "zeist-lab-lou",
+      "naam": "Plantenasiel Zeist — Lab Lou",
+      "type": "plantenasiel",
+      "plaats": "Zeist",
+      "provincie": "Utrecht",
+      "adres": "Weteringlaan 1, Zeist",
+      "lat": 52.086943,
+      "lng": 5.207538,
+      "bron_url": "https://www.plantenasielzeist.nl/plantenasielen/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "zeist-weggeefwinkel",
+      "naam": "Plantenasiel Zeist — Weggeefwinkel",
+      "type": "plantenasiel",
+      "plaats": "Zeist",
+      "provincie": "Utrecht",
+      "adres": "Laan van Vollenhove 2191, Zeist",
+      "lat": 52.101694,
+      "lng": 5.227285,
+      "bron_url": "https://www.plantenasielzeist.nl/plantenasielen/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "den-dolder-eigen-oogst",
+      "naam": "Plantenasiel Zeist — Moestuinvereniging Eigen Oogst",
+      "type": "plantenasiel",
+      "plaats": "Den Dolder",
+      "provincie": "Utrecht",
+      "adres": "Boerderijlaantje (zijweg van de Dolderseweg), Den Dolder",
+      "lat": 52.153998,
+      "lng": 5.232882,
+      "bron_url": "https://www.plantenasielzeist.nl/plantenasielen/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "utrecht-plantenhuis",
+      "naam": "Het Plantenhuis (Plantenasiel Utrecht)",
+      "type": "plantenasiel",
+      "plaats": "Utrecht",
+      "provincie": "Utrecht",
+      "adres": "Neude 11 (Bibliotheek Neude), 3512 AE Utrecht",
+      "lat": 52.092903,
+      "lng": 5.118167,
+      "bron_url": "https://www.plantenasiel.nl/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "maarssen-plant-voor-plant",
+      "naam": "Plant voor Plant (MEC Maarssen)",
+      "type": "plantenasiel",
+      "plaats": "Maarssen",
+      "provincie": "Utrecht",
+      "adres": "Reigerskamp 197, Maarssenbroek",
+      "lat": 52.133207,
+      "lng": 5.012329,
+      "bron_url": "https://plantvoorplant.nl/andere-plantenasiels/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "wageningen-plantenasiel",
+      "naam": "Plantenasiel Wageningen",
+      "type": "plantenasiel",
+      "plaats": "Wageningen",
+      "provincie": "Gelderland",
+      "adres": "Stationsstraat 32, 6701 AM Wageningen",
+      "lat": 51.967931,
+      "lng": 5.665650,
+      "bron_url": "https://www.vcwageningen.nl/o/Thuis-Wageningen/activiteiten/Vrijwilliger-Plantenasiel/96106",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "leiden-plantenasiel",
+      "naam": "Plantenasiel Leiden",
+      "type": "plantenasiel",
+      "plaats": "Leiden",
+      "provincie": "Zuid-Holland",
+      "adres": "Hazewindsteeg 2 (Broedplaats Hazewind), Leiden",
+      "lat": 52.162401,
+      "lng": 4.489186,
+      "bron_url": "https://www.gagoed.nl/plantenasiel-leiden/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "groningen-plantenasiel-050",
+      "naam": "Plantenasiel 050 Groningen",
+      "type": "plantenasiel",
+      "plaats": "Groningen",
+      "provincie": "Groningen",
+      "adres": "Viaductstraat 3-7 (Puddingstudio / Puddingfabriek), 9725 BG Groningen",
+      "lat": 53.210467,
+      "lng": 6.570787,
+      "bron_url": "https://nlandmaps.com/plantenasiel-groningen-i7973370.html",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "eindhoven-de-mortel",
+      "naam": "Plantenasiel Eindhoven (wijkgebouw De Mortel)",
+      "type": "plantenasiel",
+      "plaats": "Eindhoven",
+      "provincie": "Noord-Brabant",
+      "adres": "Savoiepad 14 (wijkgebouw De Mortel), Eindhoven",
+      "lat": 51.487855,
+      "lng": 5.443362,
+      "bron_url": "https://www.brierke.nl/202604/plant.html",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "houten-plantenasiel",
+      "naam": "Plantenasiel Houten",
+      "type": "plantenasiel",
+      "plaats": "Houten",
+      "provincie": "Utrecht",
+      "adres": "Dijkhoeve 1 (De Krachtfabriek), 3992 XV Houten",
+      "lat": 52.034969,
+      "lng": 5.163807,
+      "bron_url": "https://www.uitinhouten.nl/organisaties/90/plantenasiel-houten/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "middelburg-plantaardig",
+      "naam": "Plantaardig Middelburg (plantenasiel)",
+      "type": "plantenasiel",
+      "plaats": "Middelburg",
+      "provincie": "Zeeland",
+      "adres": "Zusterstraat 10, 4331 KJ Middelburg",
+      "lat": 51.497316,
+      "lng": 3.611392,
+      "bron_url": "https://plantaardigmiddelburg.nl/meer/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "delft-mekelpark-ruilkast",
+      "naam": "Plantenruilkast Mekelpark Delft",
+      "type": "ruilkast",
+      "plaats": "Delft",
+      "provincie": "Zuid-Holland",
+      "adres": "Mekelpark 8, 2628 CD Delft",
+      "lat": 51.999241,
+      "lng": 4.374466,
+      "bron_url": "https://plantleven.nl/plantenbieb-plantenasiel-nederland-belgie/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "medemblik-plantenbieb",
+      "naam": "Plantenbieb Medemblik",
+      "type": "plantenbieb",
+      "plaats": "Medemblik",
+      "provincie": "Noord-Holland",
+      "adres": "Kanaalstraat 24, Medemblik",
+      "lat": 52.768549,
+      "lng": 5.100918,
+      "bron_url": "https://plantleven.nl/plantenbieb-plantenasiel-nederland-belgie/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "groesbeek-happy-stekkie",
+      "naam": "Happy stekkie ruil plekkie (Groesbeek)",
+      "type": "stekjesruilpunt",
+      "plaats": "Groesbeek",
+      "provincie": "Gelderland",
+      "adres": "Knapheidepad 9, 6562 DW Groesbeek",
+      "lat": 51.758093,
+      "lng": 5.935797,
+      "bron_url": "https://plantleven.nl/plantenbieb-plantenasiel-nederland-belgie/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "voorburg-koningkerk-plantenbieb",
+      "naam": "Plantenbieb Koningkerk Voorburg",
+      "type": "plantenbieb",
+      "plaats": "Voorburg",
+      "provincie": "Zuid-Holland",
+      "adres": "Koningkerk, hoek Bruijnings Ingenhoeslaan / Koningin Julianalaan, Voorburg",
+      "lat": 52.078857,
+      "lng": 4.350498,
+      "bron_url": "https://plantleven.nl/plantenbieb-plantenasiel-nederland-belgie/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "valthermond-plantenbieb",
+      "naam": "Plantenbieb Valthermond",
+      "type": "plantenbieb",
+      "plaats": "Valthermond",
+      "provincie": "Drenthe",
+      "adres": "Zuiderdiep 168, Valthermond",
+      "lat": 52.867590,
+      "lng": 6.935383,
+      "bron_url": "https://plantleven.nl/plantenbieb-plantenasiel-nederland-belgie/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "leidschenveen-plantenbieb",
+      "naam": "Plantenbieb Leidschenveen",
+      "type": "plantenbieb",
+      "plaats": "Den Haag",
+      "provincie": "Zuid-Holland",
+      "adres": "Waterjufferhof 5 (wijk De Vissen), Leidschenveen, Den Haag",
+      "lat": 52.061124,
+      "lng": 4.415825,
+      "bron_url": "https://www.bewonersorganisatieleidschenveen.nl/index32022.asp?nr=202204261716",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "alkmaar-zadenbieb-centrum",
+      "naam": "Zadenbibliotheek Alkmaar Centrum",
+      "type": "zaadbibliotheek",
+      "plaats": "Alkmaar",
+      "provincie": "Noord-Holland",
+      "adres": "Gasthuisstraat 2 (Bibliotheek Alkmaar Centrum), Alkmaar",
+      "lat": 52.633284,
+      "lng": 4.743228,
+      "bron_url": "https://zadenbibliotheeknederland.nl/zadenbibliotheken-in-alkmaar-in-het-zonnetje/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "alkmaar-zadenbieb-de-mare",
+      "naam": "Zadenbibliotheek Alkmaar De Mare",
+      "type": "zaadbibliotheek",
+      "plaats": "Alkmaar",
+      "provincie": "Noord-Holland",
+      "adres": "Laan van Straatsburg 2 (Bibliotheek De Mare), Alkmaar",
+      "lat": 52.653514,
+      "lng": 4.758969,
+      "bron_url": "https://zadenbibliotheeknederland.nl/zadenbibliotheken-in-alkmaar-in-het-zonnetje/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "leeuwarden-zadenbieb-fonteinland",
+      "naam": "Zadenbibliotheek Leeuwarden Fonteinland",
+      "type": "zaadbibliotheek",
+      "plaats": "Leeuwarden",
+      "provincie": "Fryslân",
+      "adres": "Fonteinland 7a, 8913 CZ Leeuwarden",
+      "lat": 53.199542,
+      "lng": 5.783833,
+      "bron_url": "https://eetbaarfryslan.frl/locatie/zadenbibliotheek-leeuwarden-fonteinland/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "leeuwarden-zadenbieb-dbieb",
+      "naam": "Zadenbibliotheek Dbieb Leeuwarden",
+      "type": "zaadbibliotheek",
+      "plaats": "Leeuwarden",
+      "provincie": "Fryslân",
+      "adres": "Blokhuisplein 40, 8911 LJ Leeuwarden",
+      "lat": 53.199905,
+      "lng": 5.801986,
+      "bron_url": "https://eetbaarfryslan.frl/locatie/zadenbibliotheek-in-dbieb-leeuwarden/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "joure-zadenbieb",
+      "naam": "Zadenbibliotheek Joure",
+      "type": "zaadbibliotheek",
+      "plaats": "Joure",
+      "provincie": "Fryslân",
+      "adres": "De Merk 31 (Bibliotheek Joure), Joure",
+      "lat": 52.964846,
+      "lng": 5.801219,
+      "bron_url": "https://www.natuurlijknoorden.nl/friesland/natuur-buiten-friesland/zadenbibliotheek-fryslan/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "utrecht-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Utrecht",
+      "type": "zaadbibliotheek",
+      "plaats": "Utrecht",
+      "provincie": "Utrecht",
+      "adres": "2e Polderweg 5 (tuindersvereniging Ons Genot), 3554 GR Utrecht",
+      "lat": 52.124049,
+      "lng": 5.081672,
+      "bron_url": "https://zadenbibliotheekutrecht.nl/Contact/",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "bedum-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Bibliotheek Bedum",
+      "type": "zaadbibliotheek",
+      "plaats": "Bedum",
+      "provincie": "Groningen",
+      "adres": "Kapelstraat 9, 9781 GK Bedum",
+      "lat": 53.301841,
+      "lng": 6.599356,
+      "bron_url": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/bedum.html",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "winsum-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Bibliotheek Winsum",
+      "type": "zaadbibliotheek",
+      "plaats": "Winsum",
+      "provincie": "Groningen",
+      "adres": "Regnerus Praediniusstraat 2, 9951 CB Winsum",
+      "lat": 53.331768,
+      "lng": 6.514173,
+      "bron_url": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/winsum.html",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "hoogezand-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Bibliotheek Hoogezand",
+      "type": "zaadbibliotheek",
+      "plaats": "Hoogezand",
+      "provincie": "Groningen",
+      "adres": "Gorecht-Oost 157, 9603 AE Hoogezand",
+      "lat": 53.153518,
+      "lng": 6.756819,
+      "bron_url": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/hoogezand.html",
+      "geraadpleegd": "2026-10-29"
+    },
+    {
+      "id": "nijmegen-hatert-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Nijmegen Hatert",
+      "type": "zaadbibliotheek",
+      "plaats": "Nijmegen",
+      "provincie": "Gelderland",
+      "adres": "Bibliotheek Hatert, Couwenbergstraat 20, Nijmegen",
+      "lat": 51.805308,
+      "lng": 5.827241,
+      "bron_url": "https://zadenbibliotheeknederland.nl/zadenbibliotheek-nijmegen/",
+      "geraadpleegd": "2026-10-29"
+    }
+  ]
+}

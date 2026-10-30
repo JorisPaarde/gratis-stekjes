@@ -48,8 +48,27 @@ jobs:
           npm ci
           npm run build
 
-      - name: Pest tests
+      - name: Deploy-hook lint + self-test
+        run: |
+          php -l deploy/hook/deploy-hook.php
+          php -l deploy/hook/lib.php
+          php deploy/hook/self-test.php
+
+      - name: Validate data JSON
+        run: |
+          python3 -c "import json; json.load(open('data/niet-aanbieden.json')); print('niet-aanbieden ok')"
+          python3 -c "import json; d=json.load(open('data/deelplekken.json')); assert 'plekken' in d and len(d['plekken'])>=30; print('deelplekken ok', len(d['plekken']))"
+          python3 -c "import json; d=json.load(open('data/steden.json')); assert 'steden' in d and len(d['steden'])>=35; print('steden ok', len(d['steden']))"
+          python3 -c "import json; d=json.load(open('data/organisaties.json')); assert 'organisaties' in d and len(d['organisaties'])>=10; print('organisaties ok', len(d['organisaties']))"
+
+      - name: Blade views compileren (view:cache)
         run: |
           cp .env.example .env
           php artisan key:generate
+          php artisan view:cache
+          php artisan view:clear
+
+      - name: Pest tests
+        run: |
+          test -f .env || { cp .env.example .env && php artisan key:generate; }
           ./vendor/bin/pest

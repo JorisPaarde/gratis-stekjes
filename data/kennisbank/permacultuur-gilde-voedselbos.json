@@ -1,0 +1,88 @@
+{
+    "slug": "permacultuur-gilde-voedselbos",
+    "titel": "Permacultuur",
+    "samenvatting": "Plant in lagen en gildes; vermeerder wat lokaal aanslaat met stek, scheuren, afleggen en zaad. Deel de overvloed.",
+    "meta_description": "Permacultuur: gildes, voedselboslagen en vermeerderen met stek, scheuren en afleggen. Deel surplus via Gratis planten.",
+    "zoekwoorden": [
+        "permacultuur",
+        "permacultuur gilde",
+        "voedselbos stekken",
+        "plantengilde",
+        "voedselbos vermeerderen",
+        "permacultuur stekken",
+        "permacultuur moestuin"
+    ],
+    "categorieen": [
+        "permacultuur"
+    ],
+    "pillar": "permacultuur",
+    "is_pillar": true,
+    "gerelateerde_soorten": [
+        "zwarte-bes",
+        "framboos",
+        "munt",
+        "salie",
+        "wilg",
+        "aardbei"
+    ],
+    "seizoenen": [
+        "lente",
+        "zomer",
+        "herfst"
+    ],
+    "maanden": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+    ],
+    "niveau": "gevorderd",
+    "locatie": "buiten",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Een voedselbos bootst boslagen na: kruin, struik, kruid, bodembedekker, wortel en klimmer. In permacultuur groepeer je planten in gildes die elkaar ondersteunen (stikstof, mulch, bestuiving, beschutting). Vermeerderen hoort bij ‘deel de overvloed’: wat goed groeit, deel je als stek of scheur."
+        },
+        {
+            "type": "h2",
+            "tekst": "Gilde en voedselbos"
+        },
+        {
+            "type": "p",
+            "tekst": "Permacultuur-gilde en vermeerderen voor het voedselbos starten klein: één fruitstruik met ondersteunende kruiden en bodembedekkers. Wat aanslaat, stek of scheur je en geef je door — zonder koopdruk."
+        },
+        {
+            "type": "h2",
+            "tekst": "Vermeerderen in de praktijk"
+        },
+        {
+            "type": "ul",
+            "items": [
+                "Struiken en bessen: zomerstek, halfrijpe of winterhoutstek; afleggen bij lastige soorten.",
+                "Kruiden en vaste planten: scheuren en kopstekken.",
+                "Bomen: soms winterhout of afleggen; koop of ruil alleen invasieve-vrije soorten.",
+                "Zaad: voor genetische diversiteit en soorten die slecht stekken — combineer met vegetatief voor klonen die je al kent."
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Het WUR-handboek voedselbossen beschrijft het systeem als productief én biodivers, met lage input. Start klein: één gilde rond een fruitstruik (bes + kruiden + bodembedekker), stek wat werkt, en geef surplus weg via deelplekken of Gratis planten. Zo groeit het netwerk sneller dan de portemonnee."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "WUR edepot — Basis Handboek aanleg en beheer van Voedselbossen",
+            "url": "https://edepot.wur.nl/368583"
+        },
+        {
+            "titel": "Permacultuur Nederland — De “Bostuin” (meerlagig eetbaar ontwerp)",
+            "url": "https://www.permacultuurnederland.org/permacultuurtk/bostuin2007.pdf"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": false
+}

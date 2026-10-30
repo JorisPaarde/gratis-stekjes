@@ -10,7 +10,10 @@ test('homepage is 200 en toont merk Gratis planten', function () {
 
     $response->assertOk();
     $response->assertSee('Gratis planten', false);
-    $response->assertSee('<h1 class="hero-brand">Gratis planten</h1>', false);
+    $response->assertSee('class="hero-brand"', false);
+    $response->assertSee('>Gratis planten</h1>', false);
+    $response->assertSee('assets/images/hero/hero-stekjes-1280.webp', false);
+    $response->assertSee('fetchpriority="high"', false);
     $response->assertSee('Waarom?', false);
     $response->assertSee('Doe mee', false);
     $response->assertSee('Hoe werkt het', false);
@@ -80,5 +83,5 @@ test('robots.txt allow zonder noindex', function () {
     $this->get('/robots.txt')
         ->assertOk()
         ->assertSee('Allow: /', false)
-        ->assertSee('Sitemap:', false);
+        ->assertSee('Sitemap: https://gratisplanten.nl/sitemap.xml', false);
 });

@@ -1,0 +1,82 @@
+{
+    "slug": "stekken-in-water-of-grond",
+    "titel": "Stekken in water of in grond?",
+    "samenvatting": "Waterstekken zijn zichtbaar en leuk; stekgrond is vaak sterker voor de overstap naar de tuin. Kies bewust per soort.",
+    "zoekwoorden": [
+        "stekken in water",
+        "stekken in grond",
+        "waterstek",
+        "stekgrond",
+        "stekken water of aarde"
+    ],
+    "categorieen": [
+        "stekken"
+    ],
+    "gerelateerde_soorten": [
+        "monstera",
+        "pothos",
+        "tradescantia",
+        "munt"
+    ],
+    "seizoenen": [
+        "lente",
+        "zomer"
+    ],
+    "maanden": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+    ],
+    "niveau": "beginner",
+    "locatie": "beide",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Veel kamerplanten (pothos, monstera, tradescantia) maken in een glas water snel wortels. Dat is overzichtelijk: je ziet wanneer er iets gebeurt. Voor bessen, kruiden en struiken is stekgrond of een zandige mix meestal betrouwbaarder, omdat de wortels meteen gewend raken aan substraat."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer water?"
+        },
+        {
+            "type": "ul",
+            "items": [
+                "Soorten die van nature in vochtige of tropische omstandigheden groeien en knoopwortels maken.",
+                "Als je wilt leren kijken: knoop onder water, blad boven water, helder water wisselen bij troebelheid.",
+                "Korte tussenstap: na waterwortels voorzichtig overzetten naar licht vochtige stekgrond en afharden."
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer grond?"
+        },
+        {
+            "type": "ul",
+            "items": [
+                "Houtige en halfhoutige stekken (zomer-/winterhout): RHS adviseert peat-free stekgrond of een mengsel met scherp zand, in vochtige maar niet natte omstandigheden.",
+                "Soorten die in stilstaand water snel rotten.",
+                "Als je plantjes wilt delen of uitplanten: wortels in grond zijn vaak steviger bij de overgang."
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Permacultuur-tip: vermijd overbodig plastic en turfstekgrond. Gebruik hergebruikte bakjes met drainage en een zelfgemaakte, luchtige mix (zie stekgrond zelf maken). Waterstekken zijn prima om te oefenen; voor voedselbos en tuinplanten is grond meestal de duurzamere hoofdroute."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — Softwood cuttings (stekgrond, vochtigheid, afharden)",
+            "url": "https://www.rhs.org.uk/propagation/softwood-cuttings"
+        },
+        {
+            "titel": "RHS — Leaf cuttings (vrij drainage medium voor bladstekken)",
+            "url": "https://www.rhs.org.uk/propagation/leaf-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": false,
+    "pillar": "stekken"
+}

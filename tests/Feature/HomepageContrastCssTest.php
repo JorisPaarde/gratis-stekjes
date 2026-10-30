@@ -15,7 +15,8 @@ function cssLastDecl(string $css, string $selector, string $property): ?string
     }
     $value = null;
     foreach ($blocks[1] as $body) {
-        if (preg_match('/'.preg_quote($property, '/').'\s*:\s*([^;}]+)/i', $body, $m)) {
+        // Geen match op border-color bij property "color"
+        if (preg_match('/(?<![\w-])'.preg_quote($property, '/').'\s*:\s*([^;}]+)/i', $body, $m)) {
             $value = trim($m[1]);
         }
     }
@@ -57,7 +58,7 @@ test('cta-panel houdt donkere achtergrond met lichte tekst (geen witte-op-licht 
 
     $bg = cssLastDecl($css, '.cta-panel', 'background');
     expect($bg)->not->toBeNull();
-    expect($bg)->toContain('#2f6b45');
+    expect($bg)->toContain('#1f4d2b');
     expect($bg)->not->toContain('var(--card)');
 
     $color = cssLastDecl($css, '.cta-panel', 'color');
@@ -66,19 +67,84 @@ test('cta-panel houdt donkere achtergrond met lichte tekst (geen witte-op-licht 
     $h2 = cssLastDecl($css, '.cta-panel h2', 'color');
     expect($h2)->toBe('#fff');
 
-    // Panel body text on leaf green ≥ AA
-    expect(contrastRatio('#e8f2e4', '#2f6b45'))->toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#ffffff', '#2f6b45'))->toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#ffe2b8', '#2f6b45'))->toBeGreaterThanOrEqual(4.5);
+    // Panel body text on forest ≥ AA
+    expect(contrastRatio('#e8f2e4', '#1f4d2b'))->toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#ffffff', '#1f4d2b'))->toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#ffe2b8', '#1f4d2b'))->toBeGreaterThanOrEqual(4.5);
 });
 
 test('homepage-tekstkleuren halen WCAG AA op lichte achtergrond', function () {
-    // Tokens uit :root — hard gecheckt zodat een lichte accent-kleur niet terugkruipt als bodytekst.
-    expect(contrastRatio('#1c2e22', '#eef4ea'))->toBeGreaterThanOrEqual(4.5); // ink
-    expect(contrastRatio('#3d5345', '#eef4ea'))->toBeGreaterThanOrEqual(4.5); // ink-soft
-    expect(contrastRatio('#1f4d32', '#eef4ea'))->toBeGreaterThanOrEqual(4.5); // leaf-deep
-    expect(contrastRatio('#8a4a1a', '#eef4ea'))->toBeGreaterThanOrEqual(4.5); // accent-text
-    expect(contrastRatio('#7a3b12', '#fff4e6'))->toBeGreaterThanOrEqual(4.5); // warn on warn-card
+    expect(contrastRatio('#1a1210', '#ffffff'))->toBeGreaterThanOrEqual(4.5); // ink
+    expect(contrastRatio('#3d4a3f', '#ffffff'))->toBeGreaterThanOrEqual(4.5); // ink-soft
+    expect(contrastRatio('#1f4d2b', '#ffffff'))->toBeGreaterThanOrEqual(4.5); // forest
+    expect(contrastRatio('#8a4514', '#e6f2e1'))->toBeGreaterThanOrEqual(4.5); // accent-text op mint
+    expect(contrastRatio('#1a1210', '#ffffff'))->toBeGreaterThanOrEqual(4.5); // warn-card ink op wit
+    // Oranje knoppen: donkere tekst (wit op #e8833a faalt AA)
+    expect(contrastRatio('#ffffff', '#e8833a'))->toBeLessThan(4.5);
+    expect(contrastRatio('#1a1210', '#e8833a'))->toBeGreaterThanOrEqual(4.5);
+});
+
+test('page-title is wit op bosgroen (niet overschreven door .section h1)', function () {
+    $css = file_get_contents(base_path('resources/css/site.css'));
+
+    $color = cssLastDecl($css, '.page-title', 'color');
+    $bg = cssLastDecl($css, '.page-title', 'background');
+    expect($color)->toBe('#fff');
+    expect($bg)->toBe('var(--forest)');
+
+    // Specificiteit-guard: gecombineerde selector aanwezig
+    expect($css)->toMatch('/\.section\s+h1\.page-title/');
+    expect(contrastRatio('#ffffff', '#1f4d2b'))->toBeGreaterThanOrEqual(4.5);
+});
+
+test('warn-card is wit met oranje linkerrand (geen peach)', function () {
+    $css = file_get_contents(base_path('resources/css/site.css'));
+    $bg = cssLastDecl($css, '.warn-card', 'background');
+    $color = cssLastDecl($css, '.warn-card', 'color');
+    $borderLeft = cssLastDecl($css, '.warn-card', 'border-left');
+    expect($bg)->toBe('#fff');
+    expect($color)->toBe('var(--ink)');
+    expect($borderLeft)->toMatch('/4px\s+solid\s+var\(--orange\)/');
+    expect($css)->toContain('--warn-bg: #ffffff');
+    expect($css)->not->toContain('#fff1e4');
+    expect($css)->not->toContain('#fff4e6');
+    expect($css)->not->toContain('background: #ffe');
+    expect(file_get_contents(base_path('resources/css/berichten.css')))->not->toContain('#fff1e4');
+    expect(contrastRatio('#1a1210', '#ffffff'))->toBeGreaterThanOrEqual(4.5);
+});
+
+test('header: nowrap + hamburger tot 1200px; iconen verborgen op desktop', function () {
+    $css = file_get_contents(base_path('resources/css/site.css'));
+    expect($css)->toContain('@media (min-width: 1200px)');
+    expect($css)->not->toContain('@media (min-width: 880px)');
+    expect($css)->toMatch('/\.brand\s*\{[^}]*white-space:\s*nowrap/s');
+    expect($css)->toMatch('/\.site-nav a\s*\{[^}]*white-space:\s*nowrap/s');
+    expect($css)->toMatch('/\.nav-cta\s*\{[^}]*white-space:\s*nowrap/s');
+    expect($css)->toMatch('/min-width:\s*1200px[\s\S]*?\.nav-toggle\s*\{\s*display:\s*none/');
+    expect($css)->toMatch('/min-width:\s*1200px[\s\S]*?\.site-nav \.icon\s*\{\s*display:\s*none/');
+});
+
+test('nav-toggle display:none op desktop wordt niet overschreven door icons-regel', function () {
+    $css = file_get_contents(base_path('resources/css/site.css'));
+
+    // Icons-groep mag .nav-toggle niet meer zetten (anders wint die over @media display:none).
+    expect($css)->not->toMatch('/\.site-nav a,\s*\.nav-toggle/');
+    expect($css)->not->toMatch('/\.nav-toggle,\s*\.btn/');
+
+    // Laatste .nav-toggle display-declaratie in het bestand moet none zijn (uit ≥1200px-media).
+    expect(cssLastDecl($css, '.nav-toggle', 'display'))->toBe('none');
+});
+
+test('hero- en mint-secties halen WCAG AA', function () {
+    // Hero titelblok: wit op bosgroen
+    expect(contrastRatio('#ffffff', '#1f4d2b'))->toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#f5faf3', '#163820'))->toBeGreaterThanOrEqual(4.5); // lead op scrim
+    expect(contrastRatio('#ffffff', '#163820'))->toBeGreaterThanOrEqual(4.5);
+
+    // section--mint
+    expect(contrastRatio('#1f4d2b', '#e6f2e1'))->toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#1a1210', '#e6f2e1'))->toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#3d4a3f', '#e6f2e1'))->toBeGreaterThanOrEqual(4.5);
 });
 
 test('rise-animatie alleen bij no-preference; reduced-motion forceert zichtbaarheid', function () {
@@ -88,4 +154,30 @@ test('rise-animatie alleen bij no-preference; reduced-motion forceert zichtbaarh
     expect($css)->toContain('@media (prefers-reduced-motion: reduce)');
     expect($css)->toMatch('/\.cta-panel\s*\{[^}]*opacity:\s*1/s');
     expect($css)->toMatch('/prefers-reduced-motion:\s*reduce[\s\S]*?\.cta-panel[\s\S]*?opacity:\s*1\s*!important/');
+});
+
+test('fonts zijn self-hosted (geen Google Fonts CDN in layout)', function () {
+    $layout = file_get_contents(base_path('resources/views/layouts/site.blade.php'));
+    expect($layout)->not->toContain('fonts.googleapis.com');
+    expect($layout)->not->toContain('fonts.gstatic.com');
+
+    $fontsCss = file_get_contents(base_path('resources/css/fonts.css'));
+    expect($fontsCss)->toContain('Passion One');
+    expect($fontsCss)->toContain('Titillium Web');
+    expect($fontsCss)->toContain('/fonts/');
+
+    expect(file_exists(public_path('fonts/titillium-web-latin-400-normal.woff2')))->toBeTrue();
+    expect(file_exists(public_path('fonts/passion-one-latin-700-normal.woff2')))->toBeTrue();
+});
+
+test('palette-tokens volgen design-stijl (bosgroen/mint/oranje)', function () {
+    $css = file_get_contents(base_path('resources/css/site.css'));
+    expect($css)->toContain('--forest: #1f4d2b');
+    expect($css)->toContain('--mint: #e6f2e1');
+    expect($css)->toContain('--orange: #e8833a');
+    expect($css)->toContain('--orange-text: #1a1210');
+    expect($css)->not->toContain('--teal: #1f6b74');
+    expect($css)->not->toContain('--peach: #f4cfc2');
+    expect($css)->toContain('"Passion One"');
+    expect($css)->toContain('"Titillium Web"');
 });

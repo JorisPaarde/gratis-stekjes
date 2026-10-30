@@ -39,7 +39,7 @@
   var nuBlocks = document.querySelectorAll("[data-nu-te-stekken]");
   if (nuBlocks.length) {
     var nuCfg = window.STEKJES_SITE || {};
-    var nuUrl = nuCfg.api_nu_te_stekken || "/api/nu-te-stekken.php";
+    var nuUrl = nuCfg.api_nu_te_stekken || "/api/nu-te-stekken";
     fetch(nuUrl, { credentials: "same-origin" })
       .then(function (r) {
         return r.json();

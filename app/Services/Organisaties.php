@@ -1,0 +1,102 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Services;
+
+use RuntimeException;
+
+final class Organisaties
+{
+    public function __construct(
+        private readonly ?string $jsonPath = null,
+    ) {}
+
+    /** @return list<array<string, mixed>> */
+    public function all(): array
+    {
+        $data = $this->load();
+
+        return array_values(array_filter(
+            $data['organisaties'] ?? [],
+            static fn ($row) => is_array($row) && ! empty($row['slug']) && ! empty($row['naam'])
+        ));
+    }
+
+    /** @return array<string, mixed>|null */
+    public function find(string $slug): ?array
+    {
+        if (! preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $slug)) {
+            return null;
+        }
+        foreach ($this->all() as $row) {
+            if (($row['slug'] ?? '') === $slug) {
+                return $row;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return array{meta: array<string, mixed>, organisaties: list<array<string, mixed>>}
+     */
+    public function load(): array
+    {
+        $path = $this->jsonPath ?? base_path('data/organisaties.json');
+        if (! is_readable($path)) {
+            throw new RuntimeException('Organisaties-bestand niet leesbaar: '.$path);
+        }
+        $raw = file_get_contents($path);
+        $data = json_decode((string) $raw, true);
+        if (! is_array($data) || ! isset($data['organisaties']) || ! is_array($data['organisaties'])) {
+            throw new RuntimeException('Ongeldig organisaties-JSON.');
+        }
+        if (! isset($data['meta']) || ! is_array($data['meta'])) {
+            throw new RuntimeException('Organisaties-JSON mist meta.');
+        }
+
+        return $data;
+    }
+
+    /** @return list<string> */
+    public function validateJson(): array
+    {
+        $errors = [];
+        try {
+            $data = $this->load();
+        } catch (RuntimeException $e) {
+            return [$e->getMessage()];
+        }
+
+        $seen = [];
+        foreach ($data['organisaties'] as $i => $row) {
+            if (! is_array($row)) {
+                $errors[] = "organisaties[$i] is geen object";
+
+                continue;
+            }
+            foreach (['slug', 'naam', 'type', 'plaats', 'website', 'bron_url', 'kort'] as $key) {
+                if (! array_key_exists($key, $row) || trim((string) $row[$key]) === '') {
+                    $errors[] = "organisaties[$i] mist veld $key";
+                }
+            }
+            $slug = (string) ($row['slug'] ?? '');
+            if ($slug !== '' && isset($seen[$slug])) {
+                $errors[] = "dubbele slug: $slug";
+            } elseif ($slug !== '') {
+                $seen[$slug] = true;
+            }
+            $website = (string) ($row['website'] ?? '');
+            if ($website !== '' && ! preg_match('#^https?://#i', $website)) {
+                $errors[] = "organisaties[$i] website moet http(s) zijn";
+            }
+            $bron = (string) ($row['bron_url'] ?? '');
+            if ($bron !== '' && ! preg_match('#^https?://#i', $bron)) {
+                $errors[] = "organisaties[$i] bron_url moet http(s) zijn";
+            }
+        }
+
+        return $errors;
+    }
+}
