@@ -105,6 +105,12 @@ jobs:
           npm ci
           npm run build
           test -f public/build/manifest.json
+          chmod +x scripts/write-robots-txt.sh
+          APP_ENV_NAME=production ./scripts/write-robots-txt.sh
+          test -s public/robots.txt
+          grep -q 'Allow: /' public/robots.txt
+          grep -q 'Sitemap: https://gratisplanten.nl/sitemap.xml' public/robots.txt
+          ! grep -q 'To customize, create a robots.txt' public/robots.txt
 
       - name: Upload via HTTPS deploy-hook + migrate + smoke
         if: steps.chk.outputs.skip != '1'

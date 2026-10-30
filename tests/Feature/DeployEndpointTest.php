@@ -91,13 +91,54 @@ test('deploy endpoint schrijft env-aware robots.txt naar public_path', function 
 
         expect(is_file($robotsPath))->toBeTrue();
         $body = (string) file_get_contents($robotsPath);
-        // testing-env is niet staging; noindex false → allow + sitemap
+        // testing-env is niet staging; noindex false → allow + canonieke sitemap
         expect($body)->toContain('Allow: /')
-            ->and($body)->toContain('Sitemap:')
+            ->and($body)->toContain('Sitemap: https://gratisplanten.nl/sitemap.xml')
             ->and($body)->not->toContain('Disallow: /');
     } finally {
         if (is_file($robotsPath)) {
             @unlink($robotsPath);
+        }
+    }
+});
+
+test('deploy endpoint schrijft robots naar SCRIPT_FILENAME-docroot (index.php)', function () {
+    config([
+        'stekjes.deploy_endpoint_enabled' => true,
+        'site.noindex' => true,
+    ]);
+
+    Artisan::shouldReceive('call')->times(6)->andReturn(0);
+
+    $fakeDocroot = sys_get_temp_dir().'/gp-robots-docroot-'.getmypid();
+    @mkdir($fakeDocroot, 0755, true);
+    $index = $fakeDocroot.'/index.php';
+    file_put_contents($index, "<?php\n");
+    $previousScript = $_SERVER['SCRIPT_FILENAME'] ?? null;
+    $_SERVER['SCRIPT_FILENAME'] = $index;
+
+    $publicRobots = public_path('robots.txt');
+    if (is_file($publicRobots)) {
+        @unlink($publicRobots);
+    }
+
+    try {
+        $this->withToken('test-deploy-token', 'Bearer')
+            ->postJson('/deploy/run')
+            ->assertOk();
+
+        expect(file_get_contents($fakeDocroot.'/robots.txt'))->toBe("User-agent: *\nDisallow: /\n");
+    } finally {
+        if ($previousScript === null) {
+            unset($_SERVER['SCRIPT_FILENAME']);
+        } else {
+            $_SERVER['SCRIPT_FILENAME'] = $previousScript;
+        }
+        @unlink($fakeDocroot.'/robots.txt');
+        @unlink($index);
+        @rmdir($fakeDocroot);
+        if (is_file($publicRobots)) {
+            @unlink($publicRobots);
         }
     }
 });

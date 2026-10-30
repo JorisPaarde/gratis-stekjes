@@ -71,7 +71,8 @@ class PageController extends Controller
             return "User-agent: *\nDisallow: /\n";
         }
 
-        return "User-agent: *\nAllow: /\nSitemap: ".url('/sitemap.xml')."\n";
+        // Canonieke productie-URL (gelijk aan scripts/write-robots-txt.sh).
+        return "User-agent: *\nAllow: /\nSitemap: https://gratisplanten.nl/sitemap.xml\n";
     }
 
     public function robots(): Response

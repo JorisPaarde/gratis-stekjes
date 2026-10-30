@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.24.7] - 2026-10-30
+
+### Fixed
+
+- `robots.txt` landde niet in de docroot na `/deploy/run` (schrijf ging vermoedelijk naar release-`public/`). Nu build-time: `scripts/write-robots-txt.sh` (staging disallow-all, productie allow + `Sitemap: https://gratisplanten.nl/sitemap.xml`) → `public/robots.txt` in de zip; hook sync’t die naar de docroot. `/deploy/run` schrijft nog secundair naar de echte docroot via `SCRIPT_FILENAME`/`index.php` en faalt met 500 + message bij mislukte write/verify. Smoke checkt dat `/robots.txt` geen hosting-fallback (“To customize…”) is. Lege stray `public/` in de docroot wordt verwijderd.
+
 ## [0.24.6] - 2026-10-30
 
 ### Added

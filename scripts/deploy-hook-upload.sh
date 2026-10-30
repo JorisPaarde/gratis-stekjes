@@ -133,12 +133,31 @@ if [ -z "$ARTIFACT" ] || [ ! -f "$ARTIFACT" ]; then
   test -f "${STAGE}/public/build/manifest.json" || die "public/build/manifest.json ontbreekt — eerst vite build."
   test -d "${STAGE}/vendor" || die "vendor/ ontbreekt — eerst composer --no-dev."
 
+  # Env-aware robots.txt in de zip → hook sync't naar docroot (hosting-fallback anders).
+  chmod +x "${ROOT}/scripts/write-robots-txt.sh"
+  APP_ENV_NAME="$APP_ENV_NAME" "${ROOT}/scripts/write-robots-txt.sh" "${STAGE}/public/robots.txt"
+  test -s "${STAGE}/public/robots.txt" || die "public/robots.txt ontbreekt na write-robots-txt."
+
   ARTIFACT="${WORKDIR}/release-${RELEASE_ID}.zip"
   (
     cd "$STAGE"
     zip -qr "$ARTIFACT" .
   )
 fi
+
+# Bestaande ARTIFACT_PATH: zorg dat public/robots.txt in de zip zit (injecteer zo nodig).
+if ! unzip -l "$ARTIFACT" 2>/dev/null | grep -qE '(^|/)public/robots\.txt$'; then
+  notice "Artefact mist public/robots.txt — injecteren…"
+  ROBOTS_INJECT="${WORKDIR}/robots-inject"
+  mkdir -p "${ROBOTS_INJECT}/public"
+  chmod +x "${ROOT}/scripts/write-robots-txt.sh"
+  APP_ENV_NAME="$APP_ENV_NAME" "${ROOT}/scripts/write-robots-txt.sh" "${ROBOTS_INJECT}/public/robots.txt"
+  (
+    cd "$ROBOTS_INJECT"
+    zip -q "$ARTIFACT" public/robots.txt
+  )
+fi
+unzip -l "$ARTIFACT" | grep -qE '(^|/)public/robots\.txt$' || die "Artefact bevat geen public/robots.txt."
 
 SIZE="$(wc -c < "$ARTIFACT" | tr -d ' ')"
 TOTAL_SHA="$(sha256sum "$ARTIFACT" | awk '{print $1}')"
@@ -383,7 +402,31 @@ if [ "${SKIP_SMOKE:-}" != "1" ]; then
     rm -f "$headers"
   fi
   rm -f "$tmp"
-  notice "Smoke OK (versie ${ver})."
+
+  # Statische robots.txt in docroot moet de hosting-fallback overrulen.
+  robots_tmp="$(mktemp)"
+  set +e
+  robots_code=$(curl -sS -o "$robots_tmp" -w '%{http_code}' --connect-timeout 15 --max-time 30 \
+    "${BASE_URL}/robots.txt")
+  set -e
+  if [ "$robots_code" != "200" ]; then
+    rm -f "$robots_tmp"
+    die "Smoke: /robots.txt HTTP ${robots_code}, verwacht 200."
+  fi
+  if grep -q 'To customize, create a robots.txt' "$robots_tmp"; then
+    rm -f "$robots_tmp"
+    die "Smoke: /robots.txt is hosting-fallback — ontbreekt in docroot."
+  fi
+  if [ "$APP_ENV_NAME" = "production" ]; then
+    grep -q 'Allow: /' "$robots_tmp" || { rm -f "$robots_tmp"; die "Smoke: productie-robots mist Allow: /."; }
+    grep -q 'Sitemap: https://gratisplanten.nl/sitemap.xml' "$robots_tmp" \
+      || { rm -f "$robots_tmp"; die "Smoke: productie-robots mist canonieke Sitemap."; }
+  else
+    grep -q 'Disallow: /' "$robots_tmp" || { rm -f "$robots_tmp"; die "Smoke: staging-robots mist Disallow: /."; }
+  fi
+  rm -f "$robots_tmp"
+
+  notice "Smoke OK (versie ${ver}, robots.txt OK)."
 fi
 
 notice "Deploy-hook upload voltooid (artefact ${SIZE} bytes)."
