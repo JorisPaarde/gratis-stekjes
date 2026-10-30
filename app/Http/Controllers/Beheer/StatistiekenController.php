@@ -35,6 +35,18 @@ class StatistiekenController extends Controller
 
         $signupsPerDay = $this->signupsLastDays(30);
         $pageViews = $this->pageViewsLastDays(14);
+        $pageViewsToday = $this->pageViewsToday();
+
+        /** Chronological (oldest→newest) series for the 14-day pageview chart. */
+        $pageViewsPerDay = $pageViews['byDay']
+            ->sortBy('date')
+            ->values()
+            ->map(fn (array $day) => [
+                'date' => $day['date'],
+                'label' => $day['label'],
+                'shortLabel' => Carbon::parse($day['date'])->timezone('Europe/Amsterdam')->format('d-m'),
+                'total' => $day['total'],
+            ]);
 
         $html = view('beheer.statistieken', [
             'title' => 'Statistieken',
@@ -51,8 +63,11 @@ class StatistiekenController extends Controller
             'signupsPerDay' => $signupsPerDay,
             'signupsPerDayMax' => max(1, (int) $signupsPerDay->max('count')),
             'pageViewsByDay' => $pageViews['byDay'],
+            'pageViewsPerDay' => $pageViewsPerDay,
+            'pageViewsPerDayMax' => max(1, (int) $pageViewsPerDay->max('total')),
             'pageViewsTop' => $pageViews['top'],
             'pageViewsTotal' => $pageViews['total'],
+            'pageViewsToday' => $pageViewsToday,
             'roleDefinition' => 'Uitdeler = account met minstens één aanbod; ophaler/alleen-account = nog geen aanbod.',
         ])->render();
 
@@ -85,6 +100,17 @@ class StatistiekenController extends Controller
         }
 
         return $out;
+    }
+
+    private function pageViewsToday(): int
+    {
+        if (! Schema::hasTable('page_views')) {
+            return 0;
+        }
+
+        return (int) PageView::query()
+            ->whereDate('date', now()->toDateString())
+            ->sum('count');
     }
 
     /**
