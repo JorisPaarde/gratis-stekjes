@@ -20,7 +20,8 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Changed
 
-- Oude SSH `deploy-staging.yml` blijft parallel; skip met notice zonder SSH-secrets of bij `STAGING_USE_CPANEL=1`.
+- Oude SSH `deploy-staging.yml` retired: alleen `workflow_dispatch` + `ALLOW_LEGACY_SSH_STAGING=1` (anders hard fail). Environment `staging` deelt nu gratisplanten-DB/URL — actieve route is `deploy-staging-cpanel.yml`.
+- cPanel-secrets: exact `CPANEL_HOST`/`USER`/`API_TOKEN`, `DEPLOY_TOKEN`, `STAGING_BASE_URL`, `STAGING_DB_*`; repo `SITE_NAME`/`SMTP_*`/`CRON_TOKEN`/`ADMIN_PASSWORD`. Geen `APP_KEY`-secret. Serverpaden vast in workflow/script. Noshell: `POST /deploy/run` is leidend voor migrate/cache.
 
 ## [0.24.2] - 2026-10-30
 

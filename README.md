@@ -44,9 +44,9 @@ Uitgebreider: [`docs/INSTALL.md`](docs/INSTALL.md). Branches: [`CONTRIBUTING.md`
 
 CI: `composer install --no-dev --optimize-autoloader` en `npm ci && npm run build`.
 
-**Staging (cPanel, geen SSH):** workflow `deploy-staging-cpanel.yml` bouwt en force-pusht naar branch `deploy-staging` (artefact + gegenereerde `.cpanel.yml` — die file staat **niet** op `staging`/`master`). cPanel-clone `repo-staging` trekt die branch; app → `STAGING_APP_DIR`, inhoud `public/` → docroot `STAGING_DEPLOY_PATH`, `index.php` wijst relatief naar de app-map. Daarna UAPI `.env` + `POST /deploy/run`. Details en secretlijst: [`AGENTS.md`](AGENTS.md). Bij Imunify-blokkade op `:2083`: `./scripts/cpanel-deploy.sh` vanaf een vaste machine.
+**Staging (cPanel, noshell):** workflow `deploy-staging-cpanel.yml` bouwt en force-pusht naar `deploy-staging` (artefact + `.cpanel.yml` alleen daar). App buiten docroot, `public/` → docroot, daarna UAPI `.env` + **`POST /deploy/run`** (betrouwbare migrate/cache). Secrets: [`AGENTS.md`](AGENTS.md). Bij Imunify op `:2083`: `./scripts/cpanel-deploy.sh` vanaf een vaste machine.
 
-**Staging (oude SSH, tijdelijk parallel):** `deploy-staging.yml`; uitzetten met secret `STAGING_USE_CPANEL=1`.
+**Oude SSH-deploy** (`deploy-staging.yml`): retired; alleen handmatig met `ALLOW_LEGACY_SSH_STAGING=1`.
 
 **Productie (SSH, tags):** docroot `DEPLOY_PATH`, app `APP_DIR`. Zelfde layout-idee later via cPanel (`app-prod` + `public_html`). Parked `gratisstekjes.nl` → 301 naar `gratisplanten.nl`.
 

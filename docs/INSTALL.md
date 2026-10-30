@@ -15,22 +15,13 @@ Geen secrets, hostnamen of private paden in deze repo.
 
 CI bouwt vendor (no-dev) en Vite-assets. Layout via secrets (zie ook `AGENTS.md`):
 
-| | Staging (cPanel) | Production (Environment `production`) |
+| | Staging (cPanel, noshell) | Production (Environment `production`) |
 |---|---|---|
-| Docroot | `STAGING_DEPLOY_PATH` (subdomein-map zelf, niet `…/public`) | `DEPLOY_PATH` / later `public_html` |
-| App (buiten webroot) | `STAGING_APP_DIR` (bijv. `…/app-staging`) | `APP_DIR` / later `…/app-prod` |
-| Git-clone op server | `CPANEL_REPO_ROOT` → branch `deploy-staging` | later `repo-prod` → `master` |
+| Docroot | vaste map `…/staging.gratisplanten.nl` | `DEPLOY_PATH` / later `public_html` |
+| App (buiten webroot) | vaste map `…/app-staging` | `APP_DIR` / later `…/app-prod` |
+| Git-clone op server | `…/repo-staging` → branch `deploy-staging` | later `repo-prod` → `master` |
 
-**Staging cPanel-stappen** (`deploy-staging-cpanel.yml` + `scripts/cpanel-deploy.sh`):
-
-1. Build in CI; force-push artefact naar GitHub-branch `deploy-staging` (inclusief `.cpanel.yml` — **niet** op `staging`/`master`).
-2. UAPI `VersionControl::update` + `VersionControlDeployment::create` (`.cpanel.yml` rsynct app → `APP_DIR`, `public/` → docroot; behoud `.env`/storage/uploads).
-3. `index.php` in docroot met relatief pad (`../app-staging`) + `usePublicPath(__DIR__)`.
-4. `.env` via Fileman UAPI; `APP_KEY` behouden indien aanwezig.
-5. `POST /deploy/run` (Bearer `DEPLOY_TOKEN`) → migrate + DeelplekkenSeeder + caches.
-6. `APP_ENV=staging` / `NOINDEX=true`.
-
-Oude SSH-deploy blijft tot `STAGING_USE_CPANEL=1`. Productie-SSH: `DEPLOY_HOST`/`USER`/`PORT`/`SSH_KEY`/`KNOWN_HOSTS`.
+**Staging** (`deploy-staging-cpanel.yml` + `scripts/cpanel-deploy.sh`): build → force-push `deploy-staging` → UAPI deploy (bestanden) → Fileman `.env` → **`POST /deploy/run`** (migrate/cache; artisan in `.cpanel.yml` is onbetrouwbaar zonder shell). Secrets: `AGENTS.md`. Oude SSH-workflow is retired. Productie-SSH: `DEPLOY_*`.
 
 ## Branches
 
