@@ -1,0 +1,76 @@
+{
+    "slug": "scheuren-en-afleggen",
+    "titel": "Scheuren en afleggen: vermeerderen zonder stekglas",
+    "samenvatting": "Scheuren deelt kluiten; afleggen laat een scheut wortelen terwijl die nog aan de moederplant zit. Weinig risico, veel plantjes.",
+    "zoekwoorden": [
+        "planten scheuren",
+        "afleggen",
+        "layering",
+        "vaste planten delen",
+        "vermeerderen zonder stek"
+    ],
+    "categorieen": [
+        "vermeerderen",
+        "permacultuur"
+    ],
+    "gerelateerde_soorten": [
+        "hosta",
+        "aardbei",
+        "framboos",
+        "aloe-vera",
+        "sedum"
+    ],
+    "seizoenen": [
+        "lente",
+        "herfst"
+    ],
+    "maanden": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+    ],
+    "niveau": "beginner",
+    "locatie": "buiten",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Niet alles hoeft een stek te zijn. Scheuren (division) en afleggen (layering) zijn betrouwbare manieren om planten te delen met weinig stress — ideaal voor voedselbos, vaste borders en gratis uitdelen."
+        },
+        {
+            "type": "h2",
+            "tekst": "Scheuren"
+        },
+        {
+            "type": "p",
+            "tekst": "De RHS raadt aan kluitvormende vaste planten elke paar jaar te scheuren voor gezondheid én vermeerdering. Beste moment: lente of herfst (niet in volle groei), tenzij de soort anders vraagt. Til de kluit, deel in stukken met wortels én groeipunten, plant meteen terug of pot op. Hostas, sedum, veel geraniums en siergrassen lenen zich hier goed voor; kindplantjes van aloe kun je ook losscheuren."
+        },
+        {
+            "type": "h2",
+            "tekst": "Afleggen"
+        },
+        {
+            "type": "p",
+            "tekst": "Bij eenvoudig afleggen buig je een soepele scheut naar de grond, wond je licht bij een knop, zet vast en bedek met grond. De scheut blijft aan de moederplant tot er wortels zijn (vaak binnen een jaar). Geschikt voor struiken en klimmers die lastig stekken, en voor bramen/frambozen (tip layering). Weinig materiaalverlies: mislukt afleggen, dan blijft de moeder intact."
+        },
+        {
+            "type": "p",
+            "tekst": "Permacultuur: vermeerder wat al goed groeit op jouw plek, deel overtollige delen, koop minder aan. Aardbeiuitlopers vastzetten is feitelijk een vorm van afleggen."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — Perennials: dividing",
+            "url": "https://www.rhs.org.uk/plants/types/perennials/dividing"
+        },
+        {
+            "titel": "RHS — Layering plants",
+            "url": "https://www.rhs.org.uk/propagation/layering"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": true,
+    "pillar": "vermeerderen"
+}

@@ -1,0 +1,76 @@
+{
+    "titel": "Rozen snoeien",
+    "samenvatting": "Rozen snoeien in maart: dood en ziek hout weg, kroon open. Verschilt per type; daarna kun je stekken van gezond snoeisel.",
+    "meta_description": "Rozen snoeien in maart: dood en ziek hout weg, kroon open. Verschilt per type; daarna kun je stekken van gezond snoeisel.",
+    "zoekwoorden": [
+        "rozen snoeien",
+        "rozen snoeien wanneer",
+        "rozenstruik snoeien",
+        "snoei klimroos"
+    ],
+    "categorieen": [
+        "snoeien"
+    ],
+    "pillar": "snoeien",
+    "gerelateerde_soorten": [],
+    "seizoenen": [
+        "winter",
+        "lente"
+    ],
+    "maanden": [
+        2,
+        3
+    ],
+    "niveau": "beginner",
+    "locatie": "buiten",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Rozen snoeien houdt de plant gezond en luchtig. De RHS noemt twee doelen: dood/ziek/beschadigd hout weg en het hart van de struik open voor lucht (minder schimmel)."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer?"
+        },
+        {
+            "type": "p",
+            "tekst": "Voor de meeste tuinen: maart, als knoppen beginnen te zwellen maar vóór volle bladontwikkeling. Exacte snit hangt af van type (theeroos, floribunda, struik, klimmer)."
+        },
+        {
+            "type": "h2",
+            "tekst": "Basisstappen"
+        },
+        {
+            "type": "ol",
+            "items": [
+                "Verwijder dood, beschadigd en ziek hout tot gezond weefsel.",
+                "Knip dunne, naar binnen groeiende takken weg.",
+                "Snoei naar een naar buiten wijzende knop.",
+                "Ruim bladafval op om schimmeldruk te verlagen."
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Gezond snoeisel kun je als softwood- of winterhoutstek gebruiken — zie rozen stekken. Let op: sommige rassen zijn kweekrechtelijk beschermd; stekken voor verkoop mag dan niet."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — How to grow roses",
+            "url": "https://www.rhs.org.uk/plants/roses/growing-guide"
+        },
+        {
+            "titel": "RHS — Softwood cuttings",
+            "url": "https://www.rhs.org.uk/propagation/softwood-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": true,
+    "seo": {
+        "plant": "rozen",
+        "rol": "snoeien",
+        "stek_type": "artikel",
+        "stek_slug": "rozen-stekken"
+    },
+    "slug": "rozen-snoeien"
+}

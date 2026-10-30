@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [staging, master]
+
+jobs:
+  master-from-staging-only:
+    name: PR naar master alleen van staging
+    if: github.event_name == 'pull_request' && github.base_ref == 'master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Controleer head-branch
+        run: |
+          set -euo pipefail
+          head="${{ github.head_ref }}"
+          echo "PR naar master vanaf: $head"
+          if [ "$head" != "staging" ]; then
+            echo "::error::PR's naar master mogen alleen vanaf branch 'staging'."
+            exit 1
+          fi
+
+  build-test:
+    name: Build, lint, tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: pdo_sqlite, mbstring, curl, xml, zip, bcmath, intl
+          coverage: none
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Composer install
+        run: composer install --no-interaction --prefer-dist
+
+      - name: NPM ci + build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Validate data JSON
+        run: |
+          python3 -c "import json; json.load(open('data/niet-aanbieden.json')); print('niet-aanbieden ok')"
+          python3 -c "import json; d=json.load(open('data/deelplekken.json')); assert 'plekken' in d and len(d['plekken'])>=30; print('deelplekken ok', len(d['plekken']))"
+          python3 -c "import json; d=json.load(open('data/steden.json')); assert 'steden' in d and len(d['steden'])>=35; print('steden ok', len(d['steden']))"
+          python3 -c "import json; d=json.load(open('data/organisaties.json')); assert 'organisaties' in d and len(d['organisaties'])>=10; print('organisaties ok', len(d['organisaties']))"
+
+      - name: Blade views compileren (view:cache)
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan view:cache
+          php artisan view:clear
+
+      - name: Pest tests
+        run: |
+          test -f .env || { cp .env.example .env && php artisan key:generate; }
+          ./vendor/bin/pest

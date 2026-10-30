@@ -1,0 +1,77 @@
+{
+    "titel": "Monstera stekken in water",
+    "samenvatting": "Monstera stekken in water: knoop onder water, blad erboven, helder water wisselen. Daarna overzetten naar stekgrond.",
+    "meta_description": "Monstera stekken in water stap voor stap. Inclusief overzetten naar grond en link naar gratis monstera-stekjes.",
+    "zoekwoorden": [
+        "monstera stekken in water",
+        "monstera stekken",
+        "monstera stekje water"
+    ],
+    "categorieen": [
+        "stekken"
+    ],
+    "pillar": "stekken",
+    "gerelateerde_soorten": [
+        "monstera",
+        "pothos",
+        "philodendron"
+    ],
+    "seizoenen": [
+        "lente",
+        "zomer"
+    ],
+    "maanden": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+    ],
+    "niveau": "beginner",
+    "locatie": "binnen",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Monstera stekken scoort hoog in zoekvolume; “in water” is de populairste variant. De soortpagina Monstera stekken blijft de start. Hier zoom je in op waterstekken."
+        },
+        {
+            "type": "h2",
+            "tekst": "Stappen"
+        },
+        {
+            "type": "ol",
+            "items": [
+                "Knip een stengelstek met minstens één knoop (en bij voorkeur een luchtwortelpunt).",
+                "Zet de knoop onder water; blad blijft droog boven water.",
+                "Gebruik een schoon glas; ververs water bij troebelheid.",
+                "Wacht op enkele centimeters wortel; zet daarna over in luchtige stekgrond en houd een week extra vochtig."
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Waterwortels zijn breekbaar: overpotten voorzichtig. Wilgenwater is optioneel. Deel geslaagde plantjes via het aanbod."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — Softwood cuttings (vochtigheid, afharden)",
+            "url": "https://www.rhs.org.uk/propagation/softwood-cuttings"
+        },
+        {
+            "titel": "RHS — Leaf cuttings (drainage / niet te nat)",
+            "url": "https://www.rhs.org.uk/propagation/leaf-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": true,
+    "seo": {
+        "plant": "monstera",
+        "rol": "stekken",
+        "aanbod_plant": "monstera",
+        "wilgenwater": true
+    },
+    "slug": "monstera-stekken-in-water"
+}

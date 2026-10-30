@@ -1,0 +1,6 @@
+---
+deployment:
+  tasks:
+    - export APP_DIR=/home/gratisplanten/app-staging
+    - export DOCROOT=/home/gratisplanten/staging.gratisplanten.nl
+    - /bin/bash ./scripts/cpanel-deploy-staging.sh

@@ -1,0 +1,10 @@
+---
+# VOORBEELD — niet als .cpanel.yml committen op staging/master.
+# CI schrijft .cpanel.yml alleen op branch deploy-staging (paden uit secrets).
+# repo-prod volgt master: een staging-.cpanel.yml daar zou prod kapot deployen.
+# Zelfde patroon later voor prod: eigen build-branch + APP_DIR=…/app-prod, DOCROOT=…/public_html.
+deployment:
+  tasks:
+    - export APP_DIR=/home/USER/app-staging
+    - export DOCROOT=/home/USER/staging.example.nl
+    - /bin/bash ./scripts/cpanel-deploy-staging.sh

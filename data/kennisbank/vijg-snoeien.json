@@ -1,0 +1,81 @@
+{
+    "titel": "Vijg snoeien",
+    "samenvatting": "Vijg snoeien wanneer: na de laatste strenge vorst in vroeg tot mid-voorjaar, plus zomersnijden. Bewaar scheuten met erwtgrote vijgjes.",
+    "meta_description": "Vijg snoeien wanneer: na de laatste strenge vorst in vroeg tot mid-voorjaar, plus zomersnijden. Bewaar scheuten met erwtgrote vijgjes.",
+    "zoekwoorden": [
+        "vijg snoeien",
+        "vijg snoeien wanneer",
+        "snoei vijgenboom",
+        "wanneer vijgenbomen snoeien",
+        "snoei vijgenboom"
+    ],
+    "categorieen": [
+        "snoeien"
+    ],
+    "pillar": "snoeien",
+    "gerelateerde_soorten": [
+        "vijg"
+    ],
+    "seizoenen": [
+        "lente",
+        "zomer"
+    ],
+    "maanden": [
+        3,
+        4,
+        5,
+        6
+    ],
+    "niveau": "beginner",
+    "locatie": "buiten",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Vijgen groeien hard. Regelmatig snoeien houdt ze klein en productief. De RHS adviseert twee momenten: vroeg tot mid-voorjaar (na vorst) en vroeg tot mid-zomer."
+        },
+        {
+            "type": "h2",
+            "tekst": "Belangrijk: waar zit de oogst?"
+        },
+        {
+            "type": "p",
+            "tekst": "Buiten rijpt vooral de oogst uit erwtgrote vruchtbeginsels die vorig najaar aan de scheuttips zijn gevormd. Laat in het voorjaar genoeg van die compacte tippen staan."
+        },
+        {
+            "type": "h2",
+            "tekst": "Hoe snoeien"
+        },
+        {
+            "type": "ol",
+            "items": [
+                "Draag handschoenen: sap irriteert; begin onderaan.",
+                "Lange kale takken: hard terugsnoeien (5–8 cm) i.p.v. tippen, zodat er laag nieuwe scheuten komen.",
+                "Of helemaal laten staan, of hard snoeien — half werk helpt weinig.",
+                "In vroege zomer: knijp nieuwe scheuten in na vijf bladeren; stop mid-zomer zodat volgende oogst zich kan vormen."
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Winterhout van snoei is bruikbaar om te stekken — zie de soortpagina vijg stekken en deel surplus gratis."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — Figs: pruning and training",
+            "url": "https://www.rhs.org.uk/fruit/figs/fig-pruning-and-training"
+        },
+        {
+            "titel": "RHS — Hardwood cuttings",
+            "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": true,
+    "seo": {
+        "plant": "vijg",
+        "rol": "snoeien",
+        "stek_type": "soort",
+        "stek_slug": "vijg"
+    },
+    "slug": "vijg-snoeien"
+}

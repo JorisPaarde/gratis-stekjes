@@ -1,0 +1,68 @@
+{
+    "titel": "Olijfboom stekken",
+    "samenvatting": "Olijfboom stekken met halfrijpe zomerstek. Geduld en warmte helpen; winterbescherming in NL is essentieel.",
+    "meta_description": "Olijfboom stekken met halfrijpe zomerstek. Geduld en warmte helpen; winterbescherming in NL is essentieel.",
+    "zoekwoorden": [
+        "olijfboom stekken",
+        "olijf stekken",
+        "olijfboompje stekken"
+    ],
+    "categorieen": [
+        "stekken"
+    ],
+    "pillar": "stekken",
+    "gerelateerde_soorten": [],
+    "seizoenen": [
+        "zomer"
+    ],
+    "maanden": [
+        6,
+        7,
+        8
+    ],
+    "niveau": "beginner",
+    "locatie": "buiten",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "De RHS noemt semi-ripe cuttings in de zomer als vegetatieve route voor Olea europaea (naast zaad). Zaailingen zijn genetisch variabel; stekken behouden het ras."
+        },
+        {
+            "type": "h2",
+            "tekst": "Zo stek je olijf"
+        },
+        {
+            "type": "ol",
+            "items": [
+                "Neem halfrijpe scheuten in zomer; snijd onder een knoop.",
+                "Verwijder onderste blad; grote bladeren halveren om verdamping te beperken.",
+                "Steek in luchtige, scherp drainende stekgrond; warm en licht, geen felle middagzon.",
+                "Houd gelijkmatig vochtig; beworteling kan weken tot maanden duren.",
+                "Wilgenwater mag; stekpoeder is optioneel en vaak overbodig bij goed materiaal."
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Jonge planten vorstvrij of beschut overwinteren. Deel geslaagde stekken via het platform."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — Olea europaea (common olive)",
+            "url": "https://www.rhs.org.uk/plants/11735/olea-europaea-f/details"
+        },
+        {
+            "titel": "RHS — Semi-ripe cuttings",
+            "url": "https://www.rhs.org.uk/propagation/semi-ripe-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": true,
+    "seo": {
+        "plant": "olijfboom",
+        "rol": "stekken",
+        "aanbod_plant": "olijfboom",
+        "wilgenwater": true
+    },
+    "slug": "olijfboom-stekken"
+}

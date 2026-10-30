@@ -1,0 +1,67 @@
+{
+    "slug": "kopstek-en-scheutstek",
+    "titel": "Kopstek en scheutstek: zacht hout in lente en vroege zomer",
+    "samenvatting": "Neem 5–10 cm van een jonge, niet-bloeiende scheutpunt. Hoogste bewortelingskans, mits vochtig en niet te heet.",
+    "zoekwoorden": [
+        "kopstek",
+        "scheutstek",
+        "zomerstek",
+        "softwood cuttings",
+        "stekken in de lente"
+    ],
+    "categorieen": [
+        "stekken"
+    ],
+    "gerelateerde_soorten": [
+        "fuchsia",
+        "pelargonium",
+        "hortensia",
+        "lavendel",
+        "salie"
+    ],
+    "seizoenen": [
+        "lente",
+        "zomer"
+    ],
+    "maanden": [
+        4,
+        5,
+        6
+    ],
+    "niveau": "beginner",
+    "locatie": "beide",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Een kopstek (scheutstek, softwood cutting) komt van het zachte, flexibele topje van dit seizoensgroei. Volgens de RHS is dit vaak de makkelijkste stengelstek: hoge bewortelingskans bij vaste planten, veel struiken en sommige bomen, vooral april–juni."
+        },
+        {
+            "type": "h2",
+            "tekst": "Stappen"
+        },
+        {
+            "type": "ol",
+            "items": [
+                "Oogst ’s ochtends, als de plant vol sap staat. Kies niet-bloeiende scheuten.",
+                "Knip tot circa 5–10 cm, net onder een knoop (bladoksel).",
+                "Verwijder onderste bladeren; knijp zo nodig de zachte top uit.",
+                "Steek in een gaatje in peat-free stekgrond; eerste bladpaar net boven de grond.",
+                "Houd luchtvochtig (zak of kweekbak), licht maar geen felle zon; grond licht vochtig.",
+                "Na 2–4 weken wortels: afharden en oppotten."
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Tip uit de RHS: jong materiaal en stek van planten die je in het voorjaar hard hebt gesnoeid, wortelt vaak sneller. Dat maakt snoeiafval bruikbaar in plaats van afval — zie ook snoeiafval als stek."
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — Softwood cuttings",
+            "url": "https://www.rhs.org.uk/propagation/softwood-cuttings"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": true,
+    "pillar": "stekken"
+}

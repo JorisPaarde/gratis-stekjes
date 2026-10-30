@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * Voorbeeld van de index.php die deploy in de docroot zet.
+ * Op staging: DOCROOT=/home/…/staging.gratisplanten.nl, APP=../app-staging
+ * Op productie (later): DOCROOT=/home/…/public_html, APP=../app-prod
+ * CI/cpanel-deploy-staging.sh genereert dit met realpath --relative-to.
+ */
+define('LARAVEL_START', microtime(true));
+
+require __DIR__.'/../app-staging/vendor/autoload.php';
+
+/** @var \Illuminate\Foundation\Application $app */
+$app = require_once __DIR__.'/../app-staging/bootstrap/app.php';
+
+// Docroot = deze map (__DIR__), zodat asset() en Vite build/manifest kloppen
+$app->usePublicPath(__DIR__);
+
+$app->handleRequest(Illuminate\Http\Request::capture());
