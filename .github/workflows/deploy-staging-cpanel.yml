@@ -1,9 +1,9 @@
 name: Deploy staging (cPanel)
 
-# Bouwt vendor + public/build, pusht naar branch deploy-staging (cPanel-clone volgt die),
-# triggert UAPI VersionControl + Deployment, schrijft .env, POST /deploy/run, smoke.
-# Ontbrekende CPANEL_* → skip met notice (geen rode X). Gedeeltelijk → hard fail.
-# Handmatig: workflow_dispatch of ./scripts/cpanel-deploy.sh (andere IP i.v.m. Imunify).
+# HTTPS deploy-hook (geen :2083 / UAPI). Bouwt vendor + Vite, zip't, chunked upload
+# naar /deploy-hook.php, daarna POST /deploy/run + smoke.
+# Ontbrekende verplichte secrets → skip met notice (geen rode X) alleen als HELE
+# hook-set ontbreekt; gedeeltelijk → hard fail. Hook 404 → ::error:: + INSTALL-stappen.
 on:
   push:
     branches: [staging]
@@ -14,51 +14,43 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: staging
     env:
-      # Exacte secretnamen (environment staging + repo). Paden = vaste serverlayout.
-      CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
-      CPANEL_USER: ${{ secrets.CPANEL_USER }}
-      CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
-      STAGING_BASE_URL: ${{ secrets.STAGING_BASE_URL }}
+      DEPLOY_HOOK_TOKEN: ${{ secrets.DEPLOY_HOOK_TOKEN }}
       DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-      CPANEL_BRANCH: deploy-staging
-      # Vaste layout (noshell-hosting); override alleen lokaal via env indien nodig.
-      CPANEL_REPO_ROOT: /home/gratisplanten/repo-staging
+      STAGING_BASE_URL: ${{ secrets.STAGING_BASE_URL }}
       STAGING_APP_DIR: /home/gratisplanten/app-staging
       STAGING_DEPLOY_PATH: /home/gratisplanten/staging.gratisplanten.nl
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Secrets aanwezig?
         id: chk
         run: |
           set -euo pipefail
-          if [ -z "${CPANEL_HOST:-}" ] && [ -z "${CPANEL_USER:-}" ] && [ -z "${CPANEL_API_TOKEN:-}" ]; then
-            echo "::notice::cPanel-secrets ontbreken — deploy-staging-cpanel overgeslagen."
+          if [ -z "${DEPLOY_HOOK_TOKEN:-}" ] && [ -z "${DEPLOY_TOKEN:-}" ] && [ -z "${STAGING_BASE_URL:-}" ]; then
+            echo "::notice::Deploy-hook secrets ontbreken — deploy-staging-cpanel overgeslagen. Zie deploy/hook/INSTALL.md."
             echo "skip=1" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           missing=0
-          for v in CPANEL_HOST CPANEL_USER CPANEL_API_TOKEN STAGING_BASE_URL DEPLOY_TOKEN; do
+          for v in DEPLOY_HOOK_TOKEN DEPLOY_TOKEN STAGING_BASE_URL; do
             if [ -z "${!v:-}" ]; then
               echo "::error::Verplicht secret ontbreekt: ${v}"
               missing=1
             fi
           done
           if [ "$missing" -ne 0 ]; then
-            echo "::error::Gedeeltelijke cPanel-config — niets half gedaan."
+            echo "::error::Gedeeltelijke deploy-hook-config — niets half gedaan."
             exit 1
           fi
           echo "skip=0" >> "$GITHUB_OUTPUT"
-          echo "::add-mask::${CPANEL_API_TOKEN}"
+          echo "::add-mask::${DEPLOY_HOOK_TOKEN}"
           echo "::add-mask::${DEPLOY_TOKEN}"
 
       - name: Setup PHP 8.2
@@ -84,71 +76,18 @@ jobs:
           npm ci
           npm run build
           test -f public/build/manifest.json
+          php -l deploy/hook/deploy-hook.php
+          php -l deploy/hook/lib.php
 
-      - name: Push artefact naar deploy-staging
+      - name: Upload via HTTPS deploy-hook + migrate + smoke
         if: steps.chk.outputs.skip != '1'
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          VER="$(tr -d '[:space:]' < VERSION)"
-          SHA="$(git rev-parse --short HEAD)"
-          SRC="$PWD"
-          WORK="$(mktemp -d)"
-          APP_DIR="${STAGING_APP_DIR}"
-          DOCROOT="${STAGING_DEPLOY_PATH}"
-
-          # Orphan + force-push: één commit op deploy-staging (placeholder mag herschreven).
-          # .cpanel.yml ALLEEN hier — nooit in staging/master (repo-prod volgt master).
-          # noshell: artisan in tasks mag falen; POST /deploy/run is de betrouwbare migrate-route.
-          git worktree add --detach "$WORK" HEAD
-          git -C "$WORK" checkout --orphan deploy-staging
-          find "$WORK" -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
-
-          rsync -a \
-            --exclude='.git/' \
-            --exclude='node_modules/' \
-            --exclude='tests/' \
-            --exclude='.env' \
-            --exclude='.env.*' \
-            --exclude='.cpanel.yml' \
-            --exclude='.phpunit.result.cache' \
-            --exclude='phpunit.xml' \
-            --exclude='storage/logs/*' \
-            --exclude='storage/framework/cache/*' \
-            --exclude='storage/framework/sessions/*' \
-            --exclude='storage/framework/views/' \
-            --exclude='storage/app/*' \
-            --exclude='storage/backups/' \
-            "${SRC}/" "${WORK}/"
-
-          {
-            printf '%s\n' '---'
-            printf '%s\n' 'deployment:'
-            printf '%s\n' '  tasks:'
-            printf '%s\n' "    - export APP_DIR=${APP_DIR}"
-            printf '%s\n' "    - export DOCROOT=${DOCROOT}"
-            printf '%s\n' '    - /bin/bash ./scripts/cpanel-deploy-staging.sh'
-          } > "${WORK}/.cpanel.yml"
-
-          git -C "$WORK" add -A
-          git -C "$WORK" add -f vendor public/build .cpanel.yml scripts/cpanel-deploy-staging.sh
-          git -C "$WORK" commit -m "deploy-staging: ${VER} (${SHA})"
-          git -C "$WORK" push --force origin HEAD:deploy-staging
-          git worktree remove "$WORK" --force
-          # Zekerheid: geen .cpanel.yml achterlaten in de source-checkout.
-          rm -f "${SRC}/.cpanel.yml"
-          test ! -f "${SRC}/.cpanel.yml"
-
-      - name: cPanel UAPI deploy + .env + migrate + smoke
-        if: steps.chk.outputs.skip != '1'
+        id: upload
         env:
           SITE_NAME: ${{ secrets.SITE_NAME }}
-          STAGING_DB_HOST: ${{ secrets.STAGING_DB_HOST }}
-          STAGING_DB_NAME: ${{ secrets.STAGING_DB_NAME }}
-          STAGING_DB_USER: ${{ secrets.STAGING_DB_USER }}
-          STAGING_DB_PASS: ${{ secrets.STAGING_DB_PASS }}
+          DB_HOST: ${{ secrets.STAGING_DB_HOST }}
+          DB_DATABASE: ${{ secrets.STAGING_DB_NAME }}
+          DB_USERNAME: ${{ secrets.STAGING_DB_USER }}
+          DB_PASSWORD: ${{ secrets.STAGING_DB_PASS }}
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
@@ -157,8 +96,20 @@ jobs:
           SMTP_FROM: ${{ secrets.SMTP_FROM }}
           CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          APP_KEY: ${{ secrets.APP_KEY }}
+          BASE_URL: ${{ secrets.STAGING_BASE_URL }}
+          APP_ENV_NAME: staging
         run: |
           set -euo pipefail
-          chmod +x scripts/cpanel-deploy.sh scripts/cpanel-deploy-staging.sh scripts/dotenv-quote.sh
-          # Migratie/caches: POST /deploy/run is leidend (noshell → artisan in .cpanel.yml onbetrouwbaar).
-          ./scripts/cpanel-deploy.sh
+          chmod +x scripts/deploy-hook-upload.sh scripts/dotenv-quote.sh scripts/make-deploy-hook-config.sh
+          for v in DB_HOST DB_DATABASE DB_USERNAME DB_PASSWORD SMTP_HOST SMTP_USER SMTP_PASS CRON_TOKEN ADMIN_PASSWORD; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Verplicht secret/env ontbreekt: ${v}"
+              exit 1
+            fi
+          done
+          echo "::add-mask::${DB_PASSWORD}"
+          echo "::add-mask::${SMTP_PASS}"
+          echo "::add-mask::${ADMIN_PASSWORD}"
+          echo "::add-mask::${CRON_TOKEN}"
+          ./scripts/deploy-hook-upload.sh
