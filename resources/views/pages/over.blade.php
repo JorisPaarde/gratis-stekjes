@@ -17,9 +17,9 @@
   <h2>Hoe het werkt</h2>
   <p>Drie spelregels: <strong>gratis</strong>, alleen <strong>fysiek ophalen</strong>, en de enige tegenprestatie is een <strong>praatje</strong>.</p>
   <ol class="list-plain">
-    <li>Je maakt een account (e-mailbevestiging verplicht).</li>
-    <li>Uitdelers zetten op de site wat ze gratis weggeven, met een benaderde plek (postcode of plaats) — nooit een straatadres via de site.</li>
-    <li>Ophalers zoeken in de buurt en sturen een bericht via de site. E-mail blijft verborgen.</li>
+    <li>Je maakt één account (e-mailbevestiging verplicht). Met dat account kun je zowel iets aanbieden als iets ophalen.</li>
+    <li>Je zet op de site wat je gratis weggeeft, met een benaderde plek (postcode of plaats) — nooit een straatadres via de site.</li>
+    <li>Je zoekt in de buurt en stuurt een bericht via de site. E-mail blijft verborgen.</li>
     <li>Jullie spreken onderling een ophaalmoment af. Exacte adressen deel je zelf, als je dat wilt.</li>
     <li>Pas bij wederzijds akkoord zien jullie elkaars contactgegevens.</li>
   </ol>

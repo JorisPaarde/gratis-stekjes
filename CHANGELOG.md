@@ -9,6 +9,18 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.23.2] - 2026-10-30
+
+### Changed
+
+- Beheer-statistieken (`/beheer/statistieken`) visueler: KPI-kaarten met groot cijfer + inline-SVG sparkline, uitklapbare SVG-charts (`<details>`), overzichtsgrafiek (aanmeldingen + bezoekers, 30 dagen) standaard open; donuts voor bevestigd/onbevestigd en leden-met-aanbod; horizontale staven voor top pagina’s. Geen externe chart-libs/CDN/JS. Tabellen geminimaliseerd (per-dag pageviews alleen in ingeklapte sectie).
+- Lidmetrics: **Leden** (`users` count) en **Leden die iets aangeboden hebben** (`COUNT(DISTINCT aanbod.user_id)` — ooit ≥1 listing, elke status). Geen uitdelers/ophalers-split, geen ophaalmeting.
+- Site-copy: één accounttype — homepage Doe-mee, registreren, hoe-werkt-het en over spreken niet meer van aparte uitdeler-/ophaler-accounts of rolkeuze bij registratie. Listing-type uitdelen/ophalen blijft (wat je plaatst), geen accountrol.
+
+### Added
+
+- Pest: statistieken renderen met SVG-charts (admin), lege data zonder fouten, guest redirect; homepage zonder `rol=`-links.
+
 ## [0.23.1] - 2026-10-30
 
 ### Changed

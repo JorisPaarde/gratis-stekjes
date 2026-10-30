@@ -66,15 +66,15 @@
 
   <div class="cta-panel" id="doe-mee">
     <h2>Doe mee</h2>
-    <p>Kies wat bij je past. Stekjes blijven gratis — geen verkoop. Account, aanbod, kaart en berichten staan klaar.</p>
+    <p>Eén account volstaat: je kunt zowel iets aanbieden als iets ophalen. Stekjes blijven gratis — geen verkoop.</p>
     <div class="cta-choices">
-      <a class="cta-choice" href="{{ route('account.registreren', ['rol' => 'uitdelen']) }}">
-        <strong>Ik deel planten uit</strong>
-        <span>Account aanmaken (e-mailbevestiging verplicht).</span>
+      <a class="cta-choice" href="{{ route('account.registreren') }}">
+        <strong>Account maken</strong>
+        <span>Bevestig je e-mail; daarna kun je aanbod plaatsen én berichten sturen.</span>
       </a>
-      <a class="cta-choice" href="{{ route('account.registreren', ['rol' => 'ophalen']) }}">
-        <strong>Ik wil ophalen</strong>
-        <span>Account aanmaken en zoeken op de kaart.</span>
+      <a class="cta-choice" href="{{ route('aanbod') }}">
+        <strong>Bekijk het aanbod</strong>
+        <span>Zoek in de buurt op de kaart — zonder account mag je al kijken.</span>
       </a>
       <div class="cta-choice cta-choice--soon">
         <strong>Ik help op een andere manier</strong>
@@ -91,9 +91,9 @@
     <h2 id="hoe-titel">Hoe werkt het</h2>
     <p class="section-intro">Drie spelregels: <strong>gratis</strong>, alleen <strong>fysiek ophalen</strong>, en de enige tegenprestatie is een <strong>praatje</strong>.</p>
     <ol class="steps">
-      <li><span>Je maakt een account (of meldt je aan als helper).</span></li>
-      <li><span>Uitdelers zetten op de site wat ze gratis weggeven, met een benaderde plek (postcode of plaats) — nooit een straatadres.</span></li>
-      <li><span>Ophalers zoeken in de buurt en sturen een bericht via de site.</span></li>
+      <li><span>Je maakt één account (e-mailbevestiging verplicht) — of je meldt je later aan als helper.</span></li>
+      <li><span>Met datzelfde account zet je op de site wat je gratis weggeeft (benaderde plek: postcode of plaats — nooit een straatadres via de site).</span></li>
+      <li><span>Je zoekt in de buurt en stuurt een bericht via de site. E-mailadressen blijven verborgen.</span></li>
       <li><span>Jullie spreken onderling een ophaalmoment af. Exacte adressen deel je zelf, als je dat wilt.</span></li>
       <li><span>Pas bij wederzijds akkoord zien jullie elkaars contactgegevens.</span></li>
     </ol>
