@@ -34,7 +34,29 @@
       <p>Nog geen feedback.</p>
     </div>
   @else
-    <div class="beheer-table-wrap">
+    <ul class="beheer-feedback-cards">
+      @foreach($items as $item)
+        <li @class(['beheer-feedback-card', 'beheer-feedback-unread' => ! $item->isRead()])>
+          <div class="beheer-feedback-card-meta">
+            <time datetime="{{ $item->created_at?->toIso8601String() }}">{{ $item->created_at?->timezone('Europe/Amsterdam')->format('d-m-Y H:i') }}</time>
+            <code>{{ $item->page_path }}</code>
+          </div>
+          <p class="beheer-feedback-body">{{ $item->body }}</p>
+          <div class="beheer-feedback-card-footer">
+            <span class="beheer-feedback-status">{{ $item->isRead() ? 'gelezen' : 'nieuw' }}</span>
+            @unless($item->isRead())
+              <form method="post" action="{{ route('beheer.feedback.read') }}">
+                @csrf
+                <input type="hidden" name="id" value="{{ $item->id }}">
+                <button type="submit" class="linkish">Markeer gelezen</button>
+              </form>
+            @endunless
+          </div>
+        </li>
+      @endforeach
+    </ul>
+
+    <div class="beheer-table-wrap beheer-feedback-table">
       <table class="beheer-table">
         <thead>
           <tr>

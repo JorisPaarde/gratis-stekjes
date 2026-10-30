@@ -62,12 +62,81 @@
 
 .beheer-feedback-body {
   white-space: pre-wrap;
-  word-break: break-word;
+  overflow-wrap: anywhere;
+  word-break: normal;
   max-width: 36rem;
 }
 
 .beheer-feedback-unread td {
   background: rgba(232, 131, 58, 0.08);
+}
+
+/* Feedback: cards on narrow screens, table from 640px */
+.beheer-feedback-cards {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.beheer-feedback-card {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line, rgba(26, 18, 16, 0.12));
+  border-radius: var(--radius, 0.85rem);
+  background: var(--card, #fff);
+}
+
+.beheer-feedback-card.beheer-feedback-unread {
+  background: rgba(232, 131, 58, 0.08);
+}
+
+.beheer-feedback-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.75rem;
+  margin-bottom: 0.55rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft, #3d4a3f);
+}
+
+.beheer-feedback-card-meta code {
+  font-size: 0.85em;
+}
+
+.beheer-feedback-card .beheer-feedback-body {
+  margin: 0 0 0.75rem;
+  max-width: none;
+  line-height: 1.5;
+}
+
+.beheer-feedback-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.beheer-feedback-status {
+  font-size: 0.9rem;
+  color: var(--ink-soft, #3d4a3f);
+}
+
+.beheer-feedback-table {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .beheer-feedback-cards {
+    display: none;
+  }
+
+  .beheer-feedback-table {
+    display: block;
+  }
 }
 
 .beheer-actions a {

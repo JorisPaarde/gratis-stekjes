@@ -125,6 +125,8 @@ test('admin feedbacklijst toont ontsleutelde tekst zonder lid-pii', function () 
         ->assertSee('name="robots" content="noindex, nofollow"', false)
         ->assertSee('Graag meer stektips over kruiden.', false)
         ->assertSee('/stektips', false)
+        ->assertSee('beheer-feedback-cards', false)
+        ->assertSee('beheer-feedback-table', false)
         ->getContent();
 
     expect($html)->not->toContain('feedback-lid@example.com')

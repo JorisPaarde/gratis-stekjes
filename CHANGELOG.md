@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.24.1] - 2026-10-30
+
+### Fixed
+
+- Beheer-feedback op smal scherm (`<640px`): items als kaarten (datum + pad op één regel, volle tekst met normale wrapping, status + “Markeer gelezen” onderaan) i.p.v. een geperste tabelkolom; vanaf 640px blijft de tabel.
+
 ## [0.24.0] - 2026-10-30
 
 ### Added
