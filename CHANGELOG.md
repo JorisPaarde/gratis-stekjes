@@ -9,6 +9,21 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.24.4] - 2026-10-30
+
+### Added
+
+- HTTPS deploy-hook voor cPanel noshell (geen `:2083`/UAPI): `deploy/hook/deploy-hook.php` + `lib.php`, config buiten docroot (`~/.deploy/<env>.php` met token-hash), chunked upload (5 MiB + sha256), release-swap met behoud van `storage/` en `.env`, daarna `POST /deploy/run` + smoke.
+- `scripts/deploy-hook-upload.sh` (artefact-zip, `.env` via `dotenv-quote.sh`, Bearer-upload, migrate, smoke; duidelijke `::error::` + INSTALL-stappen bij hook-404).
+- `scripts/make-deploy-hook-config.sh` (random token → `gh secret set DEPLOY_HOOK_TOKEN`, print alleen config met hash).
+- Workflow `deploy-prod-hook.yml` (tags `v*.*.*` / `workflow_dispatch`, environment `production`, secrets `PROD_*`); draait niet op merges naar staging.
+- `deploy/hook/INSTALL.md` (eenmalige cPanel File Manager-stappen) + Pest/self-test voor auth, chunks/checksums en storage-behoud.
+
+### Changed
+
+- `deploy-staging-cpanel.yml` gebruikt alleen HTTPS-hook (geen force-push `deploy-staging`, geen UAPI-retries). Branch `deploy-staging` blijft bestaan maar wordt niet meer aangestuurd.
+- Docs (`AGENTS.md`, `README`, `docs/INSTALL.md`, `CONTRIBUTING`): secretnamen en flow bijgewerkt; `CPANEL_*` legacy.
+
 ## [0.24.3] - 2026-10-30
 
 ### Added

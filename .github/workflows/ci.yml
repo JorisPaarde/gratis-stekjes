@@ -48,6 +48,12 @@ jobs:
           npm ci
           npm run build
 
+      - name: Deploy-hook lint + self-test
+        run: |
+          php -l deploy/hook/deploy-hook.php
+          php -l deploy/hook/lib.php
+          php deploy/hook/self-test.php
+
       - name: Validate data JSON
         run: |
           python3 -c "import json; json.load(open('data/niet-aanbieden.json')); print('niet-aanbieden ok')"

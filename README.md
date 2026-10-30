@@ -15,7 +15,7 @@ Het doel is simpel: de wereld een stukje groener maken. Meer planten in meer tui
 - **Privacy eerst.** Op de kaart alleen een benaderde plek, nooit een adres of e-mailadres.
 - **Groen en eerlijk.** Invasieve soorten in Nederland horen er niet tussen.
 
-## Status (v0.24.3)
+## Status (v0.24.4)
 
 Laravel 12: accounts (registratie/double opt-in, login met onthoud mij, wachtwoord reset/wijzigen, e-mailwijziging met herbevestiging, AVG-export/wissen), aanbod met controle op invasieve Unielijst-soorten, berichten, expiry-cron, initiatieven (`/initiatieven`, oude `/partners` → 301), deelplekken (`/deelplekken`), organisaties uitnodigen (`/voor-organisaties`, aanmelden + admin-goedkeuring, `/organisaties/{slug}`), stadspagina’s (`/gratis-planten`), nu-te-stekken, beheer, stektips + contentpagina’s + `/invasieve-soorten` + sitemap. Staging-deploy via cPanel Git + UAPI (branch `deploy-staging`). Visuele stijl met bosgroen/mint/oranje-palet, hero-foto en iconenset (eigen teksten/beelden).
 
@@ -44,13 +44,13 @@ Uitgebreider: [`docs/INSTALL.md`](docs/INSTALL.md). Branches: [`CONTRIBUTING.md`
 
 CI: `composer install --no-dev --optimize-autoloader` en `npm ci && npm run build`.
 
-**Staging (cPanel, noshell):** workflow `deploy-staging-cpanel.yml` bouwt en force-pusht naar `deploy-staging` (artefact + `.cpanel.yml` alleen daar). App buiten docroot, `public/` → docroot, daarna UAPI `.env` + **`POST /deploy/run`** (betrouwbare migrate/cache). Secrets: [`AGENTS.md`](AGENTS.md). Bij Imunify op `:2083`: `./scripts/cpanel-deploy.sh` vanaf een vaste machine.
+**Staging (cPanel, noshell):** workflow `deploy-staging-cpanel.yml` bouwt een zip en pusht die via HTTPS naar `/deploy-hook.php` (chunked; geen `:2083`). Daarna **`POST /deploy/run`** + smoke. Eenmalige install: [`deploy/hook/INSTALL.md`](deploy/hook/INSTALL.md). Secrets: [`AGENTS.md`](AGENTS.md).
 
-**Oude SSH-deploy** (`deploy-staging.yml`): retired; alleen handmatig met `ALLOW_LEGACY_SSH_STAGING=1`.
+**Oude SSH-deploy** (`deploy-staging.yml`): retired; alleen handmatig met `ALLOW_LEGACY_SSH_STAGING=1`. Legacy UAPI-scripts blijven voor handmatig allowlisted IP.
 
-**Productie (SSH, tags):** docroot `DEPLOY_PATH`, app `APP_DIR`. Zelfde layout-idee later via cPanel (`app-prod` + `public_html`). Parked `gratisstekjes.nl` → 301 naar `gratisplanten.nl`.
+**Productie:** `deploy-prod-hook.yml` (tags `v*.*.*`, environment `production`, secrets `PROD_*`). Oude SSH-workflow blijft bestaan tot de hook live is. Parked `gratisstekjes.nl` → 301 naar `gratisplanten.nl`.
 
-Secrets alleen in GitHub Environments. Productie: tag `v*.*.*`. Staging: push naar `staging`.
+Secrets alleen in GitHub Environments. Staging: push naar `staging`.
 
 ## Licentie
 

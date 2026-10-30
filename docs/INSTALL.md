@@ -13,15 +13,16 @@ Geen secrets, hostnamen of private paden in deze repo.
 
 ## Server (cPanel: docroot ≠ Laravel-`public/`-map in de repo)
 
-CI bouwt vendor (no-dev) en Vite-assets. Layout via secrets (zie ook `AGENTS.md`):
+CI bouwt vendor (no-dev) en Vite-assets. Deploy via HTTPS-hook (geen shell, geen `:2083`):
 
-| | Staging (cPanel, noshell) | Production (Environment `production`) |
+| | Staging | Production (later) |
 |---|---|---|
-| Docroot | vaste map `…/staging.gratisplanten.nl` | `DEPLOY_PATH` / later `public_html` |
-| App (buiten webroot) | vaste map `…/app-staging` | `APP_DIR` / later `…/app-prod` |
-| Git-clone op server | `…/repo-staging` → branch `deploy-staging` | later `repo-prod` → `master` |
+| Docroot | `…/staging.gratisplanten.nl` | `…/public_html` |
+| App (buiten webroot) | `…/app-staging` | `…/app-prod` |
+| Hook-config | `…/.deploy/staging.php` | `…/.deploy/production.php` |
+| Workflow | `deploy-staging-cpanel.yml` | `deploy-prod-hook.yml` (tags) |
 
-**Staging** (`deploy-staging-cpanel.yml` + `scripts/cpanel-deploy.sh`): build → force-push `deploy-staging` → UAPI deploy (bestanden) → Fileman `.env` → **`POST /deploy/run`** (migrate/cache; artisan in `.cpanel.yml` is onbetrouwbaar zonder shell). Secrets: `AGENTS.md`. Oude SSH-workflow is retired. Productie-SSH: `DEPLOY_*`.
+**Staging:** build → zip → chunked upload naar `/deploy-hook.php` → **`POST /deploy/run`** → smoke. Eenmalige File Manager-stappen: [`deploy/hook/INSTALL.md`](../deploy/hook/INSTALL.md). Secrets: `AGENTS.md`. Oude SSH- en UAPI-routes zijn retired/legacy.
 
 ## Branches
 
