@@ -9,6 +9,14 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs) restyle / polish.
 
+## [0.23.0] - 2026-10-30
+
+### Added
+
+- Beheer-statistiekenpagina `/beheer/statistieken` (zelfde admin-sessie als `/beheer`): aggregaten voor aanmeldingen (totaal + per dag, 30 dagen met CSS-balken), bevestigd/onbevestigd, uitdelers vs ophalers (uitdeler = ≥1 aanbod; anders ophaler/alleen-account), aanbiedingen (totaal + actief), berichten, en pageviews. Alleen aggregaten — geen namen of e-mailadressen. noindex (meta + `X-Robots-Tag`); niet in sitemap; link vanaf beheer-overzicht.
+- Privacy-vriendelijke paginateller: tabel `page_views` (`date`, `path`, `count`, unique date+path), middleware op GET HTML 200 voor publieke webroutes. Geen cookies/sessie/IP/UA/querystring; pad genormaliseerd en begrensd; bot-UA en `/beheer*`, `/account*`, assets, robots/sitemap uitgesloten. DB-fouten worden gelogd zonder de pagina te breken.
+- Pest-tests voor admin-auth, aggregaten zonder PII, teller-increment, uitsluitingen, bot-UA en geen Set-Cookie door de teller.
+
 ## [0.22.3] - 2026-10-29
 
 ### Added

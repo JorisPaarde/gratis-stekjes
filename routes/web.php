@@ -25,6 +25,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Beheer\DashboardController as BeheerDashboardController;
 use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
+use App\Http\Controllers\Beheer\StatistiekenController as BeheerStatistiekenController;
 use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\DeelplekkenController;
@@ -172,6 +173,7 @@ Route::post('/beheer/uitloggen', [BeheerLoginController::class, 'destroy'])->nam
 
 Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::get('/overzicht', [BeheerDashboardController::class, 'index'])->name('beheer.index');
+    Route::get('/statistieken', [BeheerStatistiekenController::class, 'index'])->name('beheer.statistieken');
     Route::post('/markers', [BeheerDashboardController::class, 'saveMarker'])->name('beheer.markers.save');
     Route::post('/markers/verwijderen', [BeheerDashboardController::class, 'deleteMarker'])->name('beheer.markers.delete');
     Route::post('/meldingen/afgehandeld', [BeheerDashboardController::class, 'markReportHandled'])->name('beheer.reports.handled');
