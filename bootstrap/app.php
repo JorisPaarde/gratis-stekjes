@@ -26,6 +26,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies(at: '*');
         $middleware->validateCsrfTokens(except: [
             'deploy/run',
+            'deploy/import',
+            'deploy/import/init',
+            'deploy/import/chunk',
         ]);
         $middleware->alias([
             'admin' => AdminAuth::class,

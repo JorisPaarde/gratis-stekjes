@@ -209,6 +209,8 @@ umask 077
   dotenv_line ADMIN_PASSWORD "$ADMIN_PASSWORD"
   dotenv_line DEPLOY_TOKEN "$DEPLOY_TOKEN"
   dotenv_line DEPLOY_ENDPOINT_ENABLED "$DEPLOY_ENDPOINT_ENABLED_VAL"
+  # Import-endpoint alleen handmatig aanzetten tijdens VERHUIS; deploy houdt het uit.
+  dotenv_line DEPLOY_IMPORT_ENABLED false
 } > "$ENVFILE"
 
 # --- HTTP helpers ---

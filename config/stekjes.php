@@ -45,6 +45,13 @@ return [
      */
     'deploy_endpoint_enabled' => filter_var(env('DEPLOY_ENDPOINT_ENABLED', false), FILTER_VALIDATE_BOOL),
 
+    /**
+     * Eenmalige dataverhuis: POST /deploy/import(+ /init, /chunk).
+     * Alleen true zetten tijdens migrate-stekjes-to-prod; daarna weer uit.
+     * Vereist geldige DEPLOY_TOKEN. Default uit.
+     */
+    'deploy_import_enabled' => filter_var(env('DEPLOY_IMPORT_ENABLED', false), FILTER_VALIDATE_BOOL),
+
     /** Types voor kaartmarkers (interne sleutel partner_types blijft). */
     'partner_types' => [
         'partner' => 'Initiatief',
