@@ -18,6 +18,8 @@
 /public/build
 /public/hot
 /public/storage
+# Geschreven door POST /deploy/run (docroot); niet committen.
+/public/robots.txt
 /storage/*.key
 /storage/pail
 /vendor

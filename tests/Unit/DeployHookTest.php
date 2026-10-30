@@ -252,3 +252,44 @@ test('weigert non-POST en mistende config', function () {
 
     expect(deploy_hook_load_config($this->tmp.'/nope'))->toBeNull();
 });
+
+test('sync_docroot verwijdert cPanel-placeholder index.html en behoudt ini/robots', function () {
+    $docroot = $this->tmp.'/docroot';
+    $public = $this->tmp.'/public-src';
+    mkdir($public.'/css', 0755, true);
+    file_put_contents($public.'/index.php', "<?php\n");
+    file_put_contents($public.'/css/app.css', "body{}\n");
+
+    // cPanel leftovers in docroot
+    file_put_contents($docroot.'/index.html', "<html>Domein gereserveerd</html>\n");
+    file_put_contents($docroot.'/.user.ini', "memory_limit=256M\n");
+    file_put_contents($docroot.'/php.ini', "display_errors=Off\n");
+    file_put_contents($docroot.'/robots.txt', "User-agent: *\nDisallow: /\n");
+    mkdir($docroot.'/cgi-bin', 0755, true);
+    file_put_contents($docroot.'/cgi-bin/keep.txt', "cgi\n");
+
+    // Stale robots in public/ mag docroot-robots niet overschrijven
+    file_put_contents($public.'/robots.txt', "User-agent: *\nDisallow: /stale\n");
+
+    $sync = deploy_hook_sync_docroot($public, $docroot);
+    expect($sync['ok'])->toBeTrue();
+
+    expect(is_file($docroot.'/index.html'))->toBeFalse();
+    expect(is_file($docroot.'/index.php'))->toBeTrue();
+    expect(file_get_contents($docroot.'/.user.ini'))->toBe("memory_limit=256M\n");
+    expect(file_get_contents($docroot.'/php.ini'))->toBe("display_errors=Off\n");
+    expect(file_get_contents($docroot.'/robots.txt'))->toBe("User-agent: *\nDisallow: /\n");
+    expect(file_get_contents($docroot.'/cgi-bin/keep.txt'))->toBe("cgi\n");
+});
+
+test('sync_docroot wist index.html niet als die bij public/ hoort', function () {
+    $docroot = $this->tmp.'/docroot';
+    $public = $this->tmp.'/public-src';
+    mkdir($public, 0755, true);
+    file_put_contents($public.'/index.html', "<html>app landing</html>\n");
+    file_put_contents($public.'/index.php', "<?php\n");
+
+    $sync = deploy_hook_sync_docroot($public, $docroot);
+    expect($sync['ok'])->toBeTrue();
+    expect(file_get_contents($docroot.'/index.html'))->toBe("<html>app landing</html>\n");
+});
