@@ -160,7 +160,7 @@ final class StatsSvg
 
         $ptsA = [];
         $ptsB = [];
-        $xLabels = '';
+        $xs = [];
         $showEvery = $n > 16 ? (int) ceil($n / 8) : max(1, (int) floor($n / 6));
         foreach ($rows as $i => $row) {
             $x = $n === 1 ? $padL + ($plotW / 2) : $padL + ($i / ($n - 1)) * $plotW;
@@ -168,11 +168,37 @@ final class StatsSvg
             $yB = $padT + $plotH - (((float) $row['b'] / $max) * $plotH);
             $ptsA[] = round($x, 2).','.round($yA, 2);
             $ptsB[] = round($x, 2).','.round($yB, 2);
+            $xs[$i] = $x;
+        }
+
+        // Prefer spaced labels; always keep the last date and drop the previous if too close.
+        $minLabelGap = 36.0;
+        $labelIndexes = [];
+        foreach ($rows as $i => $row) {
             if ($i % $showEvery === 0 || $i === $n - 1) {
-                $xLabels .= '<text x="'.round($x, 2).'" y="'.($height - 22).'" text-anchor="middle" font-size="9" fill="'.self::COLOR_INK_SOFT.'">'
-                    .htmlspecialchars((string) $row['label'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
-                    .'</text>';
+                $labelIndexes[] = $i;
             }
+        }
+        $kept = [];
+        foreach ($labelIndexes as $i) {
+            $x = $xs[$i];
+            if ($i === $n - 1) {
+                if ($kept !== [] && abs($x - $xs[end($kept)]) < $minLabelGap) {
+                    array_pop($kept);
+                }
+                $kept[] = $i;
+                continue;
+            }
+            if ($kept === [] || abs($x - $xs[end($kept)]) >= $minLabelGap) {
+                $kept[] = $i;
+            }
+        }
+
+        $xLabels = '';
+        foreach ($kept as $i) {
+            $xLabels .= '<text x="'.round($xs[$i], 2).'" y="'.($height - 22).'" text-anchor="middle" font-size="9" fill="'.self::COLOR_INK_SOFT.'">'
+                .htmlspecialchars((string) $rows[$i]['label'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+                .'</text>';
         }
 
         $la = htmlspecialchars($labelA, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');

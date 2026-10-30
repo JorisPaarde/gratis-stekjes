@@ -149,6 +149,14 @@
   list-style: none;
   margin: 0 0 1.25rem;
   padding: 0;
+  align-items: start;
+}
+
+/* Opened card takes the full row on narrow screens so neighbours keep natural height. */
+@media (max-width: 719px) {
+  .stats-kpi-grid > li:has(> .stats-kpi-card[open]) {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (min-width: 720px) {
@@ -167,6 +175,7 @@
 .stats-kpi-grid > li {
   min-width: 0;
   display: flex;
+  align-self: start;
 }
 
 .stats-kpi-card {

@@ -9,6 +9,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.23.3] - 2026-10-30
+
+### Fixed
+
+- Beheer-statistieken KPI-grid: `align-items: start` zodat een opengeklapte kaart buren niet meerekkt; op smal scherm (`≤719px`) neemt een open kaart de volle rij.
+- Overzichtsgrafiek x-as: labels met minimale tussenruimte; laatste datum blijft, overlappende voorganger valt weg.
+
 ## [0.23.2] - 2026-10-30
 
 ### Changed
