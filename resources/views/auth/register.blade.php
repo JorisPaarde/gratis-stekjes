@@ -7,7 +7,7 @@
 @section('content')
 <section class="section wrap">
   <h1 class="page-title">Account maken</h1>
-  <p class="section-intro">Gratis meedoen. Stekjes blijven gratis — geen verkoop. Na registratie bevestig je je e-mail (double opt-in).</p>
+  <p class="section-intro">Gratis meedoen met één account: je kunt zowel iets aanbieden als iets ophalen. Stekjes blijven gratis — geen verkoop. Na registratie bevestig je je e-mail (double opt-in).</p>
 
   @if($errors->any())
     <ul class="error-list" role="alert">
@@ -20,7 +20,6 @@
   <form class="form" method="post" action="{{ route('account.registreren') }}" novalidate>
     @csrf
     @include('partials.honeypot')
-    <input type="hidden" name="rol" value="{{ $rol }}">
 
     <label>Voornaam of bijnaam *
       <input name="voornaam" required maxlength="80" autocomplete="nickname" value="{{ old('voornaam') }}">
@@ -34,10 +33,6 @@
     <label>Wachtwoord opnieuw *
       <input type="password" name="password_confirmation" required minlength="10" maxlength="200" autocomplete="new-password">
     </label>
-
-    @if($rol)
-      <p class="muted">Je koos: <strong>{{ $rol === 'uitdelen' ? 'stekjes uitdelen' : 'stekjes ophalen' }}</strong>. Na het bevestigen vul je je profiel en eventueel aanbod in.</p>
-    @endif
 
     <label class="checkbox">
       <input type="checkbox" name="gratis_akkoord" value="1" required @checked(old('gratis_akkoord'))>

@@ -27,7 +27,6 @@ class RegisterRequest extends FormRequest
             'privacy' => ['accepted'],
             'website' => ['nullable', 'string', 'max:200'],
             'form_started' => ['required', 'integer'],
-            'rol' => ['nullable', 'string', 'in:uitdelen,ophalen'],
         ];
     }
 

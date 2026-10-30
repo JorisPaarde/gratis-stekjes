@@ -181,9 +181,15 @@ test('uitloggen werkt', function () {
     $this->assertGuest();
 });
 
-test('homepage Doe mee linkt naar registreren', function () {
-    $this->get('/')
+test('homepage Doe mee linkt naar registreren zonder rolkeuze', function () {
+    $html = $this->get('/')
         ->assertOk()
-        ->assertSee(route('account.registreren', ['rol' => 'uitdelen'], false), false)
-        ->assertSee(route('account.registreren', ['rol' => 'ophalen'], false), false);
+        ->assertSee(route('account.registreren', absolute: false), false)
+        ->getContent();
+
+    expect($html)->not->toContain('rol=uitdelen')
+        ->and($html)->not->toContain('rol=ophalen')
+        ->and($html)->not->toContain('Ik deel planten uit')
+        ->and($html)->not->toContain('Ik wil ophalen')
+        ->and($html)->toContain('Eén account volstaat');
 });

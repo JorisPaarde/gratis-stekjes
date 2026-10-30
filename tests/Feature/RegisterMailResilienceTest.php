@@ -106,7 +106,6 @@ test('registratie toont alle validatiefouten tegelijk', function () {
         'title' => 'Registreren',
         'metaDescription' => 'x',
         'canonical' => route('account.registreren'),
-        'rol' => '',
         'formStarted' => time(),
         'errors' => $bag,
     ])->render();

@@ -19,16 +19,10 @@ class RegisterController extends Controller
 {
     public function create(): View
     {
-        $rol = request('rol');
-        if (! in_array($rol, ['uitdelen', 'ophalen'], true)) {
-            $rol = '';
-        }
-
         return view('auth.register', [
             'title' => 'Registreren',
             'metaDescription' => 'Account maken bij '.config('site.name').'. Bevestig je e-mail om verder te gaan.',
             'canonical' => route('account.registreren'),
-            'rol' => $rol,
             'formStarted' => time(),
         ]);
     }

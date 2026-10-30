@@ -26,13 +26,13 @@ test('statistieken vereist admin-sessie', function () {
 
 test('statistieken toont aggregaten zonder e-mailadressen', function () {
     $withOffer = User::factory()->create([
-        'email' => 'uitdeler-stats@example.com',
-        'name' => 'UitdelerStats',
+        'email' => 'aanbieder-stats@example.com',
+        'name' => 'AanbiederStats',
         'email_verified_at' => now(),
     ]);
     User::factory()->unverified()->create([
-        'email' => 'ophaler-stats@example.com',
-        'name' => 'OphalerStats',
+        'email' => 'lid-stats@example.com',
+        'name' => 'LidStats',
     ]);
     Aanbod::factory()->create([
         'user_id' => $withOffer->id,
@@ -69,28 +69,75 @@ test('statistieken toont aggregaten zonder e-mailadressen', function () {
         ->assertOk()
         ->assertHeader('X-Robots-Tag', 'noindex, nofollow')
         ->assertSee('name="robots" content="noindex, nofollow"', false)
-        ->assertSee('aanmeldingen totaal', false)
-        ->assertSee('uitdelers', false)
-        ->assertSee('Uitdeler = account met minstens één aanbod', false)
+        ->assertSee('Leden', false)
+        ->assertSee('Leden die iets aangeboden hebben', false)
         ->assertSee('/aanbod', false)
         ->assertSee('berichten', false)
         ->getContent();
 
-    expect($html)->not->toContain('uitdeler-stats@example.com')
-        ->and($html)->not->toContain('ophaler-stats@example.com')
+    expect($html)->not->toContain('aanbieder-stats@example.com')
+        ->and($html)->not->toContain('lid-stats@example.com')
         ->and($html)->not->toContain('peer-stats@example.com')
-        ->and($html)->not->toContain('UitdelerStats')
-        ->and($html)->not->toContain('OphalerStats');
+        ->and($html)->not->toContain('AanbiederStats')
+        ->and($html)->not->toContain('LidStats')
+        ->and($html)->not->toContain('uitdelers')
+        ->and($html)->not->toContain('ophalers')
+        ->and($html)->not->toContain('Uitdeler =');
 
-    // 3 accounts; 2/1 bevestigd/onbevestigd; 1/2 uitdelers/ophalers; 2/1 aanbod; 1 bericht; 7 pageviews vandaag.
+    // 3 leden; 1 lid met ≥1 listing; 2/1 bevestigd/onbevestigd; 2/1 aanbod; 1 bericht; 7 pageviews vandaag.
     expect($html)
-        ->toContain('aanmeldingen totaal')
-        ->and($html)->toContain('bevestigd / onbevestigd')
-        ->and($html)->toContain('uitdelers / ophalers')
+        ->toContain('bevestigd / onbevestigd')
         ->and($html)->toContain('<span class="stats-kpi-label">bezoekers vandaag</span>')
         ->and($html)->toContain('<span class="stats-kpi-value">7</span>')
-        ->and($html)->toContain('Totaal laatste 14 dagen: 7')
+        ->and($html)->toContain('1 van 3 leden heeft iets aangeboden')
         ->and($html)->toContain('<span class="stats-kpi-value">3</span>');
+});
+
+test('statistieken rendert SVG-charts voor admin', function () {
+    User::factory()->count(2)->create();
+    $owner = User::factory()->create();
+    Aanbod::factory()->create(['user_id' => $owner->id, 'type' => 'uitdelen']);
+    PageView::query()->create([
+        'date' => now()->toDateString(),
+        'path' => '/',
+        'count' => 3,
+    ]);
+
+    $html = $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken'))
+        ->assertOk()
+        ->getContent();
+
+    expect($html)
+        ->toContain('<svg')
+        ->and($html)->toContain('stats-sparkline')
+        ->and($html)->toContain('stats-svg-chart')
+        ->and($html)->toContain('role="img"')
+        ->and($html)->toContain('Lijndiagram aanmeldingen en bezoekers')
+        ->and($html)->toContain('Donut bevestigd versus onbevestigd')
+        ->and($html)->toContain('Horizontale staven top pagina')
+        ->and($html)->toContain('<details class="stats-panel stats-panel--overview" open>')
+        ->and($html)->not->toContain('cdn.')
+        ->and($html)->not->toContain('chart.js')
+        ->and($html)->not->toContain('googleapis');
+});
+
+test('statistieken werkt met lege data zonder fouten', function () {
+    expect(User::query()->count())->toBe(0);
+    expect(PageView::query()->count())->toBe(0);
+
+    $html = $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken'))
+        ->assertOk()
+        ->assertHeader('X-Robots-Tag', 'noindex, nofollow')
+        ->getContent();
+
+    expect($html)
+        ->toContain('Leden')
+        ->and($html)->toContain('Leden die iets aangeboden hebben')
+        ->and($html)->toContain('0 van 0 leden heeft iets aangeboden')
+        ->and($html)->toContain('<svg')
+        ->and($html)->not->toContain('@example.com');
 });
 
 test('statistieken toont bezoekers vandaag als KPI', function () {
@@ -119,7 +166,7 @@ test('statistieken toont bezoekers vandaag als KPI', function () {
     expect($html)
         ->toContain('<span class="stats-kpi-value">7</span>')
         ->and($html)->toContain('<span class="stats-kpi-label">bezoekers vandaag</span>')
-        ->and($html)->toContain('Totaal laatste 14 dagen: 106')
+        ->and($html)->toContain('14 dagen (106 views)')
         ->and($html)->not->toContain('@example.com');
 });
 
@@ -239,5 +286,14 @@ test('pageview-teller breekt pagina niet als page_views-tabel ontbreekt', functi
         if (Schema::hasTable('page_views_hidden_for_test')) {
             Schema::rename('page_views_hidden_for_test', 'page_views');
         }
+    }
+});
+
+test('hoe-werkt-het en over spreken niet van aparte accounttypen', function () {
+    foreach (['/hoe-werkt-het', '/over'] as $path) {
+        $html = $this->get($path)->assertOk()->getContent();
+        expect($html)->not->toContain('Uitdelers zetten')
+            ->and($html)->not->toContain('Ophalers zoeken')
+            ->and($html)->toContain('één account');
     }
 });
