@@ -139,6 +139,10 @@ cpanel_uapi() {
       fi
     elif ! printf '%s' "$body" | python3 -c 'import json,sys; json.load(sys.stdin)' 2>/dev/null; then
       notice "cPanel UAPI ${module}::${func}: poging ${attempt}/${CPANEL_RETRIES} — antwoord is geen JSON (HTTP ${http})"
+      # Diagnose: alleen <title> en byte-lengte, nooit de body zelf
+      local title
+      title="$(printf '%s' "$body" | tr '\n' ' ' | grep -oiE '<title>[^<]{0,120}</title>' | head -1 || true)"
+      notice "cPanel UAPI ${module}::${func}: body ${#body} bytes, titel: ${title:-geen}"
       if [ "$attempt" -ge "$CPANEL_RETRIES" ]; then
         rm -f "$tmp"
         error_ann "cPanel API geblokkeerd, waarschijnlijk Imunify/IP (HTTP ${http}, geen JSON). Draai scripts/cpanel-deploy.sh vanaf een allowlisted IP of workflow_dispatch vanaf een andere runner."
