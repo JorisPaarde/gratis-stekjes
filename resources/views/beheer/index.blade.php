@@ -13,10 +13,13 @@
 <section class="section wrap beheer-page">
   <div class="beheer-header">
     <h1 class="page-title">Beheer</h1>
-    <form method="post" action="{{ route('beheer.logout') }}">
-      @csrf
-      <button class="btn btn-secondary" type="submit">Uitloggen</button>
-    </form>
+    <div class="beheer-actions">
+      <a href="{{ route('beheer.statistieken') }}">Statistieken</a>
+      <form method="post" action="{{ route('beheer.logout') }}">
+        @csrf
+        <button class="btn btn-secondary" type="submit">Uitloggen</button>
+      </form>
+    </div>
   </div>
 
   @if(session('status'))

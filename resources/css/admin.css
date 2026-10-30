@@ -64,3 +64,54 @@
   min-height: 44px;
   padding: 0.55rem 0;
 }
+
+.stats-kpis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  list-style: none;
+  margin: 0 0 1.75rem;
+  padding: 0;
+}
+
+.stats-kpis li {
+  min-width: 7rem;
+}
+
+.stats-kpi-value {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--leaf-deep, #163820);
+}
+
+.stats-kpi-label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--muted, #5a524c);
+}
+
+.stats-bar-cell {
+  width: 40%;
+  min-width: 6rem;
+}
+
+.stats-bar {
+  display: block;
+  height: 0.65rem;
+  max-width: 100%;
+  width: var(--pct, 0%);
+  background: var(--leaf, #1f4d2b);
+  border-radius: 2px;
+}
+
+.stats-day-block {
+  margin: 0 0 0.75rem;
+}
+
+.stats-day-block summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.35rem 0;
+}

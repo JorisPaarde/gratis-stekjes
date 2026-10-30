@@ -6,9 +6,9 @@ use App\Models\Aanbod;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
+use App\Services\Kennisbank;
 use App\Services\Organisaties;
 use App\Services\Steden;
-use App\Services\Kennisbank;
 use App\Services\Stektips;
 use Database\Seeders\DeelplekkenSeeder;
 use Database\Seeders\DemoSeeder;
@@ -154,6 +154,9 @@ test('route-audit gevuld: publiek + account + beheer < 500', function () {
     );
     $this->withSession(['admin_ok' => true])
         ->get(route('beheer.index'))
+        ->assertOk();
+    $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken'))
         ->assertOk();
 
     expect(Message::query()->count())->toBeGreaterThan(0);
