@@ -76,6 +76,11 @@ jobs:
           npm ci
           npm run build
           test -f public/build/manifest.json
+          chmod +x scripts/write-robots-txt.sh
+          APP_ENV_NAME=staging ./scripts/write-robots-txt.sh
+          test -s public/robots.txt
+          grep -q 'Disallow: /' public/robots.txt
+          ! grep -q 'To customize, create a robots.txt' public/robots.txt
           php -l deploy/hook/deploy-hook.php
           php -l deploy/hook/lib.php
 

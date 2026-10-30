@@ -253,7 +253,7 @@ test('weigert non-POST en mistende config', function () {
     expect(deploy_hook_load_config($this->tmp.'/nope'))->toBeNull();
 });
 
-test('sync_docroot verwijdert cPanel-placeholder index.html en behoudt ini/robots', function () {
+test('sync_docroot verwijdert cPanel-placeholder index.html, behoudt ini, synct robots', function () {
     $docroot = $this->tmp.'/docroot';
     $public = $this->tmp.'/public-src';
     mkdir($public.'/css', 0755, true);
@@ -264,12 +264,14 @@ test('sync_docroot verwijdert cPanel-placeholder index.html en behoudt ini/robot
     file_put_contents($docroot.'/index.html', "<html>Domein gereserveerd</html>\n");
     file_put_contents($docroot.'/.user.ini', "memory_limit=256M\n");
     file_put_contents($docroot.'/php.ini', "display_errors=Off\n");
-    file_put_contents($docroot.'/robots.txt', "User-agent: *\nDisallow: /\n");
+    file_put_contents($docroot.'/robots.txt', "User-agent: *\nDisallow: /old\n");
     mkdir($docroot.'/cgi-bin', 0755, true);
     file_put_contents($docroot.'/cgi-bin/keep.txt', "cgi\n");
+    // Lege stray public/ in docroot
+    mkdir($docroot.'/public', 0755, true);
 
-    // Stale robots in public/ mag docroot-robots niet overschrijven
-    file_put_contents($public.'/robots.txt', "User-agent: *\nDisallow: /stale\n");
+    // Build-time robots in release-public moet docroot overschrijven
+    file_put_contents($public.'/robots.txt', "User-agent: *\nDisallow: /\n");
 
     $sync = deploy_hook_sync_docroot($public, $docroot);
     expect($sync['ok'])->toBeTrue();
@@ -280,6 +282,7 @@ test('sync_docroot verwijdert cPanel-placeholder index.html en behoudt ini/robot
     expect(file_get_contents($docroot.'/php.ini'))->toBe("display_errors=Off\n");
     expect(file_get_contents($docroot.'/robots.txt'))->toBe("User-agent: *\nDisallow: /\n");
     expect(file_get_contents($docroot.'/cgi-bin/keep.txt'))->toBe("cgi\n");
+    expect(is_dir($docroot.'/public'))->toBeFalse();
 });
 
 test('sync_docroot wist index.html niet als die bij public/ hoort', function () {
@@ -292,4 +295,17 @@ test('sync_docroot wist index.html niet als die bij public/ hoort', function () 
     $sync = deploy_hook_sync_docroot($public, $docroot);
     expect($sync['ok'])->toBeTrue();
     expect(file_get_contents($docroot.'/index.html'))->toBe("<html>app landing</html>\n");
+});
+
+test('sync_docroot verwijdert niet-lege stray public/ niet', function () {
+    $docroot = $this->tmp.'/docroot';
+    $public = $this->tmp.'/public-src';
+    mkdir($public, 0755, true);
+    file_put_contents($public.'/index.php', "<?php\n");
+    mkdir($docroot.'/public', 0755, true);
+    file_put_contents($docroot.'/public/keep.txt', "x\n");
+
+    $sync = deploy_hook_sync_docroot($public, $docroot);
+    expect($sync['ok'])->toBeTrue();
+    expect(file_get_contents($docroot.'/public/keep.txt'))->toBe("x\n");
 });

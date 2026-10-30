@@ -625,8 +625,26 @@ function deploy_hook_is_cpanel_placeholder_index_html(string $publicDir, string 
 }
 
 /**
+ * Verwijder een lege stray public/-map in de docroot (nooit als er inhoud in zit).
+ */
+function deploy_hook_remove_empty_docroot_public(string $docroot): void
+{
+    $stray = $docroot.'/public';
+    if (! is_dir($stray) || is_link($stray)) {
+        return;
+    }
+    $entries = array_values(array_filter(scandir($stray) ?: [], static function ($e) {
+        return $e !== '.' && $e !== '..';
+    }));
+    if ($entries === []) {
+        @rmdir($stray);
+    }
+}
+
+/**
  * Sync public/ naar docroot; behoud .well-known, cgi-bin, uploads, deploy-hook.php,
- * cPanel .user.ini/php.ini, en door /deploy/run geschreven robots.txt.
+ * cPanel .user.ini/php.ini. robots.txt uit de release-public/ wordt wél gekopieerd
+ * (build-time, overrult hosting-fallback).
  *
  * @return array{ok:bool,error?:string}
  */
@@ -640,7 +658,7 @@ function deploy_hook_sync_docroot(string $publicDir, string $docroot): array
     }
 
     // Nooit overschrijven/wissen: ACME, cgi-bin, uploads, de hook zelf, storage-symlink,
-    // cPanel PHP-ini's, verse robots.txt uit POST /deploy/run.
+    // cPanel PHP-ini's. robots.txt hoort NIET hier — die komt uit public/ van de release.
     $preserveNames = [
         '.well-known' => true,
         'cgi-bin' => true,
@@ -650,7 +668,6 @@ function deploy_hook_sync_docroot(string $publicDir, string $docroot): array
         'storage' => true,
         '.user.ini' => true,
         'php.ini' => true,
-        'robots.txt' => true,
     ];
 
     // Vernieuw Vite-build atomisch-ish: oude build weg, nieuwe komt uit public/.
@@ -696,6 +713,9 @@ function deploy_hook_sync_docroot(string $publicDir, string $docroot): array
     if (deploy_hook_is_cpanel_placeholder_index_html($publicDir, $docroot)) {
         @unlink($docroot.'/index.html');
     }
+
+    // Lege stray public/ in docroot (verwarrend t.o.v. release-public/); alleen als leeg.
+    deploy_hook_remove_empty_docroot_public($docroot);
 
     return ['ok' => true];
 }

@@ -83,5 +83,5 @@ test('robots.txt allow zonder noindex', function () {
     $this->get('/robots.txt')
         ->assertOk()
         ->assertSee('Allow: /', false)
-        ->assertSee('Sitemap:', false);
+        ->assertSee('Sitemap: https://gratisplanten.nl/sitemap.xml', false);
 });
