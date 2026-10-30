@@ -13,6 +13,7 @@ Contactadres site: `info@gratisplanten.nl` (`config('site.contact_email')`).
 | 3 | **Telefoon** | `users.telefoon` (optioneel) | Alleen zichtbaar bij wederzijds “ja” op contact in gesprek | Toestemming | Tot account wissen of leegmaken in profiel | Eigenaar; wederpartij bij wederzijds contact | **Encrypted cast** at rest |
 | 4 | **Locatie / postcode** | `users.locatie_label` (postcode-4 of plaats), `lat`/`lon` afgerond (`COORD_DECIMALS`, default 3 ≈ 100 m) via `Geo::roundCoord` / `PdokGeocoder` | Kaart/zoeken nabijheid | Toestemming | Tot account wissen / profielwijziging | Publiek: label + afgeronde punt op kaart/API (geen e-mail/tel) | Geen straat/huisnummer via site; geen exacte coords in opslag |
 | 5 | **Berichten** | `messages.body`, `conversations` (+ `contact_a`/`contact_b`), `blocks`, `reports.reason` | Onderlinge afspraak planten ophalen/uitdelen; moderatie | Toestemming; gerechtvaardigd belang (misbruik) bij meldingen | Tot account wissen (cascade/expliciete delete in `AvgService`) — **GAT: geen aparte retentie “X maanden na laatste bericht”** | Deelnemers gesprek; beheerder: meldingen in `/beheer` | `body` + `reason` **encrypted**; mail “nieuw bericht” zonder inhoud/adres ander |
+| 5b | **Feedback** | Tabel `feedback`: `body` (encrypted), `page_path`, `user_id` (nullable), `read_at` | Productverbetering; geen mail | Toestemming | Bij accountwissen: `user_id` → null (geanonimiseerd, `nullOnDelete`); tekst blijft voor beheer | Beheer `/beheer/feedback` (geen naam/e-mail); eigenaar via export | `body` **encrypted** (zelfde cast als berichten); rate-limit 5/uur/lid |
 | 6 | **Aanbod** | Tabel `aanbod`: type, tekst, visible, expires, renew_token | Publiek zoeken/kaart | Toestemming | TTL `aanbod_ttl_days` (60); verlengbaar; cron-herinnering | Publiek (zichtbaar+niet verlopen); eigenaar in account | Geen persoonsgegevens in API-payload (`ZoekenController` guard) |
 | 7 | **Foto’s** | Geen upload/feature in code | — | — | — | — | **GAT / N.v.t.:** geen gebruikersfoto’s. Export heeft lege `fotos[]`. Bij latere upload: schijf + wissen bij opzegging verplicht |
 | 8 | **Organisatieformulier** | `deelplekken` aanmelding: naam, type, plaats, `adres` = postcode-4+plaats (geen straat), beschrijving, `contact_email`, `privacy_at`, status | Deelplek tonen na goedkeuring | Toestemming | Pending tot goedkeuren/afwijzen; goedgekeurd zolang zichtbaar — **GAT: retentie afgewezen aanmeldingen niet geautomatiseerd** | Beheer (`/beheer`); publiek alleen goedgekeurde velden (geen contact-e-mail) | `contact_email` **encrypted**; rate-limit aanmelden; seed-deelplekken kunnen wél een openbaar bronadres hebben (**GAT/keuze**: seed vs. aanmelding) |
@@ -35,7 +36,7 @@ Contactadres site: `info@gratisplanten.nl` (`config('site.contact_email')`).
 | Recht | Pad / mechanisme |
 | --- | --- |
 | Inzage / export | `GET /account/export` → JSON (`AvgService::exportUserData`) |
-| Wissen | `POST /account/verwijderen` (wachtwoord) → aanbod, berichten, gesprekken, blocks, reports, tokens, sessies, user |
+| Wissen | `POST /account/verwijderen` (wachtwoord) → aanbod, berichten, gesprekken, blocks, reports, tokens, sessies, user; feedback blijft met `user_id` null |
 | Rectificatie | `/account/profiel`, `/account/email`, `/account/wachtwoord` |
 | Contact | `mailto:info@gratisplanten.nl` |
 

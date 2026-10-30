@@ -9,6 +9,17 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.24.0] - 2026-10-30
+
+### Added
+
+- Feedback voor ingelogde leden: zwevende knop (rechtsonder, safe-area, toetsenbordtoegankelijk) op publieke en accountpagina’s (niet voor gasten, niet op `/beheer`); formulier op `/feedback` (werkt zonder JS) met textarea, verborgen `page_path`, CSRF + honeypot, rate-limit 5/uur/lid. Succesmelding: “Dank je, ik lees alles zelf.” Geen mail, geen tracking, geen extra cookies.
+- Tabel `feedback` (`user_id` nullable FK `nullOnDelete`, `page_path`, encrypted `body` zoals berichten, `read_at`, timestamps).
+- Beheer `/beheer/feedback` (admin-auth, noindex): nieuwste eerst, datum Europe/Amsterdam, pad + ontsleutelde tekst, zonder naam/e-mail; markeer gelezen. Link vanaf beheer-overzicht.
+- Statistieken-KPI “Feedback” (totaal + ongelezen, sparkline, link naar `/beheer/feedback`).
+- Privacy: korte regel over feedback; bij accountwissen blijft feedback geanonimiseerd.
+- Pest: gast ziet geen knop / kan niet posten; lid kan indienen (body encrypted in DB); rate-limit; admin toont plaintext; gast redirect van beheer; dashboard toont count.
+
 ## [0.23.3] - 2026-10-30
 
 ### Fixed

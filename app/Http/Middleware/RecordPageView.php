@@ -28,6 +28,7 @@ class RecordPageView
     private const EXCLUDED_PREFIXES = [
         '/beheer',
         '/account',
+        '/feedback',
         '/build',
         '/storage',
         '/vendor',

@@ -15,6 +15,7 @@
     <h1 class="page-title">Beheer</h1>
     <div class="beheer-actions">
       <a href="{{ route('beheer.statistieken') }}">Statistieken</a>
+      <a href="{{ route('beheer.feedback') }}">Feedback</a>
       <form method="post" action="{{ route('beheer.logout') }}">
         @csrf
         <button class="btn btn-secondary" type="submit">Uitloggen</button>

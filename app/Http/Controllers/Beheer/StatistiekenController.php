@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Beheer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Aanbod;
+use App\Models\Feedback;
 use App\Models\Message;
 use App\Models\PageView;
 use App\Models\User;
@@ -37,6 +38,11 @@ class StatistiekenController extends Controller
 
         $messagesTotal = Schema::hasTable('messages') ? Message::query()->count() : 0;
 
+        $feedbackTotal = Schema::hasTable('feedback') ? Feedback::query()->count() : 0;
+        $feedbackUnread = Schema::hasTable('feedback')
+            ? Feedback::query()->whereNull('read_at')->count()
+            : 0;
+
         $signupsPerDay = $this->signupsLastDays(30);
         $pageViews = $this->pageViewsLastDays(30);
         $pageViews14 = $this->pageViewsLastDays(14);
@@ -67,6 +73,8 @@ class StatistiekenController extends Controller
         $messageSpark = $messagesPerDay->pluck('count')->map(fn ($v) => (int) $v)->all();
         $offersPerDay = $this->offersLastDays(14);
         $offerSpark = $offersPerDay->pluck('count')->map(fn ($v) => (int) $v)->all();
+        $feedbackPerDay = $this->feedbackLastDays(14);
+        $feedbackSpark = $feedbackPerDay->pluck('count')->map(fn ($v) => (int) $v)->all();
 
         $overviewRows = [];
         $viewsByDate = $pageViewsPerDay->keyBy('date');
@@ -117,6 +125,8 @@ class StatistiekenController extends Controller
             'offersActive' => $offersActive,
             'offersByType' => $offersByType,
             'messagesTotal' => $messagesTotal,
+            'feedbackTotal' => $feedbackTotal,
+            'feedbackUnread' => $feedbackUnread,
             'signupsPerDay' => $signupsPerDay,
             'pageViewsByDay' => $pageViews14['byDay'],
             'pageViewsTop' => $pageViews14['top'],
@@ -136,6 +146,9 @@ class StatistiekenController extends Controller
                 : '',
             'svgMessageSpark' => $messagesPerDay->sum('count') > 0 || $messagesTotal > 0
                 ? StatsSvg::sparkline($messageSpark, 'Sparkline berichten, 14 dagen')
+                : '',
+            'svgFeedbackSpark' => $feedbackPerDay->sum('count') > 0 || $feedbackTotal > 0
+                ? StatsSvg::sparkline($feedbackSpark, 'Sparkline feedback, 14 dagen', stroke: StatsSvg::COLOR_ORANGE)
                 : '',
             'svgSignups' => StatsSvg::barChart(
                 $signupBars,
@@ -205,6 +218,16 @@ class StatistiekenController extends Controller
                 'Staafdiagram berichten per dag, 14 dagen',
                 'Berichten per dag (14 dagen): '.$messagesPerDay->map(fn ($r) => $r['label'].'='.$r['count'])->implode(', ').'.',
                 fill: StatsSvg::COLOR_SAGE,
+            ),
+            'svgFeedback' => StatsSvg::barChart(
+                $feedbackPerDay->map(fn (array $r) => [
+                    'label' => $r['label'],
+                    'value' => (int) $r['count'],
+                    'title' => $r['label'].': '.$r['count'].' feedback',
+                ])->all(),
+                'Staafdiagram feedback per dag, 14 dagen',
+                'Feedback per dag (14 dagen): '.$feedbackPerDay->map(fn ($r) => $r['label'].'='.$r['count'])->implode(', ').'.',
+                fill: StatsSvg::COLOR_ORANGE,
             ),
         ])->render();
 
@@ -321,6 +344,46 @@ class StatistiekenController extends Controller
         }
 
         $rows = Message::query()
+            ->where('created_at', '>=', $from)
+            ->selectRaw('DATE(created_at) as day, COUNT(*) as aggregate')
+            ->groupBy('day')
+            ->pluck('aggregate', 'day');
+
+        for ($i = 0; $i < $days; $i++) {
+            $day = $from->copy()->addDays($i);
+            $key = $day->toDateString();
+            $out->push([
+                'date' => $key,
+                'label' => $day->timezone('Europe/Amsterdam')->format('d-m'),
+                'count' => (int) ($rows[$key] ?? 0),
+            ]);
+        }
+
+        return $out;
+    }
+
+    /**
+     * @return Collection<int, array{date: string, label: string, count: int}>
+     */
+    private function feedbackLastDays(int $days): Collection
+    {
+        $from = now()->subDays($days - 1)->startOfDay();
+        $out = collect();
+
+        if (! Schema::hasTable('feedback')) {
+            for ($i = 0; $i < $days; $i++) {
+                $day = $from->copy()->addDays($i);
+                $out->push([
+                    'date' => $day->toDateString(),
+                    'label' => $day->timezone('Europe/Amsterdam')->format('d-m'),
+                    'count' => 0,
+                ]);
+            }
+
+            return $out;
+        }
+
+        $rows = Feedback::query()
             ->where('created_at', '>=', $from)
             ->selectRaw('DATE(created_at) as day, COUNT(*) as aggregate')
             ->groupBy('day')

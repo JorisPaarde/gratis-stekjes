@@ -91,6 +91,11 @@
       </p>
     </div>
   </footer>
+  @auth
+    @unless(request()->is('beheer', 'beheer/*', 'feedback'))
+      @include('partials.feedback-fab')
+    @endunless
+  @endauth
   @stack('scripts')
 </body>
 </html>
