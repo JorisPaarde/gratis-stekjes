@@ -5,7 +5,7 @@
 .beheer-page .beheer-header {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 0.75rem;
   margin-bottom: 1rem;
@@ -18,7 +18,9 @@
 
 .beheer-table-wrap {
   overflow-x: auto;
-  margin: 0 0 2rem;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 0 1.5rem;
+  max-width: 100%;
 }
 
 .beheer-table {
@@ -65,6 +67,264 @@
   padding: 0.55rem 0;
 }
 
+/* —— Statistieken —— */
+.stats-page {
+  overflow-x: clip;
+}
+
+.stats-heading {
+  flex: 1 1 14rem;
+  min-width: 0;
+}
+
+.stats-subtitle {
+  margin: -0.35rem 0 0;
+  max-width: 36rem;
+  font-size: 1.02rem;
+  line-height: 1.45;
+}
+
+.stats-role-note {
+  margin: 0 0 1.5rem;
+  font-size: 0.92rem;
+}
+
+.stats-section-title {
+  margin-top: 1.75rem;
+}
+
+.stats-subsection-title {
+  font-family: var(--font-display, "Passion One", Georgia, serif);
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--leaf, #1f4d2b);
+  margin: 1.25rem 0 0.65rem;
+  line-height: 1.15;
+}
+
+.stats-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  list-style: none;
+  margin: 0 0 0.5rem;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .stats-kpi-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+  }
+}
+
+@media (min-width: 960px) {
+  .stats-kpi-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+.stats-kpi-card {
+  min-width: 0;
+  background: var(--bg-mint, #e6f2e1);
+  border: 1px solid var(--line, rgba(26, 18, 16, 0.12));
+  border-radius: var(--radius, 0.85rem);
+  padding: 0.85rem 0.75rem 0.9rem;
+}
+
+.stats-kpi-value {
+  display: block;
+  font-family: var(--font-display, "Passion One", Georgia, serif);
+  font-size: clamp(1.45rem, 4.5vw, 1.9rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--leaf-deep, #163820);
+  letter-spacing: 0.01em;
+  word-break: break-word;
+}
+
+.stats-kpi-sep {
+  font-weight: 400;
+  color: var(--ink-soft, #3d4a3f);
+  margin: 0 0.05em;
+}
+
+.stats-kpi-label {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.82rem;
+  line-height: 1.3;
+  color: var(--ink-soft, #3d4a3f);
+}
+
+/* CSS bar charts (no JS libs) */
+.stats-chart {
+  margin: 0 0 1.75rem;
+  padding: 0.85rem 0.5rem 0.65rem;
+  background: var(--card, #fff);
+  border: 1px solid var(--line, rgba(26, 18, 16, 0.12));
+  border-radius: var(--radius, 0.85rem);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.stats-chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.2rem;
+  min-height: 11rem;
+  min-width: max(100%, 28rem);
+  padding: 0 0.15rem;
+}
+
+.stats-chart--views .stats-chart-bars {
+  min-width: max(100%, 18rem);
+}
+
+.stats-chart-col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  height: 10.5rem;
+}
+
+.stats-chart-value {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--leaf-deep, #163820);
+  line-height: 1;
+  min-height: 0.7rem;
+}
+
+.stats-chart-track {
+  flex: 1 1 auto;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 5.5rem;
+}
+
+.stats-chart-bar {
+  display: block;
+  width: 100%;
+  max-width: 1.35rem;
+  min-height: 0;
+  background: linear-gradient(180deg, var(--leaf, #1f4d2b), var(--leaf-deep, #163820));
+  border-radius: 3px 3px 1px 1px;
+}
+
+.stats-chart-col:hover .stats-chart-bar,
+.stats-chart-col:focus-within .stats-chart-bar {
+  background: var(--orange, #e8833a);
+}
+
+.stats-chart-label {
+  font-size: 0.62rem;
+  line-height: 1.1;
+  color: var(--ink-soft, #3d4a3f);
+  writing-mode: horizontal-tb;
+  text-align: center;
+  white-space: nowrap;
+  transform: rotate(-55deg);
+  transform-origin: top center;
+  height: 2.4rem;
+  width: 2.6rem;
+  margin-top: 0.15rem;
+}
+
+@media (min-width: 720px) {
+  .stats-chart-label {
+    transform: none;
+    height: auto;
+    width: auto;
+    font-size: 0.7rem;
+    margin-top: 0;
+  }
+
+  .stats-chart-bars {
+    min-width: 100%;
+  }
+}
+
+/* Tables: zebra + aligned numbers */
+.stats-table tbody tr:nth-child(even) {
+  background: rgba(230, 242, 225, 0.45);
+}
+
+.stats-table .stats-num,
+.stats-table th.stats-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  width: 5.5rem;
+}
+
+.stats-table code {
+  font-size: 0.9em;
+  word-break: break-all;
+}
+
+.stats-day-list {
+  margin: 0 0 1rem;
+}
+
+.stats-day-block {
+  margin: 0 0 0.5rem;
+  border: 1px solid var(--line, rgba(26, 18, 16, 0.12));
+  border-radius: var(--radius, 0.85rem);
+  background: var(--card, #fff);
+  overflow: hidden;
+}
+
+.stats-day-block summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.75rem 0.9rem;
+  min-height: 44px;
+  list-style: none;
+  color: var(--leaf-deep, #163820);
+  display: flex;
+  align-items: center;
+}
+
+.stats-day-block summary::-webkit-details-marker {
+  display: none;
+}
+
+.stats-day-block summary::before {
+  content: "▶";
+  display: inline-block;
+  width: 1.1rem;
+  margin-right: 0.35rem;
+  font-size: 0.7rem;
+  color: var(--leaf, #1f4d2b);
+}
+
+.stats-day-block[open] summary::before {
+  content: "▼";
+}
+
+.stats-day-block summary:hover,
+.stats-day-block summary:focus-visible {
+  background: var(--bg-mint, #e6f2e1);
+}
+
+.stats-day-block .beheer-table-wrap,
+.stats-day-block .muted {
+  margin: 0 0.65rem 0.75rem;
+}
+
+.stats-day-block .beheer-table-wrap {
+  margin-bottom: 0.85rem;
+}
+
+/* Legacy class kept for other beheer pages / older markup */
 .stats-kpis {
   display: flex;
   flex-wrap: wrap;
@@ -76,20 +336,6 @@
 
 .stats-kpis li {
   min-width: 7rem;
-}
-
-.stats-kpi-value {
-  display: block;
-  font-size: 1.75rem;
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--leaf-deep, #163820);
-}
-
-.stats-kpi-label {
-  display: block;
-  font-size: 0.9rem;
-  color: var(--muted, #5a524c);
 }
 
 .stats-bar-cell {
@@ -104,14 +350,4 @@
   width: var(--pct, 0%);
   background: var(--leaf, #1f4d2b);
   border-radius: 2px;
-}
-
-.stats-day-block {
-  margin: 0 0 0.75rem;
-}
-
-.stats-day-block summary {
-  cursor: pointer;
-  font-weight: 600;
-  padding: 0.35rem 0;
 }

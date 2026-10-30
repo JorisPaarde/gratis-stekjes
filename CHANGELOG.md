@@ -7,7 +7,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- (volgende PRs) restyle / polish.
+- (volgende PRs).
+
+## [0.23.1] - 2026-10-30
+
+### Changed
+
+- Beheer-statistieken (`/beheer/statistieken`) opnieuw vormgegeven in huisstyle: KPI-kaarten in responsive grid (incl. bezoekers vandaag), CSS-staafdiagrammen voor aanmeldingen (30 dagen) en pageviews (14 dagen), zebra-tabellen met uitgelijnde aantallen, collapsible per-dag-breakdown, mobile-first (2 kolommen op smal scherm, tabellen scrollen in eigen container). Geen externe chart-libs/CDN/JS. Auth, noindex en privacy (alleen aggregaten) ongewijzigd.
 
 ## [0.23.0] - 2026-10-30
 

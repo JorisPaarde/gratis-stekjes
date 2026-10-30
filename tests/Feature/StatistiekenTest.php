@@ -82,12 +82,45 @@ test('statistieken toont aggregaten zonder e-mailadressen', function () {
         ->and($html)->not->toContain('UitdelerStats')
         ->and($html)->not->toContain('OphalerStats');
 
-    // 3 accounts, 2 bevestigd, 1 onbevestigd, 1 uitdeler, 2 ophaler, 2 aanbod, 1 actief, 1 bericht; 7 pageviews.
+    // 3 accounts; 2/1 bevestigd/onbevestigd; 1/2 uitdelers/ophalers; 2/1 aanbod; 1 bericht; 7 pageviews vandaag.
     expect($html)
-        ->toContain('<span class="stats-kpi-value">3</span>')
-        ->and($html)->toContain('<span class="stats-kpi-value">2</span>')
-        ->and($html)->toContain('<span class="stats-kpi-value">1</span>')
-        ->and($html)->toContain('Totaal laatste 14 dagen: 7');
+        ->toContain('aanmeldingen totaal')
+        ->and($html)->toContain('bevestigd / onbevestigd')
+        ->and($html)->toContain('uitdelers / ophalers')
+        ->and($html)->toContain('<span class="stats-kpi-label">bezoekers vandaag</span>')
+        ->and($html)->toContain('<span class="stats-kpi-value">7</span>')
+        ->and($html)->toContain('Totaal laatste 14 dagen: 7')
+        ->and($html)->toContain('<span class="stats-kpi-value">3</span>');
+});
+
+test('statistieken toont bezoekers vandaag als KPI', function () {
+    PageView::query()->create([
+        'date' => now()->toDateString(),
+        'path' => '/',
+        'count' => 4,
+    ]);
+    PageView::query()->create([
+        'date' => now()->toDateString(),
+        'path' => '/aanbod',
+        'count' => 3,
+    ]);
+    PageView::query()->create([
+        'date' => now()->subDay()->toDateString(),
+        'path' => '/',
+        'count' => 99,
+    ]);
+
+    $html = $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken'))
+        ->assertOk()
+        ->assertSee('bezoekers vandaag', false)
+        ->getContent();
+
+    expect($html)
+        ->toContain('<span class="stats-kpi-value">7</span>')
+        ->and($html)->toContain('<span class="stats-kpi-label">bezoekers vandaag</span>')
+        ->and($html)->toContain('Totaal laatste 14 dagen: 106')
+        ->and($html)->not->toContain('@example.com');
 });
 
 test('beheer overzicht linkt naar statistieken', function () {
