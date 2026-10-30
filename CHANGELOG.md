@@ -9,6 +9,21 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.24.6] - 2026-10-30
+
+### Added
+
+- Dataverhuis-tooling oude SSH-staging → prod: `php artisan stekjes:export-data` (JSON/zip + optionele `files.tar`, manifest met counts/sha256; geen sessions/cache/jobs/seed-deelplekken).
+- Import: `stekjes:import-data` + token-endpoints `POST /deploy/import/init|chunk|import` (alleen bij `DEPLOY_IMPORT_ENABLED=true`, zelfde `DEPLOY_TOKEN`); migrate-first, schema-drift (alleen gemeenschappelijke kolommen, `dropped_columns`), weigert non-admin users tenzij `force`, admin-merge op e-mail+zelfde id, behoud PKs/password hashes, reset auto-increment; response alleen counts.
+- Fallback `stekjes:export-from-mysqldump` + client `scripts/stekjes-import-upload.sh` (chunked, geen PII in logs).
+- Handmatige workflow `migrate-stekjes-to-prod.yml` (environment `production`, `confirm=VERHUIS`, `dry_run`); SSH naar oude staging, export alleen op de runner (geen artifact), daarna prod-import. `deploy-staging.yml` blijft retired/disabled.
+
+### Changed
+
+- `AGENTS.md` / `.env.example`: secrets en stappen voor eenmalige VERHUIS gedocumenteerd.
+- `deploy-prod-hook.yml`: `workflow_dispatch` input `import_enabled` → env `IMPORT_ENABLED` → `DEPLOY_IMPORT_ENABLED` in `.env` (geen handmatige prod-`.env`-edit; tag-pushes blijven `false`).
+- Migrate dry-run logt fingerprint van oude staging: `VERSION` + `APP_URL`-host (geen PII) ter verificatie van repo-level `DB_*`/`DEPLOY_*`.
+
 ## [0.24.5] - 2026-10-30
 
 ### Fixed

@@ -13,6 +13,11 @@ on:
         description: "Bestaande tag om te herdeployen (bijv. v0.24.4)"
         required: false
         type: string
+      import_enabled:
+        description: "Zet DEPLOY_IMPORT_ENABLED op prod (alleen tijdens VERHUIS)"
+        required: false
+        type: boolean
+        default: false
 
 concurrency:
   group: deploy-prod-hook
@@ -120,6 +125,8 @@ jobs:
           APP_KEY: ${{ secrets.APP_KEY }}
           BASE_URL: ${{ secrets.PROD_BASE_URL }}
           APP_ENV_NAME: production
+          # Tag-pushes: altijd false. workflow_dispatch: input import_enabled.
+          IMPORT_ENABLED: ${{ github.event_name == 'workflow_dispatch' && inputs.import_enabled || false }}
         run: |
           set -euo pipefail
           chmod +x scripts/deploy-hook-upload.sh scripts/dotenv-quote.sh
@@ -133,4 +140,11 @@ jobs:
           echo "::add-mask::${SMTP_PASS}"
           echo "::add-mask::${ADMIN_PASSWORD}"
           echo "::add-mask::${CRON_TOKEN}"
+          # Normaliseer boolean → true|false voor .env
+          case "$(printf '%s' "${IMPORT_ENABLED:-false}" | tr '[:upper:]' '[:lower:]')" in
+            1|true|yes) IMPORT_ENABLED=true ;;
+            *) IMPORT_ENABLED=false ;;
+          esac
+          export IMPORT_ENABLED
+          echo "::notice::DEPLOY_IMPORT_ENABLED=${IMPORT_ENABLED}"
           ./scripts/deploy-hook-upload.sh

@@ -31,6 +31,7 @@ use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\DeployController;
+use App\Http\Controllers\DeployImportController;
 use App\Http\Controllers\DeelplekkenController;
 use App\Http\Controllers\GratisPlantenController;
 use App\Http\Controllers\InvasieveSoortenController;
@@ -96,6 +97,15 @@ Route::get('/cron', CronController::class)->name('cron');
 Route::post('/deploy/run', DeployController::class)
     ->middleware('throttle:10,1')
     ->name('deploy.run');
+Route::post('/deploy/import/init', [DeployImportController::class, 'init'])
+    ->middleware('throttle:20,1')
+    ->name('deploy.import.init');
+Route::post('/deploy/import/chunk', [DeployImportController::class, 'chunk'])
+    ->middleware('throttle:60,1')
+    ->name('deploy.import.chunk');
+Route::post('/deploy/import', [DeployImportController::class, 'import'])
+    ->middleware('throttle:10,1')
+    ->name('deploy.import');
 Route::get('/account/aanbod-verlengen', AanbodVerlengenController::class)
     ->name('account.aanbod-verlengen');
 

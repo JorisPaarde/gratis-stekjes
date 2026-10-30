@@ -76,8 +76,32 @@ Optioneel: `APP_KEY` — anders bestaande server-`.env` behouden, anders eenmali
 - **`deploy-prod-hook.yml`** — tags `v*.*.*` + `workflow_dispatch`; environment `production`. **Niet** bij merges naar staging.
 - **`scripts/deploy-hook-upload.sh`** — client (chunk 5 MiB, sha256).
 - **`scripts/make-deploy-hook-config.sh`** — token + `gh secret set` + print config-hash.
-- **`deploy-staging.yml`** — **retired** (oude SSH). Alleen `workflow_dispatch` + `ALLOW_LEGACY_SSH_STAGING=1`.
+- **`deploy-staging.yml`** — **retired** (oude SSH). Alleen `workflow_dispatch` + `ALLOW_LEGACY_SSH_STAGING=1`. **Niet heractiveren** voor dataverhuis.
+- **`migrate-stekjes-to-prod.yml`** — eenmalige handmatige VERHUIS (zie hieronder). Nooit automatisch.
 - Legacy: `scripts/cpanel-deploy.sh` (UAPI `:2083`) alleen handmatig vanaf allowlisted IP.
+
+### Eenmalige dataverhuis (oude staging.stekjes → gratisplanten_prod)
+
+**Niet draaien** tot prod de import-endpoints heeft (tag-deploy na merge) en je secrets hebt geverifieerd.
+
+| Bron | Secrets (repo-level, OUDE staging) |
+|------|-------------------------------------|
+| SSH | `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_PORT`, `DEPLOY_SSH_KEY`, `DEPLOY_KNOWN_HOSTS`, `DEPLOY_PATH` (+ optioneel `STAGING_APP_DIR`) |
+| DB | `DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` — moeten naar de **oude** staging-DB wijzen, niet naar cPanel `gratisplanten` |
+
+| Doel | Secrets (environment `production`) |
+|------|-------------------------------------|
+| HTTPS import | `DEPLOY_TOKEN`, `PROD_BASE_URL` |
+
+`DEPLOY_IMPORT_ENABLED` zet je **niet** handmatig in `.env` (prod heeft geen shell). Via `deploy-prod-hook.yml` → `workflow_dispatch` → `import_enabled=true|false` (tag-pushes blijven `false`).
+
+**Run-stappen**
+
+1. Tag-deploy prod (import uit).
+2. `deploy-prod-hook` → `workflow_dispatch` met `import_enabled=true`.
+3. Dry-run: `Migrate stekjes → prod` → `confirm=VERHUIS`, `dry_run=true`. Check `count.*` / `dropped.*` én fingerprint `VERSION` + `APP_URL_host` (moet oude staging.stekjes zijn, geen PII).
+4. Import: zelfde migrate-workflow met `dry_run=false`.
+5. `deploy-prod-hook` → `workflow_dispatch` met `import_enabled=false`. Spot-check login/aanbod (geen mailblast).
 
 ### Deploy-volgorde (staging)
 
