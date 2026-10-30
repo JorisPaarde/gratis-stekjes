@@ -9,6 +9,18 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.24.2] - 2026-10-30
+
+### Changed
+
+- Feedbackknop: zachte bounce-animatie (2–3× bij laden, hoogstens één herhaling na ~20s, daarna stil; uit bij `prefers-reduced-motion`); tip/speech-bubble op hover en toetsenbordfocus (“Gratis planten is nog in opbouw…”) met `aria-describedby`; op touch één keer per sessie ~5s zichtbaar (sessionStorage, wegklikbaar), safe-area en geen horizontale scroll op 390px.
+- Feedbackformulier: kalmere card-layout (label, spacing, primair + Terug); copy zonder “geen mail / geen tracking”. Privacy-regel over feedback eveneens zonder die formulering; overige privacy-tekst ongewijzigd.
+- Beheer `/beheer/feedback`: alleen kaarten op alle schermbreedtes (geen tabel/kolommen); meta (datum Europe/Amsterdam + pad), leesbare tekst, statusbadge nieuw/gelezen, “Markeer gelezen”; ongelezen visueel duidelijker; max. leesbreedte op desktop.
+
+### Added
+
+- Pest: formulier zonder “tracking”; beheer zonder `<table>`; knop met tip/`aria-describedby`.
+
 ## [0.24.1] - 2026-10-30
 
 ### Fixed

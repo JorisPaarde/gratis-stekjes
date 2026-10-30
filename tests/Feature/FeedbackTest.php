@@ -52,6 +52,9 @@ test('lid kan feedback indienen en body staat encrypted in de database', functio
         ->get(route('feedback.create', ['page_path' => '/aanbod']))
         ->assertOk()
         ->assertSee('Wat kan beter of wat vind je goed?', false)
+        ->assertSee('Ik lees alles zelf.', false)
+        ->assertDontSee('geen tracking', false)
+        ->assertDontSee('geen mail', false)
         ->assertSee('name="page_path"', false)
         ->assertSee('value="/aanbod"', false);
 
@@ -126,11 +129,14 @@ test('admin feedbacklijst toont ontsleutelde tekst zonder lid-pii', function () 
         ->assertSee('Graag meer stektips over kruiden.', false)
         ->assertSee('/stektips', false)
         ->assertSee('beheer-feedback-cards', false)
-        ->assertSee('beheer-feedback-table', false)
+        ->assertSee('beheer-feedback-unread', false)
+        ->assertSee('Markeer gelezen', false)
         ->getContent();
 
     expect($html)->not->toContain('feedback-lid@example.com')
-        ->and($html)->not->toContain('FeedbackLidNaam');
+        ->and($html)->not->toContain('FeedbackLidNaam')
+        ->and($html)->not->toContain('<table')
+        ->and($html)->not->toContain('beheer-feedback-table');
 });
 
 test('gast wordt doorgestuurd vanaf beheer feedback', function () {
@@ -200,4 +206,34 @@ test('privacy vermeldt feedback in gegevenssectie', function () {
         ->assertOk()
         ->assertSee('Feedback', false)
         ->assertSee('geanonimiseerd', false);
+});
+
+test('feedbackformulier noemt geen tracking of geen mail', function () {
+    $user = User::factory()->create(['email_verified_at' => now()]);
+
+    $html = $this->actingAs($user)
+        ->get(route('feedback.create'))
+        ->assertOk()
+        ->assertSee('Vertel me wat beter kan of wat je goed vindt. Ik lees alles zelf.', false)
+        ->assertSee('feedback-form', false)
+        ->assertSee('Terug', false)
+        ->getContent();
+
+    expect(mb_strtolower($html))->not->toContain('tracking')
+        ->and($html)->not->toContain('geen mail');
+});
+
+test('feedbackknop heeft toegankelijke tiptekst', function () {
+    $user = User::factory()->create(['email_verified_at' => now()]);
+
+    $html = $this->actingAs($user)
+        ->get(route('home'))
+        ->assertOk()
+        ->assertSee('data-feedback-fab', false)
+        ->assertSee('aria-describedby="feedback-fab-tip"', false)
+        ->assertSee('Gratis planten is nog in opbouw.', false)
+        ->getContent();
+
+    expect($html)->toContain('data-feedback-fab-wrap')
+        ->and($html)->toContain('id="feedback-fab-tip"');
 });
