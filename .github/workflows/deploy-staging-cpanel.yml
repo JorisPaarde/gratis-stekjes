@@ -21,15 +21,17 @@ jobs:
     runs-on: ubuntu-latest
     environment: staging
     env:
+      # Exacte secretnamen (environment staging + repo). Paden = vaste serverlayout.
       CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
       CPANEL_USER: ${{ secrets.CPANEL_USER }}
       CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
-      CPANEL_REPO_ROOT: ${{ secrets.CPANEL_REPO_ROOT }}
-      STAGING_APP_DIR: ${{ secrets.STAGING_APP_DIR }}
-      STAGING_DEPLOY_PATH: ${{ secrets.STAGING_DEPLOY_PATH }}
       STAGING_BASE_URL: ${{ secrets.STAGING_BASE_URL }}
       DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
       CPANEL_BRANCH: deploy-staging
+      # Vaste layout (noshell-hosting); override alleen lokaal via env indien nodig.
+      CPANEL_REPO_ROOT: /home/gratisplanten/repo-staging
+      STAGING_APP_DIR: /home/gratisplanten/app-staging
+      STAGING_DEPLOY_PATH: /home/gratisplanten/staging.gratisplanten.nl
     steps:
       - uses: actions/checkout@v4
         with:
@@ -45,8 +47,7 @@ jobs:
             exit 0
           fi
           missing=0
-          for v in CPANEL_HOST CPANEL_USER CPANEL_API_TOKEN CPANEL_REPO_ROOT \
-                   STAGING_APP_DIR STAGING_DEPLOY_PATH STAGING_BASE_URL DEPLOY_TOKEN; do
+          for v in CPANEL_HOST CPANEL_USER CPANEL_API_TOKEN STAGING_BASE_URL DEPLOY_TOKEN; do
             if [ -z "${!v:-}" ]; then
               echo "::error::Verplicht secret ontbreekt: ${v}"
               missing=1
@@ -86,9 +87,6 @@ jobs:
 
       - name: Push artefact naar deploy-staging
         if: steps.chk.outputs.skip != '1'
-        env:
-          APP_DIR_SECRET: ${{ secrets.STAGING_APP_DIR }}
-          DOCROOT_SECRET: ${{ secrets.STAGING_DEPLOY_PATH }}
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
@@ -98,9 +96,12 @@ jobs:
           SHA="$(git rev-parse --short HEAD)"
           SRC="$PWD"
           WORK="$(mktemp -d)"
+          APP_DIR="${STAGING_APP_DIR}"
+          DOCROOT="${STAGING_DEPLOY_PATH}"
 
           # Orphan + force-push: één commit op deploy-staging (placeholder mag herschreven).
           # .cpanel.yml ALLEEN hier — nooit in staging/master (repo-prod volgt master).
+          # noshell: artisan in tasks mag falen; POST /deploy/run is de betrouwbare migrate-route.
           git worktree add --detach "$WORK" HEAD
           git -C "$WORK" checkout --orphan deploy-staging
           find "$WORK" -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
@@ -126,8 +127,8 @@ jobs:
             printf '%s\n' '---'
             printf '%s\n' 'deployment:'
             printf '%s\n' '  tasks:'
-            printf '%s\n' "    - export APP_DIR=${APP_DIR_SECRET}"
-            printf '%s\n' "    - export DOCROOT=${DOCROOT_SECRET}"
+            printf '%s\n' "    - export APP_DIR=${APP_DIR}"
+            printf '%s\n' "    - export DOCROOT=${DOCROOT}"
             printf '%s\n' '    - /bin/bash ./scripts/cpanel-deploy-staging.sh'
           } > "${WORK}/.cpanel.yml"
 
@@ -156,8 +157,8 @@ jobs:
           SMTP_FROM: ${{ secrets.SMTP_FROM }}
           CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
-          APP_KEY: ${{ secrets.APP_KEY }}
         run: |
           set -euo pipefail
           chmod +x scripts/cpanel-deploy.sh scripts/cpanel-deploy-staging.sh scripts/dotenv-quote.sh
+          # Migratie/caches: POST /deploy/run is leidend (noshell → artisan in .cpanel.yml onbetrouwbaar).
           ./scripts/cpanel-deploy.sh

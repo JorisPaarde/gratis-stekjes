@@ -83,8 +83,9 @@ EOF
 
 chmod -R ug+rwx "${APP_DIR}/storage/framework" "${APP_DIR}/storage/logs" "${APP_DIR}/bootstrap/cache" 2>/dev/null || true
 
-# Best-effort artisan (Imunify/shared hosting: CLI vaak afwezig of beperkt).
+# noshell: artisan hier is optioneel en mag falen. Betrouwbare route = POST /deploy/run.
 if [ -n "$PHP_BIN" ] && [ -f "${APP_DIR}/artisan" ] && [ -f "${APP_DIR}/.env" ]; then
+  set +e
   (
     cd "${APP_DIR}"
     "$PHP_BIN" artisan migrate --force \
@@ -93,9 +94,11 @@ if [ -n "$PHP_BIN" ] && [ -f "${APP_DIR}/artisan" ] && [ -f "${APP_DIR}/.env" ];
       && "$PHP_BIN" artisan config:cache \
       && "$PHP_BIN" artisan route:cache \
       && "$PHP_BIN" artisan view:cache
-  ) || printf '%s\n' 'cpanel-deploy-staging: artisan overgeslagen/mislukt — HTTP /deploy/run is fallback'
+  )
+  printf '%s\n' "cpanel-deploy-staging: artisan exit=$? (negeer bij noshell; /deploy/run is leidend)"
+  set -e
 else
-  printf '%s\n' 'cpanel-deploy-staging: geen PHP-CLI/.env — HTTP /deploy/run is fallback'
+  printf '%s\n' 'cpanel-deploy-staging: geen PHP-CLI/.env — verwacht POST /deploy/run voor migrate/cache'
 fi
 
 printf '%s\n' "cpanel-deploy-staging: klaar (APP_REL=${APP_REL})"

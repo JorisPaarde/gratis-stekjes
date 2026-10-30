@@ -4,17 +4,17 @@
 # Imunify op de host blokkeert vaak onbekende IP's op :2083 (403/time-out zonder JSON);
 # GitHub-ranges worden niet gewhitelist — draai dit script dan lokaal/op een allowlisted IP.
 #
-# Vereiste env (geen defaults met secrets):
-#   CPANEL_HOST          https://host:2083
-#   CPANEL_USER
-#   CPANEL_API_TOKEN
-#   CPANEL_REPO_ROOT     bijv. /home/USER/repo-staging
-#   STAGING_APP_DIR      bijv. /home/USER/app-staging
-#   STAGING_DEPLOY_PATH  bijv. /home/USER/staging.example.nl  (docroot)
-#   STAGING_BASE_URL     https://staging.example.nl
-#   DEPLOY_TOKEN
-#   SITE_NAME, STAGING_DB_HOST/NAME/USER/PASS, SMTP_*, CRON_TOKEN, ADMIN_PASSWORD
-# Optioneel: APP_KEY, SMTP_PORT, SMTP_SECURE, SMTP_FROM, CPANEL_BRANCH (default deploy-staging)
+# Vereiste secrets (exacte namen):
+#   CPANEL_HOST, CPANEL_USER, CPANEL_API_TOKEN, DEPLOY_TOKEN, STAGING_BASE_URL
+#   STAGING_DB_HOST, STAGING_DB_NAME, STAGING_DB_USER, STAGING_DB_PASS
+#   SITE_NAME, SMTP_HOST, SMTP_USER, SMTP_PASS, CRON_TOKEN, ADMIN_PASSWORD
+# Optioneel: SMTP_PORT, SMTP_SECURE, SMTP_FROM, CPANEL_BRANCH
+# Vaste serverlayout (override via env indien nodig):
+#   CPANEL_REPO_ROOT=/home/gratisplanten/repo-staging
+#   STAGING_APP_DIR=/home/gratisplanten/app-staging
+#   STAGING_DEPLOY_PATH=/home/gratisplanten/staging.gratisplanten.nl
+# APP_KEY: geen secret vereist — bestaande .env op server behouden, anders genereren.
+# Migratie/caches: POST /deploy/run is leidend (noshell → artisan in .cpanel.yml onbetrouwbaar).
 #
 # Gebruik:  ./scripts/cpanel-deploy.sh
 #            SKIP_ENV_WRITE=1 ./scripts/cpanel-deploy.sh   # alleen pull+deploy+migrate
@@ -73,6 +73,10 @@ CPANEL_RETRIES="${CPANEL_RETRIES:-5}"
 CPANEL_RETRY_SLEEP="${CPANEL_RETRY_SLEEP:-8}"
 DEPLOY_POLL_MAX="${DEPLOY_POLL_MAX:-60}"
 DEPLOY_POLL_SLEEP="${DEPLOY_POLL_SLEEP:-5}"
+# Vaste Hoasted-layout (noshell); alleen overschrijven als je bewust een andere clone test.
+CPANEL_REPO_ROOT="${CPANEL_REPO_ROOT:-/home/gratisplanten/repo-staging}"
+STAGING_APP_DIR="${STAGING_APP_DIR:-/home/gratisplanten/app-staging}"
+STAGING_DEPLOY_PATH="${STAGING_DEPLOY_PATH:-/home/gratisplanten/staging.gratisplanten.nl}"
 
 # Skip-modus: geen cPanel-secrets → stille exit 0 (CI blijft groen).
 if [ -z "${CPANEL_HOST:-}" ] && [ -z "${CPANEL_USER:-}" ] && [ -z "${CPANEL_API_TOKEN:-}" ]; then
@@ -83,9 +87,6 @@ fi
 require_var CPANEL_HOST
 require_var CPANEL_USER
 require_var CPANEL_API_TOKEN
-require_var CPANEL_REPO_ROOT
-require_var STAGING_APP_DIR
-require_var STAGING_DEPLOY_PATH
 require_var STAGING_BASE_URL
 require_var DEPLOY_TOKEN
 require_var STAGING_DB_HOST
