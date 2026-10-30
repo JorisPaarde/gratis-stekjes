@@ -61,15 +61,22 @@ class PageController extends Controller
         ]);
     }
 
-    public function robots(): Response
+    /**
+     * Env-aware robots.txt-body (staging/noindex → disallow-all; production → allow + sitemap).
+     * Hergebruikt door de /robots.txt-route en door DeployController (statisch bestand in docroot).
+     */
+    public function robotsBody(): string
     {
         if (config('site.noindex') || app()->environment('staging')) {
-            $body = "User-agent: *\nDisallow: /\n";
-        } else {
-            $body = "User-agent: *\nAllow: /\nSitemap: ".url('/sitemap.xml')."\n";
+            return "User-agent: *\nDisallow: /\n";
         }
 
-        return response($body, 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
+        return "User-agent: *\nAllow: /\nSitemap: ".url('/sitemap.xml')."\n";
+    }
+
+    public function robots(): Response
+    {
+        return response($this->robotsBody(), 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
     }
 
     public function sitemap(Stektips $stektips, Steden $steden, Organisaties $organisaties, Kennisbank $kennisbank): Response

@@ -51,17 +51,87 @@ test('deploy endpoint draait migrate en caches wanneer enabled', function () {
     Artisan::shouldReceive('call')->once()->with('route:cache')->andReturn(0);
     Artisan::shouldReceive('call')->once()->with('view:cache')->andReturn(0);
 
-    $this->withToken('test-deploy-token', 'Bearer')
-        ->postJson('/deploy/run')
-        ->assertOk()
-        ->assertJsonPath('ok', true)
-        ->assertJsonMissingPath('token')
-        ->assertJsonMissingPath('password');
+    $robotsPath = public_path('robots.txt');
+    if (is_file($robotsPath)) {
+        @unlink($robotsPath);
+    }
+
+    try {
+        $this->withToken('test-deploy-token', 'Bearer')
+            ->postJson('/deploy/run')
+            ->assertOk()
+            ->assertJsonPath('ok', true)
+            ->assertJsonMissingPath('token')
+            ->assertJsonMissingPath('password');
+    } finally {
+        if (is_file($robotsPath)) {
+            @unlink($robotsPath);
+        }
+    }
+});
+
+test('deploy endpoint schrijft env-aware robots.txt naar public_path', function () {
+    config([
+        'stekjes.deploy_endpoint_enabled' => true,
+        'site.noindex' => false,
+    ]);
+
+    Artisan::shouldReceive('call')->times(6)->andReturn(0);
+
+    $robotsPath = public_path('robots.txt');
+    if (is_file($robotsPath)) {
+        @unlink($robotsPath);
+    }
+
+    try {
+        $this->withToken('test-deploy-token', 'Bearer')
+            ->postJson('/deploy/run')
+            ->assertOk()
+            ->assertJsonPath('ok', true);
+
+        expect(is_file($robotsPath))->toBeTrue();
+        $body = (string) file_get_contents($robotsPath);
+        // testing-env is niet staging; noindex false → allow + sitemap
+        expect($body)->toContain('Allow: /')
+            ->and($body)->toContain('Sitemap:')
+            ->and($body)->not->toContain('Disallow: /');
+    } finally {
+        if (is_file($robotsPath)) {
+            @unlink($robotsPath);
+        }
+    }
+});
+
+test('deploy endpoint schrijft disallow robots.txt bij noindex', function () {
+    config([
+        'stekjes.deploy_endpoint_enabled' => true,
+        'site.noindex' => true,
+    ]);
+
+    Artisan::shouldReceive('call')->times(6)->andReturn(0);
+
+    $robotsPath = public_path('robots.txt');
+    if (is_file($robotsPath)) {
+        @unlink($robotsPath);
+    }
+
+    try {
+        $this->withToken('test-deploy-token', 'Bearer')
+            ->postJson('/deploy/run')
+            ->assertOk();
+
+        expect(file_get_contents($robotsPath))->toBe("User-agent: *\nDisallow: /\n");
+    } finally {
+        if (is_file($robotsPath)) {
+            @unlink($robotsPath);
+        }
+    }
 });
 
 test('deploy endpoint actief op staging zonder extra flag', function () {
     $previous = $this->app['env'];
     $this->app['env'] = 'staging';
+    $robotsPath = public_path('robots.txt');
 
     try {
         Artisan::shouldReceive('call')->times(6)->andReturn(0);
@@ -71,8 +141,13 @@ test('deploy endpoint actief op staging zonder extra flag', function () {
             ->postJson('https://localhost/deploy/run')
             ->assertOk()
             ->assertJsonPath('ok', true);
+
+        expect(file_get_contents($robotsPath))->toBe("User-agent: *\nDisallow: /\n");
     } finally {
         $this->app['env'] = $previous;
+        if (is_file($robotsPath)) {
+            @unlink($robotsPath);
+        }
     }
 });
 

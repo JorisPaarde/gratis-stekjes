@@ -302,26 +302,52 @@ fi
 METHOD="$(printf '%s' "$HOOK_BODY" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("method",""))' 2>/dev/null || true)"
 notice "Hook finish OK (extract=${METHOD:-?})."
 
-# --- migrate via bestaand endpoint ---
+# --- migrate via bestaand endpoint (retry bij 404/5xx/connectie na release-swap) ---
 if [ "${SKIP_MIGRATE:-}" != "1" ]; then
-  tmp="$(mktemp)"
-  set +e
-  code=$(curl -sS -o "$tmp" -w '%{http_code}' --connect-timeout 15 --max-time 180 \
-    -X POST -H "Authorization: Bearer ${DEPLOY_TOKEN}" \
-    -H "Accept: application/json" \
-    "${BASE_URL}/deploy/run")
-  set -e
-  body="$(cat "$tmp" 2>/dev/null || true)"
-  rm -f "$tmp"
-  if [ "$code" != "200" ]; then
-    ok="$(printf '%s' "$body" | python3 -c 'import json,sys
+  max_attempts=5
+  attempt=1
+  code=""
+  body=""
+  while [ "$attempt" -le "$max_attempts" ]; do
+    tmp="$(mktemp)"
+    set +e
+    code=$(curl -sS -o "$tmp" -w '%{http_code}' --connect-timeout 15 --max-time 180 \
+      -X POST -H "Authorization: Bearer ${DEPLOY_TOKEN}" \
+      -H "Accept: application/json" \
+      "${BASE_URL}/deploy/run")
+    curl_ec=$?
+    set -e
+    body="$(cat "$tmp" 2>/dev/null || true)"
+    rm -f "$tmp"
+
+    if [ "$curl_ec" -eq 0 ] && [ "$code" = "200" ]; then
+      notice "POST /deploy/run → 200"
+      break
+    fi
+
+    should_retry=0
+    if [ "$curl_ec" -ne 0 ] || [ -z "$code" ] || [ "$code" = "000" ]; then
+      should_retry=1
+    else
+      case "$code" in
+        404|5??) should_retry=1 ;;
+      esac
+    fi
+
+    if [ "$should_retry" -ne 1 ] || [ "$attempt" -ge "$max_attempts" ]; then
+      ok="$(printf '%s' "$body" | python3 -c 'import json,sys
 try:
  d=json.load(sys.stdin); print(d.get("ok"), d.get("error",""))
 except Exception:
  print("?", "non-json")' 2>/dev/null || echo '? non-json')"
-    die "POST /deploy/run faalde (HTTP ${code}, ${ok})."
-  fi
-  notice "POST /deploy/run → 200"
+      die "POST /deploy/run faalde (HTTP ${code:-conn}, ${ok})."
+    fi
+
+    sleep_secs=$((attempt * 5))
+    notice "POST /deploy/run HTTP ${code:-conn} — poging ${attempt}/${max_attempts}, opnieuw over ${sleep_secs}s…"
+    sleep "$sleep_secs"
+    attempt=$((attempt + 1))
+  done
 fi
 
 # --- smoke ---

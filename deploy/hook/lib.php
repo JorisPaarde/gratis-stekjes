@@ -604,7 +604,29 @@ function deploy_hook_relative_path(string $fromDir, string $toDir): string
 }
 
 /**
- * Sync public/ naar docroot; behoud .well-known, cgi-bin, uploads, deploy-hook.php.
+ * Is docroot/index.html een cPanel-placeholder (niet uit public/)?
+ * Alleen dan mag sync die weghalen — nooit andere bestanden (.user.ini, php.ini, …).
+ */
+function deploy_hook_is_cpanel_placeholder_index_html(string $publicDir, string $docroot): bool
+{
+    $path = $docroot.'/index.html';
+    if (! is_file($path)) {
+        return false;
+    }
+    // Onderdeel van de release public/ → niet wissen (sync kopieert die zelf).
+    if (is_file($publicDir.'/index.html')) {
+        return false;
+    }
+    $raw = (string) @file_get_contents($path);
+
+    // cPanel-default ("Domein gereserveerd"), of restant dat niet uit public/ komt.
+    return stripos($raw, 'Domein gereserveerd') !== false
+        || ! is_file($publicDir.'/index.html');
+}
+
+/**
+ * Sync public/ naar docroot; behoud .well-known, cgi-bin, uploads, deploy-hook.php,
+ * cPanel .user.ini/php.ini, en door /deploy/run geschreven robots.txt.
  *
  * @return array{ok:bool,error?:string}
  */
@@ -617,7 +639,8 @@ function deploy_hook_sync_docroot(string $publicDir, string $docroot): array
         return ['ok' => false, 'error' => 'docroot_mkdir'];
     }
 
-    // Nooit overschrijven/wissen: ACME, cgi-bin, uploads, de hook zelf, storage-symlink.
+    // Nooit overschrijven/wissen: ACME, cgi-bin, uploads, de hook zelf, storage-symlink,
+    // cPanel PHP-ini's, verse robots.txt uit POST /deploy/run.
     $preserveNames = [
         '.well-known' => true,
         'cgi-bin' => true,
@@ -625,6 +648,9 @@ function deploy_hook_sync_docroot(string $publicDir, string $docroot): array
         'deploy-hook.php' => true,
         'lib.php' => true,
         'storage' => true,
+        '.user.ini' => true,
+        'php.ini' => true,
+        'robots.txt' => true,
     ];
 
     // Vernieuw Vite-build atomisch-ish: oude build weg, nieuwe komt uit public/.
@@ -663,6 +689,12 @@ function deploy_hook_sync_docroot(string $publicDir, string $docroot): array
     // Zorg dat .well-known/acme-challenge bestaat.
     if (! is_dir($docroot.'/.well-known/acme-challenge')) {
         @mkdir($docroot.'/.well-known/acme-challenge', 0755, true);
+    }
+
+    // cPanel DirectoryIndex: leftover index.html ("Domein gereserveerd") wint van index.php.
+    // Alleen die placeholder weg; .user.ini / php.ini / cgi-bin blijven onaangeroerd.
+    if (deploy_hook_is_cpanel_placeholder_index_html($publicDir, $docroot)) {
+        @unlink($docroot.'/index.html');
     }
 
     return ['ok' => true];

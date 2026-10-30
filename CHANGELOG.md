@@ -9,6 +9,14 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.24.5] - 2026-10-30
+
+### Fixed
+
+- Pre-prod docroot: `DirectoryIndex index.php` in `public/.htaccess` zodat cPanel’s `index.html` niet wint van Laravel; deploy-hook verwijdert alleen de cPanel-placeholder `index.html` (“Domein gereserveerd” / niet uit `public/`), behoudt `.user.ini`/`php.ini`/`cgi-bin` en overschrijft een verse `robots.txt` niet.
+- Hosting server-wide `robots.txt` schaduwde de Laravel-route: `POST /deploy/run` schrijft nu de env-aware app-output (staging disallow-all, productie allow + sitemap) als statisch `robots.txt` in de docroot.
+- `deploy-hook-upload.sh`: retry met backoff (5×, 5s/10s/…) op `POST /deploy/run` bij 404/5xx/connectie na release-swap (opcache/fs-timing).
+
 ## [0.24.4] - 2026-10-30
 
 ### Added

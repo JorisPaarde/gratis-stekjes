@@ -46,6 +46,13 @@ class DeployController extends Controller
             Artisan::call('config:cache');
             Artisan::call('route:cache');
             Artisan::call('view:cache');
+
+            // Hosting server-wide robots.txt schaduwt de Laravel-route; schrijf verse
+            // app-output als statisch bestand in de docroot (public_path = docroot via usePublicPath).
+            $robots = app(PageController::class)->robotsBody();
+            if (@file_put_contents(public_path('robots.txt'), $robots) === false) {
+                throw new \RuntimeException('robots_txt_write_failed');
+            }
         } catch (Throwable $e) {
             report($e);
 
