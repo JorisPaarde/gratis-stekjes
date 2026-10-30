@@ -206,6 +206,7 @@ test('pageview-teller negeert uitgesloten paden', function () {
     $paths = [
         '/beheer',
         '/account/inloggen',
+        '/feedback',
         '/robots.txt',
         '/sitemap.xml',
         '/api/partners',
@@ -217,7 +218,7 @@ test('pageview-teller negeert uitgesloten paden', function () {
     }
 
     $counted = PageView::query()
-        ->whereIn('path', ['/beheer', '/account/inloggen', '/robots.txt', '/sitemap.xml', '/api/partners'])
+        ->whereIn('path', ['/beheer', '/account/inloggen', '/feedback', '/robots.txt', '/sitemap.xml', '/api/partners'])
         ->sum('count');
 
     expect((int) $counted)->toBe(0);

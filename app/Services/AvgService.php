@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\Aanbod;
 use App\Models\Conversation;
+use App\Models\Feedback;
 use App\Models\Message;
 use App\Models\Report;
 use App\Models\User;
@@ -110,6 +111,21 @@ final class AvgService
                     ])
                     ->all();
             }
+        }
+
+        if (Schema::hasTable('feedback')) {
+            $payload['feedback'] = Feedback::query()
+                ->where('user_id', $user->id)
+                ->orderBy('id')
+                ->get()
+                ->map(fn (Feedback $f) => [
+                    'id' => $f->id,
+                    'page_path' => (string) $f->page_path,
+                    'body' => (string) $f->body,
+                    'read_at' => optional($f->read_at)?->toIso8601String(),
+                    'created_at' => optional($f->created_at)?->toIso8601String(),
+                ])
+                ->all();
         }
 
         $this->assertExportSafe($payload);

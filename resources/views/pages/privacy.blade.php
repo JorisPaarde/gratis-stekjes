@@ -26,6 +26,7 @@
     <li><strong>Account:</strong> e-mailadres, wachtwoord (alleen als hash, bcrypt/argon via Laravel), voornaam of bijnaam, optioneel telefoonnummer (versleuteld opgeslagen), benaderde locatie (label zoals postcode-4 of plaats, plus afgeronde coördinaten). Optioneel een tijdelijk nieuw e-mailadres bij e-mailwijziging (<code>pending_email</code>) tot bevestiging.</li>
     <li><strong>Aanbod:</strong> type (uitdelen of ophalen), vrije tekst, zichtbaarheid, verloopdatum en (intern) verlengtoken bij herinneringsmails. Geen gebruikersfoto’s (die functie bestaat nog niet).</li>
     <li><strong>Berichten:</strong> inhoud van gesprekken (versleuteld opgeslagen), of je verder contact wilt delen (ja/nee), leestijd, blokkeerregels, en meldingen met reden (versleuteld) voor de beheerder.</li>
+    <li><strong>Feedback:</strong> optionele tekst die je via de feedbackknop stuurt (versleuteld), plus het pad van de pagina waarop je zat; geen mail, geen tracking.</li>
     <li><strong>Organisatie- of deelplek-aanmelding:</strong> naam, type, plaats, beschrijving, contact-e-mail (versleuteld, niet publiek) en tijdstip van privacy-akkoord. Pas na goedkeuring door beheer verschijnt de plek op deelplekken/stadspagina’s.</li>
     <li><strong>Technisch:</strong> sessie (login/“onthoud mij”), CSRF-token, rate-limits (cache-keys die o.a. IP of e-mail kunnen bevatten, met korte TTL), geocode-cache van zoekopdrachten (genormaliseerde query, label, afgeronde lat/lon, tijdstip). Serverlogs zonder herleidbare e-mail/IP (maskering). Geen trackingcookies, geen analytiek-scripts van derden, geen advertenties.</li>
   </ul>
@@ -56,7 +57,7 @@
   <h2>Jouw rechten</h2>
   <ul class="list-plain">
     <li><strong>Inzien / export:</strong> ingelogd via <a href="{{ route('account.export') }}">Gegevens downloaden</a> (JSON van account, aanbod, berichten, blokkades/meldingen; zonder wachtwoord of tokens; foto-links leeg zolang er geen foto-upload is).</li>
-    <li><strong>Wissen (account):</strong> <a href="{{ route('account.verwijderen') }}">Account verwijderen</a> (bevestiging met wachtwoord). Daarmee verdwijnen account, aanbod, berichten/gesprekken, blokkades, jouw meldingen, wachtwoordreset-tokens en sessies.</li>
+    <li><strong>Wissen (account):</strong> <a href="{{ route('account.verwijderen') }}">Account verwijderen</a> (bevestiging met wachtwoord). Daarmee verdwijnen account, aanbod, berichten/gesprekken, blokkades, jouw meldingen, wachtwoordreset-tokens en sessies. Feedback blijft bewaard zonder koppeling aan jou (geanonimiseerd).</li>
     <li><strong>Rectificatie:</strong> via je accountprofiel (naam, telefoon, locatie, e-mailwijziging met herbevestiging).</li>
     <li><strong>Bezwaar / klacht:</strong> mail <a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a>. Je kunt ook een klacht indienen bij de Autoriteit Persoonsgegevens (<a href="https://www.autoriteitpersoonsgegevens.nl/" rel="noopener noreferrer">autoriteitpersoonsgegevens.nl</a>).</li>
 

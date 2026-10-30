@@ -158,6 +158,9 @@ test('route-audit gevuld: publiek + account + beheer < 500', function () {
     $this->withSession(['admin_ok' => true])
         ->get(route('beheer.statistieken'))
         ->assertOk();
+    $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.feedback'))
+        ->assertOk();
 
     expect(Message::query()->count())->toBeGreaterThan(0);
     expect(Aanbod::query()->count())->toBeGreaterThan(0);

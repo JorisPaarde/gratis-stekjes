@@ -644,3 +644,41 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
   height: 100%;
   object-fit: cover;
 }
+
+/* Floating feedback — alleen voor ingelogde leden (layout), veilig t.o.v. iPhone home-indicator */
+.feedback-fab {
+  position: fixed;
+  z-index: 40;
+  right: max(1rem, env(safe-area-inset-right, 0px));
+  bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--forest);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-family: var(--font-body);
+  box-shadow: var(--shadow);
+  border: 2px solid transparent;
+}
+.feedback-fab:hover,
+.feedback-fab:focus-visible {
+  background: var(--forest-deep);
+  color: #fff;
+  outline: none;
+}
+.feedback-fab:focus-visible {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(232, 131, 58, 0.45), var(--shadow);
+}
+.feedback-form .form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 0.75rem;
+}

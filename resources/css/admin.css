@@ -60,6 +60,16 @@
   font: inherit;
 }
 
+.beheer-feedback-body {
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-width: 36rem;
+}
+
+.beheer-feedback-unread td {
+  background: rgba(232, 131, 58, 0.08);
+}
+
 .beheer-actions a {
   display: inline-flex;
   align-items: center;

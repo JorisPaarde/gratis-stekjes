@@ -117,6 +117,27 @@
       <details class="stats-kpi-card">
         <summary>
           <span class="stats-kpi-top">
+            <span class="stats-kpi-value">{{ $feedbackTotal }}</span>
+            @if($svgFeedbackSpark !== ''){!! $svgFeedbackSpark !!}@endif
+          </span>
+          <span class="stats-kpi-label">
+            <a href="{{ route('beheer.feedback') }}">Feedback</a>
+            @if($feedbackUnread > 0)
+              · {{ $feedbackUnread }} ongelezen
+            @endif
+          </span>
+        </summary>
+        <div class="stats-kpi-expand">
+          <p class="stats-kpi-caption"><a href="{{ route('beheer.feedback') }}">Bekijk alle feedback</a> — {{ $feedbackTotal }} totaal, {{ $feedbackUnread }} ongelezen.</p>
+          {!! $svgFeedback !!}
+        </div>
+      </details>
+    </li>
+
+    <li>
+      <details class="stats-kpi-card">
+        <summary>
+          <span class="stats-kpi-top">
             <span class="stats-kpi-value">{{ $pageViewsToday }}</span>
             @if($svgViewsSpark !== ''){!! $svgViewsSpark !!}@endif
           </span>
