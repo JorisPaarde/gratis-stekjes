@@ -33,6 +33,18 @@ return [
     /** Gedeeld secret voor /cron (header X-Cron-Token). */
     'cron_token' => env('CRON_TOKEN', ''),
 
+    /**
+     * Bearer-token voor POST /deploy/run (migratie + caches zonder SSH).
+     * Leeg = endpoint weigert altijd. Nooit committen.
+     */
+    'deploy_token' => env('DEPLOY_TOKEN', ''),
+
+    /**
+     * Zet op true om /deploy/run buiten APP_ENV=staging toe te staan
+     * (bijv. nood-debug). Staging schakelt het endpoint automatisch in.
+     */
+    'deploy_endpoint_enabled' => filter_var(env('DEPLOY_ENDPOINT_ENABLED', false), FILTER_VALIDATE_BOOL),
+
     /** Types voor kaartmarkers (interne sleutel partner_types blijft). */
     'partner_types' => [
         'partner' => 'Initiatief',

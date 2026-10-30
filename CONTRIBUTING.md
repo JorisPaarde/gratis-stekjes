@@ -16,12 +16,13 @@
 
 - Semver-tags op `master`: `v0.1.0`, …
 - `CHANGELOG.md` (Keep a Changelog).
-- Push naar `staging` → automatische staging-deploy (slaagt over als secrets ontbreken).
+- Push naar `staging` → `deploy-staging-cpanel.yml` (skip met notice als cPanel-secrets ontbreken).
+- Branch `deploy-staging` is alleen build-artefact (force-push); niet mergen. Geen `.cpanel.yml` op `staging`/`master`.
 - Productie-deploy alleen bij tag `v*.*.*` op `master` (+ handmatige `workflow_dispatch` voor herdeploy van een tag).
 
 ## Secrets
 
-Nooit hostnamen van servers, cPanel-gebruikers, wachtwoorden of private paden in code/docs/workflows committen. Alles via GitHub Environments/Secrets (`SITE_NAME`, `BASE_URL`, `DB_*`, `SMTP_*`, `DEPLOY_*`, `CRON_TOKEN`, …).
+Nooit tokens/wachtwoorden in git of PR-tekst. Exacte namen + cPanel-setup: `AGENTS.md` (`CPANEL_*`, `DEPLOY_TOKEN`, `STAGING_BASE_URL`, `STAGING_DB_*`, `SITE_NAME`, `SMTP_*`, `CRON_TOKEN`, `ADMIN_PASSWORD`).
 
 ## Lokaal
 

@@ -1,17 +1,15 @@
-name: Deploy staging
+name: Deploy staging (legacy SSH, retired)
 
-# Layout (waarden uit secrets, geen hardcodes):
-#   docroot = STAGING_DEPLOY_PATH
-#   app     = STAGING_APP_DIR (anders sibling …/stekjes-staging-app, afgeleid op de server)
-# App (zonder public/) → APP_DIR; inhoud public/ → docroot; index.php wijst naar de app
-# en zet public path = docroot (asset()/Vite).
+# RETIRED: oude SSH-deploy naar staging.stekjes.*. Environment `staging` bevat nu
+# de gratisplanten-DB/URL — deze workflow mag die secrets niet meer gebruiken.
+# Actieve staging-deploy: deploy-staging-cpanel.yml.
+# Bestand blijft voor referentie. Alleen handmatig (workflow_dispatch) én alleen
+# met secret ALLOW_LEGACY_SSH_STAGING=1 (voorkomt per ongeluk heractiveren).
 on:
-  push:
-    branches: [staging]
   workflow_dispatch:
 
 concurrency:
-  group: deploy-staging
+  group: deploy-staging-legacy-ssh
   cancel-in-progress: false
 
 jobs:
@@ -26,15 +24,23 @@ jobs:
       BASE: ${{ secrets.STAGING_BASE_URL }}
       APP_DIR_SECRET: ${{ secrets.STAGING_APP_DIR }}
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Secrets aanwezig?
+      - name: Legacy SSH-deploy geblokkeerd
         id: chk
         run: |
-          if [ -z "$H" ] || [ -z "$U" ] || [ -z "$D" ] || [ -z "${{ secrets.DEPLOY_SSH_KEY }}" ]; then
-            echo "Staging-secrets ontbreken, deploy overgeslagen."
-            echo "skip=1" >> "$GITHUB_OUTPUT"
+          set -euo pipefail
+          ALLOW="$(printf '%s' '${{ secrets.ALLOW_LEGACY_SSH_STAGING }}' | tr '[:upper:]' '[:lower:]')"
+          if [ "$ALLOW" != "1" ] && [ "$ALLOW" != "true" ] && [ "$ALLOW" != "yes" ]; then
+            echo "::error::Legacy SSH staging-deploy is retired. Gebruik deploy-staging-cpanel.yml. (Override alleen met ALLOW_LEGACY_SSH_STAGING=1 + juiste oude SSH-host secrets.)"
+            exit 1
           fi
+          if [ -z "$H" ] || [ -z "$U" ] || [ -z "$D" ] || [ -z "${{ secrets.DEPLOY_SSH_KEY }}" ]; then
+            echo "::error::ALLOW_LEGACY_SSH_STAGING gezet maar SSH-secrets ontbreken — gestopt."
+            exit 1
+          fi
+          echo "::warning::Legacy SSH staging-deploy draait met ALLOW_LEGACY_SSH_STAGING — controleer of STAGING_* niet naar de nieuwe host wijzen."
+          echo "skip=0" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
 
       - name: Setup PHP 8.2
         if: steps.chk.outputs.skip != '1'

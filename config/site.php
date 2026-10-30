@@ -17,4 +17,9 @@ return [
     'contact_email' => env('SITE_CONTACT_EMAIL', 'info@gratisplanten.nl'),
     // Staging always noindex; production sets NOINDEX=false
     'noindex' => filter_var(env('NOINDEX', env('APP_ENV') === 'staging'), FILTER_VALIDATE_BOOL),
+    /**
+     * Canonieke productiehost. Geparkte aliases (gratisstekjes.nl) krijgen
+     * via CanonicalHostRedirect een 301 hierheen (niet op staging/local).
+     */
+    'canonical_host' => env('CANONICAL_HOST', 'gratisplanten.nl'),
 ];

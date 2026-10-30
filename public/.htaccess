@@ -5,6 +5,13 @@
 
     RewriteEngine On
 
+    # Geparkte alias → canonieke host (pad + query behouden).
+    # Middleware CanonicalHostRedirect is leidend (uit op staging/local);
+    # deze regels vangen requests af vóór PHP wanneer de parked domain
+    # op dezelfde docroot staat (public_html).
+    RewriteCond %{HTTP_HOST} ^(www\.)?gratisstekjes\.nl$ [NC]
+    RewriteRule ^ https://gratisplanten.nl%{REQUEST_URI} [L,R=301]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
