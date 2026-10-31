@@ -11,7 +11,8 @@
   margin-bottom: 1rem;
 }
 
-.beheer-marker-form {
+.beheer-marker-form,
+.beheer-evenement-form {
   max-width: 36rem;
   margin-bottom: 1.5rem;
 }

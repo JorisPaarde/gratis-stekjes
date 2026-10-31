@@ -74,6 +74,30 @@ return [
         'tuinvereniging' => 'Tuinvereniging',
     ],
 
+    /** Types voor agenda-evenementen op /initiatieven. */
+    'evenement_types' => [
+        'stekjesmarkt' => 'Stekjesmarkt',
+        'plantenruilbeurs' => 'Plantenruilbeurs',
+        'ruildag' => 'Ruildag',
+        'overig' => 'Overig',
+    ],
+
+    /** Nederlandse provincies (filter + beheer). */
+    'provincies' => [
+        'Drenthe',
+        'Flevoland',
+        'Friesland',
+        'Gelderland',
+        'Groningen',
+        'Limburg',
+        'Noord-Brabant',
+        'Noord-Holland',
+        'Overijssel',
+        'Utrecht',
+        'Zeeland',
+        'Zuid-Holland',
+    ],
+
     /** Gedeeld beheerwachtwoord (session admin_ok). Leeg = /beheer uit. */
     'admin_password' => env('ADMIN_PASSWORD', ''),
 

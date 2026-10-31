@@ -197,6 +197,8 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::post('/feedback/gelezen', [BeheerFeedbackController::class, 'markRead'])->name('beheer.feedback.read');
     Route::post('/markers', [BeheerDashboardController::class, 'saveMarker'])->name('beheer.markers.save');
     Route::post('/markers/verwijderen', [BeheerDashboardController::class, 'deleteMarker'])->name('beheer.markers.delete');
+    Route::post('/evenementen', [BeheerDashboardController::class, 'saveEvenement'])->name('beheer.evenementen.save');
+    Route::post('/evenementen/verbergen', [BeheerDashboardController::class, 'hideEvenement'])->name('beheer.evenementen.hide');
     Route::post('/meldingen/afgehandeld', [BeheerDashboardController::class, 'markReportHandled'])->name('beheer.reports.handled');
     Route::post('/deelplekken/goedkeuren', [BeheerDashboardController::class, 'approveDeelplek'])
         ->name('beheer.deelplekken.approve');

@@ -9,6 +9,14 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.25.0] - 2026-10-31
+
+### Added
+
+- `/initiatieven` heeft een agenda 2026: evenementen (stekjesmarkt / plantenruilbeurs / ruildag / overig) met startdatum, optionele einddatum, plaats+provincie, organisator, externe link, bron/laatst gecontroleerd; komende items chronologisch per maand, filter op provincie/type, verlopen in inklapbaar *Geweest*, lege staat met link naar feedback; vaste ruilinitiatieven blijven als tweede sectie.
+- Beheer: toevoegen/bewerken/verbergen van agenda-evenementen (geen verzonnen seed-data).
+- SEO: title *Stekjesmarkt, plantenruilbeurs en ruilinitiatieven*, H1 *Plantenruilbeurzen, stekjesmarkten en initiatieven*, schema.org Event JSON-LD per komend evenement; `/initiatieven` blijft in de sitemap. Menu-label ongewijzigd.
+
 ## [0.24.12] - 2026-10-31
 
 ### Fixed

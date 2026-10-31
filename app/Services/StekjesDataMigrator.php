@@ -42,6 +42,7 @@ final class StekjesDataMigrator
         'users',
         'geocode_cache',
         'partner_markers',
+        'evenementen',
         'aanbod',
         'conversations',
         'messages',
