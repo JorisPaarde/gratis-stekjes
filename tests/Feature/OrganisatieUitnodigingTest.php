@@ -108,6 +108,29 @@ test('organisatiepagina zonder deelplek_slugs rendert 200 (geen isNotEmpty op ar
         ->assertNotFound();
 });
 
+test('struikroven pagina 200, Struikrovers, geen deelplekken, kruislink MeerBomen Nu', function () {
+    $this->get(route('organisaties.show', ['slug' => 'struikroven']))
+        ->assertOk()
+        ->assertSee('Stichting Struikroven', false)
+        ->assertSee('Struikrovers', false)
+        ->assertSee('Bekijk hun actieagenda', false)
+        ->assertSee('https://www.struikroven.nu/agenda', false)
+        ->assertSee('Geen bezoeklocatie', false)
+        ->assertDontSee('Op de deelplekkenkaart', false)
+        ->assertSee(route('organisaties.show', ['slug' => 'meerbomen-nu']), false)
+        ->assertSee('MeerBomen Nu', false);
+
+    $this->get(route('organisaties.show', ['slug' => 'meerbomen-nu']))
+        ->assertOk()
+        ->assertSee(route('organisaties.show', ['slug' => 'struikroven']), false)
+        ->assertSee('Stichting Struikroven', false);
+
+    $this->get(route('organisaties.index'))
+        ->assertOk()
+        ->assertSee('Stichting Struikroven', false)
+        ->assertSee(route('organisaties.show', ['slug' => 'struikroven']), false);
+});
+
 test('alle organisatiepaginas 200 met config/route-cache en APP_DEBUG=false', function () {
     // Bestand-sqlite i.p.v. :memory:, anders verdwijnt het schema bij config:cache / nieuwe PDO.
     $dbPath = database_path('organisaties-cache-test.sqlite');
@@ -304,6 +327,8 @@ test('sitemap bevat voor-organisaties en organisatiepaginas', function () {
     expect($xml)->toContain('/voor-organisaties');
     expect($xml)->toContain('/organisaties/plantenasiel-haarlem');
     expect($xml)->toContain('/organisaties/voedselbosbouw');
+    expect($xml)->toContain('/organisaties/struikroven');
+    expect($xml)->toContain('/organisaties/meerbomen-nu');
 });
 
 test('docs uitnodigingen bestaat en waarschuwt niet versturen', function () {

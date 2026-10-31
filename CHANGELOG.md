@@ -9,6 +9,16 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.30.1] - 2026-10-31
+
+### Added
+
+- Organisatiepagina Stichting Struikroven (`/organisaties/struikroven`): initiatief
+  dat planten redt bij sloop/vernieuwing; Struikrovers; actieagenda-link; geen
+  deelplekken op de kaart.
+- Optionele `links` en `gerelateerde_slugs` in `data/organisaties.json`; kruislink
+  Struikroven ↔ MeerBomen Nu (samenwerking).
+
 ## [0.30.0] - 2026-10-31
 
 ### Added
