@@ -95,7 +95,7 @@ class ImportStekjesData extends Command
             if (! is_array($stats)) {
                 continue;
             }
-            foreach (['prod_voor', 'bron', 'toegevoegd', 'samengevoegd', 'overgeslagen', 'prod_na', 'sum_voor', 'sum_na'] as $key) {
+            foreach (['prod_voor', 'bron', 'toegevoegd', 'samengevoegd', 'overgeslagen', 'al_aanwezig', 'prod_na', 'sum_voor', 'sum_na'] as $key) {
                 if (array_key_exists($key, $stats)) {
                     $this->line($table.'.'.$key.'='.$stats[$key]);
                 }

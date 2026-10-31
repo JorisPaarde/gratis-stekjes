@@ -142,7 +142,7 @@ d=json.load(sys.stdin)
 print("ok="+str(d.get("ok")))
 print("dry_run="+str(d.get("dry_run")))
 print("already_imported="+str(bool(d.get("already_imported"))))
-keys=("prod_voor","bron","toegevoegd","samengevoegd","overgeslagen","prod_na","sum_voor","sum_na")
+keys=("prod_voor","bron","toegevoegd","samengevoegd","overgeslagen","al_aanwezig","prod_na","sum_voor","sum_na")
 for table,stats in sorted((d.get("tables") or {}).items()):
   if not isinstance(stats, dict):
     continue

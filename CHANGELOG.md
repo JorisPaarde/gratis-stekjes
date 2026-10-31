@@ -9,6 +9,21 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.26.2] - 2026-10-31
+
+### Fixed
+
+- Samenvoeg-import herkent kopieën van de mislukte v0.24.12-run (die IDs behield en door MySQL `ALTER … AUTO_INCREMENT` al deels committe): zelfde id + dezelfde sleutelinhoud (`created_at` + tabel-specifieke sleutelvelden) → `al_aanwezig`, id→id mapping, geen verdubbeling. Zelfde id met andere inhoud blijft een echte prod-rij; bron krijgt een nieuw id.
+- `page_views`: exacte id+date+path+count-kopie wordt niet opnieuw opgeteld; optellen alleen voor bronrijen die nog geen zo’n kopie zijn.
+
+### Changed
+
+- Response/workflow-log per tabel: extra teller `al_aanwezig` naast `prod_voor`/`bron`/`toegevoegd`/`samengevoegd`/`overgeslagen`/`prod_na`.
+
+### Added
+
+- Pest: gedeeltelijke eerdere import zonder verdubbeling; id-botsing behoudt prod; page_views-kopie zonder dubbele optelling; tweede run blijft `already_imported`.
+
 ## [0.26.1] - 2026-10-31
 
 ### Fixed

@@ -336,8 +336,11 @@ final class StekjesDataMigrator
 
                 foreach ($tableStats as $table => $stats) {
                     $counts[$table] = (int) $stats['toegevoegd'];
-                    if ((int) $stats['overgeslagen'] > 0 || (int) $stats['samengevoegd'] > 0) {
-                        $skipped[$table] = (int) $stats['overgeslagen'] + (int) $stats['samengevoegd'];
+                    $skipTotal = (int) $stats['overgeslagen']
+                        + (int) $stats['samengevoegd']
+                        + (int) ($stats['al_aanwezig'] ?? 0);
+                    if ($skipTotal > 0) {
+                        $skipped[$table] = $skipTotal;
                     }
                 }
 
@@ -543,6 +546,14 @@ final class StekjesDataMigrator
                 throw new \RuntimeException('Ongeldige user-rij in export.');
             }
 
+            // Kopie van eerdere ID-behoudende import (v0.24.12): zelfde id + inhoud.
+            if ($this->isExactCopy('users', $row)) {
+                $idMaps['users'][$oldId] = $oldId;
+                $this->storeIdMap($runId, 'users', $oldId, $oldId);
+                $stats['al_aanwezig']++;
+                continue;
+            }
+
             $existing = DB::table('users')->whereRaw('LOWER(email) = ?', [$email])->first();
             if ($existing !== null) {
                 $update = $this->fillEmptyUserFields((array) $existing, $row);
@@ -557,6 +568,7 @@ final class StekjesDataMigrator
             }
 
             $insert = $row;
+            // Zelfde id maar andere inhoud = echte prod-rij: bron krijgt nieuw id.
             unset($insert['id']);
             // Password-hash letterlijk behouden (geen Eloquent casts).
             $newId = (string) (int) DB::table('users')->insertGetId($insert);
@@ -611,9 +623,14 @@ final class StekjesDataMigrator
                 $stats['overgeslagen']++;
                 continue;
             }
-            if (DB::table('geocode_cache')->where('query_key', $key)->exists()) {
+            $existing = DB::table('geocode_cache')->where('query_key', $key)->first();
+            if ($existing !== null) {
                 $this->storeIdMap($runId, 'geocode_cache', $key, $key);
-                $stats['overgeslagen']++;
+                if ($this->contentMatches('geocode_cache', $row, (array) $existing)) {
+                    $stats['al_aanwezig']++;
+                } else {
+                    $stats['overgeslagen']++;
+                }
                 continue;
             }
             DB::table('geocode_cache')->insert($row);
@@ -652,8 +669,17 @@ final class StekjesDataMigrator
                 continue;
             }
             $sourceKey = $date.'|'.$path;
+
+            // Exacte kopie (zelfde id + date/path/count): niet opnieuw optellen.
+            if ($this->isExactCopy('page_views', $row)) {
+                $this->storeIdMap($runId, 'page_views', $sourceKey, (string) (int) $row['id']);
+                $stats['al_aanwezig']++;
+                continue;
+            }
+
             $existing = DB::table('page_views')->where('date', $date)->where('path', $path)->first();
             if ($existing !== null) {
+                // Alleen optellen als het géén al-geïmporteerde id-kopie is.
                 DB::table('page_views')->where('id', $existing->id)->update([
                     'count' => (int) $existing->count + $add,
                 ]);
@@ -689,6 +715,23 @@ final class StekjesDataMigrator
 
         foreach ($rows as $row) {
             $row = $this->filterColumns($row, $targetCols, $dropCols);
+            $rawBlocker = isset($row['blocker_id']) ? (string) (int) $row['blocker_id'] : '';
+            $rawBlocked = isset($row['blocked_id']) ? (string) (int) $row['blocked_id'] : '';
+            $oldKey = $rawBlocker.':'.$rawBlocked;
+
+            // Pre-remap: exacte kopie met bron-user-ids (v0.24.12).
+            if ($rawBlocker !== '' && $rawBlocked !== '') {
+                $existingBlock = DB::table('blocks')
+                    ->where('blocker_id', (int) $rawBlocker)
+                    ->where('blocked_id', (int) $rawBlocked)
+                    ->first();
+                if ($existingBlock !== null && $this->contentMatches('blocks', $row, (array) $existingBlock)) {
+                    $this->storeIdMap($runId, 'blocks', $oldKey, $oldKey);
+                    $stats['al_aanwezig']++;
+                    continue;
+                }
+            }
+
             $row = $this->remapForeignKeys('blocks', $row, $idMaps);
             $blocker = $row['blocker_id'] ?? null;
             $blocked = $row['blocked_id'] ?? null;
@@ -696,7 +739,6 @@ final class StekjesDataMigrator
                 $stats['overgeslagen']++;
                 continue;
             }
-            $oldKey = ((string) ($row['_old_blocker'] ?? $blocker)).':'.((string) ($row['_old_blocked'] ?? $blocked));
             unset($row['_old_blocker'], $row['_old_blocked']);
 
             if (DB::table('blocks')->where('blocker_id', $blocker)->where('blocked_id', $blocked)->exists()) {
@@ -730,6 +772,14 @@ final class StekjesDataMigrator
         foreach ($rows as $row) {
             $row = $this->filterColumns($row, $targetCols, $dropCols);
             $oldId = isset($row['id']) ? (string) (int) $row['id'] : '';
+
+            if ($oldId !== '' && $this->isExactCopy('deelplekken', $row)) {
+                $idMaps['deelplekken'][$oldId] = $oldId;
+                $this->storeIdMap($runId, 'deelplekken', $oldId, $oldId);
+                $stats['al_aanwezig']++;
+                continue;
+            }
+
             $slug = (string) ($row['slug'] ?? '');
             if ($slug !== '' && DB::table('deelplekken')->where('slug', $slug)->exists()) {
                 $existingId = (string) (int) DB::table('deelplekken')->where('slug', $slug)->value('id');
@@ -772,6 +822,15 @@ final class StekjesDataMigrator
         foreach ($rows as $row) {
             $row = $this->filterColumns($row, $targetCols, $dropCols);
             $oldId = isset($row['id']) ? (string) (int) $row['id'] : '';
+
+            // Vóór FK-remap: kopie met behouden bron-id's (v0.24.12-import).
+            if ($oldId !== '' && $this->isExactCopy($table, $row)) {
+                $idMaps[$table][$oldId] = $oldId;
+                $this->storeIdMap($runId, $table, $oldId, $oldId);
+                $stats['al_aanwezig']++;
+                continue;
+            }
+
             $row = $this->remapForeignKeys($table, $row, $idMaps);
 
             if ($table === 'conversations') {
@@ -813,6 +872,7 @@ final class StekjesDataMigrator
                 }
             }
 
+            // Zelfde id maar andere inhoud → prod behouden, bron nieuw id.
             unset($row['id']);
             $newId = (string) (int) DB::table($table)->insertGetId($row);
             if ($oldId !== '') {
@@ -900,7 +960,7 @@ final class StekjesDataMigrator
     }
 
     /**
-     * @return array{prod_voor: int, bron: int, toegevoegd: int, samengevoegd: int, overgeslagen: int, prod_na: int}
+     * @return array{prod_voor: int, bron: int, toegevoegd: int, samengevoegd: int, overgeslagen: int, al_aanwezig: int, prod_na: int}
      */
     private function baseStats(int $prodVoor, int $bron): array
     {
@@ -910,8 +970,130 @@ final class StekjesDataMigrator
             'toegevoegd' => 0,
             'samengevoegd' => 0,
             'overgeslagen' => 0,
+            'al_aanwezig' => 0,
             'prod_na' => $prodVoor,
         ];
+    }
+
+    /**
+     * Sleutelvelden + created_at (of equivalent) om een v0.24.12-kopie te herkennen:
+     * zelfde id én dezelfde inhoud → al_aanwezig (niet opnieuw invoegen/optellen).
+     *
+     * @return list<string>
+     */
+    private function contentKeyFields(string $table): array
+    {
+        return match ($table) {
+            'users' => ['email', 'created_at'],
+            'aanbod' => ['user_id', 'type', 'created_at'],
+            'aanbod_fotos' => ['aanbod_id', 'path', 'created_at'],
+            'conversations' => ['user_a_id', 'user_b_id', 'aanbod_id', 'created_at'],
+            'messages' => ['conversation_id', 'sender_id', 'created_at'],
+            'blocks' => ['blocker_id', 'blocked_id', 'created_at'],
+            'reports' => ['reporter_id', 'reported_user_id', 'created_at'],
+            'feedback' => ['user_id', 'page_path', 'created_at'],
+            'mail_log' => ['user_id', 'type', 'status', 'created_at'],
+            'geocode_cache' => ['query_key', 'lat', 'lon', 'cached_at'],
+            'partner_markers' => ['naam', 'lat', 'lon', 'created_at'],
+            'deelplekken' => ['slug', 'created_at'],
+            'ervaringen' => ['user_id', 'created_at'],
+            'milestones_sent' => ['user_id', 'milestone'],
+            'evenementen' => ['titel', 'start_datum', 'created_at'],
+            'page_views' => ['date', 'path', 'count'],
+            default => ['created_at'],
+        };
+    }
+
+    /**
+     * True als prod al een rij met dezelfde id én dezelfde sleutelinhoud heeft
+     * (typisch een kopie van de mislukte v0.24.12-import die IDs behield).
+     *
+     * @param  array<string, mixed>  $sourceRow
+     */
+    private function isExactCopy(string $table, array $sourceRow): bool
+    {
+        if (! isset($sourceRow['id']) || ! Schema::hasColumn($table, 'id')) {
+            return false;
+        }
+        $existing = DB::table($table)->where('id', $sourceRow['id'])->first();
+        if ($existing === null) {
+            return false;
+        }
+
+        return $this->contentMatches($table, $sourceRow, (array) $existing);
+    }
+
+    /**
+     * @param  array<string, mixed>  $source
+     * @param  array<string, mixed>  $existing
+     */
+    private function contentMatches(string $table, array $source, array $existing): bool
+    {
+        foreach ($this->contentKeyFields($table) as $field) {
+            if (! array_key_exists($field, $source)) {
+                return false;
+            }
+            if (! $this->valuesEqual($source[$field], $existing[$field] ?? null, $field)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function valuesEqual(mixed $a, mixed $b, string $field): bool
+    {
+        if ($a === null && $b === null) {
+            return true;
+        }
+        if ($a === null || $b === null) {
+            return false;
+        }
+
+        if ($field === 'email') {
+            return strtolower(trim((string) $a)) === strtolower(trim((string) $b));
+        }
+
+        if (in_array($field, ['created_at', 'cached_at', 'updated_at', 'approved_at', 'email_verified_at', 'expires_at'], true)
+            || str_ends_with($field, '_at')) {
+            return $this->normalizeTimestamp($a) === $this->normalizeTimestamp($b);
+        }
+
+        if (in_array($field, ['lat', 'lon', 'lng'], true)) {
+            return abs((float) $a - (float) $b) < 0.000001;
+        }
+
+        if (is_bool($a) || is_bool($b)) {
+            return (int) $a === (int) $b;
+        }
+
+        if (is_numeric($a) && is_numeric($b) && ! is_string($a) && ! is_string($b)) {
+            return (string) $a === (string) $b || (float) $a === (float) $b;
+        }
+
+        // Datums / strings: normaliseer whitespace.
+        return trim((string) $a) === trim((string) $b);
+    }
+
+    private function normalizeTimestamp(mixed $value): string
+    {
+        if ($value instanceof \DateTimeInterface) {
+            return $value->format('Y-m-d H:i:s');
+        }
+        $s = trim((string) $value);
+        if ($s === '') {
+            return '';
+        }
+        // ISO → MySQL-achtig; strip timezone-suffix voor vergelijking.
+        $s = str_replace('T', ' ', $s);
+        if (preg_match('/^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/', $s, $m) === 1) {
+            return $m[1];
+        }
+        if (preg_match('/^(\d{4}-\d{2}-\d{2})$/', $s, $m) === 1) {
+            return $m[1];
+        }
+
+        return $s;
     }
 
     /**
