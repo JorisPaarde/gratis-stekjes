@@ -75,6 +75,7 @@ Route::get('/partners/{path}', function (string $path) {
 Route::get('/stijlgids', [PageController::class, 'stijlgids'])->name('stijlgids');
 Route::get('/robots.txt', [PageController::class, 'robots'])->name('robots');
 Route::get('/sitemap.xml', [PageController::class, 'sitemap'])->name('sitemap');
+Route::get('/manifest.webmanifest', [PageController::class, 'manifest'])->name('manifest');
 
 Route::get('/hoe-werkt-het', [ContentPageController::class, 'hoeWerktHet'])->name('hoe-werkt-het');
 Route::get('/hulpmiddelen', [ContentPageController::class, 'hulpmiddelen'])->name('hulpmiddelen');

@@ -113,6 +113,64 @@ class PageController extends Controller
         return response($this->robotsBody(), 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
     }
 
+    /**
+     * Web app manifest (PWA). Zelfde inhoud als public/manifest.webmanifest;
+     * route zorgt voor juiste Content-Type in tests en als fallback zonder static file.
+     */
+    public function manifest(): Response
+    {
+        $name = (string) config('site.name');
+        $payload = [
+            'id' => '/',
+            'name' => $name,
+            'short_name' => $name,
+            'description' => (string) config('site.description'),
+            'start_url' => '/',
+            'scope' => '/',
+            'display' => 'standalone',
+            'orientation' => 'any',
+            'lang' => 'nl',
+            'dir' => 'ltr',
+            'background_color' => (string) config('site.background_color'),
+            'theme_color' => (string) config('site.theme_color'),
+            'icons' => [
+                [
+                    'src' => '/assets/icons/icon-192.png',
+                    'sizes' => '192x192',
+                    'type' => 'image/png',
+                    'purpose' => 'any',
+                ],
+                [
+                    'src' => '/assets/icons/icon-512.png',
+                    'sizes' => '512x512',
+                    'type' => 'image/png',
+                    'purpose' => 'any',
+                ],
+                [
+                    'src' => '/assets/icons/icon-192-maskable.png',
+                    'sizes' => '192x192',
+                    'type' => 'image/png',
+                    'purpose' => 'maskable',
+                ],
+                [
+                    'src' => '/assets/icons/icon-512-maskable.png',
+                    'sizes' => '512x512',
+                    'type' => 'image/png',
+                    'purpose' => 'maskable',
+                ],
+            ],
+        ];
+
+        return response(
+            json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)."\n",
+            200,
+            [
+                'Content-Type' => 'application/manifest+json; charset=UTF-8',
+                'Cache-Control' => 'public, max-age=3600',
+            ]
+        );
+    }
+
     public function sitemap(Stektips $stektips, Steden $steden, Organisaties $organisaties, Kennisbank $kennisbank): Response
     {
         $urls = [

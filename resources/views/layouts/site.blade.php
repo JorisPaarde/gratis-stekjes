@@ -19,9 +19,15 @@
   <meta property="og:description" content="@yield('meta_description', config('site.description'))">
   <meta property="og:url" content="@yield('canonical', url()->current())">
   <meta name="theme-color" content="{{ config('site.theme_color') }}">
+  <meta name="application-name" content="{{ $siteName }}">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="{{ $siteName }}">
+  <meta name="gp-app-version" content="{{ config('site.version') }}">
   @vite(['resources/css/app.css', 'resources/js/app.js'])
-  <link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
-  <link rel="icon" href="{{ asset('assets/icons/icon-192.png') }}" sizes="192x192">
+  <link rel="manifest" href="{{ url('/manifest.webmanifest') }}">
+  <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+  <link rel="icon" type="image/png" href="{{ asset('assets/icons/icon-192.png') }}" sizes="192x192">
+  <link rel="apple-touch-icon" href="{{ asset('assets/icons/apple-touch-icon.png') }}">
   @isset($schema)
   <script type="application/ld+json">{!! json_encode($schema, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES) !!}</script>
   @endisset

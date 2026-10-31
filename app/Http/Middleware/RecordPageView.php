@@ -43,6 +43,8 @@ class RecordPageView
         '/sitemap.xml',
         '/favicon.ico',
         '/manifest.webmanifest',
+        '/sw.js',
+        '/offline.html',
     ];
 
     public function handle(Request $request, Closure $next): Response

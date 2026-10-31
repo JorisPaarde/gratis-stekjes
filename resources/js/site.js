@@ -124,8 +124,5 @@
       });
   }
 
-  if ("serviceWorker" in navigator) {
-    var ver = (window.STEKJES_SITE && window.STEKJES_SITE.version) || "0";
-    navigator.serviceWorker.register("/sw.js?v=" + encodeURIComponent(ver)).catch(function () {});
-  }
+  /* Service worker: zie resources/js/app.js (initPwa). */
 })();

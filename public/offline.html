@@ -4,50 +4,101 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#1f4d2b">
-  <title>Offline</title>
+  <meta name="theme-color" content="#1F4D2B">
+  <title>Je bent offline · Gratis planten</title>
   <style>
     :root {
       --ink: #1a1210;
+      --ink-soft: #3d4a3f;
       --forest: #1f4d2b;
       --orange: #e8833a;
       --orange-text: #1a1210;
       --bg: #e6f2e1;
     }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
+      min-height: 100vh;
       font-family: "Titillium Web", "Segoe UI", sans-serif;
       color: var(--ink);
-      background: var(--bg);
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(31, 77, 43, 0.12), transparent),
+        var(--bg);
       line-height: 1.55;
+      display: flex;
+      align-items: center;
     }
-    .wrap { width: min(100% - 2rem, 42rem); margin: 3rem auto; }
+    .wrap {
+      width: min(100% - 2rem, 28rem);
+      margin: 2rem auto;
+    }
+    .brand {
+      font-family: "Passion One", Georgia, serif;
+      font-size: 1.15rem;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--forest);
+      margin: 0 0 1.25rem;
+    }
     h1 {
       font-family: "Passion One", Georgia, serif;
       text-transform: uppercase;
+      letter-spacing: 0.02em;
       color: #fff;
       background: var(--forest);
       display: inline-block;
-      padding: .3rem .65rem;
+      margin: 0 0 0.85rem;
+      padding: 0.3rem 0.65rem;
+      font-size: clamp(1.6rem, 5vw, 2.1rem);
+      line-height: 1.1;
+    }
+    p {
+      margin: 0 0 1rem;
+      color: var(--ink-soft);
+      font-size: 1.05rem;
     }
     .btn {
       display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
       background: var(--orange);
       color: var(--orange-text);
       text-decoration: none;
       font-weight: 700;
-      padding: .75rem 1.3rem;
+      padding: 0.75rem 1.3rem;
       border-radius: 999px;
       text-transform: uppercase;
-      letter-spacing: .04em;
+      letter-spacing: 0.04em;
+      border: 0;
+      cursor: pointer;
+      font: inherit;
+    }
+    .btn:hover, .btn:focus-visible {
+      filter: brightness(0.96);
+      outline: 2px solid var(--forest);
+      outline-offset: 2px;
+    }
+    .hint {
+      margin-top: 1.25rem;
+      font-size: 0.95rem;
     }
   </style>
 </head>
 <body>
   <main class="wrap">
+    <p class="brand">Gratis planten</p>
     <h1>Je bent offline</h1>
-    <p>Deze pagina staat in de cache. Account, berichten en zoeken werken alleen online.</p>
-    <p><a class="btn" href="/">Naar home</a></p>
+    <p>Geen verbinding met het netwerk. Openbare pagina’s die je eerder bezocht, kunnen nog beschikbaar zijn.</p>
+    <p>Inloggen, berichten en je account werken alleen online.</p>
+    <p>
+      <a class="btn" href="/">Naar home</a>
+    </p>
+    <p class="hint">Zodra je weer online bent, vernieuw je deze pagina.</p>
   </main>
+  <script>
+    if (navigator.onLine) {
+      /* stil: gebruiker kan zelf vernieuwen; geen auto-redirect-loop */
+    }
+  </script>
 </body>
 </html>
