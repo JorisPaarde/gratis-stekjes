@@ -9,6 +9,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.27.1] - 2026-10-31
+
+### Fixed
+
+- Kaart op `/aanbod` en `/deelplekken`: beginview direct bij `L.map(…).fitBounds(NL+BE)`, zodat tiles en markers laden (regressie 0.27.0: `whenReady` vuurde niet zonder view).
+- Zoeken (bijv. postcode `9000`): kaart zoomt rond het resultaat en niet verder uit dan NL+BE.
+
 ## [0.27.0] - 2026-10-31
 
 ### Added
