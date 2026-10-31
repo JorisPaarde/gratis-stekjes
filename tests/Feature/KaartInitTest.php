@@ -101,3 +101,28 @@ test('zoeken na postcode zoomt rond resultaat (geen landelijke fitBounds)', func
         ->and($js)->toContain('map.setView([meta.zoek_lat, meta.zoek_lon], 11)')
         ->and($js)->toContain('getBoundsZoom(L.latLngBounds(nlBeBounds)');
 });
+
+test('kaart-JS gebruikt L.divIcon i.p.v. standaard Leaflet-icoon (geen unpkg img)', function () {
+    foreach (['resources/js/zoeken.js', 'resources/js/deelplekken.js', 'resources/js/stad-kaart.js'] as $rel) {
+        $js = (string) file_get_contents(base_path($rel));
+        expect($js)->not->toBe('');
+
+        // Geen bare L.marker([lat, lon]).… — dat laadt unpkg marker-icon.png (CSP img-src).
+        expect($js)->not->toMatch('/L\.marker\(\[[^\]]+\]\)\s*\./')
+            ->and($js)->toContain('L.divIcon')
+            ->and($js)->not->toContain('marker-icon.png')
+            ->and($js)->not->toContain('marker-shadow.png')
+            ->and($js)->not->toContain('Icon.Default')
+            ->and($js)->not->toMatch('/iconUrl\s*:/')
+            ->and($js)->not->toContain('unpkg.com/leaflet');
+    }
+
+    $zoeken = (string) file_get_contents(base_path('resources/js/zoeken.js'));
+    expect($zoeken)->toContain('function aanbodIcon')
+        ->and($zoeken)->toContain('{ icon: aanbodIcon() }')
+        ->and($zoeken)->toContain('partner-marker--aanbod');
+
+    $stad = (string) file_get_contents(base_path('resources/js/stad-kaart.js'));
+    expect($stad)->toContain('partner-marker--aanbod')
+        ->and($stad)->toContain('{ icon: aanbodIcon }');
+});

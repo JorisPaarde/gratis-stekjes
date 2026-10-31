@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.28.1] - 2026-10-31
+
+### Fixed
+
+- Kaartmarkers voor aanbod op `/aanbod` en stadspagina’s: `L.divIcon` i.p.v. standaard Leaflet-icoon (unpkg `marker-icon.png`), zodat CSP `img-src` markers niet meer blokkeert na zoeken.
+
 ## [0.28.0] - 2026-10-31
 
 ### Added
