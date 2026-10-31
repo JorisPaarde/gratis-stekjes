@@ -72,9 +72,9 @@ test('foto met status te_bekijken wordt niet getoond', function () {
         'nieuw' => ['slug' => 'nieuw', 'status' => 'te_bekijken', 'bestand' => 'y.jpg'],
         'oud' => ['slug' => 'oud', 'bestand' => 'z.jpg'],
     ]]));
-    $svc = new SoortAfbeeldingen($path);
+    $all = (new SoortAfbeeldingen($path))->all();
     @unlink($path);
 
-    expect($svc->all())->toHaveKeys(['goed', 'oud'])
-        ->and($svc->all())->not->toHaveKey('nieuw');
+    expect($all)->toHaveKeys(['goed', 'oud'])
+        ->and($all)->not->toHaveKey('nieuw');
 });
