@@ -26,7 +26,7 @@
       class="home-hero-pic"
       :eager="true"
       sizes="100vw"
-      alt="Volkstuinperkjes met groenten in een buurttuin"
+      alt="Volkstuinen bij de Dreef in Enkhuizen met groene tuintjes en bomen"
     />
   </div>
   <div class="home-hero-scrim" aria-hidden="true"></div>
@@ -63,13 +63,16 @@
         <a class="btn btn-secondary" href="{{ route('deelplekken') }}"><x-icon name="locatie" :size="18" /> Bekijk deelplekken</a>
       </p>
     </div>
-    <a class="home-split-media home-kaart-preview" href="{{ route('aanbod') }}">
+    <a
+      class="home-split-media home-kaart-preview"
+      href="{{ route('aanbod') }}"
+      aria-label="Naar de kaart met aanbod en deelplekken"
+    >
       <x-home-picture
         id="kaart"
         sizes="(max-width: 768px) 100vw, 50vw"
         alt="Kaart van Nederland en België met oranje markers van deelplekken"
       />
-      <span class="home-kaart-label">Naar de kaart met aanbod en deelplekken</span>
     </a>
   </div>
 </section>
@@ -105,7 +108,7 @@
       <x-home-picture
         id="stappen"
         sizes="(max-width: 768px) 100vw, 33vw"
-        alt="Kratten met verse groenten op een markt"
+        alt="Jonge selderijplantjes in hergebruikte potjes, klaar om weg te geven"
       />
       <x-home-picture
         id="stekjes"
@@ -197,7 +200,7 @@
       <x-home-picture
         id="nederland"
         sizes="(max-width: 768px) 100vw, 50vw"
-        alt="Buurttuinbed met jonge planten en mulch"
+        alt="Schooltuinbedden met groenten in de Schaap Schooltuin in Amsterdam-Noord"
       />
       <h3>Nederland</h3>
       <p>Van Groningen tot Maastricht: bekijk stadspagina’s of zoek direct op de kaart naar planten, stekjes, plantenruil en gratis zaden bij jou in de buurt.</p>
@@ -207,7 +210,7 @@
       <x-home-picture
         id="belgie"
         sizes="(max-width: 768px) 100vw, 50vw"
-        alt="Moestuinbedden met groenten in een ommuurde tuin"
+        alt="Volkstuintjes bij de Stadsvesten in Lier, België"
       />
       <h3>België</h3>
       <p>Planten gratis afhalen in Vlaanderen en Brussel: open de kaart, stuur een bericht en spreek een moment af. Ook een zadenbibliotheek of plantenasiel in de buurt? Die staan tussen de deelplekken.</p>
@@ -222,7 +225,7 @@
     <x-home-picture
       id="tuin"
       sizes="(max-width: 768px) 100vw, 50vw"
-      alt="Handen vol rode en groene koffiebessen"
+      alt="Moestuinbedden met groenten op zorgboerderij De Kleine Hoeve in Breda"
     />
     <x-home-picture
       id="delen"
@@ -256,11 +259,13 @@
   <h2 id="credits-titel" class="visually-hidden">Fotocredits</h2>
   <p class="muted home-credits-text">
     Foto’s met naamsvermelding:
-    buurttuin <a href="https://commons.wikimedia.org/wiki/File:City_gardening_community_garden_plots_Langen%C3%A6s_park_Aarhus_Denmark_01.jpg" rel="noopener noreferrer">Ciara Ní Riain</a>,
+    volkstuin Enkhuizen <a href="https://commons.wikimedia.org/wiki/File:20180907_Volkstuin_bij_de_Dreef_Enkhuizen.jpg" rel="noopener noreferrer">Gouwenaar</a>,
+    schooltuin Amsterdam <a href="https://commons.wikimedia.org/wiki/File:Schaap_Schooltuin_5.jpg" rel="noopener noreferrer">Frank Markesteijn</a>,
+    volkstuintjes Lier <a href="https://commons.wikimedia.org/wiki/File:Volkstuintjes_zuid.jpg" rel="noopener noreferrer">Bert76</a>,
+    moestuin Breda <a href="https://commons.wikimedia.org/wiki/File:Moestuin_DSCF9224.JPG" rel="noopener noreferrer">G.Lanting</a>,
+    plantjes in potjes <a href="https://commons.wikimedia.org/wiki/File:Celery_seedlings_planted_in_recycled_pots.jpg" rel="noopener noreferrer">Badak Ironman</a>,
     zakjes zaden <a href="https://commons.wikimedia.org/wiki/File:Packets_of_Vegetable_Seeds.jpg" rel="noopener noreferrer">ParentingPatch</a>,
-    zadenbibliotheek <a href="https://commons.wikimedia.org/wiki/File:Ausstellungsfl%C3%A4che_und_Saatgutbibliothek.jpg" rel="noopener noreferrer">Stadtbibliothek Neuss</a>,
-    tuinbed <a href="https://commons.wikimedia.org/wiki/File:04_18_2022_Garden_bed_Q_Gardens_community_garden_Flatbush_BK_NYC.jpg" rel="noopener noreferrer">Wil540 art</a>,
-    moestuin <a href="https://commons.wikimedia.org/wiki/File:Chiswick_House_Kitchen_Garden_-_vegetable_beds.jpg" rel="noopener noreferrer">Chiswick Chap</a>
+    zadenbibliotheek <a href="https://commons.wikimedia.org/wiki/File:Ausstellungsfl%C3%A4che_und_Saatgutbibliothek.jpg" rel="noopener noreferrer">Stadtbibliothek Neuss</a>
     (Wikimedia Commons, CC BY-SA);
     kaart © <a href="https://www.openstreetmap.org/copyright" rel="noopener noreferrer">OpenStreetMap</a>-bijdragers.
   </p>

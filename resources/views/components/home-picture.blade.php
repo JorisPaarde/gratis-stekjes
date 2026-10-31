@@ -29,10 +29,14 @@
     $h = (int) ($credits['height'] ?? $height);
     // Display box aspect from source; width/height attrs prevent CLS.
     $base = 'assets/images/home-v2/'.$id;
-    $webpSrcset = collect([640, 960, 1280])
+    // Hero: include 1920w for sharp 2x on common laptop/phone widths.
+    $widths = $id === 'hero' ? [640, 960, 1280, 1920] : [640, 960, 1280];
+    $webpSrcset = collect($widths)
         ->map(fn (int $size) => asset($base.'-'.$size.'.webp').' '.$size.'w')
         ->implode(', ');
-    $jpg = asset($base.'-960.jpg');
+    $jpgFallback = $id === 'hero' && is_readable(public_path($base.'-1920.jpg'))
+        ? asset($base.'-1920.jpg')
+        : asset($base.'-960.jpg');
     $loading = $eager ? 'eager' : 'lazy';
     $fetchpriority = $eager ? 'high' : null;
 @endphp
@@ -41,7 +45,7 @@
   <picture>
     <source type="image/webp" srcset="{{ $webpSrcset }}" sizes="{{ $sizes }}">
     <img
-      src="{{ $jpg }}"
+      src="{{ $jpgFallback }}"
       alt="{{ $altText }}"
       width="{{ $w }}"
       height="{{ $h }}"
