@@ -11,6 +11,7 @@ use App\Models\MailLog;
 use App\Models\PartnerMarker;
 use App\Models\User;
 use App\Notifications\VerifyEmailDutch;
+use App\Services\AvgService;
 use App\Services\DeelplekAanmelding;
 use App\Services\Deelplekken;
 use App\Services\Evenementen;
@@ -20,7 +21,10 @@ use App\Support\SafeMail;
 use App\Support\ThrottleMessage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
@@ -107,6 +111,48 @@ class DashboardController extends Controller
             'pendingDeelplekken' => $pendingDeelplekken,
             'users' => $users,
         ]);
+    }
+
+    public function destroyUser(Request $request, AvgService $avg): RedirectResponse
+    {
+        if (! Gate::allows('see-admin-dashboard')) {
+            abort(403);
+        }
+
+        $data = $request->validate([
+            'user_id' => ['required', 'integer', 'min:1'],
+            'confirm_name' => ['required', 'string', 'max:120'],
+        ], [
+            'user_id.required' => 'Gebruiker ontbreekt.',
+            'confirm_name.required' => 'Bevestig de weergavenaam.',
+        ]);
+
+        $user = User::query()->find((int) $data['user_id']);
+        if ($user === null) {
+            return back()->withErrors(['user' => 'Gebruiker niet gevonden.']);
+        }
+
+        if (Auth::check() && (int) Auth::id() === (int) $user->id) {
+            return back()->withErrors(['user' => 'Je kunt je eigen account niet via beheer verwijderen.']);
+        }
+
+        if (trim((string) $data['confirm_name']) !== (string) $user->name) {
+            return back()->withErrors(['user' => 'Bevestigingsnaam klopt niet.']);
+        }
+
+        $deletedId = (int) $user->id;
+        $avg->purgeUserAccount($user);
+
+        Log::info('beheer.user.deleted', [
+            'admin' => Auth::check() ? 'account' : 'password',
+            'admin_user_id' => Auth::id(),
+            'deleted_user_id' => $deletedId,
+            'at' => now()->toIso8601String(),
+        ]);
+
+        return redirect()
+            ->route('beheer.index')
+            ->with('status', 'Gebruiker #'.$deletedId.' verwijderd.');
     }
 
     public function resendVerification(Request $request): RedirectResponse

@@ -75,7 +75,11 @@ Zorg dat naast `DEPLOY_HOOK_TOKEN` ook staan (exacte namen):
 | `CRON_TOKEN` | Cron-endpoint |
 | `ADMIN_PASSWORD` | Beheer |
 
-Optioneel: `APP_KEY` — anders behoudt de hook de bestaande server-`.env`, of genereert eenmalig.
+Optioneel: `APP_KEY` — **alleen voor de allereerste install** (geen `.env` op de
+server). Heeft de server al een `APP_KEY`, dan behoudt de hook die altijd — ook als
+het GitHub-secret anders of leeg is. Nooit handmatig draaien/`key:generate` op prod
+zonder backup: encrypted casts (feedback, berichten, telefoon, …) worden onleesbaar.
+Vóór elke `.env`-herschrijf maakt de hook `app-*/.env.backup` (mode 0600).
 
 Optioneel (backups): `BACKUP_ENCRYPTION_KEY` — zie `docs/backups.md`. Lege upload → bestaande server-waarde behouden.
 

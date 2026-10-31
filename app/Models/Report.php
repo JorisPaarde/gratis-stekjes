@@ -22,7 +22,7 @@ class Report extends Model
     protected function casts(): array
     {
         return [
-            'reason' => 'encrypted',
+            'reason' => \App\Casts\SafeEncrypted::class,
             'handled' => 'boolean',
             'created_at' => 'datetime',
         ];

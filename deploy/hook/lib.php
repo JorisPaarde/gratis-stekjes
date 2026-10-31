@@ -668,7 +668,8 @@ function deploy_hook_env_get(string $envPath, string $key): string
 }
 
 /**
- * Zorg dat APP_KEY in $envContent staat: upload > bestaande > genereer.
+ * Zorg dat APP_KEY in $envContent staat: bestaande server-key > upload > genereer.
+ * Een bestaande APP_KEY op de server wordt NOOIT overschreven (encrypted casts).
  */
 function deploy_hook_resolve_app_key(string $envContent, string $existingEnvPath): string
 {
@@ -688,10 +689,9 @@ function deploy_hook_resolve_app_key(string $envContent, string $existingEnvPath
         }
     }
 
-    $key = $uploaded;
-    if ($key === '') {
-        $key = deploy_hook_env_get($existingEnvPath, 'APP_KEY');
-    }
+    $existing = deploy_hook_env_get($existingEnvPath, 'APP_KEY');
+    // Bestaande server-key wint altijd — ook als CI een (andere) APP_KEY-secret meestuurt.
+    $key = $existing !== '' ? $existing : $uploaded;
     if ($key === '') {
         $key = 'base64:'.base64_encode(random_bytes(32));
     }
@@ -712,6 +712,29 @@ function deploy_hook_resolve_app_key(string $envContent, string $existingEnvPath
     }
 
     return implode("\n", $out).(str_ends_with(implode("\n", $out), "\n") ? '' : "\n");
+}
+
+/**
+ * Kopieer bestaande .env naar .env.backup (mode 0600) vóór herschrijven.
+ * Pad ligt naast de shared .env (buiten de docroot). Geen-op = true (niets te bewaren).
+ */
+function deploy_hook_backup_env(string $envPath): bool
+{
+    if (! is_file($envPath)) {
+        return true;
+    }
+
+    $backup = $envPath.'.backup';
+    $content = @file_get_contents($envPath);
+    if ($content === false) {
+        return false;
+    }
+    if (@file_put_contents($backup, $content, LOCK_EX) === false) {
+        return false;
+    }
+    @chmod($backup, 0600);
+
+    return true;
 }
 
 /**
@@ -1343,6 +1366,10 @@ function deploy_hook_action_finish(
     $finalEnv = deploy_hook_resolve_app_key($envContent, $existingEnv);
     $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'BACKUP_ENCRYPTION_KEY');
     $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'ADMIN_DASHBOARD_EMAILS');
+    // Backup buiten docroot (appDir/.env.backup) vóór herschrijven.
+    if (! deploy_hook_backup_env($existingEnv)) {
+        return ['ok' => false, 'error' => 'env_backup'];
+    }
     if (! deploy_hook_write_env($existingEnv, $finalEnv)) {
         return ['ok' => false, 'error' => 'env_write'];
     }

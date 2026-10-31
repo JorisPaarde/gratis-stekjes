@@ -44,7 +44,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'active' => 'boolean',
-            'telefoon' => 'encrypted',
+            'telefoon' => \App\Casts\SafeEncrypted::class,
             'lat' => 'float',
             'lon' => 'float',
         ];

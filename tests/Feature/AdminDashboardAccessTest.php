@@ -190,7 +190,7 @@ test('beheer-uitloggen breekt geen account-sessie', function () {
     $this->get(route('beheer.index'))->assertOk();
 });
 
-test('beheer gebruikers-tabel toont Beheertoegang zonder e-mailadressen', function () {
+test('beheer gebruikers-tabel toont geen Beheertoegang-kolom en geen e-mailadressen', function () {
     $owner = User::factory()->create([
         'name' => 'Eigenaar',
         'email' => jpwebcreationTestEmail(),
@@ -213,27 +213,28 @@ test('beheer gebruikers-tabel toont Beheertoegang zonder e-mailadressen', functi
     $html = $this->withSession(['admin_ok' => true])
         ->get(route('beheer.index'))
         ->assertOk()
-        ->assertSee('Beheertoegang', false)
+        ->assertDontSee('Beheertoegang', false)
         ->assertSee('Eigenaar', false)
         ->assertSee('Gewoon Lid', false)
         ->assertSee('Nog Niet Bevestigd', false)
+        ->assertSee('Verwijderen', false)
         ->assertDontSee(jpwebcreationTestEmail(), false)
         ->assertDontSee('lid-zonder-beheer@example.test', false)
         ->assertDontSee('andere-owner@example.test', false)
         ->getContent();
 
     expect(preg_match(
-        '/Eigenaar<\/td>\s*<td>ja<\/td>\s*<td>ja<\/td>/s',
+        '/Eigenaar<\/td>\s*<td>ja<\/td>/s',
         $html
-    ))->toBe(1, 'geverifieerde owner moet Bevestigd=ja en Beheertoegang=ja tonen');
+    ))->toBe(1, 'geverifieerde owner moet Bevestigd=ja tonen');
     expect(preg_match(
-        '/Gewoon Lid<\/td>\s*<td>ja<\/td>\s*<td>nee<\/td>/s',
+        '/Gewoon Lid<\/td>\s*<td>ja<\/td>/s',
         $html
-    ))->toBe(1, 'lid moet Bevestigd=ja en Beheertoegang=nee tonen');
+    ))->toBe(1, 'lid moet Bevestigd=ja tonen');
     expect(preg_match(
-        '/Nog Niet Bevestigd<\/td>\s*<td>nee<\/td>\s*<td>nee<\/td>/s',
+        '/Nog Niet Bevestigd<\/td>\s*<td>nee<\/td>/s',
         $html
-    ))->toBe(1, 'ongeverifieerde allowlist-mail moet Beheertoegang=nee tonen');
+    ))->toBe(1, 'ongeverifieerde allowlist-mail moet Bevestigd=nee tonen');
 
     expect($owner->email)->not->toBe('')
         ->and($member->email)->not->toBe('')
