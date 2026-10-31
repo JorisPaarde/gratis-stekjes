@@ -54,6 +54,8 @@ test('security headers staan op responses', function () {
     expect($response->headers->get('Permissions-Policy'))->toContain('camera=()');
     expect($response->headers->get('Content-Security-Policy'))->toContain("default-src 'self'");
     expect($response->headers->get('Content-Security-Policy'))->toContain("frame-ancestors 'none'");
+    expect($response->headers->get('Content-Security-Policy'))->toContain("worker-src 'self'");
+    expect($response->headers->get('Content-Security-Policy'))->toContain("manifest-src 'self'");
 });
 
 test('HSTS-header en HTTPS-redirect-logica', function () {

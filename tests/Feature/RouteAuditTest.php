@@ -33,6 +33,7 @@ function auditPublicGetRoutes(): array
         '/stijlgids',
         '/robots.txt',
         '/sitemap.xml',
+        '/manifest.webmanifest',
         '/hoe-werkt-het',
         '/hulpmiddelen',
         '/over',

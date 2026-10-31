@@ -9,6 +9,16 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.26.0] - 2026-10-31
+
+### Added
+
+- PWA: web app manifest (`/manifest.webmanifest`, naam «Gratis planten», theme/background uit palet, iconen 192/512 + maskable, `start_url` `/`, `display` standalone, `lang` nl).
+- Handgeschreven service worker (`public/sw.js`): precache app-shell met cacheversie uit `VERSION`, network-first voor HTML, cache-first voor gehashte Vite-assets; nooit account/berichten/admin, POST, `/cron`, `/deploy`, `/media` of `/media-uploads`; oude caches opruimen bij activate.
+- Nederlandse offline-pagina (`public/offline.html`).
+- Accountpagina: blok «Zet Gratis planten op je beginscherm» (iPhone Safari / Android Chrome) plus installatieknop via `beforeinstallprompt` — ik-vorm, geen pushmeldingen.
+- Pest: manifest-route, layout-header/CSP (`worker-src`/`manifest-src`), account-installatieblok.
+
 ## [0.25.0] - 2026-10-31
 
 ### Added
@@ -40,6 +50,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - `AGENTS.md` / `.env.example` / AVG-inventaris: backup-secrets en open punt (sleutel zetten) bijgewerkt.
 - SEO-titels, H1’s en meta volgens keywordonderzoek (`docs/seo/doelgroep-titles-keywords.md` §2–3): home (“Gratis planten en stekjes … in je buurt”), stadspagina’s (“Gratis planten en stekjes in {Stad}”), soortpagina’s (“{Soort} stekken en gratis stekjes” / H1 “…: zo doe je het”, Geranium en Pannenkoekplant behouden), /deelplekken (plantenasiel vooraan), /invasieve-soorten (“Invasieve exoten” + echt aantal), /aanbod, /initiatieven en kennisbank-pijlers. Merk-suffix ` · Gratis planten` alleen als de title ≤60 tekens blijft (`SeoTitle`).
 - Stadspagina’s tonen een blok “Plantenasiel in {Stad}” alleen als er in de data een plantenasiel mét die plaatsnaam staat (niets verzonnen); link naar `/deelplekken` gefilterd op stad + type.
+
 
 ## [0.24.12] - 2026-10-31
 
