@@ -87,7 +87,7 @@ test('doelgroeppagina’s staan in sitemap maar niet in menu of footer', functio
     }
 
     // Homepage-CTA mag wél naar Help mee (buiten nav/footer); geen “binnenkort”-badge meer in dat paneel.
-    expect(preg_match('/<div class="cta-panel"[^>]*>(.*?)<\/div>\s*<\/section>/s', $home, $cta))->toBe(1);
+    expect(preg_match('/<section class="home-signup" id="doe-mee"[^>]*>(.*?)<\/section>/s', $home, $cta))->toBe(1);
     expect($cta[1])->toMatch('/href="[^"]*help-mee"/')
         ->and($cta[1])->not->toContain('badge-soon')
         ->and($cta[1])->not->toContain('binnenkort');

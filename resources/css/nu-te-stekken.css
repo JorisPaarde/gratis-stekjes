@@ -110,3 +110,88 @@ a.nu-te-stekken-plant {
     transform: none;
   }
 }
+
+/* —— Compact blok met plantkaarten (home + aanbod), sinds 0.33.0 —— */
+.nu-te-stekken-kop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.nu-te-stekken-kop .section-intro { margin-bottom: 0; }
+.nu-te-stekken-alle {
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--forest-deep, #163820);
+}
+
+.stek-kaarten {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 720px) {
+  .stek-kaarten { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1000px) {
+  .stek-kaarten { grid-template-columns: repeat(6, 1fr); }
+}
+
+.stek-kaart { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
+.stek-kaart-link {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  background: var(--card, #fff);
+  border: 1px solid var(--line, rgba(26, 18, 16, 0.12));
+  border-radius: var(--radius, 0.85rem);
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--ink, #1a1210);
+  box-shadow: var(--shadow, 0 12px 32px rgba(26, 18, 16, 0.08));
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.stek-kaart-link:hover,
+.stek-kaart-link:focus-visible {
+  color: var(--ink, #1a1210);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(26, 18, 16, 0.12);
+}
+.stek-kaart-foto {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--bg-mint, #e6f2e1);
+}
+.stek-kaart-foto.is-illustratie {
+  object-fit: contain;
+  padding: 1rem;
+}
+.stek-kaart-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+  padding: 0.65rem 0.8rem 0.8rem;
+}
+.stek-kaart-naam {
+  font-weight: 700;
+  font-size: 1.02rem;
+  line-height: 1.25;
+  color: var(--forest-deep, #163820);
+}
+.stek-kaart-credit {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.3;
+  color: var(--ink-soft, #3d4a3f);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.stek-kaart-credit a { color: inherit; }

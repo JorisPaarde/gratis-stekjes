@@ -22,9 +22,10 @@ class PageController extends Controller
     public function home(NuTeStekken $calendar, Plantensoorten $plantensoorten, HomeOverzicht $overzicht): View
     {
         $site = config('site.name');
-        $title = 'Gratis planten en stekjes delen in je buurt';
-        $heading = 'Gratis planten en stekjes in je buurt';
-        $metaDescription = config('site.description');
+        $hero = (array) config('homepage.hero', []);
+        $title = (string) config('homepage.meta.title', 'Gratis planten en stekjes delen in je buurt');
+        $heading = (string) ($hero['heading'] ?? 'Gratis planten, stekjes en zaden bij jou in de buurt');
+        $metaDescription = (string) config('homepage.meta.description', config('site.description'));
         $homeUrl = CanonicalUrl::absolute('/');
         $logoUrl = CanonicalUrl::asset((string) config('site.og_image', '/assets/icons/icon-512.png'));
         $areaServed = [
@@ -65,6 +66,7 @@ class PageController extends Controller
             'nuTeStekken' => $calendar->blockForViews(),
             'ervaringenBlok' => $ervaringenBlok,
             'overzicht' => $overzicht->data(),
+            'hero' => $hero,
             'schema' => [
                 '@context' => 'https://schema.org',
                 '@graph' => [

@@ -9,6 +9,44 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.34.0] - 2026-10-31
+
+### Changed
+
+- **Nieuwe homepage**, op basis van homepage v2 (PR #126, hero B) samengevoegd met de onderdelen
+  van 0.32/0.33. Geen feature-vlag meer: dit is de homepage.
+  - Hero met foto (volkstuin), kop «Gratis planten, stekjes en zaden bij jou in de buurt»,
+    tagline «Meer groen, meer contact», **zoekveld als hoofdactie** en «Maak gratis een account».
+  - «Zo werkt het»: drie stappen met elk een foto (op mobiel compact naast elkaar).
+  - «Hier kun je nu al terecht»: tellingen per soort deelplek, kaartvoorbeeld, nieuwste aanbod.
+  - «Waarom Gratis planten»: korte versie van het verhaal van /over, met foto.
+  - «Nu te stekken» als plantkaarten met foto; «Doe mee» als donkere band met foto.
+  - Rustiger beeld: geen groen titelvlak in de hero, koppen niet meer in hoofdletters, geen kaartranden
+    bij de stappen; fotocredits (CC BY-SA) in één regel onderaan.
+  - Weggelaten t.o.v. PR #126: blokken «Nederland en België», organisatielijst en vaste
+    vermeerdertips (vervangen door seizoensplantkaarten); de bijbehorende foto's zijn verwijderd.
+  - Paginatitel blijft «Gratis planten en stekjes delen in je buurt» (zoekwoordenonderzoek).
+
+## [0.33.0] - 2026-10-31
+
+### Changed
+
+- `/aanbod` opnieuw opgezet:
+  - **Zoekbalk op één regel** (postcode/plaats, plant optioneel, Zoek); de keuze
+    uitdelen/ophalen is weg uit de zoekbalk (badges «Te geef»/«Gezocht» staan bij de resultaten).
+  - **Filters als chips** i.p.v. een kader met vinkjes; soorten zonder plekken worden verborgen.
+  - **Kaart op volle breedte**, resultaten eronder in een raster (3/2/1 kolommen).
+  - Na zoeken **één lijst op afstand**: aanbod en plekken door elkaar, dichtstbij eerst
+    (een zadenbibliotheek op 15 km staat dus boven aanbod op 38 km); begrensd met «Toon meer».
+  - **Aanbod per lid samengevoegd**: één kaart met regels en «Stuur bericht» per regel, en één
+    marker per lid.
+  - Compacte plekkaarten: naam + afstand, type en plaats, adres klein, «Op de kaart» en «Website».
+  - «Op de kaart» zoomt in en opent de popup; zoekplek als eigen marker; kaartuitsnede rond de
+    dichtstbijzijnde resultaten.
+- «Nu te stekken» (home + aanbod): rij plantkaarten met foto (max. 6, foto eerst, naamsvermelding
+  onder elke foto) die naar de stektip linken; lange teksten, losse labels en RHS-bronnen staan
+  alleen nog op de stektip-pagina's.
+
 ## [0.32.1] - 2026-10-31
 
 ### Changed

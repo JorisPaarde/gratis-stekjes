@@ -199,14 +199,27 @@ test('aanbodpagina vult ?q= alvast in (zoekveld homepage)', function () {
         ->assertSee('value="Haarlem"', false);
 });
 
-test('zoeken.js toont lijst in begrensde groepen met «Toon meer»', function () {
+test('zoeken.js: na zoeken één lijst op afstand (aanbod en plekken door elkaar), begrensd', function () {
     $js = (string) file_get_contents(base_path('resources/js/zoeken.js'));
 
     expect($js)->toContain('function renderList(')
         ->and($js)->toContain('data-meer')
-        ->and($js)->toContain('Plekken, dichtstbij eerst')
-        ->and($js)->toContain('Aanbod, dichtstbij eerst')
-        ->and($js)->toContain('if (heeftGezocht)')
+        ->and($js)->toContain('groups.concat(plekken).sort(')
+        ->and($js)->toContain('"Dichtstbij " + center.label')
+        ->and($js)->toContain('function groupAanbod(')
+        ->and($js)->toContain('data-kaart')
+        ->and($js)->toContain('function fitRondZoek(')
         ->and($js)->toContain('?recent=1')
-        ->and($js)->toContain('get("q")');
+        ->and($js)->toContain('get("q")')
+        ->and($js)->toContain('if (heeftGezocht)');
+});
+
+test('aanbodpagina: compacte zoekbalk zonder uitdelen/ophalen-keuze, filters als chips', function () {
+    $html = $this->get(route('aanbod'))->assertOk()->getContent();
+
+    expect($html)->toContain('class="zoekbalk"')
+        ->and($html)->not->toContain('id="zoek-type"')
+        ->and($html)->not->toContain('Ophalen of zoeken')
+        ->and($html)->toContain('class="filter-chip"')
+        ->and($html)->not->toContain('<fieldset class="marker-filters"');
 });
