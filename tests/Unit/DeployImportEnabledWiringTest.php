@@ -33,7 +33,8 @@ test('migrate-workflow gebruikt repo-secrets zonder production-environment', fun
         ->and($yml)->toContain('source_VERSION')
         ->and($yml)->toContain('PROD_DEPLOY_TOKEN')
         ->and($yml)->toContain('gratisplanten.nl')
-        ->and($yml)->toContain('stekjes-staging-app')
+        ->and($yml)->toContain('old_app_dir:')
+        ->and($yml)->toContain('resolve-old-staging-app-dir.sh')
         ->and($yml)->toContain('DB_NAME')
         ->and($yml)->toContain('DB_USER')
         ->and($yml)->toContain('DB_PASS')
@@ -42,10 +43,13 @@ test('migrate-workflow gebruikt repo-secrets zonder production-environment', fun
         ->and($yml)->not->toContain('secrets.DB_DATABASE')
         ->and($yml)->not->toContain('secrets.DB_USERNAME')
         ->and($yml)->not->toContain('secrets.DB_PASSWORD')
-        ->and($yml)->not->toContain('secrets.DEPLOY_TOKEN');
+        ->and($yml)->not->toContain('secrets.DEPLOY_TOKEN')
+        ->and($yml)->not->toContain('stekjes-staging-app');
 
     $agents = file_get_contents(dirname(__DIR__, 2).'/AGENTS.md');
     expect($agents)->toContain('import_enabled=true')
         ->and($agents)->toContain('PROD_DEPLOY_TOKEN')
+        ->and($agents)->toContain('old_app_dir')
+        ->and($agents)->toContain('resolve-old-staging-app-dir.sh')
         ->and($agents)->not->toContain('tijdelijk `DEPLOY_IMPORT_ENABLED=true` (na VERHUIS weer');
 });

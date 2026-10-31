@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.24.11] - 2026-10-31
+
+### Fixed
+
+- `migrate-stekjes-to-prod.yml`: APP_DIR niet meer hard als sibling `stekjes-staging-app`. Optionele input `old_app_dir` (check op `artisan`); anders read-only SSH-autodetect via `scripts/resolve-old-staging-app-dir.sh` — eerst absoluut pad uit `DEPLOY_PATH/index.php` (`require …/vendor/autoload.php`, zoals `/home/…/gratisplanten-staging-app`), inclusief `__DIR__ . '/../…'`; anders precies één kandidaat onder siblings/`~/*` met artisan (nooit `app-prod`/`app-staging`). Logt gekozen APP_DIR + fingerprint VERSION/APP_URL-host.
+
 ## [0.24.10] - 2026-10-31
 
 ### Fixed

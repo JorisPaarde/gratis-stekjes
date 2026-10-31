@@ -87,7 +87,7 @@ Workflow **`migrate-stekjes-to-prod.yml` heeft geen `environment:`** — anders 
 | Bron | Secrets (**repo-level**, OUDE staging) |
 |------|----------------------------------------|
 | SSH | `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_PORT`, `DEPLOY_SSH_KEY`, `DEPLOY_KNOWN_HOSTS`, `DEPLOY_PATH` |
-| APP_DIR | Altijd `$(dirname DEPLOY_PATH)/stekjes-staging-app` — **niet** `STAGING_APP_DIR` (die wijst naar cPanel) |
+| APP_DIR | Workflow-input `old_app_dir` (optioneel) óf autodetect via `scripts/resolve-old-staging-app-dir.sh` (`index.php` → artisan-map, anders unieke sibling/`~/*` met artisan; nooit `app-prod`/`app-staging`) |
 | DB | Optioneel: `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS` (alleen mysqldump-fallback; artisan-export leest de oude app-`.env`) |
 
 | Doel | Secrets / URL (**repo-level**) |
