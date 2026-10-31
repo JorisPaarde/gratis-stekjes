@@ -72,3 +72,4 @@ test('homepage v2 hero-variant wisselt via config', function () {
         ->assertSee('Deel planten, stekjes en zaden met je buren', false)
         ->assertSee('Gratis ophalen, een praatje als dank', false);
 });
+
