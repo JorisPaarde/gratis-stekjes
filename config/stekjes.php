@@ -91,4 +91,7 @@ return [
      * Liever aparte BACKUP_ENCRYPTION_KEY; valt terug op APP_KEY. Nooit committen.
      */
     'backup_encryption_key' => env('BACKUP_ENCRYPTION_KEY', env('APP_KEY', '')),
+
+    /** Rolling bewaartermijn voor storage/backups/*.enc (dagen). */
+    'backup_retain_days' => (int) env('BACKUP_RETAIN_DAYS', 30),
 ];

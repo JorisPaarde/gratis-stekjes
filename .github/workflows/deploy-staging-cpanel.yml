@@ -102,6 +102,8 @@ jobs:
           CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
           APP_KEY: ${{ secrets.APP_KEY }}
+          BACKUP_ENCRYPTION_KEY: ${{ secrets.BACKUP_ENCRYPTION_KEY }}
+          BACKUP_RETAIN_DAYS: ${{ vars.BACKUP_RETAIN_DAYS }}
           BASE_URL: ${{ secrets.STAGING_BASE_URL }}
           APP_ENV_NAME: staging
         run: |
@@ -117,4 +119,9 @@ jobs:
           echo "::add-mask::${SMTP_PASS}"
           echo "::add-mask::${ADMIN_PASSWORD}"
           echo "::add-mask::${CRON_TOKEN}"
+          if [ -n "${BACKUP_ENCRYPTION_KEY:-}" ]; then
+            echo "::add-mask::${BACKUP_ENCRYPTION_KEY}"
+          else
+            echo "::notice::BACKUP_ENCRYPTION_KEY ontbreekt — hook behoudt bestaande server-.env-waarde (zie docs/backups.md)."
+          fi
           ./scripts/deploy-hook-upload.sh

@@ -29,7 +29,7 @@ Contactadres site: `info@gratisplanten.nl` (`config('site.contact_email')`).
 1. **E-mail niet encrypted:** nodig als unique login-key en voor `password_reset_tokens` / notificaties. Versleuteling at rest zou deterministische encryptie of plaintext-index vereisen; hashing maakt login onmogelijk.
 2. **Coördinaten 3 decimalen:** ~110 m — voldoende voor “in de buurt”, te grof voor huisadres.
 3. **Beheer:** gedeeld `ADMIN_PASSWORD` in sessie (`admin_ok`); leeg = HTTP 503 op `/beheer`. Geen koppeling aan user-rollen.
-4. **Backups:** command `backup:database-encrypted` — zie `docs/backups.md`. Server-cron/offsite = open.
+4. **Backups:** `backup:database-encrypted` + `/cron/backup` + workflow `backup.yml` (ciphertext off-site als artifact). Retentie 30 dagen. Zie `docs/backups.md`. Sleutel `BACKUP_ENCRYPTION_KEY` moet nog in GitHub secrets/server-`.env`.
 
 ## Rechten (implementatie)
 
@@ -45,7 +45,7 @@ Contactadres site: `info@gratisplanten.nl` (`config('site.contact_email')`).
 - Automatische purge inactieve accounts (beleid 12 maanden bestaat alleen als config/tekst).
 - Retentiebeleid berichten / afgewezen deelplek-aanmeldingen.
 - Gebruikersfoto’s: feature ontbreekt; bij toevoegen AVG-pad afmaken.
-- Backup: cron, off-site opslag, aparte `BACKUP_ENCRYPTION_KEY`, bewaartermijn backups.
+- Backup-sleutel `BACKUP_ENCRYPTION_KEY` eenmalig zetten (GitHub secret + her-deploy); daarna draait cron/artifact automatisch.
 - HSTS preload-lijst: optioneel, niet in code.
 - SMTP-/hosting-verwerkersovereenkomst en logretentie op server.
 - Cache-tabel opruimen van verlopen rate-limit keys (naast TTL).

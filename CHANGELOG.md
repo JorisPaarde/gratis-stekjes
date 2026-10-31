@@ -9,6 +9,20 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.25.0] - 2026-10-31
+
+### Added
+
+- Versleutelde backups afgerond: `EncryptedBackupService` maakt DB-dump (mysqldump of PDO-fallback) + `storage/app/public` als AES-256-CBC (GPB1), met rolling retentie (`BACKUP_RETAIN_DAYS`, default 30).
+- HTTP-endpoint `GET /cron/backup` (zelfde `X-Cron-Token` als `/cron`): backup draaien, `?list=1`, ciphertext downloaden (`?download=db|storage|<basename>`).
+- Artisan `backup:decrypt` voor restore; workflow `backup.yml` (dagelijks) trekt staging+prod ciphertext en bewaart die 30 dagen als GitHub-artifact (off-site, zonder sleutel in logs).
+- Deploy schrijft optioneel `BACKUP_ENCRYPTION_KEY` / `BACKUP_RETAIN_DAYS`; hook behoudt bestaande backup-sleutel als de upload leeg is (zelfde patroon als `APP_KEY`).
+- Docs `docs/backups.md` (restore-procedure) + Pest-tests (encrypt/decrypt-roundtrip, retentie, endpoint-auth, path-traversal).
+
+### Changed
+
+- `AGENTS.md` / `.env.example` / AVG-inventaris: backup-secrets en open punt (sleutel zetten) bijgewerkt.
+
 ## [0.24.11] - 2026-10-31
 
 ### Fixed

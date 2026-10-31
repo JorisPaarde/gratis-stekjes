@@ -29,6 +29,7 @@ use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
 use App\Http\Controllers\Beheer\StatistiekenController as BeheerStatistiekenController;
 use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\BackupCronController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\DeployController;
 use App\Http\Controllers\DeployImportController;
@@ -94,6 +95,9 @@ Route::get('/api/plantensoorten', ApiPlantensoortenController::class)
     ->name('api.plantensoorten');
 
 Route::get('/cron', CronController::class)->name('cron');
+Route::get('/cron/backup', BackupCronController::class)
+    ->middleware('throttle:10,1')
+    ->name('cron.backup');
 Route::post('/deploy/run', DeployController::class)
     ->middleware('throttle:10,1')
     ->name('deploy.run');

@@ -71,7 +71,7 @@
     <li><strong>Rate-limits / cache:</strong> korte TTL (uren tot dagen), geen aparte “IP-database”.</li>
     <li><strong>Sessies:</strong> standaard lifetime {{ (int) config('session.lifetime', 120) }} minuten (configureerbaar); “onthoud mij” houdt je langer ingelogd via een remember-cookie.</li>
     <li><strong>Inactieve accounts:</strong> beleid {{ (int) config('stekjes.inactive_account_months', 12) }} maanden zonder activiteit — automatische purge volgt later indien gewenst.</li>
-    <li><strong>Database-backups:</strong> kunnen versleuteld worden gemaakt (zie documentatie in de broncode); planning en off-site opslag regel ik op de server.</li>
+    <li><strong>Database-backups:</strong> worden versleuteld gemaakt (AES) en bewaard met een rolling retentie; de sleutel staat niet in de broncode. Zie documentatie in de repo (`docs/backups.md`).</li>
   </ul>
 
   <h2>Cookies (alleen functioneel)</h2>

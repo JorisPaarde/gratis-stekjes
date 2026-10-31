@@ -301,7 +301,10 @@ test('versleutelde backup command schrijft .enc bestand', function () {
     config(['stekjes.backup_encryption_key' => 'test-backup-key-not-secret']);
     $path = storage_path('backups/test-'.Str::random(8).'.sql.gz.enc');
 
-    $exit = Artisan::call('backup:database-encrypted', ['--path' => $path]);
+    $exit = Artisan::call('backup:database-encrypted', [
+        '--path' => $path,
+        '--no-storage' => true,
+    ]);
     expect($exit)->toBe(0);
     expect(is_file($path))->toBeTrue();
 
