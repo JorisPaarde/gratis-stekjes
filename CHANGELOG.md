@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.28.2] - 2026-10-31
+
+### Changed
+
+- Privacyverklaring: Belgische AVG/GBA-info (toezichthouder, klachtroute) en kort blok «Gebruik en recht»; teksten in ik-vorm.
+
 ## [0.28.1] - 2026-10-31
 
 ### Fixed

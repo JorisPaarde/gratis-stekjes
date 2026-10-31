@@ -58,7 +58,9 @@ test('homepage rendert zonder database-tabellen (alleen JSON/config)', function 
 test('privacy pagina laadt', function () {
     $this->get('/privacy')
         ->assertOk()
-        ->assertSee('Privacyverklaring', false);
+        ->assertSee('Privacyverklaring', false)
+        ->assertSee('Gegevensbeschermingsautoriteit', false)
+        ->assertSee('Gebruik en recht', false);
 });
 
 test('noindex meta en header wanneer site.noindex', function () {
