@@ -31,7 +31,7 @@
     </label>
     <label>Postcode of plaats *
       <input name="locatie" required maxlength="120" value="{{ old('locatie', $user->locatie_label) }}" placeholder="Bijv. 2011, 1234 AB, Haarlem of 9000 / Gent">
-      <span class="hint">Nederland: postcode (1234 AB) of plaats. België: 4 cijfers of plaatsnaam (NL/FR zoals de geocoder die geeft). Ik sla alleen een afgeronde plek op, geen straatadres.</span>
+      <span class="hint">Nederland: postcode (1234 AB) of plaats. België: 4 cijfers of plaatsnaam (Nederlands of Frans). Ik sla alleen een afgeronde plek op, geen straatadres.</span>
     </label>
     <label>Telefoon (optioneel)
       <input name="telefoon" maxlength="40" value="{{ old('telefoon', $user->telefoon) }}" autocomplete="tel">

@@ -41,7 +41,7 @@
     </label>
     <label>Adres
       <input name="adres" maxlength="255" value="{{ old('adres') }}" autocomplete="street-address">
-      <span class="hint">Alleen voor geocoding; ik sla geen straatadres op.</span>
+      <span class="hint">Alleen om je op de kaart te zetten; ik sla geen straatadres op.</span>
     </label>
     <label>Postcode
       <input name="postcode" maxlength="16" value="{{ old('postcode') }}" autocomplete="postal-code" placeholder="1234 AB of 9000">

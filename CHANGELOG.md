@@ -9,6 +9,16 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.30.3] - 2026-10-31
+
+### Changed
+
+- Publieke copy zonder ontwikkel-/SEO-werktaal: stektips-intro, pijler-/soortpagina-zinnen,
+  meta-descriptions, CTA’s, stijlgids, registratie, account (mijlpalen + beginscherm),
+  aanbodhints, privacy en kennisbankteksten herschreven naar gewone bezoekerszinnen;
+  footer toont geen zichtbare `noindex` meer.
+- Snoeikalender: «streng vorst» → «strenge vorst».
+
 ## [0.30.0] - 2026-10-31
 
 ### Added

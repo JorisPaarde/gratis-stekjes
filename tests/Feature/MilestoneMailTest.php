@@ -139,7 +139,7 @@ test('accountpagina toont badges zonder ranglijst', function () {
         ->assertSee('Eerste stekje', false)
         ->assertSee('5 gedeeld', false)
         ->assertSee('Eerste ervaring', false)
-        ->assertSee('Lichte badges', false)
+        ->assertSee('Kleine herinneringen aan wat je al deed', false)
         ->getContent();
 
     expect($html)->toContain('Mijn ervaringen');
