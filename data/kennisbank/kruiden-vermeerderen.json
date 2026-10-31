@@ -1,0 +1,102 @@
+{
+  "slug": "kruiden-vermeerderen",
+  "titel": "Kruiden vermeerderen: zaaien, stekken, scheuren",
+  "samenvatting": "Hub voor keukenkruiden: basilicum zaaien of stekken, tijm en rozemarijn stekken, bieslook en oregano scheuren, en meer.",
+  "meta_description": "Kruiden zaaien, stekken of scheuren: basilicum, tijm, oregano, bieslook, laurier, dragon en citroenmelisse. Overzicht met links naar soortpagina’s.",
+  "zoekwoorden": [
+    "kruiden zaaien",
+    "kruiden stekken",
+    "kruiden vermeerderen",
+    "basilicum stekken",
+    "tijm stekken"
+  ],
+  "categorieen": [
+    "stekken",
+    "vermeerderen"
+  ],
+  "pillar": "stekken",
+  "is_pillar": false,
+  "gerelateerde_soorten": [
+    "basilicum",
+    "laurier",
+    "tijm",
+    "oregano",
+    "bieslook",
+    "dragon",
+    "citroenmelisse",
+    "lavas",
+    "citroenverbena",
+    "munt",
+    "salie",
+    "rozemarijn",
+    "lavendel"
+  ],
+  "seizoenen": [
+    "lente",
+    "zomer"
+  ],
+  "maanden": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "niveau": "beginner",
+  "locatie": "beide",
+  "inhoud": [
+    {
+      "type": "p",
+      "tekst": "Keukenkruiden vermeerder je met drie routes: zaaien (basilicum, tijm), stekken (rozemarijn, salie, laurier, citroenverbena) en scheuren (bieslook, oregano, citroenmelisse, munt)."
+    },
+    {
+      "type": "h2",
+      "tekst": "Zaaien"
+    },
+    {
+      "type": "p",
+      "tekst": "Basilicum zaai je binnen in maart–april; buiten pas na de vorst. Tijm en oregano kan je ook zaaien, maar stek of scheuren gaat sneller tot een bruikbare plant. Franse dragon zet geen bruikbaar zaad — dat zaad is meestal Russische dragon."
+    },
+    {
+      "type": "h2",
+      "tekst": "Stekken"
+    },
+    {
+      "type": "p",
+      "tekst": "Rozemarijn, salie, lavendel en tijm: halfhout of kopstek in stekgrond. Laurier is traag (maanden). Basilicum en soms salie wortelen ook in water. Citroenverbena: zachthoutstek, kuipplant."
+    },
+    {
+      "type": "h2",
+      "tekst": "Scheuren"
+    },
+    {
+      "type": "p",
+      "tekst": "Bieslook, oregano, citroenmelisse, lavas en munt deel je als pol in het voorjaar of najaar. Munt woekert: pot of limiet in de border helpt."
+    },
+    {
+      "type": "p",
+      "tekst": "Per soort staat de detailmethode op de soortpagina. Zomerstek/halfhoutstek en scheuren en afleggen vullen dit overzicht aan."
+    }
+  ],
+  "bronnen": [
+    {
+      "titel": "RHS — Basil",
+      "url": "https://www.rhs.org.uk/herbs/basil/grow-your-own"
+    },
+    {
+      "titel": "RHS — Thyme",
+      "url": "https://www.rhs.org.uk/herbs/thyme/grow-your-own"
+    },
+    {
+      "titel": "RHS — Dividing perennials",
+      "url": "https://www.rhs.org.uk/plants/types/perennials/dividing"
+    },
+    {
+      "titel": "RHS — Semi-ripe cuttings",
+      "url": "https://www.rhs.org.uk/propagation/semi-ripe-cuttings"
+    }
+  ],
+  "duurzamer_alternatief": "wilgenwater",
+  "howto": true
+}

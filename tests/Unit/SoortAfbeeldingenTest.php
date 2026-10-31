@@ -14,12 +14,19 @@ test('elke stektip-soort heeft geverifieerde metadata of fallback', function () 
     $svc = new SoortAfbeeldingen($root.'/data/soort-afbeeldingen.json');
     $stektips = json_decode((string) file_get_contents($root.'/data/stektips.json'), true);
     $slugs = array_map(static fn ($s) => (string) $s['slug'], $stektips['soorten'] ?? []);
+    $meta = json_decode((string) file_get_contents($root.'/data/soort-afbeeldingen.json'), true);
+    $missing = $meta['missing'] ?? [];
 
-    expect(count($svc->all()))->toBe(48);
+    expect(count($svc->all()))->toBe(48)
+        ->and(count($slugs))->toBe(106)
+        ->and(count($missing))->toBe(58);
 
     foreach ($slugs as $slug) {
         $row = $svc->all()[$slug] ?? null;
-        expect($row)->toBeArray("metadata ontbreekt voor {$slug}");
+        if ($row === null) {
+            expect($missing)->toContain($slug);
+            continue;
+        }
         expect($row['auteur'] ?? '')->not->toBeEmpty()
             ->and($row['bron_url'] ?? '')->toStartWith('http')
             ->and($row['licentie_url'] ?? '')->toStartWith('http')

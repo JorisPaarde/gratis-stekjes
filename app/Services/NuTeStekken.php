@@ -14,7 +14,7 @@ final class NuTeStekken
     public const TIMEZONE = 'Europe/Amsterdam';
 
     /** @var list<string> */
-    public const METHODES = ['stek', 'scheut', 'deling', 'zaad'];
+    public const METHODES = ['stek', 'scheut', 'deling', 'zaad', 'enten', 'afleggen'];
 
     public function __construct(
         private readonly ?string $jsonPath = null,

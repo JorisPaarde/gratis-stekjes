@@ -1,0 +1,45 @@
+{
+    "slug": "appel",
+    "naam": "Appelboom",
+    "latijn": "Malus domestica",
+    "categorie": "eetbaar",
+    "waarom": "Stek wortelt zelden en zaad geeft geen gelijk ras: enten op onderstam is de echte route",
+    "methode": "Enten (copuleren) of oculeren op onderstam; zaaien alleen voor onderstam/verrassing",
+    "wanneer": "Copuleren mrt–apr (entrijs dec–jan koud bewaren); oculeren jul–aug",
+    "welk_hout": "Gezond entrijs van het gewenste ras; passende onderstam (bijv. M9, M26, MM106)",
+    "lengte_snit": "Bij copuleren: gelijke schuine sneden; cambiumlagen op elkaar; afbinden en afdichten",
+    "water_grond": "Onderstam in goede fruitgrond; na enten niet laten uitdrogen",
+    "licht": "Volle zon",
+    "water": "Matig; afhankelijk van onderstam",
+    "hulpmiddel": "Entmes, entwas of entband; schone sneden",
+    "kans": "Gemiddeld tot lastig (oefening)",
+    "klaar": "Als de ent uitloopt en de verbinding dichtgroeit",
+    "verwanten": [
+        "peer",
+        "pruim",
+        "kers",
+        "kweepeer"
+    ],
+    "waarschuwing": "Enten op wilg werkt niet voor een appelboom. Zaailingen zijn geen kopie van het ras. Zie kennisbankartikel Fruitbomen enten.",
+    "ervaringen": "",
+    "bronnen": "RHS — Grafting fruit trees — https://www.rhs.org.uk/fruit/fruit-trees/grafting-ornamental; RHS — Chip budding — https://www.rhs.org.uk/propagation/chip-budding",
+    "kort": "Enten op onderstam; stek/zaad geeft geen gelijk ras",
+    "inhoud": [
+        {
+            "type": "h2",
+            "tekst": "Appelboom stekken of enten?"
+        },
+        {
+            "type": "p",
+            "tekst": "Een stek van appel wortelt zelden en geeft geen betrouwbare fruitboom. Enten (copuleren of oculeren) op een gekozen onderstam is de gangbare route. Zaad geeft een genetische verrassing — bruikbaar als onderstam, niet als kopie van «Elstar» of «Jonagold»."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer appel enten"
+        },
+        {
+            "type": "p",
+            "tekst": "Copuleren in maart–april met koud bewaard entrijs. Oculeren (chip) in juli–augustus. Details en waarom «enten op wilg» niet werkt: zie Fruitbomen enten."
+        }
+    ]
+}

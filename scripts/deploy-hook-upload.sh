@@ -357,92 +357,235 @@ fi
 METHOD="$(printf '%s' "$HOOK_BODY" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("method",""))' 2>/dev/null || true)"
 notice "Hook finish OK (extract=${METHOD:-?})."
 
-# LiteSpeed: hook touched ~/.lsphp_restart.txt — kort wachten tot workers recyclen
-# vóór POST /deploy/run (403-retry blijft als vangnet).
-if [ "${SKIP_MIGRATE:-}" != "1" ]; then
-  LSPHP_WAIT="${LSPHP_RESTART_WAIT_SECS:-8}"
-  if [ "$LSPHP_WAIT" -gt 0 ] 2>/dev/null; then
-    notice "Wacht ${LSPHP_WAIT}s op lsphp-recycle vóór /deploy/run…"
-    sleep "$LSPHP_WAIT"
-  fi
-fi
+# Soft hook-call: zet HOOK_HTTP/HOOK_BODY, faalt nooit hard (smoke-retry pad).
+hook_curl_soft() {
+  local tmp http
+  tmp="$(mktemp)"
+  set +e
+  http=$(curl -sS -o "$tmp" -w '%{http_code}' --connect-timeout 15 --max-time 60 \
+    -H "Authorization: Bearer ${DEPLOY_HOOK_TOKEN}" \
+    -H "Accept: application/json" \
+    "$@" 2>/dev/null)
+  set -e
+  HOOK_HTTP="${http:-000}"
+  HOOK_BODY="$(cat "$tmp" 2>/dev/null || true)"
+  rm -f "$tmp"
+  return 0
+}
 
-# --- migrate via bestaand endpoint ---
-# Retry bij 404/5xx/connectie na release-swap, én bij 403 (stale lsphp kan nog
-# oude release + config:cache met oud DEPLOY_TOKEN serveren).
-if [ "${SKIP_MIGRATE:-}" != "1" ]; then
-  max_attempts=5
-  attempt=1
-  code=""
-  body=""
+# LiteSpeed: herschrijf ~/.lsphp_restart.txt in account-home (inhoud, niet alleen mtime).
+# Finish doet dit al met een nieuwe hook; hier opnieuw via action of docroot-endpoint
+# (vangnet als de server nog een oude hook met touch() draait).
+trigger_lsphp_restart() {
+  local ok=0 body_ok
+  # 1) Hook-action (na self-update van lib.php).
+  hook_curl_soft -X POST -F "action=lsphp_restart" "$HOOK_URL"
+  if [ "${HOOK_HTTP:-}" = "200" ]; then
+    body_ok="$(printf '%s' "${HOOK_BODY:-}" | python3 -c 'import json,sys
+try:
+ d=json.load(sys.stdin); print("1" if d.get("ok") and d.get("lsphp_restart") else "0")
+except Exception:
+ print("0")' 2>/dev/null || echo 0)"
+    if [ "$body_ok" = "1" ]; then
+      ok=1
+    fi
+  fi
+  # 2) Standalone endpoint uit public/ (gesynct door finish, ook met oude hook).
+  if [ "$ok" -ne 1 ]; then
+    local tmp code
+    tmp="$(mktemp)"
+    set +e
+    code=$(curl -sS -o "$tmp" -w '%{http_code}' --connect-timeout 15 --max-time 30 \
+      -X POST -H "Authorization: Bearer ${DEPLOY_HOOK_TOKEN}" \
+      -H "Accept: application/json" \
+      "${BASE_URL}/deploy-lsphp-restart.php" 2>/dev/null)
+    set -e
+    if [ "${code:-}" = "200" ]; then
+      body_ok="$(python3 -c 'import json,sys
+try:
+ d=json.load(sys.stdin); print("1" if d.get("ok") and d.get("lsphp_restart") else "0")
+except Exception:
+ print("0")' < "$tmp" 2>/dev/null || echo 0)"
+      if [ "$body_ok" = "1" ]; then
+        ok=1
+      fi
+    fi
+    rm -f "$tmp"
+  fi
+  if [ "$ok" -eq 1 ]; then
+    notice "lsphp-restart marker herschreven."
+  else
+    notice "lsphp-restart marker: geen bevestiging (ga door; smoke-retries volgen)."
+  fi
+  return 0
+}
+
+LSPHP_WAIT="${LSPHP_RESTART_WAIT_SECS:-8}"
+ver="$(tr -d '[:space:]' < "${ROOT}/VERSION")"
+EXPECTED_DEELPLEKKEN="$(python3 -c 'import json,sys
+p="'"${ROOT}"'/data/deelplekken.json"
+d=json.load(open(p))
+print(len(d.get("plekken") or []))' 2>/dev/null || echo 0)"
+
+wait_for_footer_version() {
+  local label=$1
+  local max_attempts="${SMOKE_VERSION_ATTEMPTS:-6}"
+  local sleep_secs="${SMOKE_VERSION_SLEEP_SECS:-10}"
+  local attempt=1 code tmp
   while [ "$attempt" -le "$max_attempts" ]; do
     tmp="$(mktemp)"
     set +e
-    code=$(curl -sS -o "$tmp" -w '%{http_code}' --connect-timeout 15 --max-time 180 \
-      -X POST -H "Authorization: Bearer ${DEPLOY_TOKEN}" \
-      -H "Accept: application/json" \
-      "${BASE_URL}/deploy/run")
-    curl_ec=$?
+    code=$(curl -sS -o "$tmp" -w '%{http_code}' --connect-timeout 15 --max-time 60 \
+      -H 'Cache-Control: no-cache' -H 'Pragma: no-cache' \
+      "${BASE_URL}/?gp_smoke=$(date +%s)")
     set -e
-    body="$(cat "$tmp" 2>/dev/null || true)"
+    echo "smoke-version ${label} http ${code} (poging ${attempt}/${max_attempts})"
+    if [ "$code" = "200" ] \
+      && grep -q 'Gratis planten' "$tmp" \
+      && grep -q "Versie ${ver}" "$tmp"; then
+      rm -f "$tmp"
+      notice "Footer-versie ${ver} OK (${label})."
+      return 0
+    fi
     rm -f "$tmp"
-
-    if [ "$curl_ec" -eq 0 ] && [ "$code" = "200" ]; then
-      notice "POST /deploy/run → 200"
+    if [ "$attempt" -ge "$max_attempts" ]; then
       break
     fi
+    notice "Footer-versie ${ver} nog niet zichtbaar (${label}) — lsphp-restart + ${sleep_secs}s…"
+    trigger_lsphp_restart
+    sleep "$sleep_secs"
+    attempt=$((attempt + 1))
+  done
+  return 1
+}
 
-    should_retry=0
-    stale_403=0
-    if [ "$curl_ec" -ne 0 ] || [ -z "$code" ] || [ "$code" = "000" ]; then
-      should_retry=1
-    else
-      case "$code" in
-        403)
-          # Mogelijk stale lsphp op vorige release (oud token in config:cache).
-          should_retry=1
-          stale_403=1
-          ;;
-        404|5??) should_retry=1 ;;
-      esac
+trigger_lsphp_restart
+if [ "$LSPHP_WAIT" -gt 0 ] 2>/dev/null; then
+  notice "Wacht ${LSPHP_WAIT}s op lsphp-recycle vóór migrate…"
+  sleep "$LSPHP_WAIT"
+fi
+
+# --- migrate: primair CLI via hook (nieuwe release-map), anders /deploy/run ná verse workers ---
+# Nooit migrate draaien op stale lsphp (zou oude DeelplekkenSeeder draaien).
+if [ "${SKIP_MIGRATE:-}" != "1" ]; then
+  migrate_ok=0
+
+  # 1) Hook action=migrate → artisan CLI in absolute release (verse PHP, geen web-opcache).
+  notice "Hook migrate (CLI in nieuwe release)…"
+  hook_curl_soft -X POST \
+    -F "action=migrate" \
+    -F "release=${RELEASE_ID}" \
+    "$HOOK_URL"
+  if [ "${HOOK_HTTP:-}" = "200" ]; then
+    mig_via="$(printf '%s' "${HOOK_BODY:-}" | python3 -c 'import json,sys
+try:
+ d=json.load(sys.stdin); print("1" if d.get("ok") and d.get("via")=="cli" else "0")
+except Exception:
+ print("0")' 2>/dev/null || echo 0)"
+    if [ "$mig_via" = "1" ]; then
+      migrate_ok=1
+      notice "Hook migrate CLI → OK"
+    fi
+  fi
+
+  # 2) Fallback: eerst bevestigen dat web de NIEUWE versie serveert, dan POST /deploy/run.
+  if [ "$migrate_ok" -ne 1 ]; then
+    notice "CLI-migrate niet beschikbaar — wacht op verse lsphp, daarna POST /deploy/run…"
+    if ! wait_for_footer_version "pre-migrate"; then
+      die "Kan niet migreren: footer-versie ${ver} ontbreekt (stale lsphp); seed zou op oude code draaien."
     fi
 
-    if [ "$should_retry" -ne 1 ] || [ "$attempt" -ge "$max_attempts" ]; then
-      ok="$(printf '%s' "$body" | python3 -c 'import json,sys
+    max_attempts=5
+    attempt=1
+    code=""
+    body=""
+    while [ "$attempt" -le "$max_attempts" ]; do
+      tmp="$(mktemp)"
+      set +e
+      code=$(curl -sS -o "$tmp" -w '%{http_code}' --connect-timeout 15 --max-time 180 \
+        -X POST -H "Authorization: Bearer ${DEPLOY_TOKEN}" \
+        -H "Accept: application/json" \
+        "${BASE_URL}/deploy/run")
+      curl_ec=$?
+      set -e
+      body="$(cat "$tmp" 2>/dev/null || true)"
+      rm -f "$tmp"
+
+      if [ "$curl_ec" -eq 0 ] && [ "$code" = "200" ]; then
+        run_ver="$(printf '%s' "$body" | python3 -c 'import json,sys
+try:
+ print(json.load(sys.stdin).get("version",""))
+except Exception:
+ print("")' 2>/dev/null || true)"
+        if [ -n "$run_ver" ] && [ "$run_ver" != "$ver" ]; then
+          notice "POST /deploy/run 200 maar version=${run_ver} ≠ ${ver} — stale worker, retry…"
+          trigger_lsphp_restart
+          sleep 10
+          attempt=$((attempt + 1))
+          continue
+        fi
+        notice "POST /deploy/run → 200 (version=${run_ver:-?})"
+        migrate_ok=1
+        break
+      fi
+
+      should_retry=0
+      stale_403=0
+      if [ "$curl_ec" -ne 0 ] || [ -z "$code" ] || [ "$code" = "000" ]; then
+        should_retry=1
+      else
+        case "$code" in
+          403)
+            should_retry=1
+            stale_403=1
+            ;;
+          404|5??) should_retry=1 ;;
+        esac
+      fi
+
+      if [ "$should_retry" -ne 1 ] || [ "$attempt" -ge "$max_attempts" ]; then
+        ok="$(printf '%s' "$body" | python3 -c 'import json,sys
 try:
  d=json.load(sys.stdin); print(d.get("ok"), d.get("error",""))
 except Exception:
  print("?", "non-json")' 2>/dev/null || echo '? non-json')"
-      die "POST /deploy/run faalde (HTTP ${code:-conn}, ${ok})."
-    fi
+        die "POST /deploy/run faalde (HTTP ${code:-conn}, ${ok})."
+      fi
 
-    if [ "$stale_403" -eq 1 ]; then
-      sleep_secs=30
-      notice "POST /deploy/run HTTP 403 (mogelijk stale proces) — poging ${attempt}/${max_attempts}, opnieuw over ${sleep_secs}s…"
-    else
-      sleep_secs=$((attempt * 5))
-      notice "POST /deploy/run HTTP ${code:-conn} — poging ${attempt}/${max_attempts}, opnieuw over ${sleep_secs}s…"
-    fi
-    sleep "$sleep_secs"
-    attempt=$((attempt + 1))
-  done
+      if [ "$stale_403" -eq 1 ]; then
+        trigger_lsphp_restart
+        sleep_secs=30
+        notice "POST /deploy/run HTTP 403 (mogelijk stale proces) — poging ${attempt}/${max_attempts}, opnieuw over ${sleep_secs}s…"
+      else
+        sleep_secs=$((attempt * 5))
+        notice "POST /deploy/run HTTP ${code:-conn} — poging ${attempt}/${max_attempts}, opnieuw over ${sleep_secs}s…"
+      fi
+      sleep "$sleep_secs"
+      attempt=$((attempt + 1))
+    done
+  fi
+
+  if [ "$migrate_ok" -ne 1 ]; then
+    die "Migrate/seed faalde (geen CLI-hook en geen /deploy/run)."
+  fi
+
+  # Na migrate opnieuw marker: web-workers laden verse config:cache.
+  trigger_lsphp_restart
+  if [ "$LSPHP_WAIT" -gt 0 ] 2>/dev/null; then
+    sleep "$LSPHP_WAIT"
+  fi
 fi
 
-# --- smoke ---
+# --- smoke: footer-versie + deelplekken-count + robots ---
 if [ "${SKIP_SMOKE:-}" != "1" ]; then
-  ver="$(tr -d '[:space:]' < "${ROOT}/VERSION")"
-  tmp="$(mktemp)"
-  set +e
-  code=$(curl -sS -o "$tmp" -w '%{http_code}' --connect-timeout 15 --max-time 60 "${BASE_URL}/")
-  set -e
-  echo "smoke http ${code}"
-  if [ "$code" != "200" ]; then
-    rm -f "$tmp"
-    die "Smoke: homepage HTTP ${code}, verwacht 200."
+  if ! wait_for_footer_version "post-migrate"; then
+    die "Smoke: footer-versie ${ver} ontbreekt na retries."
   fi
-  grep -q 'Gratis planten' "$tmp" || { rm -f "$tmp"; die "Smoke: merknaam ontbreekt."; }
-  grep -q "Versie ${ver}" "$tmp" || { rm -f "$tmp"; die "Smoke: footer-versie ${ver} ontbreekt."; }
+
+  # Staging noindex (soft).
   if [ "$APP_ENV_NAME" = "staging" ]; then
+    tmp="$(mktemp)"
+    curl -sS -o "$tmp" --connect-timeout 15 --max-time 60 "${BASE_URL}/" || true
     if ! grep -qi 'noindex' "$tmp"; then
       notice "LET OP: geen noindex-meta in HTML."
     fi
@@ -451,9 +594,56 @@ if [ "${SKIP_SMOKE:-}" != "1" ]; then
     if ! grep -qi '^x-robots-tag:.*noindex' "$headers"; then
       notice "LET OP: geen X-Robots-Tag: noindex"
     fi
-    rm -f "$headers"
+    rm -f "$tmp" "$headers"
   fi
-  rm -f "$tmp"
+
+  # Deelplekken: verwacht ≥ aantal rijen in data/deelplekken.json (zichtbaar via API).
+  if [ "${EXPECTED_DEELPLEKKEN:-0}" -gt 0 ] 2>/dev/null; then
+    SMOKE_MAX="${SMOKE_VERSION_ATTEMPTS:-6}"
+    SMOKE_SLEEP="${SMOKE_VERSION_SLEEP_SECS:-10}"
+    deel_ok=0
+    deel_attempt=1
+    while [ "$deel_attempt" -le "$SMOKE_MAX" ]; do
+      tmp="$(mktemp)"
+      set +e
+      code=$(curl -sS -o "$tmp" -w '%{http_code}' --connect-timeout 15 --max-time 60 \
+        -H 'Cache-Control: no-cache' \
+        "${BASE_URL}/api/deelplekken?gp_smoke=$(date +%s)")
+      set -e
+      count="$(python3 -c 'import json,sys
+try:
+ d=json.load(sys.stdin); print(len(d.get("items") or []))
+except Exception:
+ print(0)' < "$tmp" 2>/dev/null || echo 0)"
+      rm -f "$tmp"
+      echo "smoke-deelplekken http ${code} count=${count} expect>=${EXPECTED_DEELPLEKKEN} (poging ${deel_attempt}/${SMOKE_MAX})"
+      if [ "$code" = "200" ] && [ "$count" -ge "$EXPECTED_DEELPLEKKEN" ] 2>/dev/null; then
+        deel_ok=1
+        break
+      fi
+      if [ "$deel_attempt" -ge "$SMOKE_MAX" ]; then
+        break
+      fi
+      notice "Deelplekken-count te laag — lsphp-restart + eventueel opnieuw seed via /deploy/run…"
+      trigger_lsphp_restart
+      # Één keer opnieuw seed proberen als count duidelijk te laag is (oude seeder).
+      if [ "${SKIP_MIGRATE:-}" != "1" ] && [ "$deel_attempt" -eq 1 ]; then
+        hook_curl_soft -X POST -F "action=migrate" -F "release=${RELEASE_ID}" "$HOOK_URL" || true
+        if [ "${HOOK_HTTP:-}" != "200" ]; then
+          curl -sS -o /dev/null --connect-timeout 15 --max-time 180 \
+            -X POST -H "Authorization: Bearer ${DEPLOY_TOKEN}" \
+            -H "Accept: application/json" \
+            "${BASE_URL}/deploy/run" || true
+        fi
+      fi
+      sleep "$SMOKE_SLEEP"
+      deel_attempt=$((deel_attempt + 1))
+    done
+    if [ "$deel_ok" -ne 1 ]; then
+      die "Smoke: deelplekken-count < ${EXPECTED_DEELPLEKKEN} na ${SMOKE_MAX} pogingen (seeder op oude release?)."
+    fi
+    notice "Deelplekken-count OK (>= ${EXPECTED_DEELPLEKKEN})."
+  fi
 
   # Statische robots.txt in docroot moet de hosting-fallback overrulen.
   robots_tmp="$(mktemp)"
@@ -478,7 +668,7 @@ if [ "${SKIP_SMOKE:-}" != "1" ]; then
   fi
   rm -f "$robots_tmp"
 
-  notice "Smoke OK (versie ${ver}, robots.txt OK)."
+  notice "Smoke OK (versie ${ver}, deelplekken, robots.txt)."
 fi
 
 notice "Deploy-hook upload voltooid (artefact ${SIZE} bytes)."

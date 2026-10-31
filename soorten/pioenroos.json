@@ -1,0 +1,45 @@
+{
+    "slug": "pioenroos",
+    "naam": "Pioenroos",
+    "latijn": "Paeonia",
+    "categorie": "sier",
+    "waarom": "Pioen kun je niet stekken; vermeerderen gaat via scheuren (3–5 ogen) of zaaien",
+    "methode": "Scheuren (kroon met 3–5 ogen); zaaien traag",
+    "wanneer": "Scheuren sep–okt",
+    "welk_hout": "Slapende kroon met zichtbare ogen (groeipunten)",
+    "lengte_snit": "Kroon delen zodat elk stuk minstens 3 ogen en wortels heeft; niet te diep planten",
+    "water_grond": "Humusrijke, goed drainerende grond; ogen net onder het maaiveld",
+    "licht": "Zon tot lichte schaduw",
+    "water": "Matig; niet nat in de winter",
+    "hulpmiddel": "Schone spade of mes",
+    "kans": "Gemiddeld (voorzichtig werken)",
+    "klaar": "Na aanslaan; volle bloei kan 1–2 seizoenen duren",
+    "verwanten": [
+        "kerstroos",
+        "iris",
+        "daglelie"
+    ],
+    "waarschuwing": "Pioen stekken lukt niet. Zaailingen bloeien vaak pas na 4–5 jaar en wijken af.",
+    "ervaringen": "",
+    "bronnen": "RHS — Dividing perennials — https://www.rhs.org.uk/plants/types/perennials/dividing",
+    "kort": "Scheuren in september–oktober; niet stekken",
+    "seo_werkwoord": "scheuren",
+    "inhoud": [
+        {
+            "type": "h2",
+            "tekst": "Pioenroos stekken? Nee — scheuren"
+        },
+        {
+            "type": "p",
+            "tekst": "Stengelstekken van pioen slaan niet aan. De betrouwbare methode is scheuren van de kroon in september–oktober, met enkele ogen per stuk."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer pioenroos scheuren"
+        },
+        {
+            "type": "p",
+            "tekst": "Najaar (sep–okt), als het blad begint terug te trekken. Plant niet te diep: de ogen vlak onder de grond."
+        }
+    ]
+}

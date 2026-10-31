@@ -22,5 +22,23 @@
     "waarschuwing": "",
     "ervaringen": "",
     "bronnen": "RHS — How to grow lavender — https://www.rhs.org.uk/plants/lavender/growing-guide; RHS — Softwood cuttings — https://www.rhs.org.uk/propagation/softwood-cuttings",
-    "kort": "Halfverhoute stek in zandige grond"
+    "kort": "Halfverhoute stek in zandige grond",
+    "inhoud": [
+        {
+            "type": "h2",
+            "tekst": "Lavendel stekken in water"
+        },
+        {
+            "type": "p",
+            "tekst": "Lavendel wortelt slecht in water: stekken rotten vaak weg of maken geen bruikbare wortels. Zet halfhout liever direct in zandige, luchtige stekgrond die nauwelijks nat is. Een waterglas is hier geen aanrader."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer lavendel stekken"
+        },
+        {
+            "type": "p",
+            "tekst": "Beste venster: late lente tot nazomer (ongeveer mei–augustus), met halfverhoute scheuten zonder bloem. Het hout voelt steviger dan fris groen, maar buigt nog. Oude, sterk verhoute takken stekken slechter; knip liever jonger materiaal van dit seizoen."
+        }
+    ]
 }

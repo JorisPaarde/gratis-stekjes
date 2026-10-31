@@ -1,7 +1,8 @@
 /* Gratis planten — service worker (handgeschreven, geen dependency).
  * Cacheversie via ?v= uit VERSION (registratie in app.js).
  * Nooit: account (incl. ervaringen plaatsen), berichten, beheer (incl. agenda),
- * POST, /cron, /deploy, /media* (aanbod-/ervaringfoto’s), /media-uploads.
+ * POST, /cron, /deploy, /deploy-lsphp-restart.php, /media* (aanbod-/ervaringfoto’s),
+ * /media-uploads.
  */
 const GP_SW_VERSION = new URL(self.location.href).searchParams.get("v") || "0";
 const SHELL_CACHE = "gp-shell-v" + GP_SW_VERSION;
@@ -70,6 +71,7 @@ function isPrivateOrSensitive(pathname) {
     pathname.indexOf("/beheer") === 0 ||
     pathname.indexOf("/cron") === 0 ||
     pathname.indexOf("/deploy") === 0 ||
+    pathname === "/deploy-lsphp-restart.php" ||
     pathname.indexOf("/media") === 0 ||
     pathname.indexOf("/api/") === 0 ||
     pathname.indexOf("/feedback") === 0

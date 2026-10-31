@@ -1,0 +1,44 @@
+{
+    "slug": "laurier",
+    "naam": "Laurier",
+    "latijn": "Laurus nobilis",
+    "categorie": "kruid",
+    "waarom": "Keukenlaurier (Laurus nobilis) vermeerder je het best met halfhoutstek; beworteling duurt vaak maanden",
+    "methode": "Halfhoutstek (kopstek met hieltje) in stekgrond",
+    "wanneer": "Aug–sep (halfhout); soms lente",
+    "welk_hout": "Halfverhoute scheut van dit jaar, bij voorkeur met een hieltje van ouder hout",
+    "lengte_snit": "±10–15 cm; onderste bladeren weg; snede onder een knoop",
+    "water_grond": "Zandige stekgrond; licht vochtig, niet kletsnat; hoge luchtvochtigheid helpt",
+    "licht": "Zon tot halfschaduw",
+    "water": "Matig; goede drainage",
+    "hulpmiddel": "Optioneel stekpoeder of wilgenwater; kasje of plastic kap",
+    "kans": "Lastig tot gemiddeld — traag (vaak 2–6 maanden)",
+    "klaar": "Als er stevige wortels en nieuwe groei zijn (vaak pas het volgende seizoen)",
+    "verwanten": [
+        "rozemarijn",
+        "salie",
+        "lavendel"
+    ],
+    "waarschuwing": "Niet verwarren met laurierkers (Prunus laurocerasus): andere soort, giftig blad.",
+    "ervaringen": "",
+    "bronnen": "RHS — Bay (Laurus nobilis) — https://www.rhs.org.uk/herbs/bay/grow-your-own; RHS — Semi-ripe cuttings — https://www.rhs.org.uk/propagation/semi-ripe-cuttings",
+    "kort": "Halfhoutstek met hieltje; beworteling duurt maanden",
+    "inhoud": [
+        {
+            "type": "h2",
+            "tekst": "Laurier stekken in water"
+        },
+        {
+            "type": "p",
+            "tekst": "Waterstek wordt vaak geprobeerd, maar laurier bewortelt betrouwbaarder in zandige stekgrond met hoge luchtvochtigheid. In water zie je soms callus, maar overzetten naar grond mislukt vaak. Kies liever halfhoutstek in aarde."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer laurier stekken"
+        },
+        {
+            "type": "p",
+            "tekst": "Het beste moment is augustus–september, als de scheuten half verhout zijn. Houd stekken vorstvrij en geduldig: twee tot zes maanden beworteling is normaal volgens gangbaar tuinadvies."
+        }
+    ]
+}

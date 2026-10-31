@@ -1,0 +1,70 @@
+{
+  "slug": "wortelstek",
+  "titel": "Wortelstek: vermeerderen uit wortelstukken",
+  "samenvatting": "In de winter wortelstukken stekken — bruikbaar bij phlox, framboos/braam, opslag van sering en vergelijkbare planten.",
+  "meta_description": "Wortelstek in de winter: phlox, framboos, braam en meer. Hoe dikke wortels knippen en laten uitlopen.",
+  "zoekwoorden": [
+    "wortelstek",
+    "root cuttings",
+    "phlox stekken",
+    "vermeerderen uit wortel"
+  ],
+  "categorieen": [
+    "stekken",
+    "vermeerderen"
+  ],
+  "pillar": "stekken",
+  "is_pillar": false,
+  "gerelateerde_soorten": [
+    "phlox",
+    "framboos",
+    "braam",
+    "sering",
+    "appelbes"
+  ],
+  "seizoenen": [
+    "winter"
+  ],
+  "maanden": [
+    12,
+    1,
+    2
+  ],
+  "niveau": "gevorderd",
+  "locatie": "buiten",
+  "inhoud": [
+    {
+      "type": "p",
+      "tekst": "Wortelstek neem je in rust (december–februari) van planten die uit wortelstukken nieuwe scheuten kunnen maken. Bij phlox helpt wortelstek om stengelaaltjes te omzeilen: je start zonder besmette stengel."
+    },
+    {
+      "type": "h2",
+      "tekst": "Hoe"
+    },
+    {
+      "type": "ol",
+      "items": [
+        "Graaf voorzichtig dikke, gezonde wortels bloot.",
+        "Knip stukken van ongeveer 5 cm. Bij soorten met polariteit: onderkant schuin, bovenkant recht — of volg soortspecifieke RHS-adviezen.",
+        "Leg horizontaal (of rechtop volgens de soort) in stekgrond en bedek licht.",
+        "Houd koel en licht vochtig tot er scheuten verschijnen; daarna oppotten."
+      ]
+    },
+    {
+      "type": "h2",
+      "tekst": "Geschikt voor"
+    },
+    {
+      "type": "p",
+      "tekst": "Onder meer phlox, framboos en braam (worteluitlopers), en wortelopslag van sommige heesters. Niet elke vaste plant reageert: check de soortpagina."
+    }
+  ],
+  "bronnen": [
+    {
+      "titel": "RHS — Root cuttings",
+      "url": "https://www.rhs.org.uk/propagation/root-cuttings"
+    }
+  ],
+  "duurzamer_alternatief": null,
+  "howto": true
+}

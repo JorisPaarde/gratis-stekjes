@@ -1,0 +1,25 @@
+{
+    "slug": "rhododendron",
+    "naam": "Rhododendron",
+    "latijn": "Rhododendron",
+    "categorie": "sier",
+    "waarom": "Thuis is afleggen of marcotteren (luchtafleggen) betrouwbaarder dan stekken",
+    "methode": "Afleggen, luchtafleggen (marcotteren); halfhoutstek is moeilijk",
+    "wanneer": "Afleggen voorjaar (vaak 1–2 jaar); stek aug–sep",
+    "welk_hout": "Soepel zijtakje van 1–2 jaar voor afleggen/marcotteren",
+    "lengte_snit": "Bij afleggen: wondje bij een knop, vastzetten in zure grond; bij marcotteren ringwond + mos",
+    "water_grond": "Zure, vochthoudende grond; stek alleen in zure stekmix onder hoge LV",
+    "licht": "Halfschaduw",
+    "water": "Gelijkmatig vochtig; zure grond (geen kalk)",
+    "hulpmiddel": "Draad/steentje bij afleggen; bij marcotteren veenmos en zwart plastic",
+    "kans": "Lastig (stek); afleggen/marcotteren gemiddeld maar traag",
+    "klaar": "Pas als er voldoende eigen wortels zijn (vaak een seizoen of langer)",
+    "verwanten": [
+        "forsythia",
+        "sering"
+    ],
+    "waarschuwing": "Azalea valt botanisch onder Rhododendron; zelfde aanpak. Kalkhoudende grond remt groei.",
+    "ervaringen": "",
+    "bronnen": "RHS — Layering — https://www.rhs.org.uk/propagation/layering; RHS — Air layering — https://www.rhs.org.uk/propagation/air-layering-plants",
+    "kort": "Afleggen of marcotteren; stek is moeilijk"
+}

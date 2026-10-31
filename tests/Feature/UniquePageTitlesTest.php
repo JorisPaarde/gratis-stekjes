@@ -153,9 +153,11 @@ test('soortpagina’s en steden hebben onderling unieke titles', function () {
             ->assertOk()
             ->getContent();
         $title = pageTitleFromHtml($html);
-        $expectedPage = $soort['naam'].' stekken en gratis stekjes';
+        $seoNaam = trim((string) ($soort['seo_naam'] ?? '')) ?: (string) $soort['naam'];
+        $seoWerkwoord = trim((string) ($soort['seo_werkwoord'] ?? '')) ?: 'stekken';
+        $expectedPage = $seoNaam.' '.$seoWerkwoord.' en gratis stekjes';
         expect($title)->toBe(SeoTitle::document($expectedPage))
-            ->and($html)->toContain('>'.$soort['naam'].' stekken: zo doe je het</h1>')
+            ->and($html)->toContain('>'.$seoNaam.' '.$seoWerkwoord.': zo doe je het</h1>')
             ->and($titles)->not->toContain($title);
         $titles[] = $title;
     }

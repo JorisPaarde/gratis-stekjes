@@ -13,6 +13,7 @@ return [
     'app_dir' => '/home/gratisplanten/app-staging',
     'docroot' => '/home/gratisplanten/staging.gratisplanten.nl',
     'env' => 'staging',
-    // Optioneel: home voor LiteSpeed-marker ~/.lsphp_restart.txt (default: dirname(app_dir)).
+    // Optioneel: account-home voor LiteSpeed-marker ~/.lsphp_restart.txt
+    // (default: dirname(app_dir)). Hook herschrijft de inhoud ná de swap — geen touch-only.
     // 'home_dir' => '/home/gratisplanten',
 ];

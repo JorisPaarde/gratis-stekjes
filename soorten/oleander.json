@@ -1,0 +1,43 @@
+{
+    "slug": "oleander",
+    "naam": "Oleander",
+    "latijn": "Nerium oleander",
+    "categorie": "sier",
+    "waarom": "Kuipplant die je met halfhoutstek of luchtafleggen (marcotteren) kunt vermeerderen",
+    "methode": "Halfhoutstek, stek in water, of luchtafleggen",
+    "wanneer": "Jun–aug",
+    "welk_hout": "Halfverhoute scheut van dit seizoen",
+    "lengte_snit": "±10–15 cm; onderste blad weg; sap kan irriteren — handschoenen",
+    "water_grond": "Stekgrond of water tot wortels; daarna goed drainerende potgrond",
+    "licht": "Volle zon",
+    "water": "Matig; niet nat houden in de winter",
+    "hulpmiddel": "Optioneel stekpoeder; bij marcotteren veenmos en plastic",
+    "kans": "Gemiddeld",
+    "klaar": "Bij zichtbare wortels en nieuwe groei",
+    "verwanten": [
+        "toscaanse-jasmijn",
+        "passiebloem"
+    ],
+    "waarschuwing": "Alle delen zijn giftig. Handschoenen bij knippen; sap niet in ogen of mond.",
+    "ervaringen": "",
+    "bronnen": "RHS — Semi-ripe cuttings — https://www.rhs.org.uk/propagation/semi-ripe-cuttings; RHS — Air layering — https://www.rhs.org.uk/propagation/air-layering-plants",
+    "kort": "Halfhoutstek of marcotteren in de zomer",
+    "inhoud": [
+        {
+            "type": "h2",
+            "tekst": "Oleander stekken in water"
+        },
+        {
+            "type": "p",
+            "tekst": "Zomerstekken wortelen soms in water. Zet halfhout in een glas, ververs water regelmatig, en pot op zodra wortels stevig zijn. Grondstek of marcotteren is vaak zekerder."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer oleander stekken"
+        },
+        {
+            "type": "p",
+            "tekst": "Juni tot augustus, als het hout half rijp is. Kuipplant: vorstvrij overwinteren."
+        }
+    ]
+}

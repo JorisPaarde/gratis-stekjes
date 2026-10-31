@@ -9,6 +9,53 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.30.0] - 2026-10-31
+
+### Added
+
+- 58 nieuwe stektips-soortpagina’s (buiten, eetbaar, tuin): o.a. laurier, basilicum,
+  klimop, appel, braam, pioenroos, eucalyptus — totaal 106 soortpagina’s.
+- 7 kennisbank-artikelen: fruitbomen-enten (incl. familieboom-H2), onderstammen per
+  fruitboom, marcotteren, zomerstek/halfhoutstek, wortelstek, fruitboom uit pit of
+  zaad, kruiden vermeerderen.
+- Soortpagina’s: optionele `seo_naam` / `seo_werkwoord` (bijv. pioen scheuren,
+  eucalyptus zaaien, vijg(enboom)) en `inhoud`-blokken voor long-tail tussenkoppen
+  (in water, wanneer).
+- Nu-te-stekken: enten- en afleggen-groepen; methodes `enten` en `afleggen`.
+
+### Changed
+
+- Upgrades: vijg (titel/H1 Vijg(enboom)), rode bes (aalbes-synoniem), hortensia /
+  lavendel / rozemarijn (H2 in water + wanneer), scheuren-en-afleggen (H2 afleggen
+  planten), vermeerderen (link naar fruitbomen-enten).
+- plantensoorten.json: slugs + meta (`met_stektips_pagina` 106); ontbrekende soorten
+  toegevoegd (geen pampagras; herfstaster ≠ struikaster).
+
+## [0.29.2] - 2026-10-31
+
+### Fixed
+
+- LiteSpeed/lsphp bleef na HTTPS-hook-deploy vaak oude release serveren (footer-smoke
+  «versie ontbreekt»; op prod bleef 0.27.2 zichtbaar terwijl 0.29.1 gedeployed was).
+  Oorzaak: `touch()` op `~/.lsphp_restart.txt` sloeg niet aan; hosting bevestigde dat
+  **herschrijven van de inhoud** in de account-home wél herstart. Hook doet nu ná de
+  swap: unlink+verse inhoud in kandidaat-homes (`home_dir` / `dirname(app_dir)` /
+  `dirname(docroot)` / `$HOME`), entrypoint-mtimes bumpen (`.htaccess` alleen mtime,
+  geen rewrite-wijziging), hook self-update uit de release, `index.php` naar de
+  absolute release-map i.p.v. symlink `current`.
+- Migrate/seed draaide soms op stale lsphp (oude `DeelplekkenSeeder` → o.a. 32 BE-rijen
+  ontbraken). Primair: hook-action `migrate` runt artisan **CLI** in de nieuwe
+  release-map. Fallback: eerst footer-versie afwachten, dan pas `POST /deploy/run`
+  (weigeren als version ≠ artefact). `/deploy/run` herschrijft ook de lsphp-marker +
+  `opcache_reset` en retourneert `deelplekken_count`.
+
+### Changed
+
+- Upload-smoke: footer-versie tot 6×10s met lsphp-rewrite-retry; daarna
+  `/api/deelplekken` count ≥ rijen in `data/deelplekken.json`; robots-check ongewijzigd.
+- Nieuw beveiligd docroot-endpoint `deploy-lsphp-restart.php` (Bearer
+  `DEPLOY_HOOK_TOKEN`) als vangnet wanneer de server nog een oude hook heeft.
+
 ## [0.29.1] - 2026-10-31
 
 ### Fixed

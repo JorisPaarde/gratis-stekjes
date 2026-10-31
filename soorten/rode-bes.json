@@ -2,7 +2,7 @@
     "slug": "rode-bes",
     "naam": "Rode bes",
     "latijn": "Ribes rubrum",
-    "waarom": "Ribes winterstek is eenvoudig en betrouwbaar voor rode (en witte) bes",
+    "waarom": "Ribes (rode bes / aalbes, ook wit) winterstek is eenvoudig en betrouwbaar",
     "methode": "Winterstek van 20 cm, kan in een pot; lichte vorst is geen probleem",
     "wanneer": "Nov–feb",
     "welk_hout": "Eenjarige tak zo dik als een potlood, zonder zacht topje",
@@ -13,7 +13,7 @@
     "klaar": "Najaar na het stekken",
     "ervaringen": "",
     "bronnen": "RHS — Hardwood cuttings — https://www.rhs.org.uk/propagation/hardwood-cuttings; RHS — February trees and shrubs — https://www.rhs.org.uk/advice/in-month/february/trees-shrubs",
-    "kort": "Winterstek van 20 cm, kan in een pot; lichte vorst is geen probleem",
+    "kort": "Winterstek van aalbes / rode (en witte) bes",
     "categorie": "eetbaar",
     "licht": "Zon tot halfschaduw",
     "water": "Gelijkmatig vochtig",
@@ -22,5 +22,6 @@
         "jostabes",
         "kruisbes"
     ],
-    "waarschuwing": ""
+    "waarschuwing": "",
+    "seo_naam": "Rode bes (aalbes)"
 }

@@ -9,17 +9,19 @@ test('elke soortpagina laadt met 200 en SEO-titel', function () {
     $stektips = app(Stektips::class);
     $soorten = $stektips->all();
 
-    expect($soorten)->toHaveCount(48);
+    expect($soorten)->toHaveCount(106);
 
     foreach ($soorten as $soort) {
         $slug = $soort['slug'];
         $naam = $soort['naam'];
+        $seoNaam = trim((string) ($soort['seo_naam'] ?? '')) ?: $naam;
+        $seoWerkwoord = trim((string) ($soort['seo_werkwoord'] ?? '')) ?: 'stekken';
 
-        $expectedTitle = \App\Support\SeoTitle::document($naam.' stekken en gratis stekjes');
+        $expectedTitle = \App\Support\SeoTitle::document($seoNaam.' '.$seoWerkwoord.' en gratis stekjes');
 
         $this->get(route('stektips.show', ['slug' => $slug]))
             ->assertOk()
-            ->assertSee($naam.' stekken: zo doe je het', false)
+            ->assertSee($seoNaam.' '.$seoWerkwoord.': zo doe je het', false)
             ->assertSee('<title>'.$expectedTitle.'</title>', false)
             ->assertSee('Gratis '.$naam.'-stekjes in je buurt', false)
             ->assertSee((string) $soort['latijn'], false);

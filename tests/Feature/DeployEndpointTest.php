@@ -61,6 +61,7 @@ test('deploy endpoint draait migrate en caches wanneer enabled', function () {
             ->postJson('/deploy/run')
             ->assertOk()
             ->assertJsonPath('ok', true)
+            ->assertJsonPath('deelplekken_count', 0)
             ->assertJsonMissingPath('token')
             ->assertJsonMissingPath('password');
     } finally {
