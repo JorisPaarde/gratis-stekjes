@@ -62,7 +62,7 @@
 @if(count($overzicht['aanbod']) || count($overzicht['plekken']))
 <section class="section wrap" id="in-de-buurt" aria-labelledby="terecht-titel">
   <h2 id="terecht-titel">Hier kun je nu al terecht</h2>
-  <p class="section-intro">Bij leden die iets weggeven, en op vaste plekken zoals zaadbibliotheken, plantenasiels en plantenbiebs.</p>
+  <p class="section-intro">Bij leden die iets weggeven, en op vaste plekken zoals zadenbibliotheken, plantenasiels en plantenbiebs.</p>
 
   @if(count($overzicht['aanbod']))
     <h3 class="home-subkop">Net aangeboden</h3>

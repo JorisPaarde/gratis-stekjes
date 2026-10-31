@@ -20,13 +20,13 @@ final class HomeOverzicht
 {
     public const AANBOD_LIMIT = 6;
 
-    /** Meervoudsvormen voor de tellingen («55 zaadbibliotheken»). */
+    /** Meervoudsvormen voor de tellingen («55 zadenbibliotheken»). */
     private const MEERVOUD = [
         'plantenasiel' => 'plantenasiels',
         'plantenbieb' => 'plantenbiebs',
         'ruilkast' => 'ruilkasten',
         'stekjesruilpunt' => 'stekjesruilpunten',
-        'zaadbibliotheek' => 'zaadbibliotheken',
+        'zaadbibliotheek' => 'zadenbibliotheken',
         'voedselbos' => 'voedselbossen',
         'tuinvereniging' => 'tuinverenigingen',
         'partner' => 'initiatieven',

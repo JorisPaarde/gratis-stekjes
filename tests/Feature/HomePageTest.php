@@ -61,7 +61,7 @@ test('blok «Hier kun je nu al terecht» toont tellingen per soort deelplek', fu
     $html = $this->get('/')->assertOk()->getContent();
 
     expect($html)->toContain('Hier kun je nu al terecht')
-        ->and($html)->toMatch('/<strong>\d+<\/strong> zaadbibliotheken/')
+        ->and($html)->toMatch('/<strong>\d+<\/strong> zadenbibliotheken/')
         ->and($html)->toContain('plekken in Nederland en België');
     // Zonder aanbod geen lege «Net aangeboden»-kop.
     expect($html)->not->toContain('Net aangeboden');
