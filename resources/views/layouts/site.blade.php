@@ -82,34 +82,52 @@
     @yield('content')
   </main>
   <footer class="site-footer">
-    <div class="wrap footer-inner">
-      <p><strong>{{ $siteName }}</strong> — gratis planten, stekjes en zaden delen, met een praatje als enige prijs.</p>
-      <p class="footer-links">
-        <a href="{{ route('aanbod') }}">Aanbod</a>
-        <a href="{{ route('hoe-werkt-het') }}">Hoe werkt het</a>
-        <a href="{{ route('stektips.index') }}">Stektips</a>
-        <a href="{{ route('deelplekken') }}">Deelplekken</a>
-        <a href="{{ route('gratis-planten.index') }}">Gratis planten in jouw stad</a>
-        <a href="{{ route('partners') }}">Initiatieven</a>
-        <a href="{{ route('hulpmiddelen') }}">Hulpmiddelen</a>
-        <a href="{{ route('invasieve-soorten') }}">Invasieve soorten</a>
-        <a href="{{ route('voor-organisaties') }}">Voor organisaties</a>
-        <a href="{{ route('over') }}">Over</a>
-        <a href="{{ route('contact') }}">Contact</a>
-        <a href="{{ route('privacy') }}">Privacy</a>
+    <div class="wrap footer-grid">
+      <div class="footer-merk">
+        <a class="footer-brand" href="{{ route('home') }}">{{ $siteName }}</a>
+        <p>Gratis planten, stekjes en zaden delen in Nederland en België. Zelf ophalen, en vaak een praatje erbij.</p>
         @auth
-          <a href="{{ route('account.index') }}">Account</a>
+          <p><a class="btn footer-cta" href="{{ route('account.index') }}"><x-icon name="gebruiker" :size="16" /> Mijn account</a></p>
         @else
-          <a href="{{ route('account.registreren') }}">Doe mee</a>
+          <p><a class="btn footer-cta" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="16" /> Doe mee</a></p>
         @endauth
-      </p>
-      <p class="footer-meta">
-        <a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a>
-        · KvK 90397320 · btw NL004813310B95
-      </p>
-      {{-- Niet zichtbaar voor bezoekers; deploy-smoke (scripts/deploy-hook-upload.sh) grept op «Versie x.y.z». --}}
-      <!-- Versie {{ config('site.version') }} -->
+        <p class="footer-contact"><a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a></p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <div class="footer-kolom">
+          <h2>Planten vinden</h2>
+          <ul>
+            <li><a href="{{ route('aanbod') }}">Aanbod en kaart</a></li>
+            <li><a href="{{ route('deelplekken') }}">Deelplekken</a></li>
+            <li><a href="{{ route('gratis-planten.index') }}">Gratis planten in jouw stad</a></li>
+            <li><a href="{{ route('partners') }}">Initiatieven</a></li>
+          </ul>
+        </div>
+        <div class="footer-kolom">
+          <h2>Zelf stekken</h2>
+          <ul>
+            <li><a href="{{ route('stektips.index') }}">Stektips</a></li>
+            <li><a href="{{ route('hulpmiddelen') }}">Hulpmiddelen</a></li>
+            <li><a href="{{ route('invasieve-soorten') }}">Invasieve soorten</a></li>
+          </ul>
+        </div>
+        <div class="footer-kolom">
+          <h2>Over Gratis planten</h2>
+          <ul>
+            <li><a href="{{ route('hoe-werkt-het') }}">Hoe werkt het</a></li>
+            <li><a href="{{ route('over') }}">Over</a></li>
+            <li><a href="{{ route('voor-organisaties') }}">Voor organisaties</a></li>
+            <li><a href="{{ route('contact') }}">Contact</a></li>
+            <li><a href="{{ route('privacy') }}">Privacy</a></li>
+          </ul>
+        </div>
+      </nav>
     </div>
+    <div class="wrap footer-onder">
+      <p class="footer-meta">Gratis en zonder reclame · KvK 90397320 · btw NL004813310B95</p>
+    </div>
+    {{-- Niet zichtbaar voor bezoekers; deploy-smoke (scripts/deploy-hook-upload.sh) grept op «Versie x.y.z». --}}
+    <!-- Versie {{ config('site.version') }} -->
   </footer>
   @auth
     @unless(request()->is('beheer', 'beheer/*', 'feedback'))

@@ -79,7 +79,7 @@ test('doelgroeppagina’s staan in sitemap maar niet in menu of footer', functio
     }
 
     expect(preg_match('/<nav id="hoofdmenu"[^>]*>(.*?)<\/nav>/s', $home, $nav))->toBe(1);
-    expect(preg_match('/<p class="footer-links"[^>]*>(.*?)<\/p>/s', $home, $footer))->toBe(1);
+    expect(preg_match('/<nav class="footer-links"[^>]*>(.*?)<\/nav>/s', $home, $footer))->toBe(1);
 
     foreach (['volkstuinen', 'help-mee', 'natuur', 'verbinding'] as $slug) {
         expect($nav[1])->not->toContain($slug);
