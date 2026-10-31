@@ -251,7 +251,7 @@
   </div>
 
   <h2 id="markers">Kaartmarkers</h2>
-  <p class="muted">Plekken op de aanbodkaart: initiatief, voedselbos, plantenasiel, plantenbieb of ruilkast. Coördinaten via PDOK op plaats/postcode-4. Organisaties zonder bezoeklocatie horen op de initiatievenpagina, niet als marker.</p>
+  <p class="muted">Plekken op de aanbodkaart: initiatief, voedselbos, plantenasiel, plantenbieb of ruilkast. Coördinaten via PDOK (NL) of Nominatim (Vlaanderen/Brussel) op plaats/postcode. Organisaties zonder bezoeklocatie horen op de initiatievenpagina, niet als marker.</p>
 
   <form class="form beheer-marker-form" method="post" action="{{ route('beheer.markers.save') }}">
     @csrf
@@ -267,8 +267,15 @@
         @endforeach
       </select>
     </label>
-    <label>Plaats / postcode-4
-      <input name="plaats" required maxlength="120" value="{{ old('plaats', $editing->plaats ?? '') }}">
+    <label>Land
+      <select name="country" required>
+        @foreach(($countries ?? ['NL' => 'Nederland', 'BE' => 'België (Vlaanderen / Brussel)']) as $code => $label)
+          <option value="{{ $code }}" @selected(old('country', $editing->country ?? 'NL') === $code)>{{ $label }}</option>
+        @endforeach
+      </select>
+    </label>
+    <label>Plaats / postcode
+      <input name="plaats" required maxlength="120" value="{{ old('plaats', $editing->plaats ?? '') }}" placeholder="Haarlem, 2011, 9000 of Gent">
     </label>
     <label>Korte beschrijving
       <input name="beschrijving" maxlength="500" value="{{ old('beschrijving', $editing->beschrijving ?? '') }}">

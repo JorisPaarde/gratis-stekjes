@@ -15,7 +15,7 @@ class GratisPlantenController extends Controller
     {
         $site = config('site.name');
         $title = 'Gratis planten ophalen in jouw stad';
-        $metaDescription = 'Gratis planten ophalen en afhalen per stad in Nederland. Kies jouw stad en vind of deel stekjes via '.$site.'.';
+        $metaDescription = 'Gratis planten ophalen en afhalen per stad in Nederland en Vlaanderen. Kies jouw stad en vind of deel stekjes via '.$site.'.';
 
         return view('pages.gratis-planten-index', [
             'title' => $title,

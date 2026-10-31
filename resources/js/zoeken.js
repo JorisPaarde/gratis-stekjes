@@ -7,11 +7,19 @@
   var filterEl = document.getElementById("marker-filters");
   if (!form || !list || typeof L === "undefined") return;
 
-  var map = L.map(mapEl).setView([52.1, 5.2], 7);
+  // Beginuitsnede: Nederland + Vlaanderen/Brussel (past op desktop én mobiel).
+  var map = L.map(mapEl);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxZoom: 18,
   }).addTo(map);
+  map.fitBounds(
+    [
+      [50.65, 2.45],
+      [53.55, 7.25],
+    ],
+    { padding: [12, 12], maxZoom: 8 }
+  );
   var aanbodLayer = L.layerGroup().addTo(map);
   var partnerLayer = L.layerGroup().addTo(map);
   var deelplekLayer = L.layerGroup().addTo(map);

@@ -85,7 +85,7 @@ test('kernroutes hebben unieke title-tags volgens keyword-onderzoek', function (
         [
             'get' => route('deelplekken'),
             'expect' => 'Plantenasiel, plantenbieb en ruilkastje in je buurt',
-            'h1' => 'Plantenasiels, plantenbiebs en ruilkastjes in Nederland',
+            'h1' => 'Plantenasiels, plantenbiebs en ruilkastjes in Nederland en Vlaanderen',
         ],
         [
             'get' => route('invasieve-soorten'),

@@ -40,6 +40,11 @@ class ZoekenController extends Controller
 
         $result = $search->search($q, $type, true, $plant !== '' ? $plant : null);
 
+        if (! empty($result['error']) && ($result['meta'] ?? null) === null) {
+            // Buiten werkgebied (o.a. Wallonië) of onvindbare locatie: duidelijke fout.
+            return response()->json(['error' => $result['error']], 422);
+        }
+
         $payload = [
             'meta' => $result['meta'],
             'items' => $result['items'],
