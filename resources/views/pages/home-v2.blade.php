@@ -67,7 +67,7 @@
       <x-home-picture
         id="kaart"
         sizes="(max-width: 768px) 100vw, 50vw"
-        alt="Groene moestuinbedden — open de kaart om te zien wat er bij jou te halen is"
+        alt="Bloeiend veld met lange rijen planten — open de kaart om te zien wat er bij jou te halen is"
       />
       <span class="home-kaart-label">Naar de kaart met aanbod en deelplekken</span>
     </a>
@@ -115,7 +115,7 @@
       <x-home-picture
         id="zaden"
         sizes="(max-width: 768px) 100vw, 33vw"
-        alt="Mand met verse groenten en oogst uit de tuin"
+        alt="Kas vol groente- en bonenplanten"
       />
     </div>
     <p class="home-actions">
@@ -182,7 +182,7 @@
         <x-home-picture
           id="plantenasiel"
           sizes="(max-width: 768px) 100vw, 45vw"
-          alt="Potplanten die een nieuw huis zoeken, zoals in een plantenasiel"
+          alt="Tuingereedschap, potgrond en een jong plantje op jute"
         />
       </div>
     </div>
@@ -207,7 +207,7 @@
       <x-home-picture
         id="belgie"
         sizes="(max-width: 768px) 100vw, 50vw"
-        alt="Groene bladeren — planten gratis afhalen in Vlaanderen en Brussel"
+        alt="Vrouw tussen kamerplanten in potten"
       />
       <h3>België</h3>
       <p>Planten gratis afhalen in Vlaanderen en Brussel: open de kaart, stuur een bericht en spreek een moment af. Ook een zadenbibliotheek of plantenasiel in de buurt? Die staan tussen de deelplekken.</p>
@@ -222,12 +222,12 @@
     <x-home-picture
       id="tuin"
       sizes="(max-width: 768px) 100vw, 50vw"
-      alt="Pad door een weelderige tuin"
+      alt="Groot donkergroen monsterablad"
     />
     <x-home-picture
       id="delen"
       sizes="(max-width: 768px) 100vw, 50vw"
-      alt="Iemand houdt een stekje vast om te delen"
+      alt="Klein plantje in een potje op iemands schouder"
     />
   </div>
 </section>
@@ -261,5 +261,25 @@
     <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener noreferrer license">CC BY-SA 4.0</a>
     via Wikimedia Commons.
   </p>
+  @php $tipCredits = array_values(array_filter($tips, fn ($t) => empty($t['afbeelding']['is_fallback']) && ! empty($t['afbeelding']['auteur']))); @endphp
+  @if(count($tipCredits) > 0)
+    <p class="muted home-credits-text">
+      Foto’s vermeerdertips via Wikimedia Commons:
+      @foreach($tipCredits as $tc)
+        {{ $tc['naam'] }}:
+        @if(!empty($tc['afbeelding']['bron_url']))
+          <a href="{{ $tc['afbeelding']['bron_url'] }}" rel="noopener noreferrer">{{ $tc['afbeelding']['auteur'] }}</a>
+        @else
+          {{ $tc['afbeelding']['auteur'] }}
+        @endif
+        @if(!empty($tc['afbeelding']['licentie_url']))
+          (<a href="{{ $tc['afbeelding']['licentie_url'] }}" rel="noopener noreferrer license">{{ $tc['afbeelding']['licentie'] }}</a>)
+        @elseif(!empty($tc['afbeelding']['licentie']))
+          ({{ $tc['afbeelding']['licentie'] }})
+        @endif
+        @if(! $loop->last) · @endif
+      @endforeach
+    </p>
+  @endif
 </section>
 @endsection
