@@ -426,7 +426,15 @@ ver="$(tr -d '[:space:]' < "${ROOT}/VERSION")"
 EXPECTED_DEELPLEKKEN="$(python3 -c 'import json,sys
 p="'"${ROOT}"'/data/deelplekken.json"
 d=json.load(open(p))
-print(len(d.get("plekken") or []))' 2>/dev/null || echo 0)"
+def vis(r):
+    if "visible" not in r: return True
+    v=r["visible"]
+    if isinstance(v,str):
+        t=v.strip().lower()
+        if t in ("1","true","on","yes"): return True
+        if t in ("0","false","off","no",""): return False
+    return bool(v)
+print(sum(1 for r in (d.get("plekken") or []) if isinstance(r,dict) and vis(r)))' 2>/dev/null || echo 0)"
 
 wait_for_footer_version() {
   local label=$1
@@ -598,7 +606,7 @@ if [ "${SKIP_SMOKE:-}" != "1" ]; then
     rm -f "$tmp" "$headers"
   fi
 
-  # Deelplekken: verwacht ≥ aantal rijen in data/deelplekken.json (zichtbaar via API).
+  # Deelplekken: verwacht ≥ aantal zichtbare rijen (visible niet false) in data/deelplekken.json, net als /api/deelplekken.
   if [ "${EXPECTED_DEELPLEKKEN:-0}" -gt 0 ] 2>/dev/null; then
     SMOKE_MAX="${SMOKE_VERSION_ATTEMPTS:-6}"
     SMOKE_SLEEP="${SMOKE_VERSION_SLEEP_SECS:-10}"

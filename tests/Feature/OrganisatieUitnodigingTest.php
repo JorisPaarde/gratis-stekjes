@@ -319,7 +319,7 @@ test('seeder wist geen aanmeldingen', function () {
     $this->seed(DeelplekkenSeeder::class);
 
     expect(Deelplek::query()->where('naam', 'Demo Voedselbos Utrecht')->where('status', Deelplek::STATUS_APPROVED)->exists())->toBeTrue();
-    expect(Deelplek::query()->where('source', Deelplek::SOURCE_SEED)->count())->toBe(63);
+    expect(Deelplek::query()->where('source', Deelplek::SOURCE_SEED)->count())->toBe(81);
 });
 
 test('sitemap bevat voor-organisaties en organisatiepaginas', function () {
@@ -329,6 +329,23 @@ test('sitemap bevat voor-organisaties en organisatiepaginas', function () {
     expect($xml)->toContain('/organisaties/voedselbosbouw');
     expect($xml)->toContain('/organisaties/struikroven');
     expect($xml)->toContain('/organisaties/meerbomen-nu');
+    expect($xml)->toContain('/organisaties/het-bomenproject');
+    expect($xml)->not->toContain('/organisaties/stekjesroute');
+    expect($xml)->not->toContain('/organisaties/plant-voor-plant');
+});
+
+test('plant-voor-plant URL redirect naar organisaties-overzicht', function () {
+    $this->get('/organisaties/plant-voor-plant')
+        ->assertRedirect('/organisaties')
+        ->assertStatus(301);
+});
+
+test('verborgen stekjesroute is geen publieke organisatiepagina', function () {
+    $this->get('/organisaties/stekjesroute')->assertNotFound();
+    $this->get('/organisaties')
+        ->assertOk()
+        ->assertDontSee('Stekjesroute', false)
+        ->assertSee('Het Bomenproject', false);
 });
 
 test('docs uitnodigingen bestaat en waarschuwt niet versturen', function () {

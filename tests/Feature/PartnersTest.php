@@ -13,7 +13,7 @@ test('initiatievenpagina laadt op /initiatieven', function () {
         ->assertDontSee('>Partners<', false)
         ->assertSee('Voedselbosbouw.org', false)
         ->assertSee('MeerBomen Nu', false)
-        ->assertSee('Stekjesroute', false);
+        ->assertDontSee('Stekjesroute', false);
 
     $this->get(route('partners'))
         ->assertOk()

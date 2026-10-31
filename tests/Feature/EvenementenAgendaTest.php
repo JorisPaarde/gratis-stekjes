@@ -41,7 +41,7 @@ test('initiatievenpagina toont SEO-title, H1, lege agenda en vaste initiatieven'
         ->assertSee('Meld het', false)
         ->assertSee('Vaste ruilinitiatieven', false)
         ->assertSee('Voedselbosbouw.org', false)
-        ->assertSee('Stekjesroute', false);
+        ->assertDontSee('Stekjesroute', false);
 });
 
 test('komende evenementen chronologisch per maand en verborgen blijven weg', function () {
