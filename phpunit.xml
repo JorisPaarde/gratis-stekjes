@@ -34,5 +34,7 @@
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
+        <!-- Prod-default: oude homepage. V2-tests zetten config('features.homepage_v2') aan. -->
+        <env name="HOMEPAGE_V2" value="false" force="true"/>
     </php>
 </phpunit>

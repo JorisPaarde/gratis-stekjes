@@ -265,6 +265,20 @@ umask 077
     *) _IMPORT_ENABLED_VAL=false ;;
   esac
   dotenv_line DEPLOY_IMPORT_ENABLED "$_IMPORT_ENABLED_VAL"
+  # Homepage v2: aan op staging (preview), uit op production tot Joris vrijgeeft.
+  if [ "$APP_ENV_NAME" = "staging" ]; then
+    dotenv_line HOMEPAGE_V2 true
+  else
+    # Prod: alleen true als secret/var expliciet gezet; anders false (oude homepage).
+    case "$(printf '%s' "${HOMEPAGE_V2:-false}" | tr '[:upper:]' '[:lower:]')" in
+      1|true|yes) _HOMEPAGE_V2_VAL=true ;;
+      *) _HOMEPAGE_V2_VAL=false ;;
+    esac
+    dotenv_line HOMEPAGE_V2 "$_HOMEPAGE_V2_VAL"
+  fi
+  if [ -n "${HOMEPAGE_HERO_VARIANT:-}" ]; then
+    dotenv_line HOMEPAGE_HERO_VARIANT "$HOMEPAGE_HERO_VARIANT"
+  fi
 } > "$ENVFILE"
 
 # --- HTTP helpers ---

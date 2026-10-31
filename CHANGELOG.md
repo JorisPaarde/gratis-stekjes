@@ -9,6 +9,25 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.32.0] - 2026-10-31
+
+### Added
+
+- Homepage v2 achter feature-vlag `HOMEPAGE_V2` (`config/features.php`): beeldrijke
+  homepage met hero, kaart/deelplekken, hoe-het-werkt, vermeerdertips, organisaties
+  en Nederland/België. Staging-deploy zet de vlag aan; productie blijft op de
+  huidige homepage tot de vlag omgaat (environment var/secret `HOMEPAGE_V2=true`).
+- Hero-teksten in `config/homepage.php` (varianten a–d; actief: B) — H1, tagline en
+  knoppen zonder Blade-wijziging wisselbaar. Primaire CTA: account aanmaken.
+- Self-hosted homepagefoto’s (WebP srcset + JPEG-fallback) met credits in
+  `resources/data/foto-credits.json`; CC BY-SA zichtbaar toegeschreven.
+- Feature-tests voor vlag aan/uit; Playwright hero above-the-fold op 5 viewports
+  (ook in CI, met screenshot-artifact).
+
+### Changed
+
+- Versie 0.32.0.
+
 ## [0.31.1] - 2026-10-31
 
 ### Fixed
@@ -212,7 +231,6 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Stadspagina’s slaan JSON-rijen met `visible: false` over.
 - Pest: NL-snapshot ongewijzigd, BE-country na seeden, verborgen rij niet op stadspagina.
 
-
 ## [0.27.2] - 2026-10-31
 
 ### Fixed
@@ -349,7 +367,6 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - `AGENTS.md` / `.env.example` / AVG-inventaris: backup-secrets en open punt (sleutel zetten) bijgewerkt.
 - SEO-titels, H1’s en meta volgens keywordonderzoek (`docs/seo/doelgroep-titles-keywords.md` §2–3): home (“Gratis planten en stekjes … in je buurt”), stadspagina’s (“Gratis planten en stekjes in {Stad}”), soortpagina’s (“{Soort} stekken en gratis stekjes” / H1 “…: zo doe je het”, Geranium en Pannenkoekplant behouden), /deelplekken (plantenasiel vooraan), /invasieve-soorten (“Invasieve exoten” + echt aantal), /aanbod, /initiatieven en kennisbank-pijlers. Merk-suffix ` · Gratis planten` alleen als de title ≤60 tekens blijft (`SeoTitle`).
 - Stadspagina’s tonen een blok “Plantenasiel in {Stad}” alleen als er in de data een plantenasiel mét die plaatsnaam staat (niets verzonnen); link naar `/deelplekken` gefilterd op stad + type.
-
 
 ## [0.24.12] - 2026-10-31
 
@@ -600,7 +617,6 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - Privacy: verwerkingsverantwoordelijke met openbare JP Web Creation-gegevens (adres, KvK, btw, telefoon) van jpwebcreation.nl; concept-banner zonder placeholders; sitecontact overal `info@gratisplanten.nl` (geen `info@jpwebcreation.nl` in views); mail-from default idem.
 
-
 ## [0.20.0] - 2026-10-29
 
 ### Added
@@ -702,7 +718,6 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Transactionele account-mails (registratie/bevestiging, reset, e-mailwijziging) gaan via `SafeMail` na de HTTP-response (`app()->terminating`), niet via de database-queue — geen wachten op SMTP en geen afhankelijkheid van cron.
 - `cron.yml` pingt staging én productie elk apart, elke 15 minuten (was 1×/dag met fallback die staging overslaat).
 
-
 ## [0.15.2] - 2026-10-29
 
 ### Fixed
@@ -723,7 +738,6 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - SEO-stadspagina’s **Gratis planten in [stad]** (`/gratis-planten/{slug}`) voor ~40 grootste gemeenten, plus overzicht `/gratis-planten` per provincie.
 - Brondata in `data/steden.json` (CI-validatie); per stad unieke intro, actueel aanbod binnen straal, kaartuitsnede, deelplekken in/bij de stad (uit `data/deelplekken.json`), nabije steden, FAQ + FAQPage-schema en canonical.
 - Sitemap-, footer- en homepage-link (“Gratis planten in jouw stad”).
-
 
 ## [0.14.1] - 2026-10-29
 
@@ -910,7 +924,6 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Berichten rond aanbod: inbox, gesprek starten, chatten; e-mail/telefoon alleen na wederzijds “ja”.
 - Melden en blokkeren; rate limit op berichten; `NewMessageMail` via SMTP (geen berichtinhoud, geen andermans adres).
 - Component-CSS `resources/css/berichten.css`.
-
 
 ## [0.3.0] - 2026-10-29
 

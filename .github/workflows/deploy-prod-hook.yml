@@ -136,6 +136,8 @@ jobs:
           APP_ENV_NAME: production
           # Tag-pushes: altijd false. workflow_dispatch: input import_enabled.
           IMPORT_ENABLED: ${{ github.event_name == 'workflow_dispatch' && inputs.import_enabled || false }}
+          # Homepage v2: default uit op prod. Zet environment variable/secret HOMEPAGE_V2=true na ja van Joris.
+          HOMEPAGE_V2: ${{ vars.HOMEPAGE_V2 || secrets.HOMEPAGE_V2 || 'false' }}
         run: |
           set -euo pipefail
           chmod +x scripts/deploy-hook-upload.sh scripts/dotenv-quote.sh

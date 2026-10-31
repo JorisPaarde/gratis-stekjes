@@ -15,6 +15,7 @@ export default defineConfig({
                 'resources/css/admin.css',
                 'resources/css/stektips.css',
                 'resources/css/gratis-planten.css',
+                'resources/css/home-v2.css',
                 'resources/js/app.js',
                 'resources/js/zoeken.js',
                 'resources/js/deelplekken.js',

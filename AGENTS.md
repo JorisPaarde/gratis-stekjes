@@ -50,6 +50,8 @@ Zie **`deploy/hook/INSTALL.md`**. Kort:
 | `STAGING_DB_USER` | DB-user |
 | `STAGING_DB_PASS` | DB-wachtwoord |
 
+Staging-deploy zet automatisch `HOMEPAGE_V2=true` in de server-`.env` (nieuwe homepage).
+
 **Environment `production`** (workflow `deploy-prod-hook.yml`, tags `v*.*.*`)
 
 | Secret | Rol |
@@ -61,6 +63,8 @@ Zie **`deploy/hook/INSTALL.md`**. Kort:
 | `PROD_DB_NAME` | Database |
 | `PROD_DB_USER` | DB-user |
 | `PROD_DB_PASS` | DB-wachtwoord |
+
+Optioneel (prod): variable/secret `HOMEPAGE_V2=true` — zet de nieuwe homepage aan na ja van Joris (default `false`).
 
 **Repository of environment (gedeeld)**
 

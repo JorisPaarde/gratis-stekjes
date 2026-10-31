@@ -9,6 +9,7 @@ use App\Services\Kennisbank;
 use App\Services\NuTeStekken;
 use App\Services\Organisaties;
 use App\Services\Plantensoorten;
+use App\Services\SoortAfbeeldingen;
 use App\Services\Steden;
 use App\Services\Stektips;
 use App\Support\CanonicalUrl;
@@ -18,18 +19,91 @@ use Illuminate\View\View;
 
 class PageController extends Controller
 {
-    public function home(NuTeStekken $calendar, Plantensoorten $plantensoorten): View
-    {
+    public function home(
+        NuTeStekken $calendar,
+        Plantensoorten $plantensoorten,
+        Stektips $stektips,
+        Organisaties $organisaties,
+        SoortAfbeeldingen $soortAfbeeldingen,
+    ): View {
         $site = config('site.name');
-        $title = 'Gratis planten en stekjes delen in je buurt';
-        $heading = 'Gratis planten en stekjes in je buurt';
-        $metaDescription = config('site.description');
         $homeUrl = CanonicalUrl::absolute('/');
         $logoUrl = CanonicalUrl::asset((string) config('site.og_image', '/assets/icons/icon-512.png'));
         $areaServed = [
             ['@type' => 'Country', 'name' => 'NL'],
             ['@type' => 'Country', 'name' => 'BE'],
         ];
+
+        $useV2 = (bool) config('features.homepage_v2');
+
+        if ($useV2) {
+            $heroKey = (string) config('homepage.hero.active', 'b');
+            $variants = config('homepage.hero.variants', []);
+            $hero = is_array($variants[$heroKey] ?? null)
+                ? $variants[$heroKey]
+                : ($variants['b'] ?? []);
+
+            $title = (string) config('homepage.meta.title', 'Gratis planten, stekjes en zaden in je buurt');
+            $metaDescription = (string) config('homepage.meta.description', config('site.description'));
+            $heading = (string) ($hero['heading'] ?? $title);
+
+            $tipSlugs = config('homepage.tips_slugs', []);
+            $tips = [];
+            foreach (is_array($tipSlugs) ? $tipSlugs : [] as $slug) {
+                if (! is_string($slug) || $slug === '') {
+                    continue;
+                }
+                $soort = $stektips->find($slug);
+                if ($soort === null) {
+                    continue;
+                }
+                $tips[] = [
+                    'slug' => $soort['slug'],
+                    'naam' => $soort['naam'],
+                    'afbeelding' => $soortAfbeeldingen->forSlug((string) $soort['slug'], (string) $soort['naam']),
+                ];
+            }
+
+            $orgLimit = max(1, (int) config('homepage.organisaties_limit', 6));
+            $orgRows = array_slice($organisaties->all(), 0, $orgLimit);
+
+            return view('pages.home-v2', [
+                'title' => $title,
+                'heading' => $heading,
+                'metaDescription' => $metaDescription,
+                'canonical' => $homeUrl,
+                'hero' => $hero,
+                'tips' => $tips,
+                'organisaties' => $orgRows,
+                'schema' => [
+                    '@context' => 'https://schema.org',
+                    '@graph' => [
+                        [
+                            '@type' => 'Organization',
+                            '@id' => $homeUrl.'#organization',
+                            'name' => 'Gratis planten',
+                            'url' => $homeUrl,
+                            'logo' => $logoUrl,
+                            'areaServed' => $areaServed,
+                        ],
+                        [
+                            '@type' => 'WebSite',
+                            '@id' => $homeUrl.'#website',
+                            'name' => $site,
+                            'url' => $homeUrl,
+                            'description' => $metaDescription,
+                            'inLanguage' => 'nl',
+                            'publisher' => ['@id' => $homeUrl.'#organization'],
+                            'areaServed' => $areaServed,
+                        ],
+                    ],
+                ],
+            ]);
+        }
+
+        $title = 'Gratis planten en stekjes delen in je buurt';
+        $heading = 'Gratis planten en stekjes in je buurt';
+        $metaDescription = config('site.description');
 
         $ervaringenBlok = null;
         if (config('stekjes.ervaringen_home_block_enabled') && Schema::hasTable('ervaringen')) {

@@ -16,6 +16,7 @@ CSS: `@font-face` in `resources/css/fonts.css`. Geen Google Fonts CDN.
 | Bestand(en) | Bron | Auteur | Licentie |
 |-------------|------|--------|----------|
 | `public/assets/images/hero/hero-stekjes-{640,1280,1920}.webp` | [Pexels #4503273](https://www.pexels.com/photo/4503273/) (jonge planten in terracotta potten) | Anna Avilova (EXIF/Artist) | [Pexels License](https://www.pexels.com/license/) — gratis commercieel/niet-commercieel gebruik, geen toestemming vereist; geen herverkoop van de foto als product |
+| `public/assets/images/home-v2/*` (homepage v2) | Pexels + Wikimedia Commons (self-hosted; geen hotlink) | zie `resources/data/foto-credits.json` (maker + bron-URL + licentie per id) | Pexels License of CC BY-SA 4.0; CC BY-SA zichtbaar toegeschreven op de homepage |
 | `public/assets/images/soorten/*.jpg` (48 stektips-soorten) | Wikimedia Commons (self-hosted; geen hotlink) | zie `data/soort-afbeeldingen.json` (auteur + bron-URL per bestand) | alleen CC0 / Public Domain / CC BY / CC BY-SA — per bestand geverifieerd; zichtbare attribution bij de afbeelding |
 
 Geen foto’s van meerbomen.nu. Geen hotlinking. Herdownloaden/verversen: `php scripts/fetch-soort-afbeeldingen.php`.

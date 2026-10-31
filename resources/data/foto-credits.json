@@ -1,0 +1,234 @@
+{
+  "generated_at": "2026-10-31",
+  "note": "Self-hosted homepage-v2 foto’s. Pexels License: gratis commercieel gebruik, geen toestemming vereist. CC BY-SA: zichtbare naamsvermelding op de pagina verplicht.",
+  "fotos": [
+    {
+      "id": "hero",
+      "bestanden": [
+        "assets/images/home-v2/hero-640.webp",
+        "assets/images/home-v2/hero-960.webp",
+        "assets/images/home-v2/hero-1280.webp",
+        "assets/images/home-v2/hero-960.jpg"
+      ],
+      "width": 1920,
+      "height": 1280,
+      "alt": "Jonge planten in terracotta potten, klaar om te delen",
+      "bron": "Pexels",
+      "bron_url": "https://www.pexels.com/photo/4503273/",
+      "maker": "Anna Avilova",
+      "maker_url": "https://www.pexels.com/@anna-avilova-756590/",
+      "licentie": "Pexels License",
+      "licentie_url": "https://www.pexels.com/license/",
+      "attribution_required": false
+    },
+    {
+      "id": "kaart",
+      "bestanden": [
+        "assets/images/home-v2/kaart-640.webp",
+        "assets/images/home-v2/kaart-960.webp",
+        "assets/images/home-v2/kaart-1280.webp",
+        "assets/images/home-v2/kaart-960.jpg"
+      ],
+      "width": 1600,
+      "height": 1067,
+      "alt": "Groene akkerranden — open de kaart om te zien wat er bij jou te halen is",
+      "bron": "Pexels",
+      "bron_url": "https://www.pexels.com/photo/2132250/",
+      "maker": "quangpraha",
+      "maker_url": "https://www.pexels.com/photo/2132250/",
+      "licentie": "Pexels License",
+      "licentie_url": "https://www.pexels.com/license/",
+      "attribution_required": false
+    },
+    {
+      "id": "stappen",
+      "bestanden": [
+        "assets/images/home-v2/stappen-640.webp",
+        "assets/images/home-v2/stappen-960.webp",
+        "assets/images/home-v2/stappen-1280.webp",
+        "assets/images/home-v2/stappen-960.jpg"
+      ],
+      "width": 1600,
+      "height": 1067,
+      "alt": "Handen die een jong plantje vasthouden",
+      "bron": "Pexels",
+      "bron_url": "https://www.pexels.com/photo/4505166/",
+      "maker": "Anna Avilova",
+      "maker_url": "https://www.pexels.com/@anna-avilova-756590/",
+      "licentie": "Pexels License",
+      "licentie_url": "https://www.pexels.com/license/",
+      "attribution_required": false
+    },
+    {
+      "id": "zaden",
+      "bestanden": [
+        "assets/images/home-v2/zaden-640.webp",
+        "assets/images/home-v2/zaden-960.webp",
+        "assets/images/home-v2/zaden-1280.webp",
+        "assets/images/home-v2/zaden-960.jpg"
+      ],
+      "width": 1600,
+      "height": 1067,
+      "alt": "Mand met verse groenten en oogst uit de tuin",
+      "bron": "Pexels",
+      "bron_url": "https://www.pexels.com/photo/1084540/",
+      "maker": "Pixabay",
+      "maker_url": "https://www.pexels.com/@pixabay/",
+      "licentie": "Pexels License",
+      "licentie_url": "https://www.pexels.com/license/",
+      "attribution_required": false
+    },
+    {
+      "id": "stekjes",
+      "bestanden": [
+        "assets/images/home-v2/stekjes-640.webp",
+        "assets/images/home-v2/stekjes-960.webp",
+        "assets/images/home-v2/stekjes-1280.webp",
+        "assets/images/home-v2/stekjes-960.jpg"
+      ],
+      "width": 1600,
+      "height": 1067,
+      "alt": "Stekjes en jonge plantjes in potjes",
+      "bron": "Pexels",
+      "bron_url": "https://www.pexels.com/photo/4505161/",
+      "maker": "Anna Avilova",
+      "maker_url": "https://www.pexels.com/@anna-avilova-756590/",
+      "licentie": "Pexels License",
+      "licentie_url": "https://www.pexels.com/license/",
+      "attribution_required": false
+    },
+    {
+      "id": "delen",
+      "bestanden": [
+        "assets/images/home-v2/delen-640.webp",
+        "assets/images/home-v2/delen-960.webp",
+        "assets/images/home-v2/delen-1280.webp",
+        "assets/images/home-v2/delen-960.jpg"
+      ],
+      "width": 1600,
+      "height": 2400,
+      "alt": "Iemand houdt een stekje vast om te delen",
+      "bron": "Pexels",
+      "bron_url": "https://www.pexels.com/photo/4503270/",
+      "maker": "Anna Avilova",
+      "maker_url": "https://www.pexels.com/@anna-avilova-756590/",
+      "licentie": "Pexels License",
+      "licentie_url": "https://www.pexels.com/license/",
+      "attribution_required": false
+    },
+    {
+      "id": "tuin",
+      "bestanden": [
+        "assets/images/home-v2/tuin-640.webp",
+        "assets/images/home-v2/tuin-960.webp",
+        "assets/images/home-v2/tuin-1280.webp",
+        "assets/images/home-v2/tuin-960.jpg"
+      ],
+      "width": 1600,
+      "height": 2416,
+      "alt": "Pad door een weelderige tuin",
+      "bron": "Pexels",
+      "bron_url": "https://www.pexels.com/photo/5699665/",
+      "maker": "Pixabay",
+      "maker_url": "https://www.pexels.com/@pixabay/",
+      "licentie": "Pexels License",
+      "licentie_url": "https://www.pexels.com/license/",
+      "attribution_required": false
+    },
+    {
+      "id": "zadenbibliotheek",
+      "bestanden": [
+        "assets/images/home-v2/zadenbibliotheek-640.webp",
+        "assets/images/home-v2/zadenbibliotheek-960.webp",
+        "assets/images/home-v2/zadenbibliotheek-1280.webp",
+        "assets/images/home-v2/zadenbibliotheek-960.jpg"
+      ],
+      "width": 1280,
+      "height": 950,
+      "alt": "Zadenbibliotheek met bakjes gratis zaden in een bibliotheek",
+      "bron": "Wikimedia Commons",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Ausstellungsfl%C3%A4che_und_Saatgutbibliothek.jpg",
+      "maker": "Stadtbibliothek Neuss",
+      "maker_url": "https://commons.wikimedia.org/wiki/User:Stadtbibliothek_Neuss",
+      "licentie": "CC BY-SA 4.0",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution_required": true
+    },
+    {
+      "id": "plantenasiel",
+      "bestanden": [
+        "assets/images/home-v2/plantenasiel-640.webp",
+        "assets/images/home-v2/plantenasiel-960.webp",
+        "assets/images/home-v2/plantenasiel-1280.webp",
+        "assets/images/home-v2/plantenasiel-960.jpg"
+      ],
+      "width": 1600,
+      "height": 2400,
+      "alt": "Potplanten die een nieuw huis zoeken",
+      "bron": "Pexels",
+      "bron_url": "https://www.pexels.com/photo/4503269/",
+      "maker": "Anna Avilova",
+      "maker_url": "https://www.pexels.com/@anna-avilova-756590/",
+      "licentie": "Pexels License",
+      "licentie_url": "https://www.pexels.com/license/",
+      "attribution_required": false
+    },
+    {
+      "id": "nederland",
+      "bestanden": [
+        "assets/images/home-v2/nederland-640.webp",
+        "assets/images/home-v2/nederland-960.webp",
+        "assets/images/home-v2/nederland-1280.webp",
+        "assets/images/home-v2/nederland-960.jpg"
+      ],
+      "width": 1600,
+      "height": 1067,
+      "alt": "Jonge planten in potten op een tafel",
+      "bron": "Pexels",
+      "bron_url": "https://www.pexels.com/photo/4503273/",
+      "maker": "Anna Avilova",
+      "maker_url": "https://www.pexels.com/@anna-avilova-756590/",
+      "licentie": "Pexels License",
+      "licentie_url": "https://www.pexels.com/license/",
+      "attribution_required": false
+    },
+    {
+      "id": "belgie",
+      "bestanden": [
+        "assets/images/home-v2/belgie-640.webp",
+        "assets/images/home-v2/belgie-960.webp",
+        "assets/images/home-v2/belgie-1280.webp",
+        "assets/images/home-v2/belgie-960.jpg"
+      ],
+      "width": 1600,
+      "height": 2400,
+      "alt": "Groene bladeren van dichtbij — planten gratis afhalen in Vlaanderen en Brussel",
+      "bron": "Pexels",
+      "bron_url": "https://www.pexels.com/photo/4503733/",
+      "maker": "Anna Avilova",
+      "maker_url": "https://www.pexels.com/@anna-avilova-756590/",
+      "licentie": "Pexels License",
+      "licentie_url": "https://www.pexels.com/license/",
+      "attribution_required": false
+    },
+    {
+      "id": "aanmelden",
+      "bestanden": [
+        "assets/images/home-v2/aanmelden-640.webp",
+        "assets/images/home-v2/aanmelden-960.webp",
+        "assets/images/home-v2/aanmelden-1280.webp",
+        "assets/images/home-v2/aanmelden-960.jpg"
+      ],
+      "width": 1600,
+      "height": 1067,
+      "alt": "Stekjes en jonge plantjes klaar om te delen",
+      "bron": "Pexels",
+      "bron_url": "https://www.pexels.com/photo/4505161/",
+      "maker": "Anna Avilova",
+      "maker_url": "https://www.pexels.com/@anna-avilova-756590/",
+      "licentie": "Pexels License",
+      "licentie_url": "https://www.pexels.com/license/",
+      "attribution_required": false
+    }
+  ]
+}

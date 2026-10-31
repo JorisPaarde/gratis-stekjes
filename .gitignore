@@ -33,3 +33,7 @@ CHANGELOG.legacy.md
 /.phpunit.cache
 /database/*.sqlite
 /storage/backups
+
+/tmp/
+/test-results/
+/playwright-report/
