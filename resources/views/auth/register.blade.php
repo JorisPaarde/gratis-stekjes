@@ -7,7 +7,7 @@
 @section('content')
 <section class="section wrap">
   <h1 class="page-title">Account maken</h1>
-  <p class="section-intro">Gratis meedoen met één account: je kunt zowel iets aanbieden als iets ophalen. Stekjes blijven gratis — geen verkoop. Na registratie bevestig je je e-mail (double opt-in).</p>
+  <p class="section-intro">Gratis meedoen met één account: je kunt zowel iets aanbieden als iets ophalen. Stekjes blijven gratis — geen verkoop. Je krijgt een mail om je aanmelding te bevestigen.</p>
 
   @if($errors->any())
     <ul class="error-list" role="alert">

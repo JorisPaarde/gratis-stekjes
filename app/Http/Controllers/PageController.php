@@ -111,7 +111,7 @@ class PageController extends Controller
     {
         return view('pages.stijlgids', [
             'title' => 'Stijlgids',
-            'metaDescription' => 'Interne stijlgids (kleuren en iconen) van '.config('site.name').'.',
+            'metaDescription' => 'Kleuren en iconen van '.config('site.name').'.',
             'canonical' => url('/stijlgids'),
         ]);
     }

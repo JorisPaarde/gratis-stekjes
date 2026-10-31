@@ -66,7 +66,7 @@ test('accountpagina toont beginscherm-installatieblok', function () {
         ->assertSee('Toevoegen aan startscherm', false)
         ->assertSee('data-pwa-install', false)
         ->assertSee('Installeer Gratis planten', false)
-        ->assertSee('Geen pushmeldingen', false)
+        ->assertSee('geen pushmeldingen', false)
         ->assertDontSee('push-notificatie', false);
 });
 

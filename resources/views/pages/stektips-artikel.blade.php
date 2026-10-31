@@ -85,7 +85,7 @@
   </div>
 
   @if(!empty($kinderen))
-    <h2 class="stektips-related-title">In deze pijler</h2>
+    <h2 class="stektips-related-title">Meer over dit onderwerp</h2>
     <ul class="stektips-related">
       @foreach($kinderen as $kind)
         <li>

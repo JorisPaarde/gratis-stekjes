@@ -45,7 +45,7 @@
   @isset($badges)
   <div class="soft-card" style="margin-top:1rem">
     <h2>Mijlpalen</h2>
-    <p class="muted" style="margin-top:0">Lichte badges als herinnering aan wat je al deed.</p>
+    <p class="muted" style="margin-top:0">Kleine herinneringen aan wat je al deed.</p>
     <ul class="prose" style="margin:0;padding-left:1.25rem">
       @foreach($badges as $badge)
         <li>
@@ -65,14 +65,14 @@
   <div class="soft-card" style="margin-top:1rem">
     <h2>Privacy (AVG)</h2>
     <ul class="prose" style="margin:0;padding-left:1.25rem">
-      <li><a href="{{ route('account.export') }}">Gegevens downloaden (JSON)</a></li>
+      <li><a href="{{ route('account.export') }}">Gegevens downloaden</a></li>
       <li><a href="{{ route('account.verwijderen') }}">Account verwijderen</a></li>
     </ul>
   </div>
 
   <div class="soft-card" style="margin-top:1rem" data-pwa-install-block>
     <h2>Zet Gratis planten op je beginscherm</h2>
-    <p>Ik open de site sneller als app, zonder app store. Geen pushmeldingen — alleen een icoon op mijn beginscherm.</p>
+    <p>Zet Gratis planten op je beginscherm, dan open je de site met één tik. Geen app store en geen pushmeldingen — alleen een icoon.</p>
     <ol class="prose" style="margin:.75rem 0 0;padding-left:1.25rem">
       <li><strong>iPhone (Safari):</strong> tik op Delen → «Zet op beginscherm» → Voeg toe.</li>
       <li><strong>Android (Chrome):</strong> open het menu (⋮) → «App installeren» of «Toevoegen aan startscherm».</li>
