@@ -24,10 +24,10 @@
 
 .nu-te-stekken-card h3 {
   margin: 0 0 0.45rem;
-  font-family: var(--font-display, "Passion One", Georgia, serif);
-  font-size: 1.25rem;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
+  font-family: var(--font-body, "Titillium Web", sans-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.25;
   color: var(--leaf-deep, #163820);
 }
 
@@ -65,10 +65,22 @@
   outline: none;
 }
 
+/* Zonder stektip: gewone tekst, geen knop-vorm (lijkt anders klikbaar). */
 .nu-te-stekken-plant.is-plain {
   font-weight: 400;
-  background: rgba(31, 77, 50, 0.06);
+  background: none;
+  padding-inline: 0;
   color: var(--ink, #1a1210);
+}
+.nu-te-stekken-plant.is-plain:not(:last-child)::after {
+  content: ",";
+}
+
+/* Met stektip: zichtbaar een link. */
+a.nu-te-stekken-plant {
+  text-decoration: underline;
+  text-decoration-color: rgba(31, 77, 43, 0.35);
+  text-underline-offset: 0.15em;
 }
 
 .nu-te-stekken-bron {

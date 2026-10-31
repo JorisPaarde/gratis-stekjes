@@ -12,9 +12,23 @@ use Illuminate\Support\Facades\RateLimiter;
 
 class ZoekenController extends Controller
 {
+    private const RECENT_LIMIT = 24;
+
     public function __invoke(Request $request, AanbodSearch $search): JsonResponse
     {
         $q = trim((string) $request->query('q', ''));
+        if ($q === '' && $request->boolean('recent')) {
+            // Zonder locatie: alleen het nieuwste aanbod (begrensd, geen geocoding).
+            $type = (string) $request->query('type', '');
+
+            return response()->json([
+                'meta' => null,
+                'items' => $search->recent(
+                    self::RECENT_LIMIT,
+                    in_array($type, ['uitdelen', 'ophalen'], true) ? $type : null,
+                ),
+            ]);
+        }
         if ($q === '') {
             return response()->json(['error' => 'Vul een postcode of plaats in.'], 400);
         }

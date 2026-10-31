@@ -103,3 +103,41 @@
 .page-aanbod .form {
   box-shadow: none;
 }
+
+/* Lijst in groepen (aanbod / plekken), begrensd met «Toon meer». */
+.zoek-status {
+  margin: 0 0 0.75rem;
+  color: var(--ink-soft, #3d4a3f);
+  font-weight: 600;
+}
+
+.zoek-lijst .zoek-groep-kop {
+  margin-top: 0.5rem;
+}
+.zoek-lijst .zoek-groep-kop:first-child {
+  margin-top: 0;
+}
+.zoek-lijst .zoek-groep-kop h2 {
+  font-family: var(--font-body, sans-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--forest, #1f4d2b);
+  margin: 0;
+}
+.zoek-groep-aantal {
+  font-weight: 400;
+  color: var(--ink-soft, #3d4a3f);
+}
+.zoek-meer button.btn {
+  width: 100%;
+  background: transparent;
+  color: var(--forest-deep, #163820);
+  border: 2px solid rgba(31, 77, 43, 0.35);
+}
+.zoek-meer button.btn:hover,
+.zoek-meer button.btn:focus-visible {
+  background: var(--bg-mint, #e6f2e1);
+  color: var(--forest-deep, #163820);
+}
