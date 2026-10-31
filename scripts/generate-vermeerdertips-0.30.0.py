@@ -344,7 +344,7 @@ NIEUWE: list[dict] = [
         waarschuwing="Enten op wilg werkt niet voor een appelboom. Zaailingen zijn geen kopie van het ras. Zie kennisbankartikel Fruitbomen enten.",
         inhoud=[
             {"type": "h2", "tekst": "Appelboom stekken of enten?"},
-            {"type": "p", "tekst": "Mens zoekt vaak op «appelboom stekken», maar een stek van appel wortelt zelden en geeft geen betrouwbare fruitboom. Enten (copuleren of oculeren) op een gekozen onderstam is de gangbare route. Zaad geeft een genetische verrassing — bruikbaar als onderstam, niet als kopie van «Elstar» of «Jonagold»."},
+            {"type": "p", "tekst": "Een stek van appel wortelt zelden en geeft geen betrouwbare fruitboom. Enten (copuleren of oculeren) op een gekozen onderstam is de gangbare route. Zaad geeft een genetische verrassing — bruikbaar als onderstam, niet als kopie van «Elstar» of «Jonagold»."},
             {"type": "h2", "tekst": "Wanneer appel enten"},
             {"type": "p", "tekst": "Copuleren in maart–april met koud bewaard entrijs. Oculeren (chip) in juli–augustus. Details en waarom «enten op wilg» niet werkt: zie Fruitbomen enten."},
         ],
@@ -500,7 +500,7 @@ NIEUWE: list[dict] = [
         seo_werkwoord="scheuren",
         inhoud=[
             {"type": "h2", "tekst": "Pioenroos stekken? Nee — scheuren"},
-            {"type": "p", "tekst": "Zoektermen als «pioenroos stekken» komen vaak voor, maar stengelstekken van pioen slaan niet aan. De betrouwbare methode is scheuren van de kroon in september–oktober, met enkele ogen per stuk."},
+            {"type": "p", "tekst": "Stengelstekken van pioen slaan niet aan. De betrouwbare methode is scheuren van de kroon in september–oktober, met enkele ogen per stuk."},
             {"type": "h2", "tekst": "Wanneer pioenroos scheuren"},
             {"type": "p", "tekst": "Najaar (sep–okt), als het blad begint terug te trekken. Plant niet te diep: de ogen vlak onder de grond."},
         ],
@@ -769,7 +769,7 @@ NIEUWE: list[dict] = [
         water="Matig",
         verwanten=["pruim", "perzik", "abrikoos", "appel"],
         waarschuwing="Morel (zure kers) en zoete kers zijn verwante maar verschillende soorten; kies passend entmateriaal.",
-        seo_naam="Kers (morel)",
+        seo_naam="Kersenboom",
     ),
     soort(
         "kerstroos", "Kerstroos", "Helleborus",
@@ -925,9 +925,9 @@ NIEUWE: list[dict] = [
         seo_werkwoord="scheuren",
     ),
     soort(
-        "siergras", "Siergras", "diverse (bijv. Calamagrostis, Miscanthus, Pennisetum)",
+        "siergras", "Siergras", "diverse (bijv. Calamagrostis, Miscanthus, Pennisetum alopecuroides)",
         categorie="sier",
-        waarom="Scheuren in het voorjaar als de groei start — niet pampagras (Unielijst)",
+        waarom="Scheuren in het voorjaar als de groei start — geen pampagras aanbieden",
         methode="Scheuren",
         wanneer="Mrt–mei als groei start",
         welk_hout="Stevige pol met wortels",
@@ -941,7 +941,7 @@ NIEUWE: list[dict] = [
         licht="Meestal volle zon",
         water="Soortafhankelijk",
         verwanten=["daglelie", "iris", "sedum"],
-        waarschuwing="Geen pampagras: Cortaderia jubata staat op de EU-Unielijst. Kies andere siergrassen.",
+        waarschuwing="Geen pampagras aanbieden. Pennisetum setaceum (fraai lampenpoetsersgras, ook Cenchrus setaceus) staat op de EU-Unielijst — gebruik alleen soorten als Pennisetum alopecuroides, nooit P. setaceum.",
         seo_werkwoord="scheuren",
     ),
     soort(
@@ -999,7 +999,7 @@ NIEUWE: list[dict] = [
         licht="Volle zon, beschut",
         water="Matig",
         verwanten=["abrikoos", "pruim", "kers"],
-        waarschuwing="Geen rasgarantie uit pit. Krulziekte is een bekend probleem; kies resistente rassen als je oculatiehout zoekt.",
+        waarschuwing="Geen rasgarantie uit pit. Krulziekte is een bekend probleem; kies resistente rassen als je oculatiehout nodig hebt.",
     ),
     soort(
         "abrikoos", "Abrikoos", "Prunus armeniaca",
@@ -1018,7 +1018,7 @@ NIEUWE: list[dict] = [
         licht="Volle zon, zeer beschut",
         water="Matig",
         verwanten=["perzik", "pruim", "kers"],
-        waarschuwing="Zaailing is geen ras. Bloei vroeg: nachtvors kan de oogst ruïneren in NL/BE.",
+        waarschuwing="Zaailing is geen ras. Bloei vroeg: nachtvorst kan de oogst ruïneren in NL/BE.",
     ),
     soort(
         "kweepeer", "Kweepeer", "Cydonia oblonga",
@@ -1236,16 +1236,30 @@ def main() -> None:
     rode["kort"] = "Winterstek van aalbes / rode (en witte) bes"
     rode["waarom"] = "Ribes (rode bes / aalbes, ook wit) winterstek is eenvoudig en betrouwbaar"
 
-    for plant in ("hortensia", "lavendel", "rozemarijn"):
-        p = bestaande[plant]
-        naam = p["naam"]
-        extra = [
-            {"type": "h2", "tekst": f"{naam} stekken in water"},
-            {"type": "p", "tekst": f"Waterstek van {naam.lower()} wordt vaak geprobeerd. Zet een frisse, niet-bloeiende top in schoon water op een lichte plek en ververs om de paar dagen. Zodra er wortels zijn, pot je over naar luchtige stek- of potgrond. Grondstek (halfhout) blijft vaak zekerder, zeker bij {naam.lower()}."},
-            {"type": "h2", "tekst": f"Wanneer {naam.lower()} stekken"},
-            {"type": "p", "tekst": p["wanneer"] + ". Vermeerderen via stek is de gangbare zoekterm; «vermeerderen» betekent hier hetzelfde proces."},
-        ]
-        p["inhoud"] = extra
+    # Soortspecifieke H2's — geen gedeelde water/wanneer-template, geen SEO-notities.
+    bestaande["hortensia"]["inhoud"] = [
+        {"type": "h2", "tekst": "Hortensia stekken in water"},
+        {"type": "p", "tekst": "Hortensia (Hydrangea) wortelt goed in water. Neem in de zomer een halfverhoute scheut zonder bloem, zet de knoop onder water op een lichte plek zonder felle zon, en ververs het water om de paar dagen. Zodra de wortels een paar centimeter zijn, pot je over in luchtige stekgrond — laat de overgang niet te lang duren, anders wennen de waterwortels slecht aan aarde."},
+        {"type": "h2", "tekst": "Wanneer hortensia stekken"},
+        {"type": "p", "tekst": "Beste venster: juni tot augustus, als de scheuten van dit jaar half verhout zijn — nog buigzaam, niet slap-zacht en zonder bloemknop. Softwood in late lente kan ook, maar halfhout in de zomer is betrouwbaarder. Houd stekken schaduwrijk en vochtig tot ze vastzitten."},
+    ]
+    bestaande["lavendel"]["inhoud"] = [
+        {"type": "h2", "tekst": "Lavendel stekken in water"},
+        {"type": "p", "tekst": "Lavendel wortelt slecht in water: stekken rotten vaak weg of maken geen bruikbare wortels. Zet halfhout liever direct in zandige, luchtige stekgrond die nauwelijks nat is. Een waterglas is hier geen aanrader."},
+        {"type": "h2", "tekst": "Wanneer lavendel stekken"},
+        {"type": "p", "tekst": "Beste venster: late lente tot nazomer (ongeveer mei–augustus), met halfverhoute scheuten zonder bloem. Het hout voelt steviger dan fris groen, maar buigt nog. Oude, sterk verhoute takken stekken slechter; knip liever jonger materiaal van dit seizoen."},
+    ]
+    bestaande["rozemarijn"]["inhoud"] = [
+        {"type": "h2", "tekst": "Rozemarijn stekken in water"},
+        {"type": "p", "tekst": "Rozemarijn wortelt redelijk in water, vooral verse niet-bloeiende topjes. Zet ze licht, ververs het water regelmatig, en pot op zodra er stevige wortels zijn. In zandige stekgrond (niet te nat) is de slagingskans vaak nog iets hoger."},
+        {"type": "h2", "tekst": "Wanneer rozemarijn stekken"},
+        {"type": "p", "tekst": "Beste venster: april tot augustus. Kies halfverhoute scheuten van dit jaar: soepel genoeg om te buigen, al met wat stevigheid in de stengel, zonder bloem. In hete midzomer stekken iets dieper en beschut tegen uitdroging."},
+    ]
+    # Vijg typo-fix bij hergeneratie
+    if "Onder onder" in bestaande["vijg"].get("lengte_snit", ""):
+        bestaande["vijg"]["lengte_snit"] = bestaande["vijg"]["lengte_snit"].replace("Onder onder", "Onder")
+    if "Onder onder" in bestaande.get("kruisbes", {}).get("lengte_snit", ""):
+        bestaande["kruisbes"]["lengte_snit"] = bestaande["kruisbes"]["lengte_snit"].replace("Onder onder", "Onder")
 
     # Merge nieuwe
     for s in NIEUWE:
