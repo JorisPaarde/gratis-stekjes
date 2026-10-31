@@ -6,7 +6,7 @@
 
 @section('content')
 <section class="section wrap prose">
-  <h1 class="page-title"><x-icon name="waarschuwing" :size="28" /> Invasieve soorten</h1>
+  <h1 class="page-title"><x-icon name="waarschuwing" :size="28" /> {{ $heading }}</h1>
   <p class="section-intro">Op {{ config('site.name') }} mag je geen planten aanbieden die op de EU-Unielijst van invasieve uitheemse soorten staan. Die soorten mogen in de EU niet worden verhandeld of verspreid — ook niet gratis als stekje.</p>
 
   <div class="soft-card warn-card">

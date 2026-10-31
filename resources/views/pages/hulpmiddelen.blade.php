@@ -10,7 +10,7 @@
 
 @section('content')
 <section class="section wrap stektips-page">
-  <h1 class="page-title">Hulpmiddelen</h1>
+  <h1 class="page-title">{{ $title }}</h1>
   <div class="stack">
     <article class="soft-card">
       <h3><a href="{{ route('stektips.artikel', ['slug' => 'wilgenwater']) }}">Wilgenwater</a></h3>

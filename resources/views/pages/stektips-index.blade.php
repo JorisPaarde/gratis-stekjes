@@ -10,8 +10,8 @@
 
 @section('content')
 <section class="section wrap stektips-page">
-  <h1 class="page-title">Stektips &amp; kennisbank</h1>
-  <p class="section-intro">Vijf pijlers: stekken, snoeien, natuurlijk bewortelen, permacultuur en vermeerderen — plus 48 soortpagina’s. Filter en zoek werken zonder JavaScript.</p>
+  <h1 class="page-title">{{ $title }}</h1>
+  <p class="section-intro">Vijf pijlers: stekken, snoeien, natuurlijk bewortelen, permacultuur en vermeerderen — plus soortpagina’s. Filter en zoek werken zonder JavaScript.</p>
 
   @if(!empty($pillars))
     <nav class="stektips-pillars" aria-label="Kennisbank-pijlers">

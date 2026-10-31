@@ -17,10 +17,14 @@ class PageController extends Controller
     public function home(NuTeStekken $calendar): View
     {
         $site = config('site.name');
+        $title = 'Gratis planten en stekjes delen in je buurt';
+        $heading = 'Gratis planten en stekjes in je buurt';
+        $metaDescription = config('site.description');
 
         return view('pages.home', [
-            'title' => $site,
-            'metaDescription' => config('site.description'),
+            'title' => $title,
+            'heading' => $heading,
+            'metaDescription' => $metaDescription,
             'canonical' => url('/'),
             'nuTeStekken' => $calendar->blockForViews(),
             'schema' => [
@@ -28,7 +32,7 @@ class PageController extends Controller
                 '@type' => 'WebSite',
                 'name' => $site,
                 'url' => url('/'),
-                'description' => config('site.description'),
+                'description' => $metaDescription,
                 'inLanguage' => 'nl-NL',
             ],
         ]);

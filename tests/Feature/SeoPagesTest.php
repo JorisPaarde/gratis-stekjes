@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Services\Stektips;
 
 test('contentpagina’s laden', function () {
-    $this->get(route('hoe-werkt-het'))->assertOk()->assertSee('Hoe werkt het', false);
+    $this->get(route('hoe-werkt-het'))->assertOk()->assertSee('Hoe gratis planten delen', false);
     $this->get(route('hulpmiddelen'))->assertOk()->assertSee('Wilgenwater', false);
     $this->get(route('over'))->assertOk()->assertSee('Joris', false);
     $this->get(route('doe-mee'))->assertRedirect(route('account.registreren'));
@@ -17,6 +17,7 @@ test('stektips index en soortpagina', function () {
 
     $this->get(route('stektips.index'))
         ->assertOk()
+        ->assertSee('Stektips: planten stekken en snoeien', false)
         ->assertSee('Zwarte bes', false)
         ->assertSee('Herfstolijfwilg', false)
         ->assertSee('Monstera', false)
@@ -25,7 +26,7 @@ test('stektips index en soortpagina', function () {
 
     $this->get(route('stektips.show', ['slug' => 'aardbei']))
         ->assertOk()
-        ->assertSee('Aardbei stekken en gratis delen', false)
+        ->assertSee('Aardbei stekken: zo doe je het', false)
         ->assertSee('Aug–sep', false);
 
     $this->get(route('stektips.show', ['slug' => 'onbestaand']))

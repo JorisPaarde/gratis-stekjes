@@ -11,7 +11,7 @@ test('homepage is 200 en toont merk Gratis planten', function () {
     $response->assertOk();
     $response->assertSee('Gratis planten', false);
     $response->assertSee('class="hero-brand"', false);
-    $response->assertSee('>Gratis planten</h1>', false);
+    $response->assertSee('>Gratis planten en stekjes in je buurt</h1>', false);
     $response->assertSee('assets/images/hero/hero-stekjes-1280.webp', false);
     $response->assertSee('fetchpriority="high"', false);
     $response->assertSee('Waarom?', false);

@@ -25,7 +25,7 @@ test('deelplekken JSON is geldig en bevat genoeg plekken', function () {
 test('deelplekkenpagina laadt met intro, bronlink en meldpad', function () {
     $this->get('/deelplekken')
         ->assertOk()
-        ->assertSee('Deelplekken', false)
+        ->assertSee('Plantenasiels, plantenbiebs en ruilkastjes in Nederland', false)
         ->assertSee('plantenasiel', false)
         ->assertSee('Plantenasiel Haarlem', false)
         ->assertSee('Bron', false)

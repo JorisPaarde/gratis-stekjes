@@ -6,7 +6,7 @@
 
 @section('content')
 <section class="section wrap prose">
-  <h1 class="page-title">Over {{ config('site.name') }}</h1>
+  <h1 class="page-title">{{ $title }}</h1>
 
   <h2>Wie</h2>
   <p>Ik ben Joris Paardekooper. Ik maak en houd {{ config('site.name') }} (gratisplanten.nl) bij via jpwebcreation — code, teksten en hosting. Het is een plek waar mensen in Nederland gratis planten en stekjes aan elkaar uitdelen.</p>

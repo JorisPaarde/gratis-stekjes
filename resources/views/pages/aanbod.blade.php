@@ -24,7 +24,7 @@
 
 @section('content')
 <section class="section wrap">
-  <h1 class="page-title">@if(!empty($plant))Aanbod: {{ $plant }}@else Aanbod @endif</h1>
+  <h1 class="page-title">{{ $heading ?? $title }}</h1>
   <p class="section-intro">
     @if(!empty($plant))
       Filter op <strong>{{ $plant }}</strong> in aanbodteksten.

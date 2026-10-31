@@ -36,7 +36,7 @@ test('kennisbank heeft minstens 10 artikelen met bron', function () {
 test('stektips overzicht filtert en zoekt server-side onder 500', function () {
     $index = $this->get(route('stektips.index'))->assertOk();
     expect($index->getStatusCode())->toBeLessThan(500);
-    $index->assertSee('Stektips &amp; kennisbank', false)
+    $index->assertSee('Stektips: planten stekken en snoeien', false)
         ->assertSee('Wilgenwater', false)
         ->assertSee('for="stektips-q"', false)
         ->assertSee('name="categorie"', false)

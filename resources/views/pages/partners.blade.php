@@ -10,7 +10,7 @@
 
 @section('content')
 <section class="section wrap partners-page">
-  <h1 class="page-title">Initiatieven</h1>
+  <h1 class="page-title">{{ $heading ?? $title }}</h1>
   <p class="section-intro">Hieronder staan initiatieven waar ik naar link — plantenasiels, plantenbiebs, ruilkasten, voedselbossen en meer. Geen officiële partnerschappen; het zijn plekken en organisaties rondom gratis planten delen. Teksten zijn kort en feitelijk, gebaseerd op hun eigen websites.</p>
 
   <div class="stack partners-stack">

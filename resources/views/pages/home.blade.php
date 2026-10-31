@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-{{-- Merknaam alleen in <title> (geen " · site" verdubbeling) --}}
+@section('title', $title)
 @section('meta_description', $metaDescription)
 @section('canonical', $canonical)
 @section('body_class', 'page-home')
@@ -34,7 +34,7 @@
   </div>
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-inner">
-    <h1 id="hero-titel" class="hero-brand">{{ config('site.name') }}</h1>
+    <h1 id="hero-titel" class="hero-brand">{{ $heading }}</h1>
     <p class="hero-lead">Gratis planten en stekjes delen met mensen in de buurt. Je haalt ze alleen fysiek op; de enige ‘prijs’ is een praatje. Heel Nederland mag meedoen.</p>
     <div class="hero-actions">
       <a class="btn" href="#doe-mee"><x-icon name="plant" :size="18" /> Doe mee</a>

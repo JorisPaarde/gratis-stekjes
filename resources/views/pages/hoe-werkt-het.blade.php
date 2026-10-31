@@ -6,7 +6,7 @@
 
 @section('content')
 <section class="section wrap prose">
-  <h1 class="page-title">Hoe werkt het</h1>
+  <h1 class="page-title">{{ $title }}</h1>
   <p>Drie spelregels: <strong>gratis</strong>, alleen <strong>fysiek ophalen</strong>, en de enige tegenprestatie is een <strong>praatje</strong>.</p>
   <ol class="list-plain">
     <li>Je maakt één account. Daarmee kun je zowel iets aanbieden als iets ophalen.</li>

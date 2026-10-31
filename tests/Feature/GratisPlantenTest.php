@@ -9,7 +9,7 @@ use App\Services\Steden;
 test('overzicht gratis planten laadt met provincies', function () {
     $this->get(route('gratis-planten.index'))
         ->assertOk()
-        ->assertSee('Gratis planten in jouw stad', false)
+        ->assertSee('Gratis planten ophalen in jouw stad', false)
         ->assertSee('Noord-Holland', false)
         ->assertSee(route('gratis-planten.show', ['stad' => 'amsterdam']), false);
 });
@@ -22,7 +22,7 @@ test('elke stad-slug geeft 200 met H1 en canonical', function () {
         $url = route('gratis-planten.show', ['stad' => $stad['slug']]);
         $response = $this->get($url);
         $response->assertOk();
-        $response->assertSee('Gratis planten in '.$stad['naam'], false);
+        $response->assertSee('Gratis planten en stekjes in '.$stad['naam'], false);
         $response->assertSee('<link rel="canonical" href="'.$url.'"', false);
         $response->assertSee($stad['intro'], false);
     }
