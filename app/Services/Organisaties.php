@@ -95,6 +95,41 @@ final class Organisaties
             if ($bron !== '' && ! preg_match('#^https?://#i', $bron)) {
                 $errors[] = "organisaties[$i] bron_url moet http(s) zijn";
             }
+            if (array_key_exists('deelplek_slugs', $row) && ! is_array($row['deelplek_slugs'])) {
+                $errors[] = "organisaties[$i] deelplek_slugs moet een array zijn";
+            }
+            if (array_key_exists('gerelateerde_slugs', $row)) {
+                if (! is_array($row['gerelateerde_slugs'])) {
+                    $errors[] = "organisaties[$i] gerelateerde_slugs moet een array zijn";
+                } else {
+                    foreach ($row['gerelateerde_slugs'] as $j => $relatedSlug) {
+                        if (! is_string($relatedSlug) || ! preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $relatedSlug)) {
+                            $errors[] = "organisaties[$i] gerelateerde_slugs[$j] ongeldig";
+                        }
+                    }
+                }
+            }
+            if (array_key_exists('links', $row)) {
+                if (! is_array($row['links'])) {
+                    $errors[] = "organisaties[$i] links moet een array zijn";
+                } else {
+                    foreach ($row['links'] as $j => $link) {
+                        if (! is_array($link)) {
+                            $errors[] = "organisaties[$i] links[$j] is geen object";
+
+                            continue;
+                        }
+                        $label = trim((string) ($link['label'] ?? ''));
+                        $url = trim((string) ($link['url'] ?? ''));
+                        if ($label === '') {
+                            $errors[] = "organisaties[$i] links[$j] mist label";
+                        }
+                        if ($url === '' || ! preg_match('#^https?://#i', $url)) {
+                            $errors[] = "organisaties[$i] links[$j] url moet http(s) zijn";
+                        }
+                    }
+                }
+            }
         }
 
         return $errors;
