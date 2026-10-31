@@ -8,7 +8,7 @@
 <section class="section wrap prose">
   <h1 class="page-title">Privacyverklaring</h1>
 
-  <p>Deze verklaring beschrijft welke persoonsgegevens {{ config('site.name') }} (gratisplanten.nl) verwerkt, waarom, hoe lang, en welke rechten je hebt. Het werkgebied van de site is Nederland en België; ik voeg geen aparte Belgische juridische claims toe. Ik houd het dicht bij wat de applicatie echt doet (zie ook de technische inventaris in de broncode).</p>
+  <p>Deze verklaring beschrijft welke persoonsgegevens {{ config('site.name') }} (gratisplanten.nl) verwerkt, waarom, hoe lang, en welke rechten je hebt. Het werkgebied van de site is Nederland en België. Ik verwerk gegevens volgens de AVG, die in beide landen geldt. Woon je in België, dan lees je hieronder ook waar je terechtkunt met een klacht. Ik houd het dicht bij wat de applicatie echt doet (zie ook de technische inventaris in de broncode).</p>
 
   <h2>Verwerkingsverantwoordelijke</h2>
   <p>
@@ -18,6 +18,7 @@
     Btw: NL004813310B95<br>
     Contact: <a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a>
   </p>
+  <p>Ik ben gevestigd in Nederland. Daarom is de Nederlandse Autoriteit Persoonsgegevens mijn leidende toezichthouder. Woon je in België, dan mag je ook bij de Belgische Gegevensbeschermingsautoriteit terecht.</p>
 
   <h2>Welke gegevens ik verwerk</h2>
   <ul class="list-plain">
@@ -61,7 +62,12 @@
     <li><strong>Wissen (ervaring):</strong> via <a href="{{ route('account.ervaringen') }}">Mijn ervaringen</a> kun je een ervaring (inclusief foto) zelf verwijderen.</li>
     <li><strong>Wissen (account):</strong> <a href="{{ route('account.verwijderen') }}">Account verwijderen</a> (bevestiging met wachtwoord). Daarmee verdwijnen account, aanbod, bijbehorende foto’s op de server, ervaringen en foto’s, berichten/gesprekken, mijlpaalregistraties, blokkades, jouw meldingen, wachtwoordreset-tokens en sessies. Feedback blijft bewaard zonder koppeling aan jou (geanonimiseerd). Verwijder je een apart aanboditem, dan wis ik ook de foto’s van dat item.</li>
     <li><strong>Rectificatie:</strong> via je accountprofiel (naam, telefoon, locatie, e-mailwijziging met herbevestiging).</li>
-    <li><strong>Bezwaar / klacht:</strong> mail <a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a>. Je kunt ook een klacht indienen bij de Autoriteit Persoonsgegevens (<a href="https://www.autoriteitpersoonsgegevens.nl/" rel="noopener noreferrer">autoriteitpersoonsgegevens.nl</a>).</li>
+    <li><strong>Bezwaar / klacht:</strong> mail <a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a>. Kom je er met mij niet uit, dan kun je een klacht indienen bij een toezichthouder:
+      <ul>
+        <li>in Nederland bij de Autoriteit Persoonsgegevens (<a href="https://www.autoriteitpersoonsgegevens.nl/" rel="noopener noreferrer">autoriteitpersoonsgegevens.nl</a>);</li>
+        <li>in België bij de Gegevensbeschermingsautoriteit (GBA), Drukpersstraat 35, 1000 Brussel, +32 2 274 48 00, <a href="mailto:contact@apd-gba.be">contact@apd-gba.be</a>, <a href="https://www.gegevensbeschermingsautoriteit.be/" rel="noopener noreferrer">gegevensbeschermingsautoriteit.be</a>.</li>
+      </ul>
+    </li>
 
   </ul>
 
@@ -96,6 +102,9 @@
 
   <h2>Melden en blokkeren</h2>
   <p>Je kunt een gebruiker melden of blokkeren. Meldingen worden opgeslagen voor de beheerder. Er is geen openbare moderatiewachtrij.</p>
+
+  <h2>Gebruik en recht</h2>
+  <p>Gratis planten is een gratis dienst. Ik verkoop niets en neem geen betalingen aan; planten en stekjes geef je onderling weg. Op deze site is Nederlands recht van toepassing. Woon je in België, dan houd je de bescherming die het Belgische recht je dwingend geeft. Ben je het ergens niet mee eens, mail me dan eerst, dan zoek ik met je naar een oplossing.</p>
 
   <h2>Wijzigingen</h2>
   <p>Versie van deze site: {{ config('site.version') }}. Datum van deze concepttekst: 31 oktober 2026. Bij inhoudelijke wijzigingen werk ik deze pagina bij.</p>
