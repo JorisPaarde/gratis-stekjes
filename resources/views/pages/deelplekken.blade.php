@@ -23,8 +23,8 @@
 @section('content')
 <section class="section wrap deelplekken-page">
   <h1 class="page-title">Plantenasiels, plantenbiebs en ruilkastjes in Nederland en België</h1>
-  <p class="section-intro">Landelijk overzicht van plekken waar je planten, stekjes of zaden kunt brengen, ruilen of ophalen — plantenasiels, plantenbiebs, ruilkasten, stekjesruilpunten en zaadbibliotheken. Gegevens komen uit openbare bronnen; check altijd de bron voor actuele openingstijden.</p>
-  <p class="muted"><a href="{{ route('voor-organisaties') }}">Organisatie of plek aanmelden</a> · <a href="{{ route('over') }}">Plek missen of fout? Meld het</a> · ook op de <a href="{{ route('aanbod') }}">aanbodkaart</a>.</p>
+  <p class="section-intro">Hier vind je plekken waar je planten, stekjes of zaden kunt brengen, ruilen of ophalen: plantenasiels, plantenbiebs, ruilkasten, stekjesruilpunten en zaadbibliotheken. De gegevens komen uit openbare bronnen. Kijk bij de bron voor de actuele openingstijden.</p>
+  <p class="muted"><a href="{{ route('voor-organisaties') }}">Organisatie of plek aanmelden</a> · <a href="{{ route('over') }}">Mis je een plek, of klopt er iets niet? Laat het me weten</a> · of kijk op de <a href="{{ route('aanbod') }}">aanbodkaart</a>.</p>
 
   <form class="form deelplekken-filters" method="get" action="{{ route('deelplekken') }}" style="max-width:100%;margin:1rem 0">
     <div class="deelplekken-filter-grid">
@@ -45,7 +45,7 @@
         </select>
       </label>
       <label>Plaats
-        <input type="search" name="plaats" value="{{ $filters['plaats'] }}" maxlength="120" placeholder="Bijv. Utrecht">
+        <input type="search" name="plaats" value="{{ $filters['plaats'] }}" maxlength="120" placeholder="Bijvoorbeeld Utrecht">
       </label>
       <button class="btn" type="submit">Filter</button>
     </div>
@@ -66,14 +66,14 @@
           </li>
         @empty
           <li class="zoek-item">
-            <p>Geen deelplekken voor deze filters. <a href="{{ route('deelplekken') }}">Toon alles</a></p>
+            <p>Geen deelplekken gevonden met deze keuzes. <a href="{{ route('deelplekken') }}">Toon alles</a></p>
           </li>
         @endforelse
       </ul>
     </div>
   </div>
 
-  <p class="muted" style="margin-top:1rem">Kaarttegels: © OpenStreetMap-bijdragers. Locaties benaderd op openbaar adres uit de bron. Dit is geen officiële partnerschaplijst.</p>
+  <p class="muted" style="margin-top:1rem">Kaart: © OpenStreetMap-bijdragers. De plekken staan ongeveer op het openbare adres uit de bron. Dit is geen officiële lijst van samenwerkingspartners.</p>
 </section>
 @endsection
 

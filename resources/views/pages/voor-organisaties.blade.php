@@ -7,20 +7,20 @@
 @section('content')
 <section class="section wrap prose">
   <h1 class="page-title">Voor organisaties</h1>
-  <p class="section-intro">Heb je een voedselbos, tuinvereniging, plantenasiel, plantenbieb of ruilkast? Op {{ config('site.name') }} kunnen mensen in de buurt je vinden — naast aanbod van mens tot mens.</p>
+  <p class="section-intro">Heb je een voedselbos, tuinvereniging, plantenasiel, plantenbieb of ruilkast? Op {{ config('site.name') }} kunnen mensen in de buurt je vinden, naast het aanbod van mens tot mens.</p>
 
   <h2>Wat je krijgt</h2>
   <ul>
-    <li>Vermelding op <a href="{{ route('deelplekken') }}">deelplekken</a> (kaart + lijst, filterbaar op type en plaats).</li>
-    <li>Zichtbaarheid op relevante <a href="{{ route('gratis-planten.index') }}">stadspagina’s</a> als je in de buurt van die stad ligt.</li>
-    <li>Een korte pagina over je organisatie, met link naar je eigen site.</li>
+    <li>Een vermelding bij de <a href="{{ route('deelplekken') }}">deelplekken</a>, op de kaart en in de lijst (te filteren op soort en plaats).</li>
+    <li>Je staat ook op de <a href="{{ route('gratis-planten.index') }}">stadspagina</a> van een stad bij jou in de buurt.</li>
+    <li>Een korte pagina over je organisatie, met een link naar je eigen site.</li>
   </ul>
-  <p>Geen partnerschap, geen kosten, geen verkoop via deze site. Alleen een plek waar mensen je kunnen vinden om planten of stekjes te delen.</p>
+  <p>Het is geen officieel partnerschap en het kost niets. Er wordt niets verkocht via deze site. Het is alleen een plek waar mensen je kunnen vinden om planten, stekjes of zaden gratis te delen.</p>
 
   <p><a class="btn" href="{{ route('voor-organisaties.aanmelden') }}">Plek aanmelden</a></p>
 
   <h2>Organisaties op deze site</h2>
-  <p>Hieronder staan organisaties waar ik al naar link, op basis van openbare bronnen. Mis je jezelf? Meld je plek aan.</p>
+  <p>Hieronder staan organisaties waar ik al naar verwijs, op basis van openbare bronnen. Staat jouw plek er niet bij? Meld hem dan aan.</p>
   <ul>
     @foreach($organisaties as $org)
       <li>

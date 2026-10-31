@@ -7,7 +7,7 @@
 @section('content')
 <section class="section wrap">
   <h1 class="page-title">Account maken</h1>
-  <p class="section-intro">Gratis meedoen met één account: je kunt zowel iets aanbieden als iets ophalen. Stekjes blijven gratis — geen verkoop. Je krijgt een mail om je aanmelding te bevestigen.</p>
+  <p class="section-intro">Meedoen is gratis. Met één account kun je iets aanbieden én iets ophalen: planten, stekjes of zaden. Er wordt niets verkocht. Je krijgt een e-mail om je aanmelding te bevestigen.</p>
 
   @if($errors->any())
     <ul class="error-list" role="alert">
@@ -24,7 +24,7 @@
     <label>Voornaam of bijnaam *
       <input name="voornaam" required maxlength="80" autocomplete="nickname" value="{{ old('voornaam') }}">
     </label>
-    <label>E-mail *
+    <label>E-mailadres *
       <input type="email" name="email" required maxlength="254" autocomplete="email" value="{{ old('email') }}">
     </label>
     <label>Wachtwoord * <span class="hint">Minstens 10 tekens</span>
@@ -36,14 +36,14 @@
 
     <label class="checkbox">
       <input type="checkbox" name="gratis_akkoord" value="1" required @checked(old('gratis_akkoord'))>
-      <span>Ik ga akkoord: alleen <strong>gratis</strong>, geen verkoop van stekjes via deze site.</span>
+      <span>Ik ga akkoord: alles is <strong>gratis</strong>, er wordt niets verkocht via deze site.</span>
     </label>
     <label class="checkbox">
       <input type="checkbox" name="privacy" value="1" required @checked(old('privacy'))>
       <span>Ik ga akkoord met de <a href="{{ route('privacy') }}">privacyverklaring</a>.</span>
     </label>
 
-    <button class="btn" type="submit">Registreren</button>
+    <button class="btn" type="submit">Account maken</button>
   </form>
 
   <p class="muted">Al een account? <a href="{{ route('account.inloggen') }}">Inloggen</a></p>
