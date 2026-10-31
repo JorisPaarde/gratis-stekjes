@@ -16,7 +16,7 @@ class OrganisatieController extends Controller
     {
         return view('pages.organisaties-index', [
             'title' => 'Organisaties',
-            'metaDescription' => 'Organisaties en initiatieven rond gratis planten delen — met link naar hun eigen site.',
+            'metaDescription' => 'Organisaties en initiatieven rond het delen van gratis planten, met een link naar hun eigen site. Geen officiële partnerschappen.',
             'canonical' => route('organisaties.index'),
             'organisaties' => $organisaties->all(),
         ]);
@@ -67,7 +67,7 @@ class OrganisatieController extends Controller
         $kort = (string) ($org['kort'] ?? '');
         $meta = (string) ($org['meta_description'] ?? '');
         if ($meta === '') {
-            $meta = $kort !== '' ? $kort : $naam.' — organisatie rond gratis planten delen.';
+            $meta = $kort !== '' ? $kort : $naam.': organisatie rond gratis planten delen.';
         }
 
         return view('pages.organisatie-show', [

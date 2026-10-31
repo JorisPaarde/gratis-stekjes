@@ -9,6 +9,24 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.31.2] - 2026-10-31
+
+### Changed
+
+- Tekstronde 2 (Claude, nagelopen): paginatitels, Google-omschrijvingen en H1's van
+  publieke pagina's (niet de homepage), o.a. /hoe-werkt-het («Hoe werkt gratis planten
+  delen», zelf ophalen) en /hulpmiddelen («Wilgenwater en hulpmiddelen voor stekjes");
+  stadsomschrijvingen «ongeveer N km» i.p.v. «~N km».
+- Vragen en antwoorden op de stadspagina's: «zelf ophalen», «bij benadering», «als jullie
+  allebei ja zeggen»; «als die beschikbaar is» weg.
+- Privacy: «Laatst bijgewerkt» i.p.v. «Datum van deze concepttekst»; afgeronde
+  coördinaten en Nominatim kort uitgelegd (inhoud ongewijzigd).
+- Teksten in kaart- en zoekscripts (foutmeldingen, lege staten, zoekstatus).
+- Nagelopen: /hulpmiddelen, /initiatieven en organisatiepagina's («Niet te bezoeken via
+  mijn kaart», «onze» → «mijn»), /help-mee, /natuur, /verbinding, /ervaringen.
+- Typelabel «Zadenbibliotheek» (sleutel `zaadbibliotheek` ongewijzigd); «Bijv.» voluit in
+  formulieren.
+
 ## [0.31.1] - 2026-10-31
 
 ### Fixed

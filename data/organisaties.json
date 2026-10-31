@@ -22,9 +22,9 @@
       "plaats": "Nederland",
       "website": "https://netwerkvoedselbosbouw.nl/",
       "bron_url": "https://netwerkvoedselbosbouw.nl/",
-      "kort": "Netwerk rond voedselbosprofessionals (boer, ontwerper, kweker, investeerder, beleid), voortgekomen uit de Green Deal Voedselbossen. Publiceert o.a. een voedselbossenkaart.",
+      "kort": "Netwerk rond voedselbosprofessionals (boer, ontwerper, kweker, investeerder, beleid), voortgekomen uit de Green Deal Voedselbossen. Publiceert onder andere een voedselbossenkaart.",
       "deelplek_slugs": [],
-      "meta_description": "Netwerk voor voedselbosprofessionals uit de Green Deal Voedselbossen, met o.a. een voedselbossenkaart."
+      "meta_description": "Netwerk voor voedselbosprofessionals uit de Green Deal Voedselbossen, zoals boeren, ontwerpers en kwekers, met onder andere een voedselbossenkaart."
     },
     {
       "slug": "voedsel-uit-het-bos",
@@ -43,9 +43,9 @@
       "plaats": "Nederland",
       "website": "https://meerbomen.nu/",
       "bron_url": "https://meerbomen.nu/",
-      "kort": "Landelijk initiatief dat zaailingen redt en gratis tweede-kansbomen en -struiken uitdeelt via bomenhubs en vrijwilligers. Geen stekjes-deelplek; wel verwant groen delen.",
+      "kort": "Landelijk initiatief dat zaailingen redt en gratis tweede-kansbomen en -struiken uitdeelt via bomenhubs en vrijwilligers. Het is geen deelplek voor stekjes, maar het past wel bij groen delen.",
       "deelplek_slugs": [],
-      "meta_description": "Initiatief dat zaailingen redt en gratis tweede-kansbomen uitdeelt via bomenhubs en vrijwilligers.",
+      "meta_description": "Landelijk initiatief dat zaailingen redt en gratis tweede-kansbomen en -struiken uitdeelt via bomenhubs en vrijwilligers.",
       "gerelateerde_slugs": [
         "struikroven"
       ]
@@ -57,9 +57,9 @@
       "plaats": "Nederland",
       "website": "https://www.struikroven.nu/",
       "bron_url": "https://www.struikroven.nu/werkwijze",
-      "kort": "Stichting die planten redt uit wijken die gesloopt of vernieuwd worden. Tijdens Struikroofacties (seizoen september t/m april) graven bewoners gratis planten uit voor hun eigen tuin of buurt. Het lokale team bestaat uit zo’n 50 Struikrovers. Er is geen vaste uitgifteplek; aanmelden is meestal nodig en sommige acties zijn alleen voor bewoners uit de buurt. Ze nemen geen planten van particulieren aan. Begonnen in 2017 als buurtinitiatief in Eindhoven, nu actief in heel Nederland; eerste Belgische actie in Houthalen-Helchteren (december 2025).",
+      "kort": "Stichting die planten redt uit wijken die gesloopt of vernieuwd worden. Tijdens Struikroofacties (seizoen september tot en met april) graven bewoners gratis planten uit voor hun eigen tuin of buurt. Het lokale team bestaat uit zo’n 50 Struikrovers. Er is geen vaste uitgifteplek; aanmelden is meestal nodig en sommige acties zijn alleen voor bewoners uit de buurt. Ze nemen geen planten van particulieren aan. Begonnen in 2017 als buurtinitiatief in Eindhoven, nu actief in heel Nederland; eerste Belgische actie in Houthalen-Helchteren (december 2025).",
       "deelplek_slugs": [],
-      "meta_description": "Stichting die planten redt bij sloop en vernieuwing. Struikrovers organiseren Struikroofacties (september t/m april); geen vaste uitgifteplek.",
+      "meta_description": "Stichting die planten redt bij sloop en vernieuwing. Struikrovers organiseren Struikroofacties (september tot en met april); geen vaste uitgifteplek.",
       "links": [
         {
           "label": "Bekijk hun actieagenda",
@@ -79,7 +79,7 @@
       "bron_url": "https://hetbomenproject.nl/over-het-bomenproject/",
       "kort": "Platform waarmee gemeenten gratis bomen (en soms hagen) weggeven aan inwoners. Per gemeente verschilt of je moet aanmelden en wanneer je kunt ophalen; zie hun site en de gemeentepagina’s.",
       "deelplek_slugs": [],
-      "meta_description": "Platform waarmee gemeenten gratis bomen weggeven aan inwoners.",
+      "meta_description": "Platform waarmee gemeenten gratis bomen weggeven aan inwoners. Per gemeente verschilt of je je moet aanmelden en wanneer je kunt ophalen.",
       "links": [
         {
           "label": "Over Het Bomenproject",
@@ -97,12 +97,12 @@
       "plaats": "Nederland",
       "website": "https://stekjesroute.com/",
       "bron_url": "https://stekjesroute.com/pages/contact/",
-      "kort": "Platform voor plantenruilkasten in Nederland en België. Exacte kastadressen staan vaak achter login; openbaar gemelde plekken kunnen op onze deelplekkenkaart staan.",
+      "kort": "Platform voor plantenruilkasten in Nederland en België. Exacte kastadressen staan vaak achter login; openbaar gemelde plekken kunnen op mijn kaart met deelplekken staan.",
       "deelplek_slugs": [
         "delft-mekelpark-ruilkast",
         "groesbeek-happy-stekkie"
       ],
-      "meta_description": "Platform voor plantenruilkasten in Nederland en België; openbaar gemelde plekken staan op onze kaart.",
+      "meta_description": "Platform voor plantenruilkasten in Nederland en België; openbaar gemelde plekken staan op mijn kaart.",
       "visible": false
     },
     {
@@ -114,7 +114,7 @@
       "bron_url": "https://velt.nu/velt-nederland",
       "kort": "Velt ondersteunt lokale groepen rond ecologisch tuinieren, koken en leven, inclusief zaden- en plantenruilbeurzen. Contact voor Nederland via info.nederland@velt.nu (publiek op hun site).",
       "deelplek_slugs": [],
-      "meta_description": "Velt ondersteunt lokale groepen rond ecologisch tuinieren, inclusief zaden- en plantenruilbeurzen."
+      "meta_description": "Velt ondersteunt lokale groepen rond ecologisch tuinieren, koken en leven, inclusief zaden- en plantenruilbeurzen."
     },
     {
       "slug": "zadenbibliotheek-nederland",
@@ -123,7 +123,7 @@
       "plaats": "Leeuwarden",
       "website": "https://zadenbibliotheeknederland.nl/",
       "bron_url": "https://zadenbibliotheeknederland.nl/contact/",
-      "kort": "Stichting die zadenbibliotheken ondersteunt en zichtbaar maakt. Lokale locaties (bibliotheken e.d.) staan waar mogelijk op onze deelplekkenkaart.",
+      "kort": "Stichting die zadenbibliotheken ondersteunt en zichtbaar maakt. Lokale locaties, zoals bibliotheken, staan waar mogelijk op mijn kaart met deelplekken.",
       "deelplek_slugs": [
         "alkmaar-zadenbieb-centrum",
         "alkmaar-zadenbieb-de-mare",
@@ -147,7 +147,7 @@
       "plaats": "Vaassen",
       "website": "https://www.eetbaargoed.nl/",
       "bron_url": "https://www.eetbaargoed.nl/",
-      "kort": "Kwekerij gericht op bijzondere eetbare planten (o.a. honingbes). Bezoek alleen op afspraak volgens hun site; geen plantenasiel op onze kaart.",
+      "kort": "Kwekerij gericht op bijzondere eetbare planten (onder andere honingbes). Bezoek alleen op afspraak volgens hun site; geen plantenasiel op mijn kaart.",
       "deelplek_slugs": []
     },
     {
@@ -157,7 +157,7 @@
       "plaats": "Haarlem",
       "website": "https://plantenasielhaarlem.nl/",
       "bron_url": "https://plantenasielhaarlem.nl/contact/",
-      "kort": "Plantenasiel in wijkcentrum Alleman (Jan Sluijterslaan 11). Open o.a. dinsdagavond volgens hun contactsite; planten brengen en ophalen.",
+      "kort": "Plantenasiel in wijkcentrum Alleman (Jan Sluijterslaan 11). Open onder andere op dinsdagavond volgens hun contactsite; planten brengen en ophalen.",
       "deelplek_slugs": [
         "haarlem-plantenasiel"
       ]
@@ -169,7 +169,7 @@
       "plaats": "Zeist",
       "website": "https://www.plantenasielzeist.nl/",
       "bron_url": "https://www.plantenasielzeist.nl/plantenasielen/",
-      "kort": "Netwerk van plantenasielen in en rond Zeist (o.a. De Boswerf, De Dieptetuin, De Brink, Lab Lou, Weggeefwinkel) plus een locatie in Den Dolder. Tuinplanten brengen en gratis halen tijdens openingstijden.",
+      "kort": "Netwerk van plantenasielen in en rond Zeist (onder andere De Boswerf, De Dieptetuin, De Brink, Lab Lou, Weggeefwinkel) plus een locatie in Den Dolder. Tuinplanten brengen en gratis halen tijdens openingstijden.",
       "deelplek_slugs": [
         "zeist-boswerf",
         "zeist-dieptetuin",
@@ -247,7 +247,7 @@
       "plaats": "Leeuwarden",
       "website": "https://eetbaarfryslan.frl/",
       "bron_url": "https://eetbaarfryslan.frl/locatie/zadenbibliotheek-leeuwarden-fonteinland/",
-      "kort": "Platform rond eetbaar groen in Fryslân; publiceert o.a. locaties van zadenbibliotheken in Leeuwarden.",
+      "kort": "Platform rond eetbaar groen in Fryslân. Het publiceert onder andere de locaties van zadenbibliotheken in Leeuwarden.",
       "deelplek_slugs": [
         "leeuwarden-zadenbieb-fonteinland",
         "leeuwarden-zadenbieb-dbieb"

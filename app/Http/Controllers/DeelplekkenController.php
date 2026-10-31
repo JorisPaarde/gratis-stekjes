@@ -28,7 +28,7 @@ class DeelplekkenController extends Controller
 
         $site = config('site.name');
         $title = 'Plantenasiel, plantenbieb en ruilkastje in je buurt';
-        $metaDescription = 'Vind een plantenasiel, plantenbieb, ruilkast of zadenbibliotheek bij jou in de buurt — overzicht in Nederland en België.';
+        $metaDescription = 'Vind een plantenasiel, plantenbieb, ruilkast of zadenbibliotheek bij jou in de buurt. Overzicht voor Nederland en België.';
 
         $canonical = route('deelplekken');
 

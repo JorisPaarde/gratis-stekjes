@@ -46,7 +46,7 @@
         <select name="type" id="zoek-type">
           <option value="">Alles</option>
           <option value="uitdelen">Uitdelen</option>
-          <option value="ophalen">Ophalen / zoeken</option>
+          <option value="ophalen">Ophalen of zoeken</option>
         </select>
       </label>
       <button class="btn" type="submit">Zoeken</button>
@@ -81,7 +81,7 @@
     <label class="check"><input type="checkbox" data-partner-type="plantenbieb" checked> Plantenbieb</label>
     <label class="check"><input type="checkbox" data-partner-type="ruilkast" checked> Ruilkast</label>
     <label class="check"><input type="checkbox" data-partner-type="stekjesruilpunt" checked> Stekjesruilpunt</label>
-    <label class="check"><input type="checkbox" data-partner-type="zaadbibliotheek" checked> Zaadbibliotheek</label>
+    <label class="check"><input type="checkbox" data-partner-type="zaadbibliotheek" checked> Zadenbibliotheek</label>
   </fieldset>
 
   <div class="search-layout">

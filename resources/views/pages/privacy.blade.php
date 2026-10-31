@@ -22,9 +22,9 @@
 
   <h2>Welke gegevens ik verwerk</h2>
   <ul class="list-plain">
-    <li><strong>Account:</strong> e-mailadres, wachtwoord (nooit leesbaar opgeslagen), voornaam of bijnaam, optioneel telefoonnummer (versleuteld), land (NL/BE), benaderde locatie (zoals postcode of plaats, plus afgeronde coördinaten). Bij een e-mailwijziging bewaar ik tijdelijk het nieuwe adres tot je het bevestigt.</li>
+    <li><strong>Account:</strong> e-mailadres, wachtwoord (nooit leesbaar opgeslagen), voornaam of bijnaam, optioneel telefoonnummer (versleuteld), land (NL/BE), locatie bij benadering (zoals postcode of plaats, plus afgeronde coördinaten: een kaartpunt dat ik afrond, zodat het niet je precieze adres aanwijst). Bij een e-mailwijziging bewaar ik tijdelijk het nieuwe adres tot je het bevestigt.</li>
     <li><strong>Aanbod:</strong> type (uitdelen of ophalen), vrije tekst (plantensoort), zichtbaarheid, verloopdatum en een tijdelijke verlenglink in herinneringsmails. Optioneel tot drie foto’s die jij uploadt: ik controleer of het echt een afbeelding is (JPEG/PNG/WebP), verklein die opnieuw zonder locatiegegevens in het bestand, bewaar ze met willekeurige bestandsnamen, en toon ze bij je aanbod. Foto’s zijn openbaar zolang het aanbod zichtbaar is.</li>
-    <li><strong>Ervaringen:</strong> korte tekst (max. ±500 tekens), optionele foto (zelfde veilige verwerking als aanbodfoto’s: JPEG/PNG/WebP, max. 8&nbsp;MB, opnieuw zonder locatiegegevens), optionele koppeling aan een soort of jouw aanbod, en een plaatsnaam op gemeenteniveau (nooit een straatadres). Nieuwe ervaringen wachten op mijn goedkeuring vóór ze publiek zichtbaar zijn.</li>
+    <li><strong>Ervaringen:</strong> korte tekst (maximaal ongeveer 500 tekens), optionele foto (zelfde veilige verwerking als aanbodfoto’s: JPEG/PNG/WebP, max. 8&nbsp;MB, opnieuw zonder locatiegegevens), optionele koppeling aan een soort of jouw aanbod, en een plaatsnaam op gemeenteniveau (nooit een straatadres). Nieuwe ervaringen wachten op mijn goedkeuring vóór ze publiek zichtbaar zijn.</li>
     <li><strong>Berichten:</strong> inhoud van gesprekken (versleuteld opgeslagen), of je verder contact wilt delen (ja/nee), of jullie een overdracht als afgerond markeren, leestijd, blokkeerregels, en meldingen met reden (versleuteld) voor de beheerder.</li>
     <li><strong>Mijlpalen:</strong> of ik je al een felicitatiemail voor je “eerste stekje” heb gestuurd (of heb geprobeerd te sturen), zonder ranglijst of punten. Die mail staat standaard uit.</li>
     <li><strong>Feedback:</strong> optionele tekst die je via de feedbackknop stuurt (versleuteld), plus welke pagina je bekeek. Je kunt de feedbackknop ook gebruiken om je aan te melden als verbinder, via de pagina Help mee.</li>
@@ -36,14 +36,14 @@
   <ul class="list-plain">
     <li>Voornaam of bijnaam</li>
     <li>Wat je uitdeelt of zoekt (vrije tekst) en eventuele foto’s bij dat aanbod</li>
-    <li>Benaderde locatie (postcode of plaats/wijk) en afgeronde kaartpunten — nooit een straat of huisnummer via de site</li>
+    <li>Locatie bij benadering (postcode of plaats/wijk) en afgeronde kaartpunten. Nooit een straat of huisnummer via de site</li>
     <li>Goedgekeurde deelplekken/organisaties met de publieke info die daarvoor is goedgekeurd</li>
     <li>Goedgekeurde ervaringen: je voornaam/bijnaam, tekst, optionele foto, plaatsnaam (gemeente) en eventuele soortnaam</li>
   </ul>
 
   <h2>Wat blijft privé</h2>
   <ul class="list-plain">
-    <li>E-mail — niet zichtbaar voor anderen, tenzij jullie in een gesprek beide “ja” kiezen voor verder contact. E-mail sla ik niet versleuteld op: het is je login en moet uniek opzoekbaar zijn.</li>
+    <li>E-mail: niet zichtbaar voor anderen, tenzij jullie in een gesprek beide “ja” kiezen voor verder contact. E-mail sla ik niet versleuteld op: het is je login en moet uniek opzoekbaar zijn.</li>
     <li>Optioneel telefoonnummer (zelfde zichtbaarheidsregel; wél versleuteld in de database)</li>
     <li>Exacte adressen en exacte coördinaten: die sla ik niet op in het gebruikersprofiel; exacte ophaaladressen deel je zelf buiten of in een bericht als je dat wilt</li>
     <li>Contact-e-mail bij organisatie-aanmeldingen (versleuteld)</li>
@@ -84,21 +84,21 @@
 
   <h2>Cookies (alleen functioneel)</h2>
   <ul class="list-plain">
-    <li><strong>Sessiecookie</strong> — houdt je ingelogd tijdens je bezoek (en langer bij “onthoud mij”).</li>
-    <li><strong>Beveiligingscookie</strong> — beschermt formulieren tegen vervalste verzoeken.</li>
+    <li><strong>Sessiecookie:</strong> houdt je ingelogd tijdens je bezoek (en langer bij “onthoud mij”).</li>
+    <li><strong>Beveiligingscookie:</strong> beschermt formulieren tegen vervalste verzoeken.</li>
     <li>Geen trackingcookies. Geen externe formulierdienst. Geen reclame of advertentienetwerken.</li>
   </ul>
 
   <h2>Mails en hosting</h2>
   <ul class="list-plain">
-    <li>Bevestigingsmails, wachtwoordreset, e-mailwijziging, “je hebt een nieuw bericht” (zonder berichtinhoud of andermans adres), aanbod-herinneringen en — alleen als ik dat aanzet — een felicitatiemail bij je eerste stekje gaan via mijn eigen mailbox bij de hoster.</li>
+    <li>Bevestigingsmails, wachtwoordreset, e-mailwijziging, “je hebt een nieuw bericht” (zonder berichtinhoud of andermans adres), aanbod-herinneringen en, alleen als ik dat aanzet, een felicitatiemail bij je eerste stekje gaan via mijn eigen mailbox bij de hoster.</li>
     <li>Organisatie-aanmelders krijgen een bevestiging; ik krijg een melding. Geen mail naar derden buiten de aanmelder.</li>
     <li>Verbinders die zich aanmelden via de pagina Help mee: dat gaat via contact (jij mailt zelf) of via feedback (alleen opgeslagen, zonder automatische bevestigingsmail).</li>
     <li>Gegevens staan op hosting in de EU die ik beheer. Mail gaat via diezelfde hoster.</li>
   </ul>
 
   <h2>Kaart en derden</h2>
-  <p>De aanbodkaart gebruikt OpenStreetMap-tegels. Plaatsen en postcodes zoek ik in Nederland op via de gratis PDOK Locatieserver. Voor België (en als je in beide landen zoekt) gebruik ik Nominatim (OpenStreetMap), alleen voor Nederland en België. De uitkomsten bewaar ik tijdelijk op mijn eigen server. Op de kaart staan alleen benaderde punten. OpenStreetMap/PDOK/Nominatim ontvangen daarbij de gebruikelijke technische verzoeken van je browser of mijn server (geen accountgegevens van {{ config('site.name') }}).</p>
+  <p>De aanbodkaart gebruikt OpenStreetMap-tegels. Plaatsen en postcodes zoek ik in Nederland op via de gratis PDOK Locatieserver. Voor België (en als je in beide landen zoekt) gebruik ik Nominatim, de zoekdienst van OpenStreetMap, alleen voor Nederland en België. De uitkomsten bewaar ik tijdelijk op mijn eigen server. Op de kaart staan alleen punten bij benadering. OpenStreetMap/PDOK/Nominatim ontvangen daarbij de gebruikelijke technische verzoeken van je browser of mijn server (geen accountgegevens van {{ config('site.name') }}).</p>
 
   <h2>Melden en blokkeren</h2>
   <p>Je kunt een gebruiker melden of blokkeren. Meldingen bewaar ik voor controle. Er is geen openbare wachtrij van meldingen.</p>
@@ -107,6 +107,6 @@
   <p>Gratis planten is een gratis dienst. Ik verkoop niets en neem geen betalingen aan; planten en stekjes geef je onderling weg. Op deze site is Nederlands recht van toepassing. Woon je in België, dan houd je de bescherming die het Belgische recht je dwingend geeft. Ben je het ergens niet mee eens, mail me dan eerst, dan zoek ik met je naar een oplossing.</p>
 
   <h2>Wijzigingen</h2>
-  <p>Versie van deze site: {{ config('site.version') }}. Datum van deze concepttekst: 31 oktober 2026. Bij inhoudelijke wijzigingen werk ik deze pagina bij.</p>
+  <p>Versie van deze site: {{ config('site.version') }}. Laatst bijgewerkt: 31 oktober 2026. Bij inhoudelijke wijzigingen werk ik deze pagina bij.</p>
 </section>
 @endsection

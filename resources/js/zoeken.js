@@ -57,7 +57,7 @@
     plantenbieb: "Plantenbieb",
     ruilkast: "Ruilkast",
     stekjesruilpunt: "Stekjesruilpunt",
-    zaadbibliotheek: "Zaadbibliotheek",
+    zaadbibliotheek: "Zadenbibliotheek",
   };
 
   var markerColors = {
@@ -302,7 +302,7 @@
         renderAanbodFotos(item) +
         tekstHtml +
         (cfg.bericht_binnenkort
-          ? '<p class="muted"><em>Bericht sturen: binnenkort</em></p>'
+          ? '<p class="muted"><em>Een bericht sturen kan hier nog niet</em></p>'
           : '<p><a class="btn btn-secondary" href="' +
             (cfg.bericht_starten || "/account/bericht-starten") +
             "?aanbod_id=" +
@@ -326,7 +326,7 @@
           var popup =
             "<strong>" +
             escapeHtml(item.voornaam) +
-            "</strong> — " +
+            "</strong> · " +
             escapeHtml(item.type);
           if (item.tekst) {
             popup += "<br>" + escapeHtml(item.tekst);
@@ -360,7 +360,7 @@
     if (!parts.length && !aanbodItems.length) {
       status.textContent =
         (partnerItems.length || deelplekItems.length) && !plekCount
-          ? "Geen markers voor de gekozen filters."
+          ? "Geen plekken bij de gekozen filters."
           : status.dataset.empty ||
             "Vul een postcode of plaats in om aanbod te zoeken. Deelplekken staan hieronder.";
     } else if (parts.length) {
@@ -384,7 +384,7 @@
     })
       .then(function (r) {
         return r.json().then(function (data) {
-          if (!r.ok) throw new Error((data && data.error) || "Markers laden mislukt");
+          if (!r.ok) throw new Error((data && data.error) || "De kaartplekken laden is niet gelukt");
           return data;
         });
       })
@@ -408,7 +408,7 @@
     })
       .then(function (r) {
         return r.json().then(function (data) {
-          if (!r.ok) throw new Error((data && data.error) || "Deelplekken laden mislukt");
+          if (!r.ok) throw new Error((data && data.error) || "De deelplekken laden is niet gelukt");
           return data;
         });
       })
@@ -461,7 +461,7 @@
     fetch(url, { credentials: "same-origin", headers: { Accept: "application/json" } })
       .then(function (r) {
         return r.json().then(function (data) {
-          if (!r.ok) throw new Error((data && data.error) || "Zoeken mislukt");
+          if (!r.ok) throw new Error((data && data.error) || "Zoeken is niet gelukt");
           return data;
         });
       })
@@ -470,7 +470,7 @@
         var meta = data && data.meta;
         if (!aanbodItems.length) {
           status.dataset.empty =
-            "Nog geen aanbod in de buurt. Bekijk deelplekken op de kaart, of zet zelf iets online via een account.";
+            "Nog geen aanbod in de buurt. Bekijk de deelplekken op de kaart, of zet zelf iets online met een account.";
         } else {
           status.dataset.empty = "";
         }
@@ -495,11 +495,11 @@
         }
         if (!aanbodItems.length && !partnerItems.length && !deelplekItems.length) {
           status.textContent =
-            "Nog geen aanbod in de buurt. Bekijk deelplekken op de kaart, of zet zelf iets online via een account.";
+            "Nog geen aanbod in de buurt. Bekijk de deelplekken op de kaart, of zet zelf iets online met een account.";
         }
       })
       .catch(function (err) {
-        status.textContent = err.message || "Zoeken mislukt";
+        status.textContent = err.message || "Zoeken is niet gelukt";
       });
   });
 

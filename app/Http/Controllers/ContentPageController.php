@@ -12,8 +12,8 @@ class ContentPageController extends Controller
     public function hoeWerktHet(): View
     {
         return view('pages.hoe-werkt-het', [
-            'title' => 'Hoe gratis planten delen',
-            'metaDescription' => 'Zo deel je gratis planten en stekjes: fysiek ophalen, een praatje als enige tegenprestatie. Geen verkoop.',
+            'title' => 'Hoe werkt gratis planten delen',
+            'metaDescription' => 'Zo deel je gratis planten, stekjes en zaden: je haalt ze zelf op en de enige tegenprestatie is een praatje. Geen verkoop.',
             'canonical' => route('hoe-werkt-het'),
         ]);
     }
@@ -21,8 +21,8 @@ class ContentPageController extends Controller
     public function hulpmiddelen(): View
     {
         return view('pages.hulpmiddelen', [
-            'title' => 'Wilgenwater & stekhulpmiddelen',
-            'metaDescription' => 'Wilgenwater, stekpoeder, potten en substraat: hulpmiddelen om stekjes te laten wortelen.',
+            'title' => 'Wilgenwater en hulpmiddelen voor stekjes',
+            'metaDescription' => 'Wilgenwater, stekpoeder, potten, stekgrond en gereedschap: wat je nodig hebt om stekjes te laten wortelen, en wat je zelf kunt maken.',
             'canonical' => route('hulpmiddelen'),
         ]);
     }

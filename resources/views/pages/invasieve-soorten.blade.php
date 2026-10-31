@@ -46,8 +46,8 @@
     @forelse(($meta['bronnen'] ?? []) as $bron)
       <li><a href="{{ $bron['url'] }}" rel="noopener noreferrer">{{ $bron['naam'] }}</a></li>
     @empty
-      <li><a href="https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten" rel="noopener noreferrer">NVWA — Unielijst invasieve exoten</a></li>
-      <li><a href="https://eur-lex.europa.eu/legal-content/NL/TXT/?uri=CELEX:02016R1141-20250807" rel="noopener noreferrer">EUR-Lex — Uitvoeringsverordening (EU) 2016/1141</a></li>
+      <li><a href="https://www.nvwa.nl/onderwerpen/plant/invasieve-exoten/unielijst-invasieve-exoten" rel="noopener noreferrer">NVWA: Unielijst invasieve exoten</a></li>
+      <li><a href="https://eur-lex.europa.eu/legal-content/NL/TXT/?uri=CELEX:02016R1141-20250807" rel="noopener noreferrer">EUR-Lex: Uitvoeringsverordening (EU) 2016/1141</a></li>
     @endforelse
   </ul>
 

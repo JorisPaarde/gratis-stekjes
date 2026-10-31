@@ -8,7 +8,7 @@
 <x-audience-page
   eyebrow="Voor verbinders"
   heading="Breng jij mensen graag bij elkaar?"
-  intro="Jij legt het contact, ik regel de site en de teksten. Ik zoek verbinders die {{ config('site.name') }} onder de juiste mensen brengen — social media, volkstuinen tippen, voedselbossen en initiatieven zoals Meer Bomen Nu wijzen op delen."
+  intro="Jij legt het contact, ik regel de site en de teksten. Ik zoek verbinders die {{ config('site.name') }} onder de juiste mensen brengen. Denk aan social media, volkstuinen tippen, en voedselbossen en initiatieven zoals Meer Bomen Nu wijzen op delen."
   :current="$currentSeries"
   :series="$series"
 >
@@ -16,12 +16,12 @@
   <ul>
     <li><strong>Social media en berichten:</strong> korte updates, tips of een foto van een stekje dat de deur uit ging. Ik help graag mee met teksten (ook met AI).</li>
     <li><strong>Volkstuinen tippen:</strong> verenigingen wijzen op de pagina voor <a href="{{ route('volkstuinen') }}">volkstuinverenigingen</a> en het aanmeldformulier.</li>
-    <li><strong>Voedselbossen en initiatieven:</strong> plekken laten weten dat delen via de site kan — via hun eigen kanalen of het bestaande <a href="{{ route('voor-organisaties') }}">organisatieformulier</a>.</li>
+    <li><strong>Voedselbossen en initiatieven:</strong> plekken laten weten dat delen via de site kan, via hun eigen kanalen of via het bestaande <a href="{{ route('voor-organisaties') }}">organisatieformulier</a>.</li>
   </ul>
-  <p>Zo’n 2 uur per maand is genoeg. Stoppen kan altijd. Geen verkoop, geen partnerschap-claims — alleen contact leggen.</p>
+  <p>Zo’n 2 uur per maand is genoeg. Stoppen kan altijd. Er is geen verkoop en geen officieel partnerschap. Je legt alleen contact.</p>
 
   <h2>Meld je</h2>
-  <p>Stuur me een kort bericht via <a href="{{ route('contact') }}">contact</a>. Ben je al lid? Gebruik dan de <a href="{{ route('feedback.create') }}">feedbackknop</a> (opslag in de database; ik lees alles zelf, zonder automatische bevestigingsmail).</p>
+  <p>Stuur me een kort bericht via <a href="{{ route('contact') }}">contact</a>. Ben je al lid? Gebruik dan de <a href="{{ route('feedback.create') }}">feedbackknop</a>. Ik lees alles zelf. Je krijgt geen automatische bevestigingsmail.</p>
 
   <x-slot:cta>
     <div class="audience-cta-actions">
