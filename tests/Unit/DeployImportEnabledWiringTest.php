@@ -26,6 +26,27 @@ test('deploy-hook-upload schrijft DEPLOY_TOKEN en DEPLOY_IMPORT_ENABLED', functi
         ->and($map(''))->toBe('false');
 });
 
+test('deploy-workflows schrijven optioneel ADMIN_DASHBOARD_EMAILS (gemaskeerd)', function () {
+    $root = dirname(__DIR__, 2);
+    $script = file_get_contents($root.'/scripts/deploy-hook-upload.sh');
+    expect($script)->toContain('ADMIN_DASHBOARD_EMAILS')
+        ->and($script)->toContain('dotenv_line ADMIN_DASHBOARD_EMAILS')
+        ->and($script)->toMatch('/if \[ -n "\$\{ADMIN_DASHBOARD_EMAILS:-\}" \]/');
+
+    foreach ([
+        'deploy-staging-cpanel.yml',
+        'deploy-prod-hook.yml',
+        'deploy-production.yml',
+    ] as $file) {
+        $yml = file_get_contents($root.'/.github/workflows/'.$file);
+        expect($yml)->toContain('ADMIN_DASHBOARD_EMAILS: ${{ secrets.ADMIN_DASHBOARD_EMAILS }}')
+            ->and($yml)->toContain('::add-mask::${ADMIN_DASHBOARD_EMAILS}');
+    }
+
+    $hook = file_get_contents($root.'/deploy/hook/lib.php');
+    expect($hook)->toContain("deploy_hook_preserve_env_key(\$finalEnv, \$existingEnv, 'ADMIN_DASHBOARD_EMAILS')");
+});
+
 test('migrate-workflow gebruikt repo-secrets zonder production-environment', function () {
     $yml = file_get_contents(dirname(__DIR__, 2).'/.github/workflows/migrate-stekjes-to-prod.yml');
     expect($yml)->toContain('Fingerprint oude staging')

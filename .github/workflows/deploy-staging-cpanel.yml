@@ -101,6 +101,7 @@ jobs:
           SMTP_FROM: ${{ secrets.SMTP_FROM }}
           CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          ADMIN_DASHBOARD_EMAILS: ${{ secrets.ADMIN_DASHBOARD_EMAILS }}
           APP_KEY: ${{ secrets.APP_KEY }}
           BACKUP_ENCRYPTION_KEY: ${{ secrets.BACKUP_ENCRYPTION_KEY }}
           BACKUP_RETAIN_DAYS: ${{ vars.BACKUP_RETAIN_DAYS }}
@@ -119,6 +120,11 @@ jobs:
           echo "::add-mask::${SMTP_PASS}"
           echo "::add-mask::${ADMIN_PASSWORD}"
           echo "::add-mask::${CRON_TOKEN}"
+          if [ -n "${ADMIN_DASHBOARD_EMAILS:-}" ]; then
+            echo "::add-mask::${ADMIN_DASHBOARD_EMAILS}"
+          else
+            echo "::notice::ADMIN_DASHBOARD_EMAILS ontbreekt — hook behoudt bestaande server-.env-waarde."
+          fi
           if [ -n "${BACKUP_ENCRYPTION_KEY:-}" ]; then
             echo "::add-mask::${BACKUP_ENCRYPTION_KEY}"
           else

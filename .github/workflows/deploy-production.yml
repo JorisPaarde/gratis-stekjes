@@ -161,11 +161,19 @@ jobs:
           SMTP_FROM: ${{ secrets.SMTP_FROM }}
           CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          ADMIN_DASHBOARD_EMAILS: ${{ secrets.ADMIN_DASHBOARD_EMAILS }}
           APP_KEY_SECRET: ${{ secrets.APP_KEY }}
         run: |
           set -euo pipefail
           # shellcheck source=scripts/dotenv-quote.sh
           source ./scripts/dotenv-quote.sh
+          echo "::add-mask::${DB_PASS}"
+          echo "::add-mask::${SMTP_PASS}"
+          echo "::add-mask::${ADMIN_PASSWORD}"
+          echo "::add-mask::${CRON_TOKEN}"
+          if [ -n "${ADMIN_DASHBOARD_EMAILS:-}" ]; then
+            echo "::add-mask::${ADMIN_DASHBOARD_EMAILS}"
+          fi
           APP="$(tail -n1 /tmp/app_dir.txt)"
           EXISTING_KEY=$(ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" bash -s <<EOF || true
           set -euo pipefail
@@ -219,6 +227,9 @@ jobs:
             dotenv_line MAIL_FROM_NAME "$NAME"
             dotenv_line CRON_TOKEN "$CRON_TOKEN"
             dotenv_line ADMIN_PASSWORD "$ADMIN_PASSWORD"
+            if [ -n "${ADMIN_DASHBOARD_EMAILS:-}" ]; then
+              dotenv_line ADMIN_DASHBOARD_EMAILS "$ADMIN_DASHBOARD_EMAILS"
+            fi
           } > /tmp/stekjes.env
           scp -i ~/.ssh/deploy_key -P "${P:-22}" /tmp/stekjes.env "$U@$H:${APP}/.env"
           ssh -i ~/.ssh/deploy_key -p "${P:-22}" "$U@$H" "chmod 600 '${APP}/.env'"

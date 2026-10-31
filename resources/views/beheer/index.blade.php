@@ -52,6 +52,7 @@
             <th>ID</th>
             <th>Naam</th>
             <th>Bevestigd</th>
+            <th>Beheertoegang</th>
             <th>Laatste mail</th>
             <th></th>
           </tr>
@@ -68,6 +69,7 @@
               <td>{{ $u->id }}</td>
               <td>{{ $u->name }}</td>
               <td>{{ $u->hasVerifiedEmail() ? 'ja' : 'nee' }}</td>
+              <td>{{ \App\Support\AdminDashboard::userMayAccess($u) ? 'ja' : 'nee' }}</td>
               <td>
                 @if($mail)
                   {{ $mail->type }} · {{ $mail->isOk() ? 'ok' : 'fout' }}

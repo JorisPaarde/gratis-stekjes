@@ -66,6 +66,8 @@ Zie **`deploy/hook/INSTALL.md`**. Kort:
 
 `SITE_NAME`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`, `CRON_TOKEN`, `ADMIN_PASSWORD`.
 
+Optioneel: `ADMIN_DASHBOARD_EMAILS` — CSV met unieke account-e-mails voor Dashboard-menulink + `/beheer` zonder apart wachtwoord; bij lege upload behoudt de hook de bestaande server-waarde.
+
 Optioneel: `APP_KEY` — anders bestaande server-`.env` behouden, anders eenmalig genereren in de hook.
 
 Optioneel (backups): `BACKUP_ENCRYPTION_KEY` — AES-sleutel voor `backup:database-encrypted` / `/cron/backup`; bij lege upload behoudt de hook de bestaande server-waarde. Optionele variable `BACKUP_RETAIN_DAYS` (default 30). Zie `docs/backups.md`.
