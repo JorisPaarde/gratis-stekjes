@@ -93,7 +93,7 @@ test('organisatiepagina met deelplekken rendert 200', function () {
         ->assertSee('plantenasielhaarlem.nl', false)
         ->assertSee('Bron', false)
         ->assertSee('Op de deelplekkenkaart', false)
-        ->assertDontSee('Geen bezoeklocatie', false);
+        ->assertDontSee('Niet te bezoeken via mijn', false);
 });
 
 test('organisatiepagina zonder deelplek_slugs rendert 200 (geen isNotEmpty op array)', function () {
@@ -101,7 +101,7 @@ test('organisatiepagina zonder deelplek_slugs rendert 200 (geen isNotEmpty op ar
     $this->get(route('organisaties.show', ['slug' => 'velt']))
         ->assertOk()
         ->assertSee('Velt Nederland', false)
-        ->assertSee('Geen bezoeklocatie', false)
+        ->assertSee('Niet te bezoeken via mijn', false)
         ->assertDontSee('Op de deelplekkenkaart', false);
 
     $this->get(route('organisaties.show', ['slug' => 'bestaat-niet']))
@@ -115,7 +115,7 @@ test('struikroven pagina 200, Struikrovers, geen deelplekken, kruislink MeerBome
         ->assertSee('Struikrovers', false)
         ->assertSee('Bekijk hun actieagenda', false)
         ->assertSee('https://www.struikroven.nu/agenda', false)
-        ->assertSee('Geen bezoeklocatie', false)
+        ->assertSee('Niet te bezoeken via mijn', false)
         ->assertDontSee('Op de deelplekkenkaart', false)
         ->assertSee(route('organisaties.show', ['slug' => 'meerbomen-nu']), false)
         ->assertSee('MeerBomen Nu', false);

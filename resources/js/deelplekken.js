@@ -11,7 +11,7 @@
       plantenbieb: "Plantenbieb",
       ruilkast: "Ruilkast",
       stekjesruilpunt: "Stekjesruilpunt",
-      zaadbibliotheek: "Zaadbibliotheek",
+      zaadbibliotheek: "Zadenbibliotheek",
     },
     cfg.types || {}
   );
@@ -97,7 +97,7 @@
   })
     .then(function (r) {
       return r.json().then(function (data) {
-        if (!r.ok) throw new Error((data && data.error) || "Laden mislukt");
+        if (!r.ok) throw new Error((data && data.error) || "Laden is niet gelukt");
         return data;
       });
     })
@@ -140,6 +140,6 @@
       // Bewaar beginuitsnede NL + België; zoom niet naar alleen NL-markers.
     })
     .catch(function () {
-      if (status) status.textContent = "Kaartmarkers laden mislukt.";
+      if (status) status.textContent = "De plekken op de kaart laden is niet gelukt.";
     });
 })();

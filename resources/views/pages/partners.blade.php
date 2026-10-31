@@ -11,7 +11,7 @@
 @section('content')
 <section class="section wrap partners-page">
   <h1 class="page-title">{{ $h1 }}</h1>
-  <p class="section-intro">Hier verzamel ik stekjesmarkten, plantenruilbeurzen en ruildagen voor 2026, plus vaste ruilinitiatieven zonder vaste datum. Geen officiële partnerschappen — alleen doorverwijzingen naar plekken rond gratis of gedeeld groen. Check altijd de externe link voor actuele info.</p>
+  <p class="section-intro">Hier verzamel ik stekjesmarkten, plantenruilbeurzen en ruildagen voor 2026, plus vaste ruilinitiatieven zonder vaste datum. Het zijn geen officiële partnerschappen, alleen doorverwijzingen naar plekken rond gratis of gedeeld groen. Check altijd de externe link voor actuele informatie.</p>
 
   <h2 id="agenda">Agenda 2026</h2>
   <p class="section-intro">Komende evenementen chronologisch, gegroepeerd per maand. Filter op provincie of type als je wilt.</p>
@@ -113,18 +113,18 @@
   @endif
 
   <h2 id="vaste-initiatieven">Vaste ruilinitiatieven</h2>
-  <p class="section-intro">Initiatieven zonder vaste datum waar ik naar link — plantenasiels, plantenbiebs, ruilkasten, voedselbossen en meer. Teksten zijn kort en feitelijk, gebaseerd op hun eigen websites.</p>
+  <p class="section-intro">Initiatieven zonder vaste datum waar ik naar link: plantenasiels, plantenbiebs, ruilkasten, voedselbossen en meer. De teksten zijn kort en feitelijk, gebaseerd op hun eigen websites.</p>
 
   <div class="stack partners-stack">
     <article class="soft-card">
       <h3><a href="https://voedselbosbouw.org/" rel="noopener noreferrer">Voedselbosbouw.org</a></h3>
       <p>Stichting Voedselbosbouw Nederland begeleidt boeren en grondeigenaren bij agrarische voedselbossen, deelt kennis en lobbyt voor deze vorm van landbouw. Ik richt me op stekjes van mens tot mens; zij op het bredere voedselbos-verhaal.</p>
-      <p class="muted">Geen bezoeklocatie op mijn kaart; zie hun eigen site.</p>
+      <p class="muted">Niet te bezoeken via mijn kaart; zie hun eigen site.</p>
     </article>
     <article class="soft-card">
       <h3><a href="https://meerbomen.nu/" rel="noopener noreferrer">MeerBomen Nu</a></h3>
       <p>Landelijk initiatief dat kansarme zaailingen redt en gratis tweede-kansbomen en -struiken uitdeelt via bomenhubs en vrijwilligers. Het verschil met mij: zij doen bomen en acties, ik stekjes van mens tot mens.</p>
-      <p class="muted">Geen bezoeklocatie op mijn kaart.</p>
+      <p class="muted">Niet te bezoeken via mijn kaart.</p>
     </article>
   </div>
 
@@ -146,7 +146,7 @@
     </article>
     <article class="soft-card">
       <h3><a href="https://netwerkvoedselbosbouw.nl/" rel="noopener noreferrer">Netwerk Voedselbosbouw</a></h3>
-      <p>Netwerk rond voedselbosprofessionals (boer, ontwerper, kweker, investeerder, beleid), voortgekomen uit de Green Deal Voedselbossen. Publiceert o.a. een voedselbossenkaart.</p>
+      <p>Netwerk rond voedselbosprofessionals (boer, ontwerper, kweker, investeerder, beleid), voortgekomen uit de Green Deal Voedselbossen. Publiceert onder andere een voedselbossenkaart.</p>
     </article>
     <article class="soft-card">
       <h3><a href="https://www.permacultuurnederland.org/" rel="noopener noreferrer">Permacultuur Nederland</a></h3>

@@ -53,8 +53,8 @@ class GratisPlantenController extends Controller
         $title = $steden->pageTitle($city);
         $isBe = ($city['country'] ?? 'NL') === 'BE';
         $metaDescription = $isBe
-            ? 'Gratis planten, stekjes en zaden in '.$city['naam'].' ('.$city['provincie'].'). Zadenbibs en aanbod binnen ~'.(int) $city['straal_km'].' km — haal of deel via '.$site.'.'
-            : 'Gratis planten en stekjes in '.$city['naam'].' ('.$city['provincie'].'). Actueel aanbod binnen ~'.(int) $city['straal_km'].' km — haal of deel via '.$site.'.';
+            ? 'Gratis planten, stekjes en zaden in '.$city['naam'].' ('.$city['provincie'].'). Zadenbibs en aanbod binnen ongeveer '.(int) $city['straal_km'].' km. Haal of deel via '.$site.'.'
+            : 'Gratis planten en stekjes in '.$city['naam'].' ('.$city['provincie'].'). Actueel aanbod binnen ongeveer '.(int) $city['straal_km'].' km. Haal of deel via '.$site.'.';
         $canonical = route('gratis-planten.show', ['stad' => $city['slug']]);
         $faq = $steden->faqFor($city);
         $aanbod = $stadAanbod->aanbodWithin($city);

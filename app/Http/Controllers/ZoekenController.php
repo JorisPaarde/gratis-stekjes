@@ -36,7 +36,7 @@ class ZoekenController extends Controller
             : 'Gratis planten en stekjes ophalen';
         $metaDescription = $plant !== ''
             ? 'Gratis '.$plant.'-stekjes en planten in Nederland en België. Zoek op postcode of plaats en haal ze op met een praatje.'
-            : 'Gratis planten en stekjes ophalen: zoek op postcode of plaats, bekijk de kaart en haal ze fysiek op.';
+            : 'Gratis planten en stekjes ophalen: zoek op postcode of plaats, bekijk de kaart en haal ze zelf op. De enige tegenprestatie is een praatje.';
 
         return view('pages.aanbod', [
             'title' => $title,

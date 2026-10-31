@@ -66,7 +66,7 @@
               <p class="muted">
                 {{ $item['locatie_label'] }}
                 @if(isset($item['afstand_km']))
-                  · ±{{ $item['afstand_km'] }} km
+                  · ongeveer {{ $item['afstand_km'] }} km
                 @endif
               </p>
               @auth
@@ -116,12 +116,12 @@
           <li>
             <strong>{{ $plek['naam'] }}</strong>
             <span class="muted">
-              — {{ $plek['type_label'] }}
+              {{ $plek['type_label'] }}
               @if($plek['plaats'])
                 · {{ $plek['plaats'] }}
               @endif
               @if(isset($plek['afstand_km']))
-                · ±{{ $plek['afstand_km'] }} km
+                · ongeveer {{ $plek['afstand_km'] }} km
               @endif
             </span>
             @if(!empty($plek['bron_url']))
@@ -153,7 +153,7 @@
                 Gratis planten en stekjes in {{ $n['naam'] }}
               @endif
             </a>
-            <span class="muted"> (±{{ $n['afstand_km'] }} km)</span>
+            <span class="muted"> (ongeveer {{ $n['afstand_km'] }} km)</span>
           </li>
         @endforeach
       </ul>

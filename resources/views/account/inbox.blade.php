@@ -19,7 +19,7 @@
 
   @if(count($rows) === 0)
     <div class="empty-state" role="status">
-      <p>Nog geen gesprekken. Zoek iets in de buurt en stuur een bericht — contactgegevens volgen pas na wederzijds akkoord.</p>
+      <p>Nog geen gesprekken. Zoek iets in de buurt en stuur een bericht. Contactgegevens zie je pas als jullie allebei ja zeggen.</p>
       <p><a class="btn" href="{{ route('aanbod') }}">Zoek aanbod</a></p>
     </div>
   @else

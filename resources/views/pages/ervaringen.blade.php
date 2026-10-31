@@ -13,7 +13,7 @@
 @section('content')
 <section class="section wrap">
   <h1 class="page-title">Ervaringen</h1>
-  <p class="section-intro">Korte verhalen van leden die planten en stekjes delen — met of zonder foto. Alleen plaatsnaam, nooit een adres.</p>
+  <p class="section-intro">Korte verhalen van leden die planten en stekjes delen. Met of zonder foto. Je ziet alleen een plaatsnaam, nooit een adres.</p>
 
   @if($empty)
     <div class="empty-state" role="status">

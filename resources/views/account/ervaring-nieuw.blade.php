@@ -7,7 +7,7 @@
 @section('content')
 <section class="section wrap">
   <h1 class="page-title">Ervaring delen</h1>
-  <p class="section-intro">Kort en in je eigen woorden (max. {{ $maxBody }} tekens). Optioneel een foto. Plaatsnaam alleen op gemeenteniveau — nooit een straatadres. Ik keur nieuwe ervaringen eerst goed.</p>
+  <p class="section-intro">Kort en in je eigen woorden (max. {{ $maxBody }} tekens). Optioneel een foto. Plaatsnaam alleen op gemeenteniveau, nooit een straatadres. Ik keur nieuwe ervaringen eerst goed.</p>
 
   <form class="form soft-card" method="post" action="{{ route('account.ervaringen.store') }}" enctype="multipart/form-data">
     @csrf
@@ -23,14 +23,14 @@
     @error('body')<p class="error" role="alert">{{ $message }}</p>@enderror
 
     <label>Plaats of gemeente
-      <input type="text" name="plaatsnaam" maxlength="80" value="{{ old('plaatsnaam', $defaultPlaats) }}" placeholder="Bijv. Haarlem" autocomplete="address-level2">
+      <input type="text" name="plaatsnaam" maxlength="80" value="{{ old('plaatsnaam', $defaultPlaats) }}" placeholder="Bijvoorbeeld Haarlem" autocomplete="address-level2">
     </label>
     <p class="muted" style="margin-top:.25rem">Geen straat of huisnummer. Leeg laten = je profiellocatie.</p>
     @error('plaatsnaam')<p class="error" role="alert">{{ $message }}</p>@enderror
 
     <label>Koppel aan aanbod (optioneel)
       <select name="aanbod_id">
-        <option value="">— geen —</option>
+        <option value="">Geen</option>
         @foreach($aanbodOpties as $a)
           <option value="{{ $a->id }}" @selected((string) old('aanbod_id') === (string) $a->id)>
             {{ $a->type }}: {{ \Illuminate\Support\Str::limit($a->tekst, 60) }}
@@ -41,7 +41,7 @@
     @error('aanbod_id')<p class="error" role="alert">{{ $message }}</p>@enderror
 
     <label>Plantensoort-id (optioneel, via zoeken)
-      <input type="number" name="plantensoort_id" min="1" value="{{ old('plantensoort_id') }}" placeholder="Leeg = geen koppeling">
+      <input type="number" name="plantensoort_id" min="1" value="{{ old('plantensoort_id') }}" placeholder="Leeg laten voor geen koppeling">
     </label>
     @error('plantensoort_id')<p class="error" role="alert">{{ $message }}</p>@enderror
 

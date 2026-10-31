@@ -172,7 +172,7 @@
       })
         .then(function (res) {
           if (res.status === 429) {
-            setStatus('Te vaak gezocht, even wachten');
+            setStatus('Je zoekt te snel achter elkaar. Wacht even.');
             close();
             return null;
           }

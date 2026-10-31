@@ -85,7 +85,7 @@ class StektipsController extends Controller
         $pillars = $hasActiveFilters ? [] : $kennisbank->pillars();
 
         $title = 'Stektips: planten stekken en snoeien';
-        $metaDescription = 'Leer planten stekken en snoeien, maak wilgenwater en deel gratis stekjes. Tips per soort — van monstera tot vijg.';
+        $metaDescription = 'Leer planten stekken en snoeien, maak wilgenwater en deel gratis stekjes. Tips per soort, van monstera tot vijg.';
 
         return view('pages.stektips-index', [
             'title' => $title,
