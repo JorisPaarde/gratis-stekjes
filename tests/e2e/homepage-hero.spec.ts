@@ -17,45 +17,44 @@ const viewports = [
   { name: '1920x1080', width: 1920, height: 1080 },
 ] as const;
 
-/** Scroll the page so lazy images load, then wait until every img is complete. */
+/**
+ * Scroll the page so lazy section photos load, then wait until every
+ * self-hosted `.home-pic` image is complete (skip external tip thumbs that may 404).
+ */
 async function waitForHomeImages(page: Page) {
+  const homeImgs = page.locator('.page-home-v2 .home-pic img');
+  const count = await homeImgs.count();
+  for (let i = 0; i < count; i += 1) {
+    await homeImgs.nth(i).scrollIntoViewIfNeeded();
+  }
+
+  // Full-page sweep for any remaining lazy loaders.
   await page.evaluate(async () => {
     const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-    const imgs = Array.from(document.querySelectorAll<HTMLImageElement>('.page-home-v2 img'));
-    for (const img of imgs) {
-      img.scrollIntoView({ block: 'center', inline: 'nearest' });
-      await sleep(40);
-    }
-    // One more full pass top→bottom for IntersectionObserver-based lazy loaders.
     const height = Math.max(
       document.body.scrollHeight,
       document.documentElement.scrollHeight,
     );
-    for (let y = 0; y < height; y += Math.max(200, window.innerHeight * 0.75)) {
+    const step = Math.max(240, Math.floor(window.innerHeight * 0.8));
+    for (let y = 0; y <= height; y += step) {
       window.scrollTo(0, y);
-      await sleep(30);
+      await sleep(20);
     }
-    window.scrollTo(0, height);
-    await sleep(80);
     window.scrollTo(0, 0);
-
-    await Promise.all(
-      imgs.map((img) => {
-        if (img.complete && img.naturalWidth > 0) {
-          return Promise.resolve();
-        }
-        return new Promise<void>((resolve) => {
-          const done = () => resolve();
-          img.addEventListener('load', done, { once: true });
-          img.addEventListener('error', done, { once: true });
-          // Decode already-cached images that fired before listeners attached.
-          if (typeof img.decode === 'function') {
-            img.decode().then(done).catch(done);
-          }
-        });
-      }),
-    );
   });
+
+  await page.waitForFunction(
+    () => {
+      const imgs = Array.from(
+        document.querySelectorAll<HTMLImageElement>('.page-home-v2 .home-pic img'),
+      );
+      if (imgs.length === 0) {
+        return false;
+      }
+      return imgs.every((img) => img.complete && img.naturalWidth > 0);
+    },
+    { timeout: 20_000 },
+  );
 }
 
 async function assertHeroAboveFold(page: Page) {
@@ -111,6 +110,8 @@ test.describe('Homepage v2 hero above the fold', () => {
   }
 
   test('full page screenshots 393 and 1440', async ({ page }) => {
+    test.setTimeout(120_000);
+
     await page.setViewportSize({ width: 393, height: 852 });
     await page.goto('/', { waitUntil: 'networkidle' });
     await expect(page.locator('body.page-home-v2')).toBeVisible();
