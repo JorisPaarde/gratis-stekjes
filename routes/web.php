@@ -72,7 +72,8 @@ Route::redirect('/partners', '/initiatieven', 301);
 Route::get('/partners/{path}', function (string $path) {
     return redirect('/initiatieven/'.$path, 301);
 })->where('path', '.*');
-Route::get('/stijlgids', [PageController::class, 'stijlgids'])->name('stijlgids');
+// Stijlgids: nooit publiek op de site, alleen na beheer-login (gast → /beheer).
+Route::get('/stijlgids', [PageController::class, 'stijlgids'])->middleware('admin')->name('stijlgids');
 Route::get('/robots.txt', [PageController::class, 'robots'])->name('robots');
 Route::get('/sitemap.xml', [PageController::class, 'sitemap'])->name('sitemap');
 Route::get('/manifest.webmanifest', [PageController::class, 'manifest'])->name('manifest');
