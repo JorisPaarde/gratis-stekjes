@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Ervaring;
+use App\Services\HomeOverzicht;
 use App\Services\Kennisbank;
 use App\Services\NuTeStekken;
 use App\Services\Organisaties;
@@ -18,7 +19,7 @@ use Illuminate\View\View;
 
 class PageController extends Controller
 {
-    public function home(NuTeStekken $calendar, Plantensoorten $plantensoorten): View
+    public function home(NuTeStekken $calendar, Plantensoorten $plantensoorten, HomeOverzicht $overzicht): View
     {
         $site = config('site.name');
         $title = 'Gratis planten en stekjes delen in je buurt';
@@ -63,6 +64,7 @@ class PageController extends Controller
             'canonical' => $homeUrl,
             'nuTeStekken' => $calendar->blockForViews(),
             'ervaringenBlok' => $ervaringenBlok,
+            'overzicht' => $overzicht->data(),
             'schema' => [
                 '@context' => 'https://schema.org',
                 '@graph' => [

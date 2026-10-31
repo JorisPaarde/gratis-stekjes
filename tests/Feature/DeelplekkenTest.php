@@ -112,8 +112,9 @@ test('sitemap, nav en homepage linken naar deelplekken', function () {
 
     $this->get('/')
         ->assertOk()
-        ->assertSee('deelplekken bij jou in de buurt', false)
-        ->assertSee('Bekijk deelplekken', false);
+        ->assertSee('Vaste deelplekken', false)
+        ->assertSee(route('deelplekken', ['type' => 'zaadbibliotheek']), false)
+        ->assertSee(route('deelplekken'), false);
 
     $this->get(route('aanbod'))
         ->assertOk()

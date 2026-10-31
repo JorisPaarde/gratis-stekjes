@@ -18,6 +18,11 @@ class ZoekenController extends Controller
             $plant = mb_substr($plant, 0, 80);
         }
 
+        $q = trim((string) $request->query('q', ''));
+        if (mb_strlen($q) > 120) {
+            $q = mb_substr($q, 0, 120);
+        }
+
         $plantItems = [];
         if ($plant !== '') {
             $plantItems = $search->search(null, null, false, $plant)['items'];
@@ -41,6 +46,7 @@ class ZoekenController extends Controller
             'canonical' => route('aanbod'),
             'nuTeStekken' => $calendar->blockForViews(),
             'plant' => $plant,
+            'q' => $q,
             'plantItems' => $plantItems,
         ]);
     }

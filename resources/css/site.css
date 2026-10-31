@@ -888,3 +888,117 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
   font-weight: 700;
   color: var(--forest);
 }
+
+/* —— Homepage v3: zoeken in de hero + «Hier kun je nu al terecht» —— */
+.hero-zoek { max-width: 38rem; margin: 0 0 1rem; }
+.hero-zoek label {
+  display: block; font-weight: 700; color: #fff;
+  margin: 0 0 .45rem; font-size: 1.05rem;
+}
+.hero-zoek-veld { display: flex; flex-wrap: wrap; gap: .5rem; }
+.hero-zoek-veld input {
+  flex: 1 1 14rem; min-width: 0; min-height: 48px;
+  font: inherit; font-size: 1.05rem;
+  padding: .7rem 1rem;
+  border: 2px solid #e6f2e1; border-radius: var(--radius-pill);
+  background: #fff; color: var(--ink);
+}
+.hero-zoek-veld input:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+.hero-zoek-veld .btn { min-height: 48px; flex: 0 0 auto; }
+@media (max-width: 479px) {
+  .hero-zoek-veld .btn { flex: 1 1 100%; }
+}
+.hero-links { margin: 0; color: #f5faf3; display: flex; flex-wrap: wrap; gap: .35rem .6rem; }
+.hero-links a { color: #fff; font-weight: 600; }
+.hero-links a:hover { color: var(--accent-on-dark); }
+
+.home-subkop {
+  font-family: var(--font-body);
+  font-size: 1.15rem; font-weight: 700;
+  color: var(--forest);
+  margin: 1.75rem 0 .75rem;
+}
+.home-subkop:first-of-type { margin-top: .5rem; }
+.home-meer { margin: 1rem 0 0; color: var(--ink-soft); }
+
+.aanbod-kaarten {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; gap: 1rem;
+  grid-template-columns: 1fr;
+}
+/* Max. 6 kaarten: 2 of 3 kolommen geeft altijd volle rijen (geen losse kaart). */
+@media (min-width: 560px) { .aanbod-kaarten { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 900px) { .aanbod-kaarten { grid-template-columns: repeat(3, 1fr); } }
+.aanbod-kaart {
+  display: flex; flex-direction: column; height: 100%;
+  background: var(--card); color: var(--ink); text-decoration: none;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden; box-shadow: var(--shadow);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.aanbod-kaart:hover, .aanbod-kaart:focus-visible {
+  color: var(--ink); transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(26, 18, 16, 0.12);
+}
+.aanbod-kaart-foto {
+  width: 100%; aspect-ratio: 16 / 11; object-fit: cover;
+  background: var(--bg-mint);
+}
+.aanbod-kaart-foto.is-leeg {
+  display: flex; align-items: center; justify-content: center;
+  aspect-ratio: auto; height: 3.75rem;
+  color: var(--forest);
+}
+.aanbod-kaart-body { display: flex; flex-direction: column; gap: .35rem; padding: .85rem 1rem 1rem; }
+.aanbod-kaart-body .badge { align-self: flex-start; }
+.aanbod-kaart-tekst { font-weight: 600; line-height: 1.35; }
+.aanbod-kaart-meta { color: var(--ink-soft); font-size: .92rem; }
+
+.plek-tellingen {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-wrap: wrap; gap: .6rem;
+}
+.plek-tellingen a {
+  display: inline-flex; align-items: baseline; gap: .4rem;
+  padding: .55rem 1rem;
+  background: var(--bg-mint); color: var(--forest-deep);
+  border: 1px solid rgba(31, 77, 43, 0.18);
+  border-radius: var(--radius-pill);
+  text-decoration: none; font-weight: 600;
+}
+.plek-tellingen a:hover, .plek-tellingen a:focus-visible { background: #d5ead0; color: var(--forest-deep); }
+.plek-tellingen strong { font-family: var(--font-display); font-size: 1.3rem; line-height: 1; font-weight: 400; }
+
+/* Doe mee: drie kolommen vanaf tablet (geen losse kaart op een eigen rij), klikbaarheid zichtbaar. */
+@media (min-width: 760px) {
+  .cta-choices { grid-template-columns: repeat(3, 1fr); }
+}
+.cta-choice strong { display: flex; justify-content: space-between; gap: .5rem; }
+.cta-pijl { transition: transform .15s ease; }
+.cta-choice:hover .cta-pijl, .cta-choice:focus-visible .cta-pijl { transform: translateX(3px); }
+.page-home .cta-panel { margin-top: 0; }
+
+/* Typografie: Passion One (hoofdletters) alleen voor H1/H2; H3 en kaarttitels in de broodtekstletter. */
+.soft-card h3,
+.prose h3,
+.waarom-card h3 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 1.2rem;
+  line-height: 1.25;
+}
+
+/* Mobiel: compacte horizontale aanbodkaarten, maximaal 4 (rest via «Bekijk al het aanbod»). */
+@media (max-width: 559px) {
+  .aanbod-kaarten { gap: .65rem; }
+  .aanbod-kaarten > li:nth-child(n + 5) { display: none; }
+  .aanbod-kaart { flex-direction: row; align-items: stretch; }
+  .aanbod-kaart-foto,
+  .aanbod-kaart-foto.is-leeg {
+    width: 5.5rem; flex: 0 0 5.5rem; height: auto; aspect-ratio: auto;
+  }
+  .aanbod-kaart-body { padding: .7rem .85rem; gap: .25rem; }
+  .aanbod-kaart-tekst { font-size: .95rem; }
+}

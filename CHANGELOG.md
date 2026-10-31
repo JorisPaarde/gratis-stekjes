@@ -9,6 +9,39 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.32.0] - 2026-10-31
+
+### Added
+
+- Homepage: zoekveld in de hero («Wat is er bij jou in de buurt?») → `/aanbod?q=…`, dat direct
+  zoekt en inzoomt.
+- Homepage: blok «Hier kun je nu al terecht» met maximaal 6 nieuwste aanbiedingen (alleen als
+  er aanbod is; mobiel compact, max. 4) en tellingen per soort deelplek («55 zadenbibliotheken»).
+  Zonder aanbod en plekken verdwijnt het blok (geen lege staat). Werkt ook zonder DB-tabellen.
+- `/api/zoeken?recent=1`: nieuwste publieke aanbod zonder locatie (max. 24, geen geocoding).
+
+### Changed
+
+- `/aanbod`: lijst in twee begrensde groepen (aanbod, plekken) met «Toon meer»; na zoeken op
+  afstand gesorteerd met km. Zonder zoekopdracht: nieuw aanbod + deelplekken i.p.v. lege lijst.
+  Weinig aanbod → meer plekken zichtbaar, veel aanbod → plekken compact.
+- Homepage ingekort: «Waarom?», «Veilig delen», «Initiatieven» en «Verder kijken» weg
+  (pagina's blijven bestaan en staan in de footer); «Hoe werkt het» van 5 naar 3 stappen;
+  «Doe mee» één keer, met pijlen en drie kolommen.
+- Header-menu: Aanbod · Hoe werkt het · Stektips · Deelplekken · Inloggen · Doe mee.
+  Overige links (Hulpmiddelen, Initiatieven, Over, Privacy, …) in de footer.
+- Typografie: H3 en kaarttitels in de broodtekstletter (Passion One alleen nog H1/H2).
+- Nu te stekken: intro zonder «(tijdzone Europe/Amsterdam)»; plantlabels zonder stektip zijn
+  gewone tekst (geen knop-vorm).
+- Footer: versienummer niet meer zichtbaar (staat als HTML-commentaar voor de deploy-smoke).
+
+### Fixed
+
+- Nu te stekken: plantlabels linken weer naar hun stektip en «alle stektips» verschijnt weer
+  (de check zocht nog naar oude Blade-/HTML-bestanden), waardoor «Tips per soort volgen
+  binnenkort» onterecht zichtbaar was.
+- `/aanbod`: aanbod in de lijst stond in omgekeerde volgorde (verste eerst).
+
 ## [0.31.3] - 2026-10-31
 
 ### Changed
