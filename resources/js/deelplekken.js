@@ -24,8 +24,13 @@
     zaadbibliotheek: "#8a6a3a",
   };
 
-  // Beginuitsnede: Nederland + heel België (past op desktop én mobiel).
-  var map = L.map(mapEl);
+  // Beginuitsnede direct bij aanmaken (view nodig vóór whenReady/tiles).
+  var nlBeBounds = [
+    [49.45, 2.4],
+    [53.55, 7.25],
+  ];
+  var nlBeFitOpts = { padding: [16, 16], maxZoom: 7 };
+  var map = L.map(mapEl).fitBounds(nlBeBounds, nlBeFitOpts);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution:
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -33,13 +38,7 @@
   }).addTo(map);
   function fitNlBe() {
     map.invalidateSize();
-    map.fitBounds(
-      [
-        [49.45, 2.4],
-        [53.55, 7.25],
-      ],
-      { padding: [16, 16], maxZoom: 7 }
-    );
+    map.fitBounds(nlBeBounds, nlBeFitOpts);
   }
   map.whenReady(function () {
     setTimeout(fitNlBe, 50);
