@@ -10,7 +10,11 @@
         "assets/images/home-v2/hero-1280.webp",
         "assets/images/home-v2/hero-1920.webp",
         "assets/images/home-v2/hero-960.jpg",
-        "assets/images/home-v2/hero-1920.jpg"
+        "assets/images/home-v2/hero-1920.jpg",
+        "assets/images/home-v2/hero-portrait-720.webp",
+        "assets/images/home-v2/hero-portrait-1080.webp",
+        "assets/images/home-v2/hero-portrait-1440.webp",
+        "assets/images/home-v2/hero-portrait-1080.jpg"
       ],
       "width": 1920,
       "height": 1080,
@@ -34,13 +38,13 @@
       "width": 1280,
       "height": 800,
       "alt": "Kaart van Nederland en België met oranje markers van deelplekken",
-      "bron": "Eigen screenshot",
-      "bron_url": "https://gratisplanten.nl/deelplekken",
-      "maker": "Gratis planten (OpenStreetMap-tegels)",
+      "bron": "OpenStreetMap",
+      "bron_url": "https://www.openstreetmap.org/copyright",
+      "maker": "OpenStreetMap-bijdragers",
       "maker_url": "https://www.openstreetmap.org/copyright",
-      "licentie": "ODbL (kaartgegevens) / eigen weergave",
+      "licentie": "ODbL",
       "licentie_url": "https://www.openstreetmap.org/copyright",
-      "attribution_required": true
+      "attribution_required": false
     },
     {
       "id": "stappen",

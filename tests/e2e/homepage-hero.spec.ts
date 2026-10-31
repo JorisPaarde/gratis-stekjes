@@ -109,6 +109,19 @@ test.describe('Homepage v2 hero above the fold', () => {
     });
   }
 
+  async function assertKaartSection(page: Page) {
+    const section = page.locator('#kaart');
+    await expect(section.locator('#kaart-titel')).toBeVisible();
+    await expect(section.locator('#kaart-titel')).toContainText(
+      'Wat staat er bij jou in de buurt?',
+    );
+    await expect(section.getByRole('link', { name: 'Open de kaart' })).toBeVisible();
+    await expect(section.getByRole('link', { name: 'Bekijk deelplekken' })).toBeVisible();
+    // No nested interactive credit inside the map preview link.
+    await expect(section.locator('.home-kaart-preview .home-pic-credit')).toHaveCount(0);
+    await expect(section.locator('.home-kaart-preview a a')).toHaveCount(0);
+  }
+
   test('full page screenshots 393 and 1440', async ({ page }) => {
     test.setTimeout(120_000);
 
@@ -116,6 +129,7 @@ test.describe('Homepage v2 hero above the fold', () => {
     await page.goto('/', { waitUntil: 'networkidle' });
     await expect(page.locator('body.page-home-v2')).toBeVisible();
     await waitForHomeImages(page);
+    await assertKaartSection(page);
     await page.screenshot({
       path: path.join(artifactsDir, 'full-393.png'),
       fullPage: true,
@@ -124,6 +138,7 @@ test.describe('Homepage v2 hero above the fold', () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('/', { waitUntil: 'networkidle' });
     await waitForHomeImages(page);
+    await assertKaartSection(page);
     await page.screenshot({
       path: path.join(artifactsDir, 'full-1440.png'),
       fullPage: true,

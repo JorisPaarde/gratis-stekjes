@@ -6,6 +6,7 @@
     'eager' => false,
     'sizes' => '(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 960px',
     'class' => '',
+    'showCredit' => true,
 ])
 
 @php
@@ -27,22 +28,38 @@
     $altText = $alt !== '' ? $alt : (string) ($credits['alt'] ?? '');
     $w = (int) ($credits['width'] ?? $width);
     $h = (int) ($credits['height'] ?? $height);
-    // Display box aspect from source; width/height attrs prevent CLS.
     $base = 'assets/images/home-v2/'.$id;
-    // Hero: include 1920w for sharp 2x on common laptop/phone widths.
+    // Hero landscape: include 1920w for sharp 2x on common laptop widths.
     $widths = $id === 'hero' ? [640, 960, 1280, 1920] : [640, 960, 1280];
     $webpSrcset = collect($widths)
         ->map(fn (int $size) => asset($base.'-'.$size.'.webp').' '.$size.'w')
         ->implode(', ');
+    $portraitWidths = [720, 1080, 1440];
+    $hasPortrait = $id === 'hero'
+        && is_readable(public_path('assets/images/home-v2/hero-portrait-720.webp'));
+    $portraitSrcset = $hasPortrait
+        ? collect($portraitWidths)
+            ->map(fn (int $size) => asset('assets/images/home-v2/hero-portrait-'.$size.'.webp').' '.$size.'w')
+            ->implode(', ')
+        : '';
     $jpgFallback = $id === 'hero' && is_readable(public_path($base.'-1920.jpg'))
         ? asset($base.'-1920.jpg')
         : asset($base.'-960.jpg');
     $loading = $eager ? 'eager' : 'lazy';
     $fetchpriority = $eager ? 'high' : null;
+    $showFigcaption = $showCredit && ! empty($credits['attribution_required']);
 @endphp
 
 <figure {{ $attributes->class(['home-pic', $class]) }}>
   <picture>
+    @if($hasPortrait)
+      <source
+        media="(max-width: 767px)"
+        type="image/webp"
+        srcset="{{ $portraitSrcset }}"
+        sizes="100vw"
+      >
+    @endif
     <source type="image/webp" srcset="{{ $webpSrcset }}" sizes="{{ $sizes }}">
     <img
       src="{{ $jpgFallback }}"
@@ -54,7 +71,7 @@
       @if($fetchpriority) fetchpriority="{{ $fetchpriority }}" @endif
     >
   </picture>
-  @if(!empty($credits['attribution_required']))
+  @if($showFigcaption)
     <figcaption class="home-pic-credit">
       Foto:
       @if(!empty($credits['bron_url']))

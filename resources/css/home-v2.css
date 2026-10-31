@@ -177,16 +177,22 @@
 .home-kaart-preview {
   position: relative;
   display: block;
-  text-decoration: none;
-  color: inherit;
   overflow: hidden;
   border-radius: var(--radius);
-  /* Reserve space before lazy map image loads — prevents overlay text escaping upward into the hero. */
+  /* Reserve space before lazy map image loads. */
   aspect-ratio: 1280 / 800;
+}
+.home-kaart-preview-link {
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
 }
 .home-kaart-preview .home-pic {
   box-shadow: var(--shadow);
   height: 100%;
+  margin: 0;
+  border-radius: 0;
 }
 .home-kaart-preview .home-pic img {
   width: 100%;

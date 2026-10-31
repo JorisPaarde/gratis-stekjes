@@ -25,6 +25,7 @@
       id="hero"
       class="home-hero-pic"
       :eager="true"
+      :show-credit="false"
       sizes="100vw"
       alt="Volkstuinen bij de Dreef in Enkhuizen met groene tuintjes en bomen"
     />
@@ -63,17 +64,20 @@
         <a class="btn btn-secondary" href="{{ route('deelplekken') }}"><x-icon name="locatie" :size="18" /> Bekijk deelplekken</a>
       </p>
     </div>
-    <a
-      class="home-split-media home-kaart-preview"
-      href="{{ route('aanbod') }}"
-      aria-label="Naar de kaart met aanbod en deelplekken"
-    >
-      <x-home-picture
-        id="kaart"
-        sizes="(max-width: 768px) 100vw, 50vw"
-        alt="Kaart van Nederland en België met oranje markers van deelplekken"
-      />
-    </a>
+    <div class="home-split-media home-kaart-preview">
+      <a
+        class="home-kaart-preview-link"
+        href="{{ route('aanbod') }}"
+        aria-label="Naar de kaart met aanbod en deelplekken"
+      >
+        <x-home-picture
+          id="kaart"
+          :show-credit="false"
+          sizes="(max-width: 768px) 100vw, 50vw"
+          alt="Kaart van Nederland en België met oranje markers van deelplekken"
+        />
+      </a>
+    </div>
   </div>
 </section>
 
@@ -259,15 +263,16 @@
   <h2 id="credits-titel" class="visually-hidden">Fotocredits</h2>
   <p class="muted home-credits-text">
     Foto’s met naamsvermelding:
-    volkstuin Enkhuizen <a href="https://commons.wikimedia.org/wiki/File:20180907_Volkstuin_bij_de_Dreef_Enkhuizen.jpg" rel="noopener noreferrer">Gouwenaar</a>,
+    volkstuin Enkhuizen <a href="https://commons.wikimedia.org/wiki/File:20180907_Volkstuin_bij_de_Dreef_Enkhuizen.jpg" rel="noopener noreferrer">Gouwenaar</a>
+    (<a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener noreferrer license">CC BY-SA 4.0</a>),
     schooltuin Amsterdam <a href="https://commons.wikimedia.org/wiki/File:Schaap_Schooltuin_5.jpg" rel="noopener noreferrer">Frank Markesteijn</a>,
     volkstuintjes Lier <a href="https://commons.wikimedia.org/wiki/File:Volkstuintjes_zuid.jpg" rel="noopener noreferrer">Bert76</a>,
     moestuin Breda <a href="https://commons.wikimedia.org/wiki/File:Moestuin_DSCF9224.JPG" rel="noopener noreferrer">G.Lanting</a>,
     plantjes in potjes <a href="https://commons.wikimedia.org/wiki/File:Celery_seedlings_planted_in_recycled_pots.jpg" rel="noopener noreferrer">Badak Ironman</a>,
     zakjes zaden <a href="https://commons.wikimedia.org/wiki/File:Packets_of_Vegetable_Seeds.jpg" rel="noopener noreferrer">ParentingPatch</a>,
     zadenbibliotheek <a href="https://commons.wikimedia.org/wiki/File:Ausstellungsfl%C3%A4che_und_Saatgutbibliothek.jpg" rel="noopener noreferrer">Stadtbibliothek Neuss</a>
-    (Wikimedia Commons, CC BY-SA);
-    kaart © <a href="https://www.openstreetmap.org/copyright" rel="noopener noreferrer">OpenStreetMap</a>-bijdragers.
+    (Wikimedia Commons, CC BY-SA).
+    Kaart © <a href="https://www.openstreetmap.org/copyright" rel="noopener noreferrer">OpenStreetMap</a>-bijdragers.
   </p>
   @php $tipCredits = array_values(array_filter($tips, fn ($t) => empty($t['afbeelding']['is_fallback']) && ! empty($t['afbeelding']['auteur']))); @endphp
   @if(count($tipCredits) > 0)
