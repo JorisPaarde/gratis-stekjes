@@ -119,9 +119,7 @@
         status.textContent =
           items.length + (items.length === 1 ? " plek" : " plekken");
       }
-      if (bounds.length) {
-        map.fitBounds(bounds, { padding: [28, 28], maxZoom: 12 });
-      }
+      // Bewaar beginuitsnede NL + Vlaanderen; zoom niet naar alleen NL-markers.
     })
     .catch(function () {
       if (status) status.textContent = "Kaartmarkers laden mislukt.";

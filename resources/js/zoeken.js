@@ -356,10 +356,8 @@
           typeLabels = Object.assign(typeLabels, data.types);
         }
         partnerItems = (data && data.items) || [];
-        refreshMarkers(
-          (partnerItems.length > 0 || deelplekItems.length > 0) &&
-            aanbodItems.length === 0
-        );
+        // Geen fitBounds bij eerste load: beginuitsnede blijft NL + Vlaanderen.
+        refreshMarkers(false);
       })
       .catch(function () {
         partnerItems = [];
@@ -382,10 +380,8 @@
           typeLabels = Object.assign(typeLabels, data.types);
         }
         deelplekItems = (data && data.items) || [];
-        refreshMarkers(
-          (partnerItems.length > 0 || deelplekItems.length > 0) &&
-            aanbodItems.length === 0
-        );
+        // Geen fitBounds bij eerste load: beginuitsnede blijft NL + Vlaanderen.
+        refreshMarkers(false);
       })
       .catch(function () {
         deelplekItems = [];
