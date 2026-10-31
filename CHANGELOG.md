@@ -9,6 +9,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.34.1] - 2026-10-31
+
+### Fixed
+
+- Homepage «Doe mee»: ruimte tussen tekst en knoppen (marge werd overschreven door `.home-signup p`);
+  lange knoppen duwen de foto niet meer uit beeld.
+
 ## [0.34.0] - 2026-10-31
 
 ### Changed
