@@ -15,6 +15,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - Hoofdmenu-link **Dashboard** → `/beheer/overzicht` (Gate `see-admin-dashboard`), alleen bij `session('admin_ok')` of een geverifieerd account waarvan `users.email` in `stekjes.admin_dashboard_emails` staat (env `ADMIN_DASHBOARD_EMAILS`; leeg → fallback `admin_email`). Geen match op weergavenaam.
 - Zelfde Gate geeft dat account toegang tot alle `/beheer`-routes zonder apart beheerwachtwoord; wachtwoord-login blijft fallback. GET `/beheer` redirect dan direct naar overzicht. Beheer-uitloggen wist alleen `admin_ok`, niet de account-sessie.
+- Deploy (staging-cpanel, prod-hook, production) schrijft optioneel `ADMIN_DASHBOARD_EMAILS` naar `.env` (alleen als secret gezet, gemaskeerd); hook behoudt bestaande waarde bij lege upload.
 
 ### Changed
 

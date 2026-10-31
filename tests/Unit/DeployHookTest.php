@@ -148,7 +148,7 @@ test('chunk assembly + checksum + storage behouden bij finish', function () {
     file_put_contents($logDir.'/keep.log', "keep-me\n");
     file_put_contents(
         $appDir.'/.env',
-        "APP_KEY=\"base64:existingkeyexistingkeyexisti\"\nBACKUP_ENCRYPTION_KEY=\"keep-backup-key\"\n"
+        "APP_KEY=\"base64:existingkeyexistingkeyexisti\"\nBACKUP_ENCRYPTION_KEY=\"keep-backup-key\"\nADMIN_DASHBOARD_EMAILS=\"owner@example.test\"\n"
     );
 
     // Mini Laravel-achtige zip
@@ -250,6 +250,9 @@ test('chunk assembly + checksum + storage behouden bij finish', function () {
 
     // BACKUP_ENCRYPTION_KEY behouden (upload was leeg)
     expect(deploy_hook_env_get($appDir.'/.env', 'BACKUP_ENCRYPTION_KEY'))->toBe('keep-backup-key');
+
+    // ADMIN_DASHBOARD_EMAILS behouden (upload ontbrak de key)
+    expect(deploy_hook_env_get($appDir.'/.env', 'ADMIN_DASHBOARD_EMAILS'))->toBe('owner@example.test');
 
     expect(is_file($docroot.'/index.php'))->toBeTrue();
     expect(is_file($docroot.'/build/manifest.json'))->toBeTrue();
