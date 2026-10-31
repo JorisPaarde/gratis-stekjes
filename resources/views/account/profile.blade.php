@@ -36,7 +36,7 @@
     <label>Telefoon (optioneel)
       @if($user->isUnreadable('telefoon') && old('telefoon') === null)
         <input name="telefoon" maxlength="40" value="" autocomplete="tel" placeholder="{{ \App\Casts\SafeEncrypted::VIEW_FALLBACK }}">
-        <span class="hint">Opgeslagen nummer is niet leesbaar (andere sleutel). Leeg laten behoudt de oude waarde; vul alleen in om te vervangen.</span>
+        <span class="hint">Je telefoonnummer kon ik niet lezen. Vul het opnieuw in.</span>
       @else
         <input name="telefoon" maxlength="40" value="{{ old('telefoon', $user->telefoon) }}" autocomplete="tel">
       @endif
