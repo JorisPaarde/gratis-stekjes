@@ -9,6 +9,19 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.26.6] - 2026-10-31
+
+### Changed
+
+- Deelplekken-check: 14 plekken die betaling/donatie vragen of twijfelachtig zijn, staan op `visible=false` (niet verwijderd) met reden in JSON (`niet-gratis` / `twijfel`).
+- Adres + bron_url bijgewerkt voor `joure-zadenbieb` en `utrecht-zadenbibliotheek` (PDOK-coördinaten herbevestigd).
+- `DeelplekkenSeeder` respecteert `zichtbaar` uit `data/deelplekken.json`.
+- Idempotente migratie + `php artisan deelplekken:apply-gratis-check` raken alleen deze 16 rijen (geen deletes); deploy (`POST /deploy/run`) past dit toe via migrate + seeder.
+
+### Fixed
+
+- Publieke lijst, kaart-JSON, stadspagina’s en organisatiekoppelingen tonen geen niet-gratis/twijfel-deelplekken meer.
+
 ## [0.26.3] - 2026-10-31
 
 ### Fixed

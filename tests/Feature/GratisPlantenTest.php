@@ -123,10 +123,15 @@ test('footer en homepage linken naar stadsoverzicht', function () {
 });
 
 test('stadspagina toont deelplekken uit JSON en linkt naar /deelplekken', function () {
+    $this->get(route('gratis-planten.show', ['stad' => 'utrecht']))
+        ->assertOk()
+        ->assertSee('Deelplekken in of bij Utrecht', false)
+        ->assertSee('Zadenbibliotheek Utrecht', false)
+        ->assertDontSee('Het Plantenhuis', false)
+        ->assertSee(route('deelplekken', ['plaats' => 'Utrecht']), false)
+        ->assertSee(route('deelplekken'), false);
+
     $this->get(route('gratis-planten.show', ['stad' => 'haarlem']))
         ->assertOk()
-        ->assertSee('Deelplekken in of bij Haarlem', false)
-        ->assertSee('Plantenasiel Haarlem', false)
-        ->assertSee(route('deelplekken', ['plaats' => 'Haarlem']), false)
-        ->assertSee(route('deelplekken'), false);
+        ->assertDontSee('Plantenasiel Haarlem', false);
 });

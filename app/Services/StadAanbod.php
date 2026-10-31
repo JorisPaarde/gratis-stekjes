@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Aanbod;
+use App\Models\Deelplek;
 use App\Support\Geo;
 use Illuminate\Support\Facades\Schema;
 
@@ -105,7 +106,7 @@ final class StadAanbod
      */
     private function approvedAanmeldingenWithin(array $stad): array
     {
-        if (! class_exists(\App\Models\Deelplek::class)) {
+        if (! class_exists(Deelplek::class)) {
             return [];
         }
         try {
@@ -122,9 +123,9 @@ final class StadAanbod
         $labels = $this->deelplekken->typeLabels();
 
         try {
-            $rows = \App\Models\Deelplek::query()
+            $rows = Deelplek::query()
                 ->visible()
-                ->where('source', \App\Models\Deelplek::SOURCE_AANMELDING)
+                ->where('source', Deelplek::SOURCE_AANMELDING)
                 ->get();
         } catch (\Throwable) {
             return [];
@@ -172,7 +173,7 @@ final class StadAanbod
      */
     private function deelplekkenFromDatabase(array $stad): ?array
     {
-        if (! class_exists(\App\Models\Deelplek::class)) {
+        if (! class_exists(Deelplek::class)) {
             return null;
         }
         try {
@@ -189,7 +190,7 @@ final class StadAanbod
         $labels = $this->deelplekken->typeLabels();
 
         try {
-            $rows = \App\Models\Deelplek::query()->visible()->get();
+            $rows = Deelplek::query()->visible()->get();
         } catch (\Throwable) {
             return null;
         }
@@ -241,6 +242,9 @@ final class StadAanbod
 
         foreach ($data['plekken'] as $row) {
             if (! is_array($row)) {
+                continue;
+            }
+            if (($row['zichtbaar'] ?? true) === false) {
                 continue;
             }
             $rlat = isset($row['lat']) && is_numeric($row['lat']) ? (float) $row['lat'] : null;

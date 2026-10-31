@@ -173,14 +173,15 @@ test('soortpagina’s en steden hebben onderling unieke titles', function () {
 });
 
 test('stadspagina toont plantenasiel-blok alleen bij echte plantenasiels', function () {
+    // Utrecht: plantenasiel verborgen (niet-gratis); wel andere deelplekken (zadenbieb).
     $html = $this->get(route('gratis-planten.show', ['stad' => 'utrecht']))
         ->assertOk()
-        ->assertSee('Plantenasiel in Utrecht', false)
+        ->assertDontSee('Plantenasiel in Utrecht', false)
+        ->assertSee('Zadenbibliotheek Utrecht', false)
         ->getContent();
 
     expect($html)->toContain('/deelplekken?')
-        ->and($html)->toContain('plaats=Utrecht')
-        ->and($html)->toContain('type=plantenasiel');
+        ->and($html)->toContain('plaats=Utrecht');
 
     // Amsterdam: geen openbaar plantenasiel-adres in de data → geen verzonnen blok.
     $amsHtml = $this->get(route('gratis-planten.show', ['stad' => 'amsterdam']))

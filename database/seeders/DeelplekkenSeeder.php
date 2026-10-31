@@ -25,6 +25,7 @@ class DeelplekkenSeeder extends Seeder
         foreach ($data['plekken'] as $row) {
             $slug = (string) $row['id'];
             $slugs[] = $slug;
+            $visible = ($row['zichtbaar'] ?? true) !== false;
             Deelplek::query()->updateOrCreate(
                 ['slug' => $slug],
                 [
@@ -37,7 +38,7 @@ class DeelplekkenSeeder extends Seeder
                     'lng' => (float) $row['lng'],
                     'bron_url' => trim(mb_substr((string) $row['bron_url'], 0, 500)),
                     'geraadpleegd' => (string) $row['geraadpleegd'],
-                    'visible' => true,
+                    'visible' => $visible,
                     'source' => Deelplek::SOURCE_SEED,
                     'status' => Deelplek::STATUS_APPROVED,
                 ]
