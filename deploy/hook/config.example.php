@@ -13,4 +13,6 @@ return [
     'app_dir' => '/home/gratisplanten/app-staging',
     'docroot' => '/home/gratisplanten/staging.gratisplanten.nl',
     'env' => 'staging',
+    // Optioneel: home voor LiteSpeed-marker ~/.lsphp_restart.txt (default: dirname(app_dir)).
+    // 'home_dir' => '/home/gratisplanten',
 ];

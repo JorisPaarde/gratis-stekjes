@@ -25,7 +25,42 @@ const DEPLOY_HOOK_RATE_WINDOW = 3600;
 const DEPLOY_HOOK_RELEASES_KEEP = 3;
 
 /**
- * @return array{token_hash:string,app_dir:string,docroot:string,env:string}|null
+ * Home-dir voor LiteSpeed-herstartmarker (.lsphp_restart.txt).
+ * Optionele config `home_dir`, anders dirname(app_dir) — bv.
+ * /home/user/app-staging → /home/user.
+ */
+function deploy_hook_resolve_home_dir(string $appDir, ?string $configuredHome = null): string
+{
+    if (is_string($configuredHome) && trim($configuredHome) !== '') {
+        return rtrim($configuredHome, '/');
+    }
+
+    return rtrim(dirname($appDir), '/');
+}
+
+/**
+ * Touch /home/<user>/.lsphp_restart.txt zodat LiteSpeed lsphp-workers recycleert.
+ * Robuust als de map ontbreekt; logt geen secrets.
+ */
+function deploy_hook_touch_lsphp_restart(string $homeDir): bool
+{
+    $homeDir = rtrim($homeDir, '/');
+    if ($homeDir === '' || $homeDir === '/') {
+        return false;
+    }
+    if (! is_dir($homeDir)) {
+        return false;
+    }
+    $marker = $homeDir.'/.lsphp_restart.txt';
+    if (@touch($marker) === false) {
+        return false;
+    }
+
+    return is_file($marker);
+}
+
+/**
+ * @return array{token_hash:string,app_dir:string,docroot:string,env:string,home_dir:string}|null
  */
 function deploy_hook_load_config(string $docroot): ?array
 {
@@ -56,11 +91,15 @@ function deploy_hook_load_config(string $docroot): ?array
                 return null;
             }
 
+            $appDir = (string) $cfg['app_dir'];
+            $configuredHome = isset($cfg['home_dir']) ? (string) $cfg['home_dir'] : null;
+
             return [
                 'token_hash' => (string) $cfg['token_hash'],
-                'app_dir' => (string) $cfg['app_dir'],
+                'app_dir' => $appDir,
                 'docroot' => $cfgDocReal,
                 'env' => (string) $cfg['env'],
+                'home_dir' => deploy_hook_resolve_home_dir($appDir, $configuredHome),
             ];
         }
     }
@@ -766,15 +805,91 @@ function deploy_hook_prune_releases(string $releasesDir, string $currentTarget, 
 }
 
 /**
+ * Wis Laravel config-/route-cache in bootstrap/cache.
+ *
+ * Doel: een stale lsphp-proces dat nog een vorige release serveert (opcache /
+ * realpath via symlink `current`) valt terug op de gedeelde `.env` i.p.v. een
+ * stale `config:cache` met oud DEPLOY_TOKEN.
+ *
+ * Laat packages.php / services.php staan (composer package discovery).
+ * Robuust als bestanden of de map ontbreken; logt geen paden met secrets.
+ */
+function deploy_hook_clear_bootstrap_cache_files(string $appRoot): void
+{
+    $cacheDir = rtrim($appRoot, '/').'/bootstrap/cache';
+    if (! is_dir($cacheDir)) {
+        return;
+    }
+
+    foreach (['config.php', 'routes.php'] as $name) {
+        $path = $cacheDir.'/'.$name;
+        if (is_file($path) || is_link($path)) {
+            @unlink($path);
+        }
+    }
+
+    foreach (glob($cacheDir.'/routes-*.php') ?: [] as $path) {
+        if (is_file($path) || is_link($path)) {
+            @unlink($path);
+        }
+    }
+}
+
+/**
+ * Wis config-/route-cache in alle releases behalve de zojuist geactiveerde.
+ *
+ * @param  ?string  $keepReleaseDir  Pad van de nieuwe release (wordt overgeslagen)
+ */
+function deploy_hook_clear_previous_releases_config_cache(string $releasesDir, ?string $keepReleaseDir = null): void
+{
+    if (! is_dir($releasesDir)) {
+        return;
+    }
+
+    $keepReal = null;
+    if ($keepReleaseDir !== null && $keepReleaseDir !== '') {
+        $keepReal = realpath($keepReleaseDir) ?: rtrim($keepReleaseDir, '/');
+    }
+
+    foreach (scandir($releasesDir) ?: [] as $entry) {
+        if ($entry === '.' || $entry === '..' || str_starts_with($entry, '.')) {
+            continue;
+        }
+        $path = $releasesDir.'/'.$entry;
+        if (! is_dir($path)) {
+            continue;
+        }
+        $real = realpath($path) ?: $path;
+        if ($keepReal !== null && $real === $keepReal) {
+            continue;
+        }
+        deploy_hook_clear_bootstrap_cache_files($path);
+    }
+}
+
+/**
+ * Best-effort: realpath-cache + opcache na symlink-swap (lsphp kan anders
+ * de oude release blijven serveren). Werkt alleen in het huidige PHP-proces.
+ */
+function deploy_hook_invalidate_runtime_caches(): void
+{
+    clearstatcache(true);
+    if (function_exists('opcache_reset')) {
+        @opcache_reset();
+    }
+}
+
+/**
  * Volledige finish: assemble → extract → swap → env → docroot.
  *
- * @return array{ok:bool,error?:string,method?:string,release?:string}
+ * @return array{ok:bool,error?:string,method?:string,release?:string,lsphp_restart?:bool}
  */
 function deploy_hook_action_finish(
     string $appDir,
     string $docroot,
     string $uploadId,
     string $envContent,
+    ?string $homeDir = null,
 ): array {
     if (! preg_match('/^[a-f0-9]{32}$/', $uploadId)) {
         return ['ok' => false, 'error' => 'bad_upload_id'];
@@ -911,6 +1026,8 @@ function deploy_hook_action_finish(
             @symlink($releaseDir, $current);
         }
         $livePath = $current;
+        // Na swap: stale lsphp kan nog oude release + config:cache serveren.
+        deploy_hook_invalidate_runtime_caches();
     } else {
         @unlink($tmpLink);
         // Geen symlink-support: sync release → flat app_dir (preserve storage, .env, releases).
@@ -935,7 +1052,12 @@ function deploy_hook_action_finish(
             }
         }
         $livePath = $appDir;
+        deploy_hook_invalidate_runtime_caches();
     }
+
+    // LiteSpeed: herstartmarker in home → lsphp-workers laden nieuwe release.
+    $resolvedHome = deploy_hook_resolve_home_dir($appDir, $homeDir);
+    $lsphpRestart = deploy_hook_touch_lsphp_restart($resolvedHome);
 
     // Docroot: public/ + index.php; behoud deploy-hook.php
     $publicDir = $releaseDir.'/public';
@@ -955,6 +1077,11 @@ function deploy_hook_action_finish(
     // Ruim upload op
     deploy_hook_rm_tree($uploadDir);
 
+    // Stale lsphp op vorige release(s): config:cache met oud DEPLOY_TOKEN weg,
+    // zodat die processen de gedeelde (nieuwe) .env lezen tot ze recyclen.
+    deploy_hook_clear_previous_releases_config_cache($releasesDir, $releaseDir);
+    deploy_hook_invalidate_runtime_caches();
+
     // Wis gevoelige env-string uit geheugen-pad (best-effort).
     $finalEnv = '';
     $envContent = '';
@@ -963,13 +1090,14 @@ function deploy_hook_action_finish(
         'ok' => true,
         'method' => $method,
         'release' => $release,
+        'lsphp_restart' => $lsphpRestart,
     ];
 }
 
 /**
  * HTTP request afhandelen. Returnt ['status'=>int,'body'=>array].
  *
- * @param  array{token_hash:string,app_dir:string,docroot:string,env:string}  $config
+ * @param  array{token_hash:string,app_dir:string,docroot:string,env:string,home_dir?:string}  $config
  * @return array{status:int,body:array}
  */
 function deploy_hook_handle(array $config, ?array $post = null, ?array $files = null, ?string $method = null): array
@@ -1070,6 +1198,7 @@ function deploy_hook_handle(array $config, ?array $post = null, ?array $files = 
             $config['docroot'],
             (string) ($post['upload_id'] ?? ''),
             $envContent,
+            isset($config['home_dir']) ? (string) $config['home_dir'] : null,
         );
         if (! ($result['ok'] ?? false)) {
             return ['status' => 400, 'body' => $result];

@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.24.10] - 2026-10-31
+
+### Fixed
+
+- Na release-swap blijven langlopende LiteSpeed/lsphp-processen soms de vorige release serveren (opcache/realpath via symlink `current`). Die oude release had nog `config:cache` met het oude `DEPLOY_TOKEN` → `POST /deploy/run` 403 na token-rotatie (footer toonde ook de oude versie). Hook doet nu na swap: touch van `~/.lsphp_restart.txt` (home via optionele config `home_dir`, anders `dirname(app_dir)`), `clearstatcache(true)` + `opcache_reset()` (best-effort), en wist `bootstrap/cache/config.php` + `routes.php`/`routes-*.php` in vorige releases (niet `packages.php`/`services.php`). Upload-script wacht kort op lsphp-recycle en retry’t HTTP 403 als “mogelijk stale proces” (5×, 30s).
+
 ## [0.24.9] - 2026-10-30
 
 ### Fixed
