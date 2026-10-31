@@ -18,10 +18,22 @@ on:
 
 jobs:
   backup:
+    name: backup (${{ matrix.target }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: staging
+            env_name: ""
+          - target: production
+            env_name: production
+    # Productie-secrets (URL, CRON_TOKEN) staan alleen in environment "production".
+    environment: ${{ matrix.env_name }}
     steps:
-      - name: Backup staging + productie (ciphertext → artifact)
+      - name: Backup ${{ matrix.target }} (ciphertext → artifact)
         env:
+          LABEL: ${{ matrix.target }}
           STAGING_BASE: ${{ secrets.STAGING_BASE_URL }}
           PROD_BASE: ${{ secrets.PROD_BASE_URL }}
           # Fallback voor oudere secretnaam (cron.yml gebruikt BASE_URL voor prod).
@@ -118,8 +130,11 @@ jobs:
           }
 
           fail=0
-          run_one "staging" "${STAGING_BASE:-}" || fail=1
-          run_one "production" "${PROD_URL}" || fail=1
+          if [ "${LABEL}" = "staging" ]; then
+            run_one "staging" "${STAGING_BASE:-}" || fail=1
+          else
+            run_one "production" "${PROD_URL}" || fail=1
+          fi
 
           # Markeer root voor artifact-upload alleen als er .enc-bestanden zijn.
           if find "$ROOT" -type f -name '*.enc' | grep -q .; then
@@ -133,7 +148,7 @@ jobs:
         if: env.ARTIFACT_DIR != ''
         uses: actions/upload-artifact@v4
         with:
-          name: encrypted-backups-${{ github.run_id }}
+          name: encrypted-backups-${{ matrix.target }}-${{ github.run_id }}
           path: ${{ env.ARTIFACT_DIR }}
           if-no-files-found: warn
           retention-days: 30
