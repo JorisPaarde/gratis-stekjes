@@ -1,7 +1,7 @@
 @extends('layouts.site')
 
 @section('title', 'Stijlgids')
-@section('meta_description', 'Interne stijlgids: kleuren en iconen van '.config('site.name'))
+@section('meta_description', 'Kleuren en iconen van '.config('site.name'))
 @section('canonical', url('/stijlgids'))
 @section('body_class', 'page-stijlgids')
 
@@ -12,7 +12,7 @@
 @section('content')
 <section class="section wrap">
   <h1 class="page-title">Stijlgids</h1>
-  <p class="section-intro">Interne referentie voor kleuren en iconen. Niet in de navigatie of sitemap; altijd noindex.</p>
+  <p class="section-intro">Overzicht van kleuren en iconen die op de site gebruikt worden.</p>
 
   <h2>Kleuren</h2>
   <div class="swatch-grid" style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));margin:1rem 0 2rem">

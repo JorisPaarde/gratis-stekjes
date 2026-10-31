@@ -11,10 +11,10 @@
 @section('content')
 <section class="section wrap stektips-page">
   <h1 class="page-title">{{ $title }}</h1>
-  <p class="section-intro">Vijf pijlers: stekken, snoeien, natuurlijk bewortelen, permacultuur en vermeerderen — plus soortpagina’s. Filter en zoek werken zonder JavaScript.</p>
+  <p class="section-intro">Hier vind je tips om planten zelf te vermeerderen: stekken, snoeien, zaaien, scheuren en meer. Zoek op je plant en zie hoe en wanneer het lukt.</p>
 
   @if(!empty($pillars))
-    <nav class="stektips-pillars" aria-label="Kennisbank-pijlers">
+    <nav class="stektips-pillars" aria-label="Onderwerpen">
       <ul class="stektips-pillar-list">
         @foreach($pillars as $pillar)
           <li>
@@ -128,7 +128,7 @@
 
   <aside class="soft-card stektips-proef">
     <h2 class="stektips-proef-title"><a href="{{ route('stektips.show', ['slug' => 'herfstolijfwilg']) }}">Joris' eigen proef</a></h2>
-    <p>50 stekken van de <a href="{{ route('stektips.show', ['slug' => 'herfstolijfwilg']) }}">herfstolijfwilg</a> in <a href="{{ route('stektips.artikel', ['slug' => 'wilgenwater']) }}">wilgenwater</a> zijn een mooie eerste case. Zet de helft in vochtige stekgrond in een koude bak, noteer per bakje wat er gebeurt, en publiceer de uitkomst in het voorjaar.</p>
+    <p>50 stekken van de <a href="{{ route('stektips.show', ['slug' => 'herfstolijfwilg']) }}">herfstolijfwilg</a> in <a href="{{ route('stektips.artikel', ['slug' => 'wilgenwater']) }}">wilgenwater</a> zijn een mooie eerste proef. Zet de helft in vochtige stekgrond in een koude bak, noteer per bakje wat er gebeurt, en deel de uitkomst in het voorjaar.</p>
   </aside>
   <p class="stektips-meer"><a href="{{ route('hulpmiddelen') }}">Hulpmiddelen</a></p>
 </section>

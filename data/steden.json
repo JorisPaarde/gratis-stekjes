@@ -1,7 +1,7 @@
 {
   "meta": {
     "titel": "Gratis planten — stadspagina’s",
-    "omschrijving": "Nederlandse en Belgische steden voor SEO-pagina’s ‘Gratis planten in [stad]’. Coördinaten bij benadering (stadscentrum); straal_km voor aanbodfilter. Alleen steden met echte deelplekken of aanbod in de data; country NL (default) of BE.",
+    "omschrijving": "Nederlandse en Belgische steden voor de pagina’s ‘Gratis planten in [stad]’. Coördinaten bij benadering (stadscentrum); straal_km voor aanbodfilter. Alleen steden met echte deelplekken of aanbod in de data; country NL (default) of BE.",
     "bron": "NL: selectie ~40 grootste gemeenten. BE batch 1: Antwerpen, Brussel, Namen, Lommel/Pelt — alleen met ≥2 zichtbare deelplekken in data/deelplekken.json.",
     "geraadpleegd": "2026-10-31"
   },

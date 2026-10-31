@@ -25,7 +25,7 @@ test('registratiepagina laadt', function () {
     $this->get(route('account.registreren'))
         ->assertOk()
         ->assertSee('Account maken', false)
-        ->assertSee('double opt-in', false);
+        ->assertSee('Je krijgt een mail om je aanmelding te bevestigen', false);
 });
 
 test('registreren stuurt verificatiemail en logt niet in', function () {

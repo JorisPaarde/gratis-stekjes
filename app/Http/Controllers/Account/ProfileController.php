@@ -20,7 +20,7 @@ class ProfileController extends Controller
     {
         return view('account.profile', [
             'title' => 'Profiel',
-            'metaDescription' => 'Je profiel en benaderde locatie bij '.config('site.name').'.',
+            'metaDescription' => 'Je profiel en woonplaats bij '.config('site.name').'.',
             'canonical' => route('account.profiel'),
             'user' => $request->user(),
             'countries' => Country::labels(),
