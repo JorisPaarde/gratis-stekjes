@@ -361,7 +361,7 @@ test('docs uitnodigingen bestaat en waarschuwt niet versturen', function () {
     expect($text)->not->toContain('| Onze pagina |');
 });
 
-test('aanmeldbevestiging is ik-vorm (afzender Joris)', function () {
+test('aanmeldbevestiging is ik-vorm (afzender Gratis planten)', function () {
     $plek = new Deelplek(['naam' => 'Testplek']);
     $mail = (new \App\Notifications\DeelplekAanmeldingBevestiging($plek))->toMail((object) []);
     $lines = collect($mail->introLines)->implode(' ');
@@ -369,4 +369,5 @@ test('aanmeldbevestiging is ik-vorm (afzender Joris)', function () {
     expect($lines)->toContain('zet ik de plek');
     expect($lines)->not->toMatch('/\b[Ww]e\b/');
     expect($lines)->not->toMatch('/\b[Ww]ij\b/');
+    expect((string) $mail->salutation)->not->toContain('Joris');
 });

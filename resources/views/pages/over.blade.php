@@ -9,7 +9,7 @@
   <h1 class="page-title">{{ $title }}</h1>
 
   <h2>Wie</h2>
-  <p>Ik ben Joris Paardekooper. Ik maak en beheer {{ config('site.name') }} (gratisplanten.nl) via mijn bedrijf JP Web Creation: de website, de teksten en de hosting. Het is een plek waar mensen in Nederland en België gratis planten, stekjes en zaden aan elkaar geven.</p>
+  <p>Ik maak en beheer {{ config('site.name') }} (gratisplanten.nl): de website, de teksten en de hosting. Het is een plek waar mensen in Nederland en België gratis planten, stekjes en zaden aan elkaar geven.</p>
 
   <h2>Waarom</h2>
   <p>Te veel goede planten verdwijnen op de compost of in de kliko, terwijl iemand in de buurt er blij mee zou zijn. En vaak koop je iets nieuws, terwijl een stekje van een buur net zo goed was geweest. Ik wil meer groen en meer verbinding tussen mensen. Daarom wil ik uitproberen of mensen stekjes, planten en zaden gaan uitdelen en ophalen: gratis, met een praatje als enige tegenprestatie. Ik begin bij mensen die met voedselbossen en eetbare tuinen bezig zijn, maar iedereen in Nederland en België mag meedoen.</p>
