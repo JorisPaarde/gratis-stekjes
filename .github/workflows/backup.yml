@@ -25,7 +25,8 @@ jobs:
       matrix:
         include:
           - target: staging
-            env_name: ""
+            # Environment "staging" = nieuwe staging (STAGING_BASE_URL daar), niet de oude staging.stekjes.
+            env_name: staging
           - target: production
             env_name: production
     # Productie-secrets (URL, CRON_TOKEN) staan alleen in environment "production".
