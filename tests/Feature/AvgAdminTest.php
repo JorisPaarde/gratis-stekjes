@@ -147,7 +147,7 @@ test('privacy pagina linkt naar export en verwijderen', function () {
         ->assertOk()
         ->assertSee(route('account.export'), false)
         ->assertSee(route('account.verwijderen'), false)
-        ->assertSee('Concept – nog niet definitief', false)
+        ->assertDontSee('Concept – nog niet definitief', false)
         ->assertSee('JP Web Creation', false)
         ->assertSee('info@gratisplanten.nl', false)
         ->assertDontSee('info@jpwebcreation.nl', false)

@@ -69,7 +69,7 @@ test('privacy, over en initiatieven tonen geen Volgt binnenkort en geen we/wij/o
     $pages = [
         'privacy' => $this->get(route('privacy'))
             ->assertOk()
-            ->assertSee('Concept – nog niet definitief', false)
+            ->assertDontSee('Concept – nog niet definitief', false)
             ->assertSee('JP Web Creation', false)
             ->assertSee('https://jpwebcreation.nl', false)
             ->assertSee('90397320', false)

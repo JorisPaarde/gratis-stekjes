@@ -8,8 +8,6 @@
 <section class="section wrap prose">
   <h1 class="page-title">Privacyverklaring</h1>
 
-  <p class="flash flash-warn" role="status"><strong>Concept – nog niet definitief.</strong> Joris leest deze tekst na vóór livegang.</p>
-
   <p>Deze verklaring beschrijft welke persoonsgegevens {{ config('site.name') }} (gratisplanten.nl) verwerkt, waarom, hoe lang, en welke rechten je hebt. Ik houd het dicht bij wat de applicatie echt doet (zie ook de technische inventaris in de broncode).</p>
 
   <h2>Verwerkingsverantwoordelijke</h2>

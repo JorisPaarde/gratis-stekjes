@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.26.6] - 2026-10-31
+
+### Removed
+
+- Privacyverklaring: concept-banner («Concept – nog niet definitief») verwijderd.
+
 ## [0.26.5] - 2026-10-31
 
 ### Added
