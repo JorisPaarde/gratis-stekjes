@@ -21,7 +21,8 @@ final class Steden
      *   lat: float,
      *   lng: float,
      *   straal_km: float,
-     *   intro: string
+     *   intro: string,
+     *   country: string
      * }>
      */
     public function all(): array
@@ -48,7 +49,8 @@ final class Steden
      *   lat: float,
      *   lng: float,
      *   straal_km: float,
-     *   intro: string
+     *   intro: string,
+     *   country: string
      * }>>
      */
     public function groupedByProvincie(): array
@@ -65,6 +67,42 @@ final class Steden
     }
 
     /**
+     * Groepeer eerst op land (Nederland / België), daarna op provincie.
+     *
+     * @return array<string, array<string, list<array{
+     *   naam: string,
+     *   slug: string,
+     *   provincie: string,
+     *   lat: float,
+     *   lng: float,
+     *   straal_km: float,
+     *   intro: string,
+     *   country: string
+     * }>>>
+     */
+    public function groupedByLand(): array
+    {
+        $landen = [
+            'Nederland' => [],
+            'België' => [],
+        ];
+        foreach ($this->all() as $stad) {
+            $land = ($stad['country'] ?? 'NL') === 'BE' ? 'België' : 'Nederland';
+            $prov = $stad['provincie'];
+            $landen[$land][$prov] ??= [];
+            $landen[$land][$prov][] = $stad;
+        }
+        foreach ($landen as $land => $provs) {
+            ksort($landen[$land], SORT_NATURAL | SORT_FLAG_CASE);
+            if ($landen[$land] === []) {
+                unset($landen[$land]);
+            }
+        }
+
+        return $landen;
+    }
+
+    /**
      * @return array{
      *   naam: string,
      *   slug: string,
@@ -72,7 +110,8 @@ final class Steden
      *   lat: float,
      *   lng: float,
      *   straal_km: float,
-     *   intro: string
+     *   intro: string,
+     *   country: string
      * }|null
      */
     public function find(string $slug): ?array
@@ -90,19 +129,38 @@ final class Steden
     }
 
     /**
-     * Nabije steden op haversine-afstand (exclusief huidige).
+     * Document-/H1-titel per land (BE noemt zaden expliciet).
      *
-     * @param  array{lat: float, lng: float, slug: string}  $stad
-     * @return list<array{naam: string, slug: string, provincie: string, afstand_km: float}>
+     * @param  array{naam: string, country?: string}  $stad
+     */
+    public function pageTitle(array $stad): string
+    {
+        $naam = (string) $stad['naam'];
+        if (($stad['country'] ?? 'NL') === 'BE') {
+            return 'Gratis planten, stekjes en zaden in '.$naam;
+        }
+
+        return 'Gratis planten en stekjes in '.$naam;
+    }
+
+    /**
+     * Nabije steden op haversine-afstand (exclusief huidige), zelfde land.
+     *
+     * @param  array{lat: float, lng: float, slug: string, country?: string}  $stad
+     * @return list<array{naam: string, slug: string, provincie: string, country: string, afstand_km: float}>
      */
     public function nearby(array $stad, int $limit = 6): array
     {
         $lat = (float) $stad['lat'];
         $lng = (float) $stad['lng'];
         $slug = (string) $stad['slug'];
+        $country = (string) ($stad['country'] ?? 'NL');
         $rows = [];
         foreach ($this->all() as $other) {
             if ($other['slug'] === $slug) {
+                continue;
+            }
+            if (($other['country'] ?? 'NL') !== $country) {
                 continue;
             }
             $km = Geo::haversineKm($lat, $lng, $other['lat'], $other['lng']);
@@ -110,6 +168,7 @@ final class Steden
                 'naam' => $other['naam'],
                 'slug' => $other['slug'],
                 'provincie' => $other['provincie'],
+                'country' => $other['country'],
                 'afstand_km' => round($km, 1),
             ];
         }
@@ -121,7 +180,7 @@ final class Steden
     /**
      * FAQ-items voor een stad (FAQPage-schema + UI).
      *
-     * @param  array{naam: string, straal_km: float}  $stad
+     * @param  array{naam: string, straal_km: float, country?: string, slug?: string}  $stad
      * @return list<array{vraag: string, antwoord: string}>
      */
     public function faqFor(array $stad): array
@@ -129,6 +188,12 @@ final class Steden
         $naam = $stad['naam'];
         $straal = (int) round((float) $stad['straal_km']);
         $site = (string) config('site.name');
+        $country = (string) ($stad['country'] ?? 'NL');
+        $slug = (string) ($stad['slug'] ?? '');
+
+        if ($country === 'BE') {
+            return $this->faqForBelgie($naam, $straal, $site, $slug);
+        }
 
         return [
             [
@@ -148,6 +213,63 @@ final class Steden
                 'antwoord' => 'Als ik openbare deelplekken (zoals plantenasiel, plantenbieb of ruilkast) in of bij deze stad ken, toon ik die hier. Anders kun je landelijk zoeken op de aanbodkaart of de deelplekkenpagina — als die beschikbaar is.',
             ],
         ];
+    }
+
+    /**
+     * @return list<array{vraag: string, antwoord: string}>
+     */
+    private function faqForBelgie(string $naam, int $straal, string $site, string $slug): array
+    {
+        $faq = [
+            [
+                'vraag' => 'Wat is een zadenbib?',
+                'antwoord' => 'Een zadenbib (ook grainothèque) is een openbare plek — vaak in een bibliotheek — waar je gratis zaden van groenten, kruiden of bloemen kunt meenemen en zelf geoogste zaden mag achterlaten. Op '.$site.' toon ik alleen zadenbibs die in mijn openbare lijst staan.',
+            ],
+            [
+                'vraag' => "Hoe ver zoekt deze pagina rond {$naam}?",
+                'antwoord' => "Ik toon vaste deelplekken en eventueel aanbod van mensen binnen ongeveer {$straal} km. Kaartpunten zijn benaderd; voor openingsuren en regels kijk je op de bronpagina van elke zadenbib.",
+            ],
+        ];
+
+        if ($slug === 'lommel') {
+            $faq[] = [
+                'vraag' => 'Moet ik lid zijn van de bib?',
+                'antwoord' => 'Nee. Bij de zadenbibs van Noord-Limburg (Lommel, Pelt en omgeving) mag iedereen meedoen, ook zonder lidmaatschap van de bibliotheek.',
+            ];
+            $faq[] = [
+                'vraag' => 'Hoeveel zakjes mag ik meenemen?',
+                'antwoord' => 'Bij de zadenbibs van Noord-Limburg mag je per bezoek maximaal drie zakjes meenemen. Er is geen uitleentermijn en er zijn geen boetes; de bib vraagt wel om zelf geoogste zaden terug te schenken als dat lukt.',
+            ];
+        } elseif ($slug === 'antwerpen') {
+            $faq[] = [
+                'vraag' => 'Hoe werkt de zadenbib in Antwerpen?',
+                'antwoord' => 'Je neemt gratis zaden mee en schenkt bij voorkeur zelf geoogste zaden terug. De Antwerpse zadenbibs zijn open tijdens de normale openingsuren van de bib, jaarlijks van eind februari/begin maart tot oktober (daarna winterrust).',
+            ];
+            $faq[] = [
+                'vraag' => 'Hoe bied ik zelf iets aan?',
+                'antwoord' => 'Voor vaste zadenbibs breng je zaden naar de bib. Voor stekjes of planten van mens tot mens maak je een account op '.$site.', bevestig je e-mail en plaats aanbod met een benaderde locatie.',
+            ];
+        } elseif ($slug === 'namen') {
+            $faq[] = [
+                'vraag' => 'Hoe werkt een grainothèque in Namen?',
+                'antwoord' => 'In de bibliotheken van Flawinne, Malonne en La Célestine kun je gratis zakjes zaden meenemen tijdens de openingsuren. Gebruikers laten zelf geoogste zaden achter; oude, lokale en reproductieve rassen krijgen voorrang.',
+            ];
+            $faq[] = [
+                'vraag' => 'Hoe bied ik zelf iets aan?',
+                'antwoord' => 'Voor de grainothèque lever je zaden in bij een van de drie bibliotheken. Voor stekjes of planten via buren maak je een account op '.$site.' en plaats je aanbod met een benaderde locatie.',
+            ];
+        } else {
+            $faq[] = [
+                'vraag' => 'Moet ik lid zijn van de bib?',
+                'antwoord' => 'Dat verschilt per zadenbib. Op de bronpagina bij elke plek op deze pagina lees je de lokale regels; ik verzin geen lidmaatschapseisen die niet in die bron staan.',
+            ];
+            $faq[] = [
+                'vraag' => 'Hoe bied ik zelf iets aan?',
+                'antwoord' => 'Voor een zadenbib volg je de schenkregels op de bronpagina van die bib. Voor stekjes of planten van mens tot mens maak je een account op '.$site.', bevestig je e-mail en plaats aanbod.',
+            ];
+        }
+
+        return $faq;
     }
 
     /**
@@ -181,6 +303,10 @@ final class Steden
                     $errors[] = "steden[$i] mist veld $key";
                 }
             }
+            $country = $row['country'] ?? 'NL';
+            if (! in_array($country, ['NL', 'BE'], true)) {
+                $errors[] = "steden[$i] country moet NL of BE zijn";
+            }
             $slug = (string) ($row['slug'] ?? '');
             if ($slug !== '' && ! preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $slug)) {
                 $errors[] = "steden[$i] ongeldige slug: $slug";
@@ -199,9 +325,9 @@ final class Steden
             } else {
                 $latF = (float) $lat;
                 $lngF = (float) $lng;
-                // Stadspagina's blijven NL-only; bbox dekt NL (+ marge richting België).
-                if ($latF < 50.5 || $latF > 53.7 || $lngF < 2.4 || $lngF > 7.4) {
-                    $errors[] = "steden[$i] coördinaten buiten NL-bbox";
+                // Zelfde bbox als Deelplekken: NL + heel België.
+                if ($latF < 49.4 || $latF > 53.7 || $lngF < 2.4 || $lngF > 7.4) {
+                    $errors[] = "steden[$i] coördinaten buiten NL+België-bbox";
                 }
             }
             $straal = $row['straal_km'] ?? null;
@@ -249,11 +375,17 @@ final class Steden
      *   lat: float,
      *   lng: float,
      *   straal_km: float,
-     *   intro: string
+     *   intro: string,
+     *   country: string
      * }
      */
     private function normalize(array $row): array
     {
+        $country = strtoupper(trim((string) ($row['country'] ?? 'NL')));
+        if ($country !== 'BE') {
+            $country = 'NL';
+        }
+
         return [
             'naam' => (string) $row['naam'],
             'slug' => (string) $row['slug'],
@@ -262,6 +394,7 @@ final class Steden
             'lng' => (float) $row['lng'],
             'straal_km' => (float) $row['straal_km'],
             'intro' => (string) $row['intro'],
+            'country' => $country,
         ];
     }
 }

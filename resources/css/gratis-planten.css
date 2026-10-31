@@ -1,11 +1,22 @@
 /**
  * Component styles for /gratis-planten and /gratis-planten/{stad}.
  */
-.gratis-planten-index .gp-provincie {
-  margin-top: 1.75rem;
+.gratis-planten-index .gp-land {
+  margin-top: 2rem;
 }
 
-.gratis-planten-index .gp-provincie h2 {
+.gratis-planten-index .gp-land > h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.35rem;
+  color: var(--leaf-deep, #163820);
+}
+
+.gratis-planten-index .gp-provincie {
+  margin-top: 1.25rem;
+}
+
+.gratis-planten-index .gp-provincie h2,
+.gratis-planten-index .gp-provincie h3 {
   margin: 0 0 0.5rem;
   font-size: 1.2rem;
   color: var(--leaf-deep, #163820);

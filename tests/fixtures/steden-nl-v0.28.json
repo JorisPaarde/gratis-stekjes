@@ -1,0 +1,380 @@
+[
+  {
+    "naam": "Amsterdam",
+    "slug": "amsterdam",
+    "provincie": "Noord-Holland",
+    "lat": 52.3676,
+    "lng": 4.9041,
+    "straal_km": 20,
+    "intro": "In Amsterdam delen buurtgenoten gratis planten en stekjes via deze pagina. Je ziet actueel aanbod binnen ongeveer 20 km, met alleen benaderde plekken op de kaart. Zet zelf iets online als je iets overhebt."
+  },
+  {
+    "naam": "Rotterdam",
+    "slug": "rotterdam",
+    "provincie": "Zuid-Holland",
+    "lat": 51.9244,
+    "lng": 4.4777,
+    "straal_km": 18,
+    "intro": "Gratis planten in Rotterdam vind je hier bij mensen in de buurt, niet in een winkel. Ophalen gebeurt fysiek; de enige tegenprestatie is een praatje. Privacy eerst: geen straatadres op de site."
+  },
+  {
+    "naam": "Den Haag",
+    "slug": "den-haag",
+    "provincie": "Zuid-Holland",
+    "lat": 52.0705,
+    "lng": 4.3007,
+    "straal_km": 15,
+    "intro": "Rond Den Haag kun je gratis planten delen of ophalen met een benaderde locatie. Contactgegevens volgen pas na wederzijds akkoord via de site. Zo blijft uitdelen dichtbij en veilig genoeg om mee te doen."
+  },
+  {
+    "naam": "Utrecht",
+    "slug": "utrecht",
+    "provincie": "Utrecht",
+    "lat": 52.0907,
+    "lng": 5.1214,
+    "straal_km": 15,
+    "intro": "Deze stadspagina toont gratis planten in Utrecht binnen ongeveer 15 km. Zoek wat past of bied zelf een stekje aan zodat de lijst groeit. Verder zoeken kan altijd op de landelijke aanbodkaart."
+  },
+  {
+    "naam": "Eindhoven",
+    "slug": "eindhoven",
+    "provincie": "Noord-Brabant",
+    "lat": 51.4416,
+    "lng": 5.4697,
+    "straal_km": 15,
+    "intro": "In Eindhoven draait gratis planten om delen tussen mensen. Stekjes en planten krijgen een nieuw huis in de buurt, zonder verkoop. De kaartuitsnede hieronder houdt de focus lokaal."
+  },
+  {
+    "naam": "Groningen",
+    "slug": "groningen",
+    "provincie": "Groningen",
+    "lat": 53.2194,
+    "lng": 6.5665,
+    "straal_km": 15,
+    "intro": "Gratis planten in Groningen beginnen vaak met een stekje op een vensterbank. Hier zie je wat er nu binnen de straal openbaar staat. Mis je aanbod, dan helpt één eigen plaatsing de buurt verder."
+  },
+  {
+    "naam": "Tilburg",
+    "slug": "tilburg",
+    "provincie": "Noord-Brabant",
+    "lat": 51.5555,
+    "lng": 5.0913,
+    "straal_km": 14,
+    "intro": "Tilburg en omgeving: gratis planten delen zonder webshop. Locaties blijven benaderd tot postcode of plaats. Spreek zelf een ophaalmoment af nadat jullie het via de site eens zijn."
+  },
+  {
+    "naam": "Almere",
+    "slug": "almere",
+    "provincie": "Flevoland",
+    "lat": 52.3508,
+    "lng": 5.2647,
+    "straal_km": 14,
+    "intro": "In Almere kun je via gratis planten zien wat buren weggeven of zoeken. Alles blijft gratis; je haalt het fysiek op. Een praatje bij de deur is de enige ‘prijs’."
+  },
+  {
+    "naam": "Breda",
+    "slug": "breda",
+    "provincie": "Noord-Brabant",
+    "lat": 51.5719,
+    "lng": 4.7683,
+    "straal_km": 14,
+    "intro": "Gratis planten in Breda zijn bedoeld om stekjes dichterbij huis te laten circuleren. Deze pagina filtert op afstand rond de stad. Nabije steden staan onderaan als je net over de grens kijkt."
+  },
+  {
+    "naam": "Nijmegen",
+    "slug": "nijmegen",
+    "provincie": "Gelderland",
+    "lat": 51.8126,
+    "lng": 5.8372,
+    "straal_km": 14,
+    "intro": "Nijmegen heeft hier een lokale ingang voor gratis planten en stekjes. Het aanbod komt van accounts met een benaderde plek. Zelf aanbieden kan zodra je account bevestigd is."
+  },
+  {
+    "naam": "Apeldoorn",
+    "slug": "apeldoorn",
+    "provincie": "Gelderland",
+    "lat": 52.2112,
+    "lng": 5.9699,
+    "straal_km": 14,
+    "intro": "Rond Apeldoorn tonen we actueel aanbod van gratis planten binnen ongeveer 14 km. Delen blijft mens tot mens, zonder verkoop. Handig naast de stektips als je net begint met stekken."
+  },
+  {
+    "naam": "Haarlem",
+    "slug": "haarlem",
+    "provincie": "Noord-Holland",
+    "lat": 52.3874,
+    "lng": 4.6462,
+    "straal_km": 12,
+    "intro": "Haarlem en buurt: gratis planten ophalen of uitdelen via de site. Je ziet alleen benaderde locaties, nooit een exact adres. Stuur een bericht als iets past, of plaats zelf aanbod."
+  },
+  {
+    "naam": "Arnhem",
+    "slug": "arnhem",
+    "provincie": "Gelderland",
+    "lat": 51.9851,
+    "lng": 5.8987,
+    "straal_km": 14,
+    "intro": "In Arnhem draait het om gratis planten delen met mensen in de buurt. Deze pagina bundelt wat er nu binnen de straal staat. De landelijke kaart blijft beschikbaar voor een breder zoekveld."
+  },
+  {
+    "naam": "Haarlemmermeer",
+    "slug": "haarlemmermeer",
+    "provincie": "Noord-Holland",
+    "lat": 52.3008,
+    "lng": 4.6889,
+    "straal_km": 14,
+    "intro": "Haarlemmermeer is groot; daarom zoeken we gratis planten in een ruime straal. Benaderde plekken houden adressen privé. Zet zelf iets online als de lijst nog dun is."
+  },
+  {
+    "naam": "Amersfoort",
+    "slug": "amersfoort",
+    "provincie": "Utrecht",
+    "lat": 52.1561,
+    "lng": 5.3878,
+    "straal_km": 12,
+    "intro": "Gratis planten in Amersfoort vind je hier lokaal gebundeld. Uitdelen en ophalen blijven gratis, met een praatje als tegenprestatie. Contactgegevens zie je pas na wederzijds akkoord."
+  },
+  {
+    "naam": "Zaanstad",
+    "slug": "zaanstad",
+    "provincie": "Noord-Holland",
+    "lat": 52.439,
+    "lng": 4.827,
+    "straal_km": 12,
+    "intro": "In Zaanstad kun je gratis planten en stekjes delen via deze stadspagina. De focus ligt op planten doorgeven, niet op verkopen. Bekijk ook nabije steden als je net buiten de gemeente zoekt."
+  },
+  {
+    "naam": "Den Bosch",
+    "slug": "den-bosch",
+    "provincie": "Noord-Brabant",
+    "lat": 51.6978,
+    "lng": 5.3037,
+    "straal_km": 12,
+    "intro": "Den Bosch en omgeving: gratis planten van mens tot mens. Deze pagina toont aanbod binnen ongeveer 12 km. Locaties op de kaart zijn bewust benaderd."
+  },
+  {
+    "naam": "Zwolle",
+    "slug": "zwolle",
+    "provincie": "Overijssel",
+    "lat": 52.5168,
+    "lng": 6.083,
+    "straal_km": 12,
+    "intro": "Rond Zwolle verzamelen we gratis planten en stekjes die openbaar staan. Zoek, stuur een bericht, of bied zelf iets aan. Verder weg zoeken kan op de landelijke kaart."
+  },
+  {
+    "naam": "Zoetermeer",
+    "slug": "zoetermeer",
+    "provincie": "Zuid-Holland",
+    "lat": 52.0607,
+    "lng": 4.494,
+    "straal_km": 12,
+    "intro": "Gratis planten in Zoetermeer beginnen dichtbij huis. Hier zie je wat er binnen de straal te delen valt. Een eigen aanbod maakt de pagina nuttiger voor de volgende bezoeker."
+  },
+  {
+    "naam": "Leiden",
+    "slug": "leiden",
+    "provincie": "Zuid-Holland",
+    "lat": 52.1601,
+    "lng": 4.497,
+    "straal_km": 12,
+    "intro": "In Leiden kun je gratis planten ophalen of uitdelen zonder winkel. Privacy eerst: alleen benaderde plekken. Spreek onderling een ophaalmoment af via de berichten op de site."
+  },
+  {
+    "naam": "Maastricht",
+    "slug": "maastricht",
+    "provincie": "Limburg",
+    "lat": 50.8514,
+    "lng": 5.6909,
+    "straal_km": 12,
+    "intro": "Maastricht heeft hier een lokale pagina voor gratis planten. Stekjes en planten blijven gratis; je haalt ze fysiek op. Deelplekken tonen we alleen als die data beschikbaar is."
+  },
+  {
+    "naam": "Dordrecht",
+    "slug": "dordrecht",
+    "provincie": "Zuid-Holland",
+    "lat": 51.8133,
+    "lng": 4.6901,
+    "straal_km": 12,
+    "intro": "Gratis planten in Dordrecht: delen tussen buren, geen verkoop. Deze pagina filtert op afstand rond de stad. Staat de lijst leeg, dan kun jij de eerste zijn."
+  },
+  {
+    "naam": "Ede",
+    "slug": "ede",
+    "provincie": "Gelderland",
+    "lat": 52.0403,
+    "lng": 5.665,
+    "straal_km": 14,
+    "intro": "Rond Ede tonen we gratis planten binnen een ruime straal. Het idee is eenvoudig: overschot doorgeven, tekort aanvullen. Een praatje hoort erbij, een prijskaartje niet."
+  },
+  {
+    "naam": "Leeuwarden",
+    "slug": "leeuwarden",
+    "provincie": "Fryslân",
+    "lat": 53.2012,
+    "lng": 5.7999,
+    "straal_km": 14,
+    "intro": "In Leeuwarden draait gratis planten om stekjes en planten dichterbij huis. Bekijk het actuele aanbod of plaats zelf iets. Nabije steden helpen als je net over de provinciegrens kijkt."
+  },
+  {
+    "naam": "Alkmaar",
+    "slug": "alkmaar",
+    "provincie": "Noord-Holland",
+    "lat": 52.6324,
+    "lng": 4.7534,
+    "straal_km": 12,
+    "intro": "Gratis planten in Alkmaar vind je hier bij mensen in de buurt. Locaties blijven benaderd tot plaats of postcode. Contact volgt pas als jullie allebei ja zeggen via de site."
+  },
+  {
+    "naam": "Emmen",
+    "slug": "emmen",
+    "provincie": "Drenthe",
+    "lat": 52.7792,
+    "lng": 6.9069,
+    "straal_km": 15,
+    "intro": "Emmen en wijde omgeving: gratis planten delen zonder webshop. We zoeken in een ruimere straal omdat de stad verspreid ligt. Zelf aanbieden helpt de kaart vullen."
+  },
+  {
+    "naam": "Westland",
+    "slug": "westland",
+    "provincie": "Zuid-Holland",
+    "lat": 51.997,
+    "lng": 4.219,
+    "straal_km": 12,
+    "intro": "In Westland kun je gratis planten en stekjes via deze pagina lokaliseren. Ophalen blijft fysiek en gratis. De focus ligt op delen, niet op handel."
+  },
+  {
+    "naam": "Delft",
+    "slug": "delft",
+    "provincie": "Zuid-Holland",
+    "lat": 52.0116,
+    "lng": 4.3571,
+    "straal_km": 10,
+    "intro": "Delft is compact; gratis planten zoeken we dichtbij. Deze pagina toont aanbod binnen ongeveer 10 km. Verder zoeken kan via de landelijke aanbodkaart."
+  },
+  {
+    "naam": "Venlo",
+    "slug": "venlo",
+    "provincie": "Limburg",
+    "lat": 51.3704,
+    "lng": 6.1724,
+    "straal_km": 12,
+    "intro": "Rond Venlo verzamelen we gratis planten van accounts met een benaderde plek. Delen blijft mens tot mens. Zet zelf een stekje online als je iets overhebt."
+  },
+  {
+    "naam": "Deventer",
+    "slug": "deventer",
+    "provincie": "Overijssel",
+    "lat": 52.2552,
+    "lng": 6.1639,
+    "straal_km": 12,
+    "intro": "Gratis planten in Deventer: stekjes en planten doorgeven in de buurt. Geen straatadres op de kaart, wel een lokale lijst en kaartuitsnede. FAQ hieronder legt de spelregels kort uit."
+  },
+  {
+    "naam": "Helmond",
+    "slug": "helmond",
+    "provincie": "Noord-Brabant",
+    "lat": 51.4816,
+    "lng": 5.6611,
+    "straal_km": 12,
+    "intro": "In Helmond kun je gratis planten ophalen of uitdelen via de site. Alles blijft gratis; de enige tegenprestatie is een praatje. Bekijk nabije steden voor een iets bredere radius."
+  },
+  {
+    "naam": "Heerlen",
+    "slug": "heerlen",
+    "provincie": "Limburg",
+    "lat": 50.8882,
+    "lng": 5.9795,
+    "straal_km": 12,
+    "intro": "Heerlen en omgeving staan hier onder gratis planten. Aanbod komt van mensen die een benaderde locatie hebben gedeeld. Zelf meedoen kan na e-mailbevestiging van je account."
+  },
+  {
+    "naam": "Hilversum",
+    "slug": "hilversum",
+    "provincie": "Noord-Holland",
+    "lat": 52.2292,
+    "lng": 5.1669,
+    "straal_km": 12,
+    "intro": "Gratis planten in Hilversum bundelen we lokaal op deze pagina. Zoek wat past of bied aan wat je overhebt. Privacy blijft leidend: geen exacte adressen."
+  },
+  {
+    "naam": "Hengelo",
+    "slug": "hengelo",
+    "provincie": "Overijssel",
+    "lat": 52.2659,
+    "lng": 6.7931,
+    "straal_km": 12,
+    "intro": "In Hengelo draait het om gratis planten delen tussen buren. Deze pagina filtert op afstand rond de stad. De landelijke kaart blijft de plek voor een grotere zoekcirkel."
+  },
+  {
+    "naam": "Purmerend",
+    "slug": "purmerend",
+    "provincie": "Noord-Holland",
+    "lat": 52.505,
+    "lng": 4.9597,
+    "straal_km": 12,
+    "intro": "Purmerend heeft een lokale ingang voor gratis planten en stekjes. Locaties zijn benaderd; afspreken doe je zelf. Een eigen aanbod maakt delen in de buurt zichtbaarder."
+  },
+  {
+    "naam": "Almelo",
+    "slug": "almelo",
+    "provincie": "Overijssel",
+    "lat": 52.357,
+    "lng": 6.668,
+    "straal_km": 12,
+    "intro": "Rond Almelo tonen we actueel aanbod van gratis planten. Uitdelen en ophalen blijven gratis. Neem ook een kijkje bij nabije steden als je net buiten de gemeente zoekt."
+  },
+  {
+    "naam": "Roosendaal",
+    "slug": "roosendaal",
+    "provincie": "Noord-Brabant",
+    "lat": 51.5306,
+    "lng": 4.4653,
+    "straal_km": 12,
+    "intro": "Gratis planten in Roosendaal: stekjes dichterbij huis laten circuleren. Deze pagina toont wat er binnen de straal openbaar staat. Deelplekken verschijnen alleen als die data er is."
+  },
+  {
+    "naam": "Schiedam",
+    "slug": "schiedam",
+    "provincie": "Zuid-Holland",
+    "lat": 51.9194,
+    "lng": 4.3883,
+    "straal_km": 10,
+    "intro": "In Schiedam zoeken we gratis planten dichtbij, binnen ongeveer 10 km. Benaderde plekken houden je adres privé. Stuur een bericht als iets past."
+  },
+  {
+    "naam": "Lelystad",
+    "slug": "lelystad",
+    "provincie": "Flevoland",
+    "lat": 52.5185,
+    "lng": 5.4714,
+    "straal_km": 14,
+    "intro": "Lelystad en omgeving: gratis planten delen zonder verkoop. We gebruiken een ruime straal zodat aanbod in de regio meekomt. Zelf plaatsen helpt de pagina groeien."
+  },
+  {
+    "naam": "Alphen aan den Rijn",
+    "slug": "alphen-aan-den-rijn",
+    "provincie": "Zuid-Holland",
+    "lat": 52.1292,
+    "lng": 4.6555,
+    "straal_km": 12,
+    "intro": "Gratis planten in Alphen aan den Rijn vind je hier lokaal. Stekjes en planten blijven gratis; je haalt ze fysiek op. FAQ en nabije steden staan onderaan."
+  },
+  {
+    "naam": "Spijkenisse",
+    "slug": "spijkenisse",
+    "provincie": "Zuid-Holland",
+    "lat": 51.8453,
+    "lng": 4.3297,
+    "straal_km": 12,
+    "intro": "In Spijkenisse kun je via deze pagina gratis planten delen of ophalen. De kaartuitsnede toont benaderde plekken binnen de straal. Geen webshop, wel buren met een stekje over."
+  },
+  {
+    "naam": "Vlaardingen",
+    "slug": "vlaardingen",
+    "provincie": "Zuid-Holland",
+    "lat": 51.9125,
+    "lng": 4.3417,
+    "straal_km": 10,
+    "intro": "Vlaardingen heeft hier een compacte zoekcirkel voor gratis planten. Alles blijft gratis en lokaal gericht. Mis je iets, plaats dan zelf een aanbod voor de volgende bezoeker."
+  }
+]

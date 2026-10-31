@@ -160,12 +160,13 @@ test('soortpagina’s en steden hebben onderling unieke titles', function () {
         $titles[] = $title;
     }
 
-    foreach (app(Steden::class)->all() as $stad) {
+    $steden = app(Steden::class);
+    foreach ($steden->all() as $stad) {
         $html = $this->get(route('gratis-planten.show', ['stad' => $stad['slug']]))
             ->assertOk()
             ->getContent();
         $title = pageTitleFromHtml($html);
-        $expectedPage = 'Gratis planten en stekjes in '.$stad['naam'];
+        $expectedPage = $steden->pageTitle($stad);
         expect($title)->toBe(SeoTitle::document($expectedPage))
             ->and($titles)->not->toContain($title);
         $titles[] = $title;

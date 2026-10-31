@@ -96,9 +96,21 @@
   </div>
 
   <section class="gp-deelplekken" aria-labelledby="deelplekken-titel">
-    <h2 id="deelplekken-titel">Deelplekken in of bij {{ $stad['naam'] }}</h2>
+    <h2 id="deelplekken-titel">
+      @if(($stad['country'] ?? 'NL') === 'BE')
+        Zadenbibs en deelplekken in of bij {{ $stad['naam'] }}
+      @else
+        Deelplekken in of bij {{ $stad['naam'] }}
+      @endif
+    </h2>
     @if(count($deelplekken) > 0)
-      <p class="section-intro">Vaste plekken om planten of zaden te delen (uit openbare bronnen), naast het aanbod van mens tot mens.</p>
+      <p class="section-intro">
+        @if(($stad['country'] ?? 'NL') === 'BE')
+          Vaste zadenbibs en andere deelplekken (uit openbare bronnen), naast het aanbod van mens tot mens.
+        @else
+          Vaste plekken om planten of zaden te delen (uit openbare bronnen), naast het aanbod van mens tot mens.
+        @endif
+      </p>
       <ul class="gp-deelplek-lijst">
         @foreach($deelplekken as $plek)
           <li>
@@ -134,7 +146,13 @@
       <ul class="gp-stad-lijst gp-stad-lijst--inline">
         @foreach($nearby as $n)
           <li>
-            <a href="{{ route('gratis-planten.show', ['stad' => $n['slug']]) }}">Gratis planten en stekjes in {{ $n['naam'] }}</a>
+            <a href="{{ route('gratis-planten.show', ['stad' => $n['slug']]) }}">
+              @if(($n['country'] ?? 'NL') === 'BE')
+                Gratis planten, stekjes en zaden in {{ $n['naam'] }}
+              @else
+                Gratis planten en stekjes in {{ $n['naam'] }}
+              @endif
+            </a>
             <span class="muted"> (±{{ $n['afstand_km'] }} km)</span>
           </li>
         @endforeach
