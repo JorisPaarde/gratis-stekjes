@@ -218,6 +218,7 @@ test('beheer gebruikers-tabel toont geen Beheertoegang-kolom en geen e-mailadres
         ->assertSee('Gewoon Lid', false)
         ->assertSee('Nog Niet Bevestigd', false)
         ->assertSee('Verwijderen', false)
+        ->assertSee(route('beheer.users.destroy.confirm', $member), false)
         ->assertDontSee(jpwebcreationTestEmail(), false)
         ->assertDontSee('lid-zonder-beheer@example.test', false)
         ->assertDontSee('andere-owner@example.test', false)

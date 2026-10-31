@@ -253,9 +253,11 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::post('/gebruikers/bevestiging-opnieuw', [BeheerDashboardController::class, 'resendVerification'])
         ->middleware('throttle:10,1')
         ->name('beheer.users.resend-verification');
+    Route::get('/gebruikers/{user}/verwijderen', [BeheerDashboardController::class, 'confirmDestroyUser'])
+        ->whereNumber('user')
+        ->name('beheer.users.destroy.confirm');
+    Route::post('/gebruikers/{user}/verwijderen', [BeheerDashboardController::class, 'destroyUser'])
+        ->middleware('throttle:10,1')
+        ->whereNumber('user')
+        ->name('beheer.users.destroy');
 });
-
-// Bewust buiten admin-middleware: niet-admin krijgt 403 (geen login-redirect).
-Route::post('/beheer/gebruikers/verwijderen', [BeheerDashboardController::class, 'destroyUser'])
-    ->middleware('throttle:10,1')
-    ->name('beheer.users.destroy');

@@ -239,9 +239,11 @@ final class MessagingService
         ];
         if ($mutual) {
             $andere['email'] = $other->email;
-            $tel = trim((string) $other->telefoon);
-            if ($tel !== '') {
-                $andere['telefoon'] = $tel;
+            if (! $other->isUnreadable('telefoon')) {
+                $tel = trim((string) ($other->telefoon ?? ''));
+                if ($tel !== '') {
+                    $andere['telefoon'] = $tel;
+                }
             }
         }
 
@@ -253,12 +255,18 @@ final class MessagingService
             'overdracht_afgerond' => $conversation->isOverdrachtAfgerond(),
             'andere' => $andere,
             'veiligheidstips' => 'Spreek af op een plek die voor jou veilig voelt, bijvoorbeeld bij je voordeur of overdag op een openbare plek. Deel geen exact huisadres via de site totdat je elkaar vertrouwt.',
-            'berichten' => $conversation->messages()->get()->map(fn (Message $m) => [
-                'id' => $m->id,
-                'sender_id' => $m->sender_id,
-                'body' => $m->body,
-                'created_at' => $m->created_at?->timezone('Europe/Amsterdam')->format('d-m-Y H:i'),
-            ])->all(),
+            'berichten' => $conversation->messages()->get()->map(function (Message $m) {
+                $body = $m->isUnreadable('body')
+                    ? \App\Casts\SafeEncrypted::VIEW_FALLBACK
+                    : (string) ($m->body ?? '');
+
+                return [
+                    'id' => $m->id,
+                    'sender_id' => $m->sender_id,
+                    'body' => $body,
+                    'created_at' => $m->created_at?->timezone('Europe/Amsterdam')->format('d-m-Y H:i'),
+                ];
+            })->all(),
         ];
     }
 }

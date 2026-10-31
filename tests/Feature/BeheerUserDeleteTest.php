@@ -54,9 +54,15 @@ test('admin kan gebruiker verwijderen inclusief aanbod en berichten', function (
     $targetId = (int) $target->id;
 
     $this->withSession(['admin_ok' => true])
-        ->post(route('beheer.users.destroy'), [
-            'user_id' => $targetId,
-            'confirm_name' => 'Testaccount Weg',
+        ->get(route('beheer.users.destroy.confirm', $target))
+        ->assertOk()
+        ->assertSee('Weet je zeker', false)
+        ->assertSee('VERWIJDER', false)
+        ->assertDontSee('onsubmit=', false);
+
+    $this->withSession(['admin_ok' => true])
+        ->post(route('beheer.users.destroy', $target), [
+            'confirm' => 'VERWIJDER',
         ])
         ->assertRedirect(route('beheer.index'))
         ->assertSessionHas('status');
@@ -78,7 +84,25 @@ test('admin kan gebruiker verwijderen inclusief aanbod en berichten', function (
         ->once();
 });
 
-test('niet-admin krijgt 403 bij gebruikers-verwijderen', function () {
+test('verwijderen zonder VERWIJDER weigert', function () {
+    $target = User::factory()->create([
+        'name' => 'Blijft Bestaan',
+        'email' => 'blijft-bestaan@example.test',
+        'email_verified_at' => now(),
+    ]);
+
+    $this->withSession(['admin_ok' => true])
+        ->from(route('beheer.users.destroy.confirm', $target))
+        ->post(route('beheer.users.destroy', $target), [
+            'confirm' => 'verwijder',
+        ])
+        ->assertRedirect(route('beheer.users.destroy.confirm', $target))
+        ->assertSessionHasErrors('confirm');
+
+    expect(User::query()->whereKey($target->id)->exists())->toBeTrue();
+});
+
+test('niet-admin wordt naar beheer.login gestuurd bij gebruikers-verwijderen', function () {
     $member = User::factory()->create([
         'name' => 'Gewoon Lid',
         'email' => 'lid@example.test',
@@ -91,11 +115,10 @@ test('niet-admin krijgt 403 bij gebruikers-verwijderen', function () {
     ]);
 
     $this->actingAs($member)
-        ->post(route('beheer.users.destroy'), [
-            'user_id' => $target->id,
-            'confirm_name' => 'Doelwit',
+        ->post(route('beheer.users.destroy', $target), [
+            'confirm' => 'VERWIJDER',
         ])
-        ->assertForbidden();
+        ->assertRedirect(route('beheer.login'));
 
     expect(User::query()->whereKey($target->id)->exists())->toBeTrue();
 });
@@ -109,11 +132,15 @@ test('admin kan eigen account niet via beheer verwijderen', function () {
     config(['stekjes.admin_dashboard_emails' => ['eigen-admin@example.test']]);
 
     $this->actingAs($owner)
-        ->post(route('beheer.users.destroy'), [
-            'user_id' => $owner->id,
-            'confirm_name' => 'Eigen Admin',
+        ->get(route('beheer.users.destroy.confirm', $owner))
+        ->assertRedirect(route('beheer.index'))
+        ->assertSessionHasErrors('user');
+
+    $this->actingAs($owner)
+        ->post(route('beheer.users.destroy', $owner), [
+            'confirm' => 'VERWIJDER',
         ])
-        ->assertRedirect()
+        ->assertRedirect(route('beheer.index'))
         ->assertSessionHasErrors('user');
 
     expect(User::query()->whereKey($owner->id)->exists())->toBeTrue();
@@ -124,5 +151,5 @@ test('admin kan eigen account niet via beheer verwijderen', function () {
         ->getContent();
 
     expect($html)->toContain('Eigen Admin')
-        ->and($html)->not->toMatch('/confirm_name" value="Eigen Admin"/');
+        ->and($html)->not->toContain(route('beheer.users.destroy.confirm', $owner));
 });

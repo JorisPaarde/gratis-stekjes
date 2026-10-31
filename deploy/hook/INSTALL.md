@@ -77,9 +77,10 @@ Zorg dat naast `DEPLOY_HOOK_TOKEN` ook staan (exacte namen):
 
 Optioneel: `APP_KEY` — **alleen voor de allereerste install** (geen `.env` op de
 server). Heeft de server al een `APP_KEY`, dan behoudt de hook die altijd — ook als
-het GitHub-secret anders of leeg is. Nooit handmatig draaien/`key:generate` op prod
-zonder backup: encrypted casts (feedback, berichten, telefoon, …) worden onleesbaar.
-Vóór elke `.env`-herschrijf maakt de hook `app-*/.env.backup` (mode 0600).
+het GitHub-secret anders of leeg is. Zet een oude key in `APP_PREVIOUS_KEYS` (CSV)
+op de server als ciphertext van vóór een key-wisseling weer leesbaar moet; de hook
+bewaart die regel altijd. Nooit `key:generate` op prod zonder backup. Vóór elke
+`.env`-herschrijf: `app-*/.env.backup-YYYYMMDDTHHMMSSZ` (mode 0600, max 10).
 
 Optioneel (backups): `BACKUP_ENCRYPTION_KEY` — zie `docs/backups.md`. Lege upload → bestaande server-waarde behouden.
 

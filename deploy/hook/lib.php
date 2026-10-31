@@ -715,16 +715,19 @@ function deploy_hook_resolve_app_key(string $envContent, string $existingEnvPath
 }
 
 /**
- * Kopieer bestaande .env naar .env.backup (mode 0600) vóór herschrijven.
- * Pad ligt naast de shared .env (buiten de docroot). Geen-op = true (niets te bewaren).
+ * Kopieer bestaande .env naar .env.backup-YYYYMMDDTHHMMSSZ (mode 0600) vóór herschrijven.
+ * Pad ligt naast de shared .env (buiten de docroot). Houdt maximaal $keep backups.
+ * Geen-op = true (niets te bewaren).
  */
-function deploy_hook_backup_env(string $envPath): bool
+function deploy_hook_backup_env(string $envPath, int $keep = 10): bool
 {
     if (! is_file($envPath)) {
         return true;
     }
 
-    $backup = $envPath.'.backup';
+    $dir = dirname($envPath);
+    $stamp = gmdate('Ymd\THis\Z');
+    $backup = $dir.'/.env.backup-'.$stamp;
     $content = @file_get_contents($envPath);
     if ($content === false) {
         return false;
@@ -734,7 +737,47 @@ function deploy_hook_backup_env(string $envPath): bool
     }
     @chmod($backup, 0600);
 
+    $existing = glob($dir.'/.env.backup-*') ?: [];
+    rsort($existing, SORT_STRING);
+    foreach (array_slice($existing, max(0, $keep)) as $old) {
+        if (is_file($old)) {
+            @unlink($old);
+        }
+    }
+
     return true;
+}
+
+/**
+ * Forceer behoud van een bestaande server-.env-waarde (upload wint nooit).
+ * Gebruikt voor APP_PREVIOUS_KEYS (hosting zet oude APP_KEY hier voor decrypt).
+ */
+function deploy_hook_preserve_existing_always(string $envContent, string $existingEnvPath, string $key): string
+{
+    $existing = deploy_hook_env_get($existingEnvPath, $key);
+    if ($existing === '') {
+        return $envContent;
+    }
+
+    $prefix = $key.'=';
+    $escaped = $key.'="'.str_replace(['\\', '"', '$'], ['\\\\', '\\"', '\\$'], $existing).'"';
+    $out = [];
+    $seen = false;
+    foreach (preg_split("/\r\n|\n|\r/", $envContent) ?: [] as $line) {
+        if (str_starts_with($line, $prefix)) {
+            $out[] = $escaped;
+            $seen = true;
+        } else {
+            $out[] = $line;
+        }
+    }
+    if (! $seen) {
+        $out[] = $escaped;
+    }
+
+    $joined = implode("\n", $out);
+
+    return $joined.(str_ends_with($joined, "\n") ? '' : "\n");
 }
 
 /**
@@ -1366,8 +1409,10 @@ function deploy_hook_action_finish(
     $finalEnv = deploy_hook_resolve_app_key($envContent, $existingEnv);
     $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'BACKUP_ENCRYPTION_KEY');
     $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'ADMIN_DASHBOARD_EMAILS');
-    // Backup buiten docroot (appDir/.env.backup) vóór herschrijven.
-    if (! deploy_hook_backup_env($existingEnv)) {
+    // APP_PREVIOUS_KEYS: bestaande server-waarde altijd behouden (Laravel previous_keys).
+    $finalEnv = deploy_hook_preserve_existing_always($finalEnv, $existingEnv, 'APP_PREVIOUS_KEYS');
+    // Timestamped backup buiten docroot (appDir/.env.backup-…, max 10) vóór herschrijven.
+    if (! deploy_hook_backup_env($existingEnv, 10)) {
         return ['ok' => false, 'error' => 'env_backup'];
     }
     if (! deploy_hook_write_env($existingEnv, $finalEnv)) {

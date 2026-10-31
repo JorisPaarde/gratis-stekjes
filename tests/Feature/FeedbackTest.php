@@ -177,11 +177,16 @@ test('admin feedbacklijst blijft 200 bij body met verkeerde APP_KEY', function (
         ->assertSee('Leesbare feedback met huidige sleutel.', false)
         ->assertSee('Ongelezen zonder user.', false)
         ->assertSee('Met pagina-pad.', false)
-        ->assertSee('Inhoud niet leesbaar (oude sleutel)', false)
+        ->assertSee('Inhoud niet leesbaar', false)
         ->assertSee('/kapot', false)
+        ->assertDontSee('Geheim met oude sleutel', false)
         ->getContent();
 
-    expect($html)->toContain(\App\Casts\SafeEncrypted::UNREADABLE)
+    $broken = Feedback::query()->where('page_path', '/kapot')->first();
+    expect($broken)->not->toBeNull()
+        ->and($broken->body)->toBeNull()
+        ->and($broken->isUnreadable('body'))->toBeTrue()
+        ->and($html)->toContain(\App\Casts\SafeEncrypted::VIEW_FALLBACK)
         ->and($readable->id)->toBeGreaterThan(0)
         ->and($unread->read_at)->toBeNull()
         ->and($withPath->page_path)->toBe('/stektips/basilicum');

@@ -20,7 +20,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   `deelplekken.contact_email`, `users.telefoon`) gebruiken `SafeEncrypted`: bij
   decrypt-fout `null` + `isUnreadable()`, views tonen «Inhoud niet leesbaar».
 - Deploy-hook: bestaande server-`APP_KEY` en `APP_PREVIOUS_KEYS` worden **nooit**
-  overschreven. Timestamped `.env.backup-…` (mode 0600, max 10) naast de shared
+  overschreven. Timestamped unieke `.env.backup-…` (mode 0600, max 10) naast de shared
   `.env` (buiten docroot). CI faalt op letterlijke merge-conflictmarkeringen.
 - Onleesbare `telefoon` / `contact_email`: geen mail naar onleesbaar adres; profiel
   wist ciphertext niet bij leeg formulier.

@@ -68,8 +68,9 @@ Zie **`deploy/hook/INSTALL.md`**. Kort:
 
 Optioneel: `ADMIN_DASHBOARD_EMAILS` — CSV met unieke account-e-mails voor Dashboard-menulink + `/beheer` zonder apart wachtwoord; bij lege upload behoudt de hook de bestaande server-waarde.
 
-Optioneel: `APP_KEY` — alleen voor first-install. Bestaande server-`APP_KEY` wordt
-nooit overschreven (encrypted casts). Hook schrijft `.env.backup` (0600) vóór rewrite.
+Optioneel: `APP_KEY` — alleen voor first-install. Bestaande server-`APP_KEY` en
+`APP_PREVIOUS_KEYS` worden nooit overschreven (encrypted casts / Laravel
+`previous_keys`). Hook schrijft timestamped `.env.backup-…` (0600, max 10) vóór rewrite.
 
 Optioneel (backups): `BACKUP_ENCRYPTION_KEY` — AES-sleutel voor `backup:database-encrypted` / `/cron/backup`; bij lege upload behoudt de hook de bestaande server-waarde. Optionele variable `BACKUP_RETAIN_DAYS` (default 30). Zie `docs/backups.md`.
 

@@ -27,6 +27,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Geen merge-conflictmarkeringen
+        run: |
+          set -euo pipefail
+          # Zoek onopgeloste git-conflictmarkeringen in getrackte bestanden.
+          # Patroon: zevenhoek-open / zeven-equals aan begin regel, of zevenhoek-close.
+          pattern='^(<{7}|={7})|>{7}'
+          if git grep -nE "$pattern" -- . \
+            ':(exclude)vendor/**' ':(exclude)node_modules/**' ':(exclude)public/build/**' \
+            ':(exclude).github/workflows/ci.yml' \
+            ; then
+            echo "::error::Merge-conflictmarkeringen gevonden in getrackte bestanden."
+            exit 1
+          fi
+          echo "Geen conflictmarkeringen."
+
       - name: Setup PHP 8.2
         uses: shivammathur/setup-php@v2
         with:
