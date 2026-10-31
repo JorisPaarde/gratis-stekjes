@@ -12,8 +12,11 @@ return [
     /** Afronding coördinaten (privacy: geen exact adres). */
     'coord_decimals' => (int) env('COORD_DECIMALS', 3),
 
-    /** PDOK Locatieserver free endpoint. */
+    /** PDOK Locatieserver free endpoint (NL). */
     'pdok_url' => env('PDOK_URL', 'https://api.pdok.nl/bzk/locatieserver/search/v3_1/free'),
+
+    /** Nominatim search endpoint (NL+BE; User-Agent verplicht). */
+    'nominatim_url' => env('NOMINATIM_URL', 'https://nominatim.openstreetmap.org/search'),
 
     /** Aanbod zichtbaar in zoeken/kaart (dagen). */
     'aanbod_ttl_days' => 60,

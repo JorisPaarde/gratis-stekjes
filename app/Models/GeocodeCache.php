@@ -23,6 +23,7 @@ class GeocodeCache extends Model
         'lat',
         'lon',
         'label',
+        'country',
         'cached_at',
     ];
 

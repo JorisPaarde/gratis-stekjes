@@ -35,7 +35,7 @@
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-inner">
     <h1 id="hero-titel" class="hero-brand">{{ $heading }}</h1>
-    <p class="hero-lead">Gratis planten en stekjes delen met mensen in de buurt. Je haalt ze alleen fysiek op; de enige ‘prijs’ is een praatje. Heel Nederland mag meedoen.</p>
+    <p class="hero-lead">Gratis planten en stekjes delen met mensen in de buurt. Je haalt ze alleen fysiek op; de enige ‘prijs’ is een praatje. Heel Nederland en Vlaanderen mogen meedoen.</p>
     <div class="hero-actions">
       <a class="btn" href="#doe-mee"><x-icon name="plant" :size="18" /> Doe mee</a>
       <a class="btn btn-on-dark" href="#hoe-werkt-het"><x-icon name="info" :size="18" /> Hoe werkt het</a>

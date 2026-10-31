@@ -82,6 +82,7 @@ final class PdokGeocoder
                 'lat' => $lat,
                 'lon' => $lon,
                 'label' => $label,
+                'country' => 'NL',
                 'cached_at' => now(),
             ]
         );

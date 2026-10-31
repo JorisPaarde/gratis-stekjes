@@ -9,10 +9,10 @@
   <h1 class="page-title">{{ $title }}</h1>
 
   <h2>Wie</h2>
-  <p>Ik ben Joris Paardekooper. Ik maak en houd {{ config('site.name') }} (gratisplanten.nl) bij via jpwebcreation — code, teksten en hosting. Het is een plek waar mensen in Nederland gratis planten en stekjes aan elkaar uitdelen.</p>
+  <p>Ik ben Joris Paardekooper. Ik maak en houd {{ config('site.name') }} (gratisplanten.nl) bij via jpwebcreation — code, teksten en hosting. Het is een plek waar mensen in Nederland en Vlaanderen gratis planten en stekjes aan elkaar uitdelen.</p>
 
   <h2>Waarom</h2>
-  <p>Te veel goede planten verdwijnen op de compost of in de kliko, terwijl iemand in de buurt er blij mee zou zijn. En te vaak koop je iets nieuws terwijl een stekje van een buur net zo goed was geweest. Ik wil toetsen of mensen stekjes gaan uitdelen en ophalen — gratis, met een praatje als enige tegenprestatie. Eerst gericht op mensen die met voedselbossen en eetbare tuinen bezig zijn; de regio is open: heel Nederland.</p>
+  <p>Te veel goede planten verdwijnen op de compost of in de kliko, terwijl iemand in de buurt er blij mee zou zijn. En te vaak koop je iets nieuws terwijl een stekje van een buur net zo goed was geweest. Ik wil toetsen of mensen stekjes gaan uitdelen en ophalen — gratis, met een praatje als enige tegenprestatie. Eerst gericht op mensen die met voedselbossen en eetbare tuinen bezig zijn; de regio is open: heel Nederland en Vlaanderen.</p>
 
   <h2>Hoe het werkt</h2>
   <p>Drie spelregels: <strong>gratis</strong>, alleen <strong>fysiek ophalen</strong>, en de enige tegenprestatie is een <strong>praatje</strong>.</p>

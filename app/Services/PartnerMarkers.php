@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\PartnerMarker;
+use App\Support\Country;
 use App\Support\Geo;
+use App\Support\PostalCode;
 
 final class PartnerMarkers
 {
     public function __construct(
-        private readonly PdokGeocoder $geocoder,
+        private readonly LocationGeocoder $geocoder,
     ) {}
 
     /** @return array<string, string> */
@@ -59,6 +61,7 @@ final class PartnerMarkers
                 'type' => $type,
                 'type_label' => $labels[$type] ?? $type,
                 'plaats' => (string) $row->plaats,
+                'country' => Country::normalize((string) ($row->country ?? Country::NL)),
                 'beschrijving' => (string) $row->beschrijving,
                 'lat' => Geo::roundCoord((float) $row->lat),
                 'lon' => Geo::roundCoord((float) $row->lon),
@@ -69,7 +72,7 @@ final class PartnerMarkers
     }
 
     /**
-     * Admin: maak of werk marker bij (PDOK-geocode op plaats).
+     * Admin: maak of werk marker bij (geocode op plaats/postcode).
      *
      * @param  array<string, mixed>  $fields
      * @return array{ok: bool, error?: string, id?: int}
@@ -79,6 +82,7 @@ final class PartnerMarkers
         $naam = trim(mb_substr((string) ($fields['naam'] ?? ''), 0, 160));
         $type = trim((string) ($fields['type'] ?? ''));
         $plaats = trim(mb_substr((string) ($fields['plaats'] ?? ''), 0, 120));
+        $country = Country::normalize((string) ($fields['country'] ?? Country::NL));
         $beschrijving = trim(mb_substr((string) ($fields['beschrijving'] ?? ''), 0, 500));
         $url = trim(mb_substr((string) ($fields['url'] ?? ''), 0, 500));
         $bron = trim(mb_substr((string) ($fields['bron'] ?? ''), 0, 500));
@@ -91,27 +95,42 @@ final class PartnerMarkers
             return ['ok' => false, 'error' => 'Kies een geldig type.'];
         }
         if ($plaats === '') {
-            return ['ok' => false, 'error' => 'Vul een plaats of postcode-4 in voor de benaderde plek.'];
+            return ['ok' => false, 'error' => 'Vul een plaats of postcode in voor de benaderde plek.'];
         }
         if ($url !== '' && ! preg_match('#^https?://#i', $url)) {
             return ['ok' => false, 'error' => 'Website moet met http:// of https:// beginnen (of leeg laten).'];
         }
 
+        if (preg_match('/^\d{4}(\s*[A-Za-z]{2})?$/', $plaats)) {
+            $pcValid = PostalCode::validate($plaats, $country);
+            if ($pcValid !== true) {
+                return ['ok' => false, 'error' => $pcValid];
+            }
+        }
+
         $existing = $id ? PartnerMarker::query()->find($id) : null;
         $lat = null;
         $lon = null;
-        if ($existing && Geo::normalizeQuery($plaats) === Geo::normalizeQuery((string) $existing->plaats)) {
+        $samePlace = $existing
+            && Geo::normalizeQuery($plaats) === Geo::normalizeQuery((string) $existing->plaats)
+            && Country::normalize((string) ($existing->country ?? Country::NL)) === $country;
+        if ($samePlace) {
             $lat = (float) $existing->lat;
             $lon = (float) $existing->lon;
         } else {
-            $geo = $this->geocoder->geocode($plaats, $allowNetworkGeo);
-            if ($geo === null) {
-                return ['ok' => false, 'error' => 'Plaats niet gevonden. Probeer een postcode-4 of woonplaats (PDOK).'];
+            $resolved = $this->geocoder->resolve($plaats, $country, $allowNetworkGeo);
+            if (! ($resolved['ok'] ?? false)) {
+                return ['ok' => false, 'error' => $resolved['error'] ?? 'Plaats niet gevonden.'];
             }
-            $lat = $geo['lat'];
-            $lon = $geo['lon'];
-            if (! preg_match('/^\d{4}$/', $plaats)) {
-                $plaats = trim(mb_substr(explode(',', $geo['label'])[0], 0, 120));
+            $lat = $resolved['lat'];
+            $lon = $resolved['lon'];
+            if (! preg_match('/^\d{4}(\s*[A-Za-z]{2})?$/', $plaats)) {
+                $plaats = trim(mb_substr(explode(',', $resolved['label'])[0], 0, 120));
+            } else {
+                $norm = PostalCode::normalize($plaats, $country);
+                if ($norm !== null) {
+                    $plaats = PostalCode::format($norm, $country);
+                }
             }
         }
 
@@ -120,6 +139,7 @@ final class PartnerMarkers
                 'naam' => $naam,
                 'type' => $type,
                 'plaats' => $plaats,
+                'country' => $country,
                 'beschrijving' => $beschrijving,
                 'lat' => $lat,
                 'lon' => $lon,
@@ -135,6 +155,7 @@ final class PartnerMarkers
             'naam' => $naam,
             'type' => $type,
             'plaats' => $plaats,
+            'country' => $country,
             'beschrijving' => $beschrijving,
             'lat' => $lat,
             'lon' => $lon,

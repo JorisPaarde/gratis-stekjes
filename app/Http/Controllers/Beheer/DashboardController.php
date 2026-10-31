@@ -15,6 +15,7 @@ use App\Services\DeelplekAanmelding;
 use App\Services\Deelplekken;
 use App\Services\Evenementen;
 use App\Services\PartnerMarkers;
+use App\Support\Country;
 use App\Support\SafeMail;
 use App\Support\ThrottleMessage;
 use Illuminate\Http\RedirectResponse;
@@ -94,6 +95,7 @@ class DashboardController extends Controller
             'canonical' => route('beheer.index'),
             'markers' => PartnerMarker::query()->orderBy('naam')->orderBy('id')->get(),
             'typeLabels' => $partners->typeLabels(),
+            'countries' => Country::labels(),
             'deelplekTypeLabels' => $deelplekken->typeLabels(),
             'evenementTypeLabels' => $evenementen->typeLabels(),
             'provincies' => $evenementen->provincies(),
@@ -167,6 +169,7 @@ class DashboardController extends Controller
         $result = $partners->save($id > 0 ? $id : null, [
             'naam' => $request->input('naam'),
             'type' => $request->input('type'),
+            'country' => $request->input('country', 'NL'),
             'plaats' => $request->input('plaats'),
             'beschrijving' => $request->input('beschrijving'),
             'url' => $request->input('url'),

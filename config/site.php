@@ -12,7 +12,7 @@ return [
     'version' => $version !== '' ? $version : '0.0.0',
     'theme_color' => '#1F4D2B',
     'background_color' => '#E6F2E1',
-    'description' => 'Gratis planten en stekjes delen in Nederland. Weggeven en ophalen bij jou in de buurt — de enige tegenprestatie is een praatje.',
+    'description' => 'Gratis planten en stekjes delen in Nederland en Vlaanderen. Weggeven en ophalen bij jou in de buurt — de enige tegenprestatie is een praatje.',
     /** Publiek contactadres (zichtbaar in footer/privacy/contact; geen secret). */
     'contact_email' => env('SITE_CONTACT_EMAIL', 'info@gratisplanten.nl'),
     // Staging always noindex; production sets NOINDEX=false

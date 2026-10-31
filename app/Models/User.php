@@ -29,6 +29,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'locatie_label',
         'lat',
         'lon',
+        'country',
     ];
 
     protected $hidden = [
