@@ -53,14 +53,10 @@
         <x-icon name="menu" :size="18" /> Menu
       </button>
       <nav id="hoofdmenu" class="site-nav" data-nav>
-        <a href="{{ route('hoe-werkt-het') }}"><x-icon name="info" :size="16" /> Hoe werkt het</a>
         <a href="{{ route('aanbod') }}"><x-icon name="kaart" :size="16" /> Aanbod</a>
+        <a href="{{ route('hoe-werkt-het') }}"><x-icon name="info" :size="16" /> Hoe werkt het</a>
         <a href="{{ route('stektips.index') }}"><x-icon name="stekje" :size="16" /> Stektips</a>
-        <a href="{{ route('hulpmiddelen') }}"><x-icon name="plant" :size="16" /> Hulpmiddelen</a>
-        <a href="{{ route('partners') }}"><x-icon name="initiatief" :size="16" /> Initiatieven</a>
         <a href="{{ route('deelplekken') }}"><x-icon name="locatie" :size="16" /> Deelplekken</a>
-        <a href="{{ route('over') }}"><x-icon name="hart" :size="16" /> Over</a>
-        <a href="{{ route('privacy') }}"><x-icon name="check" :size="16" /> Privacy</a>
         @can('see-admin-dashboard')
           <a href="{{ route('beheer.index') }}"><x-icon name="kaart" :size="16" /> Dashboard</a>
         @endcan
@@ -89,16 +85,18 @@
     <div class="wrap footer-inner">
       <p><strong>{{ $siteName }}</strong> — gratis planten, stekjes en zaden delen, met een praatje als enige prijs.</p>
       <p class="footer-links">
-        <a href="{{ route('privacy') }}">Privacy</a>
-        <a href="{{ route('contact') }}">Contact</a>
-        <a href="{{ route('over') }}">Over</a>
-        <a href="{{ route('stektips.index') }}">Stektips</a>
         <a href="{{ route('aanbod') }}">Aanbod</a>
-        <a href="{{ route('gratis-planten.index') }}">Gratis planten in jouw stad</a>
-        <a href="{{ route('invasieve-soorten') }}">Invasieve soorten</a>
-        <a href="{{ route('partners') }}">Initiatieven</a>
+        <a href="{{ route('hoe-werkt-het') }}">Hoe werkt het</a>
+        <a href="{{ route('stektips.index') }}">Stektips</a>
         <a href="{{ route('deelplekken') }}">Deelplekken</a>
+        <a href="{{ route('gratis-planten.index') }}">Gratis planten in jouw stad</a>
+        <a href="{{ route('partners') }}">Initiatieven</a>
+        <a href="{{ route('hulpmiddelen') }}">Hulpmiddelen</a>
+        <a href="{{ route('invasieve-soorten') }}">Invasieve soorten</a>
         <a href="{{ route('voor-organisaties') }}">Voor organisaties</a>
+        <a href="{{ route('over') }}">Over</a>
+        <a href="{{ route('contact') }}">Contact</a>
+        <a href="{{ route('privacy') }}">Privacy</a>
         @auth
           <a href="{{ route('account.index') }}">Account</a>
         @else
@@ -108,8 +106,9 @@
       <p class="footer-meta">
         <a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a>
         · KvK 90397320 · btw NL004813310B95
-        · Versie {{ config('site.version') }}
       </p>
+      {{-- Niet zichtbaar voor bezoekers; deploy-smoke (scripts/deploy-hook-upload.sh) grept op «Versie x.y.z». --}}
+      <!-- Versie {{ config('site.version') }} -->
     </div>
   </footer>
   @auth
