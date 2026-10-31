@@ -39,10 +39,38 @@ function deploy_hook_resolve_home_dir(string $appDir, ?string $configuredHome = 
 }
 
 /**
- * Touch /home/<user>/.lsphp_restart.txt zodat LiteSpeed lsphp-workers recycleert.
+ * Kandidaat-homes voor ~/.lsphp_restart.txt (account-home, niet release-map).
+ * Uniek: geconfigureerde home, dirname(app_dir), dirname(docroot), $HOME.
+ *
+ * @return list<string>
+ */
+function deploy_hook_lsphp_restart_homes(string $appDir, string $docroot, ?string $configuredHome = null): array
+{
+    $homes = [];
+    foreach ([
+        deploy_hook_resolve_home_dir($appDir, $configuredHome),
+        rtrim(dirname(rtrim($docroot, '/')), '/'),
+        rtrim(dirname(rtrim($appDir, '/')), '/'),
+    ] as $candidate) {
+        if ($candidate !== '' && $candidate !== '/') {
+            $homes[$candidate] = true;
+        }
+    }
+    $envHome = getenv('HOME');
+    if (is_string($envHome) && trim($envHome) !== '') {
+        $homes[rtrim($envHome, '/')] = true;
+    }
+
+    return array_keys($homes);
+}
+
+/**
+ * Herschrijf /home/<user>/.lsphp_restart.txt (inhoud wijzigen, niet alleen mtime).
+ * LiteSpeed Detached PHP herstart workers bij een verse marker; pure touch()
+ * sloeg op deze hosting meermaals niet aan, handmatig herschrijven wel.
  * Robuust als de map ontbreekt; logt geen secrets.
  */
-function deploy_hook_touch_lsphp_restart(string $homeDir): bool
+function deploy_hook_write_lsphp_restart(string $homeDir): bool
 {
     $homeDir = rtrim($homeDir, '/');
     if ($homeDir === '' || $homeDir === '/') {
@@ -52,11 +80,88 @@ function deploy_hook_touch_lsphp_restart(string $homeDir): bool
         return false;
     }
     $marker = $homeDir.'/.lsphp_restart.txt';
-    if (@touch($marker) === false) {
+    $payload = 'restart '.gmdate('c').' '.bin2hex(random_bytes(8))."\n";
+    // Nieuw inode + verse inhoud: betrouwbaarder dan touch() op bestaande file.
+    if (is_file($marker) || is_link($marker)) {
+        @unlink($marker);
+    }
+    if (@file_put_contents($marker, $payload, LOCK_EX) === false) {
         return false;
     }
+    @chmod($marker, 0644);
 
-    return is_file($marker);
+    return is_file($marker) && @file_get_contents($marker) === $payload;
+}
+
+/**
+ * @deprecated Alias — gebruik deploy_hook_write_lsphp_restart (herschrijf, niet touch).
+ */
+function deploy_hook_touch_lsphp_restart(string $homeDir): bool
+{
+    return deploy_hook_write_lsphp_restart($homeDir);
+}
+
+/**
+ * Schrijf herstartmarkers in alle kandidaat-homes. True als minstens één lukte.
+ *
+ * @return array{ok:bool,homes:list<string>}
+ */
+function deploy_hook_write_lsphp_restart_markers(string $appDir, string $docroot, ?string $configuredHome = null): array
+{
+    $written = [];
+    foreach (deploy_hook_lsphp_restart_homes($appDir, $docroot, $configuredHome) as $home) {
+        if (deploy_hook_write_lsphp_restart($home)) {
+            $written[] = $home;
+        }
+    }
+
+    return ['ok' => $written !== [], 'homes' => $written];
+}
+
+/**
+ * Bump mtime van docroot-entrypoint (index.php) en .htaccess zonder
+ * rewrite-regels inhoudelijk te wijzigen — LiteSpeed/lsphp-signaal.
+ */
+function deploy_hook_bump_entrypoint_mtimes(string $docroot): bool
+{
+    $docroot = rtrim($docroot, '/');
+    $ok = false;
+    foreach (['index.php', '.htaccess'] as $name) {
+        $path = $docroot.'/'.$name;
+        if (! is_file($path)) {
+            continue;
+        }
+        if (@touch($path) !== false) {
+            $ok = true;
+        }
+    }
+
+    return $ok;
+}
+
+/**
+ * Kopieer deploy-hook.php + lib.php uit de nieuwe release naar de docroot,
+ * zodat volgende deploys de bijgewerkte hook draaien (hook staat buiten de zip-sync).
+ */
+function deploy_hook_self_update_from_release(string $releaseDir, string $docroot): bool
+{
+    $srcDir = rtrim($releaseDir, '/').'/deploy/hook';
+    $docroot = rtrim($docroot, '/');
+    $ok = true;
+    foreach (['deploy-hook.php', 'lib.php'] as $name) {
+        $src = $srcDir.'/'.$name;
+        $dst = $docroot.'/'.$name;
+        if (! is_file($src)) {
+            $ok = false;
+
+            continue;
+        }
+        if (! @copy($src, $dst)) {
+            $ok = false;
+        }
+    }
+
+    return $ok;
 }
 
 /**
@@ -933,6 +1038,197 @@ function deploy_hook_invalidate_runtime_caches(): void
 }
 
 /**
+ * Zoek een PHP-CLI binary (cPanel ea-php / lsphp / php). Geen secrets in output.
+ */
+function deploy_hook_resolve_php_cli(): ?string
+{
+    $candidates = [];
+    if (defined('PHP_BINARY') && is_string(PHP_BINARY) && PHP_BINARY !== '') {
+        $candidates[] = PHP_BINARY;
+    }
+    $candidates = array_merge($candidates, [
+        'php',
+        '/usr/local/bin/php',
+        '/usr/bin/php',
+        '/usr/local/bin/lsphp',
+        '/opt/cpanel/ea-php84/root/usr/bin/php',
+        '/opt/cpanel/ea-php83/root/usr/bin/php',
+        '/opt/cpanel/ea-php82/root/usr/bin/php',
+        '/opt/cpanel/ea-php81/root/usr/bin/php',
+        '/usr/local/bin/ea-php84',
+        '/usr/local/bin/ea-php83',
+        '/usr/local/bin/ea-php82',
+        '/usr/local/bin/ea-php81',
+    ]);
+
+    foreach ($candidates as $bin) {
+        if ($bin !== 'php' && ! is_executable($bin)) {
+            continue;
+        }
+        $out = [];
+        $code = 1;
+        @exec(escapeshellarg($bin).' -v 2>/dev/null', $out, $code);
+        if ($code === 0 && $out !== []) {
+            return $bin;
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Absolute app-root van de live release (nooit een stale realpath via alleen `current`
+ * zonder clearstatcache). Optioneel expliciete release-id.
+ */
+function deploy_hook_resolve_live_app_root(string $appDir, ?string $release = null): ?string
+{
+    clearstatcache(true);
+    $appDir = rtrim($appDir, '/');
+
+    if (is_string($release) && $release !== '' && preg_match('/^[A-Za-z0-9._-]{1,64}$/', $release)) {
+        $path = $appDir.'/releases/'.$release;
+        if (is_file($path.'/artisan') && is_file($path.'/vendor/autoload.php')) {
+            return $path;
+        }
+    }
+
+    $current = $appDir.'/current';
+    if (is_link($current) || is_dir($current)) {
+        $real = realpath($current);
+        if (is_string($real) && is_file($real.'/artisan') && is_file($real.'/vendor/autoload.php')) {
+            return $real;
+        }
+    }
+
+    // Nieuwste release-map als current ontbreekt.
+    $releasesDir = $appDir.'/releases';
+    if (is_dir($releasesDir)) {
+        $best = null;
+        $bestMtime = -1;
+        foreach (scandir($releasesDir) ?: [] as $entry) {
+            if ($entry === '.' || $entry === '..' || str_starts_with($entry, '.')) {
+                continue;
+            }
+            $path = $releasesDir.'/'.$entry;
+            if (! is_dir($path) || ! is_file($path.'/artisan')) {
+                continue;
+            }
+            $mtime = filemtime($path) ?: 0;
+            if ($mtime >= $bestMtime) {
+                $bestMtime = $mtime;
+                $best = $path;
+            }
+        }
+        if ($best !== null) {
+            return $best;
+        }
+    }
+
+    if (is_file($appDir.'/artisan') && is_file($appDir.'/vendor/autoload.php')) {
+        return $appDir;
+    }
+
+    return null;
+}
+
+/**
+ * Draai artisan in $appRoot via verse CLI-PHP (niet via web-lsphp/opcache).
+ *
+ * @param  list<string>  $argv  Argumenten ná artisan (bv. ['migrate','--force'])
+ * @return array{ok:bool,exit_code:int,error?:string}
+ */
+function deploy_hook_run_artisan(string $appRoot, array $argv): array
+{
+    $appRoot = rtrim($appRoot, '/');
+    $artisan = $appRoot.'/artisan';
+    if (! is_file($artisan)) {
+        return ['ok' => false, 'exit_code' => 127, 'error' => 'no_artisan'];
+    }
+
+    $php = deploy_hook_resolve_php_cli();
+    if ($php === null) {
+        return ['ok' => false, 'exit_code' => 127, 'error' => 'no_php_cli'];
+    }
+
+    $cmd = array_merge([$php, $artisan], $argv);
+    $descriptors = [
+        0 => ['pipe', 'r'],
+        1 => ['pipe', 'w'],
+        2 => ['pipe', 'w'],
+    ];
+    $proc = @proc_open(
+        $cmd,
+        $descriptors,
+        $pipes,
+        $appRoot,
+        null,
+    );
+    if (! is_resource($proc)) {
+        return ['ok' => false, 'exit_code' => 127, 'error' => 'proc_open'];
+    }
+
+    fclose($pipes[0]);
+    stream_set_blocking($pipes[1], true);
+    stream_set_blocking($pipes[2], true);
+    // Lees output weg (voorkomt blokkeren); gooi weg — mag secrets bevatten.
+    stream_get_contents($pipes[1]);
+    stream_get_contents($pipes[2]);
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+    $exit = proc_close($proc);
+
+    if ($exit !== 0) {
+        return ['ok' => false, 'exit_code' => $exit, 'error' => 'artisan_exit'];
+    }
+
+    return ['ok' => true, 'exit_code' => 0];
+}
+
+/**
+ * Migrate + DeelplekkenSeeder + caches via CLI in de nieuwe release-map.
+ *
+ * @return array{ok:bool,error?:string,release_path?:string,steps?:list<string>}
+ */
+function deploy_hook_action_migrate(string $appDir, ?string $release = null): array
+{
+    $root = deploy_hook_resolve_live_app_root($appDir, $release);
+    if ($root === null) {
+        return ['ok' => false, 'error' => 'no_release'];
+    }
+
+    $steps = [
+        ['migrate', '--force'],
+        ['db:seed', '--class=DeelplekkenSeeder', '--force'],
+        ['config:clear'],
+        ['config:cache'],
+        ['route:cache'],
+        ['view:cache'],
+    ];
+    $done = [];
+    foreach ($steps as $argv) {
+        $result = deploy_hook_run_artisan($root, $argv);
+        if (! ($result['ok'] ?? false)) {
+            return [
+                'ok' => false,
+                'error' => (string) ($result['error'] ?? 'artisan_failed'),
+                'failed_step' => $argv[0],
+                'exit_code' => $result['exit_code'] ?? 1,
+                'steps' => $done,
+            ];
+        }
+        $done[] = $argv[0];
+    }
+
+    return [
+        'ok' => true,
+        // Geen absoluut pad in response (hosting-layout); wel relative release-id.
+        'release' => basename($root),
+        'steps' => $done,
+        'via' => 'cli',
+    ];
+}
+
+/**
  * Volledige finish: assemble → extract → swap → env → docroot.
  *
  * @return array{ok:bool,error?:string,method?:string,release?:string,lsphp_restart?:bool}
@@ -1110,22 +1406,26 @@ function deploy_hook_action_finish(
         deploy_hook_invalidate_runtime_caches();
     }
 
-    // LiteSpeed: herstartmarker in home → lsphp-workers laden nieuwe release.
-    $resolvedHome = deploy_hook_resolve_home_dir($appDir, $homeDir);
-    $lsphpRestart = deploy_hook_touch_lsphp_restart($resolvedHome);
-
-    // Docroot: public/ + index.php; behoud deploy-hook.php
+    // Docroot: public/ + index.php; behoud deploy-hook.php tot self-update hieronder.
     $publicDir = $releaseDir.'/public';
     $sync = deploy_hook_sync_docroot($publicDir, $docroot);
     if (! ($sync['ok'] ?? false)) {
         return $sync;
     }
-    if (! deploy_hook_write_index($docroot, $livePath === $current ? $current : $livePath)) {
+    // Absolute release-map in index.php (niet via symlink `current`) — minder kans
+    // dat stale realpath-cache een vorige release blijft laden.
+    if (! deploy_hook_write_index($docroot, $releaseDir)) {
         return ['ok' => false, 'error' => 'index_write'];
     }
+    // Pointer buiten docroot (geen secrets; alleen release-pad voor diagnostics).
+    @file_put_contents(
+        $appDir.'/.deploy-release',
+        $releaseDir."\n",
+        LOCK_EX
+    );
 
-    // Zorg dat deploy-hook.php niet per ongeluk is weggevaagd (sync slaat hem over als source).
-    // Hook leeft alleen in docroot, niet in public/ van het archief — sync overschrijft hem niet.
+    // Hook + lib uit de nieuwe release → docroot (anders blijft oude touch()-logica staan).
+    deploy_hook_self_update_from_release($releaseDir, $docroot);
 
     deploy_hook_prune_releases($releasesDir, $releaseDir);
 
@@ -1137,6 +1437,11 @@ function deploy_hook_action_finish(
     deploy_hook_clear_previous_releases_config_cache($releasesDir, $releaseDir);
     deploy_hook_invalidate_runtime_caches();
 
+    // LiteSpeed: NÁ swap + docroot — herschrijf ~/.lsphp_restart.txt in account-home
+    // (inhoud, niet alleen mtime). Daarna entrypoint-mtimes bumpen.
+    $restart = deploy_hook_write_lsphp_restart_markers($appDir, $docroot, $homeDir);
+    deploy_hook_bump_entrypoint_mtimes($docroot);
+
     // Wis gevoelige env-string uit geheugen-pad (best-effort).
     $finalEnv = '';
     $envContent = '';
@@ -1145,7 +1450,7 @@ function deploy_hook_action_finish(
         'ok' => true,
         'method' => $method,
         'release' => $release,
-        'lsphp_restart' => $lsphpRestart,
+        'lsphp_restart' => $restart['ok'],
     ];
 }
 
@@ -1257,6 +1562,41 @@ function deploy_hook_handle(array $config, ?array $post = null, ?array $files = 
         );
         if (! ($result['ok'] ?? false)) {
             return ['status' => 400, 'body' => $result];
+        }
+
+        return ['status' => 200, 'body' => $result];
+    }
+
+    // Opnieuw ~/.lsphp_restart.txt herschrijven (smoke-retry / handmatige recycle).
+    if ($action === 'lsphp_restart') {
+        $configuredHome = isset($config['home_dir']) ? (string) $config['home_dir'] : null;
+        $restart = deploy_hook_write_lsphp_restart_markers(
+            $config['app_dir'],
+            $config['docroot'],
+            $configuredHome,
+        );
+        deploy_hook_bump_entrypoint_mtimes($config['docroot']);
+        deploy_hook_invalidate_runtime_caches();
+
+        return [
+            'status' => 200,
+            'body' => [
+                'ok' => $restart['ok'],
+                'lsphp_restart' => $restart['ok'],
+                // Geen absolute home-paden in response (hosting-layout blijft intern).
+            ],
+        ];
+    }
+
+    // Migrate + seed + caches via CLI in de nieuwe release (ná swap/herstart).
+    if ($action === 'migrate') {
+        $release = isset($post['release']) ? (string) $post['release'] : null;
+        if ($release === '') {
+            $release = null;
+        }
+        $result = deploy_hook_action_migrate($config['app_dir'], $release);
+        if (! ($result['ok'] ?? false)) {
+            return ['status' => 500, 'body' => $result];
         }
 
         return ['status' => 200, 'body' => $result];

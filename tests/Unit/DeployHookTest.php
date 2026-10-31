@@ -260,7 +260,7 @@ test('chunk assembly + checksum + storage behouden bij finish', function () {
     expect(file_get_contents($docroot.'/lib.php'))->toBe("<?php\n// lib\n");
 });
 
-test('finish wist config:cache in vorige release en touched lsphp_restart', function () {
+test('finish wist config:cache in vorige release en herschrijft lsphp_restart', function () {
     $docroot = $this->tmp.'/docroot';
     $appDir = $this->tmp.'/app-staging';
     $token = 'tok-'.bin2hex(random_bytes(8));
@@ -284,7 +284,9 @@ test('finish wist config:cache in vorige release en touched lsphp_restart', func
     symlink($oldRelease, $appDir.'/current');
 
     $marker = $this->tmp.'/.lsphp_restart.txt';
-    expect(is_file($marker))->toBeFalse();
+    // Oude touch-only marker: finish moet inhoud herschrijven.
+    file_put_contents($marker, "stale-touch\n");
+    $oldContents = file_get_contents($marker);
 
     $zipPath = $this->tmp.'/artifact.zip';
     deployHookMakeZip($zipPath, [
@@ -294,6 +296,9 @@ test('finish wist config:cache in vorige release en touched lsphp_restart', func
         'bootstrap/cache/packages.php' => "<?php\nreturn [];\n",
         'public/index.php' => "<?php\n",
         'public/build/manifest.json' => "{}\n",
+        'public/deploy-lsphp-restart.php' => "<?php\n// restart endpoint\n",
+        'deploy/hook/deploy-hook.php' => "<?php\n// new-hook\n",
+        'deploy/hook/lib.php' => "<?php\n// new-lib\n",
     ]);
     $raw = file_get_contents($zipPath);
     $sha = hash('sha256', $raw);
@@ -327,8 +332,22 @@ test('finish wist config:cache in vorige release en touched lsphp_restart', func
         ->and($finish['body']['ok'])->toBeTrue()
         ->and($finish['body']['lsphp_restart'])->toBeTrue();
 
-    // LiteSpeed-herstartmarker in home (dirname(app_dir)).
+    // LiteSpeed-marker: inhoud herschreven (niet alleen mtime).
     expect(is_file($marker))->toBeTrue();
+    $newContents = (string) file_get_contents($marker);
+    expect($newContents)->not->toBe($oldContents)
+        ->and($newContents)->toContain('restart ');
+
+    // index.php wijst naar release-map (niet current-symlink).
+    $index = (string) file_get_contents($docroot.'/index.php');
+    expect($index)->toContain('releases/newrel')
+        ->and($index)->not->toContain('/current/');
+
+    // Hook self-update uit release.
+    expect(file_get_contents($docroot.'/deploy-hook.php'))->toBe("<?php\n// new-hook\n");
+    expect(file_get_contents($docroot.'/lib.php'))->toBe("<?php\n// new-lib\n");
+    expect(is_file($docroot.'/deploy-lsphp-restart.php'))->toBeTrue();
+    expect(is_file($appDir.'/.deploy-release'))->toBeTrue();
 
     // Vorige release: config/routes weg, packages blijft (stale worker → .env).
     expect(is_dir($oldRelease))->toBeTrue();
@@ -352,7 +371,7 @@ test('resolve_home_dir: dirname(app_dir) of optionele home_dir', function () {
         ->toBe('/custom/home');
 });
 
-test('touch_lsphp_restart respecteert optionele home_dir override', function () {
+test('write_lsphp_restart herschrijft inhoud en respecteert home_dir override', function () {
     $docroot = $this->tmp.'/docroot';
     $appDir = $this->tmp.'/app-staging';
     $altHome = $this->tmp.'/alt-home';
@@ -371,9 +390,44 @@ test('touch_lsphp_restart respecteert optionele home_dir override', function () 
     $config = deploy_hook_load_config($docroot);
     expect($config['home_dir'])->toBe($altHome);
 
-    expect(deploy_hook_touch_lsphp_restart($altHome))->toBeTrue();
-    expect(is_file($altHome.'/.lsphp_restart.txt'))->toBeTrue();
+    $marker = $altHome.'/.lsphp_restart.txt';
+    file_put_contents($marker, "old\n");
+    expect(deploy_hook_write_lsphp_restart($altHome))->toBeTrue();
+    expect(file_get_contents($marker))->toContain('restart ')
+        ->and(file_get_contents($marker))->not->toBe("old\n");
     expect(is_file($this->tmp.'/.lsphp_restart.txt'))->toBeFalse();
+
+    $_SERVER['HTTP_AUTHORIZATION'] = 'Bearer '.$token;
+    $restart = deploy_hook_handle($config, ['action' => 'lsphp_restart'], [], 'POST');
+    expect($restart['status'])->toBe(200)
+        ->and($restart['body']['ok'])->toBeTrue()
+        ->and($restart['body']['lsphp_restart'])->toBeTrue();
+});
+
+test('resolve_live_app_root kiest release of current', function () {
+    $appDir = $this->tmp.'/app-staging';
+    $rel = $appDir.'/releases/abc123';
+    mkdir($rel.'/vendor', 0755, true);
+    file_put_contents($rel.'/artisan', "#!/usr/bin/env php\n");
+    file_put_contents($rel.'/vendor/autoload.php', "<?php\n");
+    symlink($rel, $appDir.'/current');
+
+    expect(deploy_hook_resolve_live_app_root($appDir, 'abc123'))->toBe($rel);
+    expect(deploy_hook_resolve_live_app_root($appDir))->toBe(realpath($rel) ?: $rel);
+});
+
+test('action migrate faalt netjes zonder release', function () {
+    $docroot = $this->tmp.'/docroot';
+    $appDir = $this->tmp.'/app-staging';
+    $token = 'tok-'.bin2hex(random_bytes(4));
+    deployHookWriteConfig($this->tmp, $docroot, $appDir, $token);
+    $config = deploy_hook_load_config($docroot);
+    $_SERVER['HTTP_AUTHORIZATION'] = 'Bearer '.$token;
+
+    $result = deploy_hook_handle($config, ['action' => 'migrate'], [], 'POST');
+    expect($result['status'])->toBe(500)
+        ->and($result['body']['ok'])->toBeFalse()
+        ->and($result['body']['error'])->toBe('no_release');
 });
 
 test('clear_bootstrap_cache_files is no-op als cache ontbreekt', function () {
@@ -387,7 +441,7 @@ test('clear_bootstrap_cache_files is no-op als cache ontbreekt', function () {
     expect(is_dir($empty.'/bootstrap/cache'))->toBeTrue();
 });
 
-test('upload-script: lsphp-wacht + HTTP 403 retry als stale proces', function () {
+test('upload-script: lsphp-rewrite, CLI-migrate, footer+deelplekken smoke retries', function () {
     $script = dirname(__DIR__, 2).'/scripts/deploy-hook-upload.sh';
     $src = file_get_contents($script);
     expect($src)->toContain('stale_403')
@@ -395,7 +449,15 @@ test('upload-script: lsphp-wacht + HTTP 403 retry als stale proces', function ()
         ->and($src)->toMatch('/sleep_secs=30/')
         ->and($src)->toContain('max_attempts=5')
         ->and($src)->toContain('LSPHP_RESTART_WAIT_SECS')
-        ->and($src)->toContain('lsphp-recycle');
+        ->and($src)->toContain('trigger_lsphp_restart')
+        ->and($src)->toContain('action=lsphp_restart')
+        ->and($src)->toContain('action=migrate')
+        ->and($src)->toContain('deploy-lsphp-restart.php')
+        ->and($src)->toContain('SMOKE_VERSION_ATTEMPTS')
+        ->and($src)->toContain('wait_for_footer_version')
+        ->and($src)->toContain('EXPECTED_DEELPLEKKEN')
+        ->and($src)->toContain('/api/deelplekken')
+        ->and($src)->toContain('pre-migrate');
 });
 
 test('weigert non-POST en mistende config', function () {
