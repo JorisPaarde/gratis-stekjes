@@ -727,7 +727,14 @@ function deploy_hook_backup_env(string $envPath, int $keep = 10): bool
 
     $dir = dirname($envPath);
     $stamp = gmdate('Ymd\THis\Z');
-    $backup = $dir.'/.env.backup-'.$stamp;
+    $suffix = getmypid().'-'.bin2hex(random_bytes(2));
+    $backup = $dir.'/.env.backup-'.$stamp.'-'.$suffix;
+    // Uniek ook bij twee deploys in dezelfde seconde.
+    $n = 0;
+    while (is_file($backup) && $n < 20) {
+        $n++;
+        $backup = $dir.'/.env.backup-'.$stamp.'-'.$suffix.'-'.$n;
+    }
     $content = @file_get_contents($envPath);
     if ($content === false) {
         return false;

@@ -101,21 +101,27 @@ test('resolve_app_key gebruikt upload alleen zonder bestaande key', function () 
     expect($merged)->toContain('APP_KEY="base64:uploadkeyuploadkeyuploadkeyu"');
 });
 
-test('backup_env schrijft timestamped .env.backup mode 0600 en pruneert', function () {
+test('backup_env schrijft unieke timestamped .env.backup mode 0600 en pruneert', function () {
     $path = $this->tmp.'/shared.env';
     $dir = dirname($path);
     file_put_contents($path, "APP_KEY=\"base64:keep\"\nSITE_NAME=test\n");
     chmod($path, 0600);
 
     expect(deploy_hook_backup_env($path, 10))->toBeTrue();
+    expect(deploy_hook_backup_env($path, 10))->toBeTrue();
     $backups = glob($dir.'/.env.backup-*') ?: [];
-    expect($backups)->toHaveCount(1)
+    expect($backups)->toHaveCount(2)
+        ->and($backups[0])->not->toBe($backups[1])
         ->and(file_get_contents($backups[0]))->toBe("APP_KEY=\"base64:keep\"\nSITE_NAME=test\n")
-        ->and(decoct(fileperms($backups[0]) & 0777))->toBe('600');
+        ->and(decoct(fileperms($backups[0]) & 0777))->toBe('600')
+        ->and(decoct(fileperms($backups[1]) & 0777))->toBe('600');
 
     // Simuleer oudere backups (rsort op naam → nieuwste blijven).
+    foreach (glob($dir.'/.env.backup-*') ?: [] as $old) {
+        @unlink($old);
+    }
     for ($i = 1; $i <= 12; $i++) {
-        $stamp = sprintf('20260101T%06dZ', $i);
+        $stamp = sprintf('20260101T%06dZ-%d', $i, $i);
         file_put_contents($dir.'/.env.backup-'.$stamp, "n=$i\n");
     }
     expect(deploy_hook_backup_env($path, 3))->toBeTrue();
