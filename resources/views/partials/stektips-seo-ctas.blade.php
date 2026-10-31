@@ -13,9 +13,9 @@
     @if(!empty($seoCtas['wilgenwater_url']))
       <h2 class="stektips-related-title">Natuurlijk bewortelen</h2>
       <p>
-        Liever zonder synthetisch stekpoeder?
-        <a href="{{ $seoCtas['wilgenwater_url'] }}">Wilgenwater maken</a>
-        — of lees over
+        Liever geen kunstmatig stekpoeder gebruiken?
+        <a href="{{ $seoCtas['wilgenwater_url'] }}">Maak wilgenwater</a>
+        of lees over
         <a href="{{ route('stektips.artikel', ['slug' => 'natuurlijk-bewortelen']) }}">natuurlijk bewortelen</a>.
       </p>
     @endif

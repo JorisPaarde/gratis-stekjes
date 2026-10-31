@@ -7,7 +7,7 @@
 @section('content')
 <section class="section wrap prose">
   <h1 class="page-title"><x-icon name="waarschuwing" :size="28" /> {{ $heading }}</h1>
-  <p class="section-intro">Op {{ config('site.name') }} mag je geen planten aanbieden die op de EU-Unielijst van invasieve uitheemse soorten staan. Die soorten mogen in de EU niet worden verhandeld of verspreid — ook niet gratis als stekje.</p>
+  <p class="section-intro">Op {{ config('site.name') }} mag je geen planten aanbieden die op de EU-Unielijst van invasieve uitheemse soorten staan. Die soorten mogen in de EU niet worden verhandeld of verspreid, ook niet gratis als stekje.</p>
 
   <div class="soft-card warn-card">
     <p><x-icon name="waarschuwing" :size="20" /> Waarom? Invasieve exoten verdringen inheemse planten en dieren, verstoren ecosystemen en kosten veel om te bestrijden. De Unielijst beschermt de natuur in heel Europa.</p>
@@ -15,13 +15,13 @@
 
   <h2>Wat kun je wel doen?</h2>
   <ul>
-    <li>Deel inheemse of niet-invasieve tuin- en kamerplanten, bessenstruiken en kruiden.</li>
-    <li>Twijfel je over een soort? Bied hem niet aan en check de NVWA of mijn lijst hieronder.</li>
-    <li>Heb je een Unielijst-plant in de tuin? Verwijder die veilig volgens lokale adviezen — geef hem niet door.</li>
+    <li>Deel inheemse of niet-invasieve tuinplanten, kamerplanten, bessenstruiken, kruiden en zaden.</li>
+    <li>Twijfel je over een soort? Bied hem dan niet aan en kijk bij de NVWA of in de lijst hieronder.</li>
+    <li>Heb je een plant van de Unielijst in je tuin? Ruim die veilig op volgens de adviezen in je gemeente en geef hem niet door.</li>
   </ul>
 
   <h2>Lijst ({{ $aantal }} soorten)</h2>
-  <p class="muted">Nederlandse namen volgens de NVWA (terrestrische planten en water-/oeverplanten). Wetenschappelijke namen en synoniemen uit de EU-Unielijst.</p>
+  <p class="muted">Nederlandse namen volgens de NVWA, voor landplanten en water- en oeverplanten. De wetenschappelijke namen en andere namen komen uit de EU-Unielijst.</p>
 
   <div class="stack" style="margin-top:1rem">
     @foreach($soorten as $soort)

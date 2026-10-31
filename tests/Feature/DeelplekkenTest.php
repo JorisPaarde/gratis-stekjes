@@ -52,7 +52,7 @@ test('deelplekkenpagina laadt met intro, bronlink en meldpad', function () {
         ->assertSee('plantenasiel', false)
         ->assertSee('Plantenasiel Haarlem', false)
         ->assertSee('Bron', false)
-        ->assertSee('Plek missen of fout? Meld het', false)
+        ->assertSee('Mis je een plek, of klopt er iets niet? Laat het me weten', false)
         ->assertSee(route('over'), false)
         ->assertSee('id="deelplekken-kaart"', false);
 });

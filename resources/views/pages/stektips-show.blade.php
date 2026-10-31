@@ -18,11 +18,11 @@
     'lengte_snit' => 'Lengte en snit',
     'water_grond' => 'Water of grond',
     'licht' => 'Licht',
-    'water' => 'Water (verzorging)',
+    'water' => 'Water geven',
     'hulpmiddel' => 'Hulpmiddel nodig?',
     'kans' => 'Moeilijkheid',
-    'klaar' => 'Wanneer klaar om uit te delen',
-    'ervaringen' => 'Ervaringen deelnemers',
+    'klaar' => 'Wanneer je het kunt uitdelen',
+    'ervaringen' => 'Ervaringen van anderen',
     'bronnen' => 'Bronnen',
   ];
   $waarschuwing = trim((string) ($soort['waarschuwing'] ?? ''));
@@ -64,7 +64,7 @@
 
   @include('partials.stektips-seo-ctas', ['seoCtas' => $seoCtas ?? []])
 
-  <div class="table-scroll" role="region" aria-label="Stektips-tabel" tabindex="0">
+  <div class="table-scroll" role="region" aria-label="Stektips in een overzicht" tabindex="0">
     <table class="table stektips-table">
       <tbody>
         @foreach($fields as $key => $label)

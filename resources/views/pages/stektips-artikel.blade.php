@@ -53,7 +53,7 @@
     <aside class="soft-card stektips-duurzamer" role="note">
       <h2 class="stektips-related-title">Duurzamer alternatief</h2>
       <p>
-        Liever zonder synthetisch stekpoeder?
+        Liever geen kunstmatig stekpoeder gebruiken?
         <a href="{{ route('stektips.artikel', ['slug' => $duurzamer['slug']]) }}">{{ $duurzamer['titel'] }}</a>
       </p>
     </aside>

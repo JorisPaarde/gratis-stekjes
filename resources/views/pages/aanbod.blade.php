@@ -27,22 +27,22 @@
   <h1 class="page-title">{{ $heading ?? $title }}</h1>
   <p class="section-intro">
     @if(!empty($plant))
-      Filter op <strong>{{ $plant }}</strong> in aanbodteksten.
-      Vul een postcode of plaats in om dichtbij te zoeken. Exacte adressen staan niet op de site.
+      Je ziet aanbod met <strong>{{ $plant }}</strong>.
+      Vul een postcode of plaats in om dichtbij te zoeken. Straatadressen staan niet op de site.
     @else
-      Zoek op postcode of plaats in Nederland of België. Je ziet benaderde plekken op de kaart en een lijst gesorteerd op afstand. Exacte adressen staan niet op de site.
+      Zoek op postcode of plaats in Nederland of België. Op de kaart zie je ongeveer waar iets te halen is, in een lijst staat het dichtstbijzijnde aanbod bovenaan. Straatadressen staan niet op de site.
     @endif
   </p>
 
   <form class="form" id="zoek-form" method="get" action="{{ route('aanbod') }}" style="max-width:100%;margin-bottom:1rem">
     <div style="display:grid;gap:.75rem;grid-template-columns:1fr;align-items:end">
       <label for="zoek-q">Postcode of plaats
-        <input type="text" name="q" id="zoek-q" maxlength="120" placeholder="Bijv. 2011 of Haarlem" @if(empty($plant)) required @endif>
+        <input type="text" name="q" id="zoek-q" maxlength="120" placeholder="Bijvoorbeeld 2011 of Haarlem" @if(empty($plant)) required @endif>
       </label>
-      <label for="zoek-plant">Plant / stekje
-        <input type="text" name="plant" id="zoek-plant" maxlength="80" value="{{ $plant ?? '' }}" placeholder="Bijv. hortensia">
+      <label for="zoek-plant">Plant, stekje of zaad
+        <input type="text" name="plant" id="zoek-plant" maxlength="80" value="{{ $plant ?? '' }}" placeholder="Bijvoorbeeld hortensia">
       </label>
-      <label for="zoek-type">Aanbodtype
+      <label for="zoek-type">Soort aanbod
         <select name="type" id="zoek-type">
           <option value="">Alles</option>
           <option value="uitdelen">Uitdelen</option>
@@ -55,9 +55,9 @@
 
   @if(!empty($plant) && isset($plantItems))
     <section class="stektips-plant-aanbod" aria-labelledby="plant-aanbod-titel">
-      <h2 id="plant-aanbod-titel" class="stektips-related-title">Treffers voor “{{ $plant }}” (zonder plaats)</h2>
+      <h2 id="plant-aanbod-titel" class="stektips-related-title">Aanbod met “{{ $plant }}” (alle plaatsen)</h2>
       @if(count($plantItems) === 0)
-        <p class="empty-state" role="status">Nog geen openbaar aanbod met “{{ $plant }}”. <a href="{{ route('account.registreren') }}">Doe mee</a> om zelf te delen, of zoek op plaats hierboven.</p>
+        <p class="empty-state" role="status">Er is nog geen aanbod met “{{ $plant }}”. <a href="{{ route('account.registreren') }}">Doe mee</a> en deel zelf iets, of zoek hierboven op plaats.</p>
       @else
         <ul class="zoek-lijst">
           @foreach($plantItems as $item)
@@ -85,18 +85,18 @@
   </fieldset>
 
   <div class="search-layout">
-    <div id="kaart" role="img" aria-label="Kaart met benaderde ophaalplekken"></div>
+    <div id="kaart" role="img" aria-label="Kaart met ongeveer de plekken waar je iets kunt ophalen"></div>
     <div>
       <ul class="zoek-lijst" id="zoek-lijst"></ul>
-      <p class="muted empty-state" id="zoek-status" role="status">Vul een postcode of plaats in om aanbod te zoeken. Deelplekken (plantenasiel, plantenbieb, …) staan al op de kaart — of <a href="{{ route('account.registreren') }}">maak een account</a> om zelf iets te plaatsen.</p>
+      <p class="muted empty-state" id="zoek-status" role="status">Vul een postcode of plaats in om aanbod te zoeken. Deelplekken zoals een plantenasiel of plantenbieb staan al op de kaart. Of <a href="{{ route('account.registreren') }}">maak een account</a> om zelf iets aan te bieden.</p>
     </div>
   </div>
 
-  <p class="muted" style="margin-top:1rem">Kaarttegels: © OpenStreetMap-bijdragers. Locaties via PDOK Locatieserver (benaderd).
+  <p class="muted" style="margin-top:1rem">Kaart: © OpenStreetMap-bijdragers. Plaatsen zoek ik op via PDOK en OpenStreetMap; ze staan er bij benadering op.
     @auth
-      · <a href="{{ route('account.aanbod') }}">Zelf aanbod plaatsen</a>
+      · <a href="{{ route('account.aanbod') }}">Zelf iets aanbieden</a>
     @else
-      · <a href="{{ route('account.registreren') }}">Account maken</a> om aanbod te plaatsen
+      · <a href="{{ route('account.registreren') }}">Maak een account</a> om iets aan te bieden
     @endauth
   </p>
 </section>

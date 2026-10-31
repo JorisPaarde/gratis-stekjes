@@ -31,12 +31,12 @@
     </label>
     <label>Postcode of plaats *
       <input name="locatie" required maxlength="120" value="{{ old('locatie', $user->locatie_label) }}" placeholder="Bijv. Haarlem, 2011 AB of Gent">
-      <span class="hint">Vul je postcode of woonplaats in. We bewaren alleen ongeveer waar je woont, nooit je straat of huisnummer.</span>
+      <span class="hint">Vul je postcode of woonplaats in. Ik bewaar alleen ongeveer waar je woont, nooit je straat of huisnummer.</span>
     </label>
     <label>Telefoon (optioneel)
       @if($user->isUnreadable('telefoon') && old('telefoon') === null)
         <input name="telefoon" maxlength="40" value="" autocomplete="tel" placeholder="{{ \App\Casts\SafeEncrypted::VIEW_FALLBACK }}">
-        <span class="hint">Opgeslagen nummer is niet leesbaar (andere sleutel). Leeg laten behoudt de oude waarde; vul alleen in om te vervangen.</span>
+        <span class="hint">Je telefoonnummer kon ik niet lezen. Vul het opnieuw in.</span>
       @else
         <input name="telefoon" maxlength="40" value="{{ old('telefoon', $user->telefoon) }}" autocomplete="tel">
       @endif

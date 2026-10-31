@@ -21,7 +21,7 @@ test('homepage is 200 en toont merk Gratis planten', function () {
     $response->assertSee('voedselbosbouw.org', false);
     $response->assertSee('meerbomen.nu', false);
     $response->assertSee('help-mee', false);
-    $response->assertSee('Ik help op een andere manier', false);
+    $response->assertSee('Ik wil op een andere manier helpen', false);
     $response->assertDontSee('badge-soon', false);
     $response->assertSee('application/ld+json', false);
     $response->assertSee('"@type":"WebSite"', false);

@@ -17,7 +17,7 @@
     @include('partials.honeypot')
     <input type="hidden" name="next" value="{{ $next }}">
 
-    <label>E-mail
+    <label>E-mailadres
       <input type="email" name="email" required maxlength="254" autocomplete="email" value="{{ old('email') }}">
     </label>
     <label>Wachtwoord
@@ -33,7 +33,7 @@
   <p class="muted">
     <a href="{{ route('account.wachtwoord.vergeten') }}">Wachtwoord vergeten?</a>
     · <a href="{{ route('account.registreren') }}">Account maken</a>
-    · <a href="{{ route('account.bevestiging-nodig') }}">Bevestigingsmail opnieuw</a>
+    · <a href="{{ route('account.bevestiging-nodig') }}">Bevestigingsmail opnieuw sturen</a>
   </p>
 </section>
 @endsection

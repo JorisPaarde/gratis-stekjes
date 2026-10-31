@@ -233,7 +233,7 @@ test('organisaties/{slug} blijft < 500 met config:cache + route:cache en APP_DEB
 test('stektips verbergt lege ervaringen/bronnen en linkt proef naar herfstolijfwilg', function () {
     $index = $this->get(route('stektips.index'))->assertOk();
     $index->assertSee(route('stektips.show', ['slug' => 'herfstolijfwilg']), false);
-    $index->assertSee('Joris\' eigen proef', false);
+    $index->assertSee('Jouw eigen proef', false);
 
     $html = $this->get(route('stektips.show', ['slug' => 'monstera']))
         ->assertOk()

@@ -63,7 +63,7 @@
     <p class="error" hidden data-invasieve-hint role="status"></p>
 
     <label for="aanbod-fotos">Foto’s (max. {{ $fotoMaxCount }}, JPEG/PNG/WebP, max. {{ $fotoMaxMb }} MB)
-      <span class="hint">Ik verklein je foto’s en verwijder locatiegegevens uit het bestand. Minimaal één foto óf een plantensoort is verplicht.</span>
+      <span class="hint">Voor je privacy haal ik de locatie uit je foto’s. Minimaal één foto óf een plantensoort is verplicht.</span>
       <input
         type="file"
         name="fotos[]"
