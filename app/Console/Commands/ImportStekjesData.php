@@ -17,10 +17,10 @@ class ImportStekjesData extends Command
     protected $signature = 'stekjes:import-data
                             {path : Pad naar stekjes-export.zip of data.json}
                             {--force : Sta import toe als target al non-admin users heeft}
-                            {--dry-run : Alleen tellingen + schema-compat, geen writes}
+                            {--dry-run : Zelfde samenvoeg-writes als echt, in een transactie die wordt teruggedraaid}
                             {--skip-migrate : Sla migrate --force over}';
 
-    protected $description = 'Importeer stekjes-data-export (behoud PKs/password hashes; geen stille remaps)';
+    protected $description = 'Samenvoeg-import stekjes-data-export (ID-remap, geen deletes; idempotent via import_runs)';
 
     public function handle(StekjesDataMigrator $migrator): int
     {
@@ -50,19 +50,24 @@ class ImportStekjesData extends Command
                 if ($raw === false) {
                     throw new \RuntimeException('Kan JSON niet lezen.');
                 }
+                $packageSha = hash_file('sha256', $path) ?: null;
                 /** @var array<string, mixed> $payload */
                 $payload = json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
-                $result = $migrator->import($payload, $force, $dryRun);
+                $result = $migrator->import($payload, $force, $dryRun, $packageSha);
             } else {
                 $result = $migrator->importPackage($path, $force, $dryRun);
             }
         } catch (Throwable $e) {
             $this->error('Import mislukt: '.$e::class);
-            if ($e->getMessage() === 'email_id_mismatch' || $e->getMessage() === 'user_id_conflict') {
-                $this->line('error='.$e->getMessage());
-            }
 
             return self::FAILURE;
+        }
+
+        if (! empty($result['already_imported'])) {
+            $this->info('Already imported (idempotent)');
+            $this->printResult($result);
+
+            return self::SUCCESS;
         }
 
         if (! $result['ok']) {
@@ -83,11 +88,18 @@ class ImportStekjesData extends Command
      */
     private function printResult(array $result): void
     {
-        foreach (($result['counts'] ?? []) as $table => $count) {
-            $this->line('count.'.$table.'='.$count);
+        if (! empty($result['already_imported'])) {
+            $this->line('already_imported=1');
         }
-        foreach (($result['skipped'] ?? []) as $table => $count) {
-            $this->line('skipped.'.$table.'='.$count);
+        foreach (($result['tables'] ?? []) as $table => $stats) {
+            if (! is_array($stats)) {
+                continue;
+            }
+            foreach (['prod_voor', 'bron', 'toegevoegd', 'samengevoegd', 'overgeslagen', 'prod_na', 'sum_voor', 'sum_na'] as $key) {
+                if (array_key_exists($key, $stats)) {
+                    $this->line($table.'.'.$key.'='.$stats[$key]);
+                }
+            }
         }
         foreach (($result['dropped_columns'] ?? []) as $table => $cols) {
             if (is_array($cols) && $cols !== []) {
@@ -100,6 +112,14 @@ class ImportStekjesData extends Command
         $missing = $result['schema']['missing_tables'] ?? [];
         if (is_array($missing) && $missing !== []) {
             $this->line('missing_tables='.implode(',', $missing));
+        }
+        $diag = $result['diagnosis'] ?? null;
+        if (is_array($diag)) {
+            foreach (['sqlstate', 'driver_code', 'table', 'column', 'error_class'] as $key) {
+                if (array_key_exists($key, $diag) && $diag[$key] !== null && $diag[$key] !== '') {
+                    $this->line('diagnosis.'.$key.'='.$diag[$key]);
+                }
+            }
         }
     }
 }

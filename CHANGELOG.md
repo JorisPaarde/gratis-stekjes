@@ -9,6 +9,24 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.26.1] - 2026-10-31
+
+### Fixed
+
+- Dataverhuis-import (`POST /deploy/import`): echte import faalde met HTTP 409 `PDOException` doordat dry-run alleen telde en de echte import `ALTER TABLE … AUTO_INCREMENT` *binnen* een MySQL-transactie deed (DDL = implicit commit → Laravel `commit()` faalt). Samenvoeg-import gebruikt nu nieuwe auto-increment IDs (geen ALTER in de transactie) en dry-run voert **exact dezelfde writes** uit in een rollback-transactie.
+- Bij fout: veilige diagnose in JSON + `storage/logs` (SQLSTATE, driver-code, tabel, kolom; nooit waarden/e-mail/PII).
+
+### Changed
+
+- Import is een **samenvoeg-import** (geen replace): niets op prod wissen/truncaten/overschrijven. Records worden toegevoegd met **ID-remap** + FK-mapping. Zelfde e-mail (case-insensitive) → prod-account behouden, lege velden aanvullen, gerelateerde rijen aan prod-id koppelen. `geocode_cache`: bestaande `query_key` overslaan. `page_views`: counts **optellen** per date+path.
+- Response/dry-run per tabel: `prod_voor`, `bron`, `toegevoegd`, `samengevoegd`, `overgeslagen`, `prod_na` (+ `sum_voor`/`sum_na` voor page_views). Herhaling met dezelfde package-sha → `already_imported` (geen dubbele writes/optellingen).
+
+### Added
+
+- Tabellen `import_runs` + `import_id_maps` voor idempotentie (package-sha + bron-fingerprint + oud→nieuw keys); migratie `2026_10_31_140000` (na evenementen/`0.26.0`).
+- Export/merge omvat ook `aanbod_fotos`, `ervaringen`, `milestones_sent`, `evenementen`, `page_views` (niet: sessions/cache/jobs/migrations/import_*).
+- Pest: samenvoegen met bestaande prod-data, duplicaat-e-mail, page_views optellen, tweede poging = `already_imported`, dry-run = zelfde stats zonder schrijven; 0.24.2-fixture; veilige diagnose.
+
 ## [0.26.0] - 2026-10-31
 
 ### Added

@@ -114,7 +114,7 @@ api_curl -X POST \
 
 if [ "$API_HTTP" != "200" ]; then
   error_ann "import HTTP ${API_HTTP} error=$(json_field error)"
-  # Counts mogen wel (geen PII).
+  # Counts + veilige diagnose (SQLSTATE/tabel/kolom); nooit waarden/PII.
   printf '%s' "$API_BODY" | python3 -c '
 import json,sys
 try:
@@ -125,6 +125,10 @@ try:
   if v: print(f"dropped.{k}="+",".join(v))
  mt=d.get("missing_tables") or []
  if mt: print("missing_tables="+",".join(mt))
+ diag=d.get("diagnosis") or {}
+ for k in ("sqlstate","driver_code","table","column","error_class"):
+  if diag.get(k) is not None and diag.get(k) != "":
+   print(f"diagnosis.{k}={diag[k]}")
 except Exception:
  pass
 ' || true
@@ -137,10 +141,14 @@ import json,sys
 d=json.load(sys.stdin)
 print("ok="+str(d.get("ok")))
 print("dry_run="+str(d.get("dry_run")))
-for k,v in sorted((d.get("counts") or {}).items()):
- print(f"count.{k}={v}")
-for k,v in sorted((d.get("skipped") or {}).items()):
- print(f"skipped.{k}={v}")
+print("already_imported="+str(bool(d.get("already_imported"))))
+keys=("prod_voor","bron","toegevoegd","samengevoegd","overgeslagen","prod_na","sum_voor","sum_na")
+for table,stats in sorted((d.get("tables") or {}).items()):
+  if not isinstance(stats, dict):
+    continue
+  for k in keys:
+    if k in stats:
+      print(f"{table}.{k}={stats[k]}")
 for k,v in sorted((d.get("dropped_columns") or {}).items()):
  if v: print(f"dropped.{k}="+",".join(v))
 mt=d.get("missing_tables") or []

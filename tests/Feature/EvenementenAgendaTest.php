@@ -227,9 +227,14 @@ test('evenementen-service weigert ongeldige data', function () {
 });
 
 test('migratie evenementen is omkeerbaar', function () {
-    $this->artisan('migrate:rollback', ['--step' => 1])->assertSuccessful();
+    // Rol specifiek deze migratie terug (niet --step=1: nieuwere migraties
+    // zoals import_runs kunnen erna staan).
+    $this->artisan('migrate:rollback', [
+        '--path' => 'database/migrations/2026_10_31_120000_create_evenementen_table.php',
+    ])->assertSuccessful();
     expect(Schema::hasTable('evenementen'))->toBeFalse();
 
     $this->artisan('migrate')->assertSuccessful();
-    expect(Schema::hasTable('evenementen'))->toBeTrue();
+    expect(Schema::hasTable('evenementen'))->toBeTrue()
+        ->and(Schema::hasTable('import_runs'))->toBeTrue();
 });
