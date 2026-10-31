@@ -161,7 +161,8 @@
 }
 .home-signup-inner { display: grid; gap: 1.75rem; align-items: center; }
 @media (min-width: 800px) {
-  .home-signup-inner { grid-template-columns: 1.2fr 0.8fr; }
+  /* minmax(0, …): lange knoppen mogen de kolom niet breder duwen (foto liep uit beeld). */
+  .home-signup-inner { grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr); gap: 2.5rem; }
 }
 .home-signup h2 {
   font-family: var(--font-display);
@@ -172,7 +173,9 @@
   line-height: 1.1;
 }
 .home-signup p { margin: 0; max-width: 36rem; }
-.home-signup .home-pic img { aspect-ratio: 3 / 2; object-fit: cover; }
+.home-signup p.home-actions { margin-top: 1.5rem; max-width: none; }
+.home-signup-media { min-width: 0; }
+.home-signup .home-pic img { aspect-ratio: 4 / 3; object-fit: cover; }
 
 .home-credits { padding-top: 1rem; padding-bottom: 1.5rem; }
 .home-credits-text { font-size: 0.8rem; margin: 0; }
