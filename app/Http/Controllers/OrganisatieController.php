@@ -41,10 +41,14 @@ class OrganisatieController extends Controller
 
         $naam = (string) $org['naam'];
         $kort = (string) ($org['kort'] ?? '');
+        $meta = (string) ($org['meta_description'] ?? '');
+        if ($meta === '') {
+            $meta = $kort !== '' ? $kort : $naam.' — organisatie rond gratis planten delen.';
+        }
 
         return view('pages.organisatie-show', [
             'title' => $naam,
-            'metaDescription' => $kort !== '' ? $kort : $naam.' — organisatie rond gratis planten delen.',
+            'metaDescription' => $meta,
             'canonical' => route('organisaties.show', ['slug' => $slug]),
             'org' => $org,
             'deelplekken' => $deelplekkenRows,

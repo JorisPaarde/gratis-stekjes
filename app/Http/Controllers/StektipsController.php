@@ -214,7 +214,10 @@ class StektipsController extends Controller
 
         $title = $naam.' stekken en gratis stekjes';
         $heading = $naam.' stekken: zo doe je het';
-        $metaDescription = $naam.$metaLatijn.' stekken: zo doe je het. '.$metaKort.'Daarna gratis stekjes delen via '.config('site.name').'.';
+        // Latijn alleen in meta als het geheel ≤ 160 tekens blijft.
+        $metaWithLatijn = $naam.$metaLatijn.' stekken: zo doe je het. '.$metaKort.'Daarna gratis stekjes delen via '.config('site.name').'.';
+        $metaWithoutLatijn = $naam.' stekken: zo doe je het. '.$metaKort.'Daarna gratis stekjes delen via '.config('site.name').'.';
+        $metaDescription = mb_strlen($metaWithLatijn, 'UTF-8') <= 160 ? $metaWithLatijn : $metaWithoutLatijn;
 
         return view('pages.stektips-show', [
             'title' => $title,

@@ -2,7 +2,7 @@
 
 @section('title', 'Pagina niet gevonden')
 @section('meta_description', 'Deze pagina bestaat niet (meer).')
-@section('canonical', url()->current())
+@section('robots', 'noindex, follow')
 
 @section('content')
 <section class="section wrap prose">

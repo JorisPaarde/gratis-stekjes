@@ -22,4 +22,9 @@ return [
      * via CanonicalHostRedirect een 301 hierheen (niet op staging/local).
      */
     'canonical_host' => env('CANONICAL_HOST', 'gratisplanten.nl'),
+    /**
+     * Standaard Open Graph / Twitter-beeld (bestaand logo in de repo).
+     * Pad relatief t.o.v. public/; absolute URL via CanonicalUrl::asset().
+     */
+    'og_image' => '/assets/icons/icon-512.png',
 ];

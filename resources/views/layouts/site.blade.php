@@ -5,19 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   @php($siteName = config('site.name'))
   @php($noindex = (bool) config('site.noindex') || app()->environment('staging'))
+  @php($accountNoindex = request()->is('account', 'account/*'))
   @php($documentTitle = \App\Support\SeoTitle::document($__env->yieldContent('title')))
+  @php($ogImage = \App\Support\CanonicalUrl::asset((string) config('site.og_image', '/assets/icons/icon-512.png')))
   <title>{{ $documentTitle }}</title>
   <meta name="description" content="@yield('meta_description', config('site.description'))">
-  @if($noindex)
+  @if($noindex || $accountNoindex)
   <meta name="robots" content="noindex, nofollow">
+  @elseif(trim($__env->yieldContent('robots')) !== '')
+  <meta name="robots" content="@yield('robots')">
   @endif
-  <link rel="canonical" href="@yield('canonical', url()->current())">
+  @hasSection('canonical')
+  <link rel="canonical" href="@yield('canonical')">
+  @endif
   <meta property="og:type" content="website">
   <meta property="og:locale" content="nl_NL">
   <meta property="og:site_name" content="{{ $siteName }}">
   <meta property="og:title" content="{{ $documentTitle }}">
   <meta property="og:description" content="@yield('meta_description', config('site.description'))">
-  <meta property="og:url" content="@yield('canonical', url()->current())">
+  @hasSection('canonical')
+  <meta property="og:url" content="@yield('canonical')">
+  @endif
+  <meta property="og:image" content="{{ $ogImage }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="{{ $ogImage }}">
   <meta name="theme-color" content="{{ config('site.theme_color') }}">
   <meta name="application-name" content="{{ $siteName }}">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -67,7 +78,7 @@
     </div>
   </header>
   <main id="inhoud">
-    @if(session('status'))
+    @if(request()->hasSession() && session('status'))
       <div class="wrap" style="padding-top:1rem">
         <p class="flash {{ session('status_level') === 'warn' ? 'flash-warn' : 'flash-ok' }}" role="status">{{ session('status') }}</p>
       </div>

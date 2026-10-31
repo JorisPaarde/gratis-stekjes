@@ -33,9 +33,11 @@ class VoorOrganisatiesController extends Controller
 
     public function create(Deelplekken $deelplekken): View
     {
+        $site = config('site.name');
+
         return view('pages.voor-organisaties-aanmelden', [
             'title' => 'Plek aanmelden',
-            'metaDescription' => 'Meld je voedselbos, plantenasiel, plantenbieb of andere deelplek aan.',
+            'metaDescription' => 'Meld je voedselbos, plantenasiel, plantenbieb of andere deelplek aan bij '.$site.' — gratis vindbaar op de kaart.',
             'canonical' => route('voor-organisaties.aanmelden'),
             'typeLabels' => $deelplekken->typeLabels(),
             'countries' => Country::labels(),

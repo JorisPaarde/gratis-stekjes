@@ -5,11 +5,18 @@ use App\Http\Middleware\CanonicalHostRedirect;
 use App\Http\Middleware\NoIndexHeader;
 use App\Http\Middleware\RecordPageView;
 use App\Http\Middleware\SecurityHeaders;
+use App\Http\Middleware\ShareErrorsFromSessionWhenPresent;
+use App\Http\Middleware\StartSessionWhenNeeded;
+use App\Http\Middleware\StripIndexPhpRedirect;
+use App\Http\Middleware\VerifyCsrfTokenWhenSession;
 use App\Support\ThrottleMessage;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Http\Request;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -19,9 +26,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->append(StripIndexPhpRedirect::class);
         $middleware->append(CanonicalHostRedirect::class);
         $middleware->append(NoIndexHeader::class);
         $middleware->append(SecurityHeaders::class);
+        $middleware->web(replace: [
+            StartSession::class => StartSessionWhenNeeded::class,
+            ShareErrorsFromSession::class => ShareErrorsFromSessionWhenPresent::class,
+            ValidateCsrfToken::class => VerifyCsrfTokenWhenSession::class,
+        ]);
         $middleware->appendToGroup('web', RecordPageView::class);
         $middleware->trustProxies(at: '*');
         $middleware->validateCsrfTokens(except: [
