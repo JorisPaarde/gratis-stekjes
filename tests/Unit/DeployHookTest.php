@@ -144,6 +144,7 @@ test('chunk assembly + checksum + storage behouden bij finish', function () {
         'composer.json' => "{}\n",
         'vendor/autoload.php' => "<?php\n",
         'bootstrap/app.php' => "<?php\nreturn new stdClass;\n",
+        'bootstrap/cache/packages.php' => "<?php\nreturn [];\n",
         'public/index.php' => "<?php\n// old\n",
         'public/build/manifest.json' => "{}\n",
         'storage/logs/.gitignore' => "*\n",
@@ -237,6 +238,144 @@ test('chunk assembly + checksum + storage behouden bij finish', function () {
     expect(is_file($docroot.'/build/manifest.json'))->toBeTrue();
     expect(file_get_contents($docroot.'/deploy-hook.php'))->toBe("<?php\n// hook\n");
     expect(file_get_contents($docroot.'/lib.php'))->toBe("<?php\n// lib\n");
+});
+
+test('finish wist config:cache in vorige release en touched lsphp_restart', function () {
+    $docroot = $this->tmp.'/docroot';
+    $appDir = $this->tmp.'/app-staging';
+    $token = 'tok-'.bin2hex(random_bytes(8));
+    deployHookWriteConfig($this->tmp, $docroot, $appDir, $token);
+    $config = deploy_hook_load_config($docroot);
+    $_SERVER['HTTP_AUTHORIZATION'] = 'Bearer '.$token;
+
+    // home_dir default = dirname(app_dir) = $this->tmp
+    expect($config['home_dir'])->toBe($this->tmp);
+
+    // Simuleer vorige live release met stale config:cache (oud DEPLOY_TOKEN).
+    $oldRelease = $appDir.'/releases/oldrel';
+    mkdir($oldRelease.'/bootstrap/cache', 0755, true);
+    mkdir($oldRelease.'/public', 0755, true);
+    file_put_contents(
+        $oldRelease.'/bootstrap/cache/config.php',
+        "<?php return ['stekjes'=>['deploy_token'=>'OLD_STALE_TOKEN']];\n"
+    );
+    file_put_contents($oldRelease.'/bootstrap/cache/routes-v7.php', "<?php\nreturn [];\n");
+    file_put_contents($oldRelease.'/bootstrap/cache/packages.php', "<?php\nreturn [];\n");
+    symlink($oldRelease, $appDir.'/current');
+
+    $marker = $this->tmp.'/.lsphp_restart.txt';
+    expect(is_file($marker))->toBeFalse();
+
+    $zipPath = $this->tmp.'/artifact.zip';
+    deployHookMakeZip($zipPath, [
+        'artisan' => "#!/usr/bin/env php\n",
+        'vendor/autoload.php' => "<?php\n",
+        'bootstrap/app.php' => "<?php\nreturn new stdClass;\n",
+        'bootstrap/cache/packages.php' => "<?php\nreturn [];\n",
+        'public/index.php' => "<?php\n",
+        'public/build/manifest.json' => "{}\n",
+    ]);
+    $raw = file_get_contents($zipPath);
+    $sha = hash('sha256', $raw);
+    $chunk = $this->tmp.'/one.bin';
+    file_put_contents($chunk, $raw);
+
+    $init = deploy_hook_handle($config, [
+        'action' => 'init',
+        'release' => 'newrel',
+        'total_size' => strlen($raw),
+        'total_sha256' => $sha,
+        'chunk_count' => 1,
+    ], [], 'POST');
+    expect($init['status'])->toBe(200);
+    $uploadId = $init['body']['upload_id'];
+
+    expect(deploy_hook_handle($config, [
+        'action' => 'chunk',
+        'upload_id' => $uploadId,
+        'chunk_index' => 0,
+        'chunk_sha256' => $sha,
+        'chunk_path' => $chunk,
+    ], [], 'POST')['status'])->toBe(200);
+
+    $finish = deploy_hook_handle($config, [
+        'action' => 'finish',
+        'upload_id' => $uploadId,
+        'env' => "APP_NAME=test\nAPP_ENV=staging\nAPP_KEY=base64:x\n",
+    ], [], 'POST');
+    expect($finish['status'])->toBe(200)
+        ->and($finish['body']['ok'])->toBeTrue()
+        ->and($finish['body']['lsphp_restart'])->toBeTrue();
+
+    // LiteSpeed-herstartmarker in home (dirname(app_dir)).
+    expect(is_file($marker))->toBeTrue();
+
+    // Vorige release: config/routes weg, packages blijft (stale worker → .env).
+    expect(is_dir($oldRelease))->toBeTrue();
+    expect(is_file($oldRelease.'/bootstrap/cache/config.php'))->toBeFalse();
+    expect(is_file($oldRelease.'/bootstrap/cache/routes-v7.php'))->toBeFalse();
+    expect(is_file($oldRelease.'/bootstrap/cache/packages.php'))->toBeTrue();
+
+    // Nieuwe release heeft geen stale config; packages uit zip blijft.
+    $newRelease = $appDir.'/releases/newrel';
+    expect(is_dir($newRelease))->toBeTrue();
+    expect(is_file($newRelease.'/bootstrap/cache/config.php'))->toBeFalse();
+    expect(is_file($newRelease.'/bootstrap/cache/packages.php'))->toBeTrue();
+});
+
+test('resolve_home_dir: dirname(app_dir) of optionele home_dir', function () {
+    expect(deploy_hook_resolve_home_dir('/home/gratisplanten/app-staging'))
+        ->toBe('/home/gratisplanten');
+    expect(deploy_hook_resolve_home_dir('/home/gratisplanten/app-prod'))
+        ->toBe('/home/gratisplanten');
+    expect(deploy_hook_resolve_home_dir('/home/gratisplanten/app-staging', '/custom/home'))
+        ->toBe('/custom/home');
+});
+
+test('touch_lsphp_restart respecteert optionele home_dir override', function () {
+    $docroot = $this->tmp.'/docroot';
+    $appDir = $this->tmp.'/app-staging';
+    $altHome = $this->tmp.'/alt-home';
+    mkdir($altHome, 0700, true);
+
+    $token = 'tok-'.bin2hex(random_bytes(4));
+    $hash = password_hash($token, PASSWORD_DEFAULT);
+    file_put_contents($this->tmp.'/.deploy/staging.php', "<?php\nreturn ["
+        ."'token_hash'=>".var_export($hash, true).","
+        ."'app_dir'=>".var_export($appDir, true).","
+        ."'docroot'=>".var_export($docroot, true).","
+        ."'env'=>'staging',"
+        ."'home_dir'=>".var_export($altHome, true).","
+        ."];\n");
+
+    $config = deploy_hook_load_config($docroot);
+    expect($config['home_dir'])->toBe($altHome);
+
+    expect(deploy_hook_touch_lsphp_restart($altHome))->toBeTrue();
+    expect(is_file($altHome.'/.lsphp_restart.txt'))->toBeTrue();
+    expect(is_file($this->tmp.'/.lsphp_restart.txt'))->toBeFalse();
+});
+
+test('clear_bootstrap_cache_files is no-op als cache ontbreekt', function () {
+    $missing = $this->tmp.'/no-app-here';
+    deploy_hook_clear_bootstrap_cache_files($missing);
+    expect(is_dir($missing))->toBeFalse();
+
+    $empty = $this->tmp.'/empty-bootstrap';
+    mkdir($empty.'/bootstrap/cache', 0755, true);
+    deploy_hook_clear_bootstrap_cache_files($empty);
+    expect(is_dir($empty.'/bootstrap/cache'))->toBeTrue();
+});
+
+test('upload-script: lsphp-wacht + HTTP 403 retry als stale proces', function () {
+    $script = dirname(__DIR__, 2).'/scripts/deploy-hook-upload.sh';
+    $src = file_get_contents($script);
+    expect($src)->toContain('stale_403')
+        ->and($src)->toContain('mogelijk stale proces')
+        ->and($src)->toMatch('/sleep_secs=30/')
+        ->and($src)->toContain('max_attempts=5')
+        ->and($src)->toContain('LSPHP_RESTART_WAIT_SECS')
+        ->and($src)->toContain('lsphp-recycle');
 });
 
 test('weigert non-POST en mistende config', function () {
