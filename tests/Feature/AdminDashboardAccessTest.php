@@ -189,3 +189,53 @@ test('beheer-uitloggen breekt geen account-sessie', function () {
 
     $this->get(route('beheer.index'))->assertOk();
 });
+
+test('beheer gebruikers-tabel toont Beheertoegang zonder e-mailadressen', function () {
+    $owner = User::factory()->create([
+        'name' => 'Eigenaar',
+        'email' => jpwebcreationTestEmail(),
+        'email_verified_at' => now(),
+    ]);
+    $member = User::factory()->create([
+        'name' => 'Gewoon Lid',
+        'email' => 'lid-zonder-beheer@example.test',
+        'email_verified_at' => now(),
+    ]);
+    $unverifiedOwner = User::factory()->unverified()->create([
+        'name' => 'Nog Niet Bevestigd',
+        'email' => 'andere-owner@example.test',
+    ]);
+    config(['stekjes.admin_dashboard_emails' => [
+        jpwebcreationTestEmail(),
+        'andere-owner@example.test',
+    ]]);
+
+    $html = $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.index'))
+        ->assertOk()
+        ->assertSee('Beheertoegang', false)
+        ->assertSee('Eigenaar', false)
+        ->assertSee('Gewoon Lid', false)
+        ->assertSee('Nog Niet Bevestigd', false)
+        ->assertDontSee(jpwebcreationTestEmail(), false)
+        ->assertDontSee('lid-zonder-beheer@example.test', false)
+        ->assertDontSee('andere-owner@example.test', false)
+        ->getContent();
+
+    expect(preg_match(
+        '/Eigenaar<\/td>\s*<td>ja<\/td>\s*<td>ja<\/td>/s',
+        $html
+    ))->toBe(1, 'geverifieerde owner moet Bevestigd=ja en Beheertoegang=ja tonen');
+    expect(preg_match(
+        '/Gewoon Lid<\/td>\s*<td>ja<\/td>\s*<td>nee<\/td>/s',
+        $html
+    ))->toBe(1, 'lid moet Bevestigd=ja en Beheertoegang=nee tonen');
+    expect(preg_match(
+        '/Nog Niet Bevestigd<\/td>\s*<td>nee<\/td>\s*<td>nee<\/td>/s',
+        $html
+    ))->toBe(1, 'ongeverifieerde allowlist-mail moet Beheertoegang=nee tonen');
+
+    expect($owner->email)->not->toBe('')
+        ->and($member->email)->not->toBe('')
+        ->and($unverifiedOwner->email)->not->toBe('');
+});
