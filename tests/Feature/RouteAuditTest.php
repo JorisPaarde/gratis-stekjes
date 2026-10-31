@@ -30,7 +30,6 @@ function auditPublicGetRoutes(): array
         '/voor-organisaties',
         '/voor-organisaties/aanmelden',
         '/organisaties',
-        '/stijlgids',
         '/robots.txt',
         '/sitemap.xml',
         '/manifest.webmanifest',

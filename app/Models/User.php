@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Concerns\HasSafeEncryptedAttributes;
 use App\Notifications\ResetPasswordDutch;
 use App\Notifications\VerifyEmailDutch;
 use App\Support\SafeMail;
@@ -17,7 +18,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, HasSafeEncryptedAttributes, Notifiable;
 
     protected $fillable = [
         'name',
@@ -44,7 +45,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'active' => 'boolean',
-            'telefoon' => 'encrypted',
+            'telefoon' => \App\Casts\SafeEncrypted::class,
             'lat' => 'float',
             'lon' => 'float',
         ];

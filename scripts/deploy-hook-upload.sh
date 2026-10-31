@@ -212,7 +212,8 @@ umask 077
   dotenv_line APP_NAME "$NAME"
   dotenv_line SITE_NAME "$NAME"
   dotenv_line APP_ENV "$APP_ENV_NAME"
-  # APP_KEY: alleen als secret gezet; anders laat hook bestaande/genereer.
+  # APP_KEY: optioneel secret alleen voor first-install. Hook behoudt altijd een
+  # bestaande server-APP_KEY (nooit overschrijven), ook als dit secret anders is.
   if [ -n "${APP_KEY:-}" ]; then
     dotenv_line APP_KEY "$APP_KEY"
   else

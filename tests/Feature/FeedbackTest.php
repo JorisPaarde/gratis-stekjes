@@ -139,6 +139,59 @@ test('admin feedbacklijst toont ontsleutelde tekst zonder lid-pii', function () 
         ->and($html)->not->toContain('beheer-feedback-table');
 });
 
+test('admin feedbacklijst blijft 200 bij body met verkeerde APP_KEY', function () {
+    $user = User::factory()->create(['email_verified_at' => now()]);
+    $readable = Feedback::query()->create([
+        'user_id' => $user->id,
+        'page_path' => '/aanbod',
+        'body' => 'Leesbare feedback met huidige sleutel.',
+    ]);
+    $unread = Feedback::query()->create([
+        'user_id' => null,
+        'page_path' => '/',
+        'body' => 'Ongelezen zonder user.',
+        'read_at' => null,
+    ]);
+    $withPath = Feedback::query()->create([
+        'user_id' => $user->id,
+        'page_path' => '/stektips/basilicum',
+        'body' => 'Met pagina-pad.',
+        'read_at' => now(),
+    ]);
+
+    // Ciphertext met een andere APP_KEY → DecryptException / MAC invalid.
+    $foreign = (new Illuminate\Encryption\Encrypter(random_bytes(32), 'AES-256-CBC'))
+        ->encrypt('Geheim met oude sleutel', false);
+    Illuminate\Support\Facades\DB::table('feedback')->insert([
+        'user_id' => $user->id,
+        'page_path' => '/kapot',
+        'body' => $foreign,
+        'read_at' => null,
+        'created_at' => now()->subMinute(),
+        'updated_at' => now()->subMinute(),
+    ]);
+
+    $html = $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.feedback'))
+        ->assertOk()
+        ->assertSee('Leesbare feedback met huidige sleutel.', false)
+        ->assertSee('Ongelezen zonder user.', false)
+        ->assertSee('Met pagina-pad.', false)
+        ->assertSee('Inhoud niet leesbaar', false)
+        ->assertSee('/kapot', false)
+        ->assertDontSee('Geheim met oude sleutel', false)
+        ->getContent();
+
+    $broken = Feedback::query()->where('page_path', '/kapot')->first();
+    expect($broken)->not->toBeNull()
+        ->and($broken->body)->toBeNull()
+        ->and($broken->isUnreadable('body'))->toBeTrue()
+        ->and($html)->toContain(\App\Casts\SafeEncrypted::VIEW_FALLBACK)
+        ->and($readable->id)->toBeGreaterThan(0)
+        ->and($unread->read_at)->toBeNull()
+        ->and($withPath->page_path)->toBe('/stektips/basilicum');
+});
+
 test('gast wordt doorgestuurd vanaf beheer feedback', function () {
     $this->get(route('beheer.feedback'))
         ->assertRedirect(route('beheer.login'));

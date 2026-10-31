@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Concerns\HasSafeEncryptedAttributes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Deelplek extends Model
 {
+    use HasSafeEncryptedAttributes;
+
     public const SOURCE_SEED = 'seed';
 
     public const SOURCE_AANMELDING = 'aanmelding';
@@ -49,7 +52,7 @@ class Deelplek extends Model
             'lng' => 'float',
             'geraadpleegd' => 'date',
             'visible' => 'boolean',
-            'contact_email' => 'encrypted',
+            'contact_email' => \App\Casts\SafeEncrypted::class,
             'privacy_at' => 'datetime',
             'reviewed_at' => 'datetime',
         ];

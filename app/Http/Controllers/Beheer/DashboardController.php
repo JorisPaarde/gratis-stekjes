@@ -9,8 +9,10 @@ use App\Models\Deelplek;
 use App\Models\Evenement;
 use App\Models\MailLog;
 use App\Models\PartnerMarker;
+use App\Models\Report;
 use App\Models\User;
 use App\Notifications\VerifyEmailDutch;
+use App\Services\AvgService;
 use App\Services\DeelplekAanmelding;
 use App\Services\Deelplekken;
 use App\Services\Evenementen;
@@ -20,7 +22,9 @@ use App\Support\SafeMail;
 use App\Support\ThrottleMessage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
@@ -43,7 +47,7 @@ class DashboardController extends Controller
 
         $reports = collect();
         if (Schema::hasTable('reports')) {
-            $reports = DB::table('reports')
+            $reports = Report::query()
                 ->orderByDesc('id')
                 ->limit(50)
                 ->get();
@@ -107,6 +111,58 @@ class DashboardController extends Controller
             'pendingDeelplekken' => $pendingDeelplekken,
             'users' => $users,
         ]);
+    }
+
+    public function confirmDestroyUser(User $user): View|RedirectResponse
+    {
+        if (Auth::check() && (int) Auth::id() === (int) $user->id) {
+            return redirect()
+                ->route('beheer.index')
+                ->withErrors(['user' => 'Je kunt je eigen account niet via beheer verwijderen.']);
+        }
+
+        return view('beheer.user-delete', [
+            'title' => 'Gebruiker verwijderen',
+            'metaDescription' => 'Bevestig verwijderen van gebruiker.',
+            'canonical' => route('beheer.users.destroy.confirm', $user),
+            'user' => $user,
+            'confirmWord' => 'VERWIJDER',
+        ]);
+    }
+
+    public function destroyUser(Request $request, User $user, AvgService $avg): RedirectResponse
+    {
+        if (Auth::check() && (int) Auth::id() === (int) $user->id) {
+            return redirect()
+                ->route('beheer.index')
+                ->withErrors(['user' => 'Je kunt je eigen account niet via beheer verwijderen.']);
+        }
+
+        $data = $request->validate([
+            'confirm' => ['required', 'string', 'max:40'],
+        ], [
+            'confirm.required' => 'Typ VERWIJDER om te bevestigen.',
+        ]);
+
+        if (trim((string) $data['confirm']) !== 'VERWIJDER') {
+            return back()
+                ->withInput()
+                ->withErrors(['confirm' => 'Typ precies VERWIJDER om te bevestigen.']);
+        }
+
+        $deletedId = (int) $user->id;
+        $avg->purgeUserAccount($user);
+
+        Log::info('beheer.user.deleted', [
+            'admin' => Auth::check() ? 'account' : 'password',
+            'admin_user_id' => Auth::id(),
+            'deleted_user_id' => $deletedId,
+            'at' => now()->toIso8601String(),
+        ]);
+
+        return redirect()
+            ->route('beheer.index')
+            ->with('status', 'Gebruiker #'.$deletedId.' verwijderd.');
     }
 
     public function resendVerification(Request $request): RedirectResponse
