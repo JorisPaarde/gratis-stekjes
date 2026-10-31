@@ -21,5 +21,23 @@
     "waarschuwing": "",
     "ervaringen": "",
     "bronnen": "RHS — How to grow shrubby hydrangeas — https://www.rhs.org.uk/plants/hydrangea/shrubby/growing-guide; RHS — Softwood cuttings — https://www.rhs.org.uk/propagation/softwood-cuttings",
-    "kort": "Halfverhoute zomerstek in stekgrond"
+    "kort": "Halfverhoute zomerstek in stekgrond",
+    "inhoud": [
+        {
+            "type": "h2",
+            "tekst": "Hortensia stekken in water"
+        },
+        {
+            "type": "p",
+            "tekst": "Hortensia (Hydrangea) wortelt goed in water. Neem in de zomer een halfverhoute scheut zonder bloem, zet de knoop onder water op een lichte plek zonder felle zon, en ververs het water om de paar dagen. Zodra de wortels een paar centimeter zijn, pot je over in luchtige stekgrond — laat de overgang niet te lang duren, anders wennen de waterwortels slecht aan aarde."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer hortensia stekken"
+        },
+        {
+            "type": "p",
+            "tekst": "Beste venster: juni tot augustus, als de scheuten van dit jaar half verhout zijn — nog buigzaam, niet slap-zacht en zonder bloemknop. Softwood in late lente kan ook, maar halfhout in de zomer is betrouwbaarder. Houd stekken schaduwrijk en vochtig tot ze vastzitten."
+        }
+    ]
 }

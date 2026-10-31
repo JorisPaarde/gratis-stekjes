@@ -1,0 +1,26 @@
+{
+    "slug": "perzik",
+    "naam": "Perzikboom",
+    "latijn": "Prunus persica",
+    "categorie": "eetbaar",
+    "waarom": "Pit zaaien (koude winter) of oculeren; zaailing lijkt vaak redelijk op ouder, geen garantie",
+    "methode": "Pit zaaien of oculeren",
+    "wanneer": "Pit buiten in het najaar; oculeren jul–aug",
+    "welk_hout": "Verse pit; of oculatiehout van bekend ras",
+    "lengte_snit": "Pit stratificeren buiten; oculeren op passende onderstam (bijv. St. Julien A)",
+    "water_grond": "Goed drainerende fruitgrond; beschutte warme plek",
+    "licht": "Volle zon, beschut",
+    "water": "Matig",
+    "hulpmiddel": "Bij oculeren: entmes en entband",
+    "kans": "Zaaien: gemiddeld; oculeren: lastig",
+    "klaar": "Kiemplant na winter; oculatie na uitlopen",
+    "verwanten": [
+        "abrikoos",
+        "pruim",
+        "kers"
+    ],
+    "waarschuwing": "Geen rasgarantie uit pit. Krulziekte is een bekend probleem; kies resistente rassen als je oculatiehout nodig hebt.",
+    "ervaringen": "",
+    "bronnen": "RHS — Chip budding — https://www.rhs.org.uk/propagation/chip-budding",
+    "kort": "Pit zaaien of oculeren; krulziekte opletten"
+}

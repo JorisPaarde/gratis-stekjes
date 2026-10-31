@@ -1,0 +1,27 @@
+{
+    "slug": "pruim",
+    "naam": "Pruimenboom",
+    "latijn": "Prunus domestica",
+    "categorie": "eetbaar",
+    "waarom": "Oculeren (chip) of enten; wortelopslag van eigen-wortel-bomen kan rasgelijk zijn",
+    "methode": "Oculeren (chip), enten; opslag van eigen-wortel-bomen",
+    "wanneer": "Oculeren jul–aug; opslag nov–mrt",
+    "welk_hout": "Gezond oculatiehout/entrijs; of bewortelde opslag van eigen ras",
+    "lengte_snit": "Chip-bud volgens standaard; cambium passend op onderstam",
+    "water_grond": "Onderstam in fruitgrond; na oculeren afbinden",
+    "licht": "Volle zon",
+    "water": "Matig",
+    "hulpmiddel": "Entmes, entband; schone sneden",
+    "kans": "Gemiddeld tot lastig",
+    "klaar": "Als de oculatie uitloopt het volgende seizoen",
+    "verwanten": [
+        "appel",
+        "peer",
+        "kers",
+        "perzik"
+    ],
+    "waarschuwing": "Opslag van een geënte boom is meestal de onderstam, niet het ras.",
+    "ervaringen": "",
+    "bronnen": "RHS — Chip budding — https://www.rhs.org.uk/propagation/chip-budding; RHS — Grafting — https://www.rhs.org.uk/fruit/fruit-trees/grafting-ornamental",
+    "kort": "Oculeren of enten; let op onderstam-opslag"
+}

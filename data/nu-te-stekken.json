@@ -19,10 +19,22 @@
             "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
           },
           "planten": [
-            {"naam": "Zwarte bes", "slug": "zwarte-bes"},
-            {"naam": "Rode bes", "slug": "rode-bes"},
-            {"naam": "Jostabes", "slug": "jostabes"},
-            {"naam": "Zwarte vlier", "slug": "zwarte-vlier"}
+            {
+              "naam": "Zwarte bes",
+              "slug": "zwarte-bes"
+            },
+            {
+              "naam": "Rode bes",
+              "slug": "rode-bes"
+            },
+            {
+              "naam": "Jostabes",
+              "slug": "jostabes"
+            },
+            {
+              "naam": "Zwarte vlier",
+              "slug": "zwarte-vlier"
+            }
           ]
         },
         {
@@ -35,9 +47,62 @@
             "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
           },
           "planten": [
-            {"naam": "Wilg", "slug": "wilg"},
-            {"naam": "Druif", "slug": "druif"},
-            {"naam": "Herfstolijfwilg", "slug": "herfstolijfwilg"}
+            {
+              "naam": "Wilg",
+              "slug": "wilg"
+            },
+            {
+              "naam": "Druif",
+              "slug": "druif"
+            },
+            {
+              "naam": "Herfstolijfwilg",
+              "slug": "herfstolijfwilg"
+            },
+            {
+              "naam": "Liguster",
+              "slug": "liguster"
+            },
+            {
+              "naam": "Forsythia",
+              "slug": "forsythia"
+            },
+            {
+              "naam": "Rode kornoelje",
+              "slug": "rode-kornoelje"
+            },
+            {
+              "naam": "Kamperfoelie",
+              "slug": "kamperfoelie"
+            }
+          ]
+        },
+        {
+          "id": "jan-enten-voorbereiding",
+          "titel": "Enthout bewaren en onderstammen",
+          "methode": "enten",
+          "tip": "Knip in rust gezond entrijs van appel, peer of pruim en bewaar het koel en vochtig tot het copuleren in maart–april. Stekken van fruitbomen wortelt zelden; enten op onderstam is de rasvaste route.",
+          "bron": {
+            "naam": "RHS — Grafting fruit trees",
+            "url": "https://www.rhs.org.uk/fruit/fruit-trees/grafting-ornamental"
+          },
+          "planten": [
+            {
+              "naam": "Appelboom",
+              "slug": "appel"
+            },
+            {
+              "naam": "Perenboom",
+              "slug": "peer"
+            },
+            {
+              "naam": "Pruimenboom",
+              "slug": "pruim"
+            },
+            {
+              "naam": "Kweepeer",
+              "slug": "kweepeer"
+            }
           ]
         }
       ]
@@ -55,14 +120,54 @@
             "url": "https://www.rhs.org.uk/advice/in-month/february/trees-shrubs"
           },
           "planten": [
-            {"naam": "Zwarte bes", "slug": "zwarte-bes"},
-            {"naam": "Rode bes", "slug": "rode-bes"},
-            {"naam": "Jostabes", "slug": "jostabes"},
-            {"naam": "Wilg", "slug": "wilg"},
-            {"naam": "Druif", "slug": "druif"},
-            {"naam": "Zwarte vlier", "slug": "zwarte-vlier"},
-            {"naam": "Herfstolijfwilg", "slug": "herfstolijfwilg"},
-            {"naam": "Kiwibes", "slug": "kiwibes"}
+            {
+              "naam": "Zwarte bes",
+              "slug": "zwarte-bes"
+            },
+            {
+              "naam": "Rode bes",
+              "slug": "rode-bes"
+            },
+            {
+              "naam": "Jostabes",
+              "slug": "jostabes"
+            },
+            {
+              "naam": "Wilg",
+              "slug": "wilg"
+            },
+            {
+              "naam": "Druif",
+              "slug": "druif"
+            },
+            {
+              "naam": "Zwarte vlier",
+              "slug": "zwarte-vlier"
+            },
+            {
+              "naam": "Herfstolijfwilg",
+              "slug": "herfstolijfwilg"
+            },
+            {
+              "naam": "Kiwibes",
+              "slug": "kiwibes"
+            },
+            {
+              "naam": "Liguster",
+              "slug": "liguster"
+            },
+            {
+              "naam": "Forsythia",
+              "slug": "forsythia"
+            },
+            {
+              "naam": "Rode kornoelje",
+              "slug": "rode-kornoelje"
+            },
+            {
+              "naam": "Kamperfoelie",
+              "slug": "kamperfoelie"
+            }
           ]
         }
       ]
@@ -80,7 +185,26 @@
             "url": "https://www.rhs.org.uk/herbs/mint/grow-your-own"
           },
           "planten": [
-            {"naam": "Munt", "slug": "munt"}
+            {
+              "naam": "Munt",
+              "slug": "munt"
+            },
+            {
+              "naam": "Bieslook",
+              "slug": "bieslook"
+            },
+            {
+              "naam": "Oregano",
+              "slug": "oregano"
+            },
+            {
+              "naam": "Citroenmelisse",
+              "slug": "citroenmelisse"
+            },
+            {
+              "naam": "Lavas",
+              "slug": "lavas"
+            }
           ]
         },
         {
@@ -93,8 +217,74 @@
             "url": "https://www.rhs.org.uk/propagation/propagating-herbs"
           },
           "planten": [
-            {"naam": "Salie", "slug": "salie"},
-            {"naam": "Rozemarijn", "slug": "rozemarijn"}
+            {
+              "naam": "Salie",
+              "slug": "salie"
+            },
+            {
+              "naam": "Rozemarijn",
+              "slug": "rozemarijn"
+            }
+          ]
+        },
+        {
+          "id": "mrt-enten-copuleren",
+          "titel": "Fruitbomen copuleren",
+          "methode": "enten",
+          "tip": "Copuleren in maart–april met koud bewaard entrijs. Cambiumlagen op elkaar, afbinden en afdichten. Enten op wilg werkt niet voor appel.",
+          "bron": {
+            "naam": "RHS — Grafting fruit trees",
+            "url": "https://www.rhs.org.uk/fruit/fruit-trees/grafting-ornamental"
+          },
+          "planten": [
+            {
+              "naam": "Appelboom",
+              "slug": "appel"
+            },
+            {
+              "naam": "Perenboom",
+              "slug": "peer"
+            },
+            {
+              "naam": "Mispel",
+              "slug": "mispel"
+            }
+          ]
+        },
+        {
+          "id": "mrt-scheuren-vaste",
+          "titel": "Vaste planten scheuren",
+          "methode": "deling",
+          "tip": "Scheur pollen als de groei start: herfstaster, ooievaarsbek, heuchera, siergras, kattenkruid. Elk stuk met wortels én groeipunt.",
+          "bron": {
+            "naam": "RHS — Dividing perennials",
+            "url": "https://www.rhs.org.uk/plants/types/perennials/dividing"
+          },
+          "planten": [
+            {
+              "naam": "Herfstaster",
+              "slug": "herfstaster"
+            },
+            {
+              "naam": "Ooievaarsbek",
+              "slug": "ooievaarsbek"
+            },
+            {
+              "naam": "Heuchera",
+              "slug": "heuchera"
+            },
+            {
+              "naam": "Siergras",
+              "slug": "siergras"
+            },
+            {
+              "naam": "Kattenkruid",
+              "slug": "kattenkruid"
+            },
+            {
+              "naam": "Agapanthus",
+              "slug": "agapanthus"
+            }
           ]
         }
       ]
@@ -112,9 +302,18 @@
             "url": "https://www.rhs.org.uk/propagation/softwood-cuttings"
           },
           "planten": [
-            {"naam": "Hortensia", "slug": null},
-            {"naam": "Vlinderstruik", "slug": null},
-            {"naam": "Fuchsia", "slug": null}
+            {
+              "naam": "Hortensia",
+              "slug": null
+            },
+            {
+              "naam": "Vlinderstruik",
+              "slug": null
+            },
+            {
+              "naam": "Fuchsia",
+              "slug": null
+            }
           ]
         },
         {
@@ -127,7 +326,34 @@
             "url": "https://www.rhs.org.uk/herbs/mint/grow-your-own"
           },
           "planten": [
-            {"naam": "Munt", "slug": "munt"}
+            {
+              "naam": "Munt",
+              "slug": "munt"
+            }
+          ]
+        },
+        {
+          "id": "apr-kruiden-stek-zaai",
+          "titel": "Kruiden stekken en zaaien",
+          "methode": "stek",
+          "tip": "Basilicum zaaien binnen; tijm en oregano stekken of scheuren. Laurier halfhoutstek komt later in het seizoen — geduld, maanden beworteling.",
+          "bron": {
+            "naam": "RHS — Basil",
+            "url": "https://www.rhs.org.uk/herbs/basil/grow-your-own"
+          },
+          "planten": [
+            {
+              "naam": "Basilicum",
+              "slug": "basilicum"
+            },
+            {
+              "naam": "Tijm",
+              "slug": "tijm"
+            },
+            {
+              "naam": "Klimop",
+              "slug": "klimop"
+            }
           ]
         }
       ]
@@ -145,9 +371,18 @@
             "url": "https://www.rhs.org.uk/propagation/softwood-cuttings"
           },
           "planten": [
-            {"naam": "Hortensia", "slug": null},
-            {"naam": "Vlinderstruik", "slug": null},
-            {"naam": "Salie", "slug": "salie"}
+            {
+              "naam": "Hortensia",
+              "slug": null
+            },
+            {
+              "naam": "Vlinderstruik",
+              "slug": null
+            },
+            {
+              "naam": "Salie",
+              "slug": "salie"
+            }
           ]
         },
         {
@@ -160,8 +395,14 @@
             "url": "https://www.rhs.org.uk/plants/types/houseplants/how-to-take-cuttings-from-houseplants"
           },
           "planten": [
-            {"naam": "Scindapsus / Epipremnum", "slug": null},
-            {"naam": "Tradescantia", "slug": null}
+            {
+              "naam": "Scindapsus / Epipremnum",
+              "slug": null
+            },
+            {
+              "naam": "Tradescantia",
+              "slug": null
+            }
           ]
         }
       ]
@@ -179,9 +420,18 @@
             "url": "https://www.rhs.org.uk/propagation/softwood-cuttings"
           },
           "planten": [
-            {"naam": "Munt", "slug": "munt"},
-            {"naam": "Salie", "slug": "salie"},
-            {"naam": "Rozemarijn", "slug": "rozemarijn"}
+            {
+              "naam": "Munt",
+              "slug": "munt"
+            },
+            {
+              "naam": "Salie",
+              "slug": "salie"
+            },
+            {
+              "naam": "Rozemarijn",
+              "slug": "rozemarijn"
+            }
           ]
         },
         {
@@ -194,9 +444,18 @@
             "url": "https://www.rhs.org.uk/propagation/propagating-herbs"
           },
           "planten": [
-            {"naam": "Basilicum", "slug": null},
-            {"naam": "Koriander", "slug": null},
-            {"naam": "Peterselie", "slug": null}
+            {
+              "naam": "Basilicum",
+              "slug": null
+            },
+            {
+              "naam": "Koriander",
+              "slug": null
+            },
+            {
+              "naam": "Peterselie",
+              "slug": null
+            }
           ]
         }
       ]
@@ -214,7 +473,10 @@
             "url": "https://www.rhs.org.uk/propagation/propagating-herbs"
           },
           "planten": [
-            {"naam": "Rozemarijn", "slug": "rozemarijn"}
+            {
+              "naam": "Rozemarijn",
+              "slug": "rozemarijn"
+            }
           ]
         },
         {
@@ -227,7 +489,98 @@
             "url": "https://www.rhs.org.uk/propagation/propagating-herbs"
           },
           "planten": [
-            {"naam": "Munt", "slug": "munt"}
+            {
+              "naam": "Munt",
+              "slug": "munt"
+            }
+          ]
+        },
+        {
+          "id": "jul-halfhout-zomer",
+          "titel": "Halfhoutstek van heesters en klimmers",
+          "methode": "stek",
+          "tip": "Halfhoutstek voor oleander, passiebloem, Toscaanse jasmijn, buxus, laurierkers, tuinhibiscus en laurier. Hoge luchtvochtigheid helpt.",
+          "bron": {
+            "naam": "RHS — Semi-ripe cuttings",
+            "url": "https://www.rhs.org.uk/propagation/semi-ripe-cuttings"
+          },
+          "planten": [
+            {
+              "naam": "Oleander",
+              "slug": "oleander"
+            },
+            {
+              "naam": "Passiebloem",
+              "slug": "passiebloem"
+            },
+            {
+              "naam": "Toscaanse jasmijn",
+              "slug": "toscaanse-jasmijn"
+            },
+            {
+              "naam": "Buxus",
+              "slug": "buxus"
+            },
+            {
+              "naam": "Laurierkers",
+              "slug": "laurierkers"
+            },
+            {
+              "naam": "Laurier",
+              "slug": "laurier"
+            },
+            {
+              "naam": "Tuinhibiscus",
+              "slug": "tuinhibiscus"
+            }
+          ]
+        },
+        {
+          "id": "jul-kopafleggen-braam",
+          "titel": "Kopafleggen van braam",
+          "methode": "afleggen",
+          "tip": "Zet de top van een lange bramenscheut vast in de grond. Knip los zodra er wortels zijn (najaar/voorjaar).",
+          "bron": {
+            "naam": "RHS — Layering",
+            "url": "https://www.rhs.org.uk/propagation/layering"
+          },
+          "planten": [
+            {
+              "naam": "Braam",
+              "slug": "braam"
+            },
+            {
+              "naam": "Japanse wijnbes",
+              "slug": "japanse-wijnbes"
+            }
+          ]
+        },
+        {
+          "id": "jul-oculeren",
+          "titel": "Oculeren van steenfruit",
+          "methode": "enten",
+          "tip": "Chip-budding in juli–augustus op pruim, kers, perzik of abrikoos. Steenfruit oculeren lukt vaak beter dan copuleren.",
+          "bron": {
+            "naam": "RHS — Chip budding",
+            "url": "https://www.rhs.org.uk/propagation/chip-budding"
+          },
+          "planten": [
+            {
+              "naam": "Pruimenboom",
+              "slug": "pruim"
+            },
+            {
+              "naam": "Kersenboom",
+              "slug": "kers"
+            },
+            {
+              "naam": "Perzikboom",
+              "slug": "perzik"
+            },
+            {
+              "naam": "Abrikoos",
+              "slug": "abrikoos"
+            }
           ]
         }
       ]
@@ -245,7 +598,10 @@
             "url": "https://www.rhs.org.uk/fruit/strawberries/grow-your-own"
           },
           "planten": [
-            {"naam": "Aardbei", "slug": "aardbei"}
+            {
+              "naam": "Aardbei",
+              "slug": "aardbei"
+            }
           ]
         },
         {
@@ -258,7 +614,10 @@
             "url": "https://www.rhs.org.uk/propagation/propagating-herbs"
           },
           "planten": [
-            {"naam": "Rozemarijn", "slug": "rozemarijn"}
+            {
+              "naam": "Rozemarijn",
+              "slug": "rozemarijn"
+            }
           ]
         }
       ]
@@ -276,7 +635,10 @@
             "url": "https://www.rhs.org.uk/fruit/strawberries/grow-your-own"
           },
           "planten": [
-            {"naam": "Aardbei", "slug": "aardbei"}
+            {
+              "naam": "Aardbei",
+              "slug": "aardbei"
+            }
           ]
         },
         {
@@ -289,8 +651,14 @@
             "url": "https://www.rhs.org.uk/propagation/techniques"
           },
           "planten": [
-            {"naam": "Vaste planten (algemeen)", "slug": null},
-            {"naam": "Munt", "slug": "munt"}
+            {
+              "naam": "Vaste planten (algemeen)",
+              "slug": null
+            },
+            {
+              "naam": "Munt",
+              "slug": "munt"
+            }
           ]
         },
         {
@@ -303,7 +671,34 @@
             "url": "https://www.rhs.org.uk/plants/16137/rubus-idaeus/details"
           },
           "planten": [
-            {"naam": "Framboos", "slug": "framboos"}
+            {
+              "naam": "Framboos",
+              "slug": "framboos"
+            }
+          ]
+        },
+        {
+          "id": "sep-pioen-scheuren",
+          "titel": "Pioenroos scheuren",
+          "methode": "deling",
+          "tip": "Pioen kun je niet stekken. Scheur de kroon in september–oktober met 3–5 ogen per stuk; plant niet te diep.",
+          "bron": {
+            "naam": "RHS — Dividing perennials",
+            "url": "https://www.rhs.org.uk/plants/types/perennials/dividing"
+          },
+          "planten": [
+            {
+              "naam": "Pioenroos",
+              "slug": "pioenroos"
+            },
+            {
+              "naam": "Iris",
+              "slug": "iris"
+            },
+            {
+              "naam": "Daglelie",
+              "slug": "daglelie"
+            }
           ]
         }
       ]
@@ -321,10 +716,38 @@
             "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
           },
           "planten": [
-            {"naam": "Kruisbes", "slug": "kruisbes"},
-            {"naam": "Herfstolijfwilg", "slug": "herfstolijfwilg"},
-            {"naam": "Zwarte bes", "slug": "zwarte-bes"},
-            {"naam": "Rode bes", "slug": "rode-bes"}
+            {
+              "naam": "Kruisbes",
+              "slug": "kruisbes"
+            },
+            {
+              "naam": "Herfstolijfwilg",
+              "slug": "herfstolijfwilg"
+            },
+            {
+              "naam": "Zwarte bes",
+              "slug": "zwarte-bes"
+            },
+            {
+              "naam": "Rode bes",
+              "slug": "rode-bes"
+            },
+            {
+              "naam": "Liguster",
+              "slug": "liguster"
+            },
+            {
+              "naam": "Forsythia",
+              "slug": "forsythia"
+            },
+            {
+              "naam": "Rode kornoelje",
+              "slug": "rode-kornoelje"
+            },
+            {
+              "naam": "Kamperfoelie",
+              "slug": "kamperfoelie"
+            }
           ]
         },
         {
@@ -337,7 +760,10 @@
             "url": "https://www.rhs.org.uk/propagation/techniques"
           },
           "planten": [
-            {"naam": "Vaste planten (algemeen)", "slug": null}
+            {
+              "naam": "Vaste planten (algemeen)",
+              "slug": null
+            }
           ]
         }
       ]
@@ -355,16 +781,78 @@
             "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
           },
           "planten": [
-            {"naam": "Zwarte bes", "slug": "zwarte-bes"},
-            {"naam": "Rode bes", "slug": "rode-bes"},
-            {"naam": "Jostabes", "slug": "jostabes"},
-            {"naam": "Zwarte vlier", "slug": "zwarte-vlier"},
-            {"naam": "Wilg", "slug": "wilg"},
-            {"naam": "Druif", "slug": "druif"},
-            {"naam": "Vijg", "slug": "vijg"},
-            {"naam": "Moerbei", "slug": "moerbei"},
-            {"naam": "Kiwibes", "slug": "kiwibes"},
-            {"naam": "Herfstolijfwilg", "slug": "herfstolijfwilg"}
+            {
+              "naam": "Zwarte bes",
+              "slug": "zwarte-bes"
+            },
+            {
+              "naam": "Rode bes",
+              "slug": "rode-bes"
+            },
+            {
+              "naam": "Jostabes",
+              "slug": "jostabes"
+            },
+            {
+              "naam": "Zwarte vlier",
+              "slug": "zwarte-vlier"
+            },
+            {
+              "naam": "Wilg",
+              "slug": "wilg"
+            },
+            {
+              "naam": "Druif",
+              "slug": "druif"
+            },
+            {
+              "naam": "Vijg",
+              "slug": "vijg"
+            },
+            {
+              "naam": "Moerbei",
+              "slug": "moerbei"
+            },
+            {
+              "naam": "Kiwibes",
+              "slug": "kiwibes"
+            },
+            {
+              "naam": "Herfstolijfwilg",
+              "slug": "herfstolijfwilg"
+            },
+            {
+              "naam": "Liguster",
+              "slug": "liguster"
+            },
+            {
+              "naam": "Forsythia",
+              "slug": "forsythia"
+            },
+            {
+              "naam": "Rode kornoelje",
+              "slug": "rode-kornoelje"
+            },
+            {
+              "naam": "Kamperfoelie",
+              "slug": "kamperfoelie"
+            }
+          ]
+        },
+        {
+          "id": "nov-rabarber-scheuren",
+          "titel": "Rabarber scheuren",
+          "methode": "deling",
+          "tip": "In rust (nov–mrt) kroon delen met minstens één knop. Zaaien geeft geen gelijk ras.",
+          "bron": {
+            "naam": "RHS — Rhubarb",
+            "url": "https://www.rhs.org.uk/fruit/rhubarb/grow-your-own"
+          },
+          "planten": [
+            {
+              "naam": "Rabarber",
+              "slug": "rabarber"
+            }
           ]
         }
       ]
@@ -382,12 +870,46 @@
             "url": "https://www.rhs.org.uk/propagation/hardwood-cuttings"
           },
           "planten": [
-            {"naam": "Zwarte bes", "slug": "zwarte-bes"},
-            {"naam": "Rode bes", "slug": "rode-bes"},
-            {"naam": "Jostabes", "slug": "jostabes"},
-            {"naam": "Wilg", "slug": "wilg"},
-            {"naam": "Druif", "slug": "druif"},
-            {"naam": "Zwarte vlier", "slug": "zwarte-vlier"}
+            {
+              "naam": "Zwarte bes",
+              "slug": "zwarte-bes"
+            },
+            {
+              "naam": "Rode bes",
+              "slug": "rode-bes"
+            },
+            {
+              "naam": "Jostabes",
+              "slug": "jostabes"
+            },
+            {
+              "naam": "Wilg",
+              "slug": "wilg"
+            },
+            {
+              "naam": "Druif",
+              "slug": "druif"
+            },
+            {
+              "naam": "Zwarte vlier",
+              "slug": "zwarte-vlier"
+            },
+            {
+              "naam": "Liguster",
+              "slug": "liguster"
+            },
+            {
+              "naam": "Forsythia",
+              "slug": "forsythia"
+            },
+            {
+              "naam": "Rode kornoelje",
+              "slug": "rode-kornoelje"
+            },
+            {
+              "naam": "Kamperfoelie",
+              "slug": "kamperfoelie"
+            }
           ]
         }
       ]

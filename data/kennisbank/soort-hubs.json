@@ -23,6 +23,89 @@
         "snoei_slug": "vijg-snoeien",
         "aanbod_plant": "vijg",
         "wilgenwater": true,
-        "extra_artikelen": []
+        "extra_artikelen": [
+            "marcotteren"
+        ]
+    },
+    "appel": {
+        "snoei_slug": null,
+        "aanbod_plant": "appel",
+        "wilgenwater": true,
+        "extra_artikelen": [
+            "fruitbomen-enten",
+            "onderstammen-per-fruitboom",
+            "fruitboom-uit-pit-of-zaad"
+        ]
+    },
+    "peer": {
+        "snoei_slug": null,
+        "aanbod_plant": "peer",
+        "wilgenwater": true,
+        "extra_artikelen": [
+            "fruitbomen-enten",
+            "onderstammen-per-fruitboom"
+        ]
+    },
+    "pruim": {
+        "snoei_slug": null,
+        "aanbod_plant": "pruim",
+        "wilgenwater": true,
+        "extra_artikelen": [
+            "fruitbomen-enten",
+            "onderstammen-per-fruitboom"
+        ]
+    },
+    "kers": {
+        "snoei_slug": null,
+        "aanbod_plant": "kers",
+        "wilgenwater": true,
+        "extra_artikelen": [
+            "fruitbomen-enten",
+            "onderstammen-per-fruitboom"
+        ]
+    },
+    "laurier": {
+        "snoei_slug": null,
+        "aanbod_plant": "laurier",
+        "wilgenwater": true,
+        "extra_artikelen": [
+            "zomerstek-halfhoutstek",
+            "kruiden-vermeerderen"
+        ]
+    },
+    "basilicum": {
+        "snoei_slug": null,
+        "aanbod_plant": "basilicum",
+        "wilgenwater": true,
+        "extra_artikelen": [
+            "kruiden-vermeerderen",
+            "stekken-in-water-of-grond"
+        ]
+    },
+    "rhododendron": {
+        "snoei_slug": null,
+        "aanbod_plant": "rhododendron",
+        "wilgenwater": true,
+        "extra_artikelen": [
+            "marcotteren",
+            "scheuren-en-afleggen"
+        ]
+    },
+    "braam": {
+        "snoei_slug": null,
+        "aanbod_plant": "braam",
+        "wilgenwater": true,
+        "extra_artikelen": [
+            "scheuren-en-afleggen",
+            "wortelstek"
+        ]
+    },
+    "phlox": {
+        "snoei_slug": null,
+        "aanbod_plant": "phlox",
+        "wilgenwater": true,
+        "extra_artikelen": [
+            "wortelstek"
+        ]
     }
 }

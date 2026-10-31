@@ -22,5 +22,23 @@
         "lavendel",
         "munt"
     ],
-    "waarschuwing": ""
+    "waarschuwing": "",
+    "inhoud": [
+        {
+            "type": "h2",
+            "tekst": "Rozemarijn stekken in water"
+        },
+        {
+            "type": "p",
+            "tekst": "Rozemarijn wortelt redelijk in water, vooral verse niet-bloeiende topjes. Zet ze licht, ververs het water regelmatig, en pot op zodra er stevige wortels zijn. In zandige stekgrond (niet te nat) is de slagingskans vaak nog iets hoger."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer rozemarijn stekken"
+        },
+        {
+            "type": "p",
+            "tekst": "Beste venster: april tot augustus. Kies halfverhoute scheuten van dit jaar: soepel genoeg om te buigen, al met wat stevigheid in de stengel, zonder bloem. In hete midzomer stekken iets dieper en beschut tegen uitdroging."
+        }
+    ]
 }

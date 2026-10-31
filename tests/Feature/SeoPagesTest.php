@@ -13,7 +13,7 @@ test('contentpagina’s laden', function () {
 
 test('stektips index en soortpagina', function () {
     $soorten = app(Stektips::class)->all();
-    expect($soorten)->toHaveCount(48);
+    expect($soorten)->toHaveCount(106);
 
     $this->get(route('stektips.index'))
         ->assertOk()
@@ -21,7 +21,7 @@ test('stektips index en soortpagina', function () {
         ->assertSee('Zwarte bes', false)
         ->assertSee('Herfstolijfwilg', false)
         ->assertSee('Monstera', false)
-        ->assertSee('48 soorten', false)
+        ->assertSee('106 soorten', false)
         ->assertSee('Wilgenwater', false);
 
     $this->get(route('stektips.show', ['slug' => 'aardbei']))

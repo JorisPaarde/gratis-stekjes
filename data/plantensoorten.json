@@ -1,11 +1,11 @@
 {
   "meta": {
     "omschrijving": "Plantensoorten voor autocomplete bij stekje aanbieden. Alleen soorten die hobbyisten realistisch kunnen vermeerderen en delen (stek, scheuren, uitlopers, offsets, zaden), plus typische voedselbos-soorten. Verborgen soorten blijven in de data voor bestaande aanbod-referenties. Geen soorten van de EU-Unielijst invasieve exoten. Zie docs/plantensoorten-selectie.md.",
-    "aantal": 337,
-    "met_stektips_pagina": 48,
-    "zichtbaar": 309,
+    "aantal": 353,
+    "met_stektips_pagina": 106,
+    "zichtbaar": 325,
     "verborgen": 28,
-    "voedselbos": 94
+    "voedselbos": 100
   },
   "soorten": [
     {
@@ -1325,7 +1325,7 @@
         "Pioen",
         "Paeonia"
       ],
-      "slug": null,
+      "slug": "pioenroos",
       "categorie": "tuin",
       "zichtbaar": true
     },
@@ -1378,7 +1378,7 @@
       "synoniemen": [
         "Syringa"
       ],
-      "slug": null,
+      "slug": "sering",
       "categorie": "tuin",
       "zichtbaar": true
     },
@@ -1389,7 +1389,7 @@
       "synoniemen": [
         "Chinees klokje"
       ],
-      "slug": null,
+      "slug": "forsythia",
       "categorie": "tuin",
       "zichtbaar": true
     },
@@ -1430,7 +1430,7 @@
       "synoniemen": [
         "Rododendron"
       ],
-      "slug": null,
+      "slug": "rhododendron",
       "categorie": "tuin",
       "zichtbaar": true
     },
@@ -1508,7 +1508,7 @@
       "synoniemen": [
         "Cornus mas"
       ],
-      "slug": null,
+      "slug": "gele-kornoelje",
       "categorie": "tuin",
       "zichtbaar": true,
       "tags": [
@@ -1520,7 +1520,7 @@
       "naam": "Rode kornoelje",
       "latijn": "Cornus sanguinea",
       "synoniemen": [],
-      "slug": null,
+      "slug": "rode-kornoelje",
       "categorie": "tuin",
       "zichtbaar": true,
       "tags": [
@@ -1557,7 +1557,7 @@
       "synoniemen": [
         "Bosrank"
       ],
-      "slug": null,
+      "slug": "clematis",
       "categorie": "tuin",
       "zichtbaar": true
     },
@@ -1568,7 +1568,7 @@
       "synoniemen": [
         "Hedera"
       ],
-      "slug": null,
+      "slug": "klimop",
       "categorie": "tuin",
       "zichtbaar": true,
       "tags": [
@@ -1593,7 +1593,7 @@
       "synoniemen": [
         "Passiflora"
       ],
-      "slug": null,
+      "slug": "passiebloem",
       "categorie": "tuin",
       "zichtbaar": true
     },
@@ -1604,7 +1604,7 @@
       "synoniemen": [
         "Lonicera"
       ],
-      "slug": null,
+      "slug": "kamperfoelie",
       "categorie": "tuin",
       "zichtbaar": true
     },
@@ -1644,7 +1644,7 @@
       "synoniemen": [
         "Palmboompje"
       ],
-      "slug": null,
+      "slug": "buxus",
       "categorie": "tuin",
       "zichtbaar": true
     },
@@ -1677,7 +1677,7 @@
       "synoniemen": [
         "Ligustrum"
       ],
-      "slug": null,
+      "slug": "liguster",
       "categorie": "tuin",
       "zichtbaar": true
     },
@@ -1706,7 +1706,7 @@
       "naam": "Laurierkers",
       "latijn": "Prunus laurocerasus",
       "synoniemen": [],
-      "slug": null,
+      "slug": "laurierkers",
       "categorie": "tuin",
       "zichtbaar": true
     },
@@ -1791,7 +1791,7 @@
         "Echinacea",
         "Rode zonnehoed"
       ],
-      "slug": null,
+      "slug": "zonnehoed",
       "categorie": "tuin",
       "zichtbaar": true
     },
@@ -1915,7 +1915,7 @@
       "synoniemen": [
         "Helleborus"
       ],
-      "slug": null,
+      "slug": "kerstroos",
       "categorie": "tuin",
       "zichtbaar": true
     },
@@ -1957,7 +1957,7 @@
       "synoniemen": [
         "Tuingeranium (vaste)"
       ],
-      "slug": null,
+      "slug": "ooievaarsbek",
       "categorie": "tuin",
       "zichtbaar": true
     },
@@ -2047,7 +2047,7 @@
         "Nepeta",
         "Catnip"
       ],
-      "slug": null,
+      "slug": "kattenkruid",
       "categorie": "tuin",
       "zichtbaar": true,
       "tags": [
@@ -2442,7 +2442,7 @@
       "synoniemen": [
         "Hemerocallis"
       ],
-      "slug": null,
+      "slug": "daglelie",
       "categorie": "tuin",
       "zichtbaar": true
     },
@@ -2453,7 +2453,7 @@
       "synoniemen": [
         "Lis"
       ],
-      "slug": null,
+      "slug": "iris",
       "categorie": "tuin",
       "zichtbaar": true
     },
@@ -3128,7 +3128,7 @@
       "naam": "Bieslook",
       "latijn": "Allium schoenoprasum",
       "synoniemen": [],
-      "slug": null,
+      "slug": "bieslook",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3257,7 +3257,7 @@
       "naam": "Rabarber",
       "latijn": "Rheum rhabarbarum",
       "synoniemen": [],
-      "slug": null,
+      "slug": "rabarber",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3321,7 +3321,7 @@
       "synoniemen": [
         "Appel"
       ],
-      "slug": null,
+      "slug": "appel",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3349,7 +3349,7 @@
       "synoniemen": [
         "Pruim"
       ],
-      "slug": null,
+      "slug": "pruim",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3364,7 +3364,7 @@
         "Kers",
         "Zoete kers"
       ],
-      "slug": null,
+      "slug": "kers",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3392,7 +3392,7 @@
       "synoniemen": [
         "Perzik"
       ],
-      "slug": null,
+      "slug": "perzik",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3406,7 +3406,7 @@
       "synoniemen": [
         "Abrikoos"
       ],
-      "slug": null,
+      "slug": "abrikoos",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3418,7 +3418,7 @@
       "naam": "Kweepeer",
       "latijn": "Cydonia oblonga",
       "synoniemen": [],
-      "slug": null,
+      "slug": "kweepeer",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3432,7 +3432,7 @@
       "synoniemen": [
         "Okkernoot"
       ],
-      "slug": null,
+      "slug": "walnoot",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3446,7 +3446,7 @@
       "synoniemen": [
         "Hazelnoot"
       ],
-      "slug": null,
+      "slug": "hazelaar",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3458,7 +3458,7 @@
       "naam": "Tamme kastanje",
       "latijn": "Castanea sativa",
       "synoniemen": [],
-      "slug": null,
+      "slug": "tamme-kastanje",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3514,7 +3514,7 @@
       "synoniemen": [
         "Blueberry"
       ],
-      "slug": null,
+      "slug": "blauwe-bes",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3554,7 +3554,7 @@
       "synoniemen": [
         "Bramen"
       ],
-      "slug": null,
+      "slug": "braam",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3568,7 +3568,7 @@
       "synoniemen": [
         "Wijnbes"
       ],
-      "slug": null,
+      "slug": "japanse-wijnbes",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3596,7 +3596,7 @@
       "synoniemen": [
         "Actinidia deliciosa"
       ],
-      "slug": null,
+      "slug": "kiwi",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3610,7 +3610,7 @@
       "synoniemen": [
         "Basielkruid"
       ],
-      "slug": null,
+      "slug": "basilicum",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3658,7 +3658,7 @@
       "naam": "Dragon",
       "latijn": "Artemisia dracunculus",
       "synoniemen": [],
-      "slug": null,
+      "slug": "dragon",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3670,7 +3670,7 @@
       "naam": "Tijm",
       "latijn": "Thymus vulgaris",
       "synoniemen": [],
-      "slug": null,
+      "slug": "tijm",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3696,7 +3696,7 @@
       "synoniemen": [
         "Wilde marjolein"
       ],
-      "slug": null,
+      "slug": "oregano",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3722,7 +3722,7 @@
       "synoniemen": [
         "Melisse"
       ],
-      "slug": null,
+      "slug": "citroenmelisse",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3736,7 +3736,7 @@
       "synoniemen": [
         "Laurierboom"
       ],
-      "slug": null,
+      "slug": "laurier",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3750,7 +3750,7 @@
       "synoniemen": [
         "Maggikruid"
       ],
-      "slug": null,
+      "slug": "lavas",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3826,7 +3826,7 @@
       "naam": "Citroenverbena",
       "latijn": "Aloysia citrodora",
       "synoniemen": [],
-      "slug": null,
+      "slug": "citroenverbena",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3879,6 +3879,201 @@
       "latijn": "Cymbopogon citratus",
       "synoniemen": [],
       "slug": null,
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
+    },
+    {
+      "id": 338,
+      "naam": "Oleander",
+      "latijn": "Nerium oleander",
+      "synoniemen": [],
+      "slug": "oleander",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": []
+    },
+    {
+      "id": 339,
+      "naam": "Blauwe regen",
+      "latijn": "Wisteria",
+      "synoniemen": [
+        "Wisteria"
+      ],
+      "slug": "blauwe-regen",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": []
+    },
+    {
+      "id": 340,
+      "naam": "Toscaanse jasmijn",
+      "latijn": "Trachelospermum jasminoides",
+      "synoniemen": [],
+      "slug": "toscaanse-jasmijn",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": []
+    },
+    {
+      "id": 341,
+      "naam": "Eucalyptus",
+      "latijn": "Eucalyptus",
+      "synoniemen": [],
+      "slug": "eucalyptus",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": []
+    },
+    {
+      "id": 342,
+      "naam": "Agapanthus",
+      "latijn": "Agapanthus",
+      "synoniemen": [
+        "Afrikaanse lelie"
+      ],
+      "slug": "agapanthus",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": []
+    },
+    {
+      "id": 343,
+      "naam": "Tuinhibiscus",
+      "latijn": "Hibiscus syriacus",
+      "synoniemen": [
+        "Althaeastruik",
+        "Hibiscus"
+      ],
+      "slug": "tuinhibiscus",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": []
+    },
+    {
+      "id": 344,
+      "naam": "Perenboom",
+      "latijn": "Pyrus communis",
+      "synoniemen": [
+        "Peer"
+      ],
+      "slug": "peer",
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
+    },
+    {
+      "id": 345,
+      "naam": "Phlox",
+      "latijn": "Phlox paniculata",
+      "synoniemen": [
+        "Vlambloem"
+      ],
+      "slug": "phlox",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": []
+    },
+    {
+      "id": 346,
+      "naam": "Herfstaster",
+      "latijn": "Symphyotrichum",
+      "synoniemen": [
+        "Aster"
+      ],
+      "slug": "herfstaster",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": []
+    },
+    {
+      "id": 347,
+      "naam": "Heuchera",
+      "latijn": "Heuchera",
+      "synoniemen": [
+        "Purperklokje"
+      ],
+      "slug": "heuchera",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": []
+    },
+    {
+      "id": 348,
+      "naam": "Siergras",
+      "latijn": "diverse (bijv. Calamagrostis, Miscanthus, Pennisetum alopecuroides)",
+      "synoniemen": [],
+      "slug": "siergras",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": []
+    },
+    {
+      "id": 349,
+      "naam": "Honingbes",
+      "latijn": "Lonicera caerulea",
+      "synoniemen": [
+        "Honeyberry"
+      ],
+      "slug": "honingbes",
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
+    },
+    {
+      "id": 350,
+      "naam": "Appelbes",
+      "latijn": "Aronia",
+      "synoniemen": [
+        "Aronia"
+      ],
+      "slug": "appelbes",
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
+    },
+    {
+      "id": 351,
+      "naam": "Gojibes",
+      "latijn": "Lycium barbarum",
+      "synoniemen": [
+        "Boksdoorn"
+      ],
+      "slug": "gojibes",
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
+    },
+    {
+      "id": 352,
+      "naam": "Duindoorn",
+      "latijn": "Hippophae rhamnoides",
+      "synoniemen": [],
+      "slug": "duindoorn",
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
+    },
+    {
+      "id": 353,
+      "naam": "Mispel",
+      "latijn": "Mespilus germanica",
+      "synoniemen": [
+        "Echte mispel"
+      ],
+      "slug": "mispel",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [

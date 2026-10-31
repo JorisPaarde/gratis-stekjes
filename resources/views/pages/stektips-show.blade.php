@@ -84,6 +84,31 @@
     </table>
   </div>
 
+  @if(!empty($soort['inhoud']) && is_array($soort['inhoud']))
+    <div class="stektips-artikel-body stektips-soort-inhoud">
+      @foreach($soort['inhoud'] as $block)
+        @php $type = $block['type'] ?? ''; @endphp
+        @if($type === 'h2')
+          <h2>{{ $block['tekst'] ?? '' }}</h2>
+        @elseif($type === 'p')
+          <p>{{ $block['tekst'] ?? '' }}</p>
+        @elseif($type === 'ol' && !empty($block['items']))
+          <ol>
+            @foreach($block['items'] as $item)
+              <li>{{ $item }}</li>
+            @endforeach
+          </ol>
+        @elseif($type === 'ul' && !empty($block['items']))
+          <ul>
+            @foreach($block['items'] as $item)
+              <li>{{ $item }}</li>
+            @endforeach
+          </ul>
+        @endif
+      @endforeach
+    </div>
+  @endif
+
   @if(!empty($verwanten))
     <h2 class="stektips-related-title">Verwante soorten</h2>
     <ul class="stektips-related">

@@ -2,23 +2,42 @@
     "slug": "vijg",
     "naam": "Vijg",
     "latijn": "Ficus carica",
-    "waarom": "Vijg (Ficus carica) is te vermeerderen met winterstek van circa 20 cm",
+    "waarom": "Vijg (Ficus carica) / vijgenboom: winterstek, waterstek of afleggen/marcotteren",
     "methode": "Meerjarig hout direct in een pot van 1–2 L; de top afdekken met wondbalsem",
     "wanneer": "Nov, vóór vorst",
     "welk_hout": "Slapend hout (houtstek) van gezonde takken; circa 20 cm",
-    "lengte_snit": "Onder onder een knop; top mag met wondbalsem; stek in pot van 1–2 L",
+    "lengte_snit": "Onder een knop; top mag met wondbalsem; stek in pot van 1–2 L",
     "water_grond": "Pot met stek- of potgrond; licht vochtig, vorstvrij of beschut",
     "hulpmiddel": "Wondbalsem optioneel op de top; stekpoeder optioneel",
     "kans": "Gemiddeld",
     "klaar": "Na enkele maanden als er wortels zijn; daarna oppotten of uitplanten",
     "ervaringen": "",
     "bronnen": "RHS — How to grow figs — https://www.rhs.org.uk/fruit/figs/grow-your-own; RHS — Hardwood cuttings — https://www.rhs.org.uk/propagation/hardwood-cuttings",
-    "kort": "Meerjarig hout direct in een pot van 1–2 L; de top afdekken met wondbalsem",
+    "kort": "Winterstek, stek in water of afleggen/marcotteren",
     "categorie": "eetbaar",
     "licht": "Volle zon",
     "water": "Matig; niet te nat in de winter",
     "verwanten": [
         "moerbei"
     ],
-    "waarschuwing": ""
+    "waarschuwing": "",
+    "seo_naam": "Vijg(enboom)",
+    "inhoud": [
+        {
+            "type": "h2",
+            "tekst": "Vijg stekken in water"
+        },
+        {
+            "type": "p",
+            "tekst": "Zomer- of halfhoutstekken van vijg wortelen soms in water. Zet een knoop onder water, ververs regelmatig, en pot op zodra wortels stevig zijn. Winterhoutstek in potgrond blijft de klassieke, betrouwbare route."
+        },
+        {
+            "type": "h2",
+            "tekst": "Afleggen en marcotteren"
+        },
+        {
+            "type": "p",
+            "tekst": "Buig een soepele scheut naar de grond (afleggen) of marcotteer een tak met een ringwond, veenmos en plastic. Zo krijg je een bewortelde plant terwijl die nog aan de moeder zit — handig bij dikkere takken."
+        }
+    ]
 }

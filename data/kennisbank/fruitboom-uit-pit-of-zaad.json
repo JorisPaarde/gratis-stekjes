@@ -1,0 +1,81 @@
+{
+  "slug": "fruitboom-uit-pit-of-zaad",
+  "titel": "Fruitboom uit pit of zaad: wat kun je verwachten",
+  "samenvatting": "Een zaailing is geen kopie van het ras. Sterke onderstam of verrassing — bij perzik lijkt de nakomeling soms redelijk op de ouder.",
+  "meta_description": "Appel, peer, perzik of abrikoos uit pit zaaien: zaailing ≠ ras. Wat je wél mag verwachten in de Nederlandse tuin.",
+  "zoekwoorden": [
+    "appelboom zaaien",
+    "perzik pit zaaien",
+    "abrikoos zaaien",
+    "fruitboom zaaien",
+    "zaailing fruitboom"
+  ],
+  "categorieen": [
+    "vermeerderen"
+  ],
+  "pillar": "vermeerderen",
+  "is_pillar": false,
+  "gerelateerde_soorten": [
+    "appel",
+    "peer",
+    "perzik",
+    "abrikoos",
+    "walnoot",
+    "tamme-kastanje",
+    "kers",
+    "pruim"
+  ],
+  "seizoenen": [
+    "herfst",
+    "winter",
+    "lente"
+  ],
+  "maanden": [
+    9,
+    10,
+    11,
+    3,
+    4
+  ],
+  "niveau": "beginner",
+  "locatie": "buiten",
+  "inhoud": [
+    {
+      "type": "p",
+      "tekst": "Pit of zaad van een lekkere appel of perzik zaaien voelt logisch. Genetisch is fruit vaak heterozygoot: de zaailing is een nieuw individu. Voor een gelijk ras blijf je aangewezen op enten of oculeren — zie Fruitbomen enten."
+    },
+    {
+      "type": "h2",
+      "tekst": "Wat zaaien wél oplevert"
+    },
+    {
+      "type": "ul",
+      "items": [
+        "Een sterke zaailing-onderstam om later op te enten.",
+        "Een speelse «verrassingsboom» — soms goed fruit, soms niet.",
+        "Bij perzik lijkt de zaailing vaker redelijk op de ouder dan bij appel, zonder garantie.",
+        "Walnoot en tamme kastanje: zaaien is de gangbare thuisstart; oogst duurt jaren."
+      ]
+    },
+    {
+      "type": "h2",
+      "tekst": "Praktisch"
+    },
+    {
+      "type": "p",
+      "tekst": "Veel pitten hebben koude nodig (najaar buiten zaaien of stratificeren). Bescherm tegen muizen. Abrikoos en perzik bloeien vroeg: vorst kan de bloei ruïneren, ook bij een geslaagde zaailing."
+    }
+  ],
+  "bronnen": [
+    {
+      "titel": "RHS — Grafting fruit trees",
+      "url": "https://www.rhs.org.uk/fruit/fruit-trees/grafting-ornamental"
+    },
+    {
+      "titel": "RHS — Chip budding",
+      "url": "https://www.rhs.org.uk/propagation/chip-budding"
+    }
+  ],
+  "duurzamer_alternatief": null,
+  "howto": false
+}

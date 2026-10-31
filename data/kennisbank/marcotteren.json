@@ -1,0 +1,83 @@
+{
+  "slug": "marcotteren",
+  "titel": "Marcotteren (luchtafleggen)",
+  "samenvatting": "Luchtafleggen (marcotteren): een tak wortelt terwijl die nog aan de moederplant zit. Geschikt voor rhododendron, sering, oleander en meer.",
+  "meta_description": "Marcotteren oftewel luchtafleggen: snede, veenmos en plastic. Voor rhododendron, sering, oleander en andere houtige planten.",
+  "zoekwoorden": [
+    "marcotteren",
+    "luchtafleggen",
+    "lucht afleggen",
+    "afleggen planten",
+    "air layering"
+  ],
+  "categorieen": [
+    "vermeerderen",
+    "stekken"
+  ],
+  "pillar": "vermeerderen",
+  "is_pillar": false,
+  "gerelateerde_soorten": [
+    "rhododendron",
+    "sering",
+    "oleander",
+    "forsythia",
+    "vijg",
+    "rubberplant"
+  ],
+  "seizoenen": [
+    "lente",
+    "herfst"
+  ],
+  "maanden": [
+    3,
+    4,
+    9,
+    10
+  ],
+  "niveau": "gevorderd",
+  "locatie": "beide",
+  "inhoud": [
+    {
+      "type": "p",
+      "tekst": "Marcotteren is luchtafleggen: je laat een tak wortels maken terwijl die nog sap krijgt van de moederplant. Handig bij planten die lastig stekken, zoals rhododendron."
+    },
+    {
+      "type": "h2",
+      "tekst": "Wanneer"
+    },
+    {
+      "type": "p",
+      "tekst": "Voorjaar of najaar. Groenblijvers bij voorkeur in het voorjaar, als de sapstroom op gang komt."
+    },
+    {
+      "type": "h2",
+      "tekst": "Werkwijze"
+    },
+    {
+      "type": "ol",
+      "items": [
+        "Kies een gezonde tak van ongeveer 1–2 jaar oud.",
+        "Maak een ringvormige snede of een tongwond van zo’n 2,5 cm; verwijder eventueel een smalle baststrook.",
+        "Pak de wond in met vochtig veenmos en wind zwart plastic of folie eromheen; sluit boven- en onderkant af.",
+        "Laat zitten tot er wortels zichtbaar zijn — soms maanden tot een jaar.",
+        "Knip onder de wortelkluit los en pot of plant op."
+      ]
+    },
+    {
+      "type": "h2",
+      "tekst": "Geschikte planten"
+    },
+    {
+      "type": "p",
+      "tekst": "Onder meer rhododendron, sering, oleander, forsythia, camelia, magnolia en ficus/vijg. Gewoon afleggen (tak in de grond) blijft eenvoudiger als de plant soepele ranken heeft — zie scheuren en afleggen."
+    }
+  ],
+  "bronnen": [
+    {
+      "titel": "RHS — Air layering plants",
+      "url": "https://www.rhs.org.uk/propagation/air-layering-plants"
+    }
+  ],
+  "duurzamer_alternatief": null,
+  "howto": true
+}
