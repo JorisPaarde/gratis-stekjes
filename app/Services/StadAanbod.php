@@ -243,6 +243,15 @@ final class StadAanbod
             if (! is_array($row)) {
                 continue;
             }
+            if (array_key_exists('visible', $row)) {
+                $visible = filter_var($row['visible'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                if ($visible === null) {
+                    $visible = (bool) $row['visible'];
+                }
+                if (! $visible) {
+                    continue;
+                }
+            }
             $rlat = isset($row['lat']) && is_numeric($row['lat']) ? (float) $row['lat'] : null;
             $rlng = isset($row['lng']) && is_numeric($row['lng']) ? (float) $row['lng'] : null;
             if ($rlat === null || $rlng === null) {
