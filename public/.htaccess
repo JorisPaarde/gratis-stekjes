@@ -20,6 +20,13 @@ DirectoryIndex index.php
     RewriteCond %{HTTP_HOST} ^(www\.)?gratisstekjes\.nl$ [NC]
     RewriteRule ^ https://gratisplanten.nl%{REQUEST_URI} [L,R=301]
 
+    # www → kaal en http → https op het hoofddomein (vóór PHP).
+    RewriteCond %{HTTP_HOST} ^www\.gratisplanten\.nl$ [NC]
+    RewriteRule ^ https://gratisplanten.nl%{REQUEST_URI} [L,R=301]
+    RewriteCond %{HTTP_HOST} ^gratisplanten\.nl$ [NC]
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^ https://gratisplanten.nl%{REQUEST_URI} [L,R=301]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
