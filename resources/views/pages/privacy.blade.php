@@ -24,7 +24,7 @@
   <h2>Welke gegevens ik verwerk</h2>
   <ul class="list-plain">
     <li><strong>Account:</strong> e-mailadres, wachtwoord (alleen als hash, bcrypt/argon via Laravel), voornaam of bijnaam, optioneel telefoonnummer (versleuteld opgeslagen), benaderde locatie (label zoals postcode-4 of plaats, plus afgeronde coördinaten). Optioneel een tijdelijk nieuw e-mailadres bij e-mailwijziging (<code>pending_email</code>) tot bevestiging.</li>
-    <li><strong>Aanbod:</strong> type (uitdelen of ophalen), vrije tekst, zichtbaarheid, verloopdatum en (intern) verlengtoken bij herinneringsmails. Geen gebruikersfoto’s (die functie bestaat nog niet).</li>
+    <li><strong>Aanbod:</strong> type (uitdelen of ophalen), vrije tekst (plantensoort), zichtbaarheid, verloopdatum en (intern) verlengtoken bij herinneringsmails. Optioneel tot drie foto’s die jij uploadt: ik controleer of het echt een afbeelding is (JPEG/PNG/WebP), herschrijf die server-side (zonder EXIF/GPS), bewaar ze buiten uitvoerbare paden met willekeurige bestandsnamen, en toon ze bij je aanbod. Foto’s zijn openbaar zolang het aanbod zichtbaar is.</li>
     <li><strong>Berichten:</strong> inhoud van gesprekken (versleuteld opgeslagen), of je verder contact wilt delen (ja/nee), leestijd, blokkeerregels, en meldingen met reden (versleuteld) voor de beheerder.</li>
     <li><strong>Feedback:</strong> optionele tekst die je via de feedbackknop stuurt (versleuteld), plus het pad van de pagina waarop je zat.</li>
     <li><strong>Organisatie- of deelplek-aanmelding:</strong> naam, type, plaats, beschrijving, contact-e-mail (versleuteld, niet publiek) en tijdstip van privacy-akkoord. Pas na goedkeuring door beheer verschijnt de plek op deelplekken/stadspagina’s.</li>
@@ -34,7 +34,7 @@
   <h2>Wat staat er publiek</h2>
   <ul class="list-plain">
     <li>Voornaam of bijnaam</li>
-    <li>Wat je uitdeelt of zoekt (vrije tekst)</li>
+    <li>Wat je uitdeelt of zoekt (vrije tekst) en eventuele foto’s bij dat aanbod</li>
     <li>Benaderde locatie (postcode-4 of plaats/wijk) en afgeronde kaartpunten — nooit een straat of huisnummer via de site</li>
     <li>Goedgekeurde deelplekken/organisaties met de publieke info die daarvoor is goedgekeurd</li>
   </ul>
@@ -56,8 +56,8 @@
 
   <h2>Jouw rechten</h2>
   <ul class="list-plain">
-    <li><strong>Inzien / export:</strong> ingelogd via <a href="{{ route('account.export') }}">Gegevens downloaden</a> (JSON van account, aanbod, berichten, blokkades/meldingen; zonder wachtwoord of tokens; foto-links leeg zolang er geen foto-upload is).</li>
-    <li><strong>Wissen (account):</strong> <a href="{{ route('account.verwijderen') }}">Account verwijderen</a> (bevestiging met wachtwoord). Daarmee verdwijnen account, aanbod, berichten/gesprekken, blokkades, jouw meldingen, wachtwoordreset-tokens en sessies. Feedback blijft bewaard zonder koppeling aan jou (geanonimiseerd).</li>
+    <li><strong>Inzien / export:</strong> ingelogd via <a href="{{ route('account.export') }}">Gegevens downloaden</a> (JSON van account, aanbod, berichten, blokkades/meldingen en links naar jouw aanbodfoto’s; zonder wachtwoord of tokens).</li>
+    <li><strong>Wissen (account):</strong> <a href="{{ route('account.verwijderen') }}">Account verwijderen</a> (bevestiging met wachtwoord). Daarmee verdwijnen account, aanbod, bijbehorende foto’s op de server, berichten/gesprekken, blokkades, jouw meldingen, wachtwoordreset-tokens en sessies. Feedback blijft bewaard zonder koppeling aan jou (geanonimiseerd). Verwijder je een apart aanboditem, dan wis ik ook de foto’s van dat item.</li>
     <li><strong>Rectificatie:</strong> via je accountprofiel (naam, telefoon, locatie, e-mailwijziging met herbevestiging).</li>
     <li><strong>Bezwaar / klacht:</strong> mail <a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a>. Je kunt ook een klacht indienen bij de Autoriteit Persoonsgegevens (<a href="https://www.autoriteitpersoonsgegevens.nl/" rel="noopener noreferrer">autoriteitpersoonsgegevens.nl</a>).</li>
 
@@ -66,7 +66,7 @@
   <h2>Bewaren en dataminimalisatie</h2>
   <ul class="list-plain">
     <li>Ik bewaar alleen wat nodig is voor bovenstaande doelen.</li>
-    <li><strong>Aanbod:</strong> standaard zichtbaar tot {{ (int) config('stekjes.aanbod_ttl_days', 60) }} dagen (verlengbaar via herinneringsmail); verlopen aanbod verdwijnt uit zoeken/kaart.</li>
+    <li><strong>Aanbod:</strong> standaard zichtbaar tot {{ (int) config('stekjes.aanbod_ttl_days', 60) }} dagen (verlengbaar via herinneringsmail); verlopen aanbod verdwijnt uit zoeken/kaart. Foto’s bewaar ik zolang het aanbod (of jouw account) bestaat; bij wissen verdwijnen de bestanden mee.</li>
     <li><strong>Geocode-cache:</strong> max. {{ (int) config('stekjes.geocode_cache_retention_days', 90) }} dagen; oudere rijen worden door de cron-job opgeschoond.</li>
     <li><strong>Rate-limits / cache:</strong> korte TTL (uren tot dagen), geen aparte “IP-database”.</li>
     <li><strong>Sessies:</strong> standaard lifetime {{ (int) config('session.lifetime', 120) }} minuten (configureerbaar); “onthoud mij” houdt je langer ingelogd via een remember-cookie.</li>
@@ -95,6 +95,6 @@
   <p>Je kunt een gebruiker melden of blokkeren. Meldingen worden opgeslagen voor de beheerder. Er is geen openbare moderatiewachtrij.</p>
 
   <h2>Wijzigingen</h2>
-  <p>Versie van deze site: {{ config('site.version') }}. Datum van deze concepttekst: 29 oktober 2026. Bij inhoudelijke wijzigingen werk ik deze pagina bij.</p>
+  <p>Versie van deze site: {{ config('site.version') }}. Datum van deze concepttekst: 31 oktober 2026. Bij inhoudelijke wijzigingen werk ik deze pagina bij.</p>
 </section>
 @endsection

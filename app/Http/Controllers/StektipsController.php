@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\Kennisbank;
+use App\Services\SoortAfbeeldingen;
 use App\Services\Stektips;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -12,7 +13,7 @@ use Illuminate\View\View;
 
 class StektipsController extends Controller
 {
-    public function index(Request $request, Stektips $stektips, Kennisbank $kennisbank): View
+    public function index(Request $request, Stektips $stektips, Kennisbank $kennisbank, SoortAfbeeldingen $afbeeldingen): View
     {
         $filters = [
             'q' => trim((string) $request->query('q', '')),
@@ -54,10 +55,11 @@ class StektipsController extends Controller
             ];
         }
         foreach ($soorten as $soort) {
+            $slug = (string) $soort['slug'];
             $entries[] = [
                 'type' => 'soort',
                 'titel' => (string) $soort['naam'],
-                'url' => route('stektips.show', ['slug' => $soort['slug']]),
+                'url' => route('stektips.show', ['slug' => $slug]),
                 'meta' => trim(
                     ((string) ($soort['wanneer'] ?? '')).
                     ' · '.
@@ -65,6 +67,7 @@ class StektipsController extends Controller
                     (! empty($soort['categorie']) ? ' · '.$soort['categorie'] : '')
                 ),
                 'badges' => ['Soortpagina'],
+                'afbeelding' => $afbeeldingen->forSlug($slug, (string) $soort['naam']),
             ];
         }
 
@@ -177,7 +180,7 @@ class StektipsController extends Controller
         ]);
     }
 
-    public function show(string $slug, Stektips $stektips, Kennisbank $kennisbank): View|Response
+    public function show(string $slug, Stektips $stektips, Kennisbank $kennisbank, SoortAfbeeldingen $afbeeldingen): View|Response
     {
         if ($slug === 'artikel') {
             abort(404);
@@ -203,6 +206,7 @@ class StektipsController extends Controller
             'metaDescription' => $naam.$metaLatijn.' stekken en gratis delen. '.$metaKort.'Methode, wanneer, moeilijkheid, licht en water — zoek aanbod op '.config('site.name').'.',
             'canonical' => $url,
             'soort' => $soort,
+            'afbeelding' => $afbeeldingen->forSlug($slug, $naam),
             'verwanten' => $stektips->related($soort),
             'gerelateerdeArtikelen' => $kennisbank->articlesForSoort($slug),
             'aanbodUrl' => $aanbodUrl,

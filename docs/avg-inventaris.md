@@ -15,7 +15,7 @@ Contactadres site: `info@gratisplanten.nl` (`config('site.contact_email')`).
 | 5 | **Berichten** | `messages.body`, `conversations` (+ `contact_a`/`contact_b`), `blocks`, `reports.reason` | Onderlinge afspraak planten ophalen/uitdelen; moderatie | Toestemming; gerechtvaardigd belang (misbruik) bij meldingen | Tot account wissen (cascade/expliciete delete in `AvgService`) — **GAT: geen aparte retentie “X maanden na laatste bericht”** | Deelnemers gesprek; beheerder: meldingen in `/beheer` | `body` + `reason` **encrypted**; mail “nieuw bericht” zonder inhoud/adres ander |
 | 5b | **Feedback** | Tabel `feedback`: `body` (encrypted), `page_path`, `user_id` (nullable), `read_at` | Productverbetering; geen mail | Toestemming | Bij accountwissen: `user_id` → null (geanonimiseerd, `nullOnDelete`); tekst blijft voor beheer | Beheer `/beheer/feedback` (geen naam/e-mail); eigenaar via export | `body` **encrypted** (zelfde cast als berichten); rate-limit 5/uur/lid |
 | 6 | **Aanbod** | Tabel `aanbod`: type, tekst, visible, expires, renew_token | Publiek zoeken/kaart | Toestemming | TTL `aanbod_ttl_days` (60); verlengbaar; cron-herinnering | Publiek (zichtbaar+niet verlopen); eigenaar in account | Geen persoonsgegevens in API-payload (`ZoekenController` guard) |
-| 7 | **Foto’s** | Geen upload/feature in code | — | — | — | — | **GAT / N.v.t.:** geen gebruikersfoto’s. Export heeft lege `fotos[]`. Bij latere upload: schijf + wissen bij opzegging verplicht |
+| 7 | **Foto’s** | Tabel `aanbod_fotos` + bestanden op disk `storage/app/aanbod-fotos` (buiten webroot); serving via `/media/aanbod-foto/{id}` | Publiek tonen bij aanbod | Toestemming (upload) | Tot aanbod- of accountwissen | Publiek (herschreven JPEG); eigenaar via export-URL’s | Mime+decode-check; alleen jpeg/png/webp; max 8 MB / 3 stuks; server-side herschrijven (GD/Imagick) stript EXIF/GPS; random namen; rate-limit; wissen in `AanbodFotoService` + `AvgService` |
 | 8 | **Organisatieformulier** | `deelplekken` aanmelding: naam, type, plaats, `adres` = postcode-4+plaats (geen straat), beschrijving, `contact_email`, `privacy_at`, status | Deelplek tonen na goedkeuring | Toestemming | Pending tot goedkeuren/afwijzen; goedgekeurd zolang zichtbaar — **GAT: retentie afgewezen aanmeldingen niet geautomatiseerd** | Beheer (`/beheer`); publiek alleen goedgekeurde velden (geen contact-e-mail) | `contact_email` **encrypted**; rate-limit aanmelden; seed-deelplekken kunnen wél een openbaar bronadres hebben (**GAT/keuze**: seed vs. aanmelding) |
 | 9 | **Sessies** | Tabel `sessions` (driver database): `user_id`, `ip_address`, `user_agent`, payload; cookies sessie + XSRF + remember | Login-state, CSRF | Gerechtvaardigd belang (beveiliging) / uitvoering | `SESSION_LIFETIME` (120 min); remember langer | Systeem; hosting-beheerder | `http_only`, `same_site=lax`, `secure` op staging/productie; wissen bij account-delete |
 | 10 | **Logs** | `storage/logs/*` (niet in git) | Foutopsporing | Gerechtvaardigd belang | **GAT:** server-logrotatie (daily channel optioneel 14 d) — hosting | Beheerder/SSH | `MaskPersonalDataProcessor` + `SafeMail::safeSummary`; geen wachtwoorden loggen |
@@ -36,7 +36,7 @@ Contactadres site: `info@gratisplanten.nl` (`config('site.contact_email')`).
 | Recht | Pad / mechanisme |
 | --- | --- |
 | Inzage / export | `GET /account/export` → JSON (`AvgService::exportUserData`) |
-| Wissen | `POST /account/verwijderen` (wachtwoord) → aanbod, berichten, gesprekken, blocks, reports, tokens, sessies, user; feedback blijft met `user_id` null |
+| Wissen | `POST /account/verwijderen` (wachtwoord) → aanbodfoto’s op disk, aanbod, berichten, gesprekken, blocks, reports, tokens, sessies, user; feedback blijft met `user_id` null |
 | Rectificatie | `/account/profiel`, `/account/email`, `/account/wachtwoord` |
 | Contact | `mailto:info@gratisplanten.nl` |
 
@@ -44,7 +44,7 @@ Contactadres site: `info@gratisplanten.nl` (`config('site.contact_email')`).
 
 - Automatische purge inactieve accounts (beleid 12 maanden bestaat alleen als config/tekst).
 - Retentiebeleid berichten / afgewezen deelplek-aanmeldingen.
-- Gebruikersfoto’s: feature ontbreekt; bij toevoegen AVG-pad afmaken.
+- (Gesloten) Aanbodfoto’s: upload + AVG-wissen/export af.
 - Backup: cron, off-site opslag, aparte `BACKUP_ENCRYPTION_KEY`, bewaartermijn backups.
 - HSTS preload-lijst: optioneel, niet in code.
 - SMTP-/hosting-verwerkersovereenkomst en logretentie op server.

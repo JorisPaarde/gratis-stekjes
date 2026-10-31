@@ -18,7 +18,10 @@ final class AanbodSearch
     {
         $rows = Aanbod::query()
             ->publiclyListed()
-            ->with(['user' => fn ($q) => $q->where('active', true)->whereNotNull('email_verified_at')])
+            ->with([
+                'user' => fn ($q) => $q->where('active', true)->whereNotNull('email_verified_at'),
+                'fotos',
+            ])
             ->whereHas('user', function ($q) {
                 $q->where('active', true)
                     ->whereNotNull('email_verified_at')
@@ -46,6 +49,7 @@ final class AanbodSearch
             ));
         }
 
+
         $q = trim((string) $query);
         if ($q !== '') {
             $geo = $this->geocoder->geocode($q, $allowNetwork);
@@ -71,6 +75,10 @@ final class AanbodSearch
     {
         $user = $aanbod->user;
 
+        $fotos = $aanbod->relationLoaded('fotos')
+            ? $aanbod->fotos
+            : $aanbod->fotos()->get();
+
         return [
             'id' => $aanbod->id,
             'type' => (string) $aanbod->type,
@@ -80,6 +88,7 @@ final class AanbodSearch
             'lat' => $user?->lat !== null ? Geo::roundCoord((float) $user->lat) : null,
             'lon' => $user?->lon !== null ? Geo::roundCoord((float) $user->lon) : null,
             'user_id' => (int) $aanbod->user_id,
+            'fotos' => $fotos->map(fn ($f) => $f->toPublicArray())->values()->all(),
         ];
     }
 

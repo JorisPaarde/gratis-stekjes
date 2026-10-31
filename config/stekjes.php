@@ -18,6 +18,23 @@ return [
     /** Aanbod zichtbaar in zoeken/kaart (dagen). */
     'aanbod_ttl_days' => 60,
 
+    /**
+     * Aanbodfoto’s (AVG: wissen bij verwijderen aanbod/account).
+     * Opslag buiten de webroot via disk `aanbod_fotos`; server-side herschrijven
+     * stript EXIF/GPS. Alleen jpeg/png/webp na mime+decode-check.
+     */
+    'aanbod_fotos' => [
+        'disk' => 'aanbod_fotos',
+        'max_count' => 3,
+        'max_bytes' => 8 * 1024 * 1024,
+        'max_input_dimension' => 10000,
+        'max_output_dimension' => 1600,
+        'thumb_dimension' => 400,
+        'upload_rate_per_hour' => 30,
+        'allowed_mimes' => ['image/jpeg', 'image/png', 'image/webp'],
+    ],
+
+
     /** Herinneringsmail zoveel dagen vóór expires_at. */
     'aanbod_reminder_days' => 7,
 

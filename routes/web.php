@@ -40,6 +40,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\PartnersController;
 use App\Http\Controllers\StektipsController;
 use App\Http\Controllers\VoorOrganisatiesController;
+use App\Http\Controllers\Media\AanbodFotoController;
 use App\Http\Controllers\ZoekenController;
 use Illuminate\Support\Facades\Route;
 
@@ -85,6 +86,10 @@ Route::get('/gratis-planten/{stad}', [GratisPlantenController::class, 'show'])
     ->name('gratis-planten.show');
 
 Route::get('/aanbod', ZoekenController::class)->name('aanbod');
+Route::get('/media/aanbod-foto/{foto}/{variant?}', AanbodFotoController::class)
+    ->where(['foto' => '[0-9]+', 'variant' => 'full|thumb'])
+    ->middleware('throttle:120,1')
+    ->name('media.aanbod-foto');
 Route::get('/api/zoeken', ApiZoekenController::class)->name('api.zoeken');
 Route::get('/api/partners', ApiPartnersController::class)->name('api.partners');
 Route::get('/api/deelplekken', ApiDeelplekkenController::class)->name('api.deelplekken');

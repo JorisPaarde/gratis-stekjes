@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Aanbod;
+use App\Models\AanbodFoto;
 use App\Models\Conversation;
 use App\Models\Feedback;
 use App\Models\Message;
@@ -19,17 +20,46 @@ use Illuminate\Support\Facades\Schema;
 final class AvgService
 {
     /**
-     * Export gebruikersgegevens (geen password/tokens). Foto-links: leeg zolang geen upload bestaat.
+     * Export gebruikersgegevens (geen password/tokens). Foto’s: publieke media-URL’s.
      *
      * @return array<string, mixed>
      */
     public function exportUserData(User $user): array
     {
-        $aanbod = Aanbod::query()
+        $aanbodRows = Aanbod::query()
             ->where('user_id', $user->id)
+            ->with('fotos')
             ->orderBy('id')
-            ->get(['id', 'type', 'tekst', 'visible', 'created_at', 'updated_at', 'expires_at'])
-            ->toArray();
+            ->get();
+
+        $aanbod = $aanbodRows->map(static function (Aanbod $a): array {
+            return [
+                'id' => $a->id,
+                'type' => $a->type,
+                'tekst' => $a->tekst,
+                'visible' => $a->visible,
+                'created_at' => $a->created_at,
+                'updated_at' => $a->updated_at,
+                'expires_at' => $a->expires_at,
+            ];
+        })->toArray();
+
+        $fotos = [];
+        foreach ($aanbodRows as $row) {
+            foreach ($row->fotos as $foto) {
+                /** @var AanbodFoto $foto */
+                $fotos[] = [
+                    'id' => $foto->id,
+                    'aanbod_id' => $foto->aanbod_id,
+                    'url' => $foto->publicUrl(),
+                    'thumb_url' => $foto->thumbUrl(),
+                    'alt' => $foto->toPublicArray()['alt'],
+                    'width' => $foto->width,
+                    'height' => $foto->height,
+                    'created_at' => optional($foto->created_at)?->toIso8601String(),
+                ];
+            }
+        }
 
         $payload = [
             'exported_at' => now()->toIso8601String(),
@@ -48,9 +78,9 @@ final class AvgService
                 'active' => (bool) $user->active,
             ],
             'aanbod' => $aanbod,
-            // Geen gebruikersfoto-feature; placeholder zodat export-contract stabiel blijft.
-            'fotos' => [],
+            'fotos' => $fotos,
         ];
+
 
         if (Schema::hasTable('conversations')) {
             $convs = Conversation::query()
@@ -153,6 +183,9 @@ final class AvgService
             request()->session()->regenerateToken();
         }
 
+        // Foto’s op disk vóór DB-cascade wissen (AVG).
+        app(AanbodFotoService::class)->deleteAllForUser($userId);
+
         DB::transaction(function () use ($userId, $email) {
             if (Schema::hasTable('conversations')) {
                 $ids = DB::table('conversations')
@@ -187,8 +220,6 @@ final class AvgService
             if (Schema::hasTable('sessions')) {
                 DB::table('sessions')->where('user_id', $userId)->delete();
             }
-
-            // Geen gebruikersfoto’s op disk (feature ontbreekt); bij latere upload hier wissen.
 
             User::query()->whereKey($userId)->delete();
         });

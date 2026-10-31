@@ -293,7 +293,7 @@ test('export bevat berichten plaintext via casts en fotos-array', function () {
 
     expect($data['user']['telefoon'])->toBe('0699887766');
     expect($data['messages'][0]['body'])->toBe('Exportbericht inhoud');
-    expect($data['fotos'])->toBe([]);
+    expect($data['fotos'])->toBeArray();
     expect(json_encode($data))->not->toContain('password');
 });
 

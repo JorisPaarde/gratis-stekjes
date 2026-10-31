@@ -218,6 +218,24 @@
     return { count: visible.length, bounds: bounds };
   }
 
+  function renderAanbodFotos(item) {
+    var fotos = Array.isArray(item.fotos) ? item.fotos : [];
+    if (!fotos.length) return "";
+    var html = '<div class="zoek-item-fotos">';
+    fotos.forEach(function (foto) {
+      var src = foto.thumb_url || foto.url || "";
+      if (!src) return;
+      html +=
+        '<img src="' +
+        escapeHtml(src) +
+        '" alt="' +
+        escapeHtml(foto.alt || "Foto bij aanbod") +
+        '" width="72" height="72" loading="lazy">';
+    });
+    html += "</div>";
+    return html;
+  }
+
   function renderAanbodList(items) {
     list.querySelectorAll('[data-kind="aanbod"]').forEach(function (el) {
       el.remove();
@@ -229,6 +247,9 @@
       li.setAttribute("data-kind", "aanbod");
       var afstand =
         item.afstand_km != null ? " · " + item.afstand_km + " km" : "";
+      var tekstHtml = item.tekst
+        ? "<p>" + escapeHtml(item.tekst) + "</p>"
+        : "";
       li.innerHTML =
         '<span class="badge">' +
         escapeHtml(item.type) +
@@ -238,9 +259,8 @@
         (item.locatie_label ? " · " + escapeHtml(item.locatie_label) : "") +
         afstand +
         "</h3>" +
-        "<p>" +
-        escapeHtml(item.tekst) +
-        "</p>" +
+        renderAanbodFotos(item) +
+        tekstHtml +
         (cfg.bericht_binnenkort
           ? '<p class="muted"><em>Bericht sturen: binnenkort</em></p>'
           : '<p><a class="btn btn-secondary" href="' +
@@ -263,9 +283,23 @@
     if (showAanbod()) {
       aanbodItems.forEach(function (item) {
         if (item.lat != null && item.lon != null) {
-          var m = L.marker([item.lat, item.lon]).bindPopup(
-            escapeHtml(item.voornaam) + " — " + escapeHtml(item.type)
-          );
+          var popup =
+            "<strong>" +
+            escapeHtml(item.voornaam) +
+            "</strong> — " +
+            escapeHtml(item.type);
+          if (item.tekst) {
+            popup += "<br>" + escapeHtml(item.tekst);
+          }
+          if (item.fotos && item.fotos[0] && item.fotos[0].thumb_url) {
+            popup +=
+              '<br><img src="' +
+              escapeHtml(item.fotos[0].thumb_url) +
+              '" alt="' +
+              escapeHtml((item.fotos[0].alt || "Foto") ) +
+              '" width="120" height="90" style="margin-top:0.35rem;object-fit:cover;border-radius:0.25rem">';
+          }
+          var m = L.marker([item.lat, item.lon]).bindPopup(popup);
           aanbodLayer.addLayer(m);
           bounds.push([item.lat, item.lon]);
         }

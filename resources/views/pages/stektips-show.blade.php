@@ -52,6 +52,10 @@
     <p class="muted">{{ $soort['kort'] }}@if($categorie !== '') · {{ $categorie }}@endif</p>
   @endif
 
+  @isset($afbeelding)
+    @include('partials.soort-afbeelding', ['afbeelding' => $afbeelding])
+  @endisset
+
   @if($waarschuwing !== '')
     <aside class="warn-card stektips-waarschuwing" role="note">
       <p><x-icon name="waarschuwing" :size="20" /> {{ $waarschuwing }}</p>

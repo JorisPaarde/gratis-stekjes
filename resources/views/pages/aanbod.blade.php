@@ -19,7 +19,7 @@
       plant_filter: @json($plant ?? '')
     };
   </script>
-  @vite(['resources/css/aanbod.css', 'resources/css/deelplekken.css', 'resources/css/nu-te-stekken.css'])
+  @vite(['resources/css/aanbod.css', 'resources/css/aanbod-fotos.css', 'resources/css/deelplekken.css', 'resources/css/nu-te-stekken.css'])
 @endpush
 
 @section('content')

@@ -9,6 +9,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.25.0] - 2026-10-31
+
+### Added
+
+- Aanbodfoto’s: tot 3 JPEG/PNG/WebP per item (max. 8 MB), mime+decode-check, EXIF-oriëntatie, server-side herschrijven (GD of Imagick) zonder EXIF/GPS, resize/thumbnail, random namen buiten de webroot, rate-limit, media-route. Plantensoort optioneel als er een foto is. Foto’s op kaart/lijst met alt-tekst; wissen bij aanbod- of accountverwijdering (AVG); privacytekst bijgewerkt.
+- Soortfoto’s op stektips-index en soortpagina’s: 48 self-hosted Wikimedia Commons-beelden met geverifieerde CC0/CC-BY/CC-BY-SA + zichtbare attribution (`data/soort-afbeeldingen.json`); neutrale SVG-fallback.
+
 ## [0.24.11] - 2026-10-31
 
 ### Fixed
