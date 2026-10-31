@@ -7,6 +7,7 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/css/aanbod.css',
+                'resources/css/aanbod-fotos.css',
                 'resources/css/berichten.css',
                 'resources/css/partners.css',
                 'resources/css/deelplekken.css',

@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   @php($siteName = config('site.name'))
   @php($noindex = (bool) config('site.noindex') || app()->environment('staging'))
-  <title>@hasSection('title')@yield('title') · {{ $siteName }}@else{{ $siteName }}@endif</title>
+  @php($documentTitle = \App\Support\SeoTitle::document($__env->yieldContent('title')))
+  <title>{{ $documentTitle }}</title>
   <meta name="description" content="@yield('meta_description', config('site.description'))">
   @if($noindex)
   <meta name="robots" content="noindex, nofollow">
@@ -14,7 +15,7 @@
   <meta property="og:type" content="website">
   <meta property="og:locale" content="nl_NL">
   <meta property="og:site_name" content="{{ $siteName }}">
-  <meta property="og:title" content="@hasSection('title')@yield('title') · {{ $siteName }}@else{{ $siteName }}@endif">
+  <meta property="og:title" content="{{ $documentTitle }}">
   <meta property="og:description" content="@yield('meta_description', config('site.description'))">
   <meta property="og:url" content="@yield('canonical', url()->current())">
   <meta name="theme-color" content="{{ config('site.theme_color') }}">

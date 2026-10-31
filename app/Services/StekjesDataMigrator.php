@@ -42,6 +42,7 @@ final class StekjesDataMigrator
         'users',
         'geocode_cache',
         'partner_markers',
+        'evenementen',
         'aanbod',
         'conversations',
         'messages',
@@ -186,6 +187,7 @@ final class StekjesDataMigrator
         foreach ($payload['tables'] as $table => $rows) {
             if (! Schema::hasTable($table)) {
                 $report['missing_tables'][] = $table;
+
                 continue;
             }
             $targetCols = Schema::getColumnListing($table);
@@ -591,6 +593,7 @@ final class StekjesDataMigrator
                 // Zelfde e-mail + zelfde id: skip (behoud bestaande, o.a. prod-admin).
                 $skipped++;
                 $skipIds[] = $id;
+
                 continue;
             }
 
@@ -643,10 +646,12 @@ final class StekjesDataMigrator
                     ->exists();
                 if ($exists) {
                     $skipped++;
+
                     continue;
                 }
                 DB::table('blocks')->insert($row);
                 $inserted++;
+
                 continue;
             }
 
@@ -654,16 +659,19 @@ final class StekjesDataMigrator
                 $key = $row['query_key'] ?? null;
                 if ($key !== null && DB::table('geocode_cache')->where('query_key', $key)->exists()) {
                     $skipped++;
+
                     continue;
                 }
                 DB::table('geocode_cache')->insert($row);
                 $inserted++;
+
                 continue;
             }
 
             if (isset($row['id'])) {
                 if (DB::table($table)->where('id', $row['id'])->exists()) {
                     $skipped++;
+
                     continue;
                 }
             }

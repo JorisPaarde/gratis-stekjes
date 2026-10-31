@@ -8,11 +8,15 @@ use RuntimeException;
 
 /**
  * Catalogus plantensoorten voor autocomplete bij stekje aanbieden.
- * Bron: data/plantensoorten.json (48 stektips + gangbare NL-soorten).
+ * Bron: data/plantensoorten.json (stektips + gangbare NL-soorten).
+ * Verborgen soorten blijven in de data voor bestaande aanbod-referenties;
+ * lijsten/zoeken tonen alleen zichtbare rijen. Zie docs/plantensoorten-selectie.md.
  */
 final class Plantensoorten
 {
-    /** @var list<array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, naam_norm: string, latijn_norm: string, syn_norms: list<string>}>|null */
+    /**
+     * @var list<array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, zichtbaar: bool, tags: list<string>, naam_norm: string, latijn_norm: string, syn_norms: list<string>}>|null
+     */
     private ?array $cache = null;
 
     public function __construct(
@@ -20,15 +24,19 @@ final class Plantensoorten
     ) {}
 
     /**
-     * @return list<array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, url: ?string}>
+     * @return list<array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, tags: list<string>, zichtbaar: bool, url: ?string}>
      */
-    public function all(): array
+    public function all(bool $includeHidden = false): array
     {
-        return array_map(fn (array $row) => $this->toPublic($row), $this->rows());
+        $rows = $includeHidden
+            ? $this->rows()
+            : array_values(array_filter($this->rows(), static fn (array $r): bool => $r['zichtbaar']));
+
+        return array_map(fn (array $row) => $this->toPublic($row), $rows);
     }
 
     /**
-     * @return array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, url: ?string}|null
+     * @return array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, tags: list<string>, zichtbaar: bool, url: ?string}|null
      */
     public function find(int $id): ?array
     {
@@ -46,14 +54,41 @@ final class Plantensoorten
         return $this->find($id) !== null;
     }
 
+    public function isVisible(int $id): bool
+    {
+        $soort = $this->find($id);
+
+        return $soort !== null && ($soort['zichtbaar'] ?? true);
+    }
+
     /**
-     * Zoek op Nederlandse naam, synoniem of Latijnse naam.
+     * Of een stektips-slug in publieke lijsten mag (verborgen catalogussoorten
+     * blijven bereikbaar via directe URL).
+     */
+    public function isSlugListed(?string $slug): bool
+    {
+        if ($slug === null || $slug === '') {
+            return false;
+        }
+
+        foreach ($this->rows() as $row) {
+            if (($row['slug'] ?? null) === $slug) {
+                return $row['zichtbaar'];
+            }
+        }
+
+        // Soortpagina zonder catalogusrij: wel tonen.
+        return true;
+    }
+
+    /**
+     * Zoek op Nederlandse naam, synoniem of Latijnse naam (alleen zichtbare soorten).
      * Ranking: exacte naam → naam begint-met → synoniem/Latijn begint-met → bevat.
      * Accent- en hoofdletterongevoelig. Bij synoniem-match: veld `match` = dat synoniem.
      *
-     * @return list<array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, url: ?string, match: ?string}>
+     * @return list<array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, tags: list<string>, zichtbaar: bool, url: ?string, match: ?string}>
      */
-    public function search(string $query, int $limit = 10): array
+    public function search(string $query, int $limit = 10, ?string $tag = null): array
     {
         $q = $this->normalize($query);
         if ($q === '' || mb_strlen($q) < 1) {
@@ -61,8 +96,9 @@ final class Plantensoorten
         }
 
         $limit = max(1, min(25, $limit));
+        $tagNorm = $tag !== null && $tag !== '' ? mb_strtolower(trim($tag), 'UTF-8') : null;
 
-        /** @var array<int, list<array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, url: ?string, match: ?string}>> $buckets */
+        /** @var array<int, list<array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, tags: list<string>, zichtbaar: bool, url: ?string, match: ?string}>> $buckets */
         $buckets = [
             0 => [], // exacte naam
             1 => [], // naam begint-met
@@ -71,9 +107,15 @@ final class Plantensoorten
         ];
 
         foreach ($this->rows() as $row) {
+            if (! $row['zichtbaar']) {
+                continue;
+            }
+            if ($tagNorm !== null && ! in_array($tagNorm, $row['tags'], true)) {
+                continue;
+            }
+
             $naamNorm = $row['naam_norm'];
             $latijnNorm = $row['latijn_norm'];
-            $synNorms = $row['syn_norms'];
 
             $rank = null;
             $match = null;
@@ -124,8 +166,9 @@ final class Plantensoorten
 
     /**
      * Exacte match op genormaliseerde Nederlandse naam, synoniem of Latijnse naam.
+     * Vindt ook verborgen soorten (bestaande aanbod / invasieve check).
      *
-     * @return array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, url: ?string}|null
+     * @return array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, tags: list<string>, zichtbaar: bool, url: ?string}|null
      */
     public function resolveExact(string $text): ?array
     {
@@ -192,7 +235,7 @@ final class Plantensoorten
     }
 
     /**
-     * @return list<array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, naam_norm: string, latijn_norm: string, syn_norms: list<string>}>
+     * @return list<array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, zichtbaar: bool, tags: list<string>, naam_norm: string, latijn_norm: string, syn_norms: list<string>}>
      */
     private function rows(): array
     {
@@ -237,6 +280,19 @@ final class Plantensoorten
             $naam = (string) $row['naam'];
             $latijn = (string) $row['latijn'];
 
+            $tags = [];
+            if (! empty($row['tags']) && is_array($row['tags'])) {
+                foreach ($row['tags'] as $tag) {
+                    if (is_string($tag) && trim($tag) !== '') {
+                        $tags[] = mb_strtolower(trim($tag), 'UTF-8');
+                    }
+                }
+            }
+            $tags = array_values(array_unique($tags));
+
+            // Ontbrekend veld = zichtbaar (backwards compatible).
+            $zichtbaar = ! array_key_exists('zichtbaar', $row) || (bool) $row['zichtbaar'];
+
             $rows[] = [
                 'id' => (int) $row['id'],
                 'naam' => $naam,
@@ -244,6 +300,8 @@ final class Plantensoorten
                 'synoniemen' => array_values($syns),
                 'slug' => $slug,
                 'categorie' => is_string($row['categorie'] ?? null) ? (string) $row['categorie'] : '',
+                'zichtbaar' => $zichtbaar,
+                'tags' => $tags,
                 'naam_norm' => $this->normalize($naam),
                 'latijn_norm' => $this->normalize($latijn),
                 'syn_norms' => array_values(array_filter(
@@ -280,8 +338,8 @@ final class Plantensoorten
     }
 
     /**
-     * @param  array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, naam_norm?: string, latijn_norm?: string, syn_norms?: list<string>}  $row
-     * @return array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, url: ?string}
+     * @param  array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, zichtbaar?: bool, tags?: list<string>, naam_norm?: string, latijn_norm?: string, syn_norms?: list<string>}  $row
+     * @return array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, tags: list<string>, zichtbaar: bool, url: ?string}
      */
     private function toPublic(array $row): array
     {
@@ -296,6 +354,8 @@ final class Plantensoorten
             'synoniemen' => $row['synoniemen'],
             'slug' => $slug,
             'categorie' => $row['categorie'] ?? '',
+            'tags' => array_values($row['tags'] ?? []),
+            'zichtbaar' => (bool) ($row['zichtbaar'] ?? true),
             'url' => $url,
         ];
     }

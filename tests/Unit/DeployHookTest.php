@@ -65,6 +65,17 @@ test('deploy-hook.php en lib.php zijn syntax-OK', function () {
     expect($c2)->toBe(0);
 });
 
+test('preserve_env_key behoudt BACKUP_ENCRYPTION_KEY bij lege upload', function () {
+    $path = $this->tmp.'/existing.env';
+    file_put_contents($path, "BACKUP_ENCRYPTION_KEY=\"server-only-key\"\nAPP_KEY=\"base64:x\"\n");
+    $merged = deploy_hook_preserve_env_key("APP_KEY=\"base64:x\"\nBACKUP_ENCRYPTION_KEY=\n", $path, 'BACKUP_ENCRYPTION_KEY');
+    expect($merged)->toContain('BACKUP_ENCRYPTION_KEY="server-only-key"');
+
+    $fromUpload = deploy_hook_preserve_env_key("BACKUP_ENCRYPTION_KEY=\"new-from-ci\"\n", $path, 'BACKUP_ENCRYPTION_KEY');
+    expect($fromUpload)->toContain('BACKUP_ENCRYPTION_KEY="new-from-ci"')
+        ->and($fromUpload)->not->toContain('server-only-key');
+});
+
 test('auth weigert verkeerde token', function () {
     $docroot = $this->tmp.'/docroot';
     $appDir = $this->tmp.'/app-staging';
@@ -135,7 +146,10 @@ test('chunk assembly + checksum + storage behouden bij finish', function () {
     $logDir = $appDir.'/storage/logs';
     mkdir($logDir, 0755, true);
     file_put_contents($logDir.'/keep.log', "keep-me\n");
-    file_put_contents($appDir.'/.env', "APP_KEY=\"base64:existingkeyexistingkeyexisti\"\n");
+    file_put_contents(
+        $appDir.'/.env',
+        "APP_KEY=\"base64:existingkeyexistingkeyexisti\"\nBACKUP_ENCRYPTION_KEY=\"keep-backup-key\"\n"
+    );
 
     // Mini Laravel-achtige zip
     $zipPath = $this->tmp.'/artifact.zip';
@@ -216,7 +230,7 @@ test('chunk assembly + checksum + storage behouden bij finish', function () {
     file_put_contents($docroot.'/deploy-hook.php', "<?php\n// hook\n");
     file_put_contents($docroot.'/lib.php', "<?php\n// lib\n");
 
-    $env = "APP_NAME=\"Gratis planten\"\nAPP_ENV=staging\nAPP_KEY=\nAPP_URL=\"https://staging.example\"\n";
+    $env = "APP_NAME=\"Gratis planten\"\nAPP_ENV=staging\nAPP_KEY=\nBACKUP_ENCRYPTION_KEY=\nAPP_URL=\"https://staging.example\"\n";
     $finish = deploy_hook_handle($config, [
         'action' => 'finish',
         'upload_id' => $uploadId,
@@ -233,6 +247,9 @@ test('chunk assembly + checksum + storage behouden bij finish', function () {
     // APP_KEY behouden (upload was leeg)
     $writtenKey = deploy_hook_env_get($appDir.'/.env', 'APP_KEY');
     expect($writtenKey)->toBe('base64:existingkeyexistingkeyexisti');
+
+    // BACKUP_ENCRYPTION_KEY behouden (upload was leeg)
+    expect(deploy_hook_env_get($appDir.'/.env', 'BACKUP_ENCRYPTION_KEY'))->toBe('keep-backup-key');
 
     expect(is_file($docroot.'/index.php'))->toBeTrue();
     expect(is_file($docroot.'/build/manifest.json'))->toBeTrue();

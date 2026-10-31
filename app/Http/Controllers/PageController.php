@@ -4,31 +4,64 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Ervaring;
 use App\Services\Kennisbank;
 use App\Services\NuTeStekken;
 use App\Services\Organisaties;
+use App\Services\Plantensoorten;
 use App\Services\Steden;
 use App\Services\Stektips;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class PageController extends Controller
 {
-    public function home(NuTeStekken $calendar): View
+    public function home(NuTeStekken $calendar, Plantensoorten $plantensoorten): View
     {
         $site = config('site.name');
+        $title = 'Gratis planten en stekjes delen in je buurt';
+        $heading = 'Gratis planten en stekjes in je buurt';
+        $metaDescription = config('site.description');
+
+        $ervaringenBlok = null;
+        if (config('stekjes.ervaringen_home_block_enabled') && Schema::hasTable('ervaringen')) {
+            $rows = Ervaring::query()
+                ->approved()
+                ->with('user:id,name')
+                ->orderByDesc('approved_at')
+                ->orderByDesc('id')
+                ->limit(3)
+                ->get();
+            if ($rows->isNotEmpty()) {
+                $ervaringenBlok = $rows->map(function (Ervaring $e) use ($plantensoorten) {
+                    $soort = $e->plantensoort_id ? $plantensoorten->find((int) $e->plantensoort_id) : null;
+
+                    return [
+                        'body' => $e->body,
+                        'plaatsnaam' => $e->plaatsnaam,
+                        'naam' => $e->user?->name ?? 'Lid',
+                        'soort' => $soort['naam'] ?? null,
+                        'has_photo' => $e->hasPhoto(),
+                        'photo_url' => $e->hasPhoto() ? route('ervaringen.foto', $e) : null,
+                    ];
+                })->all();
+            }
+        }
 
         return view('pages.home', [
-            'title' => $site,
-            'metaDescription' => config('site.description'),
+            'title' => $title,
+            'heading' => $heading,
+            'metaDescription' => $metaDescription,
             'canonical' => url('/'),
             'nuTeStekken' => $calendar->blockForViews(),
+            'ervaringenBlok' => $ervaringenBlok,
             'schema' => [
                 '@context' => 'https://schema.org',
                 '@type' => 'WebSite',
                 'name' => $site,
                 'url' => url('/'),
-                'description' => config('site.description'),
+                'description' => $metaDescription,
                 'inLanguage' => 'nl-NL',
             ],
         ]);
@@ -99,7 +132,16 @@ class PageController extends Controller
             route('organisaties.index'),
             route('invasieve-soorten'),
             route('gratis-planten.index'),
+            route('volkstuinen'),
+            route('help-mee'),
+            route('natuur'),
+            route('verbinding'),
         ];
+
+        // /ervaringen alleen in sitemap als er goedgekeurde ervaringen zijn (anders noindex/leeg).
+        if (Schema::hasTable('ervaringen') && Ervaring::query()->approved()->exists()) {
+            $urls[] = route('ervaringen.index');
+        }
         foreach ($kennisbank->all() as $artikel) {
             $urls[] = route('stektips.artikel', ['slug' => $artikel['slug']]);
         }

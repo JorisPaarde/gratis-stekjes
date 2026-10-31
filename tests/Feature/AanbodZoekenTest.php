@@ -108,7 +108,8 @@ test('zoek-API sorteert op afstand en lekt geen e-mail', function () {
     $items = $response->json('items');
     expect($items)->toHaveCount(2);
     expect($items[0]['tekst'])->toBe('Dichtbij: bessen');
-    expect($items[0])->toHaveKeys(['id', 'type', 'tekst', 'voornaam', 'locatie_label', 'lat', 'lon', 'user_id', 'afstand_km']);
+    expect($items[0])->toHaveKeys(['id', 'type', 'tekst', 'voornaam', 'locatie_label', 'lat', 'lon', 'user_id', 'afstand_km', 'fotos']);
+    expect($items[0]['fotos'])->toBeArray();
     expect($response->getContent())->not->toContain('near@example.com');
     expect($response->getContent())->not->toContain('"email"');
 });

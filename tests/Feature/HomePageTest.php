@@ -11,7 +11,7 @@ test('homepage is 200 en toont merk Gratis planten', function () {
     $response->assertOk();
     $response->assertSee('Gratis planten', false);
     $response->assertSee('class="hero-brand"', false);
-    $response->assertSee('>Gratis planten</h1>', false);
+    $response->assertSee('>Gratis planten en stekjes in je buurt</h1>', false);
     $response->assertSee('assets/images/hero/hero-stekjes-1280.webp', false);
     $response->assertSee('fetchpriority="high"', false);
     $response->assertSee('Waarom?', false);
@@ -20,7 +20,9 @@ test('homepage is 200 en toont merk Gratis planten', function () {
     $response->assertSee('Veilig delen', false);
     $response->assertSee('voedselbosbouw.org', false);
     $response->assertSee('meerbomen.nu', false);
-    $response->assertSee('binnenkort', false);
+    $response->assertSee('help-mee', false);
+    $response->assertSee('Ik help op een andere manier', false);
+    $response->assertDontSee('badge-soon', false);
     $response->assertSee('application/ld+json', false);
     $response->assertSee('"@type":"WebSite"', false);
     $response->assertDontSee('mensen doen al mee', false);

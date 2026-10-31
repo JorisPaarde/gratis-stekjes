@@ -24,8 +24,23 @@
 @section('content')
 <section class="section wrap gratis-planten-stad">
   <p class="gp-breadcrumb"><a href="{{ route('gratis-planten.index') }}">Alle steden</a> · {{ $stad['provincie'] }}</p>
-  <h1 class="page-title">Gratis planten in {{ $stad['naam'] }}</h1>
+  <h1 class="page-title">{{ $title }}</h1>
   <p class="section-intro">{{ $stad['intro'] }}</p>
+
+  @if(!empty($plantenasiels))
+  <aside class="soft-card gp-plantenasiel" aria-labelledby="plantenasiel-titel">
+    <h2 id="plantenasiel-titel">Plantenasiel in {{ $stad['naam'] }}</h2>
+    <p>
+      @if(count($plantenasiels) === 1)
+        In of bij {{ $stad['naam'] }} ken ik {{ $plantenasiels[0]['naam'] }}.
+      @else
+        In of bij {{ $stad['naam'] }} ken ik {{ count($plantenasiels) }} plantenasiels.
+      @endif
+      <a href="{{ route('deelplekken', ['plaats' => $stad['naam'], 'type' => 'plantenasiel']) }}">Bekijk plantenasiels bij {{ $stad['naam'] }}</a>
+      of het <a href="{{ route('deelplekken', ['type' => 'plantenasiel']) }}">landelijke overzicht plantenasiels</a>.
+    </p>
+  </aside>
+  @endif
 
   <div class="gp-layout">
     <div>
@@ -119,7 +134,7 @@
       <ul class="gp-stad-lijst gp-stad-lijst--inline">
         @foreach($nearby as $n)
           <li>
-            <a href="{{ route('gratis-planten.show', ['stad' => $n['slug']]) }}">Gratis planten in {{ $n['naam'] }}</a>
+            <a href="{{ route('gratis-planten.show', ['stad' => $n['slug']]) }}">Gratis planten en stekjes in {{ $n['naam'] }}</a>
             <span class="muted"> (±{{ $n['afstand_km'] }} km)</span>
           </li>
         @endforeach

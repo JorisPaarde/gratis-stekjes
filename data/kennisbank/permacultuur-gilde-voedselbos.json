@@ -1,8 +1,8 @@
 {
     "slug": "permacultuur-gilde-voedselbos",
-    "titel": "Permacultuur",
+    "titel": "Permacultuur, gilde en voedselbos",
     "samenvatting": "Plant in lagen en gildes; vermeerder wat lokaal aanslaat met stek, scheuren, afleggen en zaad. Deel de overvloed.",
-    "meta_description": "Permacultuur: gildes, voedselboslagen en vermeerderen met stek, scheuren en afleggen. Deel surplus via Gratis planten.",
+    "meta_description": "Permacultuur en voedselbos: planten die elkaar helpen in gildes en lagen. Vermeerder met stek en deel surplus.",
     "zoekwoorden": [
         "permacultuur",
         "permacultuur gilde",
@@ -84,5 +84,7 @@
         }
     ],
     "duurzamer_alternatief": null,
-    "howto": false
+    "howto": false,
+    "seo_title": "Permacultuur en voedselbos: planten die elkaar helpen",
+    "h1": "Permacultuur, gilde en voedselbos"
 }

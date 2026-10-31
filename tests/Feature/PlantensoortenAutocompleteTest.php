@@ -21,7 +21,7 @@ function plantsoortUser(array $extra = []): User
 test('zoek-endpoint vindt op Nederlandse naam, synoniem en Latijn', function () {
     $byNaam = $this->getJson(route('api.plantensoorten', ['q' => 'Monstera']))
         ->assertOk()
-        ->assertJsonStructure(['items' => [['id', 'naam', 'latijn', 'synoniemen', 'url', 'match']]])
+        ->assertJsonStructure(['items' => [['id', 'naam', 'latijn', 'synoniemen', 'tags', 'url', 'match']]])
         ->json('items');
     expect(collect($byNaam)->pluck('naam')->all())->toContain('Monstera');
 
@@ -309,4 +309,54 @@ test('autocomplete-JS: geen markering bij openen, ArrowDown/Enter-gedrag', funct
     expect($js)->toContain('open && activeIndex >= 0 && items[activeIndex]');
     // Synoniem-match tonen in suggestie.
     expect($js)->toContain("item.naam + ' · ' + item.match");
+});
+
+test('verborgen soorten verschijnen niet in autocomplete maar bestaan wel', function () {
+    $magnolia = app(Plantensoorten::class)->resolveExact('Magnolia');
+    expect($magnolia)->not->toBeNull()->and($magnolia['zichtbaar'])->toBeFalse();
+
+    $items = $this->getJson(route('api.plantensoorten', ['q' => 'Magnolia']))
+        ->assertOk()
+        ->json('items');
+    expect(collect($items)->pluck('naam')->all())->not->toContain('Magnolia');
+});
+
+test('voedselbos-tag filter op zoek-endpoint', function () {
+    $items = $this->getJson(route('api.plantensoorten', ['q' => 'bes', 'tag' => 'voedselbos']))
+        ->assertOk()
+        ->json('items');
+
+    expect($items)->not->toBeEmpty();
+    foreach ($items as $item) {
+        expect($item['tags'])->toContain('voedselbos');
+    }
+});
+
+test('bestaand aanbod met verborgen plantensoort_id blijft koppelbaar bij update', function () {
+    $user = plantsoortUser();
+    $magnolia = app(Plantensoorten::class)->resolveExact('Magnolia');
+    expect($magnolia)->not->toBeNull();
+
+    $aanbod = Aanbod::query()->create([
+        'user_id' => $user->id,
+        'type' => 'uitdelen',
+        'tekst' => 'Magnolia',
+        'plantensoort_id' => $magnolia['id'],
+        'visible' => true,
+        'expires_at' => now()->addDays(30),
+    ]);
+
+    $this->actingAs($user)
+        ->post(route('account.aanbod.update', $aanbod), [
+            'type' => 'uitdelen',
+            'tekst' => 'Magnolia stekje',
+            'plantensoort_id' => $magnolia['id'],
+            'gratis_akkoord' => '1',
+            'website' => '',
+            'form_started' => time() - 10,
+        ])
+        ->assertRedirect(route('account.aanbod'))
+        ->assertSessionHasNoErrors();
+
+    expect($aanbod->fresh()->plantensoort_id)->toBe($magnolia['id']);
 });

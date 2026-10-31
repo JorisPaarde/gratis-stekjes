@@ -24,7 +24,7 @@
     </ol>
   </nav>
 
-  <h1 class="page-title">{{ $artikel['titel'] }}</h1>
+  <h1 class="page-title">{{ $heading ?? $artikel['titel'] }}</h1>
   @if(!empty($artikel['samenvatting']))
     <p class="section-intro">{{ $artikel['samenvatting'] }}</p>
   @endif

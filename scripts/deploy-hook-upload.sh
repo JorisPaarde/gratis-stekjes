@@ -10,6 +10,8 @@
 #            ARTIFACT_PATH (bestaande zip), RELEASE_ID, SKIP_SMOKE=1, SKIP_MIGRATE=1
 #            HOOK_PATH (default /deploy-hook.php)
 #            IMPORT_ENABLED (true|false → DEPLOY_IMPORT_ENABLED; default false)
+#            BACKUP_ENCRYPTION_KEY (apart van APP_KEY; leeg → hook behoudt bestaande .env-waarde)
+#            BACKUP_RETAIN_DAYS (default 30)
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -71,6 +73,7 @@ mask "${SMTP_PASS:-}"
 mask "${ADMIN_PASSWORD:-}"
 mask "${CRON_TOKEN:-}"
 mask "${APP_KEY:-}"
+mask "${BACKUP_ENCRYPTION_KEY:-}"
 
 require_var DEPLOY_HOOK_TOKEN
 require_var DEPLOY_TOKEN
@@ -242,6 +245,13 @@ umask 077
   dotenv_line ADMIN_PASSWORD "$ADMIN_PASSWORD"
   dotenv_line DEPLOY_TOKEN "$DEPLOY_TOKEN"
   dotenv_line DEPLOY_ENDPOINT_ENABLED "$DEPLOY_ENDPOINT_ENABLED_VAL"
+  # Backup-sleutel: alleen schrijven als secret gezet; anders behoudt de hook de bestaande waarde.
+  if [ -n "${BACKUP_ENCRYPTION_KEY:-}" ]; then
+    dotenv_line BACKUP_ENCRYPTION_KEY "$BACKUP_ENCRYPTION_KEY"
+  else
+    printf '%s\n' 'BACKUP_ENCRYPTION_KEY='
+  fi
+  dotenv_line BACKUP_RETAIN_DAYS "${BACKUP_RETAIN_DAYS:-30}"
   # VERHUIS: workflow_dispatch import_enabled=true zet dit aan; tag-pushes laten IMPORT_ENABLED leeg → false.
   case "$(printf '%s' "${IMPORT_ENABLED:-false}" | tr '[:upper:]' '[:lower:]')" in
     1|true|yes) _IMPORT_ENABLED_VAL=true ;;

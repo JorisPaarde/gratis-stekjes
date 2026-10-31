@@ -1,8 +1,11 @@
 {
   "meta": {
-    "omschrijving": "Plantensoorten voor autocomplete bij stekje aanbieden. Basis: 48 stektips-soorten (met slug naar /stektips/{slug}). Uitgebreid met gangbare tuin-, kamer- en moestuinplanten die in Nederland gedeeld worden. Geen soorten van de EU-Unielijst invasieve exoten.",
+    "omschrijving": "Plantensoorten voor autocomplete bij stekje aanbieden. Alleen soorten die hobbyisten realistisch kunnen vermeerderen en delen (stek, scheuren, uitlopers, offsets, zaden), plus typische voedselbos-soorten. Verborgen soorten blijven in de data voor bestaande aanbod-referenties. Geen soorten van de EU-Unielijst invasieve exoten. Zie docs/plantensoorten-selectie.md.",
     "aantal": 337,
-    "met_stektips_pagina": 48
+    "met_stektips_pagina": 48,
+    "zichtbaar": 309,
+    "verborgen": 28,
+    "voedselbos": 94
   },
   "soorten": [
     {
@@ -14,7 +17,11 @@
         "Aardbeien"
       ],
       "slug": "aardbei",
-      "categorie": "eetbaar"
+      "categorie": "eetbaar",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 2,
@@ -25,7 +32,8 @@
         "Aloe"
       ],
       "slug": "aloe-vera",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 3,
@@ -35,7 +43,8 @@
         "Flamingobloem"
       ],
       "slug": "anthurium",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 4,
@@ -43,7 +52,8 @@
       "latijn": "Begonia",
       "synoniemen": [],
       "slug": "begonia",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 5,
@@ -53,7 +63,8 @@
         "Goeppertia"
       ],
       "slug": "calathea",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 6,
@@ -61,7 +72,8 @@
       "latijn": "Dahlia",
       "synoniemen": [],
       "slug": "dahlia",
-      "categorie": "sier"
+      "categorie": "sier",
+      "zichtbaar": true
     },
     {
       "id": 7,
@@ -71,7 +83,8 @@
         "Difenbachia"
       ],
       "slug": "dieffenbachia",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 8,
@@ -82,7 +95,11 @@
         "Wijnstok"
       ],
       "slug": "druif",
-      "categorie": "eetbaar"
+      "categorie": "eetbaar",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 9,
@@ -90,7 +107,8 @@
       "latijn": "Echeveria",
       "synoniemen": [],
       "slug": "echeveria",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 10,
@@ -101,7 +119,11 @@
         "Frambozen"
       ],
       "slug": "framboos",
-      "categorie": "eetbaar"
+      "categorie": "eetbaar",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 11,
@@ -111,7 +133,8 @@
         "Bellenplant"
       ],
       "slug": "fuchsia",
-      "categorie": "sier"
+      "categorie": "sier",
+      "zichtbaar": true
     },
     {
       "id": 12,
@@ -123,7 +146,8 @@
         "Groenlelie"
       ],
       "slug": "graslelie",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 13,
@@ -134,7 +158,11 @@
         "Elaeagnus umbellata"
       ],
       "slug": "herfstolijfwilg",
-      "categorie": "eetbaar"
+      "categorie": "eetbaar",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 14,
@@ -145,7 +173,8 @@
         "Boerenhortensia"
       ],
       "slug": "hortensia",
-      "categorie": "sier"
+      "categorie": "sier",
+      "zichtbaar": true
     },
     {
       "id": 15,
@@ -155,7 +184,8 @@
         "Hartlelie"
       ],
       "slug": "hosta",
-      "categorie": "sier"
+      "categorie": "sier",
+      "zichtbaar": true
     },
     {
       "id": 16,
@@ -166,7 +196,8 @@
         "Donderblad"
       ],
       "slug": "huislook",
-      "categorie": "sier"
+      "categorie": "sier",
+      "zichtbaar": true
     },
     {
       "id": 17,
@@ -177,7 +208,8 @@
         "Crassula ovata"
       ],
       "slug": "jadeplant",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 18,
@@ -187,7 +219,11 @@
         "Josta"
       ],
       "slug": "jostabes",
-      "categorie": "eetbaar"
+      "categorie": "eetbaar",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 19,
@@ -198,7 +234,8 @@
         "Kaapsviooltje"
       ],
       "slug": "kaaps-viooltje",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 20,
@@ -208,7 +245,8 @@
         "Kalanchoë"
       ],
       "slug": "kalanchoe",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 21,
@@ -219,7 +257,8 @@
         "Lidcactus"
       ],
       "slug": "kerstcactus",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 22,
@@ -230,7 +269,8 @@
         "Hartenketting"
       ],
       "slug": "kettinghart",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 23,
@@ -240,7 +280,11 @@
         "Actinidia arguta"
       ],
       "slug": "kiwibes",
-      "categorie": "eetbaar"
+      "categorie": "eetbaar",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 24,
@@ -250,7 +294,11 @@
         "Stekelbes"
       ],
       "slug": "kruisbes",
-      "categorie": "eetbaar"
+      "categorie": "eetbaar",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 25,
@@ -261,7 +309,11 @@
         "Lavandula angustifolia"
       ],
       "slug": "lavendel",
-      "categorie": "kruid"
+      "categorie": "kruid",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 26,
@@ -272,7 +324,8 @@
         "Vredeslelie"
       ],
       "slug": "lepelplant",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 27,
@@ -282,7 +335,11 @@
         "Moerbeiboom"
       ],
       "slug": "moerbei",
-      "categorie": "eetbaar"
+      "categorie": "eetbaar",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 28,
@@ -293,7 +350,8 @@
         "Monstera deliciosa"
       ],
       "slug": "monstera",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 29,
@@ -305,7 +363,11 @@
         "Crossemunt"
       ],
       "slug": "munt",
-      "categorie": "kruid"
+      "categorie": "kruid",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 30,
@@ -317,7 +379,8 @@
         "Tuingeranium"
       ],
       "slug": "pelargonium",
-      "categorie": "sier"
+      "categorie": "sier",
+      "zichtbaar": true
     },
     {
       "id": 31,
@@ -327,7 +390,8 @@
         "Radiatorplant"
       ],
       "slug": "peperomia",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 32,
@@ -335,7 +399,8 @@
       "latijn": "Philodendron",
       "synoniemen": [],
       "slug": "philodendron",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 33,
@@ -346,7 +411,8 @@
         "Pilea peperomioides"
       ],
       "slug": "pilea",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 34,
@@ -358,7 +424,8 @@
         "Duivelsklimop"
       ],
       "slug": "pothos",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 35,
@@ -369,7 +436,11 @@
         "Rode bes"
       ],
       "slug": "rode-bes",
-      "categorie": "eetbaar"
+      "categorie": "eetbaar",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 36,
@@ -380,7 +451,11 @@
         "Rosmarinus officinalis"
       ],
       "slug": "rozemarijn",
-      "categorie": "kruid"
+      "categorie": "kruid",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 37,
@@ -391,7 +466,8 @@
         "Rubberboom"
       ],
       "slug": "rubberplant",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 38,
@@ -402,7 +478,11 @@
         "Keukensalie"
       ],
       "slug": "salie",
-      "categorie": "kruid"
+      "categorie": "kruid",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 39,
@@ -414,7 +494,8 @@
         "Dracaena trifasciata"
       ],
       "slug": "sanseveria",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 40,
@@ -425,7 +506,8 @@
         "Scindapsus pictus"
       ],
       "slug": "scindapsus",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 41,
@@ -435,7 +517,8 @@
         "Vetkruid"
       ],
       "slug": "sedum",
-      "categorie": "sier"
+      "categorie": "sier",
+      "zichtbaar": true
     },
     {
       "id": 42,
@@ -446,7 +529,8 @@
         "Syngonium podophyllum"
       ],
       "slug": "syngonium",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 43,
@@ -456,7 +540,8 @@
         "Eendagsbloem"
       ],
       "slug": "tradescantia",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 44,
@@ -467,7 +552,11 @@
         "Ficus carica"
       ],
       "slug": "vijg",
-      "categorie": "eetbaar"
+      "categorie": "eetbaar",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 45,
@@ -478,7 +567,11 @@
         "Katwilg"
       ],
       "slug": "wilg",
-      "categorie": "sier"
+      "categorie": "sier",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 46,
@@ -489,7 +582,8 @@
         "Zamioculcas zamiifolia"
       ],
       "slug": "zamioculcas",
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 47,
@@ -500,7 +594,11 @@
         "Cassissbes"
       ],
       "slug": "zwarte-bes",
-      "categorie": "eetbaar"
+      "categorie": "eetbaar",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 48,
@@ -512,7 +610,11 @@
         "Sambucus nigra"
       ],
       "slug": "zwarte-vlier",
-      "categorie": "eetbaar"
+      "categorie": "eetbaar",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 49,
@@ -522,7 +624,8 @@
         "Ficus lyrata"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 50,
@@ -533,7 +636,8 @@
         "Benjaminvijg"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 51,
@@ -544,7 +648,8 @@
         "Dracaena marginata"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 52,
@@ -554,7 +659,8 @@
         "Dracaena fragrans"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 53,
@@ -565,7 +671,8 @@
         "Yucca elephantipes"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 54,
@@ -576,7 +683,8 @@
         "Flesboom"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": false
     },
     {
       "id": 55,
@@ -586,7 +694,8 @@
         "Chinese evergroen"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 56,
@@ -596,7 +705,8 @@
         "Olifantenoor"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 57,
@@ -606,7 +716,8 @@
         "Maranta"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 58,
@@ -614,7 +725,8 @@
       "latijn": "Ctenanthe",
       "synoniemen": [],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 59,
@@ -624,7 +736,8 @@
         "Stromanthe"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 60,
@@ -635,7 +748,8 @@
         "Ijzerplant"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 61,
@@ -646,7 +760,8 @@
         "Parapluplant"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 62,
@@ -656,7 +771,8 @@
         "Monstera adansonii"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 63,
@@ -666,7 +782,8 @@
         "Rhaphidophora tetrasperma"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 64,
@@ -676,7 +793,8 @@
         "Philodendron scandens"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 65,
@@ -686,7 +804,8 @@
         "Philodendron selloum"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 66,
@@ -697,7 +816,8 @@
         "Wasplant"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 67,
@@ -707,7 +827,8 @@
         "Hoya kerrii"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 68,
@@ -718,7 +839,8 @@
         "Ketting-erwten"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 69,
@@ -728,7 +850,8 @@
         "Senecio radicans"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 70,
@@ -738,7 +861,8 @@
         "Pilea cadierei"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 71,
@@ -748,7 +872,8 @@
         "Strelitzia"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 72,
@@ -758,7 +883,8 @@
         "Strelitzia nicolai"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 73,
@@ -766,7 +892,8 @@
       "latijn": "Caladium bicolor",
       "synoniemen": [],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 74,
@@ -776,7 +903,8 @@
         "Begonia maculata"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 75,
@@ -786,7 +914,8 @@
         "Begonia rex"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 76,
@@ -796,7 +925,8 @@
         "Croton"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 77,
@@ -807,7 +937,8 @@
         "Zwaardvaren"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 78,
@@ -817,7 +948,8 @@
         "Asplenium nidus"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 79,
@@ -827,7 +959,8 @@
         "Adiantum"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 80,
@@ -838,7 +971,8 @@
         "Phalaenopsis"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 81,
@@ -846,7 +980,8 @@
       "latijn": "Dendrobium",
       "synoniemen": [],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": false
     },
     {
       "id": 82,
@@ -854,7 +989,8 @@
       "latijn": "Cymbidium",
       "synoniemen": [],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": false
     },
     {
       "id": 83,
@@ -864,7 +1000,8 @@
         "Echinocactus grusonii"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": false
     },
     {
       "id": 84,
@@ -875,7 +1012,8 @@
         "Vijgcactus"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 85,
@@ -883,7 +1021,8 @@
       "latijn": "Haworthia",
       "synoniemen": [],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 86,
@@ -891,7 +1030,8 @@
       "latijn": "Gasteria",
       "synoniemen": [],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 87,
@@ -901,7 +1041,8 @@
         "Lithops"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": false
     },
     {
       "id": 88,
@@ -909,7 +1050,8 @@
       "latijn": "Aeonium",
       "synoniemen": [],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 89,
@@ -920,7 +1062,8 @@
         "Zenuwplant"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 90,
@@ -930,7 +1073,8 @@
         "Hypoestes"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 91,
@@ -940,7 +1084,8 @@
         "Coleus"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 92,
@@ -951,7 +1096,8 @@
         "Soleirolia"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 93,
@@ -959,7 +1105,8 @@
       "latijn": "Clivia miniata",
       "synoniemen": [],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 94,
@@ -970,7 +1117,8 @@
         "Hippeastrum"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 95,
@@ -980,7 +1128,8 @@
         "Cyclamen"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": false
     },
     {
       "id": 96,
@@ -990,7 +1139,8 @@
         "Stephanotis"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 97,
@@ -1000,7 +1150,8 @@
         "Chamaedorea"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": false
     },
     {
       "id": 98,
@@ -1011,7 +1162,8 @@
         "Areca"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": false
     },
     {
       "id": 99,
@@ -1021,7 +1173,8 @@
         "Kentia"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": false
     },
     {
       "id": 100,
@@ -1031,7 +1184,8 @@
         "Phoenix roebelenii"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": false
     },
     {
       "id": 101,
@@ -1042,7 +1196,8 @@
         "Sagopalm"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": false
     },
     {
       "id": 102,
@@ -1052,7 +1207,8 @@
         "Sedum morganianum"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 103,
@@ -1062,7 +1218,8 @@
         "Graptopetalum"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 104,
@@ -1070,7 +1227,8 @@
       "latijn": "Peperomia argyreia",
       "synoniemen": [],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 105,
@@ -1078,7 +1236,8 @@
       "latijn": "Peperomia caperata",
       "synoniemen": [],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 106,
@@ -1088,7 +1247,8 @@
         "Calathea makoyana"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 107,
@@ -1098,7 +1258,8 @@
         "Calathea lancifolia"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 108,
@@ -1108,7 +1269,8 @@
         "Ficus pumila"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 109,
@@ -1118,7 +1280,8 @@
         "Rhoeo"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 110,
@@ -1128,7 +1291,8 @@
         "Tradescantia zebrina"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 111,
@@ -1138,7 +1302,8 @@
         "Setcreasea"
       ],
       "slug": null,
-      "categorie": "kamerplant"
+      "categorie": "kamerplant",
+      "zichtbaar": true
     },
     {
       "id": 112,
@@ -1149,7 +1314,8 @@
         "Klimroos"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 113,
@@ -1160,7 +1326,8 @@
         "Paeonia"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 114,
@@ -1168,7 +1335,8 @@
       "latijn": "Hydrangea paniculata",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 115,
@@ -1178,7 +1346,8 @@
         "Hydrangea Annabelle"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 116,
@@ -1188,7 +1357,8 @@
         "Hydrangea petiolaris"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 117,
@@ -1198,7 +1368,8 @@
         "Buddleja"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 118,
@@ -1208,7 +1379,8 @@
         "Syringa"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 119,
@@ -1218,7 +1390,8 @@
         "Chinees klokje"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 120,
@@ -1226,7 +1399,8 @@
       "latijn": "Weigela florida",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 121,
@@ -1237,7 +1411,8 @@
         "Bruidsbloem"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 122,
@@ -1245,7 +1420,8 @@
       "latijn": "Deutzia",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 123,
@@ -1255,7 +1431,8 @@
         "Rododendron"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 124,
@@ -1265,7 +1442,8 @@
         "Japanse azalea"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 125,
@@ -1275,7 +1453,8 @@
         "Camellia"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 126,
@@ -1283,7 +1462,8 @@
       "latijn": "Magnolia",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": false
     },
     {
       "id": 127,
@@ -1293,7 +1473,8 @@
         "Sierkers"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": false
     },
     {
       "id": 128,
@@ -1303,7 +1484,11 @@
         "Amelanchier"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 129,
@@ -1313,7 +1498,8 @@
         "Sierappelboom"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 130,
@@ -1323,7 +1509,11 @@
         "Cornus mas"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 131,
@@ -1331,7 +1521,11 @@
       "latijn": "Cornus sanguinea",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 132,
@@ -1341,7 +1535,11 @@
         "Sneeuwbal"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 133,
@@ -1349,7 +1547,8 @@
       "latijn": "Viburnum tinus",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 134,
@@ -1359,7 +1558,8 @@
         "Bosrank"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 135,
@@ -1369,7 +1569,11 @@
         "Hedera"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 136,
@@ -1379,7 +1583,8 @@
         "Wisteria"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 137,
@@ -1389,7 +1594,8 @@
         "Passiflora"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 138,
@@ -1399,7 +1605,8 @@
         "Lonicera"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 139,
@@ -1409,7 +1616,8 @@
         "Campsis"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 140,
@@ -1417,7 +1625,8 @@
       "latijn": "Parthenocissus quinquefolia",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 141,
@@ -1425,7 +1634,8 @@
       "latijn": "Parthenocissus tricuspidata",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 142,
@@ -1435,7 +1645,8 @@
         "Palmboompje"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 143,
@@ -1445,7 +1656,8 @@
         "Venijnboom"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": false
     },
     {
       "id": 144,
@@ -1455,7 +1667,8 @@
         "Ilex"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": false
     },
     {
       "id": 145,
@@ -1465,7 +1678,8 @@
         "Ligustrum"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 146,
@@ -1475,7 +1689,8 @@
         "Beuk"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": false
     },
     {
       "id": 147,
@@ -1483,7 +1698,8 @@
       "latijn": "Carpinus betulus",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": false
     },
     {
       "id": 148,
@@ -1491,7 +1707,8 @@
       "latijn": "Prunus laurocerasus",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 149,
@@ -1499,7 +1716,8 @@
       "latijn": "Prunus lusitanica",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 150,
@@ -1510,7 +1728,8 @@
         "Red robin"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 151,
@@ -1518,7 +1737,8 @@
       "latijn": "Skimmia japonica",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 152,
@@ -1528,7 +1748,8 @@
         "Pieris"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 153,
@@ -1539,7 +1760,8 @@
         "Heide"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 154,
@@ -1549,7 +1771,8 @@
         "Erica"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 155,
@@ -1557,7 +1780,8 @@
       "latijn": "Lavandula angustifolia",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 156,
@@ -1568,7 +1792,8 @@
         "Rode zonnehoed"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 157,
@@ -1578,7 +1803,8 @@
         "Zonnehoed geel"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 158,
@@ -1588,7 +1814,8 @@
         "Herfstaster"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 159,
@@ -1598,7 +1825,8 @@
         "Solidago"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 160,
@@ -1608,7 +1836,8 @@
         "Helenium"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 161,
@@ -1618,7 +1847,8 @@
         "Coreopsis"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 162,
@@ -1628,7 +1858,11 @@
         "Achillea"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 163,
@@ -1638,7 +1872,8 @@
         "Alchemilla"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 164,
@@ -1648,7 +1883,8 @@
         "Heuchera"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 165,
@@ -1658,7 +1894,8 @@
         "Myosotis"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 166,
@@ -1668,7 +1905,8 @@
         "Primula"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 167,
@@ -1678,7 +1916,8 @@
         "Helleborus"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 168,
@@ -1686,7 +1925,8 @@
       "latijn": "Helleborus orientalis",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 169,
@@ -1696,7 +1936,8 @@
         "Bergenia"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 170,
@@ -1706,7 +1947,8 @@
         "Prachtspirea"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 171,
@@ -1716,7 +1958,8 @@
         "Tuingeranium (vaste)"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 172,
@@ -1724,7 +1967,8 @@
       "latijn": "Geranium sanguineum",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 173,
@@ -1734,7 +1978,8 @@
         "Campanula"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 174,
@@ -1744,7 +1989,8 @@
         "Digitalis"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 175,
@@ -1754,7 +2000,8 @@
         "Aquilegia"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 176,
@@ -1764,7 +2011,8 @@
         "Delphinium"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 177,
@@ -1774,7 +2022,11 @@
         "Lupinus"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 178,
@@ -1784,7 +2036,8 @@
         "Phlox"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 179,
@@ -1795,7 +2048,11 @@
         "Catnip"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 180,
@@ -1805,7 +2062,8 @@
         "Verbena bonariensis"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 181,
@@ -1815,7 +2073,11 @@
         "Salvia nemorosa"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 182,
@@ -1825,7 +2087,11 @@
         "Calendula"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 183,
@@ -1835,7 +2101,8 @@
         "Tagetes"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": false
     },
     {
       "id": 184,
@@ -1845,7 +2112,8 @@
         "Alcea"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 185,
@@ -1855,7 +2123,8 @@
         "Malva"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 186,
@@ -1863,7 +2132,8 @@
       "latijn": "Leucanthemum vulgare",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 187,
@@ -1871,7 +2141,8 @@
       "latijn": "Leucanthemum × superbum",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 188,
@@ -1879,7 +2150,8 @@
       "latijn": "Helianthus annuus",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 189,
@@ -1889,7 +2161,8 @@
         "Cosmos"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": false
     },
     {
       "id": 190,
@@ -1897,7 +2170,8 @@
       "latijn": "Zinnia elegans",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": false
     },
     {
       "id": 191,
@@ -1905,7 +2179,8 @@
       "latijn": "Petunia",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": false
     },
     {
       "id": 192,
@@ -1915,7 +2190,8 @@
         "Impatiens"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": false
     },
     {
       "id": 193,
@@ -1923,7 +2199,8 @@
       "latijn": "Lobelia erinus",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": false
     },
     {
       "id": 194,
@@ -1933,7 +2210,11 @@
         "Tropaeolum"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 195,
@@ -1943,7 +2224,8 @@
         "Centaurea"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": false
     },
     {
       "id": 196,
@@ -1953,7 +2235,8 @@
         "Papaver"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": false
     },
     {
       "id": 197,
@@ -1961,7 +2244,8 @@
       "latijn": "Papaver orientale",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 198,
@@ -1971,7 +2255,8 @@
         "Nigella"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": false
     },
     {
       "id": 199,
@@ -1981,7 +2266,8 @@
         "Lathyrus"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": false
     },
     {
       "id": 200,
@@ -1991,7 +2277,8 @@
         "Dicentra"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 201,
@@ -2001,7 +2288,8 @@
         "Pulmonaria"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 202,
@@ -2011,7 +2299,8 @@
         "Meiklokje"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 203,
@@ -2021,7 +2310,11 @@
         "Vinca"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 204,
@@ -2031,7 +2324,8 @@
         "Epimedium"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 205,
@@ -2041,7 +2335,8 @@
         "Astrantia"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 206,
@@ -2051,7 +2346,8 @@
         "Eryngium"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 207,
@@ -2061,7 +2357,8 @@
         "Echinops"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 208,
@@ -2071,7 +2368,8 @@
         "Lythrum"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 209,
@@ -2081,7 +2379,8 @@
         "Filipendula"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 210,
@@ -2091,7 +2390,8 @@
         "Persicaria amplexicaulis"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 211,
@@ -2101,7 +2401,8 @@
         "Sedum spectabile"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 212,
@@ -2109,7 +2410,8 @@
       "latijn": "Sedum acre",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 213,
@@ -2119,7 +2421,8 @@
         "Aubrieta"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 214,
@@ -2129,7 +2432,8 @@
         "Saxifraga"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 215,
@@ -2139,7 +2443,8 @@
         "Hemerocallis"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 216,
@@ -2149,7 +2454,8 @@
         "Lis"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 217,
@@ -2159,7 +2465,8 @@
         "Lelies"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 218,
@@ -2169,7 +2476,8 @@
         "Zwaardlelie"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 219,
@@ -2179,7 +2487,8 @@
         "Tulpen"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 220,
@@ -2189,7 +2498,8 @@
         "Narcissen"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 221,
@@ -2197,7 +2507,8 @@
       "latijn": "Hyacinthus orientalis",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 222,
@@ -2205,7 +2516,8 @@
       "latijn": "Crocus",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 223,
@@ -2215,7 +2527,8 @@
         "Muscari"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 224,
@@ -2223,7 +2536,8 @@
       "latijn": "Galanthus nivalis",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 225,
@@ -2233,7 +2547,8 @@
         "Eranthis"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 226,
@@ -2243,7 +2558,8 @@
         "Scilla"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 227,
@@ -2253,7 +2569,8 @@
         "Chionodoxa"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 228,
@@ -2263,7 +2580,8 @@
         "Allium"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 229,
@@ -2273,7 +2591,8 @@
         "Agapanthus"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 230,
@@ -2283,7 +2602,8 @@
         "Kniphofia"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 231,
@@ -2293,7 +2613,8 @@
         "Crocosmia"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 232,
@@ -2303,7 +2624,8 @@
         "Indisch bloemriet"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 233,
@@ -2313,7 +2635,8 @@
         "Osteospermum"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": false
     },
     {
       "id": 234,
@@ -2323,7 +2646,8 @@
         "Delosperma"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 235,
@@ -2333,7 +2657,8 @@
         "Miscanthus"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 236,
@@ -2343,7 +2668,8 @@
         "Pennisetum"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 237,
@@ -2351,7 +2677,8 @@
       "latijn": "Festuca glauca",
       "synoniemen": [],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 238,
@@ -2361,7 +2688,8 @@
         "Carex"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 239,
@@ -2371,7 +2699,8 @@
         "Fargesia"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 240,
@@ -2381,7 +2710,8 @@
         "Jasminum"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true
     },
     {
       "id": 241,
@@ -2391,7 +2721,11 @@
         "Comfrey"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 242,
@@ -2401,7 +2735,11 @@
         "Grote brandnetel"
       ],
       "slug": null,
-      "categorie": "tuin"
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 243,
@@ -2411,7 +2749,8 @@
         "Tomatenplant"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 244,
@@ -2421,7 +2760,8 @@
         "Keratomeat"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 245,
@@ -2429,7 +2769,8 @@
       "latijn": "Capsicum annuum",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 246,
@@ -2440,7 +2781,8 @@
         "Spaanse peper"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 247,
@@ -2450,7 +2792,8 @@
         "Eiervrucht"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 248,
@@ -2458,7 +2801,8 @@
       "latijn": "Cucumis sativus",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 249,
@@ -2468,7 +2812,8 @@
         "Zucchini"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 250,
@@ -2476,7 +2821,8 @@
       "latijn": "Cucurbita maxima",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 251,
@@ -2486,7 +2832,8 @@
         "Butternutpompoen"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 252,
@@ -2494,7 +2841,8 @@
       "latijn": "Cucumis melo",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 253,
@@ -2504,7 +2852,8 @@
         "Kropsla"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 254,
@@ -2514,7 +2863,8 @@
         "Raketsla"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 255,
@@ -2522,7 +2872,8 @@
       "latijn": "Cichorium endivia",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 256,
@@ -2530,7 +2881,8 @@
       "latijn": "Cichorium intybus",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 257,
@@ -2538,7 +2890,8 @@
       "latijn": "Spinacia oleracea",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 258,
@@ -2548,7 +2901,8 @@
         "Warmoes"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 259,
@@ -2556,7 +2910,8 @@
       "latijn": "Brassica oleracea var. sabellica",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 260,
@@ -2566,7 +2921,8 @@
         "Spruitjes"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 261,
@@ -2574,7 +2930,8 @@
       "latijn": "Brassica oleracea var. botrytis",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 262,
@@ -2582,7 +2939,8 @@
       "latijn": "Brassica oleracea var. italica",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 263,
@@ -2590,7 +2948,8 @@
       "latijn": "Brassica oleracea var. capitata",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 264,
@@ -2598,7 +2957,8 @@
       "latijn": "Brassica oleracea var. capitata f. rubra",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 265,
@@ -2606,7 +2966,8 @@
       "latijn": "Brassica oleracea var. sabauda",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 266,
@@ -2614,7 +2975,8 @@
       "latijn": "Brassica rapa subsp. chinensis",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 267,
@@ -2622,7 +2984,8 @@
       "latijn": "Brassica oleracea var. gongylodes",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 268,
@@ -2630,7 +2993,8 @@
       "latijn": "Raphanus sativus",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 269,
@@ -2640,7 +3004,8 @@
         "Biet"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 270,
@@ -2650,7 +3015,8 @@
         "Peen"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 271,
@@ -2658,7 +3024,8 @@
       "latijn": "Pastinaca sativa",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 272,
@@ -2666,7 +3033,8 @@
       "latijn": "Apium graveolens var. rapaceum",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 273,
@@ -2676,7 +3044,8 @@
         "Selderij"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 274,
@@ -2686,7 +3055,11 @@
         "Knolvenkel"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 275,
@@ -2694,7 +3067,11 @@
       "latijn": "Allium porrum",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 276,
@@ -2702,7 +3079,11 @@
       "latijn": "Allium cepa",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 277,
@@ -2710,7 +3091,11 @@
       "latijn": "Allium cepa Aggregatum Group",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 278,
@@ -2718,7 +3103,11 @@
       "latijn": "Allium sativum",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 279,
@@ -2728,7 +3117,11 @@
         "Bosui"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 280,
@@ -2736,7 +3129,11 @@
       "latijn": "Allium schoenoprasum",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 281,
@@ -2744,7 +3141,11 @@
       "latijn": "Solanum tuberosum",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 282,
@@ -2754,7 +3155,11 @@
         "Bataat"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 283,
@@ -2764,7 +3169,8 @@
         "Mais"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true
     },
     {
       "id": 284,
@@ -2774,7 +3180,11 @@
         "Erwt"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 285,
@@ -2784,7 +3194,11 @@
         "Peulen"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 286,
@@ -2792,7 +3206,11 @@
       "latijn": "Vicia faba",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 287,
@@ -2802,7 +3220,11 @@
         "Prinsessenboon"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 288,
@@ -2812,7 +3234,11 @@
         "Staakboon"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 289,
@@ -2820,7 +3246,11 @@
       "latijn": "Phaseolus coccineus",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 290,
@@ -2828,7 +3258,11 @@
       "latijn": "Rheum rhabarbarum",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 291,
@@ -2836,7 +3270,11 @@
       "latijn": "Asparagus officinalis",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 292,
@@ -2844,7 +3282,11 @@
       "latijn": "Cynara cardunculus",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 293,
@@ -2854,7 +3296,11 @@
         "Topinamboer"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 294,
@@ -2862,7 +3308,11 @@
       "latijn": "Armoracia rusticana",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 295,
@@ -2872,7 +3322,11 @@
         "Appel"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 296,
@@ -2882,7 +3336,11 @@
         "Peer"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 297,
@@ -2892,7 +3350,11 @@
         "Pruim"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 298,
@@ -2903,7 +3365,11 @@
         "Zoete kers"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 299,
@@ -2913,7 +3379,11 @@
         "Morel"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 300,
@@ -2923,7 +3393,11 @@
         "Perzik"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 301,
@@ -2933,7 +3407,11 @@
         "Abrikoos"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 302,
@@ -2941,7 +3419,11 @@
       "latijn": "Cydonia oblonga",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 303,
@@ -2951,7 +3433,11 @@
         "Okkernoot"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 304,
@@ -2961,7 +3447,11 @@
         "Hazelnoot"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 305,
@@ -2969,7 +3459,11 @@
       "latijn": "Castanea sativa",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 306,
@@ -2979,7 +3473,11 @@
         "Olijf"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 307,
@@ -2989,7 +3487,11 @@
         "Citroen"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 308,
@@ -2999,7 +3501,11 @@
         "Sinaasappel"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 309,
@@ -3009,7 +3515,11 @@
         "Blueberry"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 310,
@@ -3017,7 +3527,11 @@
       "latijn": "Vaccinium myrtillus",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 311,
@@ -3027,7 +3541,11 @@
         "Grote veenbes"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 312,
@@ -3037,7 +3555,11 @@
         "Bramen"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 313,
@@ -3047,7 +3569,11 @@
         "Wijnbes"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 314,
@@ -3057,7 +3583,11 @@
         "Maandaardbei"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 315,
@@ -3067,7 +3597,11 @@
         "Actinidia deliciosa"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 316,
@@ -3077,7 +3611,11 @@
         "Basielkruid"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 317,
@@ -3085,7 +3623,11 @@
       "latijn": "Petroselinum crispum",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 318,
@@ -3093,7 +3635,11 @@
       "latijn": "Coriandrum sativum",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 319,
@@ -3101,7 +3647,11 @@
       "latijn": "Anethum graveolens",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 320,
@@ -3109,7 +3659,11 @@
       "latijn": "Artemisia dracunculus",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 321,
@@ -3117,7 +3671,11 @@
       "latijn": "Thymus vulgaris",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 322,
@@ -3125,7 +3683,11 @@
       "latijn": "Thymus citriodorus",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 323,
@@ -3135,7 +3697,11 @@
         "Wilde marjolein"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 324,
@@ -3143,7 +3709,11 @@
       "latijn": "Origanum majorana",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 325,
@@ -3153,7 +3723,11 @@
         "Melisse"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 326,
@@ -3163,7 +3737,11 @@
         "Laurierboom"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 327,
@@ -3173,7 +3751,11 @@
         "Maggikruid"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 328,
@@ -3181,7 +3763,11 @@
       "latijn": "Anthriscus cerefolium",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 329,
@@ -3189,7 +3775,11 @@
       "latijn": "Rumex acetosa",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 330,
@@ -3199,7 +3789,11 @@
         "Komkommerkruid"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 331,
@@ -3209,7 +3803,11 @@
         "Echte kamille"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 332,
@@ -3217,7 +3815,11 @@
       "latijn": "Stevia rebaudiana",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 333,
@@ -3225,7 +3827,11 @@
       "latijn": "Aloysia citrodora",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 334,
@@ -3235,7 +3841,11 @@
         "Satureja"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 335,
@@ -3243,7 +3853,11 @@
       "latijn": "Zingiber officinale",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 336,
@@ -3253,7 +3867,11 @@
         "Geelwortel"
       ],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     },
     {
       "id": 337,
@@ -3261,7 +3879,11 @@
       "latijn": "Cymbopogon citratus",
       "synoniemen": [],
       "slug": null,
-      "categorie": "moestuin"
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
     }
   ]
 }

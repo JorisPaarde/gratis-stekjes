@@ -10,8 +10,8 @@
 
 @section('content')
 <section class="section wrap stektips-page">
-  <h1 class="page-title">Stektips &amp; kennisbank</h1>
-  <p class="section-intro">Vijf pijlers: stekken, snoeien, natuurlijk bewortelen, permacultuur en vermeerderen — plus 48 soortpagina’s. Filter en zoek werken zonder JavaScript.</p>
+  <h1 class="page-title">{{ $title }}</h1>
+  <p class="section-intro">Vijf pijlers: stekken, snoeien, natuurlijk bewortelen, permacultuur en vermeerderen — plus soortpagina’s. Filter en zoek werken zonder JavaScript.</p>
 
   @if(!empty($pillars))
     <nav class="stektips-pillars" aria-label="Kennisbank-pijlers">
@@ -94,6 +94,17 @@
     <div class="grid-cards stektips-entries">
       @foreach($entries as $entry)
         <a class="soft-card stektips-entry stektips-entry--{{ $entry['type'] }}" href="{{ $entry['url'] }}">
+          @if(!empty($entry['afbeelding']['url']))
+            <img
+              class="stektips-entry-img"
+              src="{{ $entry['afbeelding']['url'] }}"
+              alt="{{ $entry['afbeelding']['alt'] }}"
+              width="320"
+              height="200"
+              loading="lazy"
+              decoding="async"
+            >
+          @endif
           <h2 class="stektips-entry-title">{{ $entry['titel'] }}</h2>
           @if(!empty($entry['badges']))
             <p class="stektips-entry-badges">
@@ -104,6 +115,11 @@
           @endif
           @if($entry['meta'] !== '')
             <p>{{ \Illuminate\Support\Str::limit($entry['meta'], 140) }}</p>
+          @endif
+          @if(!empty($entry['afbeelding']) && empty($entry['afbeelding']['is_fallback']))
+            <p class="stektips-entry-credit muted">
+              {{ $entry['afbeelding']['auteur'] }} · {{ $entry['afbeelding']['licentie'] }}
+            </p>
           @endif
         </a>
       @endforeach

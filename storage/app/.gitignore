@@ -1,4 +1,7 @@
 *
 !private/
 !public/
+!aanbod-fotos/
+!aanbod-fotos/.gitignore
+!aanbod-fotos/.htaccess
 !.gitignore

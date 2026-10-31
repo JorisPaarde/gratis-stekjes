@@ -6,12 +6,14 @@ namespace App\Http\Controllers\Beheer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Deelplek;
+use App\Models\Evenement;
 use App\Models\MailLog;
 use App\Models\PartnerMarker;
 use App\Models\User;
 use App\Notifications\VerifyEmailDutch;
 use App\Services\DeelplekAanmelding;
 use App\Services\Deelplekken;
+use App\Services\Evenementen;
 use App\Services\PartnerMarkers;
 use App\Support\SafeMail;
 use App\Support\ThrottleMessage;
@@ -24,10 +26,19 @@ use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request, PartnerMarkers $partners, Deelplekken $deelplekken): View
-    {
+    public function index(
+        Request $request,
+        PartnerMarkers $partners,
+        Deelplekken $deelplekken,
+        Evenementen $evenementen,
+    ): View {
         $editId = (int) $request->query('edit', 0);
         $editing = $editId > 0 ? PartnerMarker::query()->find($editId) : null;
+
+        $editEvenementId = (int) $request->query('edit_evenement', 0);
+        $editingEvenement = $editEvenementId > 0
+            ? Evenement::query()->find($editEvenementId)
+            : null;
 
         $reports = collect();
         if (Schema::hasTable('reports')) {
@@ -68,6 +79,15 @@ class DashboardController extends Controller
                 });
         }
 
+        $agenda = collect();
+        if (Schema::hasTable('evenementen')) {
+            $agenda = Evenement::query()
+                ->orderByDesc('start_datum')
+                ->orderByDesc('id')
+                ->limit(200)
+                ->get();
+        }
+
         return view('beheer.index', [
             'title' => 'Beheer',
             'metaDescription' => 'Beheer',
@@ -75,7 +95,11 @@ class DashboardController extends Controller
             'markers' => PartnerMarker::query()->orderBy('naam')->orderBy('id')->get(),
             'typeLabels' => $partners->typeLabels(),
             'deelplekTypeLabels' => $deelplekken->typeLabels(),
+            'evenementTypeLabels' => $evenementen->typeLabels(),
+            'provincies' => $evenementen->provincies(),
             'editing' => $editing,
+            'editingEvenement' => $editingEvenement,
+            'evenementen' => $agenda,
             'reports' => $reports,
             'hasReportsTable' => Schema::hasTable('reports'),
             'pendingDeelplekken' => $pendingDeelplekken,
@@ -184,5 +208,47 @@ class DashboardController extends Controller
         DB::table('reports')->where('id', $id)->update(['handled' => true]);
 
         return redirect()->route('beheer.index')->with('status', 'Melding afgehandeld.');
+    }
+
+    public function saveEvenement(Request $request, Evenementen $evenementen): RedirectResponse
+    {
+        $id = (int) $request->input('id', 0);
+        $result = $evenementen->save($id > 0 ? $id : null, [
+            'titel' => $request->input('titel'),
+            'type' => $request->input('type'),
+            'start_datum' => $request->input('start_datum'),
+            'eind_datum' => $request->input('eind_datum'),
+            'plaats' => $request->input('plaats'),
+            'provincie' => $request->input('provincie'),
+            'organisator' => $request->input('organisator'),
+            'url' => $request->input('url'),
+            'bron' => $request->input('bron'),
+            'gecontroleerd_op' => $request->input('gecontroleerd_op'),
+            'visible' => $request->boolean('visible'),
+        ]);
+
+        if (empty($result['ok'])) {
+            return back()->withErrors([
+                'evenement' => $result['error'] ?? 'Opslaan mislukt.',
+            ])->withInput();
+        }
+
+        return redirect()
+            ->route('beheer.index')
+            ->with('status', 'Evenement opgeslagen.');
+    }
+
+    public function hideEvenement(Request $request, Evenementen $evenementen): RedirectResponse
+    {
+        $result = $evenementen->hide((int) $request->input('id', 0));
+        if (empty($result['ok'])) {
+            return back()->withErrors([
+                'evenement' => $result['error'] ?? 'Verbergen mislukt.',
+            ]);
+        }
+
+        return redirect()
+            ->route('beheer.index')
+            ->with('status', 'Evenement verborgen.');
     }
 }

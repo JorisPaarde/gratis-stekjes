@@ -1,0 +1,51 @@
+.aanbod-foto-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0.75rem 0;
+  padding: 0;
+}
+
+.aanbod-foto-thumbs li {
+  margin: 0;
+}
+
+.aanbod-foto-thumbs img {
+  display: block;
+  width: 7.5rem;
+  height: 7.5rem;
+  object-fit: cover;
+  border-radius: 0.35rem;
+  background: color-mix(in srgb, var(--color-bos, #2f5d3a) 8%, white);
+}
+
+.aanbod-fotos-edit {
+  border: 0;
+  margin: 0.75rem 0;
+  padding: 0;
+}
+
+.aanbod-fotos-edit legend {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.zoek-item .aanbod-foto-thumbs img {
+  width: 5.5rem;
+  height: 5.5rem;
+}
+
+.zoek-item-fotos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.zoek-item-fotos img {
+  width: 4.5rem;
+  height: 4.5rem;
+  object-fit: cover;
+  border-radius: 0.3rem;
+}
