@@ -31,13 +31,20 @@
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxZoom: 18,
   }).addTo(map);
-  map.fitBounds(
-    [
-      [49.45, 2.4],
-      [53.55, 7.25],
-    ],
-    { padding: [12, 12], maxZoom: 8 }
-  );
+  function fitNlBe() {
+    map.invalidateSize();
+    map.fitBounds(
+      [
+        [49.45, 2.4],
+        [53.55, 7.25],
+      ],
+      { padding: [16, 16], maxZoom: 7 }
+    );
+  }
+  map.whenReady(function () {
+    setTimeout(fitNlBe, 50);
+    setTimeout(fitNlBe, 400);
+  });
   var layer = L.layerGroup().addTo(map);
 
   function deelplekIcon(type) {
