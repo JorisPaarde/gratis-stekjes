@@ -159,3 +159,54 @@ test('partners API is leeg zonder markers', function () {
         ->assertOk()
         ->assertJsonPath('items', []);
 });
+
+test('zoek-API zonder q met recent=1 geeft nieuwste aanbod, begrensd en zonder e-mail', function () {
+    $user = userWithLocation(['email' => 'recent@example.com']);
+    foreach (range(1, 30) as $i) {
+        Aanbod::query()->create([
+            'user_id' => $user->id,
+            'type' => 'uitdelen',
+            'tekst' => 'Recent '.$i,
+            'visible' => true,
+            'expires_at' => now()->addDays(30),
+        ]);
+    }
+    Aanbod::query()->create([
+        'user_id' => $user->id,
+        'type' => 'uitdelen',
+        'tekst' => 'Verlopen',
+        'visible' => true,
+        'expires_at' => now()->subDay(),
+    ]);
+
+    $response = $this->getJson(route('api.zoeken', ['recent' => 1]))->assertOk();
+    $items = $response->json('items');
+
+    expect($items)->toHaveCount(24);
+    expect($response->json('meta'))->toBeNull();
+    expect($items[0]['tekst'])->toBe('Recent 30');
+    expect(collect($items)->pluck('tekst'))->not->toContain('Verlopen');
+    expect($response->getContent())->not->toContain('recent@example.com');
+});
+
+test('zoek-API zonder q en zonder recent blijft 400', function () {
+    $this->getJson(route('api.zoeken'))->assertStatus(400);
+});
+
+test('aanbodpagina vult ?q= alvast in (zoekveld homepage)', function () {
+    $this->get(route('aanbod', ['q' => 'Haarlem']))
+        ->assertOk()
+        ->assertSee('value="Haarlem"', false);
+});
+
+test('zoeken.js toont lijst in begrensde groepen met «Toon meer»', function () {
+    $js = (string) file_get_contents(base_path('resources/js/zoeken.js'));
+
+    expect($js)->toContain('function renderList(')
+        ->and($js)->toContain('data-meer')
+        ->and($js)->toContain('Plekken, dichtstbij eerst')
+        ->and($js)->toContain('Aanbod, dichtstbij eerst')
+        ->and($js)->toContain('if (heeftGezocht)')
+        ->and($js)->toContain('?recent=1')
+        ->and($js)->toContain('get("q")');
+});

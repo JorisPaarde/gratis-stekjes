@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Models\Aanbod;
 use App\Support\Country;
 use App\Support\Geo;
+use Illuminate\Database\Eloquent\Builder;
 
 final class AanbodSearch
 {
@@ -21,24 +22,7 @@ final class AanbodSearch
      */
     public function search(?string $query, ?string $typeFilter, bool $allowNetwork = true, ?string $plant = null): array
     {
-        $rows = Aanbod::query()
-            ->publiclyListed()
-            ->with([
-                'user' => fn ($q) => $q->where('active', true)->whereNotNull('email_verified_at'),
-                'fotos',
-            ])
-            ->whereHas('user', function ($q) {
-                $q->where('active', true)
-                    ->whereNotNull('email_verified_at')
-                    ->whereNotNull('lat')
-                    ->whereNotNull('lon');
-            })
-            ->when(
-                in_array($typeFilter, ['uitdelen', 'ophalen'], true),
-                fn ($q) => $q->where('type', $typeFilter)
-            )
-            ->latest('created_at')
-            ->get();
+        $rows = $this->baseQuery($typeFilter)->get();
 
         $items = $rows->map(fn (Aanbod $a) => $this->toPublicItem($a))->all();
 
@@ -76,6 +60,45 @@ final class AanbodSearch
         }
 
         return ['meta' => null, 'items' => $items];
+    }
+
+    /**
+     * Nieuwste publieke aanbiedingen, zonder locatiezoekopdracht (geen geocoding).
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function recent(int $limit, ?string $typeFilter = null): array
+    {
+        $limit = max(1, min($limit, 50));
+
+        return $this->baseQuery($typeFilter)
+            ->limit($limit)
+            ->get()
+            ->map(fn (Aanbod $a) => $this->toPublicItem($a))
+            ->all();
+    }
+
+    /** @return Builder<Aanbod> */
+    private function baseQuery(?string $typeFilter): Builder
+    {
+        return Aanbod::query()
+            ->publiclyListed()
+            ->with([
+                'user' => fn ($q) => $q->where('active', true)->whereNotNull('email_verified_at'),
+                'fotos',
+            ])
+            ->whereHas('user', function ($q) {
+                $q->where('active', true)
+                    ->whereNotNull('email_verified_at')
+                    ->whereNotNull('lat')
+                    ->whereNotNull('lon');
+            })
+            ->when(
+                in_array($typeFilter, ['uitdelen', 'ophalen'], true),
+                fn ($q) => $q->where('type', $typeFilter)
+            )
+            ->latest('created_at')
+            ->orderByDesc('id');
     }
 
     /** @return array<string, mixed> */

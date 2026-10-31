@@ -30,14 +30,14 @@
       Je ziet aanbod met <strong>{{ $plant }}</strong>.
       Vul een postcode of plaats in om dichtbij te zoeken. Straatadressen staan niet op de site.
     @else
-      Zoek op postcode of plaats in Nederland of België. Op de kaart zie je ongeveer waar iets te halen is, in een lijst staat het dichtstbijzijnde aanbod bovenaan. Straatadressen staan niet op de site.
+      Zoek op postcode of plaats in Nederland of België. Je ziet aanbod van leden en vaste plekken zoals zaadbibliotheken en plantenasiels, het dichtstbij eerst. Straatadressen van leden staan niet op de site.
     @endif
   </p>
 
   <form class="form" id="zoek-form" method="get" action="{{ route('aanbod') }}" style="max-width:100%;margin-bottom:1rem">
     <div style="display:grid;gap:.75rem;grid-template-columns:1fr;align-items:end">
       <label for="zoek-q">Postcode of plaats
-        <input type="text" name="q" id="zoek-q" maxlength="120" placeholder="Bijvoorbeeld 2011 of Haarlem" @if(empty($plant)) required @endif>
+        <input type="text" name="q" id="zoek-q" maxlength="120" value="{{ $q ?? '' }}" placeholder="Bijvoorbeeld 2011 of Haarlem" @if(empty($plant)) required @endif>
       </label>
       <label for="zoek-plant">Plant, stekje of zaad
         <input type="text" name="plant" id="zoek-plant" maxlength="80" value="{{ $plant ?? '' }}" placeholder="Bijvoorbeeld hortensia">
@@ -87,8 +87,8 @@
   <div class="search-layout">
     <div id="kaart" role="img" aria-label="Kaart met ongeveer de plekken waar je iets kunt ophalen"></div>
     <div>
+      <p class="zoek-status" id="zoek-status" role="status">Vul een postcode of plaats in om te zien wat er dichtbij is. Of <a href="{{ route('account.registreren') }}">maak een account</a> om zelf iets aan te bieden.</p>
       <ul class="zoek-lijst" id="zoek-lijst"></ul>
-      <p class="muted empty-state" id="zoek-status" role="status">Vul een postcode of plaats in om aanbod te zoeken. Deelplekken zoals een plantenasiel of plantenbieb staan al op de kaart. Of <a href="{{ route('account.registreren') }}">maak een account</a> om zelf iets aan te bieden.</p>
     </div>
   </div>
 
