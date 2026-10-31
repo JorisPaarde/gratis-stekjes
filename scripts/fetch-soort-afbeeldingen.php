@@ -4,17 +4,27 @@
 declare(strict_types=1);
 
 /**
- * Eenmalig: haal per stektip-soort een vrij gelicenseerde foto van Wikimedia Commons.
- * Alleen CC0 / Public Domain / CC-BY / CC-BY-SA. Self-host na download + herschrijven (GD).
+ * Zoek per stektip-soort ZONDER goedgekeurde foto een kandidaat op Wikimedia Commons.
+ * Alleen CC0 / Public Domain / CC-BY / CC-BY-SA. Herschrijven naar JPEG (GD).
+ *
+ * De eerste zoektreffer is niet te vertrouwen (bijv. «Cassis» gaf zeeschelpen i.p.v. zwarte bes).
+ * Daarom:
+ * - bestaande rijen blijven staan; goedgekeurde foto's worden nooit overschreven;
+ * - een nieuwe kandidaat krijgt status «te_bekijken» en komt in storage/app/soort-kandidaten/
+ *   (niet publiek). De site toont hem niet (SoortAfbeeldingen filtert op «goedgekeurd»).
+ * - Goedkeuren: foto met het oog bekijken, verplaatsen naar
+ *   public/assets/images/soorten/<slug>.jpg en status op «goedgekeurd» zetten.
  *
  * Gebruik: php scripts/fetch-soort-afbeeldingen.php
  */
 $root = dirname(__DIR__);
 $stektips = json_decode((string) file_get_contents($root.'/data/stektips.json'), true);
 $soorten = $stektips['soorten'] ?? [];
-$outDir = $root.'/public/assets/images/soorten';
+$outDir = $root.'/storage/app/soort-kandidaten';
 @mkdir($outDir, 0755, true);
 $metaPath = $root.'/data/soort-afbeeldingen.json';
+$existing = is_file($metaPath) ? json_decode((string) file_get_contents($metaPath), true) : [];
+$existingRows = is_array($existing['soorten'] ?? null) ? $existing['soorten'] : [];
 
 $allowedLicenceHints = [
     'cc0',
@@ -149,8 +159,8 @@ function searchCommons(string $query, string $ua): array
 
 $results = [
     'generated_at' => gmdate('c'),
-    'source' => 'Wikimedia Commons (per-file licence verified)',
-    'soorten' => [],
+    'source' => (string) ($existing['source'] ?? 'Wikimedia Commons (per-file licence verified)'),
+    'soorten' => $existingRows,
 ];
 
 $ok = 0;
@@ -161,6 +171,10 @@ foreach ($soorten as $soort) {
     $naam = (string) ($soort['naam'] ?? '');
     $latijn = trim((string) ($soort['latijn'] ?? ''));
     if ($slug === '') {
+        continue;
+    }
+    if (isset($existingRows[$slug])) {
+        // Al een (goedgekeurde of te bekijken) rij: niet automatisch vervangen.
         continue;
     }
 
@@ -232,6 +246,8 @@ foreach ($soorten as $soort) {
                 'alt' => $naam.($latijn !== '' ? ' ('.$latijn.')' : ''),
                 'bestand' => 'assets/images/soorten/'.$slug.'.jpg',
                 'notitie' => $desc !== '' ? mb_substr($desc, 0, 200) : null,
+                'status' => 'te_bekijken',
+                'kandidaat_bestand' => 'storage/app/soort-kandidaten/'.$slug.'.jpg',
             ];
             $dlUrl = $fileUrl;
             break 2;
@@ -260,7 +276,7 @@ foreach ($soorten as $soort) {
         $chosen['width_max'] = 1200;
         $results['soorten'][$slug] = $chosen;
         $ok++;
-        echo "  → OK {$chosen['licentie']} — {$chosen['auteur']}\n";
+        echo "  → kandidaat (te_bekijken) {$chosen['licentie']} — {$chosen['auteur']}\n";
     } catch (Throwable $e) {
         echo "  → download fout: {$e->getMessage()}\n";
         $skip++;
@@ -269,10 +285,14 @@ foreach ($soorten as $soort) {
 }
 
 ksort($results['soorten']);
-$results['count'] = count($results['soorten']);
+$approved = array_keys(array_filter(
+    $results['soorten'],
+    static fn ($row) => is_array($row) && (string) ($row['status'] ?? 'goedgekeurd') === 'goedgekeurd'
+));
+$results['count'] = count($approved);
 $results['missing'] = array_values(array_diff(
     array_map(static fn ($s) => (string) $s['slug'], $soorten),
-    array_keys($results['soorten'])
+    $approved
 ));
 
 file_put_contents(
@@ -280,5 +300,5 @@ file_put_contents(
     json_encode($results, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)."\n"
 );
 
-echo "\nKlaar: {$ok} met beeld, ".count($results['missing'])." zonder (fallback).\n";
+echo "\nKlaar: {$ok} nieuwe kandidaten (te_bekijken, niet zichtbaar), ".count($results['missing'])." zonder goedgekeurde foto.\n";
 echo "Meta: {$metaPath}\n";
