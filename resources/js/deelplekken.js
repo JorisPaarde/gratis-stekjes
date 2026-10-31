@@ -31,8 +31,8 @@
   ];
   var nlBeFitOpts = { padding: [4, 4], maxZoom: 8 };
   // zoomSnap 0.25: tussenstappen tussen zoom 5/6/7.
-  // Eerste view via fitBounds (contain); fitNlBe gebruikt cover zodat
-  // een breed vak niet half West-Europa toont.
+  // fitNlBe: contain (inside=false) zodat heel NL+BE in beeld blijft,
+  // strakker dan zoom 5 maar zonder afsnijden van noord/zuid.
   var map = L.map(mapEl, { zoomSnap: 0.25 }).fitBounds(nlBeBounds, nlBeFitOpts);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution:
@@ -42,8 +42,8 @@
   function fitNlBe() {
     map.invalidateSize();
     var bounds = L.latLngBounds(nlBeBounds);
-    // inside=true: viewport past binnen NL+BE (cover) → nauwelijks buurlanden.
-    var zoom = map.getBoundsZoom(bounds, true, L.point(4, 4));
+    // inside=false: NL+BE past binnen viewport (contain) → geen afsnijden.
+    var zoom = map.getBoundsZoom(bounds, false, L.point(4, 4));
     if (isFinite(zoom)) {
       map.setView(bounds.getCenter(), Math.min(zoom, 8));
     } else {
@@ -51,6 +51,7 @@
     }
   }
   map.whenReady(function () {
+    // Na layout / late size: opnieuw contain-zoom.
     setTimeout(fitNlBe, 50);
     setTimeout(fitNlBe, 400);
     setTimeout(fitNlBe, 1000);
