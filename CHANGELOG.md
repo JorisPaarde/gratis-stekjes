@@ -9,6 +9,20 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.29.0] - 2026-10-31
+
+### Added
+
+- Belgische stadspagina’s batch 1: Antwerpen, Brussel, Namen en Lommel (`/gratis-planten/{stad}`), met echte zadenbibs uit `data/deelplekken.json`.
+- `steden.json`: optioneel `country` (NL default / BE); provincie `Limburg (BE)` voor Noord-Limburg.
+- Index `/gratis-planten` groepeert op land (Nederland / België) daarna provincie; BE-titles noemen zaden; FAQ met zadenbib-vragen.
+- Sitemap neemt de vier BE-URL’s automatisch op met `<lastmod>` (mtime `steden.json`).
+
+### Changed
+
+- `Steden::validateJson` gebruikt de NL+BE-bbox (49.4–53.7 / 2.4–7.4), gelijk aan Deelplekken.
+- `nearby()` beperkt tot hetzelfde land; schema `inLanguage` `nl-BE` op BE-stadspagina’s.
+
 ## [0.28.2] - 2026-10-31
 
 ### Changed

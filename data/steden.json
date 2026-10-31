@@ -1,9 +1,9 @@
 {
   "meta": {
     "titel": "Gratis planten — stadspagina’s",
-    "omschrijving": "Grootste Nederlandse gemeenten/steden voor SEO-pagina’s ‘Gratis planten in [stad]’. Coördinaten bij benadering (stadscentrum); straal_km voor aanbodfilter. Geen claims over lokale organisaties buiten onze eigen data.",
-    "bron": "Selectie ~40 grootste gemeenten (inwonertal); coördinaten openbaar/benaderd.",
-    "geraadpleegd": "2026-10-29"
+    "omschrijving": "Nederlandse en Belgische steden voor SEO-pagina’s ‘Gratis planten in [stad]’. Coördinaten bij benadering (stadscentrum); straal_km voor aanbodfilter. Alleen steden met echte deelplekken of aanbod in de data; country NL (default) of BE.",
+    "bron": "NL: selectie ~40 grootste gemeenten. BE batch 1: Antwerpen, Brussel, Namen, Lommel/Pelt — alleen met ≥2 zichtbare deelplekken in data/deelplekken.json.",
+    "geraadpleegd": "2026-10-31"
   },
   "steden": [
     {
@@ -383,6 +383,46 @@
       "lng": 4.3417,
       "straal_km": 10,
       "intro": "Vlaardingen heeft hier een compacte zoekcirkel voor gratis planten. Alles blijft gratis en lokaal gericht. Mis je iets, plaats dan zelf een aanbod voor de volgende bezoeker."
+    },
+    {
+      "naam": "Antwerpen",
+      "slug": "antwerpen",
+      "provincie": "Antwerpen",
+      "lat": 51.2194,
+      "lng": 4.4025,
+      "straal_km": 10,
+      "country": "BE",
+      "intro": "In Antwerpen vind ik acht openbare zadenbibs binnen ongeveer 10 km, onder meer bij A-bib Permeke, Luchtbal, Berchem, Linkeroever, Merksem, Bist, EcoHuis en de Erfgoedbibliotheek Hendrik Conscience. Je neemt er gratis zaden mee tijdens de openingsuren van de bib; de collectie is open van eind februari/begin maart tot oktober. Op deze pagina zie je die vaste plekken én eventueel aanbod van buren."
+    },
+    {
+      "naam": "Brussel",
+      "slug": "brussel",
+      "provincie": "Brussels Hoofdstedelijk Gewest",
+      "lat": 50.8503,
+      "lng": 4.3517,
+      "straal_km": 10,
+      "country": "BE",
+      "intro": "Rond Brussel ken ik vijf zadenbibs binnen ongeveer 10 km: Muntpunt en de bibliotheken van Etterbeek, Jette, Sint-Agatha-Berchem en Ukkel. Op deze pagina toon ik die vaste deelplekken en eventueel gratis planten of stekjes van mensen in de buurt. Adressen en bronlinks staan bij elke plek; openingsuren check je bij de bib zelf."
+    },
+    {
+      "naam": "Namen",
+      "slug": "namen",
+      "provincie": "Namen",
+      "lat": 50.4674,
+      "lng": 4.8719,
+      "straal_km": 10,
+      "country": "BE",
+      "intro": "In Namen (Namur) vind ik drie grainothèques (zadenbibs) binnen ongeveer 10 km: La Célestine, Flawinne en Malonne. Je kunt er gratis zakjes zaden meenemen tijdens de openingsuren van de bibliotheek en zelf geoogste zaden achterlaten. Op deze pagina staan die plekken; stekjes of planten van buren verschijnen hier zodra iemand iets aanbiedt."
+    },
+    {
+      "naam": "Lommel",
+      "slug": "lommel",
+      "provincie": "Limburg (BE)",
+      "lat": 51.223,
+      "lng": 5.42,
+      "straal_km": 15,
+      "country": "BE",
+      "intro": "Rond Lommel en Pelt in Noord-Limburg ken ik de zadenbibs van Lommel, Pelt, Eksel, Achel, Hamont, Peer en Bocholt. Iedereen mag meedoen, ook zonder bib-lidmaatschap; per bezoek mag je maximaal drie zakjes meenemen. Op deze pagina zie je die vaste plekken binnen ongeveer 15 km, plus eventueel aanbod van mensen in de buurt."
     }
   ]
 }
