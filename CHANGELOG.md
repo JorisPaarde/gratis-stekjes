@@ -9,6 +9,15 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.31.1] - 2026-10-31
+
+### Fixed
+
+- Deploy-smoke telt alleen zichtbare deelplekken (`visible` niet false) uit
+  `data/deelplekken.json`, net als `/api/deelplekken`. Sinds 0.31.0 staan
+  Delft/Groesbeek op `visible: false`, waardoor de smoke 81 verwachtte en de API
+  terecht 79 gaf.
+
 ## [0.31.0] - 2026-10-31
 
 ### Added
