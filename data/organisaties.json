@@ -71,6 +71,26 @@
       ]
     },
     {
+      "slug": "het-bomenproject",
+      "naam": "Het Bomenproject",
+      "type": "initiatief",
+      "plaats": "Nederland",
+      "website": "https://hetbomenproject.nl/",
+      "bron_url": "https://hetbomenproject.nl/over-het-bomenproject/",
+      "kort": "Platform waarmee gemeenten gratis bomen (en soms hagen) weggeven aan inwoners. Per gemeente verschilt of je moet aanmelden en wanneer je kunt ophalen; zie hun site en de gemeentepagina’s.",
+      "deelplek_slugs": [],
+      "meta_description": "Platform waarmee gemeenten gratis bomen weggeven aan inwoners.",
+      "links": [
+        {
+          "label": "Over Het Bomenproject",
+          "url": "https://hetbomenproject.nl/over-het-bomenproject/"
+        }
+      ],
+      "gerelateerde_slugs": [
+        "meerbomen-nu"
+      ]
+    },
+    {
       "slug": "stekjesroute",
       "naam": "Stekjesroute",
       "type": "initiatief",
@@ -82,7 +102,8 @@
         "delft-mekelpark-ruilkast",
         "groesbeek-happy-stekkie"
       ],
-      "meta_description": "Platform voor plantenruilkasten in Nederland en België; openbaar gemelde plekken staan op onze kaart."
+      "meta_description": "Platform voor plantenruilkasten in Nederland en België; openbaar gemelde plekken staan op onze kaart.",
+      "visible": false
     },
     {
       "slug": "velt",
@@ -169,18 +190,6 @@
       "kort": "Plantenasiel in Bibliotheek Neude (Neude 11, Utrecht). Gericht op kamerplanten die een nieuw thuis zoeken; openingstijden staan op hun site.",
       "deelplek_slugs": [
         "utrecht-plantenhuis"
-      ]
-    },
-    {
-      "slug": "plant-voor-plant",
-      "naam": "Plant voor Plant (MEC Maarssen)",
-      "type": "plantenasiel",
-      "plaats": "Maarssen",
-      "website": "https://plantvoorplant.nl/",
-      "bron_url": "https://plantvoorplant.nl/andere-plantenasiels/",
-      "kort": "Plantenasiel / plant-voor-plant-initiatief bij MEC Maarssen (Reigerskamp). Verwijst ook naar andere plantenasiels in de regio.",
-      "deelplek_slugs": [
-        "maarssen-plant-voor-plant"
       ]
     },
     {

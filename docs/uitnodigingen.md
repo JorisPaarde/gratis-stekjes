@@ -46,7 +46,8 @@ Joris
 | Vereniging Voedsel uit het Bos | voedselbos | Utrecht | https://voedseluithetbos.nl/ | info@voedseluithetbos.nl; contactformulier op contactpagina | https://voedseluithetbos.nl/contact/ | `/organisaties/voedsel-uit-het-bos` |
 | MeerBomen Nu | initiatief | Nederland | https://meerbomen.nu/ | info@meerbomen.nu (vermeld op homepage) | https://meerbomen.nu/ | `/organisaties/meerbomen-nu` |
 | Stichting Struikroven | initiatief | Nederland | https://www.struikroven.nu/ | info@struikroven.nl; bestuur@struikroven.nl (ANBI) | https://www.struikroven.nu/werkwijze · https://www.struikroven.nu/anbi | `/organisaties/struikroven` |
-| Stekjesroute | initiatief | Nederland | https://stekjesroute.com/ | info@stekjesroute.eu; contactformulier | https://stekjesroute.com/pages/contact/ | `/organisaties/stekjesroute` |
+| Stekjesroute | initiatief | Nederland | https://stekjesroute.com/ | info@stekjesroute.eu; contactformulier | https://stekjesroute.com/pages/contact/ | verborgen (`visible: false`) — twijfel of gratis |
+| Het Bomenproject | initiatief | Nederland | https://hetbomenproject.nl/ | via hun site | https://hetbomenproject.nl/over-het-bomenproject/ | `/organisaties/het-bomenproject` |
 | Velt Nederland | tuinvereniging | Nederland | https://velt.nu/velt-nederland | info.nederland@velt.nu | https://velt.nu/velt-nederland | `/organisaties/velt` |
 | Zadenbibliotheek Nederland | zaadbibliotheek | Leeuwarden | https://zadenbibliotheeknederland.nl/ | welkom@zadenbibliotheeknederland.nl | https://zadenbibliotheeknederland.nl/contact/ | `/organisaties/zadenbibliotheek-nederland` |
 | Permacultuur Nederland | initiatief | Nederland | https://www.permacultuurnederland.org/ | info@permacultuurnederland.org | http://www.permacultuurnederland.org/wp/contact-en-netwerk/ | `/organisaties/permacultuur-nederland` |
@@ -54,7 +55,6 @@ Joris
 | Plantenasiel Haarlem | plantenasiel | Haarlem | https://plantenasielhaarlem.nl/ | plantenasielhaarlem@gmail.com | https://plantenasielhaarlem.nl/contact/ | `/organisaties/plantenasiel-haarlem` |
 | Plantenasiel Zeist | plantenasiel | Zeist | https://www.plantenasielzeist.nl/ | info@plantenasielzeist.nl | https://www.plantenasielzeist.nl/ | `/organisaties/plantenasiel-zeist` |
 | Het Plantenhuis (Plantenasiel Utrecht) | plantenasiel | Utrecht | https://www.plantenasiel.nl/ | plantenhuis@outlook.com | https://www.plantenasiel.nl/ | `/organisaties/plantenhuis-utrecht` |
-| Plant voor Plant (MEC Maarssen) | plantenasiel | Maarssen | https://plantvoorplant.nl/ | zie hun site / contact via plantvoorplant.nl | https://plantvoorplant.nl/andere-plantenasiels/ | `/organisaties/plant-voor-plant` |
 | Plantaardig Middelburg | plantenasiel | Middelburg | https://plantaardigmiddelburg.nl/ | info@plantaardigmiddelburg.nl | https://plantaardigmiddelburg.nl/meer/ | `/organisaties/plantaardig-middelburg` |
 | Plantenasiel Leiden | plantenasiel | Leiden | https://www.gagoed.nl/plantenasiel-leiden/ | via Goed Leiden-pagina (geen apart algemeen mailadres in bron gevonden) | https://www.gagoed.nl/plantenasiel-leiden/ | `/organisaties/plantenasiel-leiden` |
 | Plantenasiel Houten | plantenasiel | Houten | https://www.uitinhouten.nl/organisaties/90/plantenasiel-houten/ | via Uit in Houten-vermelding | https://www.uitinhouten.nl/organisaties/90/plantenasiel-houten/ | `/organisaties/plantenasiel-houten` |

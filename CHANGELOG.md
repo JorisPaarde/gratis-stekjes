@@ -9,6 +9,28 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.31.0] - 2026-10-31
+
+### Added
+
+- Organisatiepagina Het Bomenproject (`/organisaties/het-bomenproject`).
+- Deelplekken uit scan 31 okt 2026: Plantenruilbib Hulshout, De Roverstuin Utrecht
+  (Beton-T), 12 Groningse zadenbibliotheken, Zadenbibliotheek OBA Spaarndammerbuurt,
+  4 plantenbiebs Torhout.
+- Optionele `visible`-vlag in `data/organisaties.json` (verborgen orgs uit lijst,
+  sitemap en show).
+
+### Changed
+
+- Stekjesroute verborgen (`visible: false`); gekoppelde ruilkasten Delft/Groesbeek
+  op `visible: false` (niet op kaart/API/sitemap).
+- Oude URL `/organisaties/plant-voor-plant` → 301 naar `/organisaties`.
+
+### Removed
+
+- Plant voor Plant (MEC Maarssen) uit organisaties, deelplekken en uitnodigingenlijst
+  (geen duidelijk gratis aanbod).
+
 ## [0.30.1] - 2026-10-31
 
 ### Added

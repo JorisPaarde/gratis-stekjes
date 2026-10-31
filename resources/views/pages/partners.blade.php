@@ -132,11 +132,6 @@
   <p class="section-intro">Losse verwijzingen naar verwante plekken en netwerken.</p>
   <div class="grid-cards partners-links">
     <article class="soft-card">
-      <h3><a href="https://stekjesroute.com/" rel="noopener noreferrer">Stekjesroute</a></h3>
-      <p>Verzamelplatform voor plantenruilkasten in Nederland en België. Bij die kasten ruil je stekjes en planten (niet gratis; anders een donatie volgens de kast).</p>
-      <p class="muted">Daar ruilen; hier gratis met een praatje.</p>
-    </article>
-    <article class="soft-card">
       <h3><a href="https://velt.nu/zaden-en-plantenruilbeurzen" rel="noopener noreferrer">Velt</a></h3>
       <p>Velt-groepen organiseren zaden- en plantenruilbeurzen in Nederland en België: delen van zaden en planten, zonder dat er geld aan te pas hoeft te komen.</p>
     </article>
