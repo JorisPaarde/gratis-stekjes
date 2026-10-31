@@ -9,6 +9,17 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.26.5] - 2026-10-31
+
+### Added
+
+- Hoofdmenu-link **Dashboard** → `/beheer/overzicht` (Gate `see-admin-dashboard`), alleen bij `session('admin_ok')` of een geverifieerd account waarvan `users.email` in `stekjes.admin_dashboard_emails` staat (env `ADMIN_DASHBOARD_EMAILS`; leeg → fallback `admin_email`). Geen match op weergavenaam.
+- Zelfde Gate geeft dat account toegang tot alle `/beheer`-routes zonder apart beheerwachtwoord; wachtwoord-login blijft fallback. GET `/beheer` redirect dan direct naar overzicht. Beheer-uitloggen wist alleen `admin_ok`, niet de account-sessie.
+
+### Changed
+
+- `AdminAuth` accepteert `admin_ok` óf Gate `see-admin-dashboard`.
+
 ## [0.26.3] - 2026-10-31
 
 ### Fixed

@@ -50,6 +50,9 @@
         <a href="{{ route('deelplekken') }}"><x-icon name="locatie" :size="16" /> Deelplekken</a>
         <a href="{{ route('over') }}"><x-icon name="hart" :size="16" /> Over</a>
         <a href="{{ route('privacy') }}"><x-icon name="check" :size="16" /> Privacy</a>
+        @can('see-admin-dashboard')
+          <a href="{{ route('beheer.index') }}"><x-icon name="kaart" :size="16" /> Dashboard</a>
+        @endcan
         @auth
           <a href="{{ route('account.index') }}"><x-icon name="gebruiker" :size="16" /> Account</a>
           <form class="nav-logout" method="post" action="{{ route('account.uitloggen') }}">

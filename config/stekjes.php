@@ -123,6 +123,16 @@ return [
      */
     'admin_email' => env('ADMIN_EMAIL', env('MAIL_FROM_ADDRESS', '')),
 
+    /**
+     * Unieke account-e-mails (CSV) met Dashboard-menulink + /beheer zonder apart
+     * wachtwoord (Gate see-admin-dashboard). Match alleen op users.email.
+     * Lege default = val terug op admin_email; beide leeg = geen account-toegang.
+     */
+    'admin_dashboard_emails' => array_values(array_filter(array_map(
+        static fn (string $email): string => strtolower(trim($email)),
+        explode(',', (string) env('ADMIN_DASHBOARD_EMAILS', ''))
+    ))),
+
     /** Dataminimalisatie / retentie (beleidstekst + toekomstige purge). */
     'inactive_account_months' => (int) env('INACTIVE_ACCOUNT_MONTHS', 12),
 
