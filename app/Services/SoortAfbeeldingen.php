@@ -7,9 +7,15 @@ namespace App\Services;
 /**
  * Self-hosted soortfoto’s met geverifieerde vrije licentie (CC0 / CC-BY / CC-BY-SA).
  * Metadata: data/soort-afbeeldingen.json. Ontbrekende soorten → neutrale SVG-fallback.
+ * Alleen rijen met status «goedgekeurd» (of zonder status, oud formaat) worden getoond;
+ * «te_bekijken» (nieuw opgehaald, nog niet met het oog gecontroleerd) valt terug op de SVG.
  */
 final class SoortAfbeeldingen
 {
+    public const STATUS_GOEDGEKEURD = 'goedgekeurd';
+
+    public const STATUS_TE_BEKIJKEN = 'te_bekijken';
+
     /** @var array<string, array<string, mixed>>|null */
     private ?array $bySlug = null;
 
@@ -88,6 +94,10 @@ final class SoortAfbeeldingen
             }
             $slug = (string) ($row['slug'] ?? $key);
             if ($slug === '') {
+                continue;
+            }
+            $status = (string) ($row['status'] ?? self::STATUS_GOEDGEKEURD);
+            if ($status !== self::STATUS_GOEDGEKEURD) {
                 continue;
             }
             $out[$slug] = $row;
