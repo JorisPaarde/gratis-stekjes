@@ -105,6 +105,8 @@
   @include('partials.nu-te-stekken', ['nuTeStekken' => $nuTeStekken, 'headingId' => 'nu-te-stekken-titel'])
 @endif
 
+@include('partials.ervaringen-home')
+
 <section class="section section--mint" id="veiligheid" aria-labelledby="veilig-titel">
   <div class="wrap">
     <h2 id="veilig-titel">Veilig delen</h2>

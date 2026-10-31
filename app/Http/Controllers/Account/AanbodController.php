@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Aanbod;
 use App\Rules\GeenInvasieveSoort;
 use App\Services\InvasieveSoorten;
+use App\Services\MilestoneService;
 use App\Services\Plantensoorten;
 use App\Support\FormGuard;
 use App\Support\ThrottleMessage;
@@ -42,7 +43,7 @@ class AanbodController extends Controller
         ]);
     }
 
-    public function store(Request $request, Plantensoorten $plantensoorten): RedirectResponse
+    public function store(Request $request, Plantensoorten $plantensoorten, MilestoneService $milestones): RedirectResponse
     {
         $user = $request->user();
         if (! $user->hasLocation()) {
@@ -75,6 +76,8 @@ class AanbodController extends Controller
             'expires_at' => now()->addDays($ttl),
         ]);
         RateLimiter::hit($throttleKey, 3600);
+
+        $milestones->maybeSendEersteStekje($user, 'eerste_aanbod');
 
         return redirect()
             ->route('account.aanbod')

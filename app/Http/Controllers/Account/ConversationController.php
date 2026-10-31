@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
 use App\Models\Conversation;
 use App\Services\MessagingService;
+use App\Services\MilestoneService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -28,7 +29,7 @@ class ConversationController extends Controller
         ]);
     }
 
-    public function store(Request $request, Conversation $gesprek, MessagingService $messaging): RedirectResponse
+    public function store(Request $request, Conversation $gesprek, MessagingService $messaging, MilestoneService $milestones): RedirectResponse
     {
         $uid = (int) $request->user()->id;
         abort_unless($gesprek->involves($uid), 403);
@@ -53,6 +54,18 @@ class ConversationController extends Controller
             $ok = ! empty($r['ok']);
 
             return back()->with($ok ? 'status' : 'error', $ok ? 'Keuze opgeslagen.' : ($r['error'] ?? 'Mislukt'));
+        }
+
+        if ($action === 'overdracht') {
+            $r = $messaging->completeOverdracht($uid, $gesprek, $milestones);
+            $ok = ! empty($r['ok']);
+            $msg = $ok
+                ? ((! empty($r['first']))
+                    ? 'Overdracht afgerond. Wil je een ervaring delen?'
+                    : 'Deze overdracht stond al als afgerond.')
+                : ($r['error'] ?? 'Mislukt');
+
+            return back()->with($ok ? 'status' : 'error', $msg);
         }
 
         if ($action === 'report') {

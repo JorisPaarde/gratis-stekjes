@@ -40,6 +40,7 @@ function auditPublicGetRoutes(): array
         '/stektips',
         '/gratis-planten',
         '/aanbod',
+        '/ervaringen',
         '/api/zoeken?q=Haarlem',
         '/api/partners',
         '/api/deelplekken',

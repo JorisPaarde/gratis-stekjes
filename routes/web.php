@@ -7,6 +7,7 @@ use App\Http\Controllers\Account\AanbodVerlengenController;
 use App\Http\Controllers\Account\ConversationController;
 use App\Http\Controllers\Account\DeleteAccountController;
 use App\Http\Controllers\Account\EmailChangeController;
+use App\Http\Controllers\Account\ErvaringController as AccountErvaringController;
 use App\Http\Controllers\Account\ExportController;
 use App\Http\Controllers\Account\InboxController;
 use App\Http\Controllers\Account\PasswordController;
@@ -24,10 +25,12 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Beheer\DashboardController as BeheerDashboardController;
+use App\Http\Controllers\Beheer\ErvaringController as BeheerErvaringController;
 use App\Http\Controllers\Beheer\FeedbackController as BeheerFeedbackController;
 use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
 use App\Http\Controllers\Beheer\StatistiekenController as BeheerStatistiekenController;
 use App\Http\Controllers\ContentPageController;
+use App\Http\Controllers\ErvaringController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\DeployController;
@@ -46,6 +49,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::get('/ervaringen', [ErvaringController::class, 'index'])->name('ervaringen.index');
+Route::get('/ervaringen/{ervaring}/foto', [ErvaringController::class, 'photo'])
+    ->whereNumber('ervaring')
+    ->name('ervaringen.foto');
 Route::get('/initiatieven', PartnersController::class)->name('partners');
 Route::get('/deelplekken', DeelplekkenController::class)->name('deelplekken');
 Route::get('/voor-organisaties', [VoorOrganisatiesController::class, 'index'])->name('voor-organisaties');
@@ -172,6 +179,19 @@ Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(functio
     // Oude POST /account/aanbod (vóór /nieuw) → zelfde store-action.
     Route::post('/account/aanbod', [AanbodController::class, 'store']);
 
+    Route::get('/account/ervaringen', [AccountErvaringController::class, 'index'])
+        ->name('account.ervaringen');
+    Route::get('/account/ervaringen/nieuw', [AccountErvaringController::class, 'create'])
+        ->name('account.ervaringen.create');
+    Route::post('/account/ervaringen/nieuw', [AccountErvaringController::class, 'store'])
+        ->middleware('throttle:10,1')
+        ->name('account.ervaringen.store');
+    Route::delete('/account/ervaringen/{ervaring}', [AccountErvaringController::class, 'destroy'])
+        ->name('account.ervaringen.destroy');
+    Route::get('/account/ervaringen/{ervaring}/foto', [AccountErvaringController::class, 'photo'])
+        ->whereNumber('ervaring')
+        ->name('account.ervaringen.foto');
+
     Route::get('/account/inbox', InboxController::class)->name('account.inbox');
     Route::get('/account/bericht-starten', StartConversationController::class)
         ->name('account.bericht-starten');
@@ -195,6 +215,16 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::get('/statistieken', [BeheerStatistiekenController::class, 'index'])->name('beheer.statistieken');
     Route::get('/feedback', [BeheerFeedbackController::class, 'index'])->name('beheer.feedback');
     Route::post('/feedback/gelezen', [BeheerFeedbackController::class, 'markRead'])->name('beheer.feedback.read');
+    Route::get('/ervaringen', [BeheerErvaringController::class, 'index'])->name('beheer.ervaringen');
+    Route::post('/ervaringen/goedkeuren', [BeheerErvaringController::class, 'approve'])
+        ->name('beheer.ervaringen.approve');
+    Route::post('/ervaringen/afwijzen', [BeheerErvaringController::class, 'reject'])
+        ->name('beheer.ervaringen.reject');
+    Route::post('/ervaringen/verwijderen', [BeheerErvaringController::class, 'destroy'])
+        ->name('beheer.ervaringen.destroy');
+    Route::get('/ervaringen/{ervaring}/foto', [BeheerErvaringController::class, 'photo'])
+        ->whereNumber('ervaring')
+        ->name('beheer.ervaringen.foto');
     Route::post('/markers', [BeheerDashboardController::class, 'saveMarker'])->name('beheer.markers.save');
     Route::post('/markers/verwijderen', [BeheerDashboardController::class, 'deleteMarker'])->name('beheer.markers.delete');
     Route::post('/meldingen/afgehandeld', [BeheerDashboardController::class, 'markReportHandled'])->name('beheer.reports.handled');

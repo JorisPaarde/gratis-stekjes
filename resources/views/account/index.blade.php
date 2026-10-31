@@ -37,9 +37,30 @@
     <ul class="prose" style="margin:0;padding-left:1.25rem">
       <li><a href="{{ route('account.aanbod') }}">Mijn aanbod</a></li>
       <li><a href="{{ route('account.inbox') }}">Inbox</a></li>
+      <li><a href="{{ route('account.ervaringen') }}">Mijn ervaringen</a></li>
       <li><a href="{{ route('aanbod') }}">Kaart / zoeken</a></li>
     </ul>
   </div>
+
+  @isset($badges)
+  <div class="soft-card" style="margin-top:1rem">
+    <h2>Mijlpalen</h2>
+    <p class="muted" style="margin-top:0">Lichte badges als herinnering aan wat je al deed.</p>
+    <ul class="prose" style="margin:0;padding-left:1.25rem">
+      @foreach($badges as $badge)
+        <li>
+          @if($badge['earned'])
+            <x-icon name="check" :size="16" /> <strong>{{ $badge['label'] }}</strong>
+          @else
+            <span class="muted">{{ $badge['label'] }}</span>
+          @endif
+          <span class="muted"> — {{ $badge['hint'] }}</span>
+        </li>
+      @endforeach
+    </ul>
+    <p style="margin-top:.75rem"><a href="{{ route('account.ervaringen.create') }}">Deel een ervaring</a></p>
+  </div>
+  @endisset
 
   <div class="soft-card" style="margin-top:1rem">
     <h2>Privacy (AVG)</h2>

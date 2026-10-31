@@ -91,4 +91,16 @@ return [
      * Liever aparte BACKUP_ENCRYPTION_KEY; valt terug op APP_KEY. Nooit committen.
      */
     'backup_encryption_key' => env('BACKUP_ENCRYPTION_KEY', env('APP_KEY', '')),
+
+    /**
+     * Blok met laatste goedgekeurde ervaringen op de homepage.
+     * Default uit — aanzetten na content/moderatie.
+     */
+    'ervaringen_home_block_enabled' => filter_var(env('ERVARINGEN_HOME_BLOCK_ENABLED', false), FILTER_VALIDATE_BOOL),
+
+    /**
+     * Felicitatiemail bij eerste aanbod of eerste afgeronde overdracht.
+     * HARDE EIS: default uit. Bij uit: niets queue'en/versturen, alleen loggen.
+     */
+    'milestone_mail_enabled' => filter_var(env('MILESTONE_MAIL_ENABLED', false), FILTER_VALIDATE_BOOL),
 ];

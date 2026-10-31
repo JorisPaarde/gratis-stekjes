@@ -9,6 +9,14 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.25.0] - 2026-10-31
+
+### Added
+
+- Ervaringen delen: ingelogd lid plaatst korte tekst (max. 500), optionele foto (jpeg/png/webp, max. 8 MB, finfo + decode-check, opnieuw encoden zonder EXIF/GPS, resize ~1600px), optionele koppeling soort/aanbod, plaatsnaam alleen gemeenteniveau. Status `pending` tot goedkeuring in `/beheer/ervaringen`. Publieke `/ervaringen` (noindex zolang leeg, niet in menu); homepage-blok achter `ERVARINGEN_HOME_BLOCK_ENABLED` (default uit). Lid kan eigen ervaring wissen; meegenomen in AVG-export en account-verwijdering. Privacytekst bijgewerkt.
+- Overdracht afronden in gesprek (na wederzijds contact) + uitnodiging om ervaring te delen.
+- Mijlpaalmail “eerste stekje” bij eerste aanbod of eerste afgeronde overdracht (Blade-template, ik-vorm). **Hard uit** via `MILESTONE_MAIL_ENABLED=false`: niets queue’en/versturen, alleen log `zou_versturen` zonder PII. Idempotent via `milestones_sent`. Badges op accountpagina (eerste stekje, 5 gedeeld, eerste ervaring) zonder punten/ranglijst.
+
 ## [0.24.12] - 2026-10-31
 
 ### Fixed
