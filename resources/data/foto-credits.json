@@ -1,0 +1,145 @@
+{
+  "generated_at": "2026-10-31",
+  "note": "Self-hosted homepage-v2 foto’s. Unieke bestanden per sectie. Pexels License of CC BY/CC BY-SA (zichtbare naamsvermelding). Hero/nederland/belgie: NL/BE volkstuinen. Kaartpreview: eigen screenshot van OSM-tegels + deelplek-markers uit data/deelplekken.json.",
+  "fotos": [
+    {
+      "id": "hero",
+      "bestanden": [
+        "assets/images/home-v2/hero-640.webp",
+        "assets/images/home-v2/hero-960.webp",
+        "assets/images/home-v2/hero-1280.webp",
+        "assets/images/home-v2/hero-1920.webp",
+        "assets/images/home-v2/hero-960.jpg",
+        "assets/images/home-v2/hero-1920.jpg",
+        "assets/images/home-v2/hero-portrait-720.webp",
+        "assets/images/home-v2/hero-portrait-1080.webp",
+        "assets/images/home-v2/hero-portrait-1440.webp",
+        "assets/images/home-v2/hero-portrait-1080.jpg"
+      ],
+      "width": 1920,
+      "height": 1080,
+      "alt": "Volkstuinen bij de Dreef in Enkhuizen met groene tuintjes en bomen",
+      "bron": "Wikimedia Commons",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:20180907_Volkstuin_bij_de_Dreef_Enkhuizen.jpg",
+      "maker": "Gouwenaar",
+      "maker_url": "https://commons.wikimedia.org/wiki/User:Gouwenaar",
+      "licentie": "CC BY-SA 4.0",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution_required": true
+    },
+    {
+      "id": "kaart",
+      "bestanden": [
+        "assets/images/home-v2/kaart-640.webp",
+        "assets/images/home-v2/kaart-960.webp",
+        "assets/images/home-v2/kaart-1280.webp",
+        "assets/images/home-v2/kaart-960.jpg"
+      ],
+      "width": 1280,
+      "height": 800,
+      "alt": "Kaart van Nederland en België met oranje markers van deelplekken",
+      "bron": "OpenStreetMap",
+      "bron_url": "https://www.openstreetmap.org/copyright",
+      "maker": "OpenStreetMap-bijdragers",
+      "maker_url": "https://www.openstreetmap.org/copyright",
+      "licentie": "ODbL",
+      "licentie_url": "https://www.openstreetmap.org/copyright",
+      "attribution_required": false
+    },
+    {
+      "id": "stappen",
+      "bestanden": [
+        "assets/images/home-v2/stappen-640.webp",
+        "assets/images/home-v2/stappen-960.webp",
+        "assets/images/home-v2/stappen-1280.webp",
+        "assets/images/home-v2/stappen-960.jpg"
+      ],
+      "width": 1280,
+      "height": 848,
+      "alt": "Jonge selderijplantjes in hergebruikte potjes, klaar om weg te geven",
+      "bron": "Wikimedia Commons",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Celery_seedlings_planted_in_recycled_pots.jpg",
+      "maker": "Badak Ironman",
+      "maker_url": "https://commons.wikimedia.org/wiki/User:Badak_Ironman",
+      "licentie": "CC BY-SA 4.0",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution_required": true
+    },
+    {
+      "id": "zaden",
+      "bestanden": [
+        "assets/images/home-v2/zaden-640.webp",
+        "assets/images/home-v2/zaden-960.webp",
+        "assets/images/home-v2/zaden-1280.webp",
+        "assets/images/home-v2/zaden-960.jpg"
+      ],
+      "width": 1296,
+      "height": 968,
+      "alt": "Zakjes groentezaden op een rek",
+      "bron": "Wikimedia Commons",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Packets_of_Vegetable_Seeds.jpg",
+      "maker": "ParentingPatch",
+      "maker_url": "https://commons.wikimedia.org/wiki/File:Packets_of_Vegetable_Seeds.jpg",
+      "licentie": "CC BY-SA 3.0",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "attribution_required": true
+    },
+    {
+      "id": "stekjes",
+      "bestanden": [
+        "assets/images/home-v2/stekjes-640.webp",
+        "assets/images/home-v2/stekjes-960.webp",
+        "assets/images/home-v2/stekjes-1280.webp",
+        "assets/images/home-v2/stekjes-960.jpg"
+      ],
+      "width": 1600,
+      "height": 1067,
+      "alt": "Iemand verpot een vrouwentong in een terracotta pot",
+      "bron": "Pexels",
+      "bron_url": "https://www.pexels.com/photo/4505161/",
+      "maker": "Anna Avilova",
+      "maker_url": "https://www.pexels.com/@anna-avilova-756590/",
+      "licentie": "Pexels License",
+      "licentie_url": "https://www.pexels.com/license/",
+      "attribution_required": false
+    },
+    {
+      "id": "delen",
+      "bestanden": [
+        "assets/images/home-v2/delen-640.webp",
+        "assets/images/home-v2/delen-960.webp",
+        "assets/images/home-v2/delen-1280.webp",
+        "assets/images/home-v2/delen-960.jpg"
+      ],
+      "width": 1600,
+      "height": 1067,
+      "alt": "Hand met een jong plantje in een kluitje aarde",
+      "bron": "Pexels",
+      "bron_url": "https://www.pexels.com/photo/1072824/",
+      "maker": "Matthias Cooper",
+      "maker_url": "https://www.pexels.com/photo/1072824/",
+      "licentie": "Pexels License",
+      "licentie_url": "https://www.pexels.com/license/",
+      "attribution_required": false
+    },
+    {
+      "id": "aanmelden",
+      "bestanden": [
+        "assets/images/home-v2/aanmelden-640.webp",
+        "assets/images/home-v2/aanmelden-960.webp",
+        "assets/images/home-v2/aanmelden-1280.webp",
+        "assets/images/home-v2/aanmelden-960.jpg"
+      ],
+      "width": 1600,
+      "height": 1067,
+      "alt": "Schepje met potgrond boven bloeiende planten",
+      "bron": "Pexels",
+      "bron_url": "https://www.pexels.com/photo/1301856/",
+      "maker": "Pixabay",
+      "maker_url": "https://www.pexels.com/@pixabay/",
+      "licentie": "Pexels License",
+      "licentie_url": "https://www.pexels.com/license/",
+      "attribution_required": false
+    }
+  ]
+}

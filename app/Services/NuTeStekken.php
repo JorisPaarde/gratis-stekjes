@@ -13,6 +13,9 @@ final class NuTeStekken
 {
     public const TIMEZONE = 'Europe/Amsterdam';
 
+    /** Maximaal aantal plantkaarten in het compacte blok (home / aanbod). */
+    public const UITGELICHT_MAX = 6;
+
     /** @var list<string> */
     public const METHODES = ['stek', 'scheut', 'deling', 'zaad', 'enten', 'afleggen'];
 
@@ -114,7 +117,7 @@ final class NuTeStekken
     {
         $payload = $this->voorMaand($this->maandnummer($when));
         $payload['titel'] = 'Nu te stekken';
-        $payload['intro'] = 'Wat je in '.$payload['maand_naam'].' kunt stekken of delen. Tips zijn algemeen; kijk altijd naar je eigen plant en het weer.';
+        $payload['intro'] = 'Deze planten kun je in '.$payload['maand_naam'].' goed stekken of delen.';
         $payload['stektips_index'] = $this->stektipsIndexUrl();
 
         return $payload;
@@ -137,7 +140,49 @@ final class NuTeStekken
             'intro' => $payload['intro'],
             'groepen' => $payload['groepen'],
             'stektips_index' => $payload['stektips_index'],
+            'uitgelicht' => $this->uitgelicht($payload['groepen']),
         ];
+    }
+
+    /**
+     * Plantkaarten voor home/aanbod: alleen soorten met een stektip, met foto eerst,
+     * zonder dubbelen, maximaal {@see self::UITGELICHT_MAX}.
+     *
+     * @param  list<array<string, mixed>>  $groepen
+     * @return list<array{naam: string, slug: string, url: string, methode: string, afbeelding: array<string, mixed>}>
+     */
+    public function uitgelicht(array $groepen): array
+    {
+        $afbeeldingen = app(SoortAfbeeldingen::class);
+        $metFoto = [];
+        $zonderFoto = [];
+        $gezien = [];
+
+        foreach ($groepen as $groep) {
+            foreach (($groep['planten'] ?? []) as $plant) {
+                $slug = (string) ($plant['slug'] ?? '');
+                $url = $plant['stek_url'] ?? null;
+                if ($slug === '' || $url === null || isset($gezien[$slug])) {
+                    continue;
+                }
+                $gezien[$slug] = true;
+                $afbeelding = $afbeeldingen->forSlug($slug, (string) ($plant['naam'] ?? ''));
+                $kaart = [
+                    'naam' => (string) ($plant['naam'] ?? $slug),
+                    'slug' => $slug,
+                    'url' => (string) $url,
+                    'methode' => (string) ($groep['methode'] ?? ''),
+                    'afbeelding' => $afbeelding,
+                ];
+                if ($afbeelding['is_fallback']) {
+                    $zonderFoto[] = $kaart;
+                } else {
+                    $metFoto[] = $kaart;
+                }
+            }
+        }
+
+        return array_slice(array_merge($metFoto, $zonderFoto), 0, self::UITGELICHT_MAX);
     }
 
     /** @return array{meta?: array<string, mixed>, maanden: array<string, mixed>} */

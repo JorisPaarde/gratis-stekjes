@@ -34,23 +34,16 @@
     @endif
   </p>
 
-  <form class="form" id="zoek-form" method="get" action="{{ route('aanbod') }}" style="max-width:100%;margin-bottom:1rem">
-    <div style="display:grid;gap:.75rem;grid-template-columns:1fr;align-items:end">
-      <label for="zoek-q">Postcode of plaats
-        <input type="text" name="q" id="zoek-q" maxlength="120" value="{{ $q ?? '' }}" placeholder="Bijvoorbeeld 2011 of Haarlem" @if(empty($plant)) required @endif>
-      </label>
-      <label for="zoek-plant">Plant, stekje of zaad
-        <input type="text" name="plant" id="zoek-plant" maxlength="80" value="{{ $plant ?? '' }}" placeholder="Bijvoorbeeld hortensia">
-      </label>
-      <label for="zoek-type">Soort aanbod
-        <select name="type" id="zoek-type">
-          <option value="">Alles</option>
-          <option value="uitdelen">Uitdelen</option>
-          <option value="ophalen">Ophalen of zoeken</option>
-        </select>
-      </label>
-      <button class="btn" type="submit">Zoeken</button>
+  <form class="zoekbalk" id="zoek-form" method="get" action="{{ route('aanbod') }}" role="search">
+    <div class="zoekbalk-veld zoekbalk-veld--waar">
+      <label for="zoek-q">Postcode of plaats</label>
+      <input type="text" name="q" id="zoek-q" maxlength="120" value="{{ $q ?? '' }}" placeholder="Bijvoorbeeld 2011 of Haarlem" autocomplete="postal-code" @if(empty($plant)) required @endif>
     </div>
+    <div class="zoekbalk-veld">
+      <label for="zoek-plant">Plant, stekje of zaad <span class="zoekbalk-optioneel">(optioneel)</span></label>
+      <input type="text" name="plant" id="zoek-plant" maxlength="80" value="{{ $plant ?? '' }}" placeholder="Bijvoorbeeld hortensia">
+    </div>
+    <button class="btn zoekbalk-knop" type="submit"><x-icon name="zoeken" :size="18" /> Zoek</button>
   </form>
 
   @if(!empty($plant) && isset($plantItems))
@@ -72,17 +65,17 @@
     </section>
   @endif
 
-  <fieldset class="marker-filters" id="marker-filters">
-    <legend>Toon op kaart en in lijst</legend>
-    <label class="check"><input type="checkbox" data-aanbod checked> Aanbod</label>
-    <label class="check"><input type="checkbox" data-partner-type="partner" checked> Initiatief</label>
-    <label class="check"><input type="checkbox" data-partner-type="voedselbos" checked> Voedselbos</label>
-    <label class="check"><input type="checkbox" data-partner-type="plantenasiel" checked> Plantenasiel</label>
-    <label class="check"><input type="checkbox" data-partner-type="plantenbieb" checked> Plantenbieb</label>
-    <label class="check"><input type="checkbox" data-partner-type="ruilkast" checked> Ruilkast</label>
-    <label class="check"><input type="checkbox" data-partner-type="stekjesruilpunt" checked> Stekjesruilpunt</label>
-    <label class="check"><input type="checkbox" data-partner-type="zaadbibliotheek" checked> Zadenbibliotheek</label>
-  </fieldset>
+  <div class="marker-filters" id="marker-filters" role="group" aria-labelledby="marker-filters-label">
+    <span class="marker-filters-label" id="marker-filters-label">Toon</span>
+    <label class="filter-chip"><input type="checkbox" data-aanbod checked><span>Aanbod</span></label>
+    <label class="filter-chip"><input type="checkbox" data-partner-type="plantenasiel" checked><span>Plantenasiel</span></label>
+    <label class="filter-chip"><input type="checkbox" data-partner-type="plantenbieb" checked><span>Plantenbieb</span></label>
+    <label class="filter-chip"><input type="checkbox" data-partner-type="zaadbibliotheek" checked><span>Zadenbibliotheek</span></label>
+    <label class="filter-chip"><input type="checkbox" data-partner-type="ruilkast" checked><span>Ruilkast</span></label>
+    <label class="filter-chip"><input type="checkbox" data-partner-type="stekjesruilpunt" checked><span>Stekjesruilpunt</span></label>
+    <label class="filter-chip"><input type="checkbox" data-partner-type="voedselbos" checked><span>Voedselbos</span></label>
+    <label class="filter-chip"><input type="checkbox" data-partner-type="partner" checked><span>Initiatief</span></label>
+  </div>
 
   <div class="search-layout">
     <div id="kaart" role="img" aria-label="Kaart met ongeveer de plekken waar je iets kunt ophalen"></div>

@@ -36,7 +36,7 @@ test('kernroutes hebben unieke title-tags volgens keyword-onderzoek', function (
         [
             'get' => route('home'),
             'expect' => 'Gratis planten en stekjes delen in je buurt · Gratis planten',
-            'h1' => 'Gratis planten en stekjes in je buurt',
+            'h1' => 'Gratis planten, stekjes en zaden bij jou in de buurt',
         ],
         [
             'get' => route('aanbod'),
