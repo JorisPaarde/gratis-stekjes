@@ -9,6 +9,17 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.36.0] - 2026-10-31
+
+### Changed
+
+- Stektips: 78 nieuwe soortfoto's van Wikimedia Commons, allemaal met het oog gecontroleerd. 6 foto's
+  die de plant niet lieten zien (o.a. zeeschelpen bij zwarte bes) en 14 zwakke foto's vervangen; de 58
+  soorten zonder foto hebben er nu een. Alle 106 stektips hebben een foto met naamsvermelding.
+- `scripts/fetch-soort-afbeeldingen.php` neemt de eerste zoektreffer niet meer ongezien over: nieuwe
+  kandidaten krijgen status «te_bekijken», staan buiten de publieke map en worden pas getoond na
+  goedkeuring. Bestaande foto's worden niet overschreven.
+
 ## [0.35.0] - 2026-10-31
 
 ### Changed

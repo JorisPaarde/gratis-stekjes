@@ -17,9 +17,9 @@ test('elke stektip-soort heeft geverifieerde metadata of fallback', function () 
     $meta = json_decode((string) file_get_contents($root.'/data/soort-afbeeldingen.json'), true);
     $missing = $meta['missing'] ?? [];
 
-    expect(count($svc->all()))->toBe(48)
+    expect(count($svc->all()))->toBe(106)
         ->and(count($slugs))->toBe(106)
-        ->and(count($missing))->toBe(58);
+        ->and(count($missing))->toBe(0);
 
     foreach ($slugs as $slug) {
         $row = $svc->all()[$slug] ?? null;
@@ -63,4 +63,18 @@ test('onbekende slug krijgt neutrale fallback-pad in metadata-service', function
     // Unit: geen Laravel URL-helpers — controleer dat ontbrekende slug geen row heeft.
     $svc = new SoortAfbeeldingen(soortAfbeeldingenRoot().'/data/soort-afbeeldingen.json');
     expect($svc->all())->not->toHaveKey('bestaat-niet');
+});
+
+test('foto met status te_bekijken wordt niet getoond', function () {
+    $path = tempnam(sys_get_temp_dir(), 'sa');
+    file_put_contents($path, json_encode(['soorten' => [
+        'goed' => ['slug' => 'goed', 'status' => 'goedgekeurd', 'bestand' => 'x.jpg'],
+        'nieuw' => ['slug' => 'nieuw', 'status' => 'te_bekijken', 'bestand' => 'y.jpg'],
+        'oud' => ['slug' => 'oud', 'bestand' => 'z.jpg'],
+    ]]));
+    $all = (new SoortAfbeeldingen($path))->all();
+    @unlink($path);
+
+    expect($all)->toHaveKeys(['goed', 'oud'])
+        ->and($all)->not->toHaveKey('nieuw');
 });
