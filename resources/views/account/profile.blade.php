@@ -30,7 +30,7 @@
       </select>
     </label>
     <label>Postcode of plaats *
-      <input name="locatie" required maxlength="120" value="{{ old('locatie', $user->locatie_label) }}" placeholder="Bijv. Haarlem, 2011 AB of Gent">
+      <input name="locatie" required maxlength="120" value="{{ old('locatie', $user->locatie_label) }}" placeholder="Bijvoorbeeld Haarlem, 2011 AB of Gent">
       <span class="hint">Vul je postcode of woonplaats in. Ik bewaar alleen ongeveer waar je woont, nooit je straat of huisnummer.</span>
     </label>
     <label>Telefoon (optioneel)

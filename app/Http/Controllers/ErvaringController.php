@@ -50,7 +50,7 @@ class ErvaringController extends Controller
 
         $html = view('pages.ervaringen', [
             'title' => 'Ervaringen',
-            'metaDescription' => 'Korte ervaringen van leden die planten en stekjes delen via '.config('site.name').'.',
+            'metaDescription' => 'Korte verhalen van leden die planten en stekjes delen via '.config('site.name').'. Met of zonder foto, en alleen een plaatsnaam, nooit een adres.',
             'canonical' => route('ervaringen.index'),
             'items' => $enriched,
             'empty' => $empty,

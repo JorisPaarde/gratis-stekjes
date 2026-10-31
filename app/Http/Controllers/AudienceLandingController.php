@@ -38,7 +38,7 @@ class AudienceLandingController extends Controller
     public function helpMee(): View
     {
         $title = 'Help mee: vrijwilligerswerk voor planten en natuur';
-        $meta = 'Word verbinder voor '.config('site.name').': jij legt contact met volkstuinen en initiatieven; ik regel de site. Zo’n 2 uur per maand.';
+        $meta = 'Word verbinder voor '.config('site.name').'. Jij legt contact met volkstuinen en initiatieven, ik regel de site. Zo’n 2 uur per maand.';
         $canonical = route('help-mee');
 
         return view('pages.audience.help-mee', [
@@ -54,7 +54,7 @@ class AudienceLandingController extends Controller
     public function natuur(): View
     {
         $title = 'Inheemse planten gratis delen: bijen- en vlinderplanten';
-        $meta = 'Inheemse planten, bijenplanten en vlinderplanten gratis delen via '.config('site.name').' — meer groen, zonder één plant te kopen.';
+        $meta = 'Inheemse planten, bijenplanten en vlinderplanten gratis delen via '.config('site.name').'. Meer groen, zonder één plant te kopen.';
         $canonical = route('natuur');
 
         return view('pages.audience.natuur', [

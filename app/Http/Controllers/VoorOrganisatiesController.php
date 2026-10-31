@@ -37,7 +37,7 @@ class VoorOrganisatiesController extends Controller
 
         return view('pages.voor-organisaties-aanmelden', [
             'title' => 'Plek aanmelden',
-            'metaDescription' => 'Meld je voedselbos, plantenasiel, plantenbieb of andere deelplek aan bij '.$site.' — gratis vindbaar op de kaart.',
+            'metaDescription' => 'Meld je voedselbos, plantenasiel, plantenbieb of andere deelplek aan bij '.$site.' en word gratis vindbaar op de kaart.',
             'canonical' => route('voor-organisaties.aanmelden'),
             'typeLabels' => $deelplekken->typeLabels(),
             'countries' => Country::labels(),

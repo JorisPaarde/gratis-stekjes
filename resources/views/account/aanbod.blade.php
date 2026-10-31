@@ -33,13 +33,13 @@
       data-plantsoort-url="{{ $plantensoortenZoekUrl }}"
     >
       <label for="aanbod-tekst">Plantensoort
-        <span class="hint">Typ een naam; ik toon suggesties. Of upload een foto — dan mag dit leeg blijven. Staat jouw soort er niet bij? Typ dan vrij verder.</span>
+        <span class="hint">Typ een naam; ik toon suggesties. Of upload een foto, dan mag dit leeg blijven. Staat jouw soort er niet bij? Typ dan vrij verder.</span>
         <input
           type="text"
           name="tekst"
           id="aanbod-tekst"
           maxlength="2000"
-          placeholder="Bijv. Monstera of munt"
+          placeholder="Bijvoorbeeld monstera of munt"
           value="{{ old('tekst') }}"
           data-invasieve-input
           data-plantsoort-input
@@ -272,7 +272,7 @@
       var hit = findMatch(input.value);
       if (hit) {
         hint.hidden = false;
-        hint.textContent = 'Let op: dit lijkt op een invasieve soort (“' + hit + '”). Die mag je niet aanbieden — ik blokkeer dat. Uitleg: ' + uitleg;
+        hint.textContent = 'Let op: dit lijkt op een invasieve soort (“' + hit + '”). Die mag je niet aanbieden, dus ik blokkeer dat. Uitleg: ' + uitleg;
       } else {
         hint.hidden = true;
         hint.textContent = '';

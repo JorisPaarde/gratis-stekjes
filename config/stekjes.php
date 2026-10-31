@@ -79,7 +79,7 @@ return [
         'plantenbieb' => 'Plantenbieb',
         'ruilkast' => 'Ruilkast',
         'stekjesruilpunt' => 'Stekjesruilpunt',
-        'zaadbibliotheek' => 'Zaadbibliotheek',
+        'zaadbibliotheek' => 'Zadenbibliotheek',
     ],
 
     /** Types voor landelijke deelplekken (/deelplekken). */
@@ -88,7 +88,7 @@ return [
         'plantenbieb' => 'Plantenbieb',
         'ruilkast' => 'Ruilkast',
         'stekjesruilpunt' => 'Stekjesruilpunt',
-        'zaadbibliotheek' => 'Zaadbibliotheek',
+        'zaadbibliotheek' => 'Zadenbibliotheek',
         'voedselbos' => 'Voedselbos',
         'tuinvereniging' => 'Tuinvereniging',
     ],

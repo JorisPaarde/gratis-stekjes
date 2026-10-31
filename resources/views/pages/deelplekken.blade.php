@@ -23,7 +23,7 @@
 @section('content')
 <section class="section wrap deelplekken-page">
   <h1 class="page-title">Plantenasiels, plantenbiebs en ruilkastjes in Nederland en België</h1>
-  <p class="section-intro">Hier vind je plekken waar je planten, stekjes of zaden kunt brengen, ruilen of ophalen: plantenasiels, plantenbiebs, ruilkasten, stekjesruilpunten en zaadbibliotheken. De gegevens komen uit openbare bronnen. Kijk bij de bron voor de actuele openingstijden.</p>
+  <p class="section-intro">Hier vind je plekken waar je planten, stekjes of zaden kunt brengen, ruilen of ophalen: plantenasiels, plantenbiebs, ruilkasten, stekjesruilpunten en zadenbibliotheken. De gegevens komen uit openbare bronnen. Kijk bij de bron voor de actuele openingstijden.</p>
   <p class="muted"><a href="{{ route('voor-organisaties') }}">Organisatie of plek aanmelden</a> · <a href="{{ route('over') }}">Mis je een plek, of klopt er iets niet? Laat het me weten</a> · of kijk op de <a href="{{ route('aanbod') }}">aanbodkaart</a>.</p>
 
   <form class="form deelplekken-filters" method="get" action="{{ route('deelplekken') }}" style="max-width:100%;margin:1rem 0">

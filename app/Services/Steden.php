@@ -198,19 +198,19 @@ final class Steden
         return [
             [
                 'vraag' => "Wat betekent ‘gratis planten in {$naam}’?",
-                'antwoord' => "Op {$site} delen mensen in en rond {$naam} stekjes en planten zonder verkoop. Je haalt ze fysiek op; de enige tegenprestatie is een praatje.",
+                'antwoord' => "Op {$site} delen mensen in en rond {$naam} stekjes en planten zonder verkoop. Je haalt ze zelf op; de enige tegenprestatie is een praatje.",
             ],
             [
                 'vraag' => "Hoe ver zoekt deze pagina rond {$naam}?",
-                'antwoord' => "Ik toon actueel aanbod binnen ongeveer {$straal} km van het centrum van {$naam}. Locaties op de kaart zijn benaderd (postcode of plaats), nooit een straatadres.",
+                'antwoord' => "Ik toon actueel aanbod binnen ongeveer {$straal} km van het centrum van {$naam}. Locaties op de kaart zijn bij benadering (postcode of plaats), nooit een straatadres.",
             ],
             [
                 'vraag' => 'Hoe bied ik zelf iets aan?',
-                'antwoord' => 'Maak een account, bevestig je e-mail, vul een benaderde locatie in je profiel in en plaats aanbod. Contactgegevens zie je pas na wederzijds akkoord via de site.',
+                'antwoord' => 'Maak een account, bevestig je e-mail, vul in je profiel ongeveer in waar je woont en plaats aanbod. Contactgegevens zie je pas als jullie allebei ja zeggen, via de site.',
             ],
             [
                 'vraag' => 'Zijn er ook vaste deelplekken?',
-                'antwoord' => 'Als ik openbare deelplekken (zoals plantenasiel, plantenbieb of ruilkast) in of bij deze stad ken, toon ik die hier. Anders kun je landelijk zoeken op de aanbodkaart of de deelplekkenpagina — als die beschikbaar is.',
+                'antwoord' => 'Als ik openbare deelplekken (zoals plantenasiel, plantenbieb of ruilkast) in of bij deze stad ken, toon ik die hier. Anders kun je landelijk zoeken op de aanbodkaart of de deelplekkenpagina.',
             ],
         ];
     }
@@ -223,11 +223,11 @@ final class Steden
         $faq = [
             [
                 'vraag' => 'Wat is een zadenbib?',
-                'antwoord' => 'Een zadenbib (ook grainothèque) is een openbare plek — vaak in een bibliotheek — waar je gratis zaden van groenten, kruiden of bloemen kunt meenemen en zelf geoogste zaden mag achterlaten. Op '.$site.' toon ik alleen zadenbibs die in mijn openbare lijst staan.',
+                'antwoord' => 'Een zadenbib (ook grainothèque) is een openbare plek, vaak in een bibliotheek, waar je gratis zaden van groenten, kruiden of bloemen kunt meenemen en zelf geoogste zaden mag achterlaten. Op '.$site.' toon ik alleen zadenbibs die in mijn openbare lijst staan.',
             ],
             [
                 'vraag' => "Hoe ver zoekt deze pagina rond {$naam}?",
-                'antwoord' => "Ik toon vaste deelplekken en eventueel aanbod van mensen binnen ongeveer {$straal} km. Kaartpunten zijn benaderd; voor openingsuren en regels kijk je op de bronpagina van elke zadenbib.",
+                'antwoord' => "Ik toon vaste deelplekken en eventueel aanbod van mensen binnen ongeveer {$straal} km. Kaartpunten staan bij benadering op de kaart. Voor openingsuren en regels kijk je op de bronpagina van elke zadenbib.",
             ],
         ];
 
@@ -247,7 +247,7 @@ final class Steden
             ];
             $faq[] = [
                 'vraag' => 'Hoe bied ik zelf iets aan?',
-                'antwoord' => 'Voor vaste zadenbibs breng je zaden naar de bib. Voor stekjes of planten van mens tot mens maak je een account op '.$site.', bevestig je e-mail en plaats aanbod met een benaderde locatie.',
+                'antwoord' => 'Voor vaste zadenbibs breng je zaden naar de bib. Voor stekjes of planten van mens tot mens maak je een account op '.$site.', bevestig je e-mail en plaats aanbod met ongeveer de plek waar je woont.',
             ];
         } elseif ($slug === 'namen') {
             $faq[] = [
@@ -256,7 +256,7 @@ final class Steden
             ];
             $faq[] = [
                 'vraag' => 'Hoe bied ik zelf iets aan?',
-                'antwoord' => 'Voor de grainothèque lever je zaden in bij een van de drie bibliotheken. Voor stekjes of planten via buren maak je een account op '.$site.' en plaats je aanbod met een benaderde locatie.',
+                'antwoord' => 'Voor de grainothèque lever je zaden in bij een van de drie bibliotheken. Voor stekjes of planten via buren maak je een account op '.$site.' en plaats je aanbod met ongeveer de plek waar je woont.',
             ];
         } else {
             $faq[] = [

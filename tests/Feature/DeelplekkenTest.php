@@ -118,7 +118,7 @@ test('sitemap, nav en homepage linken naar deelplekken', function () {
     $this->get(route('aanbod'))
         ->assertOk()
         ->assertSee('api_deelplekken', false)
-        ->assertSee('Zaadbibliotheek', false);
+        ->assertSee('Zadenbibliotheek', false);
 });
 
 test('seeder vult deelplekken uit JSON met NL-default en BE-country', function () {

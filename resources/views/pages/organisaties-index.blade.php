@@ -7,7 +7,7 @@
 @section('content')
 <section class="section wrap prose">
   <h1 class="page-title">Organisaties</h1>
-  <p class="section-intro">Korte pagina’s over organisaties en initiatieven rond gratis planten delen. Geen officiële partnerschappen — alleen publiek controleerbare info met link naar hun eigen site.</p>
+  <p class="section-intro">Korte pagina’s over organisaties en initiatieven rond gratis planten delen. Het zijn geen officiële partnerschappen. Ik gebruik alleen informatie die iedereen kan controleren, met een link naar hun eigen site.</p>
   <ul>
     @foreach($organisaties as $org)
       <li>
