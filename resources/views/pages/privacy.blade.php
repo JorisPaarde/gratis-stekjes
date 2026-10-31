@@ -22,7 +22,7 @@
 
   <h2>Welke gegevens ik verwerk</h2>
   <ul class="list-plain">
-    <li><strong>Account:</strong> e-mailadres, wachtwoord (alleen versleuteld opgeslagen), voornaam of bijnaam, optioneel telefoonnummer (versleuteld), land (NL/BE), benaderde locatie (zoals postcode of plaats, plus afgeronde coördinaten). Bij een e-mailwijziging bewaar ik tijdelijk het nieuwe adres tot je het bevestigt.</li>
+    <li><strong>Account:</strong> e-mailadres, wachtwoord (nooit leesbaar opgeslagen), voornaam of bijnaam, optioneel telefoonnummer (versleuteld), land (NL/BE), benaderde locatie (zoals postcode of plaats, plus afgeronde coördinaten). Bij een e-mailwijziging bewaar ik tijdelijk het nieuwe adres tot je het bevestigt.</li>
     <li><strong>Aanbod:</strong> type (uitdelen of ophalen), vrije tekst (plantensoort), zichtbaarheid, verloopdatum en een tijdelijke verlenglink in herinneringsmails. Optioneel tot drie foto’s die jij uploadt: ik controleer of het echt een afbeelding is (JPEG/PNG/WebP), verklein die opnieuw zonder locatiegegevens in het bestand, bewaar ze met willekeurige bestandsnamen, en toon ze bij je aanbod. Foto’s zijn openbaar zolang het aanbod zichtbaar is.</li>
     <li><strong>Ervaringen:</strong> korte tekst (max. ±500 tekens), optionele foto (zelfde veilige verwerking als aanbodfoto’s: JPEG/PNG/WebP, max. 8&nbsp;MB, opnieuw zonder locatiegegevens), optionele koppeling aan een soort of jouw aanbod, en een plaatsnaam op gemeenteniveau (nooit een straatadres). Nieuwe ervaringen wachten op mijn goedkeuring vóór ze publiek zichtbaar zijn.</li>
     <li><strong>Berichten:</strong> inhoud van gesprekken (versleuteld opgeslagen), of je verder contact wilt delen (ja/nee), of jullie een overdracht als afgerond markeren, leestijd, blokkeerregels, en meldingen met reden (versleuteld) voor de beheerder.</li>
@@ -47,7 +47,7 @@
     <li>Optioneel telefoonnummer (zelfde zichtbaarheidsregel; wél versleuteld in de database)</li>
     <li>Exacte adressen en exacte coördinaten: die sla ik niet op in het gebruikersprofiel; exacte ophaaladressen deel je zelf buiten of in een bericht als je dat wilt</li>
     <li>Contact-e-mail bij organisatie-aanmeldingen (versleuteld)</li>
-    <li>Berichtinhoud en meldingsredenen (versleuteld), wachtwoorden (alleen versleuteld), beheerwachtwoord-sessie</li>
+    <li>Berichtinhoud en meldingsredenen (versleuteld), wachtwoorden (nooit leesbaar opgeslagen), beheerwachtwoord-sessie</li>
   </ul>
 
   <h2>Doel en grondslag</h2>
