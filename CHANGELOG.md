@@ -9,6 +9,17 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.35.0] - 2026-10-31
+
+### Changed
+
+- **Footer**: donkergroen, met merk, korte zin, «Doe mee»/«Mijn account» en contactmail links, en drie
+  kolommen «Planten vinden», «Zelf stekken» en «Over Gratis planten» i.p.v. één rij van 13 links.
+  KvK en btw klein onderaan; versie blijft als HTML-commentaar (deploy-smoke).
+- **/hoe-werkt-het** opnieuw opgezet: drie spelregels met icoon (het praatje als uitnodiging), twee
+  routes met foto, «Ik zoek een plant» (kijken zonder account, zoekveld) en «Ik geef een plant
+  weg» (één account, 60 dagen zichtbaar, geen invasieve soorten), en een blok «Veilig en privé».
+
 ## [0.34.1] - 2026-10-31
 
 ### Fixed
