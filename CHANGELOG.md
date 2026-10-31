@@ -9,6 +9,17 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.29.1] - 2026-10-31
+
+### Fixed
+
+- Stadspagina-kaart: `STEKJES_STAD` gebruikt `@json(...)` i.p.v. `{{ json_encode(...) }}`, zodat namen niet meer als `&quot;…&quot;` in het script belanden (lege Leaflet-kaart / `Unexpected token '&'`).
+- Meta description `/account/inloggen` verlengd naar 70–160 tekens (ik-vorm).
+
+### Changed
+
+- NL-stadintro’s met «we» herschreven naar ik-vorm (Apeldoorn, Haarlemmermeer, Zwolle, Maastricht, Ede, Emmen, Delft, Venlo, Hilversum, Almelo, Schiedam, Lelystad); snapshot-fixture bijgewerkt.
+
 ## [0.29.0] - 2026-10-31
 
 ### Added

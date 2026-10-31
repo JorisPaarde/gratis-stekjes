@@ -57,6 +57,34 @@ test('sitemap bevat overzicht en steden met lastmod', function () {
     }
 });
 
+test('stadspagina STEKJES_STAD bevat geen &quot; en heeft geldige JSON-waarden', function () {
+    $html = $this->get(route('gratis-planten.show', ['stad' => 'antwerpen']))
+        ->assertOk()
+        ->getContent();
+
+    expect(preg_match('/window\.STEKJES_STAD\s*=\s*(\{.*?\});/s', $html, $m))->toBe(1);
+    $script = $m[1];
+    expect($script)->not->toContain('&quot;');
+
+    expect(preg_match('/\blat:\s*(-?[\d.]+)/', $script, $lat))->toBe(1);
+    expect(json_decode($lat[1], false, 512, JSON_THROW_ON_ERROR))->toBeFloat();
+
+    expect(preg_match('/\blng:\s*(-?[\d.]+)/', $script, $lng))->toBe(1);
+    expect(json_decode($lng[1], false, 512, JSON_THROW_ON_ERROR))->toBeFloat();
+
+    expect(preg_match('/\bstraal_km:\s*(-?[\d.]+)/', $script, $straal))->toBe(1);
+    expect(json_decode($straal[1], false, 512, JSON_THROW_ON_ERROR))->toBeInt();
+
+    expect(preg_match('/\bnaam:\s*("(?:\\\\.|[^"\\\\])*")/', $script, $naam))->toBe(1);
+    expect(json_decode($naam[1], false, 512, JSON_THROW_ON_ERROR))->toBe('Antwerpen');
+
+    expect(preg_match('/\baanbod:\s*(\[.*?\])/s', $script, $aanbod))->toBe(1);
+    expect(json_decode($aanbod[1], true, 512, JSON_THROW_ON_ERROR))->toBeArray();
+
+    expect(preg_match('/\bdeelplekken:\s*(\[.*\])/s', $script, $deelplekken))->toBe(1);
+    expect(json_decode($deelplekken[1], true, 512, JSON_THROW_ON_ERROR))->toBeArray();
+});
+
 test('stadspagina FAQPage-schema is geldige JSON', function () {
     $html = $this->get(route('gratis-planten.show', ['stad' => 'utrecht']))
         ->assertOk()
