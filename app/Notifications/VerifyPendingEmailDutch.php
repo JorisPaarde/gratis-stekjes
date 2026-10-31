@@ -34,7 +34,7 @@ class VerifyPendingEmailDutch extends Notification
             ->line('Bevestig je nieuwe e-mailadres bij '.$site.' via deze knop:')
             ->action('Nieuw e-mailadres bevestigen', $url)
             ->line('Heb je dit niet aangevraagd? Negeer deze mail — je huidige adres blijft actief.')
-            ->salutation('Groet,'.PHP_EOL.'Joris ('.$site.')');
+            ->salutation('Groet,'.PHP_EOL.$site);
     }
 
     protected function verificationUrl(): string

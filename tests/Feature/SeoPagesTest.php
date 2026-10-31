@@ -7,7 +7,7 @@ use App\Services\Stektips;
 test('contentpagina’s laden', function () {
     $this->get(route('hoe-werkt-het'))->assertOk()->assertSee('Hoe werkt gratis planten delen', false);
     $this->get(route('hulpmiddelen'))->assertOk()->assertSee('Wilgenwater', false);
-    $this->get(route('over'))->assertOk()->assertSee('Joris', false);
+    $this->get(route('over'))->assertOk()->assertSee('Ik maak en beheer', false)->assertDontSee('Joris', false)->assertDontSee('JP Web Creation', false);
     $this->get(route('doe-mee'))->assertRedirect(route('account.registreren'));
 });
 

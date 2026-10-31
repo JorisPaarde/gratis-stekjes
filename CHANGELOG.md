@@ -9,6 +9,16 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.31.3] - 2026-10-31
+
+### Changed
+
+- Naam van de eigenaar en zijn bedrijf weg uit lopende tekst: /over («Ik maak en beheer …»
+  zonder naam en bedrijf), /contact (zin «project van …» weg) en de ondertekening van alle
+  mails (meldingen en mailtemplates: «Groet, Gratis planten»). Alleen /privacy noemt nog de
+  verantwoordelijke, omdat dat wettelijk moet. Ik-vorm blijft.
+- Test `GeenEigenaarsnaamTest` bewaakt dat de naam alleen op /privacy staat.
+
 ## [0.31.2] - 2026-10-31
 
 ### Changed

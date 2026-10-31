@@ -22,7 +22,7 @@ class ResetPasswordDutch extends ResetPassword
             ->action('Nieuw wachtwoord instellen', $url)
             ->line('Deze link is '.$minutes.' minuten geldig.')
             ->line('Heb je geen reset aangevraagd? Negeer deze mail.')
-            ->salutation('Groet,'.PHP_EOL.'Joris ('.$site.')');
+            ->salutation('Groet,'.PHP_EOL.$site);
     }
 
     protected function resetUrl($notifiable): string

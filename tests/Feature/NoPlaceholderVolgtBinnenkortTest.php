@@ -84,10 +84,12 @@ test('privacy, over en initiatieven tonen geen Volgt binnenkort en geen we/wij/o
         'contact' => $this->get(route('contact'))
             ->assertOk()
             ->assertSee('info@gratisplanten.nl', false)
+            ->assertDontSee('JP Web Creation', false)
             ->assertDontSee('info@jpwebcreation.nl', false),
         'over' => $this->get(route('over'))
             ->assertOk()
-            ->assertSee('Joris Paardekooper', false)
+            ->assertDontSee('Joris', false)
+            ->assertDontSee('JP Web Creation', false)
             ->assertSee('zonder reclame', false)
             ->assertDontSee('Volgt binnenkort', false),
         'initiatieven' => $this->get(route('partners'))
