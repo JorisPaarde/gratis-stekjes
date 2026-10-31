@@ -9,6 +9,16 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.25.0] - 2026-10-31
+
+### Added
+
+- Doelgroep-landingspagina’s (niet in hoofdmenu/footer, wél in sitemap + SEO/OG/canonical/WebPage-schema): `/volkstuinen`, `/help-mee`, `/natuur`, `/verbinding` — gedeelde Blade-component `x-audience-page`, Nederlandse ik-vorm.
+- `/volkstuinen`: delen binnen een volkstuinvereniging via bestaande account-/aanbod-/berichtfuncties; vereniging aanmelden via `/voor-organisaties/aanmelden` (type tuinvereniging) of contact.
+- `/help-mee`: verbinders werven (social, volkstuinen, voedselbossen/initiatieven); interesseformulier → tabel `help_mee_interests` (versleuteld e-mail/notitie), géén automatische mail; beheerlijst `/beheer/help-mee`.
+- Homepage-CTA “Ik help op een andere manier” linkt naar `/help-mee` (geen “binnenkort”-badge meer).
+- Privacyvermelding voor Help mee-interesse.
+
 ## [0.24.11] - 2026-10-31
 
 ### Fixed

@@ -24,7 +24,9 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Beheer\DashboardController as BeheerDashboardController;
+use App\Http\Controllers\AudienceLandingController;
 use App\Http\Controllers\Beheer\FeedbackController as BeheerFeedbackController;
+use App\Http\Controllers\Beheer\HelpMeeController as BeheerHelpMeeController;
 use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
 use App\Http\Controllers\Beheer\StatistiekenController as BeheerStatistiekenController;
 use App\Http\Controllers\ContentPageController;
@@ -70,6 +72,14 @@ Route::get('/hoe-werkt-het', [ContentPageController::class, 'hoeWerktHet'])->nam
 Route::get('/hulpmiddelen', [ContentPageController::class, 'hulpmiddelen'])->name('hulpmiddelen');
 Route::get('/over', [ContentPageController::class, 'over'])->name('over');
 Route::get('/doe-mee', [ContentPageController::class, 'doeMee'])->name('doe-mee');
+
+Route::get('/volkstuinen', [AudienceLandingController::class, 'volkstuinen'])->name('volkstuinen');
+Route::get('/help-mee', [AudienceLandingController::class, 'helpMee'])->name('help-mee');
+Route::post('/help-mee', [AudienceLandingController::class, 'helpMeeStore'])
+    ->middleware('throttle:10,1')
+    ->name('help-mee.store');
+Route::get('/natuur', [AudienceLandingController::class, 'natuur'])->name('natuur');
+Route::get('/verbinding', [AudienceLandingController::class, 'verbinding'])->name('verbinding');
 Route::get('/invasieve-soorten', InvasieveSoortenController::class)->name('invasieve-soorten');
 Route::get('/stektips', [StektipsController::class, 'index'])->name('stektips.index');
 Route::get('/stektips/artikel/{slug}', [StektipsController::class, 'artikel'])
@@ -195,6 +205,8 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::get('/statistieken', [BeheerStatistiekenController::class, 'index'])->name('beheer.statistieken');
     Route::get('/feedback', [BeheerFeedbackController::class, 'index'])->name('beheer.feedback');
     Route::post('/feedback/gelezen', [BeheerFeedbackController::class, 'markRead'])->name('beheer.feedback.read');
+    Route::get('/help-mee', [BeheerHelpMeeController::class, 'index'])->name('beheer.help-mee');
+    Route::post('/help-mee/gelezen', [BeheerHelpMeeController::class, 'markRead'])->name('beheer.help-mee.read');
     Route::post('/markers', [BeheerDashboardController::class, 'saveMarker'])->name('beheer.markers.save');
     Route::post('/markers/verwijderen', [BeheerDashboardController::class, 'deleteMarker'])->name('beheer.markers.delete');
     Route::post('/meldingen/afgehandeld', [BeheerDashboardController::class, 'markReportHandled'])->name('beheer.reports.handled');

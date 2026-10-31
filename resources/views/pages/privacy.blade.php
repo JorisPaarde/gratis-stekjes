@@ -27,6 +27,7 @@
     <li><strong>Aanbod:</strong> type (uitdelen of ophalen), vrije tekst, zichtbaarheid, verloopdatum en (intern) verlengtoken bij herinneringsmails. Geen gebruikersfoto’s (die functie bestaat nog niet).</li>
     <li><strong>Berichten:</strong> inhoud van gesprekken (versleuteld opgeslagen), of je verder contact wilt delen (ja/nee), leestijd, blokkeerregels, en meldingen met reden (versleuteld) voor de beheerder.</li>
     <li><strong>Feedback:</strong> optionele tekst die je via de feedbackknop stuurt (versleuteld), plus het pad van de pagina waarop je zat.</li>
+    <li><strong>Help mee-interesse:</strong> naam, e-mail (versleuteld) en optionele toelichting (versleuteld) via het formulier op /help-mee, plus tijdstip van privacy-akkoord. Alleen voor mij als beheerder; er gaat geen automatische bevestigingsmail.</li>
     <li><strong>Organisatie- of deelplek-aanmelding:</strong> naam, type, plaats, beschrijving, contact-e-mail (versleuteld, niet publiek) en tijdstip van privacy-akkoord. Pas na goedkeuring door beheer verschijnt de plek op deelplekken/stadspagina’s.</li>
     <li><strong>Technisch:</strong> sessie (login/“onthoud mij”), CSRF-token, rate-limits (cache-keys die o.a. IP of e-mail kunnen bevatten, met korte TTL), geocode-cache van zoekopdrachten (genormaliseerde query, label, afgeronde lat/lon, tijdstip). Serverlogs zonder herleidbare e-mail/IP (maskering). Geen trackingcookies, geen analytiek-scripts van derden, geen advertenties.</li>
   </ul>
@@ -45,6 +46,7 @@
     <li>Optioneel telefoonnummer (zelfde zichtbaarheidsregel; wél versleuteld in de database)</li>
     <li>Exacte adressen en exacte coördinaten: die sla ik niet op in het gebruikersprofiel; exacte ophaaladressen deel je zelf buiten of in een bericht als je dat wilt</li>
     <li>Contact-e-mail bij organisatie-aanmeldingen (versleuteld)</li>
+    <li>E-mail en toelichting bij Help mee-interesse (versleuteld)</li>
     <li>Berichtinhoud en meldingsredenen (versleuteld), wachtwoorden (alleen hash), beheerwachtwoord-sessie</li>
   </ul>
 
@@ -85,6 +87,7 @@
   <ul class="list-plain">
     <li>Bevestigingsmails, wachtwoordreset, e-mailwijziging, “je hebt een nieuw bericht” (zonder berichtinhoud of andermans adres) en aanbod-herinneringen gaan via SMTP (eigen mailbox; typisch Hoasted).</li>
     <li>Organisatie-aanmelders krijgen een bevestiging; de beheerder een interne melding. Geen mail naar derden buiten de aanmelder.</li>
+    <li>Help mee-interesse: alleen opslag in de database; geen automatische bevestiging of andere mails.</li>
     <li>Gegevens staan op hosting in de EU die ik beheer. Mail verloopt via de geconfigureerde SMTP-provider.</li>
   </ul>
 

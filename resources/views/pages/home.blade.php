@@ -76,11 +76,10 @@
         <strong>Bekijk het aanbod</strong>
         <span>Zoek in de buurt op de kaart — zonder account mag je al kijken.</span>
       </a>
-      <div class="cta-choice cta-choice--soon">
+      <a class="cta-choice" href="{{ route('help-mee') }}">
         <strong>Ik help op een andere manier</strong>
-        <span>Tips, foto’s, een regio trekken — helper zonder volledig account.</span>
-        <span class="badge-soon">binnenkort</span>
-      </div>
+        <span>Social media, volkstuinen tippen, initiatieven wijzen — word verbinder.</span>
+      </a>
     </div>
   </div>
 </section>
@@ -91,7 +90,7 @@
     <h2 id="hoe-titel">Hoe werkt het</h2>
     <p class="section-intro">Drie spelregels: <strong>gratis</strong>, alleen <strong>fysiek ophalen</strong>, en de enige tegenprestatie is een <strong>praatje</strong>.</p>
     <ol class="steps">
-      <li><span>Je maakt één account (e-mailbevestiging verplicht) — of je meldt je later aan als helper.</span></li>
+      <li><span>Je maakt één account (e-mailbevestiging verplicht) — of je meldt je aan als <a href="{{ route('help-mee') }}">verbinder</a>.</span></li>
       <li><span>Met datzelfde account zet je op de site wat je gratis weggeeft (benaderde plek: postcode of plaats — nooit een straatadres via de site).</span></li>
       <li><span>Je zoekt in de buurt en stuurt een bericht via de site. E-mailadressen blijven verborgen.</span></li>
       <li><span>Jullie spreken onderling een ophaalmoment af. Exacte adressen deel je zelf, als je dat wilt.</span></li>

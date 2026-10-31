@@ -99,6 +99,10 @@ class PageController extends Controller
             route('organisaties.index'),
             route('invasieve-soorten'),
             route('gratis-planten.index'),
+            route('volkstuinen'),
+            route('help-mee'),
+            route('natuur'),
+            route('verbinding'),
         ];
         foreach ($kennisbank->all() as $artikel) {
             $urls[] = route('stektips.artikel', ['slug' => $artikel['slug']]);
