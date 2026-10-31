@@ -20,7 +20,7 @@ class ProfileController extends Controller
     {
         return view('account.profile', [
             'title' => 'Profiel',
-            'metaDescription' => 'Je profiel en benaderde locatie bij '.config('site.name').'.',
+            'metaDescription' => 'Je profiel en woonplaats bij '.config('site.name').'.',
             'canonical' => route('account.profiel'),
             'user' => $request->user(),
             'countries' => Country::labels(),
@@ -62,14 +62,17 @@ class ProfileController extends Controller
 
         $label = PostalCode::locationLabel($locatie, $country, $resolved['label']);
 
-        $request->user()->update([
+        $user = $request->user();
+        $user->fill([
             'name' => trim($data['voornaam']),
-            'telefoon' => trim((string) ($data['telefoon'] ?? '')),
             'country' => $country,
             'locatie_label' => $label,
             'lat' => Geo::roundCoord((float) $resolved['lat']),
             'lon' => Geo::roundCoord((float) $resolved['lon']),
         ]);
+        // Onleesbare telefoon (andere APP_KEY) niet wissen met leeg formulier.
+        $user->fillEncryptedIfProvided('telefoon', $data['telefoon'] ?? '');
+        $user->save();
 
         return redirect()
             ->route('account.profiel')

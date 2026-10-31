@@ -73,7 +73,8 @@ Route::redirect('/partners', '/initiatieven', 301);
 Route::get('/partners/{path}', function (string $path) {
     return redirect('/initiatieven/'.$path, 301);
 })->where('path', '.*');
-Route::get('/stijlgids', [PageController::class, 'stijlgids'])->name('stijlgids');
+// Stijlgids: nooit publiek op de site, alleen na beheer-login (gast → /beheer).
+Route::get('/stijlgids', [PageController::class, 'stijlgids'])->middleware('admin')->name('stijlgids');
 Route::get('/robots.txt', [PageController::class, 'robots'])->name('robots');
 Route::get('/sitemap.xml', [PageController::class, 'sitemap'])->name('sitemap');
 Route::get('/manifest.webmanifest', [PageController::class, 'manifest'])->name('manifest');
@@ -254,4 +255,11 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::post('/gebruikers/bevestiging-opnieuw', [BeheerDashboardController::class, 'resendVerification'])
         ->middleware('throttle:10,1')
         ->name('beheer.users.resend-verification');
+    Route::get('/gebruikers/{user}/verwijderen', [BeheerDashboardController::class, 'confirmDestroyUser'])
+        ->whereNumber('user')
+        ->name('beheer.users.destroy.confirm');
+    Route::post('/gebruikers/{user}/verwijderen', [BeheerDashboardController::class, 'destroyUser'])
+        ->middleware('throttle:10,1')
+        ->whereNumber('user')
+        ->name('beheer.users.destroy');
 });

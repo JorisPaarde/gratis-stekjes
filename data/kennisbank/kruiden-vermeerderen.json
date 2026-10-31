@@ -2,7 +2,7 @@
   "slug": "kruiden-vermeerderen",
   "titel": "Kruiden vermeerderen: zaaien, stekken, scheuren",
   "samenvatting": "Hub voor keukenkruiden: basilicum zaaien of stekken, tijm en rozemarijn stekken, bieslook en oregano scheuren, en meer.",
-  "meta_description": "Kruiden zaaien, stekken of scheuren: basilicum, tijm, oregano, bieslook, laurier, dragon en citroenmelisse. Overzicht met links naar soortpagina’s.",
+  "meta_description": "Kruiden zaaien, stekken of scheuren: basilicum, tijm, oregano, bieslook, laurier, dragon en citroenmelisse. Overzicht met links naar tips per soort.",
   "zoekwoorden": [
     "kruiden zaaien",
     "kruiden stekken",
@@ -76,7 +76,7 @@
     },
     {
       "type": "p",
-      "tekst": "Per soort staat de detailmethode op de soortpagina. Zomerstek/halfhoutstek en scheuren en afleggen vullen dit overzicht aan."
+      "tekst": "Per soort staat de detailmethode bij de tips voor die plant. Zomerstek/halfhoutstek en scheuren en afleggen vullen dit overzicht aan."
     }
   ],
   "bronnen": [

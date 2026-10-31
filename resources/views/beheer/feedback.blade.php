@@ -41,7 +41,13 @@
             <time datetime="{{ $item->created_at?->toIso8601String() }}">{{ $item->created_at?->timezone('Europe/Amsterdam')->format('d-m-Y H:i') }}</time>
             <code>{{ $item->page_path }}</code>
           </div>
-          <p class="beheer-feedback-body">{{ $item->body }}</p>
+          <p class="beheer-feedback-body">
+            @if($item->isUnreadable('body'))
+              {{ \App\Casts\SafeEncrypted::VIEW_FALLBACK }}
+            @else
+              {{ $item->body }}
+            @endif
+          </p>
           <div class="beheer-feedback-card-footer">
             <span @class(['beheer-feedback-status', $item->isRead() ? 'is-gelezen' : 'is-nieuw'])>
               {{ $item->isRead() ? 'gelezen' : 'nieuw' }}

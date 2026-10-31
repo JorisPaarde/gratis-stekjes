@@ -25,7 +25,7 @@ test('registratiepagina laadt', function () {
     $this->get(route('account.registreren'))
         ->assertOk()
         ->assertSee('Account maken', false)
-        ->assertSee('double opt-in', false);
+        ->assertSee('Je krijgt een e-mail om je aanmelding te bevestigen', false);
 });
 
 test('registreren stuurt verificatiemail en logt niet in', function () {
@@ -191,5 +191,5 @@ test('homepage Doe mee linkt naar registreren zonder rolkeuze', function () {
         ->and($html)->not->toContain('rol=ophalen')
         ->and($html)->not->toContain('Ik deel planten uit')
         ->and($html)->not->toContain('Ik wil ophalen')
-        ->and($html)->toContain('Eén account volstaat');
+        ->and($html)->toContain('Met één account kun je iets aanbieden én iets ophalen');
 });

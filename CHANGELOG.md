@@ -31,6 +31,56 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Plant voor Plant (MEC Maarssen) uit organisaties, deelplekken en uitnodigingenlijst
   (geen duidelijk gratis aanbod).
 
+## [0.30.5] - 2026-10-31
+
+### Changed
+
+- Tekstopschoning (Claude) van de meest bezochte pagina's: home (onder de hero), aanbod,
+  hoe werkt het, contact, stektips, invasieve soorten, deelplekken, gratis planten +
+  stadspagina's (42 stadsintro's), privacy (alleen leesbaarheid), over, voor organisaties,
+  volkstuinen, registreren, inloggen en header/footer. Werktaal weg, warmer en eenvoudiger,
+  zaden genoemd waar het past, meer uitnodiging om een account te maken.
+- Mijn aanbod: fotohint «Voor je privacy haal ik de locatie uit je foto’s.»
+- Profielpagina: locatiehint in de ik-vorm («Ik bewaar alleen ongeveer waar je woont…»).
+- Profielpagina: hint bij onleesbaar telefoonnummer in gewone woorden.
+- `soorten/monstera.json` gelijkgetrokken met de nieuwe monstera-tekst in `data/stektips.json`.
+
+## [0.30.4] - 2026-10-31
+
+### Fixed
+
+- Beheer-feedback (`/beheer/feedback`) crashte met `DecryptException` / «The MAC is
+  invalid» wanneer `feedback.body` met een andere `APP_KEY` was versleuteld (ruwe
+  import via `StekjesDataMigrator` behoudt ciphertext van de oude host). Encrypted
+  casts in beheer/berichten (`feedback.body`, `messages.body`, `reports.reason`,
+  `deelplekken.contact_email`, `users.telefoon`) gebruiken `SafeEncrypted`: bij
+  decrypt-fout `null` + `isUnreadable()`, views tonen «Inhoud niet leesbaar».
+- Deploy-hook: bestaande server-`APP_KEY` en `APP_PREVIOUS_KEYS` worden **nooit**
+  overschreven. Timestamped unieke `.env.backup-…` (mode 0600, max 10) naast de shared
+  `.env` (buiten docroot). CI faalt op letterlijke merge-conflictmarkeringen.
+- Onleesbare `telefoon` / `contact_email`: geen mail naar onleesbaar adres; profiel
+  wist ciphertext niet bij leeg formulier.
+
+### Changed
+
+- Beheer-gebruikerslijst: kolom «Beheertoegang» verwijderd (alleen weergave;
+  `ADMIN_DASHBOARD_EMAILS` / Dashboard-toegang ongewijzigd).
+- Beheer: gebruiker verwijderen via bevestigingspagina (typ `VERWIJDER`); hergebruikt
+  `AvgService::purgeUserAccount()`. Eigen account geblokkeerd; geen mail; log zonder
+  e-mailadres. Route binnen admin-middleware + throttle.
+- `/stijlgids` niet meer publiek: achter admin-middleware (gast → beheer-login), niet in
+  sitemap, geen links; uit route-audit en audit-crawl gehaald.
+
+## [0.30.3] - 2026-10-31
+
+### Changed
+
+- Publieke copy zonder ontwikkel-/SEO-werktaal: stektips-intro, pijler-/soortpagina-zinnen,
+  meta-descriptions, CTA’s, stijlgids, registratie, account (mijlpalen + beginscherm),
+  aanbodhints, profielpagina, privacy en kennisbankteksten herschreven naar gewone
+  bezoekerszinnen; footer toont geen zichtbare `noindex` meer.
+- Snoeikalender: «streng vorst» → «strenge vorst».
+
 ## [0.30.1] - 2026-10-31
 
 ### Added

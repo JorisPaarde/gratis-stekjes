@@ -63,7 +63,7 @@
     <p class="error" hidden data-invasieve-hint role="status"></p>
 
     <label for="aanbod-fotos">Foto’s (max. {{ $fotoMaxCount }}, JPEG/PNG/WebP, max. {{ $fotoMaxMb }} MB)
-      <span class="hint">Ik herschrijf je foto’s op de server en verwijder EXIF/GPS. Minimaal één foto óf een plantensoort is verplicht.</span>
+      <span class="hint">Voor je privacy haal ik de locatie uit je foto’s. Minimaal één foto óf een plantensoort is verplicht.</span>
       <input
         type="file"
         name="fotos[]"
@@ -272,7 +272,7 @@
       var hit = findMatch(input.value);
       if (hit) {
         hint.hidden = false;
-        hint.textContent = 'Let op: dit lijkt op een invasieve soort (“' + hit + '”). Die mag je niet aanbieden. Server-side wordt dit geblokkeerd. Uitleg: ' + uitleg;
+        hint.textContent = 'Let op: dit lijkt op een invasieve soort (“' + hit + '”). Die mag je niet aanbieden — ik blokkeer dat. Uitleg: ' + uitleg;
       } else {
         hint.hidden = true;
         hint.textContent = '';

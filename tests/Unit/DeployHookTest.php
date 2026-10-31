@@ -76,6 +76,137 @@ test('preserve_env_key behoudt BACKUP_ENCRYPTION_KEY bij lege upload', function 
         ->and($fromUpload)->not->toContain('server-only-key');
 });
 
+test('resolve_app_key behoudt bestaande server-key ook bij andere upload', function () {
+    $path = $this->tmp.'/existing-appkey.env';
+    file_put_contents($path, "APP_KEY=\"base64:serverkeyserverkeyserverkeys\"\n");
+
+    $merged = deploy_hook_resolve_app_key(
+        "APP_NAME=test\nAPP_KEY=\"base64:uploadkeyuploadkeyuploadkeyu\"\n",
+        $path
+    );
+
+    expect($merged)->toContain('APP_KEY="base64:serverkeyserverkeyserverkeys"')
+        ->and($merged)->not->toContain('uploadkeyuploadkeyuploadkeyu');
+});
+
+test('resolve_app_key gebruikt upload alleen zonder bestaande key', function () {
+    $path = $this->tmp.'/missing-appkey.env';
+    file_put_contents($path, "APP_NAME=test\n");
+
+    $merged = deploy_hook_resolve_app_key(
+        "APP_KEY=\"base64:uploadkeyuploadkeyuploadkeyu\"\n",
+        $path
+    );
+
+    expect($merged)->toContain('APP_KEY="base64:uploadkeyuploadkeyuploadkeyu"');
+});
+
+test('backup_env schrijft unieke timestamped .env.backup mode 0600 en pruneert', function () {
+    $path = $this->tmp.'/shared.env';
+    $dir = dirname($path);
+    file_put_contents($path, "APP_KEY=\"base64:keep\"\nSITE_NAME=test\n");
+    chmod($path, 0600);
+
+    expect(deploy_hook_backup_env($path, 10))->toBeTrue();
+    expect(deploy_hook_backup_env($path, 10))->toBeTrue();
+    $backups = glob($dir.'/.env.backup-*') ?: [];
+    expect($backups)->toHaveCount(2)
+        ->and($backups[0])->not->toBe($backups[1])
+        ->and(file_get_contents($backups[0]))->toBe("APP_KEY=\"base64:keep\"\nSITE_NAME=test\n")
+        ->and(decoct(fileperms($backups[0]) & 0777))->toBe('600')
+        ->and(decoct(fileperms($backups[1]) & 0777))->toBe('600');
+
+    // Simuleer oudere backups (rsort op naam → nieuwste blijven).
+    foreach (glob($dir.'/.env.backup-*') ?: [] as $old) {
+        @unlink($old);
+    }
+    for ($i = 1; $i <= 12; $i++) {
+        $stamp = sprintf('20260101T%06dZ-%d', $i, $i);
+        file_put_contents($dir.'/.env.backup-'.$stamp, "n=$i\n");
+    }
+    expect(deploy_hook_backup_env($path, 3))->toBeTrue();
+    $kept = glob($dir.'/.env.backup-*') ?: [];
+    expect(count($kept))->toBe(3);
+});
+
+test('preserve_existing_always behoudt APP_PREVIOUS_KEYS ondanks upload', function () {
+    $path = $this->tmp.'/prevkeys.env';
+    file_put_contents($path, "APP_PREVIOUS_KEYS=\"base64:oldkeyoldkeyoldkeyoldkeyold\"\n");
+
+    $merged = deploy_hook_preserve_existing_always(
+        "APP_PREVIOUS_KEYS=\"base64:uploadkeyuploadkeyuploadkeyu\"\nAPP_ENV=production\n",
+        $path,
+        'APP_PREVIOUS_KEYS'
+    );
+
+    expect($merged)->toContain('APP_PREVIOUS_KEYS="base64:oldkeyoldkeyoldkeyoldkeyold"')
+        ->and($merged)->not->toContain('uploadkeyuploadkeyuploadkeyu');
+});
+
+test('finish overschrijft bestaande APP_KEY niet bij andere upload-secret', function () {
+    $docroot = $this->tmp.'/docroot';
+    $appDir = $this->tmp.'/app-staging';
+    $token = 'tok-'.bin2hex(random_bytes(8));
+    deployHookWriteConfig($this->tmp, $docroot, $appDir, $token);
+    $config = deploy_hook_load_config($docroot);
+    expect($config)->not->toBeNull();
+    $_SERVER['HTTP_AUTHORIZATION'] = 'Bearer '.$token;
+
+    mkdir($appDir.'/storage/logs', 0755, true);
+    file_put_contents(
+        $appDir.'/.env',
+        "APP_KEY=\"base64:existingserverkeyexistingserver\"\nAPP_PREVIOUS_KEYS=\"base64:previouskeypreviouskeyprevi\"\nSITE_NAME=\"oud\"\n"
+    );
+
+    $zipPath = $this->tmp.'/artifact-key.zip';
+    deployHookMakeZip($zipPath, [
+        'artisan' => "#!/usr/bin/env php\n",
+        'composer.json' => "{}\n",
+        'vendor/autoload.php' => "<?php\n",
+        'bootstrap/app.php' => "<?php\nreturn new stdClass;\n",
+        'bootstrap/cache/packages.php' => "<?php\nreturn [];\n",
+        'public/index.php' => "<?php\n// app\n",
+        'public/build/manifest.json' => "{}\n",
+        'storage/logs/.gitignore' => "*\n",
+    ]);
+    $raw = file_get_contents($zipPath);
+    $sha = hash('sha256', $raw);
+
+    $init = deploy_hook_handle($config, [
+        'action' => 'init',
+        'release' => 'keyfix1',
+        'total_size' => strlen($raw),
+        'total_sha256' => $sha,
+        'chunk_count' => 1,
+    ], [], 'POST');
+    expect($init['status'])->toBe(200);
+    $uploadId = $init['body']['upload_id'];
+
+    $chunkPath = $this->tmp.'/c0.bin';
+    file_put_contents($chunkPath, $raw);
+    deploy_hook_handle($config, [
+        'action' => 'chunk',
+        'upload_id' => $uploadId,
+        'chunk_index' => 0,
+        'chunk_sha256' => hash('sha256', $raw),
+        'chunk_path' => $chunkPath,
+    ], [], 'POST');
+
+    $finish = deploy_hook_handle($config, [
+        'action' => 'finish',
+        'upload_id' => $uploadId,
+        'env' => "APP_NAME=test\nAPP_ENV=production\nAPP_KEY=\"base64:githubsecretkeygithubsecretke\"\nAPP_PREVIOUS_KEYS=\"base64:uploadprevuploadprevuploadp\"\nSITE_NAME=\"nieuw\"\n",
+    ], [], 'POST');
+
+    $backups = glob($appDir.'/.env.backup-*') ?: [];
+    expect($finish['status'])->toBe(200)
+        ->and(deploy_hook_env_get($appDir.'/.env', 'APP_KEY'))->toBe('base64:existingserverkeyexistingserver')
+        ->and(deploy_hook_env_get($appDir.'/.env', 'APP_PREVIOUS_KEYS'))->toBe('base64:previouskeypreviouskeyprevi')
+        ->and(deploy_hook_env_get($appDir.'/.env', 'SITE_NAME'))->toBe('nieuw')
+        ->and($backups)->not->toBeEmpty()
+        ->and(file_get_contents($backups[0]))->toContain('existingserverkeyexistingserver');
+});
+
 test('auth weigert verkeerde token', function () {
     $docroot = $this->tmp.'/docroot';
     $appDir = $this->tmp.'/app-staging';
@@ -247,6 +378,12 @@ test('chunk assembly + checksum + storage behouden bij finish', function () {
     // APP_KEY behouden (upload was leeg)
     $writtenKey = deploy_hook_env_get($appDir.'/.env', 'APP_KEY');
     expect($writtenKey)->toBe('base64:existingkeyexistingkeyexisti');
+
+    // Timestamped .env.backup buiten docroot (naast shared .env)
+    $backups = glob($appDir.'/.env.backup-*') ?: [];
+    expect($backups)->not->toBeEmpty()
+        ->and(file_get_contents($backups[0]))->toContain('base64:existingkeyexistingkeyexisti')
+        ->and(decoct(fileperms($backups[0]) & 0777))->toBe('600');
 
     // BACKUP_ENCRYPTION_KEY behouden (upload was leeg)
     expect(deploy_hook_env_get($appDir.'/.env', 'BACKUP_ENCRYPTION_KEY'))->toBe('keep-backup-key');

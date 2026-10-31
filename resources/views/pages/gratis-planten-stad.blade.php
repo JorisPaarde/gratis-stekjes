@@ -37,7 +37,7 @@
         In of bij {{ $stad['naam'] }} ken ik {{ count($plantenasiels) }} plantenasiels.
       @endif
       <a href="{{ route('deelplekken', ['plaats' => $stad['naam'], 'type' => 'plantenasiel']) }}">Bekijk plantenasiels bij {{ $stad['naam'] }}</a>
-      of het <a href="{{ route('deelplekken', ['type' => 'plantenasiel']) }}">landelijke overzicht plantenasiels</a>.
+      of het <a href="{{ route('deelplekken', ['type' => 'plantenasiel']) }}">overzicht van alle plantenasiels</a>.
     </p>
   </aside>
   @endif
@@ -47,13 +47,13 @@
       <h2 id="aanbod-titel">Actueel aanbod</h2>
       @if(count($aanbod) === 0)
         <div class="gp-empty soft-card" role="status">
-          <p>Nog geen openbaar aanbod binnen ~{{ (int) $stad['straal_km'] }} km van {{ $stad['naam'] }}.</p>
-          <p>Jij kunt de eerste zijn: zet een stekje of plant online en maak delen in {{ $stad['naam'] }} zichtbaar.</p>
+          <p>Er is nog geen aanbod binnen ongeveer {{ (int) $stad['straal_km'] }} km van {{ $stad['naam'] }}.</p>
+          <p>Jij kunt de eerste zijn: zet een plant, stekje of zaad op de site en laat zien dat er in {{ $stad['naam'] }} gedeeld wordt.</p>
           <p>
             @auth
-              <a class="btn" href="{{ route('account.aanbod') }}"><x-icon name="plus" :size="16" /> Zelf aanbod plaatsen</a>
+              <a class="btn" href="{{ route('account.aanbod') }}"><x-icon name="plus" :size="16" /> Zelf iets aanbieden</a>
             @else
-              <a class="btn" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="16" /> Account maken en aanbieden</a>
+              <a class="btn" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="16" /> Maak een account en bied iets aan</a>
             @endauth
           </p>
         </div>
@@ -83,15 +83,15 @@
           @else
             <a class="btn btn-secondary" href="{{ route('account.registreren') }}">Zelf iets aanbieden</a>
           @endauth
-          · <a href="{{ route('aanbod') }}">Landelijke kaart</a>
+          · <a href="{{ route('aanbod') }}">Kaart van heel het land</a>
         </p>
       @endif
     </div>
 
     <div>
       <h2 id="kaart-titel">Kaart rond {{ $stad['naam'] }}</h2>
-      <div id="stad-kaart" class="gp-kaart" role="img" aria-label="Kaartuitsnede rond {{ $stad['naam'] }} met benaderde ophaalplekken"></div>
-      <p class="muted gp-kaart-note">Benaderde plekken · © OpenStreetMap. Straal ~{{ (int) $stad['straal_km'] }} km.</p>
+      <div id="stad-kaart" class="gp-kaart" role="img" aria-label="Kaart rond {{ $stad['naam'] }} met ongeveer de plekken waar je iets kunt ophalen"></div>
+      <p class="muted gp-kaart-note">Plekken zijn bij benadering · © OpenStreetMap. Straal ongeveer {{ (int) $stad['straal_km'] }} km.</p>
     </div>
   </div>
 
@@ -106,9 +106,9 @@
     @if(count($deelplekken) > 0)
       <p class="section-intro">
         @if(($stad['country'] ?? 'NL') === 'BE')
-          Vaste zadenbibs en andere deelplekken (uit openbare bronnen), naast het aanbod van mens tot mens.
+          Vaste zadenbibs en andere deelplekken, naast het aanbod van mens tot mens. De gegevens komen uit openbare bronnen.
         @else
-          Vaste plekken om planten of zaden te delen (uit openbare bronnen), naast het aanbod van mens tot mens.
+          Vaste plekken om planten of zaden te delen, naast het aanbod van mens tot mens. De gegevens komen uit openbare bronnen.
         @endif
       </p>
       <ul class="gp-deelplek-lijst">
@@ -131,12 +131,12 @@
         @endforeach
       </ul>
     @else
-      <p class="section-intro">Geen bekende vaste deelplek binnen ~{{ (int) $stad['straal_km'] }} km in mijn openbare lijst. Elders in {{ $stad['provincie'] }} of landelijk wel mogelijk.</p>
+      <p class="section-intro">Ik ken geen vaste deelplek binnen ongeveer {{ (int) $stad['straal_km'] }} km. Misschien wel elders in {{ $stad['provincie'] }} of in de rest van het land.</p>
     @endif
     <p>
       <a href="{{ route('deelplekken', ['plaats' => $stad['naam']]) }}">Deelplekken bij {{ $stad['naam'] }}</a>
       · <a href="{{ route('deelplekken', ['provincie' => $stad['provincie']]) }}">Heel {{ $stad['provincie'] }}</a>
-      · <a href="{{ route('deelplekken') }}">Landelijk overzicht</a>
+      · <a href="{{ route('deelplekken') }}">Alle deelplekken</a>
     </p>
   </section>
 

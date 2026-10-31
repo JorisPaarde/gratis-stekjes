@@ -71,7 +71,7 @@ class StektipsController extends Controller
                     ((string) ($soort['kans'] ?? '')).
                     (! empty($soort['categorie']) ? ' · '.$soort['categorie'] : '')
                 ),
-                'badges' => ['Soortpagina'],
+                'badges' => ['Soort'],
                 'afbeelding' => $afbeeldingen->forSlug($slug, (string) $soort['naam']),
             ];
         }
@@ -85,7 +85,7 @@ class StektipsController extends Controller
         $pillars = $hasActiveFilters ? [] : $kennisbank->pillars();
 
         $title = 'Stektips: planten stekken en snoeien';
-        $metaDescription = 'Leer planten stekken en snoeien, maak wilgenwater en deel gratis stekjes. Kennisbank met soortpagina’s — van monstera tot vijg.';
+        $metaDescription = 'Leer planten stekken en snoeien, maak wilgenwater en deel gratis stekjes. Tips per soort — van monstera tot vijg.';
 
         return view('pages.stektips-index', [
             'title' => $title,
@@ -275,7 +275,7 @@ class StektipsController extends Controller
                 $ctas['stek_url'] = $stekType === 'soort'
                     ? route('stektips.show', ['slug' => $stekSlug])
                     : route('stektips.artikel', ['slug' => $stekSlug]);
-                $ctas['stek_label'] = $plantLabel !== '' ? $plantLabel.' stekken' : 'Stekpagina';
+                $ctas['stek_label'] = $plantLabel !== '' ? $plantLabel.' stekken' : 'Tips om te stekken';
             }
             $aanbodPlant = (string) ($seo['aanbod_plant'] ?? $plant);
             if ($aanbodPlant !== '') {
