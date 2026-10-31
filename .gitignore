@@ -37,3 +37,5 @@ CHANGELOG.legacy.md
 /tmp/
 /test-results/
 /playwright-report/
+
+/artifacts/

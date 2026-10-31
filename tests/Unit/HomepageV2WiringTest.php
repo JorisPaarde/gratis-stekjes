@@ -47,7 +47,20 @@ test('foto-credits.json bevat bron, maker en licentie per homepagefoto', functio
         $first = $root.'/public/'.$foto['bestanden'][0];
         expect(is_file($first))->toBeTrue("ontbrekend bestand: {$foto['bestanden'][0]}");
         if (! empty($foto['attribution_required'])) {
-            expect($foto['licentie'])->toContain('CC BY');
+            $lic = (string) $foto['licentie'];
+            expect(
+                str_contains($lic, 'CC BY') || str_contains($lic, 'ODbL') || str_contains($lic, 'OpenStreetMap')
+            )->toBeTrue("onverwachte licentie voor {$foto['id']}: {$lic}");
         }
+    }
+
+    $hashes = [];
+    foreach ($data['fotos'] as $foto) {
+        $path960 = $root.'/public/assets/images/home-v2/'.$foto['id'].'-960.webp';
+        expect(is_file($path960))->toBeTrue();
+        $hashes[md5_file($path960)][] = $foto['id'];
+    }
+    foreach ($hashes as $hash => $ids) {
+        expect($ids)->toHaveCount(1, 'dubbele foto: '.implode(',', $ids));
     }
 });

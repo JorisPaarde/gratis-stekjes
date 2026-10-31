@@ -85,3 +85,36 @@ jobs:
         run: |
           test -f .env || { cp .env.example .env && php artisan key:generate; }
           ./vendor/bin/pest
+
+      - name: Homepage v2 Playwright (above the fold)
+        env:
+          HOMEPAGE_V2: "true"
+          HOMEPAGE_ARTIFACTS_DIR: artifacts/homepage-v2
+          PLAYWRIGHT_BASE_URL: http://127.0.0.1:8000
+        run: |
+          set -euo pipefail
+          test -f .env || { cp .env.example .env && php artisan key:generate; }
+          # Force v2 for the local server (phpunit force=false does not apply here).
+          grep -q '^HOMEPAGE_V2=' .env && sed -i 's/^HOMEPAGE_V2=.*/HOMEPAGE_V2=true/' .env || echo 'HOMEPAGE_V2=true' >> .env
+          php artisan config:clear
+          npx playwright install --with-deps chromium
+          php artisan serve --host=127.0.0.1 --port=8000 > /tmp/artisan-serve-ci.log 2>&1 &
+          echo $! > /tmp/artisan-serve-ci.pid
+          for i in $(seq 1 30); do
+            if curl -fsS "$PLAYWRIGHT_BASE_URL/" >/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          curl -fsS "$PLAYWRIGHT_BASE_URL/" | grep -q 'page-home-v2'
+          npm run test:e2e:homepage
+          kill "$(cat /tmp/artisan-serve-ci.pid)" 2>/dev/null || true
+
+      - name: Upload homepage-v2 screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: homepage-v2-screenshots
+          path: artifacts/homepage-v2/
+          if-no-files-found: warn
+          retention-days: 14

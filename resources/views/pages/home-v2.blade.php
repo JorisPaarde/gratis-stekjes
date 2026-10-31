@@ -26,7 +26,7 @@
       class="home-hero-pic"
       :eager="true"
       sizes="100vw"
-      alt="Jonge plantjes in de aarde, klaar om te delen"
+      alt="Volkstuinperkjes met groenten in een buurttuin"
     />
   </div>
   <div class="home-hero-scrim" aria-hidden="true"></div>
@@ -67,7 +67,7 @@
       <x-home-picture
         id="kaart"
         sizes="(max-width: 768px) 100vw, 50vw"
-        alt="Bloeiend veld met lange rijen planten — open de kaart om te zien wat er bij jou te halen is"
+        alt="Kaart van Nederland en België met oranje markers van deelplekken"
       />
       <span class="home-kaart-label">Naar de kaart met aanbod en deelplekken</span>
     </a>
@@ -105,17 +105,17 @@
       <x-home-picture
         id="stappen"
         sizes="(max-width: 768px) 100vw, 33vw"
-        alt="Handen die een jong plantje vasthouden"
+        alt="Rijen groenten in een moestuin"
       />
       <x-home-picture
         id="stekjes"
         sizes="(max-width: 768px) 100vw, 33vw"
-        alt="Stekjes en jonge plantjes in potjes"
+        alt="Jonge stekjes in zwarte potjes"
       />
       <x-home-picture
         id="zaden"
         sizes="(max-width: 768px) 100vw, 33vw"
-        alt="Kas vol groente- en bonenplanten"
+        alt="Zakjes groentezaden op een rek"
       />
     </div>
     <p class="home-actions">
@@ -157,7 +157,7 @@
     <div class="home-split home-split--rev">
       <div class="home-split-copy">
         <h2 id="org-titel">Organisaties en plekken die delen</h2>
-        <p class="section-intro">Naast buren die iets weggeven, zijn er plantenasiels, zadenbibliotheken en andere initiatieven waar je planten, stekjes of gratis zaden kunt brengen of meenemen. Geen officiële partnerschappen — wel korte pagina’s met een link naar hun eigen site.</p>
+        <p class="section-intro">Naast buren die iets weggeven, zijn er plantenasiels, zadenbibliotheken en andere initiatieven waar je planten, stekjes of gratis zaden kunt brengen of meenemen. Ken je een plantenasiel, zadenbibliotheek of ruilgroep? Die zetten we graag op de kaart.</p>
         <ul class="home-org-list">
           @foreach($organisaties as $org)
             <li>
@@ -177,12 +177,12 @@
         <x-home-picture
           id="zadenbibliotheek"
           sizes="(max-width: 768px) 100vw, 45vw"
-          alt="Zadenbibliotheek met bakjes gratis zaden"
+          alt="Zadenbibliotheek met bakjes zaden in een bibliotheek"
         />
         <x-home-picture
           id="plantenasiel"
           sizes="(max-width: 768px) 100vw, 45vw"
-          alt="Tuingereedschap, potgrond en een jong plantje op jute"
+          alt="Rijen potplanten die een nieuw huis zoeken"
         />
       </div>
     </div>
@@ -197,7 +197,7 @@
       <x-home-picture
         id="nederland"
         sizes="(max-width: 768px) 100vw, 50vw"
-        alt="Jonge planten in potten — gratis planten en stekjes in Nederland"
+        alt="Buurttuinbed met jonge planten en mulch"
       />
       <h3>Nederland</h3>
       <p>Van Groningen tot Maastricht: bekijk stadspagina’s of zoek direct op de kaart naar planten, stekjes, plantenruil en gratis zaden bij jou in de buurt.</p>
@@ -207,7 +207,7 @@
       <x-home-picture
         id="belgie"
         sizes="(max-width: 768px) 100vw, 50vw"
-        alt="Vrouw tussen kamerplanten in potten"
+        alt="Moestuinbedden met groenten in een ommuurde tuin"
       />
       <h3>België</h3>
       <p>Planten gratis afhalen in Vlaanderen en Brussel: open de kaart, stuur een bericht en spreek een moment af. Ook een zadenbibliotheek of plantenasiel in de buurt? Die staan tussen de deelplekken.</p>
@@ -222,12 +222,12 @@
     <x-home-picture
       id="tuin"
       sizes="(max-width: 768px) 100vw, 50vw"
-      alt="Groot donkergroen monsterablad"
+      alt="Houten plantenbakken met groene tuingroenten"
     />
     <x-home-picture
       id="delen"
       sizes="(max-width: 768px) 100vw, 50vw"
-      alt="Klein plantje in een potje op iemands schouder"
+      alt="Handen die een plantje in de aarde zetten"
     />
   </div>
 </section>
@@ -255,11 +255,14 @@
 <section class="section wrap home-credits" aria-labelledby="credits-titel">
   <h2 id="credits-titel" class="visually-hidden">Fotocredits</h2>
   <p class="muted home-credits-text">
-    Foto zadenbibliotheek:
-    <a href="https://commons.wikimedia.org/wiki/File:Ausstellungsfl%C3%A4che_und_Saatgutbibliothek.jpg" rel="noopener noreferrer">Stadtbibliothek Neuss</a>
-    ·
-    <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener noreferrer license">CC BY-SA 4.0</a>
-    via Wikimedia Commons.
+    Foto’s met naamsvermelding:
+    buurttuin <a href="https://commons.wikimedia.org/wiki/File:City_gardening_community_garden_plots_Langen%C3%A6s_park_Aarhus_Denmark_01.jpg" rel="noopener noreferrer">Ciara Ní Riain</a>,
+    zakjes zaden <a href="https://commons.wikimedia.org/wiki/File:Packets_of_Vegetable_Seeds.jpg" rel="noopener noreferrer">ParentingPatch</a>,
+    zadenbibliotheek <a href="https://commons.wikimedia.org/wiki/File:Ausstellungsfl%C3%A4che_und_Saatgutbibliothek.jpg" rel="noopener noreferrer">Stadtbibliothek Neuss</a>,
+    tuinbed <a href="https://commons.wikimedia.org/wiki/File:04_18_2022_Garden_bed_Q_Gardens_community_garden_Flatbush_BK_NYC.jpg" rel="noopener noreferrer">Wil540 art</a>,
+    moestuin <a href="https://commons.wikimedia.org/wiki/File:Chiswick_House_Kitchen_Garden_-_vegetable_beds.jpg" rel="noopener noreferrer">Chiswick Chap</a>
+    (Wikimedia Commons, CC BY-SA);
+    kaart © <a href="https://www.openstreetmap.org/copyright" rel="noopener noreferrer">OpenStreetMap</a>-bijdragers.
   </p>
   @php $tipCredits = array_values(array_filter($tips, fn ($t) => empty($t['afbeelding']['is_fallback']) && ! empty($t['afbeelding']['auteur']))); @endphp
   @if(count($tipCredits) > 0)

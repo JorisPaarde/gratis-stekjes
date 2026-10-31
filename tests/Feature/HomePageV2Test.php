@@ -27,6 +27,8 @@ test('homepage v2 is 200 met vlag aan en toont hero B', function () {
     $response->assertSee('gratis zaden', false);
     $response->assertSee('Planten gratis afhalen in Vlaanderen en Brussel', false);
     $response->assertSee('Doe mee — het is gratis', false);
+    $response->assertSee('Ken je een plantenasiel, zadenbibliotheek of ruilgroep?', false);
+    $response->assertDontSee('Geen officiële partnerschappen', false);
     $response->assertSee('assets/images/home-v2/hero-960.webp', false);
     $response->assertSee('Stadtbibliothek Neuss', false);
     $response->assertDontSee('zadenbieb', false);
