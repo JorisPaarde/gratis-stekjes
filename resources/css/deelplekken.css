@@ -14,11 +14,19 @@
 }
 
 #deelplekken-kaart {
-  min-height: 320px;
+  /* Vaste hoogte: fitBounds(NL+BE) vult het kader dichter (minder buurlanden). */
+  height: 360px;
+  min-height: 360px;
   border-radius: var(--radius, 1rem);
   border: 1px solid var(--line, rgba(26, 18, 16, 0.12));
   overflow: hidden;
   background: var(--bg-2, #e6f2e1);
+}
+@media (min-width: 900px) {
+  #deelplekken-kaart {
+    height: 480px;
+    min-height: 480px;
+  }
 }
 
 .deelplekken-lijst h2 {

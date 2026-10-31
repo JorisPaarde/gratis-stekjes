@@ -12,19 +12,31 @@
     [49.45, 2.4],
     [53.55, 7.25],
   ];
-  var nlBeFitOpts = { padding: [16, 16], maxZoom: 7 };
-  var map = L.map(mapEl).fitBounds(nlBeBounds, nlBeFitOpts);
+  var nlBeFitOpts = { padding: [4, 4], maxZoom: 8 };
+  // zoomSnap 0.25: tussenstappen tussen zoom 5/6/7.
+  // Eerste view via fitBounds (contain); fitNlBe gebruikt cover zodat
+  // een breed vak niet half West-Europa toont.
+  var map = L.map(mapEl, { zoomSnap: 0.25 }).fitBounds(nlBeBounds, nlBeFitOpts);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxZoom: 18,
   }).addTo(map);
   function fitNlBe() {
     map.invalidateSize();
-    map.fitBounds(nlBeBounds, nlBeFitOpts);
+    var bounds = L.latLngBounds(nlBeBounds);
+    // inside=true: viewport past binnen NL+BE (cover) → nauwelijks buurlanden.
+    var zoom = map.getBoundsZoom(bounds, true, L.point(4, 4));
+    if (isFinite(zoom)) {
+      map.setView(bounds.getCenter(), Math.min(zoom, 8));
+    } else {
+      map.fitBounds(nlBeBounds, nlBeFitOpts);
+    }
   }
   map.whenReady(function () {
+    // Na layout: cover-zoom (contain-fitBounds alleen is te wijd op breed vak).
     setTimeout(fitNlBe, 50);
     setTimeout(fitNlBe, 400);
+    setTimeout(fitNlBe, 1000);
   });
   var aanbodLayer = L.layerGroup().addTo(map);
   var partnerLayer = L.layerGroup().addTo(map);
