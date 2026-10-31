@@ -20,7 +20,7 @@ test('zoeken.js en deelplekken.js zetten view direct bij L.map (fitBounds NL+BE)
             ->and($js)->toContain('maxZoom: 8')
             ->and($js)->toContain('zoomSnap: 0.25')
             ->and($js)->toContain('padding: [4, 4]')
-            ->and($js)->toContain('getBoundsZoom(bounds, true')
+            ->and($js)->toContain('getBoundsZoom(bounds, false')
             ->and($js)->toContain('invalidateSize')
             ->and($js)->toContain('tile.openstreetmap.org');
 
