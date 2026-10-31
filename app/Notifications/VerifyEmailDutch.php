@@ -26,7 +26,7 @@ class VerifyEmailDutch extends VerifyEmail
             ->action('E-mail bevestigen', $url)
             ->line('Deze link is '.$hours.' uur geldig.')
             ->line('Heb je je niet aangemeld? Negeer deze mail.')
-            ->salutation('Groet,'.PHP_EOL.'Joris ('.$site.')');
+            ->salutation('Groet,'.PHP_EOL.$site);
     }
 
     protected function verificationUrl($notifiable): string
