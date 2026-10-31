@@ -7,11 +7,26 @@
   var filterEl = document.getElementById("marker-filters");
   if (!form || !list || typeof L === "undefined") return;
 
-  var map = L.map(mapEl).setView([52.1, 5.2], 7);
+  // Beginuitsnede: Nederland + heel België (past op desktop én mobiel).
+  var map = L.map(mapEl);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxZoom: 18,
   }).addTo(map);
+  function fitNlBe() {
+    map.invalidateSize();
+    map.fitBounds(
+      [
+        [49.45, 2.4],
+        [53.55, 7.25],
+      ],
+      { padding: [16, 16], maxZoom: 7 }
+    );
+  }
+  map.whenReady(function () {
+    setTimeout(fitNlBe, 50);
+    setTimeout(fitNlBe, 400);
+  });
   var aanbodLayer = L.layerGroup().addTo(map);
   var partnerLayer = L.layerGroup().addTo(map);
   var deelplekLayer = L.layerGroup().addTo(map);
@@ -348,10 +363,8 @@
           typeLabels = Object.assign(typeLabels, data.types);
         }
         partnerItems = (data && data.items) || [];
-        refreshMarkers(
-          (partnerItems.length > 0 || deelplekItems.length > 0) &&
-            aanbodItems.length === 0
-        );
+        // Geen fitBounds bij eerste load: beginuitsnede blijft NL + België.
+        refreshMarkers(false);
       })
       .catch(function () {
         partnerItems = [];
@@ -374,10 +387,8 @@
           typeLabels = Object.assign(typeLabels, data.types);
         }
         deelplekItems = (data && data.items) || [];
-        refreshMarkers(
-          (partnerItems.length > 0 || deelplekItems.length > 0) &&
-            aanbodItems.length === 0
-        );
+        // Geen fitBounds bij eerste load: beginuitsnede blijft NL + België.
+        refreshMarkers(false);
       })
       .catch(function () {
         deelplekItems = [];

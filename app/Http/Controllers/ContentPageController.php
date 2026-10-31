@@ -31,7 +31,7 @@ class ContentPageController extends Controller
     {
         return view('pages.over', [
             'title' => 'Over gratis planten delen',
-            'metaDescription' => 'Waarom '.config('site.name').' bestaat: gratis stekjes delen met een praatje, door heel Nederland.',
+            'metaDescription' => 'Waarom '.config('site.name').' bestaat: gratis stekjes delen met een praatje, door heel Nederland en België.',
             'canonical' => route('over'),
         ]);
     }

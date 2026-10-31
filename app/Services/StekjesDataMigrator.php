@@ -611,7 +611,7 @@ final class StekjesDataMigrator
     {
         $update = [];
         // Nooit: id, email, password, created_at.
-        $candidates = ['name', 'telefoon', 'locatie_label', 'lat', 'lon', 'pending_email', 'email_verified_at', 'remember_token', 'active', 'updated_at'];
+        $candidates = ['name', 'telefoon', 'locatie_label', 'lat', 'lon', 'country', 'pending_email', 'email_verified_at', 'remember_token', 'active', 'updated_at'];
         foreach ($candidates as $col) {
             if (! array_key_exists($col, $incoming)) {
                 continue;

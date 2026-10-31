@@ -27,6 +27,7 @@ class UserFactory extends Factory
             'locatie_label' => '',
             'lat' => null,
             'lon' => null,
+            'country' => 'NL',
         ];
     }
 

@@ -32,11 +32,20 @@
         @endforeach
       </select>
     </label>
+    <label>Land *
+      <select name="country" required>
+        @foreach($countries as $code => $label)
+          <option value="{{ $code }}" @selected(old('country', 'NL') === $code)>{{ $label }}</option>
+        @endforeach
+      </select>
+    </label>
     <label>Adres
       <input name="adres" maxlength="255" value="{{ old('adres') }}" autocomplete="street-address">
+      <span class="hint">Alleen voor geocoding; ik sla geen straatadres op.</span>
     </label>
     <label>Postcode
-      <input name="postcode" maxlength="16" value="{{ old('postcode') }}" autocomplete="postal-code">
+      <input name="postcode" maxlength="16" value="{{ old('postcode') }}" autocomplete="postal-code" placeholder="1234 AB of 9000">
+      <span class="hint">NL: 1234 AB. BE: 4 cijfers (heel België).</span>
     </label>
     <label>Plaats *
       <input name="plaats" required maxlength="120" value="{{ old('plaats') }}" autocomplete="address-level2">

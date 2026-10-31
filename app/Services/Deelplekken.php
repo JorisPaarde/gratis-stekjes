@@ -102,8 +102,9 @@ final class Deelplekken
             } else {
                 $latF = (float) $lat;
                 $lngF = (float) $lng;
-                if ($latF < 50.5 || $latF > 53.7 || $lngF < 3.2 || $lngF > 7.4) {
-                    $errors[] = "plekken[$i] coördinaten buiten NL-bbox";
+                // NL + heel België (Ardennen ~49.5°, westkust BE ~2.5°).
+                if ($latF < 49.4 || $latF > 53.7 || $lngF < 2.4 || $lngF > 7.4) {
+                    $errors[] = "plekken[$i] coördinaten buiten NL+België-bbox";
                 }
             }
             $bron = (string) ($row['bron_url'] ?? '');
@@ -186,6 +187,7 @@ final class Deelplekken
                 'type_label' => $labels[$type] ?? $type,
                 'plaats' => (string) $row->plaats,
                 'provincie' => (string) $row->provincie,
+                'country' => (string) ($row->country ?: 'NL'),
                 'adres' => (string) $row->adres,
                 'lat' => Geo::roundCoord((float) $row->lat),
                 'lng' => Geo::roundCoord((float) $row->lng),

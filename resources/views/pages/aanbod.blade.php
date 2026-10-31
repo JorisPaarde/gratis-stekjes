@@ -30,7 +30,7 @@
       Filter op <strong>{{ $plant }}</strong> in aanbodteksten.
       Vul een postcode of plaats in om dichtbij te zoeken. Exacte adressen staan niet op de site.
     @else
-      Zoek op postcode (4 cijfers) of plaats in Nederland. Je ziet benaderde plekken op de kaart en een lijst gesorteerd op afstand. Exacte adressen staan niet op de site.
+      Zoek op postcode of plaats in Nederland of België. Je ziet benaderde plekken op de kaart en een lijst gesorteerd op afstand. Exacte adressen staan niet op de site.
     @endif
   </p>
 

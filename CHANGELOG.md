@@ -9,6 +9,21 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.27.0] - 2026-10-31
+
+### Added
+
+- Werkgebied uitgebreid naar **heel België** (naast Nederland). Belgische postcodes 1000–9999 (4 cijfers) zijn geldig; Franstalige plaatsnamen worden overgenomen zoals de geocoder ze geeft (geen Franse sitevertaling).
+- Landveld `country` (NL/BE) op accounts, deelplekken, kaartmarkers en geocode-cache; migratie zet bestaande rijen op NL. Formulieren krijgen landkeuze (default NL).
+- Belgische postcodes naast NL `1234 AB`: validatie, genormaliseerde opslag en weergave per land.
+- Locatiezoeken/geocoding: Nominatim met `countrycodes=nl,be` naast PDOK (NL).
+- Pest: unit-tests postcode/land, migratietest `country`, feature/E2E met Belgische adressen (Gent 9000, Liège 4000, Namur 5000).
+
+### Changed
+
+- Kaart (aanbod + deelplekken): beginuitsnede via `fitBounds` zodat NL + heel België op desktop én mobiel in beeld zijn.
+- Teksten/meta/SEO/privacy/deelplekken-H1: werkgebied «Nederland» → «Nederland en België» (geen Belgisch-juridische claims toegevoegd).
+
 ## [0.26.6] - 2026-10-31
 
 ### Removed

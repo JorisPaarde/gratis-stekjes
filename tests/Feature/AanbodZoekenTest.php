@@ -38,6 +38,7 @@ test('profiel geocodeert locatie via cache zonder netwerk', function () {
     $this->actingAs($user)
         ->post(route('account.profiel'), [
             'voornaam' => 'Sam',
+            'country' => 'NL',
             'locatie' => 'Haarlem',
             'telefoon' => '',
         ])

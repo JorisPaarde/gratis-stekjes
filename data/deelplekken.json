@@ -1,7 +1,7 @@
 {
   "meta": {
-    "titel": "Deelplekken voor planten in Nederland",
-    "omschrijving": "Publiek vindbare plantenasiels, plantenbiebs, ruilkasten, stekjesruilpunten en zaadbibliotheken. Alleen plekken met een in een bron teruggevonden bezoekadres of duidelijke plaatsaanduiding; coördinaten via PDOK/OpenStreetMap op dat adres.",
+    "titel": "Deelplekken voor planten in Nederland en België",
+    "omschrijving": "Publiek vindbare plantenasiels, plantenbiebs, ruilkasten, stekjesruilpunten en zaadbibliotheken. Alleen plekken met een in een bron teruggevonden bezoekadres of duidelijke plaatsaanduiding; coördinaten via PDOK/OpenStreetMap/Nominatim op dat adres.",
     "geraadpleegd": "2026-10-29",
     "bronnen": [
       {
@@ -84,7 +84,7 @@
       "Plantenasiel Zwolle (Focus): alleen nieuws uit 2020 over Zerboltstraat; actuele status onzeker.",
       "Plantbeu Rotterdam/Eindhoven: genoemd in oudere media, geen actueel bezoekadres gevonden.",
       "Stekjesroute-ruilkasten: exacte adressen vaak achter login; alleen openbaar gemelde adressen opgenomen.",
-      "Belgische plantenasiels: buiten scope (Nederland).",
+      "Belgische plantenasiels: nog niet systematisch in deze seed-lijst (aanmelden via /voor-organisaties blijft mogelijk).",
       "Mama Botanica / Mevrouw Monstera-lijsten: alleen stadsnamen zonder adres — niet gebruikt als enige bron voor een plek.",
       "Plantenasiel Oosterhout: alleen aggregatorvermelding zonder primaire bron met adres.",
       "Zadenbibliotheek Hoeksche Waard: domein stond geparkeerd tijdens controle."

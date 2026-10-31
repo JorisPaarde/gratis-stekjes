@@ -18,6 +18,7 @@ function aanmeldPayload(array $overrides = []): array
     return array_merge([
         'naam' => 'Demo Voedselbos Utrecht',
         'type' => 'voedselbos',
+        'country' => 'NL',
         'adres' => 'Neude 1',
         'postcode' => '3512 AD',
         'plaats' => 'Utrecht',
