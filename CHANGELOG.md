@@ -9,6 +9,25 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.28.0] - 2026-10-31
+
+### Added
+
+- Site-brede `og:image` + `twitter:card` (bestaand logo `assets/icons/icon-512.png`, absolute URL via APP_URL).
+- JSON-LD Organization op de home (naam «Gratis planten», url, logo) met `areaServed` NL én BE; zelfde areaServed op relevante CollectionPage/WebPage-schema’s.
+- `<lastmod>` in `sitemap.xml` op basis van echte bestands-`mtime` / `updated_at` (niet «nu»).
+
+### Changed
+
+- Canonical en `og:url` altijd uit `APP_URL` (`URL::forceRootUrl`), nooit uit de request-host (voorkomt www-dubbele indexatie).
+- Filter-URL’s (`?plant=`, `?plaats=` / `?type=` / `?provincie=`) canonicaliseren naar de kale pagina.
+- Meta descriptions die te kort (<70) of te lang (>160) waren bijgewerkt (privacy, contact, help-mee, aanmelden, stektips, kennisbank, organisaties).
+
+### Fixed
+
+- `noindex` op `/account/*`; 301 van `/index.php` en `/index.php/*` naar `/` resp. het pad zonder `index.php`; geen canonical op foutpagina’s.
+- Sessie-/XSRF-cookies alleen op account, beheer, feedback, CSRF-formulieren of bij bestaande sessiecookie — publieke GET’s (`/`, `/aanbod`, stadspagina’s) blijven zonder `Set-Cookie` (cachebaar).
+
 ## [0.27.3] - 2026-10-31
 
 ### Added
@@ -17,6 +36,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - `DeelplekkenSeeder` leest `country` en `visible` uit de JSON-rij (default NL / true).
 - Stadspagina’s slaan JSON-rijen met `visible: false` over.
 - Pest: NL-snapshot ongewijzigd, BE-country na seeden, verborgen rij niet op stadspagina.
+
 
 ## [0.27.2] - 2026-10-31
 

@@ -2,7 +2,7 @@
 
 @section('title', 'Sessie verlopen')
 @section('meta_description', 'Je sessie is verlopen. Probeer het opnieuw.')
-@section('canonical', url()->current())
+@section('robots', 'noindex, follow')
 
 @section('content')
 <section class="section wrap prose">

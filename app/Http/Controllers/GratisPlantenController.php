@@ -28,7 +28,11 @@ class GratisPlantenController extends Controller
                 'name' => $title,
                 'url' => route('gratis-planten.index'),
                 'description' => $metaDescription,
-                'inLanguage' => 'nl-NL',
+                'inLanguage' => 'nl',
+                'areaServed' => [
+                    ['@type' => 'Country', 'name' => 'NL'],
+                    ['@type' => 'Country', 'name' => 'BE'],
+                ],
                 'isPartOf' => [
                     '@type' => 'WebSite',
                     'name' => $site,
@@ -95,7 +99,11 @@ class GratisPlantenController extends Controller
                         'name' => $title,
                         'url' => $canonical,
                         'description' => $metaDescription,
-                        'inLanguage' => 'nl-NL',
+                        'inLanguage' => 'nl',
+                        'areaServed' => [
+                            ['@type' => 'Country', 'name' => 'NL'],
+                            ['@type' => 'Country', 'name' => 'BE'],
+                        ],
                         'isPartOf' => [
                             '@type' => 'WebSite',
                             'name' => $site,

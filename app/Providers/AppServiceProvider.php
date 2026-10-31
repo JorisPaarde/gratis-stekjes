@@ -26,6 +26,12 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $appUrl = rtrim((string) config('app.url'), '/');
+        if ($appUrl !== '') {
+            // Canonical/route()/asset-URL's altijd uit APP_URL, niet uit de request-host (www-lek).
+            URL::forceRootUrl($appUrl);
+        }
+
         if ($this->app->environment(['production', 'staging'])) {
             URL::forceScheme('https');
         }
@@ -33,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
         $this->pushLogMaskingProcessor();
 
         Gate::define('see-admin-dashboard', function (?User $user): bool {
-            if (session('admin_ok')) {
+            if (request()->hasSession() && session('admin_ok')) {
                 return true;
             }
 
