@@ -9,6 +9,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.27.2] - 2026-10-31
+
+### Fixed
+
+- Kaart `/aanbod` en `/deelplekken`: hoger kaartvak (360px mobiel, 480px desktop), `zoomSnap: 0.25`, minder padding, en contain-zoom (`getBoundsZoom(…, false)`) zodat heel NL+BE strak in beeld blijft (geen afsnijden; i.p.v. zoom 5 / cover).
+- `public/.htaccess`: www→kaal en http→https voor `gratisplanten.nl` / `www` (vóór PHP; staging ongemoeid). Voorkomt dat een deploy handmatige prod-regels weghaalt.
+
 ## [0.27.1] - 2026-10-31
 
 ### Fixed
