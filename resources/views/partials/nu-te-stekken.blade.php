@@ -37,7 +37,5 @@
   </div>
   @if(!empty($nuTeStekken['stektips_index']))
     <p class="muted">Meer soorten: <a href="{{ $nuTeStekken['stektips_index'] }}">alle stektips</a>.</p>
-  @else
-    <p class="muted">Tips per soort volgen binnenkort.</p>
   @endif
 </section>

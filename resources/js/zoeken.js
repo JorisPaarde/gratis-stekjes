@@ -32,11 +32,20 @@
       map.fitBounds(nlBeBounds, nlBeFitOpts);
     }
   }
+  // Na layout / late size: opnieuw contain-zoom — maar niet meer zodra er gezocht is
+  // (anders springt de kaart bij binnenkomen via ?q= terug naar heel NL+BE).
+  var heeftGezocht = false;
+  function initialFit() {
+    if (heeftGezocht) {
+      map.invalidateSize();
+      return;
+    }
+    fitNlBe();
+  }
   map.whenReady(function () {
-    // Na layout / late size: opnieuw contain-zoom.
-    setTimeout(fitNlBe, 50);
-    setTimeout(fitNlBe, 400);
-    setTimeout(fitNlBe, 1000);
+    setTimeout(initialFit, 50);
+    setTimeout(initialFit, 400);
+    setTimeout(initialFit, 1000);
   });
   var aanbodLayer = L.layerGroup().addTo(map);
   var partnerLayer = L.layerGroup().addTo(map);
@@ -57,7 +66,7 @@
     plantenbieb: "Plantenbieb",
     ruilkast: "Ruilkast",
     stekjesruilpunt: "Stekjesruilpunt",
-    zaadbibliotheek: "Zaadbibliotheek",
+    zaadbibliotheek: "Zadenbibliotheek",
   };
 
   var markerColors = {
@@ -132,130 +141,131 @@
     });
   }
 
-  function renderPartners() {
-    partnerLayer.clearLayers();
-    var allowed = enabledPartnerTypes();
-    var bounds = [];
-    var visible = partnerItems.filter(function (item) {
-      return allowed.indexOf(item.type) !== -1;
-    });
+  // —— Lijst: twee begrensde groepen (aanbod, plekken), dichtstbij eerst na zoeken ——
+  var center = null; // { lat, lon, label } na een zoekopdracht
+  var limits = { aanbod: 6, plekken: 6 };
+  var STAP = { aanbod: 6, plekken: 8 };
 
-    // Verwijder oude partner-rijen uit de lijst
-    list.querySelectorAll('[data-kind="partner_marker"]').forEach(function (el) {
-      el.remove();
-    });
-
-    visible.forEach(function (item) {
-      var li = document.createElement("li");
-      li.className = "zoek-item zoek-item--partner";
-      li.setAttribute("data-kind", "partner_marker");
-      li.setAttribute("data-type", item.type || "");
-      var label = item.type_label || typeLabels[item.type] || item.type;
-      var link =
-        item.url
-          ? '<p><a href="' +
-            escapeHtml(item.url) +
-            '" rel="noopener noreferrer" target="_blank">Website</a></p>'
-          : "";
-      li.innerHTML =
-        '<span class="badge badge--' +
-        escapeHtml(item.type) +
-        '">' +
-        escapeHtml(label) +
-        "</span>" +
-        "<h3>" +
-        escapeHtml(item.naam) +
-        (item.plaats ? " · " + escapeHtml(item.plaats) : "") +
-        "</h3>" +
-        "<p>" +
-        escapeHtml(item.beschrijving || "") +
-        "</p>" +
-        link;
-      list.appendChild(li);
-
-      if (item.lat != null && item.lon != null) {
-        var popup =
-          "<strong>" +
-          escapeHtml(item.naam) +
-          "</strong><br>" +
-          escapeHtml(label) +
-          (item.plaats ? " · " + escapeHtml(item.plaats) : "");
-        if (item.beschrijving) {
-          popup += "<br>" + escapeHtml(item.beschrijving);
-        }
-        var m = L.marker([item.lat, item.lon], { icon: partnerIcon(item.type) }).bindPopup(popup);
-        partnerLayer.addLayer(m);
-        bounds.push([item.lat, item.lon]);
-      }
-    });
-
-    return { count: visible.length, bounds: bounds };
+  function distanceKm(lat1, lon1, lat2, lon2) {
+    var r = 6371;
+    var dLat = ((lat2 - lat1) * Math.PI) / 180;
+    var dLon = ((lon2 - lon1) * Math.PI) / 180;
+    var a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    return r * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   }
 
-  function renderDeelplekken() {
-    deelplekLayer.clearLayers();
+  function formatKm(km) {
+    if (km == null || !isFinite(km)) return "";
+    return (km < 10 ? km.toFixed(1) : Math.round(km).toString()).replace(".", ",") + " km";
+  }
+
+  function itemLon(item) {
+    return item.lng != null ? item.lng : item.lon;
+  }
+
+  function visiblePlekken() {
     var allowed = enabledPartnerTypes();
-    var bounds = [];
-    var visible = deelplekItems.filter(function (item) {
-      return allowed.indexOf(item.type) !== -1;
-    });
+    var plekken = partnerItems
+      .map(function (item) {
+        return Object.assign({ kind: "partner_marker" }, item);
+      })
+      .concat(
+        deelplekItems.map(function (item) {
+          return Object.assign({ kind: "deelplek" }, item);
+        })
+      )
+      .filter(function (item) {
+        return allowed.indexOf(item.type) !== -1;
+      });
+    if (center) {
+      plekken.forEach(function (item) {
+        var lon = itemLon(item);
+        item.afstand_km =
+          item.lat != null && lon != null ? distanceKm(center.lat, center.lon, item.lat, lon) : null;
+      });
+      plekken.sort(function (a, b) {
+        if (a.afstand_km == null) return 1;
+        if (b.afstand_km == null) return -1;
+        return a.afstand_km - b.afstand_km;
+      });
+    }
+    return plekken;
+  }
 
-    list.querySelectorAll('[data-kind="deelplek"]').forEach(function (el) {
-      el.remove();
-    });
-
-    visible.forEach(function (item) {
-      var li = document.createElement("li");
-      li.className = "zoek-item zoek-item--deelplek";
-      li.setAttribute("data-kind", "deelplek");
-      li.setAttribute("data-type", item.type || "");
-      var label = item.type_label || typeLabels[item.type] || item.type;
-      var bron =
-        item.bron_url
-          ? '<p><a href="' +
-            escapeHtml(item.bron_url) +
-            '" rel="noopener noreferrer" target="_blank">Bron</a></p>'
-          : "";
-      li.innerHTML =
-        '<span class="badge badge--' +
-        escapeHtml(item.type) +
-        '">' +
-        escapeHtml(label) +
-        "</span>" +
-        "<h3>" +
-        escapeHtml(item.naam) +
-        (item.plaats ? " · " + escapeHtml(item.plaats) : "") +
-        "</h3>" +
-        "<p>" +
-        escapeHtml(item.adres || item.plaats || "Deelplek") +
-        "</p>" +
-        bron;
-      list.appendChild(li);
-
-      var lon = item.lng != null ? item.lng : item.lon;
-      if (item.lat != null && lon != null) {
-        var popup =
-          "<strong>" +
-          escapeHtml(item.naam) +
-          "</strong><br>" +
-          escapeHtml(label) +
-          (item.plaats ? " · " + escapeHtml(item.plaats) : "");
-        if (item.adres) {
-          popup += "<br>" + escapeHtml(item.adres);
-        }
-        if (item.bron_url) {
-          popup +=
-            '<br><a href="' +
-            escapeHtml(item.bron_url) +
-            '" rel="noopener noreferrer" target="_blank">Bron</a>';
-        }
-        var m = L.marker([item.lat, lon], { icon: deelplekIcon(item.type) }).bindPopup(popup);
-        deelplekLayer.addLayer(m);
-        bounds.push([item.lat, lon]);
+  function plekPopup(item, label) {
+    var popup =
+      "<strong>" +
+      escapeHtml(item.naam) +
+      "</strong><br>" +
+      escapeHtml(label) +
+      (item.plaats ? " · " + escapeHtml(item.plaats) : "");
+    if (item.kind === "deelplek") {
+      if (item.adres) popup += "<br>" + escapeHtml(item.adres);
+      if (item.bron_url) {
+        popup +=
+          '<br><a href="' +
+          escapeHtml(item.bron_url) +
+          '" rel="noopener noreferrer" target="_blank">Bron</a>';
       }
-    });
+    } else if (item.beschrijving) {
+      popup += "<br>" + escapeHtml(item.beschrijving);
+    }
+    return popup;
+  }
 
-    return { count: visible.length, bounds: bounds };
+  function renderPlekMarkers(plekken) {
+    partnerLayer.clearLayers();
+    deelplekLayer.clearLayers();
+    var bounds = [];
+    plekken.forEach(function (item) {
+      var lon = itemLon(item);
+      if (item.lat == null || lon == null) return;
+      var label = item.type_label || typeLabels[item.type] || item.type;
+      var isDeelplek = item.kind === "deelplek";
+      var m = L.marker([item.lat, lon], {
+        icon: isDeelplek ? deelplekIcon(item.type) : partnerIcon(item.type),
+      }).bindPopup(plekPopup(item, label));
+      (isDeelplek ? deelplekLayer : partnerLayer).addLayer(m);
+      bounds.push([item.lat, lon]);
+    });
+    return bounds;
+  }
+
+  function plekListItem(item) {
+    var li = document.createElement("li");
+    li.className = "zoek-item " + (item.kind === "deelplek" ? "zoek-item--deelplek" : "zoek-item--partner");
+    li.setAttribute("data-kind", item.kind);
+    li.setAttribute("data-type", item.type || "");
+    var label = item.type_label || typeLabels[item.type] || item.type;
+    var afstand = item.afstand_km != null ? " · " + formatKm(item.afstand_km) : "";
+    var tekst = item.kind === "deelplek" ? item.adres || item.plaats || "" : item.beschrijving || "";
+    var linkUrl = item.kind === "deelplek" ? item.bron_url : item.url;
+    var linkLabel = item.kind === "deelplek" ? "Bron" : "Website";
+    li.innerHTML =
+      '<span class="badge badge--' +
+      escapeHtml(item.type) +
+      '">' +
+      escapeHtml(label) +
+      "</span>" +
+      "<h3>" +
+      escapeHtml(item.naam) +
+      (item.plaats ? " · " + escapeHtml(item.plaats) : "") +
+      escapeHtml(afstand) +
+      "</h3>" +
+      (tekst ? "<p>" + escapeHtml(tekst) + "</p>" : "") +
+      (linkUrl
+        ? '<p><a href="' +
+          escapeHtml(linkUrl) +
+          '" rel="noopener noreferrer" target="_blank">' +
+          linkLabel +
+          "</a></p>"
+        : "");
+    return li;
   }
 
   function renderAanbodFotos(item) {
@@ -276,49 +286,127 @@
     return html;
   }
 
-  function renderAanbodList(items) {
-    list.querySelectorAll('[data-kind="aanbod"]').forEach(function (el) {
-      el.remove();
-    });
-    if (!showAanbod()) return;
-    items.forEach(function (item) {
-      var li = document.createElement("li");
-      li.className = "zoek-item";
-      li.setAttribute("data-kind", "aanbod");
-      var afstand =
-        item.afstand_km != null ? " · " + item.afstand_km + " km" : "";
-      var tekstHtml = item.tekst
-        ? "<p>" + escapeHtml(item.tekst) + "</p>"
-        : "";
-      li.innerHTML =
-        '<span class="badge">' +
-        escapeHtml(item.type) +
-        "</span>" +
-        "<h3>" +
-        escapeHtml(item.voornaam) +
-        (item.locatie_label ? " · " + escapeHtml(item.locatie_label) : "") +
-        afstand +
-        "</h3>" +
-        renderAanbodFotos(item) +
-        tekstHtml +
-        (cfg.bericht_binnenkort
-          ? '<p class="muted"><em>Bericht sturen: binnenkort</em></p>'
-          : '<p><a class="btn btn-secondary" href="' +
-            (cfg.bericht_starten || "/account/bericht-starten") +
-            "?aanbod_id=" +
-            encodeURIComponent(item.id) +
-            "&user_id=" +
-            encodeURIComponent(item.user_id) +
-            '">Stuur bericht</a></p>');
-      list.insertBefore(li, list.firstChild);
-    });
+  var aanbodTypeLabels = { uitdelen: "Te geef", ophalen: "Gezocht" };
+
+  function aanbodListItem(item) {
+    var li = document.createElement("li");
+    li.className = "zoek-item";
+    li.setAttribute("data-kind", "aanbod");
+    var afstand = item.afstand_km != null ? " · " + formatKm(item.afstand_km) : "";
+    var tekstHtml = item.tekst ? "<p>" + escapeHtml(item.tekst) + "</p>" : "";
+    li.innerHTML =
+      '<span class="badge">' +
+      escapeHtml(aanbodTypeLabels[item.type] || item.type) +
+      "</span>" +
+      "<h3>" +
+      escapeHtml(item.voornaam) +
+      (item.locatie_label ? " · " + escapeHtml(item.locatie_label) : "") +
+      escapeHtml(afstand) +
+      "</h3>" +
+      renderAanbodFotos(item) +
+      tekstHtml +
+      (cfg.bericht_binnenkort
+        ? '<p class="muted"><em>Een bericht sturen kan hier nog niet</em></p>'
+        : '<p><a class="btn btn-secondary" href="' +
+          (cfg.bericht_starten || "/account/bericht-starten") +
+          "?aanbod_id=" +
+          encodeURIComponent(item.id) +
+          "&user_id=" +
+          encodeURIComponent(item.user_id) +
+          '">Stuur bericht</a></p>');
+    return li;
+  }
+
+  function groepKop(titel, aantal) {
+    var li = document.createElement("li");
+    li.className = "zoek-groep-kop";
+    li.innerHTML =
+      "<h2>" +
+      escapeHtml(titel) +
+      (aantal != null ? ' <span class="zoek-groep-aantal">(' + aantal + ")</span>" : "") +
+      "</h2>";
+    return li;
+  }
+
+  function meerKnop(soort, rest) {
+    var li = document.createElement("li");
+    li.className = "zoek-meer";
+    var tekst = soort === "aanbod" ? "Toon meer aanbod" : "Toon meer plekken";
+    li.innerHTML =
+      '<button type="button" class="btn btn-secondary" data-meer="' +
+      soort +
+      '">' +
+      tekst +
+      " (nog " +
+      rest +
+      ")</button>";
+    return li;
+  }
+
+  function renderList(plekken) {
+    list.innerHTML = "";
+    var aanbod = showAanbod() ? aanbodItems : [];
+
+    if (aanbod.length) {
+      // Zonder zoekopdracht is «recent» begrensd op de server: geen (misleidend) totaal tonen.
+      list.appendChild(groepKop(center ? "Aanbod, dichtstbij eerst" : "Net aangeboden", center ? aanbod.length : null));
+      aanbod.slice(0, limits.aanbod).forEach(function (item) {
+        list.appendChild(aanbodListItem(item));
+      });
+      if (aanbod.length > limits.aanbod) {
+        list.appendChild(meerKnop("aanbod", aanbod.length - limits.aanbod));
+      }
+    }
+
+    if (plekken.length) {
+      list.appendChild(groepKop(center ? "Plekken, dichtstbij eerst" : "Deelplekken en initiatieven", plekken.length));
+      plekken.slice(0, limits.plekken).forEach(function (item) {
+        list.appendChild(plekListItem(item));
+      });
+      if (plekken.length > limits.plekken) {
+        list.appendChild(meerKnop("plekken", plekken.length - limits.plekken));
+      }
+    }
+  }
+
+  function resetLimits() {
+    var hasAanbod = showAanbod() && aanbodItems.length > 0;
+    limits.aanbod = STAP.aanbod;
+    // Weinig of geen aanbod: plekken krijgen meer ruimte; veel aanbod: plekken compact.
+    limits.plekken = hasAanbod ? 4 : 8;
+  }
+
+  list.addEventListener("click", function (ev) {
+    var btn = ev.target.closest ? ev.target.closest("[data-meer]") : null;
+    if (!btn) return;
+    var soort = btn.getAttribute("data-meer");
+    limits[soort] += STAP[soort];
+    renderList(visiblePlekken());
+  });
+
+  function updateStatus(plekCount) {
+    var aanbodCount = showAanbod() ? aanbodItems.length : 0;
+    if (!aanbodCount && !plekCount) {
+      status.textContent =
+        (partnerItems.length || deelplekItems.length)
+          ? "Geen plekken bij de gekozen filters."
+          : status.dataset.empty || "Vul een postcode of plaats in om te zien wat er dichtbij is.";
+      return;
+    }
+    var parts = [];
+    if (aanbodCount) parts.push(center ? aanbodCount + " aanbod" : "nieuw aanbod");
+    if (plekCount) parts.push(plekCount + (plekCount === 1 ? " plek" : " plekken"));
+    if (center) {
+      status.textContent = "Rond " + center.label + ": " + parts.join(" · ") + ", dichtstbij eerst.";
+    } else {
+      status.textContent = parts.join(" · ") + ". Vul een postcode of plaats in om te zien wat dichtbij is.";
+    }
   }
 
   function refreshMarkers(fitPartners) {
     aanbodLayer.clearLayers();
-    var partnerInfo = renderPartners();
-    var deelplekInfo = renderDeelplekken();
-    var bounds = partnerInfo.bounds.concat(deelplekInfo.bounds);
+    var plekken = visiblePlekken();
+    var bounds = renderPlekMarkers(plekken);
 
     if (showAanbod()) {
       aanbodItems.forEach(function (item) {
@@ -326,8 +414,8 @@
           var popup =
             "<strong>" +
             escapeHtml(item.voornaam) +
-            "</strong> — " +
-            escapeHtml(item.type);
+            "</strong> · " +
+            escapeHtml(aanbodTypeLabels[item.type] || item.type);
           if (item.tekst) {
             popup += "<br>" + escapeHtml(item.tekst);
           }
@@ -344,28 +432,10 @@
           bounds.push([item.lat, item.lon]);
         }
       });
-      renderAanbodList(aanbodItems);
-    } else {
-      renderAanbodList([]);
     }
 
-    var plekCount = partnerInfo.count + deelplekInfo.count;
-    var parts = [];
-    if (showAanbod() && aanbodItems.length) {
-      parts.push(aanbodItems.length + " aanbod");
-    }
-    if (plekCount) {
-      parts.push(plekCount + " plekken");
-    }
-    if (!parts.length && !aanbodItems.length) {
-      status.textContent =
-        (partnerItems.length || deelplekItems.length) && !plekCount
-          ? "Geen markers voor de gekozen filters."
-          : status.dataset.empty ||
-            "Vul een postcode of plaats in om aanbod te zoeken. Deelplekken staan hieronder.";
-    } else if (parts.length) {
-      status.textContent = parts.join(" · ");
-    }
+    renderList(plekken);
+    updateStatus(plekken.length);
 
     if (fitPartners && bounds.length) {
       map.fitBounds(bounds, { padding: [24, 24], maxZoom: 12 });
@@ -384,7 +454,7 @@
     })
       .then(function (r) {
         return r.json().then(function (data) {
-          if (!r.ok) throw new Error((data && data.error) || "Markers laden mislukt");
+          if (!r.ok) throw new Error((data && data.error) || "De kaartplekken laden is niet gelukt");
           return data;
         });
       })
@@ -408,7 +478,7 @@
     })
       .then(function (r) {
         return r.json().then(function (data) {
-          if (!r.ok) throw new Error((data && data.error) || "Deelplekken laden mislukt");
+          if (!r.ok) throw new Error((data && data.error) || "De deelplekken laden is niet gelukt");
           return data;
         });
       })
@@ -431,25 +501,31 @@
     });
   }
 
-  form.addEventListener("submit", function (ev) {
-    var qEl = document.getElementById("zoek-q");
+  function loadRecentAanbod() {
+    var type = document.getElementById("zoek-type");
+    var url = api + "?recent=1" + (type && type.value ? "&type=" + encodeURIComponent(type.value) : "");
+    return fetch(url, { credentials: "same-origin", headers: { Accept: "application/json" } })
+      .then(function (r) {
+        return r.ok ? r.json() : { items: [] };
+      })
+      .then(function (data) {
+        if (center) return; // intussen gezocht: zoekresultaat wint
+        aanbodItems = (data && data.items) || [];
+        resetLimits();
+        refreshMarkers(false);
+      })
+      .catch(function () {});
+  }
+
+  function zoek(q) {
+    heeftGezocht = true;
     var plantEl = document.getElementById("zoek-plant");
-    var q = qEl ? qEl.value.trim() : "";
     var plant =
       (plantEl && plantEl.value.trim()) ||
       (cfg.plant_filter ? String(cfg.plant_filter) : "");
     var type = document.getElementById("zoek-type").value;
-    // Zonder plaats: server-side plantfilter (werkt zonder JS / progressive enhancement)
-    if (!q) {
-      return;
-    }
-    ev.preventDefault();
     status.textContent = "Zoeken…";
-    aanbodItems = [];
-    aanbodLayer.clearLayers();
-    list.querySelectorAll('[data-kind="aanbod"]').forEach(function (el) {
-      el.remove();
-    });
+    status.dataset.empty = "";
 
     var url =
       api +
@@ -461,19 +537,22 @@
     fetch(url, { credentials: "same-origin", headers: { Accept: "application/json" } })
       .then(function (r) {
         return r.json().then(function (data) {
-          if (!r.ok) throw new Error((data && data.error) || "Zoeken mislukt");
+          if (!r.ok) throw new Error((data && data.error) || "Zoeken is niet gelukt");
           return data;
         });
       })
       .then(function (data) {
         aanbodItems = (data && data.items) || [];
         var meta = data && data.meta;
+        center =
+          meta && meta.zoek_lat != null
+            ? { lat: meta.zoek_lat, lon: meta.zoek_lon, label: meta.zoek_label || q }
+            : null;
         if (!aanbodItems.length) {
           status.dataset.empty =
-            "Nog geen aanbod in de buurt. Bekijk deelplekken op de kaart, of zet zelf iets online via een account.";
-        } else {
-          status.dataset.empty = "";
+            "Nog geen aanbod in de buurt. Bekijk de plekken op de kaart, of zet zelf iets online via een account.";
         }
+        resetLimits();
         // Markers tekenen zonder landelijke fitBounds; zoom rond zoekresultaat.
         refreshMarkers(false);
         if (meta && meta.zoek_lat != null) {
@@ -493,14 +572,30 @@
             }
           }
         }
-        if (!aanbodItems.length && !partnerItems.length && !deelplekItems.length) {
+        if (!meta) {
           status.textContent =
-            "Nog geen aanbod in de buurt. Bekijk deelplekken op de kaart, of zet zelf iets online via een account.";
+            "Ik kon “" + q + "” niet vinden. Probeer een postcode of een andere plaatsnaam.";
         }
       })
       .catch(function (err) {
-        status.textContent = err.message || "Zoeken mislukt";
+        status.textContent = err.message || "Zoeken is niet gelukt";
       });
+  }
+
+  form.addEventListener("submit", function (ev) {
+    var qEl = document.getElementById("zoek-q");
+    var q = qEl ? qEl.value.trim() : "";
+    // Zonder plaats: server-side plantfilter (werkt zonder JS / progressive enhancement)
+    if (!q) {
+      return;
+    }
+    ev.preventDefault();
+    if (window.history && window.history.replaceState) {
+      var params = new URLSearchParams(window.location.search);
+      params.set("q", q);
+      window.history.replaceState(null, "", window.location.pathname + "?" + params.toString());
+    }
+    zoek(q);
   });
 
   function escapeHtml(s) {
@@ -513,4 +608,14 @@
 
   loadPartners();
   loadDeelplekken();
+
+  // Binnenkomen met ?q= (zoekveld op de homepage): direct zoeken; anders nieuwste aanbod tonen.
+  var startQ = new URLSearchParams(window.location.search).get("q");
+  var startQEl = document.getElementById("zoek-q");
+  if (startQ && startQ.trim()) {
+    if (startQEl) startQEl.value = startQ.trim();
+    zoek(startQ.trim());
+  } else {
+    loadRecentAanbod();
+  }
 })();

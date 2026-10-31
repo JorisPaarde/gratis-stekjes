@@ -114,7 +114,7 @@ final class NuTeStekken
     {
         $payload = $this->voorMaand($this->maandnummer($when));
         $payload['titel'] = 'Nu te stekken';
-        $payload['intro'] = 'Wat past bij '.$payload['maand_naam'].' (tijdzone '.$payload['timezone'].'). Tips zijn algemeen; check altijd je eigen plant en weer.';
+        $payload['intro'] = 'Wat je in '.$payload['maand_naam'].' kunt stekken of delen. Tips zijn algemeen; kijk altijd naar je eigen plant en het weer.';
         $payload['stektips_index'] = $this->stektipsIndexUrl();
 
         return $payload;
@@ -186,23 +186,16 @@ final class NuTeStekken
         if ($slug === null || $slug === '' || ! preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $slug)) {
             return null;
         }
-        // Stektips-pagina's landen in de SEO-PR; tot die tijd geen dode links.
-        $dir = base_path('resources/views/stektips/'.$slug.'.blade.php');
-        $legacy = base_path('stektips/'.$slug.'/index.html');
-        if (! is_file($dir) && ! is_file($legacy)) {
+        // Alleen linken als de stektip echt bestaat (geen dode links).
+        if (app(Stektips::class)->find($slug) === null) {
             return null;
         }
 
-        return url('/stektips/'.$slug);
+        return route('stektips.show', ['slug' => $slug]);
     }
 
     private function stektipsIndexUrl(): ?string
     {
-        if (is_file(base_path('resources/views/pages/stektips.blade.php'))
-            || is_file(base_path('stektips/index.html'))) {
-            return url('/stektips');
-        }
-
-        return null;
+        return app(Stektips::class)->all() !== [] ? route('stektips.index') : null;
     }
 }

@@ -30,11 +30,11 @@ test('oude /partners URL geeft 301 naar /initiatieven', function () {
         ->assertStatus(301);
 });
 
-test('homepage toont Initiatieven en geen Partners', function () {
+test('homepage linkt naar Initiatieven en toont geen Partners', function () {
     $this->get('/')
         ->assertOk()
-        ->assertSee('Initiatieven', false)
-        ->assertSee('Alle initiatieven en links', false)
+        ->assertSee('>Initiatieven</a>', false)
+        ->assertSee(route('partners'), false)
         ->assertDontSee('>Partners<', false)
         ->assertDontSee('Alle partners', false);
 });
