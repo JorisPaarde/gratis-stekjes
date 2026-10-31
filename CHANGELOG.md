@@ -9,6 +9,24 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.34.0] - 2026-10-31
+
+### Changed
+
+- **Nieuwe homepage**, op basis van homepage v2 (PR #126, hero B) samengevoegd met de onderdelen
+  van 0.32/0.33. Geen feature-vlag meer: dit is de homepage.
+  - Hero met foto (volkstuin), kop «Gratis planten, stekjes en zaden bij jou in de buurt»,
+    tagline «Meer groen, meer contact», **zoekveld als hoofdactie** en «Maak gratis een account».
+  - «Zo werkt het»: drie stappen met elk een foto (op mobiel compact naast elkaar).
+  - «Hier kun je nu al terecht»: tellingen per soort deelplek, kaartvoorbeeld, nieuwste aanbod.
+  - «Waarom Gratis planten»: korte versie van het verhaal van /over, met foto.
+  - «Nu te stekken» als plantkaarten met foto; «Doe mee» als donkere band met foto.
+  - Rustiger beeld: geen groen titelvlak in de hero, koppen niet meer in hoofdletters, geen kaartranden
+    bij de stappen; fotocredits (CC BY-SA) in één regel onderaan.
+  - Weggelaten t.o.v. PR #126: blokken «Nederland en België», organisatielijst en vaste
+    vermeerdertips (vervangen door seizoensplantkaarten); de bijbehorende foto's zijn verwijderd.
+  - Paginatitel blijft «Gratis planten en stekjes delen in je buurt» (zoekwoordenonderzoek).
+
 ## [0.33.0] - 2026-10-31
 
 ### Changed

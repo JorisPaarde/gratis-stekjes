@@ -64,7 +64,7 @@ test('homepage en aanbod tonen Nu te stekken-blok', function () {
 });
 
 test('blok nu te stekken toont plantkaarten met link naar stektip, foto eerst, max 6', function () {
-    $block = app(\App\Services\NuTeStekken::class)->blockForViews(new DateTimeImmutable('2026-11-15 12:00', new DateTimeZone('Europe/Amsterdam')));
+    $block = app(NuTeStekken::class)->blockForViews(new DateTimeImmutable('2026-11-15 12:00', new DateTimeZone('Europe/Amsterdam')));
 
     expect($block)->not->toBeNull();
     $kaarten = $block['uitgelicht'];

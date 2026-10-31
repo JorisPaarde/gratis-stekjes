@@ -12,6 +12,7 @@ export default defineConfig({
                 'resources/css/partners.css',
                 'resources/css/deelplekken.css',
                 'resources/css/nu-te-stekken.css',
+                'resources/css/home.css',
                 'resources/css/admin.css',
                 'resources/css/stektips.css',
                 'resources/css/gratis-planten.css',

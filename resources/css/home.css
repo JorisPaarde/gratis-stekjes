@@ -1,0 +1,199 @@
+/*
+ * Homepage — beeldrijk en rustig (basis: homepage v2 / PR #126).
+ * Passion One alleen voor H1/H2, zonder groene titelvlakken; tussenkoppen in de broodtekstletter.
+ */
+
+/* —— Hero —— */
+.page-home .home-hero {
+  position: relative;
+  min-height: min(calc(100svh - 4rem), 44rem);
+  display: flex;
+  align-items: flex-end;
+  color: #fff;
+  overflow: hidden;
+}
+.page-home .home-hero-media { position: absolute; inset: 0; z-index: 0; }
+.page-home .home-hero-media .home-pic,
+.page-home .home-hero-media picture,
+.page-home .home-hero-media img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 0;
+}
+.page-home .home-hero-media img { object-fit: cover; }
+.page-home .home-hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(22, 56, 32, 0.15) 0%, rgba(22, 56, 32, 0.55) 45%, rgba(22, 56, 32, 0.92) 100%);
+}
+.page-home .home-hero-inner {
+  position: relative;
+  z-index: 2;
+  width: min(100% - 2rem, var(--max));
+  margin-inline: auto;
+  padding: 2rem 0 2.25rem;
+}
+.page-home .home-hero-heading {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.1rem, 5.6vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: 0.01em;
+  margin: 0 0 0.6rem;
+  max-width: 18ch;
+  color: #fff;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+}
+.page-home .home-hero-tagline {
+  font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+  font-weight: 700;
+  color: #ffe2b8;
+  margin: 0 0 0.35rem;
+}
+.page-home .home-hero-lead {
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  max-width: 38rem;
+  color: #f5faf3;
+  margin: 0 0 1.25rem;
+}
+.page-home .hero-zoek { margin-bottom: 0.9rem; }
+.page-home .home-hero-account {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin: 0;
+  color: #f5faf3;
+  font-weight: 600;
+}
+.page-home .home-hero-account .btn { min-height: 40px; padding: 0.55rem 1.1rem; }
+@media (max-width: 479px) {
+  .page-home .home-hero { min-height: calc(100svh - 3.5rem); }
+  .page-home .home-hero-inner { padding: 1.25rem 0 1.5rem; }
+  .page-home .home-hero-lead { font-size: 0.98rem; margin-bottom: 1rem; }
+}
+
+/* —— Algemeen —— */
+.page-home .section h2 {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-weight: 400;
+}
+.page-home .home-section { scroll-margin-top: 4.5rem; }
+.home-actions { display: flex; flex-wrap: wrap; gap: 0.65rem; margin: 1.25rem 0 0; }
+
+.home-pic { margin: 0; overflow: hidden; border-radius: var(--radius); }
+.home-pic img { width: 100%; height: auto; display: block; }
+.home-pic-credit {
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  margin-top: 0.3rem;
+  line-height: 1.3;
+}
+.home-pic-credit a { color: inherit; }
+
+.home-split { display: grid; gap: 1.5rem; align-items: center; }
+@media (min-width: 800px) {
+  .home-split { grid-template-columns: 1.05fr 0.95fr; gap: 2.5rem; }
+  .home-split--rev .home-split-copy { order: 2; }
+  .home-split--rev .home-split-media { order: 1; }
+}
+
+/* —— Stappen: foto + nummer + korte tekst, geen kaartranden —— */
+.home-stappen {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.75rem;
+}
+@media (min-width: 800px) {
+  .home-stappen { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+}
+.home-stap .home-pic img { aspect-ratio: 4 / 3; object-fit: cover; }
+.home-stap h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 1.2rem;
+  color: var(--forest);
+  margin: 0.85rem 0 0.35rem;
+}
+.home-stap p { margin: 0; color: var(--ink-soft); }
+.home-stap-num {
+  flex: 0 0 auto;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: var(--orange);
+  color: var(--orange-text);
+  font-weight: 700;
+  font-size: 1rem;
+  display: grid;
+  place-items: center;
+}
+
+/* —— Hier kun je terecht —— */
+.home-kaart-preview {
+  display: block;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.15s ease;
+}
+.home-kaart-preview:hover, .home-kaart-preview:focus-visible { transform: translateY(-2px); }
+.home-kaart-preview .home-pic { border-radius: 0; }
+.home-kaart-preview .home-pic img { aspect-ratio: 16 / 10; object-fit: cover; }
+#in-de-buurt .home-subkop { margin-top: 2.25rem; }
+#in-de-buurt .plek-tellingen a { background: #fff; }
+
+/* —— Waarom —— */
+.home-verhaal { font-size: 1.1rem; line-height: 1.6; margin: 0 0 0.9rem; max-width: 36rem; }
+#waarom .home-pic img { aspect-ratio: 3 / 2; object-fit: cover; }
+
+/* —— Doe mee —— */
+.home-signup {
+  background: var(--forest);
+  color: #e8f2e4;
+  padding: 3rem 0;
+}
+.home-signup-inner { display: grid; gap: 1.75rem; align-items: center; }
+@media (min-width: 800px) {
+  .home-signup-inner { grid-template-columns: 1.2fr 0.8fr; }
+}
+.home-signup h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: #fff;
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+  line-height: 1.1;
+}
+.home-signup p { margin: 0; max-width: 36rem; }
+.home-signup .home-pic img { aspect-ratio: 3 / 2; object-fit: cover; }
+
+.home-credits { padding-top: 1rem; padding-bottom: 1.5rem; }
+.home-credits-text { font-size: 0.8rem; margin: 0; }
+.home-credits-text a { color: inherit; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .page-home .home-hero-inner { animation: rise 0.65s ease both; }
+}
+
+/* Mobiel: stappen compact (kleine foto links, tekst rechts). */
+@media (max-width: 799px) {
+  .home-stappen { gap: 1rem; }
+  .home-stap {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    column-gap: 0.9rem;
+    align-items: start;
+  }
+  .home-stap .home-pic { grid-row: 1 / span 2; }
+  .home-stap .home-pic img { aspect-ratio: 1 / 1; }
+  .home-stap h3 { margin: 0 0 0.25rem; font-size: 1.08rem; }
+  .home-stap p { font-size: 0.95rem; }
+  .home-kaart-preview .home-pic img { aspect-ratio: 16 / 9; }
+}

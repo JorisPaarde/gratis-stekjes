@@ -13,34 +13,49 @@ test('homepage is 200 en toont merk Gratis planten', function () {
 
     $response->assertOk();
     $response->assertSee('Gratis planten', false);
-    $response->assertSee('class="hero-brand"', false);
-    $response->assertSee('>Gratis planten en stekjes in je buurt</h1>', false);
-    $response->assertSee('assets/images/hero/hero-stekjes-1280.webp', false);
+    $response->assertSee('class="home-hero-heading"', false);
+    $response->assertSee('>Gratis planten, stekjes en zaden bij jou in de buurt</h1>', false);
+    $response->assertSee('Meer groen, meer contact', false);
+    $response->assertSee('assets/images/home-v2/hero-', false);
     $response->assertSee('fetchpriority="high"', false);
     $response->assertSee('Doe mee', false);
-    $response->assertSee('Hoe werkt het', false);
+    $response->assertSee('Zo werkt het', false);
     $response->assertSee('help-mee', false);
-    $response->assertSee('Ik wil op een andere manier helpen', false);
+    $response->assertSee('Maak gratis een account', false);
     $response->assertSee(route('invasieve-soorten'), false);
     $response->assertDontSee('badge-soon', false);
     $response->assertSee('application/ld+json', false);
     $response->assertSee('"@type":"WebSite"', false);
     $response->assertDontSee('mensen doen al mee', false);
+    $response->assertSee('<title>Gratis planten en stekjes delen in je buurt', false);
 });
 
-test('hero heeft een zoekveld dat naar /aanbod?q= gaat', function () {
+test('hero heeft een zoekveld dat naar /aanbod?q= gaat, met account als tweede actie', function () {
     $html = $this->get('/')->assertOk()->getContent();
 
     expect($html)->toContain('class="hero-zoek"')
         ->and($html)->toContain('action="'.route('aanbod').'"')
         ->and($html)->toContain('name="q"')
-        ->and($html)->toContain('Zoek in de buurt');
+        ->and($html)->toContain('Wat is er bij jou in de buurt?');
+    preg_match('/<section class="home-hero".*?<\/section>/s', $html, $hero);
+    expect($hero[0])->toContain(route('account.registreren'));
+});
+
+test('homepage heeft foto’s met naamsvermelding voor CC BY-SA', function () {
+    $html = $this->get('/')->assertOk()->getContent();
+
+    expect($html)->toContain('assets/images/home-v2/zaden-')
+        ->and($html)->toContain('assets/images/home-v2/delen-')
+        ->and($html)->toContain('class="muted home-credits-text"')
+        ->and($html)->toContain('Gouwenaar')
+        ->and($html)->toContain('creativecommons.org/licenses/by-sa');
 });
 
 test('homepage is ingekort: geen Waarom, Veilig delen, Initiatieven- of Verder kijken-sectie', function () {
     $html = $this->get('/')->assertOk()->getContent();
 
     expect($html)->not->toContain('Waarom?')
+        ->and($html)->not->toContain('id="nederland-belgie"')
         ->and($html)->not->toContain('id="veiligheid"')
         ->and($html)->not->toContain('id="initiatieven"')
         ->and($html)->not->toContain('Verder kijken')
@@ -50,10 +65,10 @@ test('homepage is ingekort: geen Waarom, Veilig delen, Initiatieven- of Verder k
 
 test('hoe werkt het heeft drie stappen', function () {
     $html = $this->get('/')->assertOk()->getContent();
-    preg_match('/<ol class="steps">(.*?)<\/ol>/s', $html, $m);
+    preg_match('/<ol class="home-stappen">(.*?)<\/ol>/s', $html, $m);
 
     expect($m)->not->toBeEmpty();
-    expect(substr_count($m[1], '<li>'))->toBe(3);
+    expect(substr_count($m[1], '<li class="home-stap">'))->toBe(3);
 });
 
 test('blok «Hier kun je nu al terecht» toont tellingen per soort deelplek', function () {
@@ -118,13 +133,11 @@ test('nu te stekken toont geen tijdzone en geen placeholder', function () {
         ->and($html)->not->toContain('volgen binnenkort');
 });
 
-test('Doe mee-paneel staat in HTML zonder JS-afhankelijke reveal-klassen', function () {
+test('Doe mee-blok staat in HTML zonder JS-afhankelijke reveal-klassen', function () {
     $html = $this->get('/')->assertOk()->getContent();
 
     expect($html)->toContain('id="doe-mee"');
-    expect($html)->toContain('class="cta-panel"');
-    // Geen opacity/reveal hooks die zonder JS onzichtbaar zouden blijven
-    expect($html)->not->toMatch('/cta-panel[^>]*opacity\s*:\s*0/');
+    expect($html)->toContain('class="home-signup"');
     expect($html)->not->toContain('data-reveal');
     expect($html)->not->toContain('is-invisible');
 });
