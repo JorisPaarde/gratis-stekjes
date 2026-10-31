@@ -7,7 +7,7 @@
 @section('content')
 <section class="section wrap">
   <h1 class="page-title">Profiel</h1>
-  <p class="section-intro">Publiek: voornaam/bijnaam en benaderde locatie (postcode of plaats in Nederland of België). Telefoon alleen later zichtbaar bij wederzijds “ja” in een gesprek.</p>
+  <p class="section-intro">Anderen zien alleen je voornaam of bijnaam en ongeveer waar je woont. Je telefoonnummer zien ze pas als jullie in een gesprek allebei “ja” zeggen.</p>
 
   @if(session('status'))
     <p class="ok" role="status">{{ session('status') }}</p>
@@ -30,8 +30,8 @@
       </select>
     </label>
     <label>Postcode of plaats *
-      <input name="locatie" required maxlength="120" value="{{ old('locatie', $user->locatie_label) }}" placeholder="Bijv. 2011, 1234 AB, Haarlem of 9000 / Gent">
-      <span class="hint">Nederland: postcode (1234 AB) of plaats. België: 4 cijfers of plaatsnaam (Nederlands of Frans). Ik sla alleen een afgeronde plek op, geen straatadres.</span>
+      <input name="locatie" required maxlength="120" value="{{ old('locatie', $user->locatie_label) }}" placeholder="Bijv. Haarlem, 2011 AB of Gent">
+      <span class="hint">Vul je postcode of woonplaats in. We bewaren alleen ongeveer waar je woont, nooit je straat of huisnummer.</span>
     </label>
     <label>Telefoon (optioneel)
       <input name="telefoon" maxlength="40" value="{{ old('telefoon', $user->telefoon) }}" autocomplete="tel">
