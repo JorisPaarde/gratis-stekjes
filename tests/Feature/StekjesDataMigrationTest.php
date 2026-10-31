@@ -694,3 +694,95 @@ test('page_views exacte id-kopie wordt niet opnieuw opgeteld', function () {
 
     expect((int) DB::table('page_views')->where('id', 5)->value('count'))->toBe(5);
 });
+
+test('herimport met andere exported_at telt niets opnieuw via import_id_maps', function () {
+    $migrator = app(StekjesDataMigrator::class);
+    $payload = stekjes0242FixturePayload();
+    $payload['tables']['page_views'] = [
+        [
+            'id' => 1,
+            'date' => '2026-10-01',
+            'path' => '/',
+            'count' => 7,
+        ],
+        [
+            'id' => 2,
+            'date' => '2026-10-02',
+            'path' => '/aanbod',
+            'count' => 4,
+        ],
+    ];
+    $payload['manifest']['tables']['page_views'] = ['count' => 2, 'sha256' => 'synthetic-pv-reimport'];
+    $payload['exported_at'] = '2026-10-31T08:00:00+00:00';
+
+    clearAppDataTables();
+
+    // Prod heeft al overlapping (user-merge + page_views-som), zoals na de echte verhuis.
+    DB::table('page_views')->insert([
+        'date' => '2026-10-01',
+        'path' => '/',
+        'count' => 10,
+    ]);
+    DB::table('users')->insert([
+        'id' => 50,
+        'name' => 'ProdAdmin',
+        'email' => 'admin-0242@example.test',
+        'password' => '$2y$04$abcdefghijklmnopqrstuuPRODADMINXXXXXXXXXXXXXXXXXX',
+        'telefoon' => '',
+        'locatie_label' => 'ProdStad',
+        'active' => 1,
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    $first = $migrator->import(
+        $payload,
+        force: false,
+        dryRun: false,
+        packageSha256: hash('sha256', 'reimport-export-a')
+    );
+    expect($first['ok'])->toBeTrue()
+        ->and($first['already_imported'])->toBeFalse()
+        ->and($first['tables']['users']['samengevoegd'])->toBe(1)
+        ->and($first['tables']['users']['toegevoegd'])->toBe(2)
+        ->and($first['tables']['page_views']['samengevoegd'])->toBe(1)
+        ->and($first['tables']['page_views']['toegevoegd'])->toBe(1)
+        ->and($first['tables']['page_views']['sum_na'])->toBe(21); // 10+7 + 4
+
+    $usersAfter = (int) DB::table('users')->count();
+    $mailAfter = (int) DB::table('mail_log')->count();
+    $geoAfter = (int) DB::table('geocode_cache')->count();
+    $aanbodAfter = (int) DB::table('aanbod')->count();
+    $sumViews = (int) DB::table('page_views')->sum('count');
+    $fp = $first['source_fingerprint'];
+
+    // Nieuwe export van dezelfde bron: alleen exported_at + package-sha anders.
+    $payload2 = $payload;
+    $payload2['exported_at'] = '2026-10-31T12:00:00+00:00';
+
+    $second = $migrator->import(
+        $payload2,
+        force: false,
+        dryRun: false,
+        packageSha256: hash('sha256', 'reimport-export-b')
+    );
+
+    expect($second['ok'])->toBeTrue()
+        ->and($second['already_imported'])->toBeFalse()
+        ->and($second['source_fingerprint'])->toBe($fp);
+
+    foreach ($second['tables'] as $table => $stats) {
+        expect($stats['toegevoegd'])->toBe(0, "tabel {$table} zou 0 moeten toevoegen")
+            ->and($stats['samengevoegd'] ?? 0)->toBe(0, "tabel {$table} zou 0 moeten optellen");
+        $known = (int) ($stats['al_aanwezig'] ?? 0) + (int) ($stats['overgeslagen'] ?? 0);
+        expect($known)->toBe((int) $stats['bron'], "tabel {$table}: alle bronrijen al_aanwezig of overgeslagen");
+    }
+
+    expect(DB::table('users')->count())->toBe($usersAfter)
+        ->and(DB::table('mail_log')->count())->toBe($mailAfter)
+        ->and(DB::table('geocode_cache')->count())->toBe($geoAfter)
+        ->and(DB::table('aanbod')->count())->toBe($aanbodAfter)
+        ->and((int) DB::table('page_views')->sum('count'))->toBe($sumViews)
+        ->and($second['tables']['page_views']['sum_voor'])->toBe($sumViews)
+        ->and($second['tables']['page_views']['sum_na'])->toBe($sumViews);
+});

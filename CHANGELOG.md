@@ -9,6 +9,20 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.26.3] - 2026-10-31
+
+### Fixed
+
+- Herhaalde stekjes→prod-import van dezelfde bron (nieuwe export, andere `exported_at`/package-sha) telt niets opnieuw: `import_id_maps` (bron-tabel + bron-id, voor `page_views` ook `date|path`) seedt de merge, zodat users/mail_log/geocode/page_views en overige tabellen `al_aanwezig` (of overgeslagen) worden i.p.v. opnieuw samengevoegd/toegevoegd. Idempotentie op bron-inhoud, niet op export-tijdstip. Bestaande prod-data blijft onaangeroerd (geen deletes/overschrijven).
+
+### Changed
+
+- `source_fingerprint` is gebaseerd op manifest table-hashes (+ files tar), zonder `exported_at`. Exact dezelfde package-sha blijft `already_imported`; een her-export met andere sha doorloopt de merge via maps zodat dry-run 0 toevoegen/optellen toont.
+
+### Added
+
+- Pest: twee imports met verschillende `exported_at` → tweede run alles `al_aanwezig`/overgeslagen, page_views-sum gelijk.
+
 ## [0.26.2] - 2026-10-31
 
 ### Fixed

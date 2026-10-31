@@ -214,7 +214,8 @@ final class StekjesDataMigrator
     /**
      * Samenvoeg-import: voegt bronrijen toe (ID-remap), wist/overschrijft niets op target.
      * Dry-run: exact dezelfde writes in een transactie die wordt teruggedraaid.
-     * Idempotent via import_runs.package_sha256 → already_imported.
+     * Exact dezelfde package-sha → already_imported. Zelfde bron-inhoud (andere export-tijd)
+     * → per rij via import_id_maps als al_aanwezig (0 toevoegen / 0 optellen).
      *
      * @param  array<string, mixed>  $payload
      * @return array<string, mixed>
@@ -239,10 +240,14 @@ final class StekjesDataMigrator
         $packageSha256 = $packageSha256 ?? $this->fingerprintPayload($payload);
         $sourceFingerprint = $this->sourceFingerprint($payload);
 
+        // Exact dezelfde package (zelfde zip/sha) → geen herverwerking.
+        // Zelfde bron-inhoud met andere exported_at: wél verwerken via import_id_maps
+        // zodat dry-run 0 toevoegen/optellen + al_aanwezig toont (niet de oude counts).
         if (Schema::hasTable('import_runs')) {
             $prior = DB::table('import_runs')
                 ->where('package_sha256', $packageSha256)
                 ->where('status', 'completed')
+                ->orderByDesc('id')
                 ->first();
             if ($prior !== null) {
                 /** @var array<string, mixed> $stored */
@@ -261,12 +266,14 @@ final class StekjesDataMigrator
                     'dropped_columns' => $droppedColumns,
                     'schema' => $schema,
                     'package_sha256' => $packageSha256,
+                    'source_fingerprint' => $sourceFingerprint,
                 ];
             }
         }
 
         $tableStats = [];
-        $idMaps = [];
+        // Seed met mappings van eerdere geslaagde runs (bron-tabel + bron-id → prod-id).
+        $idMaps = $this->loadPriorIdMaps();
         $counts = [];
         $skipped = [];
 
@@ -275,6 +282,7 @@ final class StekjesDataMigrator
             try {
                 $runId = null;
                 if (Schema::hasTable('import_runs')) {
+                    // Nieuwe package-sha mag naast bestaande fingerprint; unique op sha.
                     $runId = (int) DB::table('import_runs')->insertGetId([
                         'package_sha256' => $packageSha256,
                         'source_fingerprint' => $sourceFingerprint,
@@ -305,11 +313,13 @@ final class StekjesDataMigrator
                         'geocode_cache' => $this->mergeGeocodeCache(
                             $payload['tables'][$table],
                             $droppedColumns['geocode_cache'] ?? [],
+                            $idMaps,
                             $runId
                         ),
                         'page_views' => $this->mergePageViews(
                             $payload['tables'][$table],
                             $droppedColumns['page_views'] ?? [],
+                            $idMaps,
                             $runId
                         ),
                         'blocks' => $this->mergeBlocks(
@@ -371,6 +381,7 @@ final class StekjesDataMigrator
                         'dropped_columns' => $droppedColumns,
                         'schema' => $schema,
                         'package_sha256' => $packageSha256,
+                        'source_fingerprint' => $sourceFingerprint,
                     ];
                 }
 
@@ -398,6 +409,7 @@ final class StekjesDataMigrator
                 'error' => $diagnosis['error_class'],
                 'diagnosis' => $diagnosis,
                 'package_sha256' => $packageSha256,
+                'source_fingerprint' => $sourceFingerprint,
             ];
         }
 
@@ -411,6 +423,7 @@ final class StekjesDataMigrator
             'dropped_columns' => $droppedColumns,
             'schema' => $schema,
             'package_sha256' => $packageSha256,
+            'source_fingerprint' => $sourceFingerprint,
         ];
     }
 
@@ -546,6 +559,13 @@ final class StekjesDataMigrator
                 throw new \RuntimeException('Ongeldige user-rij in export.');
             }
 
+            // Eerdere run heeft deze bron-id al gemapt → geen merge/insert opnieuw.
+            if (isset($idMaps['users'][$oldId])) {
+                $this->storeIdMap($runId, 'users', $oldId, $idMaps['users'][$oldId]);
+                $stats['al_aanwezig']++;
+                continue;
+            }
+
             // Kopie van eerdere ID-behoudende import (v0.24.12): zelfde id + inhoud.
             if ($this->isExactCopy('users', $row)) {
                 $idMaps['users'][$oldId] = $oldId;
@@ -608,13 +628,15 @@ final class StekjesDataMigrator
     /**
      * @param  list<array<string, mixed>>  $rows
      * @param  list<string>  $dropCols
-     * @return array{prod_voor: int, bron: int, toegevoegd: int, samengevoegd: int, overgeslagen: int, prod_na: int}
+     * @param  array<string, array<string, string>>  $idMaps
+     * @return array{prod_voor: int, bron: int, toegevoegd: int, samengevoegd: int, overgeslagen: int, al_aanwezig: int, prod_na: int}
      */
-    private function mergeGeocodeCache(array $rows, array $dropCols, ?int $runId): array
+    private function mergeGeocodeCache(array $rows, array $dropCols, array &$idMaps, ?int $runId): array
     {
         $prodVoor = (int) DB::table('geocode_cache')->count();
         $stats = $this->baseStats($prodVoor, count($rows));
         $targetCols = Schema::getColumnListing('geocode_cache');
+        $idMaps['geocode_cache'] = $idMaps['geocode_cache'] ?? [];
 
         foreach ($rows as $row) {
             $row = $this->filterColumns($row, $targetCols, $dropCols);
@@ -623,8 +645,14 @@ final class StekjesDataMigrator
                 $stats['overgeslagen']++;
                 continue;
             }
+            if (isset($idMaps['geocode_cache'][$key])) {
+                $this->storeIdMap($runId, 'geocode_cache', $key, $idMaps['geocode_cache'][$key]);
+                $stats['al_aanwezig']++;
+                continue;
+            }
             $existing = DB::table('geocode_cache')->where('query_key', $key)->first();
             if ($existing !== null) {
+                $idMaps['geocode_cache'][$key] = $key;
                 $this->storeIdMap($runId, 'geocode_cache', $key, $key);
                 if ($this->contentMatches('geocode_cache', $row, (array) $existing)) {
                     $stats['al_aanwezig']++;
@@ -634,6 +662,7 @@ final class StekjesDataMigrator
                 continue;
             }
             DB::table('geocode_cache')->insert($row);
+            $idMaps['geocode_cache'][$key] = $key;
             $this->storeIdMap($runId, 'geocode_cache', $key, $key);
             $stats['toegevoegd']++;
         }
@@ -645,12 +674,14 @@ final class StekjesDataMigrator
 
     /**
      * Pageviews: per date+path counts optellen (niet vervangen).
+     * Bron-rij die al via import_id_maps (id of date|path) bekend is → nooit opnieuw optellen.
      *
      * @param  list<array<string, mixed>>  $rows
      * @param  list<string>  $dropCols
-     * @return array{prod_voor: int, bron: int, toegevoegd: int, samengevoegd: int, overgeslagen: int, prod_na: int, sum_voor: int, sum_na: int}
+     * @param  array<string, array<string, string>>  $idMaps
+     * @return array{prod_voor: int, bron: int, toegevoegd: int, samengevoegd: int, overgeslagen: int, al_aanwezig: int, prod_na: int, sum_voor: int, sum_na: int}
      */
-    private function mergePageViews(array $rows, array $dropCols, ?int $runId): array
+    private function mergePageViews(array $rows, array $dropCols, array &$idMaps, ?int $runId): array
     {
         $prodVoor = (int) DB::table('page_views')->count();
         $sumVoor = (int) DB::table('page_views')->sum('count');
@@ -658,6 +689,7 @@ final class StekjesDataMigrator
         $stats['sum_voor'] = $sumVoor;
         $stats['sum_na'] = $sumVoor;
         $targetCols = Schema::getColumnListing('page_views');
+        $idMaps['page_views'] = $idMaps['page_views'] ?? [];
 
         foreach ($rows as $row) {
             $row = $this->filterColumns($row, $targetCols, $dropCols);
@@ -668,30 +700,45 @@ final class StekjesDataMigrator
                 $stats['overgeslagen']++;
                 continue;
             }
-            $sourceKey = $date.'|'.$path;
+            $pathKey = $date.'|'.$path;
+            $idKey = isset($row['id']) ? (string) (int) $row['id'] : '';
+
+            // Al verwerkt in eerdere run (bron-id of date|path).
+            $priorNew = null;
+            if ($idKey !== '' && isset($idMaps['page_views'][$idKey])) {
+                $priorNew = $idMaps['page_views'][$idKey];
+            } elseif (isset($idMaps['page_views'][$pathKey])) {
+                $priorNew = $idMaps['page_views'][$pathKey];
+            }
+            if ($priorNew !== null) {
+                $this->rememberPageViewKeys($idMaps, $runId, $idKey, $pathKey, $priorNew);
+                $stats['al_aanwezig']++;
+                continue;
+            }
 
             // Exacte kopie (zelfde id + date/path/count): niet opnieuw optellen.
             if ($this->isExactCopy('page_views', $row)) {
-                $this->storeIdMap($runId, 'page_views', $sourceKey, (string) (int) $row['id']);
+                $newKey = (string) (int) $row['id'];
+                $this->rememberPageViewKeys($idMaps, $runId, $idKey, $pathKey, $newKey);
                 $stats['al_aanwezig']++;
                 continue;
             }
 
             $existing = DB::table('page_views')->where('date', $date)->where('path', $path)->first();
             if ($existing !== null) {
-                // Alleen optellen als het géén al-geïmporteerde id-kopie is.
                 DB::table('page_views')->where('id', $existing->id)->update([
                     'count' => (int) $existing->count + $add,
                 ]);
-                $this->storeIdMap($runId, 'page_views', $sourceKey, (string) (int) $existing->id);
+                $newKey = (string) (int) $existing->id;
+                $this->rememberPageViewKeys($idMaps, $runId, $idKey, $pathKey, $newKey);
                 $stats['samengevoegd']++;
                 continue;
             }
 
             $insert = $row;
             unset($insert['id']);
-            $newId = (string) (int) DB::table('page_views')->insertGetId($insert);
-            $this->storeIdMap($runId, 'page_views', $sourceKey, $newId);
+            $newKey = (string) (int) DB::table('page_views')->insertGetId($insert);
+            $this->rememberPageViewKeys($idMaps, $runId, $idKey, $pathKey, $newKey);
             $stats['toegevoegd']++;
         }
 
@@ -699,6 +746,20 @@ final class StekjesDataMigrator
         $stats['sum_na'] = (int) DB::table('page_views')->sum('count');
 
         return $stats;
+    }
+
+    /**
+     * @param  array<string, array<string, string>>  $idMaps
+     */
+    private function rememberPageViewKeys(array &$idMaps, ?int $runId, string $idKey, string $pathKey, string $newKey): void
+    {
+        $idMaps['page_views'] = $idMaps['page_views'] ?? [];
+        if ($idKey !== '' && $idKey !== '0') {
+            $idMaps['page_views'][$idKey] = $newKey;
+            $this->storeIdMap($runId, 'page_views', $idKey, $newKey);
+        }
+        $idMaps['page_views'][$pathKey] = $newKey;
+        $this->storeIdMap($runId, 'page_views', $pathKey, $newKey);
     }
 
     /**
@@ -712,12 +773,19 @@ final class StekjesDataMigrator
         $prodVoor = (int) DB::table('blocks')->count();
         $stats = $this->baseStats($prodVoor, count($rows));
         $targetCols = Schema::getColumnListing('blocks');
+        $idMaps['blocks'] = $idMaps['blocks'] ?? [];
 
         foreach ($rows as $row) {
             $row = $this->filterColumns($row, $targetCols, $dropCols);
             $rawBlocker = isset($row['blocker_id']) ? (string) (int) $row['blocker_id'] : '';
             $rawBlocked = isset($row['blocked_id']) ? (string) (int) $row['blocked_id'] : '';
             $oldKey = $rawBlocker.':'.$rawBlocked;
+
+            if ($oldKey !== ':' && isset($idMaps['blocks'][$oldKey])) {
+                $this->storeIdMap($runId, 'blocks', $oldKey, $idMaps['blocks'][$oldKey]);
+                $stats['al_aanwezig']++;
+                continue;
+            }
 
             // Pre-remap: exacte kopie met bron-user-ids (v0.24.12).
             if ($rawBlocker !== '' && $rawBlocked !== '') {
@@ -726,6 +794,7 @@ final class StekjesDataMigrator
                     ->where('blocked_id', (int) $rawBlocked)
                     ->first();
                 if ($existingBlock !== null && $this->contentMatches('blocks', $row, (array) $existingBlock)) {
+                    $idMaps['blocks'][$oldKey] = $oldKey;
                     $this->storeIdMap($runId, 'blocks', $oldKey, $oldKey);
                     $stats['al_aanwezig']++;
                     continue;
@@ -741,13 +810,16 @@ final class StekjesDataMigrator
             }
             unset($row['_old_blocker'], $row['_old_blocked']);
 
+            $newKey = $blocker.':'.$blocked;
             if (DB::table('blocks')->where('blocker_id', $blocker)->where('blocked_id', $blocked)->exists()) {
-                $this->storeIdMap($runId, 'blocks', $oldKey, $blocker.':'.$blocked);
+                $idMaps['blocks'][$oldKey] = $newKey;
+                $this->storeIdMap($runId, 'blocks', $oldKey, $newKey);
                 $stats['overgeslagen']++;
                 continue;
             }
             DB::table('blocks')->insert($row);
-            $this->storeIdMap($runId, 'blocks', $oldKey, $blocker.':'.$blocked);
+            $idMaps['blocks'][$oldKey] = $newKey;
+            $this->storeIdMap($runId, 'blocks', $oldKey, $newKey);
             $stats['toegevoegd']++;
         }
 
@@ -772,6 +844,12 @@ final class StekjesDataMigrator
         foreach ($rows as $row) {
             $row = $this->filterColumns($row, $targetCols, $dropCols);
             $oldId = isset($row['id']) ? (string) (int) $row['id'] : '';
+
+            if ($oldId !== '' && isset($idMaps['deelplekken'][$oldId])) {
+                $this->storeIdMap($runId, 'deelplekken', $oldId, $idMaps['deelplekken'][$oldId]);
+                $stats['al_aanwezig']++;
+                continue;
+            }
 
             if ($oldId !== '' && $this->isExactCopy('deelplekken', $row)) {
                 $idMaps['deelplekken'][$oldId] = $oldId;
@@ -822,6 +900,13 @@ final class StekjesDataMigrator
         foreach ($rows as $row) {
             $row = $this->filterColumns($row, $targetCols, $dropCols);
             $oldId = isset($row['id']) ? (string) (int) $row['id'] : '';
+
+            // Eerdere run heeft deze bron-id al gemapt → geen insert opnieuw.
+            if ($oldId !== '' && isset($idMaps[$table][$oldId])) {
+                $this->storeIdMap($runId, $table, $oldId, $idMaps[$table][$oldId]);
+                $stats['al_aanwezig']++;
+                continue;
+            }
 
             // Vóór FK-remap: kopie met behouden bron-id's (v0.24.12-import).
             if ($oldId !== '' && $this->isExactCopy($table, $row)) {
@@ -950,13 +1035,45 @@ final class StekjesDataMigrator
         if ($runId === null || ! Schema::hasTable('import_id_maps')) {
             return;
         }
-        DB::table('import_id_maps')->insert([
-            'import_run_id' => $runId,
-            'table_name' => $table,
-            'old_key' => mb_substr($oldKey, 0, 191),
-            'new_key' => mb_substr($newKey, 0, 191),
-            'created_at' => now(),
-        ]);
+        $old = mb_substr($oldKey, 0, 191);
+        $new = mb_substr($newKey, 0, 191);
+        // Zelfde run +zelfde old_key (bv. page_views id én date|path pad) → upsert.
+        DB::table('import_id_maps')->updateOrInsert(
+            [
+                'import_run_id' => $runId,
+                'table_name' => $table,
+                'old_key' => $old,
+            ],
+            [
+                'new_key' => $new,
+                'created_at' => now(),
+            ]
+        );
+    }
+
+    /**
+     * Alle bron→prod mappings van eerdere geslaagde imports (idempotentie over export-sha heen).
+     *
+     * @return array<string, array<string, string>>
+     */
+    private function loadPriorIdMaps(): array
+    {
+        $maps = [];
+        if (! Schema::hasTable('import_id_maps') || ! Schema::hasTable('import_runs')) {
+            return $maps;
+        }
+
+        $rows = DB::table('import_id_maps as m')
+            ->join('import_runs as r', 'r.id', '=', 'm.import_run_id')
+            ->where('r.status', 'completed')
+            ->orderBy('m.id')
+            ->get(['m.table_name', 'm.old_key', 'm.new_key']);
+
+        foreach ($rows as $row) {
+            $maps[(string) $row->table_name][(string) $row->old_key] = (string) $row->new_key;
+        }
+
+        return $maps;
     }
 
     /**
@@ -1097,6 +1214,8 @@ final class StekjesDataMigrator
     }
 
     /**
+     * Package-fingerprint inclusief exported_at (uniek per export-zip).
+     *
      * @param  array<string, mixed>  $payload
      */
     private function fingerprintPayload(array $payload): string
@@ -1111,14 +1230,35 @@ final class StekjesDataMigrator
     }
 
     /**
+     * Bron-inhoud fingerprint: manifest table hashes (+ files tar), zonder exported_at.
+     * Zelfde bron opnieuw geëxporteerd → dezelfde fingerprint.
+     *
      * @param  array<string, mixed>  $payload
      */
     private function sourceFingerprint(array $payload): string
     {
-        $raw = ((string) ($payload['app_version'] ?? '')).'|'.((string) ($payload['exported_at'] ?? ''));
-        $manifestHash = hash('sha256', json_encode($payload['manifest']['tables'] ?? []) ?: '');
+        $tables = $payload['manifest']['tables'] ?? [];
+        if (! is_array($tables)) {
+            $tables = [];
+        }
+        ksort($tables);
+        $canonicalTables = [];
+        foreach ($tables as $name => $meta) {
+            $meta = is_array($meta) ? $meta : [];
+            $canonicalTables[(string) $name] = [
+                'count' => (int) ($meta['count'] ?? 0),
+                'sha256' => (string) ($meta['sha256'] ?? ''),
+            ];
+        }
 
-        return mb_substr(hash('sha256', $raw.'|'.$manifestHash), 0, 128);
+        $encoded = json_encode([
+            'format' => $payload['format'] ?? self::FORMAT,
+            'format_version' => (int) ($payload['format_version'] ?? self::FORMAT_VERSION),
+            'tables' => $canonicalTables,
+            'files_tar_sha256' => $payload['manifest']['files_tar_sha256'] ?? null,
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+        return hash('sha256', $encoded === false ? 'invalid' : $encoded);
     }
 
     private function extractSafeTableName(string $message): ?string
