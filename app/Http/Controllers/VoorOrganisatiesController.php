@@ -10,6 +10,7 @@ use App\Notifications\DeelplekAanmeldingBevestiging;
 use App\Services\DeelplekAanmelding;
 use App\Services\Deelplekken;
 use App\Services\Organisaties;
+use App\Support\Country;
 use App\Support\SafeMail;
 use App\Support\ThrottleMessage;
 use Illuminate\Http\RedirectResponse;
@@ -37,6 +38,7 @@ class VoorOrganisatiesController extends Controller
             'metaDescription' => 'Meld je voedselbos, plantenasiel, plantenbieb of andere deelplek aan.',
             'canonical' => route('voor-organisaties.aanmelden'),
             'typeLabels' => $deelplekken->typeLabels(),
+            'countries' => Country::labels(),
             'formStarted' => time(),
         ]);
     }

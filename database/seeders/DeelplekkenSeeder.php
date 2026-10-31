@@ -32,6 +32,7 @@ class DeelplekkenSeeder extends Seeder
                     'type' => (string) $row['type'],
                     'plaats' => trim(mb_substr((string) $row['plaats'], 0, 120)),
                     'provincie' => trim(mb_substr((string) $row['provincie'], 0, 64)),
+                    'country' => 'NL',
                     'adres' => trim(mb_substr((string) ($row['adres'] ?? ''), 0, 255)),
                     'lat' => (float) $row['lat'],
                     'lng' => (float) $row['lng'],

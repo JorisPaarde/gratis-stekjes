@@ -27,6 +27,7 @@ class Deelplek extends Model
         'type',
         'plaats',
         'provincie',
+        'country',
         'adres',
         'lat',
         'lng',

@@ -13,6 +13,7 @@ class PartnerMarker extends Model
         'naam',
         'type',
         'plaats',
+        'country',
         'beschrijving',
         'lat',
         'lon',

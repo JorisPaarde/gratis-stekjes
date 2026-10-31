@@ -7,11 +7,25 @@
   var filterEl = document.getElementById("marker-filters");
   if (!form || !list || typeof L === "undefined") return;
 
-  var map = L.map(mapEl).setView([52.1, 5.2], 7);
+  // Beginuitsnede direct bij aanmaken (view nodig vóór whenReady/tiles).
+  var nlBeBounds = [
+    [49.45, 2.4],
+    [53.55, 7.25],
+  ];
+  var nlBeFitOpts = { padding: [16, 16], maxZoom: 7 };
+  var map = L.map(mapEl).fitBounds(nlBeBounds, nlBeFitOpts);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxZoom: 18,
   }).addTo(map);
+  function fitNlBe() {
+    map.invalidateSize();
+    map.fitBounds(nlBeBounds, nlBeFitOpts);
+  }
+  map.whenReady(function () {
+    setTimeout(fitNlBe, 50);
+    setTimeout(fitNlBe, 400);
+  });
   var aanbodLayer = L.layerGroup().addTo(map);
   var partnerLayer = L.layerGroup().addTo(map);
   var deelplekLayer = L.layerGroup().addTo(map);
@@ -329,6 +343,11 @@
 
     if (fitPartners && bounds.length) {
       map.fitBounds(bounds, { padding: [24, 24], maxZoom: 12 });
+      // Clamp: nooit verder uit dan NL+BE.
+      var minZoom = map.getBoundsZoom(L.latLngBounds(nlBeBounds), false, L.point(16, 16));
+      if (map.getZoom() < minZoom) {
+        fitNlBe();
+      }
     }
   }
 
@@ -348,10 +367,8 @@
           typeLabels = Object.assign(typeLabels, data.types);
         }
         partnerItems = (data && data.items) || [];
-        refreshMarkers(
-          (partnerItems.length > 0 || deelplekItems.length > 0) &&
-            aanbodItems.length === 0
-        );
+        // Geen fitBounds bij eerste load: beginuitsnede blijft NL + België.
+        refreshMarkers(false);
       })
       .catch(function () {
         partnerItems = [];
@@ -374,10 +391,8 @@
           typeLabels = Object.assign(typeLabels, data.types);
         }
         deelplekItems = (data && data.items) || [];
-        refreshMarkers(
-          (partnerItems.length > 0 || deelplekItems.length > 0) &&
-            aanbodItems.length === 0
-        );
+        // Geen fitBounds bij eerste load: beginuitsnede blijft NL + België.
+        refreshMarkers(false);
       })
       .catch(function () {
         deelplekItems = [];
@@ -427,16 +442,31 @@
       .then(function (data) {
         aanbodItems = (data && data.items) || [];
         var meta = data && data.meta;
-        if (meta && meta.zoek_lat != null) {
-          map.setView([meta.zoek_lat, meta.zoek_lon], 11);
-        }
         if (!aanbodItems.length) {
           status.dataset.empty =
             "Nog geen aanbod in de buurt. Bekijk deelplekken op de kaart, of zet zelf iets online via een account.";
         } else {
           status.dataset.empty = "";
         }
-        refreshMarkers(true);
+        // Markers tekenen zonder landelijke fitBounds; zoom rond zoekresultaat.
+        refreshMarkers(false);
+        if (meta && meta.zoek_lat != null) {
+          map.setView([meta.zoek_lat, meta.zoek_lon], 11);
+        } else if (aanbodItems.length) {
+          var resultBounds = [];
+          aanbodItems.forEach(function (item) {
+            if (item.lat != null && item.lon != null) {
+              resultBounds.push([item.lat, item.lon]);
+            }
+          });
+          if (resultBounds.length) {
+            map.fitBounds(resultBounds, { padding: [24, 24], maxZoom: 12 });
+            var minZ = map.getBoundsZoom(L.latLngBounds(nlBeBounds), false, L.point(16, 16));
+            if (map.getZoom() < minZ) {
+              fitNlBe();
+            }
+          }
+        }
         if (!aanbodItems.length && !partnerItems.length && !deelplekItems.length) {
           status.textContent =
             "Nog geen aanbod in de buurt. Bekijk deelplekken op de kaart, of zet zelf iets online via een account.";

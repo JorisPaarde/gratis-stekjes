@@ -5,14 +5,19 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Aanbod;
+use App\Support\Country;
 use App\Support\Geo;
 
 final class AanbodSearch
 {
-    public function __construct(private readonly PdokGeocoder $geocoder) {}
+    public function __construct(private readonly LocationGeocoder $geocoder) {}
 
     /**
-     * @return array{meta: ?array{zoek_lat: float, zoek_lon: float, zoek_label: string}, items: list<array<string, mixed>>}
+     * @return array{
+     *   meta: ?array{zoek_lat: float, zoek_lon: float, zoek_label: string, country?: string},
+     *   items: list<array<string, mixed>>,
+     *   error?: string
+     * }
      */
     public function search(?string $query, ?string $typeFilter, bool $allowNetwork = true, ?string $plant = null): array
     {
@@ -51,19 +56,23 @@ final class AanbodSearch
 
         $q = trim((string) $query);
         if ($q !== '') {
-            $geo = $this->geocoder->geocode($q, $allowNetwork);
-            if ($geo) {
-                $items = $this->sortByDistance($items, $geo['lat'], $geo['lon']);
-
-                return [
-                    'meta' => [
-                        'zoek_lat' => $geo['lat'],
-                        'zoek_lon' => $geo['lon'],
-                        'zoek_label' => $geo['label'],
-                    ],
-                    'items' => $items,
-                ];
+            $resolved = $this->geocoder->resolve($q, null, $allowNetwork);
+            if (! ($resolved['ok'] ?? false)) {
+                // Onvindbaar → oude gedrag (on-gesorteerde lijst).
+                return ['meta' => null, 'items' => $items];
             }
+
+            $items = $this->sortByDistance($items, $resolved['lat'], $resolved['lon']);
+
+            return [
+                'meta' => [
+                    'zoek_lat' => $resolved['lat'],
+                    'zoek_lon' => $resolved['lon'],
+                    'zoek_label' => $resolved['label'],
+                    'country' => $resolved['country'] ?? Country::NL,
+                ],
+                'items' => $items,
+            ];
         }
 
         return ['meta' => null, 'items' => $items];
@@ -84,6 +93,7 @@ final class AanbodSearch
             'tekst' => (string) $aanbod->tekst,
             'voornaam' => (string) ($user?->name ?? ''),
             'locatie_label' => (string) ($user?->locatie_label ?? ''),
+            'country' => Country::normalize((string) ($user?->country ?? Country::NL)),
             'lat' => $user?->lat !== null ? Geo::roundCoord((float) $user->lat) : null,
             'lon' => $user?->lon !== null ? Geo::roundCoord((float) $user->lon) : null,
             'user_id' => (int) $aanbod->user_id,

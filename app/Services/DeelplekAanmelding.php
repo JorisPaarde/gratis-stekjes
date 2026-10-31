@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Deelplek;
+use App\Support\Country;
+use App\Support\PostalCode;
 use Illuminate\Support\Str;
 
 final class DeelplekAanmelding
 {
     public function __construct(
         private readonly Deelplekken $deelplekken,
-        private readonly PdokGeocoder $geocoder,
+        private readonly LocationGeocoder $geocoder,
     ) {}
 
     /**
@@ -25,6 +27,7 @@ final class DeelplekAanmelding
         $adres = trim(mb_substr((string) ($fields['adres'] ?? ''), 0, 255));
         $postcode = trim(mb_substr((string) ($fields['postcode'] ?? ''), 0, 16));
         $plaats = trim(mb_substr((string) ($fields['plaats'] ?? ''), 0, 120));
+        $country = Country::normalize((string) ($fields['country'] ?? Country::NL));
         $url = trim(mb_substr((string) ($fields['url'] ?? ''), 0, 500));
         $beschrijving = trim(mb_substr((string) ($fields['beschrijving'] ?? ''), 0, 1000));
         $email = strtolower(trim(mb_substr((string) ($fields['contact_email'] ?? ''), 0, 254)));
@@ -45,16 +48,34 @@ final class DeelplekAanmelding
             return ['ok' => false, 'error' => 'Website moet met http:// of https:// beginnen (of leeg laten).'];
         }
 
-        $geoQuery = $this->geoQuery($adres, $postcode, $plaats);
-        $geo = $this->geocoder->geocode($geoQuery, $allowNetworkGeo);
-        if ($geo === null) {
-            return ['ok' => false, 'error' => 'Adres of plaats niet gevonden. Probeer een postcode of woonplaats (PDOK).'];
+        if ($postcode !== '') {
+            $pcValid = PostalCode::validate($postcode, $country);
+            if ($pcValid !== true) {
+                return ['ok' => false, 'error' => $pcValid];
+            }
+            $postcode = PostalCode::format(
+                PostalCode::normalize($postcode, $country) ?? $postcode,
+                $country
+            );
         }
 
-        // AVG: geen exact straatadres opslaan — alleen postcode-4 + plaats (coords al afgerond).
-        $pc4 = substr(preg_replace('/\D/', '', $postcode) ?? '', 0, 4);
-        $adresRegel = trim(($pc4 !== '' ? $pc4.' ' : '').$plaats);
-        // $adres blijft alleen in de geocode-query hierboven; niet in de database.
+        $geoQuery = $this->geoQuery($adres, $postcode, $plaats);
+        $resolved = $this->geocoder->resolve($geoQuery, $country, $allowNetworkGeo);
+        if (! ($resolved['ok'] ?? false)) {
+            return ['ok' => false, 'error' => $resolved['error'] ?? 'Adres of plaats niet gevonden.'];
+        }
+
+        // AVG: geen exact straatadres opslaan — alleen genormaliseerde postcode + plaats.
+        $pcStored = $postcode !== ''
+            ? $postcode
+            : ($resolved['postcode'] !== null
+                ? PostalCode::format((string) $resolved['postcode'], $country)
+                : '');
+        // BE: plaatsnaam zoals geocoder die geeft (gemeente/deelgemeente).
+        if ($country === Country::BE && trim((string) $resolved['label']) !== '' && ! preg_match('/^\d{4}$/', (string) $resolved['label'])) {
+            $plaats = trim(mb_substr((string) $resolved['label'], 0, 120));
+        }
+        $adresRegel = trim(($pcStored !== '' ? $pcStored.' ' : '').$plaats);
 
         $slug = $this->uniqueSlug($naam, $plaats);
 
@@ -64,9 +85,10 @@ final class DeelplekAanmelding
             'type' => $type,
             'plaats' => $plaats,
             'provincie' => '',
+            'country' => $country,
             'adres' => mb_substr($adresRegel, 0, 255),
-            'lat' => $geo['lat'],
-            'lng' => $geo['lon'],
+            'lat' => $resolved['lat'],
+            'lng' => $resolved['lon'],
             'bron_url' => $url !== '' ? $url : '',
             'geraadpleegd' => now()->toDateString(),
             'visible' => false,

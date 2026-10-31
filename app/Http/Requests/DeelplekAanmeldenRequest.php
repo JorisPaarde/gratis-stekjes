@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Support\Country;
 use App\Support\FormGuard;
+use App\Support\PostalCode;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -24,6 +26,7 @@ class DeelplekAanmeldenRequest extends FormRequest
         return [
             'naam' => ['required', 'string', 'max:160'],
             'type' => ['required', 'string', Rule::in($types)],
+            'country' => ['required', 'string', Rule::in(Country::codes())],
             'adres' => ['nullable', 'string', 'max:255'],
             'postcode' => ['nullable', 'string', 'max:16'],
             'plaats' => ['required', 'string', 'max:120'],
@@ -44,6 +47,8 @@ class DeelplekAanmeldenRequest extends FormRequest
             'naam.required' => 'Vul een naam in.',
             'type.required' => 'Kies een type.',
             'type.in' => 'Kies een geldig type.',
+            'country.required' => 'Kies een land.',
+            'country.in' => 'Kies Nederland of België.',
             'plaats.required' => 'Vul een plaats in.',
             'contact_email.required' => 'Vul een contact-e-mailadres in.',
             'contact_email.email' => 'Vul een geldig e-mailadres in.',
@@ -67,6 +72,14 @@ class DeelplekAanmeldenRequest extends FormRequest
             $url = trim((string) $this->input('url', ''));
             if ($url !== '' && ! preg_match('#^https?://#i', $url)) {
                 $validator->errors()->add('url', 'Website moet met http:// of https:// beginnen (of leeg laten).');
+            }
+            $postcode = trim((string) $this->input('postcode', ''));
+            $country = Country::normalize((string) $this->input('country', Country::NL));
+            if ($postcode !== '') {
+                $pcValid = PostalCode::validate($postcode, $country);
+                if ($pcValid !== true) {
+                    $validator->errors()->add('postcode', $pcValid);
+                }
             }
         });
     }

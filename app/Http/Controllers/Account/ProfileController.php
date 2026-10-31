@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
-use App\Services\PdokGeocoder;
+use App\Services\LocationGeocoder;
+use App\Support\Country;
 use App\Support\Geo;
+use App\Support\PostalCode;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -20,47 +23,65 @@ class ProfileController extends Controller
             'metaDescription' => 'Je profiel en benaderde locatie bij '.config('site.name').'.',
             'canonical' => route('account.profiel'),
             'user' => $request->user(),
+            'countries' => Country::labels(),
         ]);
     }
 
-    public function update(Request $request, PdokGeocoder $geocoder): RedirectResponse
+    public function update(Request $request, LocationGeocoder $geocoder): RedirectResponse
     {
         $data = $request->validate([
             'voornaam' => ['required', 'string', 'max:80'],
+            'country' => ['required', 'string', Rule::in(Country::codes())],
             'locatie' => ['required', 'string', 'max:120'],
             'telefoon' => ['nullable', 'string', 'max:40', 'regex:/^[0-9+\s().-]{7,40}$/'],
         ], [
             'voornaam.required' => 'Vul een voornaam of bijnaam in.',
-            'locatie.required' => 'Vul een postcode (4 cijfers) of plaats in.',
+            'country.required' => 'Kies een land.',
+            'country.in' => 'Kies Nederland of België.',
+            'locatie.required' => 'Vul een postcode of plaats in.',
             'telefoon.regex' => 'Telefoonnummer ziet er niet geldig uit.',
         ]);
 
+        $country = Country::normalize($data['country']);
         $locatie = trim($data['locatie']);
-        $geo = $geocoder->geocode($locatie, true);
-        if (! $geo) {
-            return back()
-                ->withInput()
-                ->withErrors(['locatie' => 'Locatie niet gevonden. Gebruik een postcode (4 cijfers) of plaatsnaam in Nederland.']);
+
+        // Als het op een postcode lijkt: land-specifieke validatie (incl. Waalse afwijzing).
+        if ($this->looksLikePostcode($locatie, $country)) {
+            $pcValid = PostalCode::validate($locatie, $country);
+            if ($pcValid !== true) {
+                return back()->withInput()->withErrors(['locatie' => $pcValid]);
+            }
         }
 
-        if (preg_match('/^\d{4}/', $locatie)) {
-            $label = substr(preg_replace('/\D/', '', $locatie) ?? '', 0, 4);
-        } else {
-            $label = trim(explode(',', $geo['label'])[0]);
-            $label = mb_substr($label, 0, 80);
+        $resolved = $geocoder->resolve($locatie, $country, true);
+        if (! ($resolved['ok'] ?? false)) {
+            return back()
+                ->withInput()
+                ->withErrors(['locatie' => $resolved['error'] ?? 'Locatie niet gevonden.']);
         }
+
+        $label = PostalCode::locationLabel($locatie, $country, $resolved['label']);
 
         $request->user()->update([
             'name' => trim($data['voornaam']),
             'telefoon' => trim((string) ($data['telefoon'] ?? '')),
+            'country' => $country,
             'locatie_label' => $label,
-            // Dubbele afronding: geocoder rondt al af; hier hard afdwingen voor opslag.
-            'lat' => Geo::roundCoord((float) $geo['lat']),
-            'lon' => Geo::roundCoord((float) $geo['lon']),
+            'lat' => Geo::roundCoord((float) $resolved['lat']),
+            'lon' => Geo::roundCoord((float) $resolved['lon']),
         ]);
 
         return redirect()
             ->route('account.profiel')
             ->with('status', 'Profiel opgeslagen.');
+    }
+
+    private function looksLikePostcode(string $input, string $country): bool
+    {
+        if ($country === Country::BE) {
+            return (bool) preg_match('/^\d{4}$/', trim($input));
+        }
+
+        return (bool) preg_match('/^\d{4}(\s*[A-Za-z]{2})?$/', trim($input));
     }
 }

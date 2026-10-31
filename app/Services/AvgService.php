@@ -103,6 +103,7 @@ final class AvgService
                 'name' => (string) $user->name,
                 'telefoon' => (string) ($user->telefoon ?? ''),
                 'locatie_label' => (string) ($user->locatie_label ?? ''),
+                'country' => (string) ($user->country ?? 'NL'),
                 'lat' => $user->lat !== null ? Geo::roundCoord((float) $user->lat) : null,
                 'lon' => $user->lon !== null ? Geo::roundCoord((float) $user->lon) : null,
                 'email_verified_at' => optional($user->email_verified_at)?->toIso8601String(),

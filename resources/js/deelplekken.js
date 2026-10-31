@@ -24,12 +24,26 @@
     zaadbibliotheek: "#8a6a3a",
   };
 
-  var map = L.map(mapEl).setView([52.1, 5.2], 7);
+  // Beginuitsnede direct bij aanmaken (view nodig vóór whenReady/tiles).
+  var nlBeBounds = [
+    [49.45, 2.4],
+    [53.55, 7.25],
+  ];
+  var nlBeFitOpts = { padding: [16, 16], maxZoom: 7 };
+  var map = L.map(mapEl).fitBounds(nlBeBounds, nlBeFitOpts);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution:
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxZoom: 18,
   }).addTo(map);
+  function fitNlBe() {
+    map.invalidateSize();
+    map.fitBounds(nlBeBounds, nlBeFitOpts);
+  }
+  map.whenReady(function () {
+    setTimeout(fitNlBe, 50);
+    setTimeout(fitNlBe, 400);
+  });
   var layer = L.layerGroup().addTo(map);
 
   function deelplekIcon(type) {
@@ -111,9 +125,7 @@
         status.textContent =
           items.length + (items.length === 1 ? " plek" : " plekken");
       }
-      if (bounds.length) {
-        map.fitBounds(bounds, { padding: [28, 28], maxZoom: 12 });
-      }
+      // Bewaar beginuitsnede NL + België; zoom niet naar alleen NL-markers.
     })
     .catch(function () {
       if (status) status.textContent = "Kaartmarkers laden mislukt.";

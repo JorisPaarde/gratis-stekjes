@@ -8,7 +8,7 @@
 <section class="section wrap prose">
   <h1 class="page-title">Privacyverklaring</h1>
 
-  <p>Deze verklaring beschrijft welke persoonsgegevens {{ config('site.name') }} (gratisplanten.nl) verwerkt, waarom, hoe lang, en welke rechten je hebt. Ik houd het dicht bij wat de applicatie echt doet (zie ook de technische inventaris in de broncode).</p>
+  <p>Deze verklaring beschrijft welke persoonsgegevens {{ config('site.name') }} (gratisplanten.nl) verwerkt, waarom, hoe lang, en welke rechten je hebt. Het werkgebied van de site is Nederland en België; ik voeg geen aparte Belgische juridische claims toe. Ik houd het dicht bij wat de applicatie echt doet (zie ook de technische inventaris in de broncode).</p>
 
   <h2>Verwerkingsverantwoordelijke</h2>
   <p>
@@ -21,7 +21,7 @@
 
   <h2>Welke gegevens ik verwerk</h2>
   <ul class="list-plain">
-    <li><strong>Account:</strong> e-mailadres, wachtwoord (alleen als hash, bcrypt/argon via Laravel), voornaam of bijnaam, optioneel telefoonnummer (versleuteld opgeslagen), benaderde locatie (label zoals postcode-4 of plaats, plus afgeronde coördinaten). Optioneel een tijdelijk nieuw e-mailadres bij e-mailwijziging (<code>pending_email</code>) tot bevestiging.</li>
+    <li><strong>Account:</strong> e-mailadres, wachtwoord (alleen als hash, bcrypt/argon via Laravel), voornaam of bijnaam, optioneel telefoonnummer (versleuteld opgeslagen), land (NL/BE), benaderde locatie (label zoals postcode of plaats, plus afgeronde coördinaten). Optioneel een tijdelijk nieuw e-mailadres bij e-mailwijziging (<code>pending_email</code>) tot bevestiging.</li>
     <li><strong>Aanbod:</strong> type (uitdelen of ophalen), vrije tekst (plantensoort), zichtbaarheid, verloopdatum en (intern) verlengtoken bij herinneringsmails. Optioneel tot drie foto’s die jij uploadt: ik controleer of het echt een afbeelding is (JPEG/PNG/WebP), herschrijf die server-side (zonder EXIF/GPS), bewaar ze buiten uitvoerbare paden met willekeurige bestandsnamen, en toon ze bij je aanbod. Foto’s zijn openbaar zolang het aanbod zichtbaar is.</li>
     <li><strong>Ervaringen:</strong> korte tekst (max. ±500 tekens), optionele foto (zelfde veilige verwerking als aanbodfoto’s: JPEG/PNG/WebP, max. 8&nbsp;MB, finfo + decode, opnieuw zonder EXIF/GPS), optionele koppeling aan een soort of jouw aanbod, en een plaatsnaam op gemeenteniveau (nooit een straatadres). Nieuwe ervaringen wachten op mijn goedkeuring vóór ze publiek zichtbaar zijn.</li>
     <li><strong>Berichten:</strong> inhoud van gesprekken (versleuteld opgeslagen), of je verder contact wilt delen (ja/nee), of jullie een overdracht als afgerond markeren, leestijd, blokkeerregels, en meldingen met reden (versleuteld) voor de beheerder.</li>
@@ -35,7 +35,7 @@
   <ul class="list-plain">
     <li>Voornaam of bijnaam</li>
     <li>Wat je uitdeelt of zoekt (vrije tekst) en eventuele foto’s bij dat aanbod</li>
-    <li>Benaderde locatie (postcode-4 of plaats/wijk) en afgeronde kaartpunten — nooit een straat of huisnummer via de site</li>
+    <li>Benaderde locatie (postcode of plaats/wijk) en afgeronde kaartpunten — nooit een straat of huisnummer via de site</li>
     <li>Goedgekeurde deelplekken/organisaties met de publieke info die daarvoor is goedgekeurd</li>
     <li>Goedgekeurde ervaringen: je voornaam/bijnaam, tekst, optionele foto, plaatsnaam (gemeente) en eventuele soortnaam</li>
   </ul>
@@ -92,7 +92,7 @@
   </ul>
 
   <h2>Kaart en derden</h2>
-  <p>De aanbodkaart gebruikt Leaflet met tegels van OpenStreetMap. Zoeklocaties via de gratis PDOK Locatieserver; resultaten cache ik lokaal. Op de kaart alleen benaderde punten. OpenStreetMap/PDOK ontvangen daarbij de gebruikelijke technische verzoeken van je browser of mijn server (geen accountgegevens van {{ config('site.name') }}).</p>
+  <p>De aanbodkaart gebruikt Leaflet met tegels van OpenStreetMap. Zoeklocaties in Nederland via de gratis PDOK Locatieserver; voor België (en gemengd zoeken) via Nominatim (OpenStreetMap), beperkt tot landen NL en BE. Resultaten cache ik lokaal. Op de kaart alleen benaderde punten. OpenStreetMap/PDOK/Nominatim ontvangen daarbij de gebruikelijke technische verzoeken van je browser of mijn server (geen accountgegevens van {{ config('site.name') }}).</p>
 
   <h2>Melden en blokkeren</h2>
   <p>Je kunt een gebruiker melden of blokkeren. Meldingen worden opgeslagen voor de beheerder. Er is geen openbare moderatiewachtrij.</p>
