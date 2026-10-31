@@ -2,8 +2,14 @@
 
 declare(strict_types=1);
 
-test('stijlgids laadt, is noindex en toont iconen', function () {
-    $html = $this->get(route('stijlgids'))
+test('stijlgids is niet publiek: gast wordt naar beheer-login gestuurd', function () {
+    $this->get('/stijlgids')
+        ->assertRedirect(route('beheer.login'));
+});
+
+test('stijlgids laadt voor beheer, is noindex en toont iconen', function () {
+    $html = $this->withSession(['admin_ok' => true])
+        ->get(route('stijlgids'))
         ->assertOk()
         ->assertSee('Stijlgids', false)
         ->assertSee('name="robots" content="noindex, nofollow"', false)

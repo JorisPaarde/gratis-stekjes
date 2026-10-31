@@ -43,7 +43,7 @@ Self-hosted OFL: **Passion One** (display) + **Titillium Web** (body). Zie `docs
 
 ## Iconen
 
-Lucide (ISC) + eigen planticonen (zelfde 24px-grid, stroke 2). Overzicht: `/stijlgids` (noindex).
+Lucide (ISC) + eigen planticonen (zelfde 24px-grid, stroke 2). Overzicht: `/stijlgids` (noindex, alleen na beheer-login; nooit publiek of gelinkt).
 
 ## Motion & a11y
 

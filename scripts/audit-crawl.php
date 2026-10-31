@@ -111,7 +111,7 @@ $organisaties = app(App\Services\Organisaties::class)->all();
 $paths = [
     '/', '/privacy', '/initiatieven', '/deelplekken',
     '/voor-organisaties', '/voor-organisaties/aanmelden', '/organisaties',
-    '/stijlgids', '/robots.txt', '/sitemap.xml',
+    '/robots.txt', '/sitemap.xml',
     '/hoe-werkt-het', '/hulpmiddelen', '/over', '/invasieve-soorten', '/stektips', '/gratis-planten',
     '/aanbod', '/api/zoeken?q=Haarlem', '/api/partners', '/api/deelplekken', '/api/nu-te-stekken',
     '/account/registreren', '/account/inloggen', '/account/wachtwoord-vergeten', '/beheer',
