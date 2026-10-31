@@ -9,6 +9,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.32.1] - 2026-10-31
+
+### Changed
+
+- Tekstronde 2 (0.31.2) naar productie, bovenop homepage v3 (0.32.0). Bij overlap blijft
+  homepage v3 leidend (homepage-bestanden en `resources/js/zoeken.js` gelijk aan #138).
+
 ## [0.32.0] - 2026-10-31
 
 ### Added
