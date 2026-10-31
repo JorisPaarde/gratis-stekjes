@@ -12,7 +12,7 @@
   <h2>Wat je krijgt</h2>
   <ul>
     <li>Een vermelding bij de <a href="{{ route('deelplekken') }}">deelplekken</a>, op de kaart en in de lijst (te filteren op soort en plaats).</li>
-    <li>Je staat ook op de <a href="{{ route('gratis-planten.index') }}">stadspagina</a> van een stad bij jou in de buurt.</li>
+    <li>Lig je in de buurt van een van de steden, dan sta je ook op die <a href="{{ route('gratis-planten.index') }}">stadspagina</a>.</li>
     <li>Een korte pagina over je organisatie, met een link naar je eigen site.</li>
   </ul>
   <p>Het is geen officieel partnerschap en het kost niets. Er wordt niets verkocht via deze site. Het is alleen een plek waar mensen je kunnen vinden om planten, stekjes of zaden gratis te delen.</p>

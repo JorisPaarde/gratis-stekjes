@@ -19,6 +19,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   volkstuinen, registreren, inloggen en header/footer. Werktaal weg, warmer en eenvoudiger,
   zaden genoemd waar het past, meer uitnodiging om een account te maken.
 - Mijn aanbod: fotohint «Voor je privacy haal ik de locatie uit je foto’s.»
+- Profielpagina: locatiehint in de ik-vorm («Ik bewaar alleen ongeveer waar je woont…»).
 
 ## [0.30.4] - 2026-10-31
 

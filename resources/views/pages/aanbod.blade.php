@@ -92,7 +92,7 @@
     </div>
   </div>
 
-  <p class="muted" style="margin-top:1rem">Kaart: © OpenStreetMap-bijdragers. Plaatsen zijn ongeveer, via PDOK.
+  <p class="muted" style="margin-top:1rem">Kaart: © OpenStreetMap-bijdragers. Plaatsen zoek ik op via PDOK en OpenStreetMap; ze staan er bij benadering op.
     @auth
       · <a href="{{ route('account.aanbod') }}">Zelf iets aanbieden</a>
     @else

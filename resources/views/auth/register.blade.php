@@ -36,7 +36,7 @@
 
     <label class="checkbox">
       <input type="checkbox" name="gratis_akkoord" value="1" required @checked(old('gratis_akkoord'))>
-      <span>Ik ga akkoord: alles is <strong>gratis</strong>, er wordt niets verkocht via deze site.</span>
+      <span>Ik ga akkoord: ik bied alles <strong>gratis</strong> aan en verkoop niets via deze site.</span>
     </label>
     <label class="checkbox">
       <input type="checkbox" name="privacy" value="1" required @checked(old('privacy'))>

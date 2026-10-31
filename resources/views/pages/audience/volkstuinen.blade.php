@@ -22,7 +22,7 @@
   <p>Er blijven drie spelregels: het is <strong>gratis</strong>, je haalt alles <strong>zelf op</strong>, en de enige tegenprestatie is een <strong>praatje</strong>.</p>
 
   <h2>Voor het bestuur</h2>
-  <p>Een volkstuinvereniging kan zich als deelplek aanmelden met het formulier voor organisaties. Kies bij het type <em>tuinvereniging</em>. Na controle komt de plek op de pagina met <a href="{{ route('deelplekken') }}">deelplekken</a> en op de <a href="{{ route('gratis-planten.index') }}">stadspagina’s</a> in de buurt. Het is geen officieel partnerschap, het kost niets en er wordt niets verkocht via deze site.</p>
+  <p>Een volkstuinvereniging kan zich als deelplek aanmelden met het formulier voor organisaties. Kies bij het type <em>tuinvereniging</em>. Na controle kan de plek komen op de pagina met <a href="{{ route('deelplekken') }}">deelplekken</a> en op de <a href="{{ route('gratis-planten.index') }}">stadspagina’s</a> in de buurt. Het is geen officieel partnerschap, het kost niets en er wordt niets verkocht via deze site.</p>
   <p>Later komt er voor elke vereniging een eigen link en QR-code om in het clubhuis op te hangen. Die poster bestaat nog niet. Wil je hem krijgen zodra hij klaar is? Mail me dan via <a href="{{ route('contact') }}">contact</a>.</p>
 
   <x-slot:cta>
