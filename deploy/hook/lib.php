@@ -1046,6 +1046,7 @@ function deploy_hook_action_finish(
     // Bij flat layout stond .env al op $appDir/.env; bewaar.
     $finalEnv = deploy_hook_resolve_app_key($envContent, $existingEnv);
     $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'BACKUP_ENCRYPTION_KEY');
+    $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'ADMIN_DASHBOARD_EMAILS');
     if (! deploy_hook_write_env($existingEnv, $finalEnv)) {
         return ['ok' => false, 'error' => 'env_write'];
     }

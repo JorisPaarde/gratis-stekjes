@@ -12,6 +12,7 @@
 #            IMPORT_ENABLED (true|false → DEPLOY_IMPORT_ENABLED; default false)
 #            BACKUP_ENCRYPTION_KEY (apart van APP_KEY; leeg → hook behoudt bestaande .env-waarde)
 #            BACKUP_RETAIN_DAYS (default 30)
+#            ADMIN_DASHBOARD_EMAILS (CSV; alleen schrijven als gezet; leeg → hook behoudt bestaande)
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -71,6 +72,7 @@ mask "${DEPLOY_TOKEN:-}"
 mask "${DB_PASSWORD:-}"
 mask "${SMTP_PASS:-}"
 mask "${ADMIN_PASSWORD:-}"
+mask "${ADMIN_DASHBOARD_EMAILS:-}"
 mask "${CRON_TOKEN:-}"
 mask "${APP_KEY:-}"
 mask "${BACKUP_ENCRYPTION_KEY:-}"
@@ -243,6 +245,10 @@ umask 077
   dotenv_line MAIL_FROM_NAME "$NAME"
   dotenv_line CRON_TOKEN "$CRON_TOKEN"
   dotenv_line ADMIN_PASSWORD "$ADMIN_PASSWORD"
+  # Dashboard-accounts: alleen schrijven als secret gezet; anders behoudt de hook de bestaande waarde.
+  if [ -n "${ADMIN_DASHBOARD_EMAILS:-}" ]; then
+    dotenv_line ADMIN_DASHBOARD_EMAILS "$ADMIN_DASHBOARD_EMAILS"
+  fi
   dotenv_line DEPLOY_TOKEN "$DEPLOY_TOKEN"
   dotenv_line DEPLOY_ENDPOINT_ENABLED "$DEPLOY_ENDPOINT_ENABLED_VAL"
   # Backup-sleutel: alleen schrijven als secret gezet; anders behoudt de hook de bestaande waarde.

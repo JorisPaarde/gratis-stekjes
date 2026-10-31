@@ -8,19 +8,21 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class LoginController extends Controller
 {
     public function create(Request $request): View|Response|RedirectResponse
     {
+        if (Gate::allows('see-admin-dashboard')) {
+            return redirect()->route('beheer.index');
+        }
+
         $password = (string) config('stekjes.admin_password', '');
         if ($password === '') {
             return response('Admin niet geconfigureerd.', 503)
                 ->header('Content-Type', 'text/plain; charset=UTF-8');
-        }
-        if ($request->session()->get('admin_ok')) {
-            return redirect()->route('beheer.index');
         }
 
         return view('beheer.login', [
@@ -53,6 +55,11 @@ class LoginController extends Controller
     {
         $request->session()->forget('admin_ok');
         $request->session()->regenerate();
+
+        // Account-sessie blijft; alleen de losse beheer-flag verdwijnt.
+        if (Gate::allows('see-admin-dashboard')) {
+            return redirect()->route('home');
+        }
 
         return redirect()->route('beheer.login');
     }
