@@ -9,6 +9,23 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.33.0] - 2026-10-31
+
+### Changed
+
+- `/aanbod` opnieuw opgezet:
+  - **Zoekbalk op één regel** (postcode/plaats, plant optioneel, Zoek); de keuze
+    uitdelen/ophalen is weg uit de zoekbalk (badges «Te geef»/«Gezocht» staan bij de resultaten).
+  - **Filters als chips** i.p.v. een kader met vinkjes; soorten zonder plekken worden verborgen.
+  - **Kaart op volle breedte**, resultaten eronder in een raster (3/2/1 kolommen).
+  - Na zoeken **één lijst op afstand**: aanbod en plekken door elkaar, dichtstbij eerst
+    (een zadenbibliotheek op 15 km staat dus boven aanbod op 38 km); begrensd met «Toon meer».
+  - **Aanbod per lid samengevoegd**: één kaart met regels en «Stuur bericht» per regel, en één
+    marker per lid.
+  - Compacte plekkaarten: naam + afstand, type en plaats, adres klein, «Op de kaart» en «Website».
+  - «Op de kaart» zoomt in en opent de popup; zoekplek als eigen marker; kaartuitsnede rond de
+    dichtstbijzijnde resultaten.
+
 ## [0.32.0] - 2026-10-31
 
 ### Added
