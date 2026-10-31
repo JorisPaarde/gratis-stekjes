@@ -27,8 +27,8 @@ class DeelplekkenController extends Controller
         ]);
 
         $site = config('site.name');
-        $title = 'Deelplekken';
-        $metaDescription = 'Plantenasiel, plantenbieb of ruilkast bij jou in de buurt — landelijk overzicht van deelplekken voor planten in Nederland.';
+        $title = 'Plantenasiel, plantenbieb en ruilkastje in je buurt';
+        $metaDescription = 'Vind een plantenasiel, plantenbieb, ruilkast of zadenbibliotheek bij jou in de buurt — landelijk overzicht in Nederland.';
 
         return view('pages.deelplekken', [
             'title' => $title,

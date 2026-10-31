@@ -4,31 +4,64 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Ervaring;
 use App\Services\Kennisbank;
 use App\Services\NuTeStekken;
 use App\Services\Organisaties;
+use App\Services\Plantensoorten;
 use App\Services\Steden;
 use App\Services\Stektips;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class PageController extends Controller
 {
-    public function home(NuTeStekken $calendar): View
+    public function home(NuTeStekken $calendar, Plantensoorten $plantensoorten): View
     {
         $site = config('site.name');
+        $title = 'Gratis planten en stekjes delen in je buurt';
+        $heading = 'Gratis planten en stekjes in je buurt';
+        $metaDescription = config('site.description');
+
+        $ervaringenBlok = null;
+        if (config('stekjes.ervaringen_home_block_enabled') && Schema::hasTable('ervaringen')) {
+            $rows = Ervaring::query()
+                ->approved()
+                ->with('user:id,name')
+                ->orderByDesc('approved_at')
+                ->orderByDesc('id')
+                ->limit(3)
+                ->get();
+            if ($rows->isNotEmpty()) {
+                $ervaringenBlok = $rows->map(function (Ervaring $e) use ($plantensoorten) {
+                    $soort = $e->plantensoort_id ? $plantensoorten->find((int) $e->plantensoort_id) : null;
+
+                    return [
+                        'body' => $e->body,
+                        'plaatsnaam' => $e->plaatsnaam,
+                        'naam' => $e->user?->name ?? 'Lid',
+                        'soort' => $soort['naam'] ?? null,
+                        'has_photo' => $e->hasPhoto(),
+                        'photo_url' => $e->hasPhoto() ? route('ervaringen.foto', $e) : null,
+                    ];
+                })->all();
+            }
+        }
 
         return view('pages.home', [
-            'title' => $site,
-            'metaDescription' => config('site.description'),
+            'title' => $title,
+            'heading' => $heading,
+            'metaDescription' => $metaDescription,
             'canonical' => url('/'),
             'nuTeStekken' => $calendar->blockForViews(),
+            'ervaringenBlok' => $ervaringenBlok,
             'schema' => [
                 '@context' => 'https://schema.org',
                 '@type' => 'WebSite',
                 'name' => $site,
                 'url' => url('/'),
-                'description' => config('site.description'),
+                'description' => $metaDescription,
                 'inLanguage' => 'nl-NL',
             ],
         ]);
@@ -80,6 +113,64 @@ class PageController extends Controller
         return response($this->robotsBody(), 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
     }
 
+    /**
+     * Web app manifest (PWA). Zelfde inhoud als public/manifest.webmanifest;
+     * route zorgt voor juiste Content-Type in tests en als fallback zonder static file.
+     */
+    public function manifest(): Response
+    {
+        $name = (string) config('site.name');
+        $payload = [
+            'id' => '/',
+            'name' => $name,
+            'short_name' => $name,
+            'description' => (string) config('site.description'),
+            'start_url' => '/',
+            'scope' => '/',
+            'display' => 'standalone',
+            'orientation' => 'any',
+            'lang' => 'nl',
+            'dir' => 'ltr',
+            'background_color' => (string) config('site.background_color'),
+            'theme_color' => (string) config('site.theme_color'),
+            'icons' => [
+                [
+                    'src' => '/assets/icons/icon-192.png',
+                    'sizes' => '192x192',
+                    'type' => 'image/png',
+                    'purpose' => 'any',
+                ],
+                [
+                    'src' => '/assets/icons/icon-512.png',
+                    'sizes' => '512x512',
+                    'type' => 'image/png',
+                    'purpose' => 'any',
+                ],
+                [
+                    'src' => '/assets/icons/icon-192-maskable.png',
+                    'sizes' => '192x192',
+                    'type' => 'image/png',
+                    'purpose' => 'maskable',
+                ],
+                [
+                    'src' => '/assets/icons/icon-512-maskable.png',
+                    'sizes' => '512x512',
+                    'type' => 'image/png',
+                    'purpose' => 'maskable',
+                ],
+            ],
+        ];
+
+        return response(
+            json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)."\n",
+            200,
+            [
+                'Content-Type' => 'application/manifest+json; charset=UTF-8',
+                'Cache-Control' => 'public, max-age=3600',
+            ]
+        );
+    }
+
     public function sitemap(Stektips $stektips, Steden $steden, Organisaties $organisaties, Kennisbank $kennisbank): Response
     {
         $urls = [
@@ -99,7 +190,16 @@ class PageController extends Controller
             route('organisaties.index'),
             route('invasieve-soorten'),
             route('gratis-planten.index'),
+            route('volkstuinen'),
+            route('help-mee'),
+            route('natuur'),
+            route('verbinding'),
         ];
+
+        // /ervaringen alleen in sitemap als er goedgekeurde ervaringen zijn (anders noindex/leeg).
+        if (Schema::hasTable('ervaringen') && Ervaring::query()->approved()->exists()) {
+            $urls[] = route('ervaringen.index');
+        }
         foreach ($kennisbank->all() as $artikel) {
             $urls[] = route('stektips.artikel', ['slug' => $artikel['slug']]);
         }

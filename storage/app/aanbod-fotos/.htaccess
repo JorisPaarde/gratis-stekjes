@@ -1,0 +1,12 @@
+# Geen directory listing, geen PHP-executie — ook als deze map
+# ooit onder een docroot belandt (defense in depth).
+Options -Indexes -ExecCGI
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Deny from all
+</IfModule>
+<FilesMatch "\.(?i:php|phtml|phar|php[0-9]+)$">
+    Require all denied
+</FilesMatch>

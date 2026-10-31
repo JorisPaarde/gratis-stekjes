@@ -112,6 +112,14 @@ assert_true(is_file($tmp.'/app/storage/logs/x.log'), 'storage preserved');
 assert_true(trim((string) file_get_contents($tmp.'/app/storage/logs/x.log')) === 'preserve', 'log content');
 assert_true(is_file($tmp.'/docroot/index.php'), 'index.php written');
 
+// BACKUP_ENCRYPTION_KEY behouden als upload leeg is.
+$existingEnv = $tmp.'/preserve-backup.env';
+file_put_contents($existingEnv, "APP_KEY=\"base64:abc\"\nBACKUP_ENCRYPTION_KEY=\"keep-me-secret\"\n");
+$merged = deploy_hook_preserve_env_key("APP_KEY=\"base64:abc\"\nBACKUP_ENCRYPTION_KEY=\n", $existingEnv, 'BACKUP_ENCRYPTION_KEY');
+assert_true(str_contains($merged, 'BACKUP_ENCRYPTION_KEY="keep-me-secret"'), 'backup key preserved');
+$keepUpload = deploy_hook_preserve_env_key("BACKUP_ENCRYPTION_KEY=\"from-upload\"\n", $existingEnv, 'BACKUP_ENCRYPTION_KEY');
+assert_true(str_contains($keepUpload, 'BACKUP_ENCRYPTION_KEY="from-upload"'), 'upload backup key wins');
+
 // cleanup
 $it = new RecursiveIteratorIterator(
     new RecursiveDirectoryIterator($tmp, FilesystemIterator::SKIP_DOTS),

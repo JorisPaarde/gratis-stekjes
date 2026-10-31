@@ -1,6 +1,11 @@
 # cPanel DirectoryIndex zet index.html vóór index.php; forceer Laravel front controller.
 DirectoryIndex index.php
 
+# PWA: correcte MIME voor web app manifest
+<IfModule mod_mime.c>
+    AddType application/manifest+json .webmanifest
+</IfModule>
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes

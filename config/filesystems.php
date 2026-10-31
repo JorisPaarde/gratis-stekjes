@@ -47,6 +47,19 @@ return [
             'report' => false,
         ],
 
+        /*
+         * Aanbodfoto’s: buiten public/ (geen executable pad). Serving via
+         * Media\AanbodFotoController. Bevat .htaccess die PHP-executie weigert
+         * als de map ooit per ongeluk onder een docroot hangt.
+         */
+        'aanbod_fotos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/aanbod-fotos'),
+            'visibility' => 'private',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

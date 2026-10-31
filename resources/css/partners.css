@@ -17,3 +17,84 @@
   color: var(--muted, #4a4540);
   font-size: 0.95rem;
 }
+
+.partners-filter-grid {
+  display: grid;
+  gap: 0.75rem 1rem;
+  align-items: end;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  max-width: 40rem;
+}
+
+.partners-agenda {
+  display: grid;
+  gap: 1.75rem;
+  margin: 1.25rem 0 2rem;
+}
+
+.partners-month-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.15rem;
+  text-transform: capitalize;
+}
+
+.partners-event-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.partners-event {
+  margin: 0;
+}
+
+.partners-event-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.85rem;
+  align-items: center;
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+}
+
+.partners-event-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+}
+
+.partners-agenda-empty {
+  margin: 1rem 0 2rem;
+}
+
+.partners-past {
+  margin: 0 0 2.5rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line, rgba(26, 18, 16, 0.12));
+  border-radius: var(--radius, 0.85rem);
+  background: var(--card, #fff);
+}
+
+.partners-past > summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--leaf-deep, #163820);
+  list-style: none;
+}
+
+.partners-past > summary::-webkit-details-marker {
+  display: none;
+}
+
+.partners-past > summary::before {
+  content: '▸ ';
+}
+
+.partners-past[open] > summary::before {
+  content: '▾ ';
+}
+
+.partners-past .partners-event-list {
+  margin-top: 0.85rem;
+}

@@ -135,6 +135,39 @@ final class MessagingService
     }
 
     /**
+     * Markeer een overdracht als afgerond (eenmalig). Vereist wederzijds contact.
+     *
+     * @return array{ok: bool, error?: string, first?: bool}
+     */
+    public function completeOverdracht(int $userId, Conversation $conversation, MilestoneService $milestones): array
+    {
+        if (! $conversation->involves($userId)) {
+            return ['ok' => false, 'error' => 'Geen toegang.'];
+        }
+        if (! $conversation->hasMutualContact()) {
+            return ['ok' => false, 'error' => 'Rond eerst wederzijds contact af voordat je de overdracht markeert.'];
+        }
+
+        $conversation->refresh();
+        if ($conversation->isOverdrachtAfgerond()) {
+            return ['ok' => true, 'first' => false];
+        }
+
+        $conversation->update(['overdracht_at' => now()]);
+
+        $userA = User::query()->find((int) $conversation->user_a_id);
+        $userB = User::query()->find((int) $conversation->user_b_id);
+        if ($userA) {
+            $milestones->maybeSendEersteStekje($userA, 'eerste_overdracht');
+        }
+        if ($userB) {
+            $milestones->maybeSendEersteStekje($userB, 'eerste_overdracht');
+        }
+
+        return ['ok' => true, 'first' => true];
+    }
+
+    /**
      * @return array{ok: bool, error?: string}
      */
     public function report(int $reporterId, int $reportedId, ?int $conversationId, string $reason): array
@@ -217,6 +250,7 @@ final class MessagingService
             'aanbod_id' => $conversation->aanbod_id,
             'mijn_contactkeuze' => $conversation->myContactChoice($viewerId),
             'wederzijds_contact' => $mutual,
+            'overdracht_afgerond' => $conversation->isOverdrachtAfgerond(),
             'andere' => $andere,
             'veiligheidstips' => 'Spreek af op een plek die voor jou veilig voelt, bijvoorbeeld bij je voordeur of overdag op een openbare plek. Deel geen exact huisadres via de site totdat je elkaar vertrouwt.',
             'berichten' => $conversation->messages()->get()->map(fn (Message $m) => [

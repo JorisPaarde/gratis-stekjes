@@ -8,6 +8,7 @@ use App\Services\StekjesDataMigrator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Throwable;
 
@@ -164,28 +165,46 @@ class DeployImportController extends Controller
 
             $result = $migrator->importPackage($packagePath, $force, $dryRun);
 
-            $status = $result['ok'] ? 200 : 409;
-            // Strip schema detail dat kolomnamen herhaalt is OK; geen row data.
-            return response()->json([
-                'ok' => $result['ok'],
+            // already_imported is succes (idempotent); andere !ok → 409.
+            $already = ! empty($result['already_imported']);
+            $status = ($result['ok'] || $already) ? 200 : 409;
+            // Per-tabel merge-stats + veilige diagnose; nooit row-data/PII.
+            $body = [
+                'ok' => (bool) $result['ok'],
                 'dry_run' => $result['dry_run'],
-                'counts' => $result['counts'],
-                'skipped' => $result['skipped'],
-                'dropped_columns' => $result['dropped_columns'],
+                'already_imported' => $already,
+                'tables' => $result['tables'] ?? [],
+                'counts' => $result['counts'] ?? [],
+                'skipped' => $result['skipped'] ?? [],
+                'dropped_columns' => $result['dropped_columns'] ?? [],
                 'missing_tables' => $result['schema']['missing_tables'] ?? [],
                 'files_restored' => $result['files_restored'] ?? null,
                 'error' => $result['error'] ?? null,
-            ], $status);
+            ];
+            if (isset($result['diagnosis']) && is_array($result['diagnosis'])) {
+                $body['diagnosis'] = [
+                    'sqlstate' => $result['diagnosis']['sqlstate'] ?? null,
+                    'driver_code' => $result['diagnosis']['driver_code'] ?? null,
+                    'table' => $result['diagnosis']['table'] ?? null,
+                    'column' => $result['diagnosis']['column'] ?? null,
+                    'error_class' => $result['diagnosis']['error_class'] ?? null,
+                ];
+            }
+
+            return response()->json($body, $status);
         } catch (Throwable $e) {
+            $diagnosis = $migrator->safePdoDiagnosis($e);
+            Log::warning('stekjes deploy import failed', $diagnosis);
             report($e);
             $msg = $e->getMessage();
-            $safe = in_array($msg, ['email_id_mismatch', 'user_id_conflict', 'Ongeldig export-formaat.', 'Onbekende format_version.'], true)
+            $safe = in_array($msg, ['email_id_mismatch', 'user_id_conflict', 'Ongeldig export-formaat.', 'Onbekende format_version.', 'unknown_upload', 'incomplete_upload', 'total_sha_mismatch'], true)
                 ? $msg
-                : $e::class;
+                : ($diagnosis['error_class'] ?? 'error');
 
             return response()->json([
                 'ok' => false,
                 'error' => $safe,
+                'diagnosis' => $diagnosis,
             ], 500);
         } finally {
             if ($cleanupDir !== null) {

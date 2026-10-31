@@ -5,20 +5,20 @@
 @section('canonical', $canonical)
 
 @push('head')
-  @vite(['resources/css/plantsoort-autocomplete.css'])
+  @vite(['resources/css/plantsoort-autocomplete.css', 'resources/css/aanbod-fotos.css'])
 @endpush
 
 @section('content')
 <section class="section wrap">
   <h1 class="page-title">Mijn aanbod</h1>
-  <p class="section-intro">Kies een plantensoort of typ vrij wat je hebt of zoekt. Aanbod staat {{ (int) config('stekjes.aanbod_ttl_days', 60) }} dagen in zoeken en op de kaart; daarna blijft het hier zichtbaar zodat je kunt verlengen.</p>
+  <p class="section-intro">Kies een plantensoort of typ vrij wat je hebt of zoekt. Met een foto mag de soortnaam optioneel blijven. Aanbod staat {{ (int) config('stekjes.aanbod_ttl_days', 60) }} dagen in zoeken en op de kaart; daarna blijft het hier zichtbaar zodat je kunt verlengen.</p>
   <p class="muted"><x-icon name="waarschuwing" :size="16" /> Geen invasieve soorten (EU-Unielijst). <a href="{{ $invasieveUitlegUrl }}">Meer uitleg</a>.</p>
 
   @if($errors->any())
     <p class="error" role="alert">{{ $errors->first() }}</p>
   @endif
 
-  <form class="form" method="post" action="{{ route('account.aanbod.store') }}" data-invasieve-form>
+  <form class="form" method="post" action="{{ route('account.aanbod.store') }}" enctype="multipart/form-data" data-invasieve-form data-aanbod-foto-form>
     @csrf
     @include('partials.honeypot')
     <label>Type *
@@ -32,18 +32,18 @@
       data-plantsoort-autocomplete
       data-plantsoort-url="{{ $plantensoortenZoekUrl }}"
     >
-      <label for="aanbod-tekst">Plantensoort *
-        <span class="hint">Typ een naam; ik toon suggesties. Staat jouw soort er niet bij? Typ dan vrij verder.</span>
+      <label for="aanbod-tekst">Plantensoort
+        <span class="hint">Typ een naam; ik toon suggesties. Of upload een foto — dan mag dit leeg blijven. Staat jouw soort er niet bij? Typ dan vrij verder.</span>
         <input
           type="text"
           name="tekst"
           id="aanbod-tekst"
-          required
           maxlength="2000"
           placeholder="Bijv. Monstera of munt"
           value="{{ old('tekst') }}"
           data-invasieve-input
           data-plantsoort-input
+          data-aanbod-tekst
           aria-autocomplete="list"
           aria-controls="aanbod-plantsoort-listbox"
           aria-expanded="false"
@@ -61,6 +61,20 @@
       <p class="visually-hidden" role="status" aria-live="polite" data-plantsoort-status></p>
     </div>
     <p class="error" hidden data-invasieve-hint role="status"></p>
+
+    <label for="aanbod-fotos">Foto’s (max. {{ $fotoMaxCount }}, JPEG/PNG/WebP, max. {{ $fotoMaxMb }} MB)
+      <span class="hint">Ik herschrijf je foto’s op de server en verwijder EXIF/GPS. Minimaal één foto óf een plantensoort is verplicht.</span>
+      <input
+        type="file"
+        name="fotos[]"
+        id="aanbod-fotos"
+        accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+        multiple
+        data-aanbod-fotos
+        data-aanbod-fotos-max="{{ $fotoMaxCount }}"
+      >
+    </label>
+
     <label class="checkbox">
       <input type="checkbox" name="gratis_akkoord" value="1" required @checked(old('gratis_akkoord'))>
       <span>Alleen gratis, geen verkoop.</span>
@@ -99,7 +113,7 @@
             </span>
           @endif
           @if($editing)
-            <form class="form" method="post" action="{{ route('account.aanbod.update', $row) }}" data-invasieve-form>
+            <form class="form" method="post" action="{{ route('account.aanbod.update', $row) }}" enctype="multipart/form-data" data-invasieve-form data-aanbod-foto-form>
               @csrf
               @include('partials.honeypot')
               <label>Type *
@@ -113,16 +127,16 @@
                 data-plantsoort-autocomplete
                 data-plantsoort-url="{{ $plantensoortenZoekUrl }}"
               >
-                <label for="aanbod-tekst-{{ $row->id }}">Plantensoort *
+                <label for="aanbod-tekst-{{ $row->id }}">Plantensoort
                   <input
                     type="text"
                     name="tekst"
                     id="aanbod-tekst-{{ $row->id }}"
-                    required
                     maxlength="2000"
                     value="{{ old('tekst', $row->tekst) }}"
                     data-invasieve-input
                     data-plantsoort-input
+                    data-aanbod-tekst
                     aria-autocomplete="list"
                     aria-controls="aanbod-plantsoort-listbox-{{ $row->id }}"
                     aria-expanded="false"
@@ -140,6 +154,39 @@
                 <p class="visually-hidden" role="status" aria-live="polite" data-plantsoort-status></p>
               </div>
               <p class="error" hidden data-invasieve-hint role="status"></p>
+
+              @if($row->fotos->isNotEmpty())
+                <fieldset class="aanbod-fotos-edit">
+                  <legend>Huidige foto’s</legend>
+                  <ul class="aanbod-foto-thumbs">
+                    @foreach($row->fotos as $foto)
+                      <li>
+                        <img src="{{ $foto->thumbUrl() }}" alt="{{ $foto->toPublicArray()['alt'] }}" width="96" height="96" loading="lazy">
+                        <label class="checkbox">
+                          <input type="checkbox" name="remove_fotos[]" value="{{ $foto->id }}">
+                          <span>Verwijderen</span>
+                        </label>
+                      </li>
+                    @endforeach
+                  </ul>
+                </fieldset>
+              @endif
+
+              @php $slotsLeft = max(0, $fotoMaxCount - $row->fotos->count()); @endphp
+              @if($slotsLeft > 0)
+                <label for="aanbod-fotos-{{ $row->id }}">Extra foto’s (nog {{ $slotsLeft }})
+                  <input
+                    type="file"
+                    name="fotos[]"
+                    id="aanbod-fotos-{{ $row->id }}"
+                    accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                    multiple
+                    data-aanbod-fotos
+                    data-aanbod-fotos-max="{{ $slotsLeft }}"
+                  >
+                </label>
+              @endif
+
               <input type="hidden" name="edit_id" value="{{ $row->id }}">
               <label class="checkbox">
                 <input type="checkbox" name="gratis_akkoord" value="1" required checked>
@@ -149,7 +196,18 @@
               <a class="btn btn-secondary" href="{{ route('account.aanbod') }}">Annuleren</a>
             </form>
           @else
-            <p>{{ $row->tekst }}</p>
+            @if($row->fotos->isNotEmpty())
+              <ul class="aanbod-foto-thumbs">
+                @foreach($row->fotos as $foto)
+                  <li>
+                    <img src="{{ $foto->thumbUrl() }}" alt="{{ $foto->toPublicArray()['alt'] }}" width="120" height="120" loading="lazy">
+                  </li>
+                @endforeach
+              </ul>
+            @endif
+            @if(trim((string) $row->tekst) !== '')
+              <p>{{ $row->tekst }}</p>
+            @endif
             @if($row->expires_at)
               <p class="muted">Geldig tot {{ $row->expires_at->timezone('Europe/Amsterdam')->format('d-m-Y') }}</p>
             @endif

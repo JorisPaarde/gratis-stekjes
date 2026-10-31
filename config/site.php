@@ -10,9 +10,9 @@ $version = is_readable($versionFile)
 return [
     'name' => env('SITE_NAME', env('APP_NAME', 'Gratis planten')),
     'version' => $version !== '' ? $version : '0.0.0',
-    'theme_color' => '#1f4d2b',
-    'background_color' => '#e6f2e1',
-    'description' => 'Gratis planten en stekjes weggeven en ophalen. De enige tegenprestatie is een praatje.',
+    'theme_color' => '#1F4D2B',
+    'background_color' => '#E6F2E1',
+    'description' => 'Gratis planten en stekjes delen in Nederland. Weggeven en ophalen bij jou in de buurt — de enige tegenprestatie is een praatje.',
     /** Publiek contactadres (zichtbaar in footer/privacy/contact; geen secret). */
     'contact_email' => env('SITE_CONTACT_EMAIL', 'info@gratisplanten.nl'),
     // Staging always noindex; production sets NOINDEX=false

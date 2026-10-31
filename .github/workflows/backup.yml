@@ -1,0 +1,139 @@
+name: Encrypted backups
+
+# Dagelijks: versleutelde DB- + storage-backup op staging én productie via /cron/backup,
+# daarna off-site kopie als GitHub Actions artifact (ciphertext only; sleutel blijft secret).
+on:
+  schedule:
+    - cron: "15 3 * * *"
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Welke omgeving"
+        type: choice
+        options:
+          - both
+          - staging
+          - production
+        default: both
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Backup staging + productie (ciphertext → artifact)
+        env:
+          STAGING_BASE: ${{ secrets.STAGING_BASE_URL }}
+          PROD_BASE: ${{ secrets.PROD_BASE_URL }}
+          # Fallback voor oudere secretnaam (cron.yml gebruikt BASE_URL voor prod).
+          BASE: ${{ secrets.BASE_URL }}
+          CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
+          TARGET: ${{ github.event.inputs.target || 'both' }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CRON_TOKEN:-}" ]; then
+            echo "::notice::CRON_TOKEN ontbreekt — backup overgeslagen."
+            exit 0
+          fi
+          echo "::add-mask::${CRON_TOKEN}"
+
+          PROD_URL="${PROD_BASE:-${BASE:-}}"
+          ROOT="${RUNNER_TEMP}/encrypted-backups"
+          mkdir -p "$ROOT"
+          chmod 700 "$ROOT"
+
+          run_one() {
+            local label="$1"
+            local target="$2"
+            if [ -z "${target}" ]; then
+              echo "${label}: URL niet gezet — overgeslagen."
+              return 0
+            fi
+            case "${TARGET}" in
+              both) ;;
+              staging|production)
+                if [ "${TARGET}" != "${label}" ]; then
+                  echo "${label}: overgeslagen (target=${TARGET})."
+                  return 0
+                fi
+                ;;
+            esac
+
+            local out="${ROOT}/${label}"
+            mkdir -p "$out"
+            chmod 700 "$out"
+            target="${target%/}"
+
+            local code
+            code=$(curl -sS -o "${out}/manifest.json" -w '%{http_code}' \
+              -H "X-Cron-Token: ${CRON_TOKEN}" \
+              -H "Accept: application/json" \
+              --connect-timeout 20 --max-time 600 \
+              "${target}/cron/backup" || true)
+            echo "${label}: /cron/backup → HTTP ${code}"
+            if [ "$code" = "000" ] || [ "$code" = "404" ] || [ "$code" = "502" ] || [ "$code" = "503" ]; then
+              echo "::notice::${label}: endpoint nog niet bereikbaar — ok voor nu."
+              head -c 400 "${out}/manifest.json" || true
+              return 0
+            fi
+            if [ "$code" != "200" ]; then
+              echo "::error::${label}: backup mislukt (HTTP ${code})"
+              head -c 600 "${out}/manifest.json" || true
+              return 1
+            fi
+
+            python3 -c '
+          import json,sys
+          d=json.load(open(sys.argv[1]))
+          assert d.get("ok") is True, d
+          print("db=", (d.get("db") or {}).get("basename"), "bytes=", (d.get("db") or {}).get("bytes"))
+          st=d.get("storage")
+          if st:
+              print("storage=", st.get("basename"), "bytes=", st.get("bytes"))
+          print("pruned=", d.get("pruned"), "retain_days=", d.get("retain_days"))
+          ' "${out}/manifest.json"
+
+            local kind name http
+            for kind in db storage; do
+              http=$(curl -sS -o "${out}/${kind}.enc" -w '%{http_code}' \
+                -H "X-Cron-Token: ${CRON_TOKEN}" \
+                --connect-timeout 20 --max-time 600 \
+                "${target}/cron/backup?download=${kind}" || true)
+              echo "${label}: download ${kind} → HTTP ${http}"
+              if [ "$http" != "200" ]; then
+                echo "::warning::${label}: download ${kind} mislukt (HTTP ${http})"
+                rm -f "${out}/${kind}.enc"
+                continue
+              fi
+              head -c 4 "${out}/${kind}.enc" | grep -q '^GPB1$' \
+                || { echo "::error::${label}: ${kind}.enc mist magic GPB1"; return 1; }
+              name=$(python3 -c '
+          import json,sys
+          d=json.load(open(sys.argv[1]))
+          k=sys.argv[2]
+          print((d.get(k) or {}).get("basename") or (k+".enc"))
+          ' "${out}/manifest.json" "$kind")
+              mv "${out}/${kind}.enc" "${out}/${name}"
+            done
+            return 0
+          }
+
+          fail=0
+          run_one "staging" "${STAGING_BASE:-}" || fail=1
+          run_one "production" "${PROD_URL}" || fail=1
+
+          # Markeer root voor artifact-upload alleen als er .enc-bestanden zijn.
+          if find "$ROOT" -type f -name '*.enc' | grep -q .; then
+            echo "ARTIFACT_DIR=${ROOT}" >> "$GITHUB_ENV"
+          else
+            echo "::notice::Geen .enc-bestanden om te uploaden."
+          fi
+          exit "$fail"
+
+      - name: Upload encrypted artifacts
+        if: env.ARTIFACT_DIR != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: encrypted-backups-${{ github.run_id }}
+          path: ${{ env.ARTIFACT_DIR }}
+          if-no-files-found: warn
+          retention-days: 30

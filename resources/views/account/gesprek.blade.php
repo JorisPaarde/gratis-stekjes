@@ -32,6 +32,17 @@
       @if(!empty($andere['telefoon']))
         <p>Telefoon: {{ $andere['telefoon'] }}</p>
       @endif
+      @if(!empty($view['overdracht_afgerond']))
+        <p class="muted" style="margin-top:.75rem">Overdracht afgerond.
+          <a href="{{ route('account.ervaringen.create', ['gesprek' => $view['id']]) }}">Deel een ervaring</a>
+        </p>
+      @else
+        <form method="post" action="{{ route('account.gesprek.store', $view['id']) }}" style="margin-top:.75rem">
+          @csrf
+          <input type="hidden" name="action" value="overdracht">
+          <button class="btn btn-secondary" type="submit">Ik heb de overdracht afgerond</button>
+        </form>
+      @endif
     @else
       <p>Jouw keuze nu: {{ $view['mijn_contactkeuze'] ?? 'nog niet gekozen' }}</p>
       <form method="post" action="{{ route('account.gesprek.store', $view['id']) }}" style="display:flex;gap:.5rem;flex-wrap:wrap">

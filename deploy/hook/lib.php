@@ -610,6 +610,59 @@ function deploy_hook_resolve_app_key(string $envContent, string $existingEnvPath
 }
 
 /**
+ * Behoud $key uit bestaande .env als de upload hem leeg/ontbrekend heeft.
+ * Gebruikt o.a. voor BACKUP_ENCRYPTION_KEY (nooit genereren; alleen bewaren).
+ */
+function deploy_hook_preserve_env_key(string $envContent, string $existingEnvPath, string $key): string
+{
+    $uploaded = '';
+    $prefix = $key.'=';
+    foreach (preg_split("/\r\n|\n|\r/", $envContent) ?: [] as $line) {
+        if (! str_starts_with($line, $prefix)) {
+            continue;
+        }
+        $raw = substr($line, strlen($prefix));
+        if (
+            (str_starts_with($raw, '"') && str_ends_with($raw, '"'))
+            || (str_starts_with($raw, "'") && str_ends_with($raw, "'"))
+        ) {
+            $raw = substr($raw, 1, -1);
+            $raw = str_replace(['\\$', '\\"', '\\\\'], ['$', '"', '\\'], $raw);
+        }
+        $uploaded = $raw;
+        break;
+    }
+
+    if ($uploaded !== '') {
+        return $envContent;
+    }
+
+    $existing = deploy_hook_env_get($existingEnvPath, $key);
+    if ($existing === '') {
+        return $envContent;
+    }
+
+    $escaped = $key.'="'.str_replace(['\\', '"', '$'], ['\\\\', '\\"', '\\$'], $existing).'"';
+    $out = [];
+    $seen = false;
+    foreach (preg_split("/\r\n|\n|\r/", $envContent) ?: [] as $line) {
+        if (str_starts_with($line, $prefix)) {
+            $out[] = $escaped;
+            $seen = true;
+        } else {
+            $out[] = $line;
+        }
+    }
+    if (! $seen) {
+        $out[] = $escaped;
+    }
+
+    $joined = implode("\n", $out);
+
+    return $joined.(str_ends_with($joined, "\n") ? '' : "\n");
+}
+
+/**
  * Schrijf .env naar $path met mode 0600.
  */
 function deploy_hook_write_env(string $path, string $content): bool
@@ -992,6 +1045,7 @@ function deploy_hook_action_finish(
     $existingEnv = $appDir.'/.env';
     // Bij flat layout stond .env al op $appDir/.env; bewaar.
     $finalEnv = deploy_hook_resolve_app_key($envContent, $existingEnv);
+    $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'BACKUP_ENCRYPTION_KEY');
     if (! deploy_hook_write_env($existingEnv, $finalEnv)) {
         return ['ok' => false, 'error' => 'env_write'];
     }

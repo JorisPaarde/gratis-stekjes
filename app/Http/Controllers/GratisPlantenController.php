@@ -14,8 +14,8 @@ class GratisPlantenController extends Controller
     public function index(Steden $steden): View
     {
         $site = config('site.name');
-        $title = 'Gratis planten in jouw stad';
-        $metaDescription = 'Overzicht van gratis planten per stad in Nederland — vind stekjes en planten bij jou in de buurt via '.$site.'.';
+        $title = 'Gratis planten ophalen in jouw stad';
+        $metaDescription = 'Gratis planten ophalen en afhalen per stad in Nederland. Kies jouw stad en vind of deel stekjes via '.$site.'.';
 
         return view('pages.gratis-planten-index', [
             'title' => $title,
@@ -46,12 +46,26 @@ class GratisPlantenController extends Controller
         }
 
         $site = config('site.name');
-        $title = 'Gratis planten in '.$city['naam'];
-        $metaDescription = 'Gratis planten en stekjes in '.$city['naam'].' ('.$city['provincie'].'). Bekijk actueel aanbod binnen ~'.(int) $city['straal_km'].' km en deel zelf via '.$site.'.';
+        $title = 'Gratis planten en stekjes in '.$city['naam'];
+        $metaDescription = 'Gratis planten en stekjes in '.$city['naam'].' ('.$city['provincie'].'). Actueel aanbod binnen ~'.(int) $city['straal_km'].' km — haal of deel via '.$site.'.';
         $canonical = route('gratis-planten.show', ['stad' => $city['slug']]);
         $faq = $steden->faqFor($city);
         $aanbod = $stadAanbod->aanbodWithin($city);
         $deelplekken = $stadAanbod->deelplekkenWithin($city);
+        // Alleen plantenasiels mét plaatsnaam die bij deze stad hoort (geen
+        // buurgemeente binnen de straal — anders verzinnen we een asiel "in" de stad).
+        $stadNaamNorm = mb_strtolower((string) $city['naam'], 'UTF-8');
+        $plantenasiels = array_values(array_filter(
+            $deelplekken,
+            static function (array $p) use ($stadNaamNorm): bool {
+                if (($p['type'] ?? '') !== 'plantenasiel') {
+                    return false;
+                }
+                $plaats = mb_strtolower(trim((string) ($p['plaats'] ?? '')), 'UTF-8');
+
+                return $plaats !== '' && $plaats === $stadNaamNorm;
+            }
+        ));
         $nearby = $steden->nearby($city);
 
         $faqEntities = array_map(static fn (array $item) => [
@@ -70,6 +84,7 @@ class GratisPlantenController extends Controller
             'stad' => $city,
             'aanbod' => $aanbod,
             'deelplekken' => $deelplekken,
+            'plantenasiels' => $plantenasiels,
             'nearby' => $nearby,
             'faq' => $faq,
             'schema' => [

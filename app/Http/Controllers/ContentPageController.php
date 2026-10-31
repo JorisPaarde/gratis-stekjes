@@ -12,8 +12,8 @@ class ContentPageController extends Controller
     public function hoeWerktHet(): View
     {
         return view('pages.hoe-werkt-het', [
-            'title' => 'Hoe werkt het',
-            'metaDescription' => 'Spelregels: gratis, fysiek ophalen, een praatje als enige tegenprestatie.',
+            'title' => 'Hoe gratis planten delen',
+            'metaDescription' => 'Zo deel je gratis planten en stekjes: fysiek ophalen, een praatje als enige tegenprestatie. Geen verkoop.',
             'canonical' => route('hoe-werkt-het'),
         ]);
     }
@@ -21,8 +21,8 @@ class ContentPageController extends Controller
     public function hulpmiddelen(): View
     {
         return view('pages.hulpmiddelen', [
-            'title' => 'Hulpmiddelen',
-            'metaDescription' => 'Wilgenwater, stekpoeder, potten en substraat — praktisch voor stekken.',
+            'title' => 'Wilgenwater & stekhulpmiddelen',
+            'metaDescription' => 'Wilgenwater, stekpoeder, potten en substraat: hulpmiddelen om stekjes te laten wortelen.',
             'canonical' => route('hulpmiddelen'),
         ]);
     }
@@ -30,8 +30,8 @@ class ContentPageController extends Controller
     public function over(): View
     {
         return view('pages.over', [
-            'title' => 'Over',
-            'metaDescription' => 'Over '.config('site.name').' — gratis stekjes met een praatje.',
+            'title' => 'Over gratis planten delen',
+            'metaDescription' => 'Waarom '.config('site.name').' bestaat: gratis stekjes delen met een praatje, door heel Nederland.',
             'canonical' => route('over'),
         ]);
     }

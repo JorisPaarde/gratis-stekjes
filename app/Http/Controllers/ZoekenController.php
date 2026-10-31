@@ -25,11 +25,20 @@ class ZoekenController extends Controller
 
         $canonicalQuery = array_filter(['plant' => $plant !== '' ? $plant : null]);
 
+        $title = $plant !== ''
+            ? 'Gratis '.$plant.'-stekjes'
+            : 'Aanbod: gratis planten en stekjes ophalen';
+        $heading = $plant !== ''
+            ? 'Gratis '.$plant.'-stekjes'
+            : 'Gratis planten en stekjes ophalen';
+        $metaDescription = $plant !== ''
+            ? 'Gratis '.$plant.'-stekjes en planten in Nederland. Zoek op postcode of plaats en haal ze op met een praatje.'
+            : 'Gratis planten en stekjes ophalen: zoek op postcode of plaats, bekijk de kaart en haal ze fysiek op.';
+
         return view('pages.aanbod', [
-            'title' => $plant !== '' ? 'Aanbod: '.$plant : 'Aanbod',
-            'metaDescription' => $plant !== ''
-                ? 'Gratis '.$plant.'-stekjes en planten in Nederland. Zoek op postcode of plaats.'
-                : 'Zoek gratis planten en stekjes op postcode of plaats. Benaderde plekken op de kaart.',
+            'title' => $title,
+            'heading' => $heading,
+            'metaDescription' => $metaDescription,
             'canonical' => route('aanbod', $canonicalQuery),
             'nuTeStekken' => $calendar->blockForViews(),
             'plant' => $plant,

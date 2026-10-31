@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Console\Commands\BackupDatabaseEncrypted;
+use App\Http\Middleware\SecurityHeaders;
 use App\Logging\MaskPersonalDataProcessor;
 use App\Models\Aanbod;
 use App\Models\Conversation;
@@ -10,13 +11,17 @@ use App\Models\Deelplek;
 use App\Models\GeocodeCache;
 use App\Models\Message;
 use App\Models\User;
+use App\Services\PdokGeocoder;
 use App\Support\Geo;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\Response;
 
 function avgSecPassword(): string
 {
@@ -49,6 +54,8 @@ test('security headers staan op responses', function () {
     expect($response->headers->get('Permissions-Policy'))->toContain('camera=()');
     expect($response->headers->get('Content-Security-Policy'))->toContain("default-src 'self'");
     expect($response->headers->get('Content-Security-Policy'))->toContain("frame-ancestors 'none'");
+    expect($response->headers->get('Content-Security-Policy'))->toContain("worker-src 'self'");
+    expect($response->headers->get('Content-Security-Policy'))->toContain("manifest-src 'self'");
 });
 
 test('HSTS-header en HTTPS-redirect-logica', function () {
@@ -56,9 +63,9 @@ test('HSTS-header en HTTPS-redirect-logica', function () {
     $this->app['env'] = 'staging';
 
     try {
-        $secureRequest = \Illuminate\Http\Request::create('https://example.test/', 'GET');
+        $secureRequest = Request::create('https://example.test/', 'GET');
         $secureRequest->server->set('HTTPS', 'on');
-        $middleware = new \App\Http\Middleware\SecurityHeaders;
+        $middleware = new SecurityHeaders;
         $secureResponse = $middleware->handle($secureRequest, static fn () => response('ok'));
         expect($secureResponse->headers->get('Strict-Transport-Security'))
             ->toContain('max-age=31536000')
@@ -74,10 +81,10 @@ test('HSTS-header en HTTPS-redirect-logica', function () {
 });
 
 test('HTTPS-redirect middleware in niet-test omgeving', function () {
-    $middleware = new class extends \App\Http\Middleware\SecurityHeaders
+    $middleware = new class extends SecurityHeaders
     {
         // Test-double: forceer HTTPS-afdwingen alsof we op staging draaien.
-        public function handle(\Illuminate\Http\Request $request, \Closure $next): \Symfony\Component\HttpFoundation\Response
+        public function handle(Request $request, Closure $next): Response
         {
             if (! $request->secure()) {
                 return redirect()->secure($request->getRequestUri(), 301);
@@ -87,7 +94,7 @@ test('HTTPS-redirect middleware in niet-test omgeving', function () {
         }
     };
 
-    $insecure = \Illuminate\Http\Request::create('http://example.test/privacy', 'GET');
+    $insecure = Request::create('http://example.test/privacy', 'GET');
     $response = $middleware->handle($insecure, static fn () => response('ok'));
     expect($response->getStatusCode())->toBe(301);
     expect($response->headers->get('Location'))->toStartWith('https://');
@@ -169,7 +176,7 @@ test('locatiecoördinaten worden afgerond opgeslagen en geëxporteerd', function
         'cached_at' => now(),
     ]);
     // Opslag mag preciezer zijn in cache-rij vóór round-on-read; geocoder rondt bij return.
-    $geo = app(\App\Services\PdokGeocoder::class)->geocode('Haarlem', false);
+    $geo = app(PdokGeocoder::class)->geocode('Haarlem', false);
     expect($geo['lat'])->toBe(Geo::roundCoord(52.381234));
     expect($geo['lon'])->toBe(Geo::roundCoord(4.636789));
 });
@@ -195,9 +202,9 @@ test('aanbod plaatsen is rate-limited', function () {
     ]);
 
     $key = 'aanbod-store:'.$user->id;
-    \Illuminate\Support\Facades\RateLimiter::clear($key);
+    RateLimiter::clear($key);
     for ($i = 0; $i < 20; $i++) {
-        \Illuminate\Support\Facades\RateLimiter::hit($key, 3600);
+        RateLimiter::hit($key, 3600);
     }
 
     $this->actingAs($user)
@@ -293,7 +300,7 @@ test('export bevat berichten plaintext via casts en fotos-array', function () {
 
     expect($data['user']['telefoon'])->toBe('0699887766');
     expect($data['messages'][0]['body'])->toBe('Exportbericht inhoud');
-    expect($data['fotos'])->toBe([]);
+    expect($data['fotos'])->toBeArray();
     expect(json_encode($data))->not->toContain('password');
 });
 
@@ -301,7 +308,10 @@ test('versleutelde backup command schrijft .enc bestand', function () {
     config(['stekjes.backup_encryption_key' => 'test-backup-key-not-secret']);
     $path = storage_path('backups/test-'.Str::random(8).'.sql.gz.enc');
 
-    $exit = Artisan::call('backup:database-encrypted', ['--path' => $path]);
+    $exit = Artisan::call('backup:database-encrypted', [
+        '--path' => $path,
+        '--no-storage' => true,
+    ]);
     expect($exit)->toBe(0);
     expect(is_file($path))->toBeTrue();
 

@@ -16,7 +16,20 @@ class Conversation extends Model
         'user_b_id',
         'contact_a',
         'contact_b',
+        'overdracht_at',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'overdracht_at' => 'datetime',
+        ];
+    }
+
+    public function isOverdrachtAfgerond(): bool
+    {
+        return $this->overdracht_at !== null;
+    }
 
     public function aanbod(): BelongsTo
     {
