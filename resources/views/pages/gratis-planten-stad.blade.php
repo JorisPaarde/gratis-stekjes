@@ -10,10 +10,10 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script>
     window.STEKJES_STAD = {
-      lat: {{ json_encode($stad['lat']) }},
-      lng: {{ json_encode($stad['lng']) }},
-      straal_km: {{ json_encode($stad['straal_km']) }},
-      naam: {{ json_encode($stad['naam']) }},
+      lat: @json($stad['lat']),
+      lng: @json($stad['lng']),
+      straal_km: @json($stad['straal_km']),
+      naam: @json($stad['naam']),
       aanbod: @json($aanbod),
       deelplekken: @json($deelplekken)
     };
@@ -96,9 +96,21 @@
   </div>
 
   <section class="gp-deelplekken" aria-labelledby="deelplekken-titel">
-    <h2 id="deelplekken-titel">Deelplekken in of bij {{ $stad['naam'] }}</h2>
+    <h2 id="deelplekken-titel">
+      @if(($stad['country'] ?? 'NL') === 'BE')
+        Zadenbibs en deelplekken in of bij {{ $stad['naam'] }}
+      @else
+        Deelplekken in of bij {{ $stad['naam'] }}
+      @endif
+    </h2>
     @if(count($deelplekken) > 0)
-      <p class="section-intro">Vaste plekken om planten of zaden te delen (uit openbare bronnen), naast het aanbod van mens tot mens.</p>
+      <p class="section-intro">
+        @if(($stad['country'] ?? 'NL') === 'BE')
+          Vaste zadenbibs en andere deelplekken (uit openbare bronnen), naast het aanbod van mens tot mens.
+        @else
+          Vaste plekken om planten of zaden te delen (uit openbare bronnen), naast het aanbod van mens tot mens.
+        @endif
+      </p>
       <ul class="gp-deelplek-lijst">
         @foreach($deelplekken as $plek)
           <li>
@@ -134,7 +146,13 @@
       <ul class="gp-stad-lijst gp-stad-lijst--inline">
         @foreach($nearby as $n)
           <li>
-            <a href="{{ route('gratis-planten.show', ['stad' => $n['slug']]) }}">Gratis planten en stekjes in {{ $n['naam'] }}</a>
+            <a href="{{ route('gratis-planten.show', ['stad' => $n['slug']]) }}">
+              @if(($n['country'] ?? 'NL') === 'BE')
+                Gratis planten, stekjes en zaden in {{ $n['naam'] }}
+              @else
+                Gratis planten en stekjes in {{ $n['naam'] }}
+              @endif
+            </a>
             <span class="muted"> (±{{ $n['afstand_km'] }} km)</span>
           </li>
         @endforeach

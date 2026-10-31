@@ -21,14 +21,18 @@ class GratisPlantenController extends Controller
             'title' => $title,
             'metaDescription' => $metaDescription,
             'canonical' => route('gratis-planten.index'),
-            'byProvincie' => $steden->groupedByProvincie(),
+            'byLand' => $steden->groupedByLand(),
             'schema' => [
                 '@context' => 'https://schema.org',
                 '@type' => 'CollectionPage',
                 'name' => $title,
                 'url' => route('gratis-planten.index'),
                 'description' => $metaDescription,
-                'inLanguage' => 'nl-NL',
+                'inLanguage' => 'nl',
+                'areaServed' => [
+                    ['@type' => 'Country', 'name' => 'NL'],
+                    ['@type' => 'Country', 'name' => 'BE'],
+                ],
                 'isPartOf' => [
                     '@type' => 'WebSite',
                     'name' => $site,
@@ -46,8 +50,11 @@ class GratisPlantenController extends Controller
         }
 
         $site = config('site.name');
-        $title = 'Gratis planten en stekjes in '.$city['naam'];
-        $metaDescription = 'Gratis planten en stekjes in '.$city['naam'].' ('.$city['provincie'].'). Actueel aanbod binnen ~'.(int) $city['straal_km'].' km — haal of deel via '.$site.'.';
+        $title = $steden->pageTitle($city);
+        $isBe = ($city['country'] ?? 'NL') === 'BE';
+        $metaDescription = $isBe
+            ? 'Gratis planten, stekjes en zaden in '.$city['naam'].' ('.$city['provincie'].'). Zadenbibs en aanbod binnen ~'.(int) $city['straal_km'].' km — haal of deel via '.$site.'.'
+            : 'Gratis planten en stekjes in '.$city['naam'].' ('.$city['provincie'].'). Actueel aanbod binnen ~'.(int) $city['straal_km'].' km — haal of deel via '.$site.'.';
         $canonical = route('gratis-planten.show', ['stad' => $city['slug']]);
         $faq = $steden->faqFor($city);
         $aanbod = $stadAanbod->aanbodWithin($city);
@@ -67,6 +74,10 @@ class GratisPlantenController extends Controller
             }
         ));
         $nearby = $steden->nearby($city);
+        $inLanguage = $isBe ? 'nl-BE' : 'nl';
+        $areaServed = $isBe
+            ? [['@type' => 'Country', 'name' => 'BE']]
+            : [['@type' => 'Country', 'name' => 'NL']];
 
         $faqEntities = array_map(static fn (array $item) => [
             '@type' => 'Question',
@@ -95,7 +106,8 @@ class GratisPlantenController extends Controller
                         'name' => $title,
                         'url' => $canonical,
                         'description' => $metaDescription,
-                        'inLanguage' => 'nl-NL',
+                        'inLanguage' => $inLanguage,
+                        'areaServed' => $areaServed,
                         'isPartOf' => [
                             '@type' => 'WebSite',
                             'name' => $site,

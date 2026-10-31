@@ -26,7 +26,7 @@ class LoginController extends Controller
 
         return view('auth.login', [
             'title' => 'Inloggen',
-            'metaDescription' => 'Inloggen bij '.config('site.name').'.',
+            'metaDescription' => 'Inloggen bij '.config('site.name').' zodat je aanbod en berichten kunt beheren. Ik bewaar alleen wat nodig is voor je account.',
             'canonical' => route('account.inloggen'),
             'next' => $next,
             'formStarted' => time(),

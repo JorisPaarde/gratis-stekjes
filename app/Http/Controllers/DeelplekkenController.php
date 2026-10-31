@@ -30,14 +30,13 @@ class DeelplekkenController extends Controller
         $title = 'Plantenasiel, plantenbieb en ruilkastje in je buurt';
         $metaDescription = 'Vind een plantenasiel, plantenbieb, ruilkast of zadenbibliotheek bij jou in de buurt — overzicht in Nederland en België.';
 
+        $canonical = route('deelplekken');
+
         return view('pages.deelplekken', [
             'title' => $title,
             'metaDescription' => $metaDescription,
-            'canonical' => route('deelplekken', array_filter([
-                'type' => $type !== '' ? $type : null,
-                'provincie' => $provincie !== '' ? $provincie : null,
-                'plaats' => $plaats !== '' ? $plaats : null,
-            ])),
+            // Filter-URL's (?plaats= / ?type= / ?provincie=) → canonical zonder query.
+            'canonical' => $canonical,
             'typeLabels' => $deelplekken->typeLabels(),
             'provincies' => $deelplekken->provincies(),
             'filters' => [
@@ -50,9 +49,13 @@ class DeelplekkenController extends Controller
                 '@context' => 'https://schema.org',
                 '@type' => 'CollectionPage',
                 'name' => $title,
-                'url' => route('deelplekken'),
+                'url' => $canonical,
                 'description' => $metaDescription,
-                'inLanguage' => 'nl-NL',
+                'inLanguage' => 'nl',
+                'areaServed' => [
+                    ['@type' => 'Country', 'name' => 'NL'],
+                    ['@type' => 'Country', 'name' => 'BE'],
+                ],
                 'isPartOf' => [
                     '@type' => 'WebSite',
                     'name' => $site,

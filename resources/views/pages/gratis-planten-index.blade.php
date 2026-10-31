@@ -12,18 +12,23 @@
 @section('content')
 <section class="section wrap gratis-planten-index">
   <h1 class="page-title">{{ $title }}</h1>
-  <p class="section-intro">Kies een stad en zie wat buren gratis delen — stekjes en planten ophalen met een praatje als enige prijs. Hoofdterm: <strong>gratis planten</strong>, lokaal via stadspagina’s.</p>
+  <p class="section-intro">Kies een stad en zie wat buren gratis delen — stekjes en planten ophalen met een praatje als enige prijs. Hoofdterm: <strong>gratis planten</strong>, lokaal via stadspagina’s. In België ook via een <strong>zadenbib</strong>.</p>
 
-  @foreach($byProvincie as $provincie => $steden)
-    <section class="gp-provincie" aria-labelledby="prov-{{ \Illuminate\Support\Str::slug($provincie) }}">
-      <h2 id="prov-{{ \Illuminate\Support\Str::slug($provincie) }}">{{ $provincie }}</h2>
-      <ul class="gp-stad-lijst">
-        @foreach($steden as $s)
-          <li>
-            <a href="{{ route('gratis-planten.show', ['stad' => $s['slug']]) }}">Gratis planten in {{ $s['naam'] }}</a>
-          </li>
-        @endforeach
-      </ul>
+  @foreach($byLand as $land => $byProvincie)
+    <section class="gp-land" aria-labelledby="land-{{ \Illuminate\Support\Str::slug($land) }}">
+      <h2 id="land-{{ \Illuminate\Support\Str::slug($land) }}">{{ $land }}</h2>
+      @foreach($byProvincie as $provincie => $steden)
+        <section class="gp-provincie" aria-labelledby="prov-{{ \Illuminate\Support\Str::slug($land.'-'.$provincie) }}">
+          <h3 id="prov-{{ \Illuminate\Support\Str::slug($land.'-'.$provincie) }}">{{ $provincie }}</h3>
+          <ul class="gp-stad-lijst">
+            @foreach($steden as $s)
+              <li>
+                <a href="{{ route('gratis-planten.show', ['stad' => $s['slug']]) }}">Gratis planten in {{ $s['naam'] }}</a>
+              </li>
+            @endforeach
+          </ul>
+        </section>
+      @endforeach
     </section>
   @endforeach
 

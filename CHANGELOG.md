@@ -9,6 +9,72 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.29.1] - 2026-10-31
+
+### Fixed
+
+- Stadspagina-kaart: `STEKJES_STAD` gebruikt `@json(...)` i.p.v. `{{ json_encode(...) }}`, zodat namen niet meer als `&quot;…&quot;` in het script belanden (lege Leaflet-kaart / `Unexpected token '&'`).
+- Meta description `/account/inloggen` verlengd naar 70–160 tekens (ik-vorm).
+
+### Changed
+
+- NL-stadintro’s met «we» herschreven naar ik-vorm (Apeldoorn, Haarlemmermeer, Zwolle, Maastricht, Ede, Emmen, Delft, Venlo, Hilversum, Almelo, Schiedam, Lelystad); snapshot-fixture bijgewerkt.
+
+## [0.29.0] - 2026-10-31
+
+### Added
+
+- Belgische stadspagina’s batch 1: Antwerpen, Brussel, Namen en Lommel (`/gratis-planten/{stad}`), met echte zadenbibs uit `data/deelplekken.json`.
+- `steden.json`: optioneel `country` (NL default / BE); provincie `Limburg (BE)` voor Noord-Limburg.
+- Index `/gratis-planten` groepeert op land (Nederland / België) daarna provincie; BE-titles noemen zaden; FAQ met zadenbib-vragen.
+- Sitemap neemt de vier BE-URL’s automatisch op met `<lastmod>` (mtime `steden.json`).
+
+### Changed
+
+- `Steden::validateJson` gebruikt de NL+BE-bbox (49.4–53.7 / 2.4–7.4), gelijk aan Deelplekken.
+- `nearby()` beperkt tot hetzelfde land; schema `inLanguage` `nl-BE` op BE-stadspagina’s.
+
+## [0.28.2] - 2026-10-31
+
+### Changed
+
+- Privacyverklaring: Belgische AVG/GBA-info (toezichthouder, klachtroute) en kort blok «Gebruik en recht»; teksten in ik-vorm.
+
+## [0.28.1] - 2026-10-31
+
+### Fixed
+
+- Kaartmarkers voor aanbod op `/aanbod` en stadspagina’s: `L.divIcon` i.p.v. standaard Leaflet-icoon (unpkg `marker-icon.png`), zodat CSP `img-src` markers niet meer blokkeert na zoeken.
+
+## [0.28.0] - 2026-10-31
+
+### Added
+
+- Site-brede `og:image` + `twitter:card` (bestaand logo `assets/icons/icon-512.png`, absolute URL via APP_URL).
+- JSON-LD Organization op de home (naam «Gratis planten», url, logo) met `areaServed` NL én BE; zelfde areaServed op relevante CollectionPage/WebPage-schema’s.
+- `<lastmod>` in `sitemap.xml` op basis van echte bestands-`mtime` / `updated_at` (niet «nu»).
+
+### Changed
+
+- Canonical en `og:url` altijd uit `APP_URL` (`URL::forceRootUrl`), nooit uit de request-host (voorkomt www-dubbele indexatie).
+- Filter-URL’s (`?plant=`, `?plaats=` / `?type=` / `?provincie=`) canonicaliseren naar de kale pagina.
+- Meta descriptions die te kort (<70) of te lang (>160) waren bijgewerkt (privacy, contact, help-mee, aanmelden, stektips, kennisbank, organisaties).
+
+### Fixed
+
+- `noindex` op `/account/*`; 301 van `/index.php` en `/index.php/*` naar `/` resp. het pad zonder `index.php`; geen canonical op foutpagina’s.
+- Sessie-/XSRF-cookies alleen op account, beheer, feedback, CSRF-formulieren of bij bestaande sessiecookie — publieke GET’s (`/`, `/aanbod`, stadspagina’s) blijven zonder `Set-Cookie` (cachebaar).
+
+## [0.27.3] - 2026-10-31
+
+### Added
+
+- 32 Belgische zadenbibs/grainothèques als deelplekken (`data/deelplekken.json`, type `zaadbibliotheek`, `country: BE`).
+- `DeelplekkenSeeder` leest `country` en `visible` uit de JSON-rij (default NL / true).
+- Stadspagina’s slaan JSON-rijen met `visible: false` over.
+- Pest: NL-snapshot ongewijzigd, BE-country na seeden, verborgen rij niet op stadspagina.
+
+
 ## [0.27.2] - 2026-10-31
 
 ### Fixed

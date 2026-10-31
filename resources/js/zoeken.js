@@ -118,6 +118,20 @@
     });
   }
 
+  // Div-icon i.p.v. Leaflet-default (CDN-bitmap; CSP img-src blokkeert dat).
+  function aanbodIcon() {
+    return L.divIcon({
+      className: "partner-marker partner-marker--aanbod",
+      html:
+        '<span class="partner-marker-dot" style="background:' +
+        markerColors.partner +
+        '" title="Aanbod"></span>',
+      iconSize: [18, 18],
+      iconAnchor: [9, 9],
+      popupAnchor: [0, -8],
+    });
+  }
+
   function renderPartners() {
     partnerLayer.clearLayers();
     var allowed = enabledPartnerTypes();
@@ -325,7 +339,7 @@
               escapeHtml((item.fotos[0].alt || "Foto") ) +
               '" width="120" height="90" style="margin-top:0.35rem;object-fit:cover;border-radius:0.25rem">';
           }
-          var m = L.marker([item.lat, item.lon]).bindPopup(popup);
+          var m = L.marker([item.lat, item.lon], { icon: aanbodIcon() }).bindPopup(popup);
           aanbodLayer.addLayer(m);
           bounds.push([item.lat, item.lon]);
         }

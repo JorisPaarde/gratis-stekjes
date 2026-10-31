@@ -2,7 +2,7 @@
 
 @section('title', 'Er ging iets mis')
 @section('meta_description', 'Er ging iets mis. Probeer het later opnieuw.')
-@section('canonical', url()->current())
+@section('robots', 'noindex, follow')
 
 @section('content')
 <section class="section wrap prose">

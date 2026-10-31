@@ -2,7 +2,7 @@
 
 @section('title', 'Te veel verzoeken')
 @section('meta_description', 'Te veel verzoeken. Wacht even en probeer opnieuw.')
-@section('canonical', url()->current())
+@section('robots', 'noindex, follow')
 
 @section('content')
 <section class="section wrap prose">

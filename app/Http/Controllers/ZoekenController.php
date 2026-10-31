@@ -23,8 +23,6 @@ class ZoekenController extends Controller
             $plantItems = $search->search(null, null, false, $plant)['items'];
         }
 
-        $canonicalQuery = array_filter(['plant' => $plant !== '' ? $plant : null]);
-
         $title = $plant !== ''
             ? 'Gratis '.$plant.'-stekjes'
             : 'Aanbod: gratis planten en stekjes ophalen';
@@ -39,7 +37,8 @@ class ZoekenController extends Controller
             'title' => $title,
             'heading' => $heading,
             'metaDescription' => $metaDescription,
-            'canonical' => route('aanbod', $canonicalQuery),
+            // Filter-URL's (?plant=) canonicaliseren naar de kale aanbodpagina.
+            'canonical' => route('aanbod'),
             'nuTeStekken' => $calendar->blockForViews(),
             'plant' => $plant,
             'plantItems' => $plantItems,
