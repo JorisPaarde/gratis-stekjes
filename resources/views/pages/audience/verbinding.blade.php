@@ -7,8 +7,8 @@
 @section('content')
 <x-audience-page
   eyebrow="Voor wie meer contact zoekt"
-  heading="Planten delen, buren ontmoeten"
-  intro="Het is jammer dat mensen elkaar steeds minder treffen. Een stekje ophalen is een klein excuus om wél even langs te gaan — en vaak blijft er een praatje van over. Dat is precies de bedoeling van {{ config('site.name') }}."
+  heading="Leer je buren kennen via een stekje"
+  intro="Het stekje is het excuus, het praatje is het punt. Of je nu bij een plantenbieb, stekjesmarkt of buurttuin hangt — via {{ config('site.name') }} haal je iets op bij iemand in de buurt en spreek je elkaar even."
   :current="$currentSeries"
   :series="$series"
 >
@@ -18,16 +18,16 @@
 
   <h2>Zo begin je</h2>
   <ol class="list-plain">
-    <li>Maak een account en bevestig je e-mail.</li>
-    <li>Zet iets klaar om weg te geven, of zoek eerst op de <a href="{{ route('aanbod') }}">kaart</a> wat er bij jou in de buurt staat.</li>
-    <li>Stuur een bericht, spreek af, en haal het plantje op.</li>
+    <li>Maak een account en bevestig je e-mail — of kijk eerst op de <a href="{{ route('aanbod') }}">kaart</a> wat er bij jou in de buurt staat.</li>
+    <li>Zet iets klaar om weg te geven, of stuur een bericht over iets dat je wilt ophalen.</li>
+    <li>Spreek af en haal het plantje op. Vaak blijft er een praatje van over.</li>
   </ol>
   <p>Wil je vooral anderen helpen de site te verspreiden? Kijk op <a href="{{ route('help-mee') }}">Help mee</a>.</p>
 
   <x-slot:cta>
     <div class="audience-cta-actions">
-      <a class="btn" href="{{ route('account.registreren') }}">Account maken</a>
-      <a class="btn btn-secondary" href="{{ route('aanbod') }}">Zoek in de buurt</a>
+      <a class="btn" href="{{ route('aanbod') }}">Kijk wat je buren weggeven</a>
+      <a class="btn btn-secondary" href="{{ route('account.registreren') }}">Account maken</a>
       <a class="btn btn-secondary" href="{{ route('hoe-werkt-het') }}">Hoe werkt het</a>
     </div>
   </x-slot:cta>

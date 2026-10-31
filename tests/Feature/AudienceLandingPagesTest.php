@@ -2,39 +2,41 @@
 
 declare(strict_types=1);
 
-use App\Models\HelpMeeInterest;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\RateLimiter;
-
 /** @return list<string> */
 function audienceLandingPaths(): array
 {
     return ['/volkstuinen', '/help-mee', '/natuur', '/verbinding'];
 }
 
-test('doelgroep-landingspagina’s geven 200 met SEO-meta en schema', function () {
+test('doelgroep-landingspagina’s geven 200 met SEO-title, H1, CTA en schema', function () {
     $cases = [
         'volkstuinen' => [
-            'title' => 'Volkstuinverenigingen',
-            'heading' => 'Delen binnen je vereniging',
-            'see' => ['tuinvereniging', 'voor-organisaties/aanmelden'],
+            'title' => 'Volkstuinvereniging: planten en oogst gratis delen',
+            'heading' => 'Stekjes delen binnen je eigen volkstuin',
+            'cta' => 'Zet het eerste stekje van jouw tuin online',
+            'see' => ['QR', 'clubhuis', 'voor-organisaties/aanmelden'],
+            'dont' => ['Lucy', 'partnerschap met'],
         ],
         'help-mee' => [
-            'title' => 'Help mee',
-            'heading' => 'Help mee',
-            'see' => ['verbinders', 'Stuur interesse'],
+            'title' => 'Help mee: vrijwilligerswerk voor planten en natuur',
+            'heading' => 'Breng jij mensen graag bij elkaar?',
+            'cta' => 'Meld je als verbinder: 2 uur per maand, stoppen kan altijd',
+            'see' => ['contact', 'feedback'],
+            'dont' => ['help-mee.store', 'help_mee_interests'],
         ],
         'natuur' => [
-            'title' => 'Natuurliefhebbers',
-            'heading' => 'Meer planten, meer groen',
-            'see' => ['stektips', 'deelplekken'],
+            'title' => 'Inheemse planten gratis delen: bijen- en vlinderplanten',
+            'heading' => 'Meer groen, zonder één plant te kopen',
+            'cta' => 'Bied je snoeiafval aan als stek',
+            'see' => ['inheemse planten', 'bijenplanten'],
+            'dont' => [],
         ],
         'verbinding' => [
-            'title' => 'Verbinding',
-            'heading' => 'Planten delen, buren ontmoeten',
-            'see' => ['praatje', 'help-mee'],
+            'title' => 'Plantenbieb, stekjesmarkt en buurttuin: samen delen',
+            'heading' => 'Leer je buren kennen via een stekje',
+            'cta' => 'Kijk wat je buren weggeven',
+            'see' => ['praatje', 'aanbod'],
+            'dont' => [],
         ],
     ];
 
@@ -42,16 +44,20 @@ test('doelgroep-landingspagina’s geven 200 met SEO-meta en schema', function (
         $html = $this->get(route($name))
             ->assertOk()
             ->assertSee('<h1 class="page-title">'.$case['heading'].'</h1>', false)
+            ->assertSee($case['title'], false)
+            ->assertSee($case['cta'], false)
             ->assertSee('rel="canonical"', false)
             ->assertSee('property="og:title"', false)
             ->assertSee('property="og:description"', false)
             ->assertSee('application/ld+json', false)
             ->assertSee('"@type":"WebPage"', false)
-            ->assertSee($case['title'], false)
             ->getContent();
 
         foreach ($case['see'] as $needle) {
             expect($html)->toContain($needle);
+        }
+        foreach ($case['dont'] as $needle) {
+            expect($html)->not->toContain($needle);
         }
 
         $text = html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5, 'UTF-8');
@@ -80,82 +86,22 @@ test('doelgroeppagina’s staan in sitemap maar niet in menu of footer', functio
         expect($footer[1])->not->toContain($slug);
     }
 
-    // Homepage-CTA mag wél naar Help mee (buiten nav/footer).
-    expect($home)->toMatch('/href="[^"]*help-mee"/');
+    // Homepage-CTA mag wél naar Help mee (buiten nav/footer); geen “binnenkort”-badge meer in dat paneel.
+    expect(preg_match('/<div class="cta-panel"[^>]*>(.*?)<\/div>\s*<\/section>/s', $home, $cta))->toBe(1);
+    expect($cta[1])->toMatch('/href="[^"]*help-mee"/')
+        ->and($cta[1])->not->toContain('badge-soon')
+        ->and($cta[1])->not->toContain('binnenkort');
     expect($home)->not->toMatch('/href="[^"]*\/volkstuinen"/')
         ->and($home)->not->toMatch('/href="[^"]*\/natuur"/')
         ->and($home)->not->toMatch('/href="[^"]*\/verbinding"/');
 });
 
-test('help-mee formulier slaat op zonder mail', function () {
-    Mail::fake();
-    RateLimiter::clear('help-mee:127.0.0.1');
+test('help-mee heeft geen eigen post-endpoint en verwijst naar contact', function () {
+    $this->post('/help-mee', [])->assertStatus(405);
 
-    $this->post(route('help-mee.store'), [
-        'website' => '',
-        'form_started' => time() - 10,
-        'name' => 'Sam',
-        'email' => 'sam@example.com',
-        'note' => 'Ik wil social media doen.',
-        'privacy' => '1',
-    ])
-        ->assertRedirect(route('help-mee'))
-        ->assertSessionHas('status');
-
-    $row = HelpMeeInterest::query()->first();
-    expect($row)->not->toBeNull()
-        ->and($row->name)->toBe('Sam')
-        ->and((string) $row->email)->toBe('sam@example.com')
-        ->and((string) $row->note)->toBe('Ik wil social media doen.')
-        ->and($row->privacy_at)->not->toBeNull();
-
-    $rawEmail = (string) DB::table('help_mee_interests')->where('id', $row->id)->value('email');
-    expect($rawEmail)->not->toBe('sam@example.com')
-        ->and(Crypt::decryptString($rawEmail))->toBe('sam@example.com');
-
-    Mail::assertNothingSent();
-});
-
-test('help-mee honeypot slaat stilzwijgend niets op', function () {
-    Mail::fake();
-
-    $this->post(route('help-mee.store'), [
-        'website' => 'https://spam.example',
-        'form_started' => time() - 10,
-        'name' => 'Bot',
-        'email' => 'bot@example.com',
-        'note' => 'spam',
-        'privacy' => '1',
-    ])
-        ->assertRedirect(route('help-mee'))
-        ->assertSessionHas('status');
-
-    expect(HelpMeeInterest::query()->count())->toBe(0);
-    Mail::assertNothingSent();
-});
-
-test('privacy vermeldt help-mee interesse', function () {
-    $this->get(route('privacy'))
+    $this->get(route('help-mee'))
         ->assertOk()
-        ->assertSee('Help mee-interesse', false)
-        ->assertSee('geen automatische bevestigingsmail', false);
-});
-
-test('beheer toont help-mee aanmeldingen', function () {
-    config(['stekjes.admin_password' => 'TestOnly-HelpMee-Beheer-9']);
-
-    HelpMeeInterest::query()->create([
-        'name' => 'Alex',
-        'email' => 'alex@example.com',
-        'note' => 'Volkstuinen tippen',
-        'privacy_at' => now(),
-    ]);
-
-    $this->withSession(['admin_ok' => true])
-        ->get(route('beheer.help-mee'))
-        ->assertOk()
-        ->assertSee('Alex', false)
-        ->assertSee('alex@example.com', false)
-        ->assertSee('Volkstuinen tippen', false)
-        ->assertHeader('X-Robots-Tag', 'noindex, nofollow');
+        ->assertSee('Meld je als verbinder: 2 uur per maand, stoppen kan altijd', false)
+        ->assertSee(route('contact'), false)
+        ->assertSee('feedback', false);
 });

@@ -13,11 +13,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- Doelgroep-landingspagina’s (niet in hoofdmenu/footer, wél in sitemap + SEO/OG/canonical/WebPage-schema): `/volkstuinen`, `/help-mee`, `/natuur`, `/verbinding` — gedeelde Blade-component `x-audience-page`, Nederlandse ik-vorm.
-- `/volkstuinen`: delen binnen een volkstuinvereniging via bestaande account-/aanbod-/berichtfuncties; vereniging aanmelden via `/voor-organisaties/aanmelden` (type tuinvereniging) of contact.
-- `/help-mee`: verbinders werven (social, volkstuinen, voedselbossen/initiatieven); interesseformulier → tabel `help_mee_interests` (versleuteld e-mail/notitie), géén automatische mail; beheerlijst `/beheer/help-mee`.
+- Doelgroep-landingspagina’s (niet in hoofdmenu/footer, wél in sitemap + SEO/OG/canonical/WebPage-schema): `/volkstuinen`, `/help-mee`, `/natuur`, `/verbinding` — gedeelde Blade-component `x-audience-page`, Nederlandse ik-vorm; titles/H1/CTA’s uit SEO-zoektermen + marketingadvies 31 okt.
+- `/volkstuinen`: “Stekjes delen binnen je eigen volkstuin”; CTA “Zet het eerste stekje van jouw tuin online”; bestuur: QR-poster later (geen belofte dat die al bestaat); aanmelden via `/voor-organisaties/aanmelden` of contact.
+- `/natuur`: “Meer groen, zonder één plant te kopen” rond inheemse/bijen-/vlinderplanten; CTA “Bied je snoeiafval aan als stek”.
+- `/verbinding`: “Leer je buren kennen via een stekje”; CTA “Kijk wat je buren weggeven”.
+- `/help-mee`: “Breng jij mensen graag bij elkaar?”; CTA “Meld je als verbinder: 2 uur per maand, stoppen kan altijd” via bestaand contact/feedback (geen eigen mailflow).
 - Homepage-CTA “Ik help op een andere manier” linkt naar `/help-mee` (geen “binnenkort”-badge meer).
-- Privacyvermelding voor Help mee-interesse.
 
 ## [0.24.11] - 2026-10-31
 
