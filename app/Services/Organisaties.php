@@ -19,7 +19,13 @@ final class Organisaties
 
         return array_values(array_filter(
             $data['organisaties'] ?? [],
-            static fn ($row) => is_array($row) && ! empty($row['slug']) && ! empty($row['naam'])
+            static function ($row): bool {
+                if (! is_array($row) || empty($row['slug']) || empty($row['naam'])) {
+                    return false;
+                }
+
+                return self::rowVisible($row);
+            }
         ));
     }
 
@@ -36,6 +42,20 @@ final class Organisaties
         }
 
         return null;
+    }
+
+    /** Of een organisatie-rij publiek zichtbaar is (default true). */
+    private static function rowVisible(array $row): bool
+    {
+        if (! array_key_exists('visible', $row)) {
+            return true;
+        }
+        $visible = filter_var($row['visible'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        if ($visible === null) {
+            return (bool) $row['visible'];
+        }
+
+        return $visible;
     }
 
     /**
@@ -94,6 +114,12 @@ final class Organisaties
             $bron = (string) ($row['bron_url'] ?? '');
             if ($bron !== '' && ! preg_match('#^https?://#i', $bron)) {
                 $errors[] = "organisaties[$i] bron_url moet http(s) zijn";
+            }
+            if (array_key_exists('visible', $row)) {
+                $visible = filter_var($row['visible'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                if ($visible === null && ! is_bool($row['visible'])) {
+                    $errors[] = "organisaties[$i] visible moet boolean zijn";
+                }
             }
             if (array_key_exists('deelplek_slugs', $row) && ! is_array($row['deelplek_slugs'])) {
                 $errors[] = "organisaties[$i] deelplek_slugs moet een array zijn";

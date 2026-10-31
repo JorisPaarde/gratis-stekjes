@@ -65,6 +65,7 @@ Route::post('/voor-organisaties/aanmelden', [VoorOrganisatiesController::class, 
     ->middleware('throttle:10,1')
     ->name('voor-organisaties.aanmelden.store');
 Route::get('/organisaties', [OrganisatieController::class, 'index'])->name('organisaties.index');
+Route::redirect('/organisaties/plant-voor-plant', '/organisaties', 301);
 Route::get('/organisaties/{slug}', [OrganisatieController::class, 'show'])
     ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
     ->name('organisaties.show');

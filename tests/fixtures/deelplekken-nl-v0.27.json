@@ -96,18 +96,6 @@
     "geraadpleegd": "2026-10-29"
   },
   {
-    "id": "maarssen-plant-voor-plant",
-    "naam": "Plant voor Plant (MEC Maarssen)",
-    "type": "plantenasiel",
-    "plaats": "Maarssen",
-    "provincie": "Utrecht",
-    "adres": "Reigerskamp 197, Maarssenbroek",
-    "lat": 52.133207,
-    "lng": 5.012329,
-    "bron_url": "https://plantvoorplant.nl/andere-plantenasiels/",
-    "geraadpleegd": "2026-10-29"
-  },
-  {
     "id": "wageningen-plantenasiel",
     "naam": "Plantenasiel Wageningen",
     "type": "plantenasiel",
@@ -189,7 +177,8 @@
     "lat": 51.999241,
     "lng": 4.374466,
     "bron_url": "https://plantleven.nl/plantenbieb-plantenasiel-nederland-belgie/",
-    "geraadpleegd": "2026-10-29"
+    "geraadpleegd": "2026-10-29",
+    "visible": false
   },
   {
     "id": "medemblik-plantenbieb",
@@ -213,7 +202,8 @@
     "lat": 51.758093,
     "lng": 5.935797,
     "bron_url": "https://plantleven.nl/plantenbieb-plantenasiel-nederland-belgie/",
-    "geraadpleegd": "2026-10-29"
+    "geraadpleegd": "2026-10-29",
+    "visible": false
   },
   {
     "id": "voorburg-koningkerk-plantenbieb",
@@ -370,5 +360,173 @@
     "lng": 5.827241,
     "bron_url": "https://zadenbibliotheeknederland.nl/zadenbibliotheek-nijmegen/",
     "geraadpleegd": "2026-10-29"
+  },
+  {
+    "id": "utrecht-roverstuin",
+    "naam": "De Roverstuin Utrecht (Beton-T)",
+    "type": "plantenasiel",
+    "plaats": "Utrecht",
+    "provincie": "Utrecht",
+    "adres": "Koningin Wilhelminalaan 4 (Beton-T / Vechtclub), Utrecht",
+    "lat": 52.076247,
+    "lng": 5.108286,
+    "bron_url": "https://www.vechtclub.nl/beton-t/de-roverstuin/",
+    "geraadpleegd": "2026-10-31"
+  },
+  {
+    "id": "amsterdam-oba-spaarndammerbuurt-zadenbibliotheek",
+    "naam": "Zadenbibliotheek OBA Spaarndammerbuurt",
+    "type": "zaadbibliotheek",
+    "plaats": "Amsterdam",
+    "provincie": "Noord-Holland",
+    "adres": "Spaarndammerstraat 490 (OBA Spaarndammerbuurt), Amsterdam",
+    "lat": 52.388909,
+    "lng": 4.88,
+    "bron_url": "https://www.dewestkrant.nl/eerste-amsterdamse-zadenbibliotheek-opent-in-spaarndammerbuurt/",
+    "geraadpleegd": "2026-10-31"
+  },
+  {
+    "id": "leens-zadenbibliotheek",
+    "naam": "Zadenbibliotheek Bibliotheek Leens",
+    "type": "zaadbibliotheek",
+    "plaats": "Leens",
+    "provincie": "Groningen",
+    "adres": "R. Ritzemastraat 2, 9965 TD Leens",
+    "lat": 53.361817,
+    "lng": 6.37619,
+    "bron_url": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/leens.html",
+    "geraadpleegd": "2026-10-31"
+  },
+  {
+    "id": "uithuizen-zadenbibliotheek",
+    "naam": "Zadenbibliotheek Bibliotheek Uithuizen",
+    "type": "zaadbibliotheek",
+    "plaats": "Uithuizen",
+    "provincie": "Groningen",
+    "adres": "Blink 1c, 9981 AJ Uithuizen",
+    "lat": 53.406147,
+    "lng": 6.676837,
+    "bron_url": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/uithuizen.html",
+    "geraadpleegd": "2026-10-31"
+  },
+  {
+    "id": "stadskanaal-zadenbibliotheek",
+    "naam": "Zadenbibliotheek Bibliotheek Stadskanaal",
+    "type": "zaadbibliotheek",
+    "plaats": "Stadskanaal",
+    "provincie": "Groningen",
+    "adres": "Continentenlaan 2, 9501 DG Stadskanaal",
+    "lat": 52.988935,
+    "lng": 6.956742,
+    "bron_url": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/stadskanaal.html",
+    "geraadpleegd": "2026-10-31"
+  },
+  {
+    "id": "leek-zadenbibliotheek",
+    "naam": "Zadenbibliotheek Bibliotheek Leek",
+    "type": "zaadbibliotheek",
+    "plaats": "Leek",
+    "provincie": "Groningen",
+    "adres": "Waezenburglaan 53, 9351 HC Leek",
+    "lat": 53.161716,
+    "lng": 6.370824,
+    "bron_url": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/leek.html",
+    "geraadpleegd": "2026-10-31"
+  },
+  {
+    "id": "zuidhorn-zadenbibliotheek",
+    "naam": "Zadenbibliotheek Bibliotheek Zuidhorn",
+    "type": "zaadbibliotheek",
+    "plaats": "Zuidhorn",
+    "provincie": "Groningen",
+    "adres": "Jellemaweg 3, 9801 CG Zuidhorn",
+    "lat": 53.244656,
+    "lng": 6.403482,
+    "bron_url": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/zuidhorn.html",
+    "geraadpleegd": "2026-10-31"
+  },
+  {
+    "id": "marum-zadenbibliotheek",
+    "naam": "Zadenbibliotheek Bibliotheek Marum",
+    "type": "zaadbibliotheek",
+    "plaats": "Marum",
+    "provincie": "Groningen",
+    "adres": "Wendtsteinweg 57, 9363 AM Marum",
+    "lat": 53.144165,
+    "lng": 6.267119,
+    "bron_url": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/marum.html",
+    "geraadpleegd": "2026-10-31"
+  },
+  {
+    "id": "grootegast-zadenbibliotheek",
+    "naam": "Zadenbibliotheek Bibliotheek Grootegast",
+    "type": "zaadbibliotheek",
+    "plaats": "Grootegast",
+    "provincie": "Groningen",
+    "adres": "Marktplein 11, 9861 JA Grootegast",
+    "lat": 53.214314,
+    "lng": 6.277343,
+    "bron_url": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/grootegast.html",
+    "geraadpleegd": "2026-10-31"
+  },
+  {
+    "id": "harkstede-zadenbibliotheek",
+    "naam": "Zadenbibliotheek Bibliotheek Harkstede",
+    "type": "zaadbibliotheek",
+    "plaats": "Harkstede",
+    "provincie": "Groningen",
+    "adres": "Dorpshuisweg 36, 9617 BN Harkstede",
+    "lat": 53.210351,
+    "lng": 6.699997,
+    "bron_url": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/harkstede.html",
+    "geraadpleegd": "2026-10-31"
+  },
+  {
+    "id": "slochteren-zadenbibliotheek",
+    "naam": "Zadenbibliotheek Bibliotheek Slochteren",
+    "type": "zaadbibliotheek",
+    "plaats": "Slochteren",
+    "provincie": "Groningen",
+    "adres": "Hoofdweg 9a, 9621 AC Slochteren",
+    "lat": 53.217355,
+    "lng": 6.807199,
+    "bron_url": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/slochteren.html",
+    "geraadpleegd": "2026-10-31"
+  },
+  {
+    "id": "zuidbroek-zadenbibliotheek",
+    "naam": "Zadenbibliotheek Bibliotheek Zuidbroek",
+    "type": "zaadbibliotheek",
+    "plaats": "Zuidbroek",
+    "provincie": "Groningen",
+    "adres": "W.A. Scholtenweg 18, 9636 BS Zuidbroek",
+    "lat": 53.161441,
+    "lng": 6.861059,
+    "bron_url": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/zuidbroek.html",
+    "geraadpleegd": "2026-10-31"
+  },
+  {
+    "id": "onstwedde-zadenbibliotheek",
+    "naam": "Zadenbibliotheek Bibliotheek Onstwedde",
+    "type": "zaadbibliotheek",
+    "plaats": "Onstwedde",
+    "provincie": "Groningen",
+    "adres": "Boslaan 50, 9591 BK Onstwedde",
+    "lat": 53.03712,
+    "lng": 7.039735,
+    "bron_url": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/onstwedde.html",
+    "geraadpleegd": "2026-10-31"
+  },
+  {
+    "id": "musselkanaal-zadenbibliotheek",
+    "naam": "Zadenbibliotheek Bibliotheek Musselkanaal",
+    "type": "zaadbibliotheek",
+    "plaats": "Musselkanaal",
+    "provincie": "Groningen",
+    "adres": "Willem Diemerstraat 7, 9581 AG Musselkanaal",
+    "lat": 52.929525,
+    "lng": 7.015444,
+    "bron_url": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/musselkanaal.html",
+    "geraadpleegd": "2026-10-31"
   }
 ]

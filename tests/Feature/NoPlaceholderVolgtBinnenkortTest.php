@@ -92,8 +92,7 @@ test('privacy, over en initiatieven tonen geen Volgt binnenkort en geen we/wij/o
             ->assertDontSee('Volgt binnenkort', false),
         'initiatieven' => $this->get(route('partners'))
             ->assertOk()
-            ->assertSee('Stekjesroute', false)
-            ->assertSee('plantenruilkasten', false)
+            ->assertDontSee('Stekjesroute', false)
             ->assertSee('Zadenbibliotheek Nederland', false)
             ->assertDontSee('Volgt binnenkort', false),
     ];
