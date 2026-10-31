@@ -9,4 +9,4 @@ Heb je zin om anderen te inspireren? Deel dan een korte ervaring (met of zonder 
 Ik kijk ernaar uit.
 
 Groet,
-Joris ({{ config('site.name') }})
+{{ config('site.name') }}

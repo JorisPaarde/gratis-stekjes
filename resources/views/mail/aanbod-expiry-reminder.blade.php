@@ -7,4 +7,4 @@ Wil je het nog {{ (int) config('stekjes.aanbod_ttl_days', 60) }} dagen laten sta
 De link is eenmalig en tijdelijk geldig.
 
 Groet,
-Joris ({{ config('site.name') }})
+{{ config('site.name') }}
