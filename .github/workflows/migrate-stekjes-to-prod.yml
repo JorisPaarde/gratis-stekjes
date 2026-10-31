@@ -7,8 +7,8 @@ name: Migrate stekjes → prod (manual)
 # oude plain-PHP prod waarden. Alleen repo-level secrets:
 #   SSH (oude staging): DEPLOY_HOST, DEPLOY_USER, DEPLOY_PORT, DEPLOY_SSH_KEY,
 #                       DEPLOY_KNOWN_HOSTS, DEPLOY_PATH
-#   APP_DIR: altijd sibling van DEPLOY_PATH → …/stekjes-staging-app
-#            (niet de cPanel app-staging secret — die is de nieuwe host)
+#   APP_DIR: input old_app_dir óf autodetect (index.php / unieke sibling/~ met artisan);
+#            nooit app-prod/app-staging (nieuwe cPanel-host)
 #   DB (optioneel, alleen mysqldump-fallback): DB_HOST, DB_NAME, DB_USER, DB_PASS
 #   Prod import: PROD_DEPLOY_TOKEN; BASE_URL default https://gratisplanten.nl
 #   DEPLOY_IMPORT_ENABLED: via deploy-prod-hook workflow_dispatch import_enabled
@@ -31,6 +31,11 @@ on:
         required: false
         type: boolean
         default: false
+      old_app_dir:
+        description: "Optioneel: absoluut pad naar Laravel-app op oude staging (…/artisan)"
+        required: false
+        type: string
+        default: ""
 
 concurrency:
   group: migrate-stekjes-to-prod
@@ -123,20 +128,47 @@ jobs:
             ssh-keyscan -p "${P:-22}" -H "$H" >> ~/.ssh/known_hosts 2>/dev/null || true
           fi
 
-      - name: Resolve APP_DIR op oude staging (sibling van DEPLOY_PATH)
+      - name: Resolve APP_DIR op oude staging
         id: app
+        env:
+          OLD_APP_DIR_INPUT: ${{ inputs.old_app_dir }}
         run: |
           set -euo pipefail
-          # Altijd afleiden van DEPLOY_PATH — niet de cPanel app-staging secret.
-          ssh -i ~/.ssh/deploy_key -p "${P:-22}" -o StrictHostKeyChecking=yes "$U@$H" bash -s <<EOF > /tmp/app_dir.txt
+          chmod +x scripts/resolve-old-staging-app-dir.sh
+          # Script naar remote; resolve daar (index.php / siblings / ~), of override.
+          scp -i ~/.ssh/deploy_key -P "${P:-22}" -o StrictHostKeyChecking=yes \
+            scripts/resolve-old-staging-app-dir.sh \
+            "$U@$H:/tmp/resolve-old-staging-app-dir.sh"
+          set +e
+          ssh -i ~/.ssh/deploy_key -p "${P:-22}" -o StrictHostKeyChecking=yes "$U@$H" bash -s <<EOF > /tmp/app_dir_resolve.log 2>&1
           set -euo pipefail
+          chmod +x /tmp/resolve-old-staging-app-dir.sh
           DOC='${D%/}'
-          APP="\$(dirname "\$DOC")/stekjes-staging-app"
-          test -d "\$APP" || { echo "APP_DIR ontbreekt (verwacht sibling stekjes-staging-app van DEPLOY_PATH)" >&2; exit 1; }
-          printf '%s\n' "\$APP"
+          OVERRIDE='${OLD_APP_DIR_INPUT}'
+          if [ -n "\$OVERRIDE" ]; then
+            /tmp/resolve-old-staging-app-dir.sh --docroot "\$DOC" --override "\$OVERRIDE"
+          else
+            /tmp/resolve-old-staging-app-dir.sh --docroot "\$DOC"
+          fi
+          rm -f /tmp/resolve-old-staging-app-dir.sh
           EOF
+          resolve_ec=$?
+          set -e
+          # Remote stdout (APP_DIR) + stderr (notices) gemengd; paden OK in log, geen secrets.
+          cat /tmp/app_dir_resolve.log
+          if [ "$resolve_ec" -ne 0 ]; then
+            echo "::error::APP_DIR resolve faalde (exit ${resolve_ec}; zie kandidaten hierboven)."
+            exit 1
+          fi
+          APP="$(grep -E '^/' /tmp/app_dir_resolve.log | tail -n1 || true)"
+          if [ -z "$APP" ]; then
+            echo "::error::APP_DIR resolve gaf geen pad terug."
+            exit 1
+          fi
+          printf '%s\n' "$APP" > /tmp/app_dir.txt
+          echo "app_dir=${APP}" >> "$GITHUB_OUTPUT"
           echo "app_dir_set=1" >> "$GITHUB_OUTPUT"
-          echo "::notice::Oude staging APP_DIR afgeleid van DEPLOY_PATH (stekjes-staging-app)."
+          echo "::notice::Oude staging APP_DIR=${APP}"
 
       - name: Fingerprint oude staging (VERSION + APP_URL-host, geen PII)
         id: fingerprint
