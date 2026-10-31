@@ -1,0 +1,44 @@
+{
+    "slug": "basilicum",
+    "naam": "Basilicum",
+    "latijn": "Ocimum basilicum",
+    "categorie": "kruid",
+    "waarom": "Eenjarig kruid: zaaien is de hoofdroute; kopstek in water lukt ook in de zomer",
+    "methode": "Zaaien (binnen) of kopstek in water",
+    "wanneer": "Zaaien mrt–apr binnen; buiten na half mei. Stek mei–aug",
+    "welk_hout": "Jonge, niet-bloeiende topjes van ±8–10 cm",
+    "lengte_snit": "Onder een knoop knippen; onderste blaadjes weg",
+    "water_grond": "Water tot wortels zichtbaar zijn, daarna luchtige potgrond; of direct in stekgrond",
+    "licht": "Volle zon",
+    "water": "Gelijkmatig vochtig; geen koude voeten",
+    "hulpmiddel": "Niet nodig",
+    "kans": "Makkelijk (stek); zaaien eveneens makkelijk",
+    "klaar": "Zodra wortels ±3–5 cm zijn en de plant nieuw blad maakt",
+    "verwanten": [
+        "munt",
+        "citroenmelisse",
+        "oregano"
+    ],
+    "waarschuwing": "Vorstgevoelig: eenjarig in NL/BE, buiten pas na de ijsheiligen.",
+    "ervaringen": "",
+    "bronnen": "RHS — Basil — https://www.rhs.org.uk/herbs/basil/grow-your-own; RHS — Softwood cuttings — https://www.rhs.org.uk/propagation/softwood-cuttings",
+    "kort": "Zaaien binnen, of kopstek in water in de zomer",
+    "inhoud": [
+        {
+            "type": "h2",
+            "tekst": "Basilicum stekken in water"
+        },
+        {
+            "type": "p",
+            "tekst": "Zet een frisse top in schoon water op een lichte, warme plek. Ververs het water om de paar dagen. Zodra er wortels zijn, pot je op in luchtige grond. Bloeiende scheuten stekken minder betrouwbaar."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer basilicum stekken of zaaien"
+        },
+        {
+            "type": "p",
+            "tekst": "Zaai maart–april binnen. Stekken kan van mei tot augustus zolang je niet-bloeiende topjes hebt. Buiten zetten pas na half mei vanwege vorst."
+        }
+    ]
+}

@@ -14,10 +14,10 @@ test('catalogus bevat basis-48 en honderden zichtbare soorten', function () {
 
     expect(count($all))->toBeGreaterThanOrEqual(200)
         ->and(count($all))->toBeLessThan(count($inclHidden))
-        ->and(count($inclHidden))->toBe(337);
+        ->and(count($inclHidden))->toBe(353);
 
     $withSlug = array_values(array_filter($all, fn ($r) => ! empty($r['slug'])));
-    expect(count($withSlug))->toBe(48);
+    expect(count($withSlug))->toBe(106);
 
     $monstera = $this->planten->resolveExact('Monstera');
     expect($monstera)->not->toBeNull()

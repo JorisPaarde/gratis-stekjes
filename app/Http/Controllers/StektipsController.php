@@ -203,6 +203,14 @@ class StektipsController extends Controller
         }
 
         $naam = (string) ($soort['naam'] ?? $slug);
+        $seoNaam = trim((string) ($soort['seo_naam'] ?? ''));
+        if ($seoNaam === '') {
+            $seoNaam = $naam;
+        }
+        $seoWerkwoord = trim((string) ($soort['seo_werkwoord'] ?? ''));
+        if ($seoWerkwoord === '') {
+            $seoWerkwoord = 'stekken';
+        }
         $latijn = (string) ($soort['latijn'] ?? '');
         $kort = (string) ($soort['kort'] ?? '');
         $metaLatijn = ($latijn !== '' && $latijn !== 'Volgt binnenkort') ? " ({$latijn})" : '';
@@ -212,12 +220,16 @@ class StektipsController extends Controller
         $aanbodPlant = is_array($hub) ? (string) ($hub['aanbod_plant'] ?? $naam) : $naam;
         $aanbodUrl = route('aanbod', ['plant' => $aanbodPlant]);
 
-        $title = $naam.' stekken en gratis stekjes';
-        $heading = $naam.' stekken: zo doe je het';
+        $title = $seoNaam.' '.$seoWerkwoord.' en gratis stekjes';
+        $heading = $seoNaam.' '.$seoWerkwoord.': zo doe je het';
         // Latijn alleen in meta als het geheel ≤ 160 tekens blijft.
-        $metaWithLatijn = $naam.$metaLatijn.' stekken: zo doe je het. '.$metaKort.'Daarna gratis stekjes delen via '.config('site.name').'.';
-        $metaWithoutLatijn = $naam.' stekken: zo doe je het. '.$metaKort.'Daarna gratis stekjes delen via '.config('site.name').'.';
+        $metaWithLatijn = $seoNaam.$metaLatijn.' '.$seoWerkwoord.': zo doe je het. '.$metaKort.'Daarna gratis stekjes delen via '.config('site.name').'.';
+        $metaWithoutLatijn = $seoNaam.' '.$seoWerkwoord.': zo doe je het. '.$metaKort.'Daarna gratis stekjes delen via '.config('site.name').'.';
         $metaDescription = mb_strlen($metaWithLatijn, 'UTF-8') <= 160 ? $metaWithLatijn : $metaWithoutLatijn;
+        // Meta description max 160; bij overlange kort-tekst inkorten zonder latijn.
+        if (mb_strlen($metaDescription, 'UTF-8') > 160) {
+            $metaDescription = mb_substr($metaWithoutLatijn, 0, 157, 'UTF-8').'…';
+        }
 
         return view('pages.stektips-show', [
             'title' => $title,

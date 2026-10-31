@@ -22,5 +22,23 @@
     "waarschuwing": "",
     "ervaringen": "",
     "bronnen": "RHS — How to grow lavender — https://www.rhs.org.uk/plants/lavender/growing-guide; RHS — Softwood cuttings — https://www.rhs.org.uk/propagation/softwood-cuttings",
-    "kort": "Halfverhoute stek in zandige grond"
+    "kort": "Halfverhoute stek in zandige grond",
+    "inhoud": [
+        {
+            "type": "h2",
+            "tekst": "Lavendel stekken in water"
+        },
+        {
+            "type": "p",
+            "tekst": "Waterstek van lavendel wordt vaak geprobeerd. Zet een frisse, niet-bloeiende top in schoon water op een lichte plek en ververs om de paar dagen. Zodra er wortels zijn, pot je over naar luchtige stek- of potgrond. Grondstek (halfhout) blijft vaak zekerder, zeker bij lavendel."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer lavendel stekken"
+        },
+        {
+            "type": "p",
+            "tekst": "Late lente–zomer. Vermeerderen via stek is de gangbare zoekterm; «vermeerderen» betekent hier hetzelfde proces."
+        }
+    ]
 }

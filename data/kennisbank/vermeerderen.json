@@ -17,7 +17,10 @@
     "gerelateerde_soorten": [
         "hosta",
         "aardbei",
-        "framboos"
+        "framboos",
+        "appel",
+        "peer",
+        "pioenroos"
     ],
     "seizoenen": [
         "lente",
@@ -52,7 +55,7 @@
         },
         {
             "type": "p",
-            "tekst": "Enten en oculeren vragen oefening en onderstam. Voor de meeste deelacties op dit platform zijn stek, scheuren of afleggen passender. Zaaien is een apart thema (hoog volume) en geen kerndoel van de stektips-kennisbank."
+            "tekst": "Enten en oculeren vragen oefening en onderstam. Voor fruitbomen is dat de echte rasvaste route — zie het artikel Fruitbomen enten (copuleren, spleetenten, oculeren, familieboom, entmes/entwas, en waarom enten op wilg niet werkt). Zaaien van pitten geeft geen gelijk ras; zie Fruitboom uit pit of zaad."
         }
     ],
     "bronnen": [
@@ -63,12 +66,20 @@
         {
             "titel": "RHS — Layering plants",
             "url": "https://www.rhs.org.uk/propagation/layering"
+        },
+        {
+            "titel": "RHS — Grafting fruit trees",
+            "url": "https://www.rhs.org.uk/fruit/fruit-trees/grafting-ornamental"
         }
     ],
     "duurzamer_alternatief": null,
     "howto": false,
     "child_slugs": [
-        "scheuren-en-afleggen"
+        "scheuren-en-afleggen",
+        "fruitbomen-enten",
+        "onderstammen-per-fruitboom",
+        "marcotteren",
+        "fruitboom-uit-pit-of-zaad"
     ],
     "slug": "vermeerderen"
 }

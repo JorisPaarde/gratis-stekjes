@@ -4,6 +4,8 @@
     'scheut' => 'Scheut',
     'deling' => 'Deling',
     'zaad' => 'Zaad',
+    'enten' => 'Enten',
+    'afleggen' => 'Afleggen',
   ];
   $headingId = $headingId ?? 'nu-te-stekken-titel';
 @endphp

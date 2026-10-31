@@ -24,7 +24,7 @@ test('elke stektip heeft gevulde tipvelden zonder Volgt binnenkort', function ()
     ];
 
     $soorten = stektipsService()->all();
-    expect($soorten)->toHaveCount(48);
+    expect($soorten)->toHaveCount(106);
 
     foreach ($soorten as $soort) {
         $slug = (string) ($soort['slug'] ?? '');
@@ -67,7 +67,7 @@ test('soorten-json en stektips-json blijven synchroon', function () {
     $dir = dirname(__DIR__, 2).'/soorten';
     $files = glob($dir.'/*.json') ?: [];
 
-    expect($files)->toHaveCount(48);
+    expect($files)->toHaveCount(106);
 
     foreach ($files as $path) {
         $row = json_decode((string) file_get_contents($path), true);

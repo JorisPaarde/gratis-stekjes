@@ -7,7 +7,10 @@
         "afleggen",
         "layering",
         "vaste planten delen",
-        "vermeerderen zonder stek"
+        "vermeerderen zonder stek",
+        "afleggen planten",
+        "kopafleggen",
+        "heuvelen"
     ],
     "categorieen": [
         "vermeerderen",
@@ -18,7 +21,14 @@
         "aardbei",
         "framboos",
         "aloe-vera",
-        "sedum"
+        "sedum",
+        "braam",
+        "pioenroos",
+        "bieslook",
+        "agapanthus",
+        "siergras",
+        "hazelaar",
+        "klimop"
     ],
     "seizoenen": [
         "lente",
@@ -58,6 +68,14 @@
         {
             "type": "p",
             "tekst": "Permacultuur: vermeerder wat al goed groeit op jouw plek, deel overtollige delen, koop minder aan. Aardbeiuitlopers vastzetten is feitelijk een vorm van afleggen."
+        },
+        {
+            "type": "h2",
+            "tekst": "Afleggen planten"
+        },
+        {
+            "type": "p",
+            "tekst": "Kopafleggen (tip layering) werkt uitstekend bij braam, framboos en Japanse wijnbes: zet de top van een lange scheut in juli–augustus vast in de grond en knip los zodra er wortels zijn. Heuvelen (stooling) gebruik je bij onderstammen en sommige heesters: de basis wordt met grond bedekt zodat scheuten wortels maken. Zie ook marcotteren (luchtafleggen) voor takken die je niet naar de grond krijgt, en de soortpagina’s braam, kamperfoelie, hazelaar en klimop."
         }
     ],
     "bronnen": [

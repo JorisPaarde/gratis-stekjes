@@ -1,0 +1,128 @@
+{
+  "slug": "onderstammen-per-fruitboom",
+  "titel": "Onderstammen per fruitboom",
+  "samenvatting": "Naslagtabel: groeikracht van appelonderstammen (M9, M26, MM106…), peer op kwee, pruim, kers, perzik en walnoot. Percentages verschillen per bron.",
+  "meta_description": "Onderstammen voor appel, peer, pruim, kers, perzik en walnoot. M9, M26, MM106, kwee, St. Julien A, Gisela 5 — met bronnen voor NL/BE.",
+  "zoekwoorden": [
+    "onderstammen",
+    "onderstam",
+    "onderstam appelboom",
+    "M9",
+    "M26",
+    "MM106",
+    "onderstammen fruitbomen"
+  ],
+  "categorieen": [
+    "vermeerderen"
+  ],
+  "pillar": "vermeerderen",
+  "is_pillar": false,
+  "gerelateerde_soorten": [
+    "appel",
+    "peer",
+    "pruim",
+    "kers",
+    "perzik",
+    "abrikoos",
+    "kweepeer",
+    "walnoot"
+  ],
+  "seizoenen": [
+    "lente",
+    "winter"
+  ],
+  "maanden": [
+    1,
+    2,
+    3,
+    4,
+    11
+  ],
+  "niveau": "gevorderd",
+  "locatie": "buiten",
+  "inhoud": [
+    {
+      "type": "p",
+      "tekst": "De onderstam bepaalt groeikracht, paalbehoefte en soms standplaatstolerantie. Percentages hieronder zijn richtwaarden ten opzichte van een zaailing; bronnen spreken elkaar soms tegen. Dit artikel volgt gangbare NL-naslagen (van Diepen, permacultuur.nu, WUR) en noemt die spreiding."
+    },
+    {
+      "type": "h2",
+      "tekst": "Appel"
+    },
+    {
+      "type": "ul",
+      "items": [
+        "M27 ≈ 30% — zeer zwak; blijvende paal.",
+        "M9 ≈ 40% — zwak; blijvende paal; gevoelig voor bodemmoeheid en woelmuis; typische levensduur vaak 15–20 jaar.",
+        "M26 ≈ 50% — zwak tot halfzwak; meestal paal.",
+        "M7 ≈ 60% — halfsterk.",
+        "MM106 ≈ 70% — halfsterk; bruikbaarder op schralere grond.",
+        "MM111 / M25 — sterk tot zeer sterk."
+      ]
+    },
+    {
+      "type": "h2",
+      "tekst": "Peer"
+    },
+    {
+      "type": "p",
+      "tekst": "Zaailing geeft hoogstam. Kwee A ≈ 60%, Adams ≈ 55%, Kwee C ≈ 50%. Kwee C is vorstgevoeliger; kwee MC vroor in strenge winters (o.a. 2013) massaal terug. Sommige perenrassen hebben een tussenstam nodig op kwee."
+    },
+    {
+      "type": "h2",
+      "tekst": "Pruim"
+    },
+    {
+      "type": "p",
+      "tekst": "Myrobalan en Brompton sterk; St. Julien A halfsterk; VVA-1 en Pixy zwak. Voor Nederlandse omstandigheden noemt WUR-onderzoek VVA-1 als sterke kandidaat onder de zwakkere typen."
+    },
+    {
+      "type": "h2",
+      "tekst": "Kers"
+    },
+    {
+      "type": "p",
+      "tekst": "F12/1 sterk; Colt ≈ 80%; Gisela 5 ≈ 50% (boom vaak 2–3 m). Zwakkere onderstammen vragen meer steun en zorgvuldig waterbeheer."
+    },
+    {
+      "type": "h2",
+      "tekst": "Perzik, abrikoos en walnoot"
+    },
+    {
+      "type": "p",
+      "tekst": "Perzik en abrikoos: vaak St. Julien A. Walnoot: in de praktijk op een zaailing van walnoot — andere onderstammen zijn voor hobbyisten zelden beschikbaar."
+    },
+    {
+      "type": "p",
+      "tekst": "Hoe je ent of oculatie zet: zie Fruitbomen enten."
+    }
+  ],
+  "bronnen": [
+    {
+      "titel": "van Diepen — Onderstammen",
+      "url": "https://www.vandiepen.nl/onderstammen.php?product_id=198"
+    },
+    {
+      "titel": "permacultuur.nu — Onderstammen (PDF)",
+      "url": "https://www.permacultuur.nu/images/pdfs/onderstammen.pdf"
+    },
+    {
+      "titel": "WUR — edepot 417145",
+      "url": "https://edepot.wur.nl/417145"
+    },
+    {
+      "titel": "Fruitpluktuin — Fruitbomen vermeerderen",
+      "url": "https://fruitpluktuin.nl/Vermeerderen/fruitbomen-vermeerderen"
+    },
+    {
+      "titel": "LWG Bayern — Veredlungsunterlagen Obstgehölze (PDF)",
+      "url": "https://www.lwg.bayern.de/mam/cms06/gartenakademie/dateien/3101_-_veredlungsunterlagen_von_obstgehoelzen.pdf"
+    },
+    {
+      "titel": "Agroforestry Research Trust — Rootstock information",
+      "url": "https://www.agroforestry.co.uk/agroforestry-shop/rootstock-information/"
+    }
+  ],
+  "duurzamer_alternatief": null,
+  "howto": false
+}

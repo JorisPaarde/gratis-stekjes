@@ -1,0 +1,77 @@
+{
+  "slug": "zomerstek-halfhoutstek",
+  "titel": "Zomerstek en halfhoutstek",
+  "samenvatting": "Halfrijpe stekken in de zomer: de methode voor laurier, buxus, laurierkers, passiebloem, jasmijn en vergelijkbare heesters.",
+  "meta_description": "Zomerstek / halfhoutstek: wanneer knippen, hoe stekken zetten, voor laurier, buxus, passiebloem en meer. Met RHS-bron.",
+  "zoekwoorden": [
+    "zomerstek",
+    "halfhoutstek",
+    "halfrijpe stek",
+    "semi-ripe cuttings",
+    "heesters stekken"
+  ],
+  "categorieen": [
+    "stekken"
+  ],
+  "pillar": "stekken",
+  "is_pillar": false,
+  "gerelateerde_soorten": [
+    "laurier",
+    "buxus",
+    "laurierkers",
+    "passiebloem",
+    "toscaanse-jasmijn",
+    "oleander",
+    "tuinhibiscus",
+    "rozemarijn",
+    "lavendel",
+    "hortensia"
+  ],
+  "seizoenen": [
+    "zomer"
+  ],
+  "maanden": [
+    6,
+    7,
+    8,
+    9
+  ],
+  "niveau": "beginner",
+  "locatie": "buiten",
+  "inhoud": [
+    {
+      "type": "p",
+      "tekst": "Halfhoutstek (semi-ripe / zomerstek) neem je als de scheut van dit jaar begint te verhouten: nog buigzaam, niet meer slap-zacht. In België zoekt men relatief vaak op «zomerstek»; inhoudelijk is het dezelfde techniek als halfhoutstek."
+    },
+    {
+      "type": "h2",
+      "tekst": "Hoe"
+    },
+    {
+      "type": "ol",
+      "items": [
+        "Knip ’s ochtends een gezonde, niet-bloeiende scheut.",
+        "Maak stekken van ongeveer 10–15 cm; snede onder een knoop; onderste bladeren weg; grote bladeren eventueel inkorten.",
+        "Zet in zandige stekgrond; optioneel stekpoeder of wilgenwater.",
+        "Houd warm, licht (geen felle middagzon) en luchtvochtig — kasje of plastic kap.",
+        "Houd de grond licht vochtig tot er weerstand is bij licht trekken."
+      ]
+    },
+    {
+      "type": "h2",
+      "tekst": "Typische planten"
+    },
+    {
+      "type": "p",
+      "tekst": "Laurier, buxus, laurierkers, passiebloem, Toscaanse jasmijn, oleander, tuinhibiscus, lavendel en rozemarijn. Vergelijk winterhoutstek voor bladverliezende struiken in rust."
+    }
+  ],
+  "bronnen": [
+    {
+      "titel": "RHS — Semi-ripe cuttings",
+      "url": "https://www.rhs.org.uk/propagation/semi-ripe-cuttings"
+    }
+  ],
+  "duurzamer_alternatief": "wilgenwater",
+  "howto": true
+}

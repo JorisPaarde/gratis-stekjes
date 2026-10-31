@@ -21,5 +21,23 @@
     "waarschuwing": "",
     "ervaringen": "",
     "bronnen": "RHS — How to grow shrubby hydrangeas — https://www.rhs.org.uk/plants/hydrangea/shrubby/growing-guide; RHS — Softwood cuttings — https://www.rhs.org.uk/propagation/softwood-cuttings",
-    "kort": "Halfverhoute zomerstek in stekgrond"
+    "kort": "Halfverhoute zomerstek in stekgrond",
+    "inhoud": [
+        {
+            "type": "h2",
+            "tekst": "Hortensia stekken in water"
+        },
+        {
+            "type": "p",
+            "tekst": "Waterstek van hortensia wordt vaak geprobeerd. Zet een frisse, niet-bloeiende top in schoon water op een lichte plek en ververs om de paar dagen. Zodra er wortels zijn, pot je over naar luchtige stek- of potgrond. Grondstek (halfhout) blijft vaak zekerder, zeker bij hortensia."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer hortensia stekken"
+        },
+        {
+            "type": "p",
+            "tekst": "Zomer (halfverhout). Vermeerderen via stek is de gangbare zoekterm; «vermeerderen» betekent hier hetzelfde proces."
+        }
+    ]
 }

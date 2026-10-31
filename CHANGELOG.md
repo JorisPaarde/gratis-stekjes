@@ -9,6 +9,28 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.30.0] - 2026-10-31
+
+### Added
+
+- 58 nieuwe stektips-soortpagina’s (buiten, eetbaar, tuin): o.a. laurier, basilicum,
+  klimop, appel, braam, pioenroos, eucalyptus — totaal 106 soortpagina’s.
+- 7 kennisbank-artikelen: fruitbomen-enten (incl. familieboom-H2), onderstammen per
+  fruitboom, marcotteren, zomerstek/halfhoutstek, wortelstek, fruitboom uit pit of
+  zaad, kruiden vermeerderen.
+- Soortpagina’s: optionele `seo_naam` / `seo_werkwoord` (bijv. pioen scheuren,
+  eucalyptus zaaien, vijg(enboom)) en `inhoud`-blokken voor long-tail tussenkoppen
+  (in water, wanneer).
+- Nu-te-stekken: enten- en afleggen-groepen; methodes `enten` en `afleggen`.
+
+### Changed
+
+- Upgrades: vijg (titel/H1 Vijg(enboom)), rode bes (aalbes-synoniem), hortensia /
+  lavendel / rozemarijn (H2 in water + wanneer), scheuren-en-afleggen (H2 afleggen
+  planten), vermeerderen (link naar fruitbomen-enten).
+- plantensoorten.json: slugs + meta (`met_stektips_pagina` 106); ontbrekende soorten
+  toegevoegd (geen pampagras; herfstaster ≠ struikaster).
+
 ## [0.29.2] - 2026-10-31
 
 ### Fixed
