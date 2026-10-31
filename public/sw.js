@@ -70,10 +70,14 @@ function isPrivateOrSensitive(pathname) {
     pathname.indexOf("/beheer") === 0 ||
     pathname.indexOf("/cron") === 0 ||
     pathname.indexOf("/deploy") === 0 ||
-    pathname.indexOf("/media-uploads") === 0 ||
+    pathname.indexOf("/media") === 0 ||
     pathname.indexOf("/api/") === 0 ||
     pathname.indexOf("/feedback") === 0
   ) {
+    return true;
+  }
+  // Gebruikersuploads via publieke ervaringen-foto-route (niet /ervaringen-lijst).
+  if (pathname.indexOf("/ervaringen/") === 0 && pathname.indexOf("/foto") !== -1) {
     return true;
   }
   return false;
