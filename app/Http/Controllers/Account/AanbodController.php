@@ -188,8 +188,13 @@ class AanbodController extends Controller
             }
         }
 
+        // Vrije tekst koppelt alleen zichtbare soorten; verborgen blijven
+        // bereikbaar via bestaand plantensoort_id (aanbod bewerken).
         $exact = $plantensoorten->resolveExact($tekst);
+        if ($exact === null || ! ($exact['zichtbaar'] ?? true)) {
+            return null;
+        }
 
-        return $exact['id'] ?? null;
+        return $exact['id'];
     }
 }

@@ -13,12 +13,11 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Changed
 
-- SEO-titels, H1’s en meta volgens keywordonderzoek (§2–3): home (“Gratis planten en stekjes … in je buurt”), stadspagina’s (“Gratis planten en stekjes in {Stad}”), soortpagina’s (“{Soort} stekken en gratis stekjes” / H1 “…: zo doe je het”, Geranium en Pannenkoekplant behouden), /deelplekken (plantenasiel vooraan), /invasieve-soorten (“Invasieve exoten”), /aanbod, /initiatieven en kennisbank-pijlers. Merk-suffix ` · Gratis planten` alleen als de title ≤60 tekens blijft (`SeoTitle`).
+- SEO-titels, H1’s en meta volgens keywordonderzoek (`docs/seo/doelgroep-titles-keywords.md` §2–3): home (“Gratis planten en stekjes … in je buurt”), stadspagina’s (“Gratis planten en stekjes in {Stad}”), soortpagina’s (“{Soort} stekken en gratis stekjes” / H1 “…: zo doe je het”, Geranium en Pannenkoekplant behouden), /deelplekken (plantenasiel vooraan), /invasieve-soorten (“Invasieve exoten” + echt aantal), /aanbod, /initiatieven en kennisbank-pijlers. Merk-suffix ` · Gratis planten` alleen als de title ≤60 tekens blijft (`SeoTitle`).
 - Stadspagina’s tonen een blok “Plantenasiel in {Stad}” alleen als er in de data een plantenasiel mét die plaatsnaam staat (niets verzonnen); link naar `/deelplekken` gefilterd op stad + type.
 
 ### Added
 
-- Plantensoorten-catalogus: `zichtbaar` + tag `voedselbos`; autocomplete/lijsten tonen alleen zichtbare soorten, verborgen records blijven voor bestaande `aanbod.plantensoort_id`. Selectiecriteria in `docs/plantensoorten-selectie.md`. API-filter `?tag=voedselbos`.
 - Tests op unieke `<title>`-tags op kernroutes, soort- en stadspagina’s.
 
 ## [0.24.11] - 2026-10-31
