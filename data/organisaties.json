@@ -2,7 +2,7 @@
   "meta": {
     "titel": "Organisaties rond gratis planten delen",
     "omschrijving": "Korte, feitelijke pagina’s over publiek vindbare organisaties en initiatieven. Geen partnerschappen; alleen controleerbare info met bronlink. Contactgegevens voor uitnodigen staan alleen in docs/uitnodigingen.md (niet versturen).",
-    "geraadpleegd": "2026-10-29"
+    "geraadpleegd": "2026-10-31"
   },
   "organisaties": [
     {
@@ -45,7 +45,30 @@
       "bron_url": "https://meerbomen.nu/",
       "kort": "Landelijk initiatief dat zaailingen redt en gratis tweede-kansbomen en -struiken uitdeelt via bomenhubs en vrijwilligers. Geen stekjes-deelplek; wel verwant groen delen.",
       "deelplek_slugs": [],
-      "meta_description": "Initiatief dat zaailingen redt en gratis tweede-kansbomen uitdeelt via bomenhubs en vrijwilligers."
+      "meta_description": "Initiatief dat zaailingen redt en gratis tweede-kansbomen uitdeelt via bomenhubs en vrijwilligers.",
+      "gerelateerde_slugs": [
+        "struikroven"
+      ]
+    },
+    {
+      "slug": "struikroven",
+      "naam": "Stichting Struikroven",
+      "type": "initiatief",
+      "plaats": "Nederland",
+      "website": "https://www.struikroven.nu/",
+      "bron_url": "https://www.struikroven.nu/werkwijze",
+      "kort": "Stichting die planten redt uit wijken die gesloopt of vernieuwd worden. Tijdens Struikroofacties (seizoen september t/m april) graven bewoners gratis planten uit voor hun eigen tuin of buurt. Vrijwilligers heten Struikrovers. Er is geen vaste uitgifteplek; aanmelden is meestal nodig en sommige acties zijn alleen voor omwonenden. Ze nemen geen planten van particulieren aan. Hoofdkantoor in Eindhoven, actief in heel Nederland; eerste Belgische actie in Houthalen-Helchteren (december 2025).",
+      "deelplek_slugs": [],
+      "meta_description": "Stichting die planten redt bij sloop en vernieuwing. Struikrovers organiseren Struikroofacties (september t/m april); geen vaste uitgifteplek.",
+      "links": [
+        {
+          "label": "Bekijk hun actieagenda",
+          "url": "https://www.struikroven.nu/agenda"
+        }
+      ],
+      "gerelateerde_slugs": [
+        "meerbomen-nu"
+      ]
     },
     {
       "slug": "stekjesroute",

@@ -15,6 +15,10 @@
     <a href="{{ $org['website'] }}" rel="noopener noreferrer" target="_blank">Website</a>
     ·
     <a href="{{ $org['bron_url'] }}" rel="noopener noreferrer" target="_blank">Bron</a>
+    @foreach($extraLinks as $link)
+      ·
+      <a href="{{ $link['url'] }}" rel="noopener noreferrer" target="_blank">{{ $link['label'] }}</a>
+    @endforeach
   </p>
 
   @if(count($deelplekken) > 0)
@@ -30,6 +34,17 @@
     <p><a href="{{ ($org['plaats'] ?? '') !== '' && ($org['plaats'] ?? '') !== 'Nederland' ? route('deelplekken', ['plaats' => $org['plaats']]) : route('deelplekken') }}">Bekijk deelplekken</a></p>
   @else
     <p class="muted">Geen bezoeklocatie op mijn <a href="{{ route('deelplekken') }}">deelplekkenkaart</a>; zie hun eigen site.</p>
+  @endif
+
+  @if(count($gerelateerd) > 0)
+    <h2>Samenwerking</h2>
+    <ul>
+      @foreach($gerelateerd as $related)
+        <li>
+          <a href="{{ route('organisaties.show', ['slug' => $related['slug']]) }}">{{ $related['naam'] }}</a>
+        </li>
+      @endforeach
+    </ul>
   @endif
 
   <p class="muted">

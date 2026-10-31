@@ -135,6 +135,7 @@ test('meta descriptions privacy contact help-mee aanmelden vallen binnen 70–16
         '/stektips/artikel/stekpoeder',
         '/organisaties/velt',
         '/organisaties/meerbomen-nu',
+        '/organisaties/struikroven',
         '/organisaties/netwerk-voedselbosbouw',
         '/organisaties/plantenasiel-zeist',
     ] as $path) {
