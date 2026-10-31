@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Aanbod;
+use App\Models\AanbodFoto;
 use App\Models\Conversation;
+use App\Models\Ervaring;
 use App\Models\Feedback;
 use App\Models\Message;
+use App\Models\MilestoneSent;
 use App\Models\Report;
 use App\Models\User;
 use App\Support\Geo;
@@ -15,21 +18,80 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 final class AvgService
 {
     /**
-     * Export gebruikersgegevens (geen password/tokens). Foto-links: leeg zolang geen upload bestaat.
+     * Export gebruikersgegevens (geen password/tokens). Aanbodfoto’s als media-URL’s; ervaring-foto’s als relatieve paden.
      *
      * @return array<string, mixed>
      */
     public function exportUserData(User $user): array
     {
-        $aanbod = Aanbod::query()
+        $aanbodRows = Aanbod::query()
             ->where('user_id', $user->id)
+            ->with('fotos')
             ->orderBy('id')
-            ->get(['id', 'type', 'tekst', 'visible', 'created_at', 'updated_at', 'expires_at'])
-            ->toArray();
+            ->get();
+
+        $aanbod = $aanbodRows->map(static function (Aanbod $a): array {
+            return [
+                'id' => $a->id,
+                'type' => $a->type,
+                'tekst' => $a->tekst,
+                'visible' => $a->visible,
+                'created_at' => $a->created_at,
+                'updated_at' => $a->updated_at,
+                'expires_at' => $a->expires_at,
+            ];
+        })->toArray();
+
+        $fotos = [];
+        foreach ($aanbodRows as $row) {
+            foreach ($row->fotos as $foto) {
+                /** @var AanbodFoto $foto */
+                $fotos[] = [
+                    'id' => $foto->id,
+                    'aanbod_id' => $foto->aanbod_id,
+                    'url' => $foto->publicUrl(),
+                    'thumb_url' => $foto->thumbUrl(),
+                    'alt' => $foto->toPublicArray()['alt'],
+                    'width' => $foto->width,
+                    'height' => $foto->height,
+                    'created_at' => optional($foto->created_at)?->toIso8601String(),
+                ];
+            }
+        }
+
+        $ervaringen = [];
+        if (Schema::hasTable('ervaringen')) {
+            $ervaringen = Ervaring::query()
+                ->where('user_id', $user->id)
+                ->orderBy('id')
+                ->get()
+                ->map(function (Ervaring $e) use (&$fotos) {
+                    if ($e->hasPhoto()) {
+                        $fotos[] = [
+                            'ervaring_id' => $e->id,
+                            'path' => (string) $e->photo_path,
+                        ];
+                    }
+
+                    return [
+                        'id' => $e->id,
+                        'body' => (string) $e->body,
+                        'plaatsnaam' => (string) $e->plaatsnaam,
+                        'plantensoort_id' => $e->plantensoort_id,
+                        'aanbod_id' => $e->aanbod_id,
+                        'status' => (string) $e->status,
+                        'photo_path' => $e->photo_path,
+                        'approved_at' => optional($e->approved_at)?->toIso8601String(),
+                        'created_at' => optional($e->created_at)?->toIso8601String(),
+                    ];
+                })
+                ->all();
+        }
 
         $payload = [
             'exported_at' => now()->toIso8601String(),
@@ -48,8 +110,8 @@ final class AvgService
                 'active' => (bool) $user->active,
             ],
             'aanbod' => $aanbod,
-            // Geen gebruikersfoto-feature; placeholder zodat export-contract stabiel blijft.
-            'fotos' => [],
+            'ervaringen' => $ervaringen,
+            'fotos' => $fotos,
         ];
 
         if (Schema::hasTable('conversations')) {
@@ -153,6 +215,9 @@ final class AvgService
             request()->session()->regenerateToken();
         }
 
+        // Foto’s op disk vóór DB-cascade wissen (AVG).
+        app(AanbodFotoService::class)->deleteAllForUser($userId);
+
         DB::transaction(function () use ($userId, $email) {
             if (Schema::hasTable('conversations')) {
                 $ids = DB::table('conversations')
@@ -181,14 +246,36 @@ final class AvgService
             }
             Aanbod::query()->where('user_id', $userId)->delete();
 
+            if (Schema::hasTable('ervaringen')) {
+                $photoPaths = Ervaring::query()
+                    ->where('user_id', $userId)
+                    ->whereNotNull('photo_path')
+                    ->pluck('photo_path')
+                    ->all();
+                Ervaring::query()->where('user_id', $userId)->delete();
+                foreach ($photoPaths as $path) {
+                    $path = trim((string) $path);
+                    if ($path === '') {
+                        continue;
+                    }
+                    try {
+                        Storage::disk('public')->delete($path);
+                    } catch (\Throwable) {
+                        // Best-effort; AVG-wissen mag niet crashen.
+                    }
+                }
+            }
+
+            if (Schema::hasTable('milestones_sent')) {
+                MilestoneSent::query()->where('user_id', $userId)->delete();
+            }
+
             if (Schema::hasTable('password_reset_tokens')) {
                 DB::table('password_reset_tokens')->where('email', $email)->delete();
             }
             if (Schema::hasTable('sessions')) {
                 DB::table('sessions')->where('user_id', $userId)->delete();
             }
-
-            // Geen gebruikersfoto’s op disk (feature ontbreekt); bij latere upload hier wissen.
 
             User::query()->whereKey($userId)->delete();
         });

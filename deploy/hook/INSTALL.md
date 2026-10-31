@@ -77,6 +77,8 @@ Zorg dat naast `DEPLOY_HOOK_TOKEN` ook staan (exacte namen):
 
 Optioneel: `APP_KEY` — anders behoudt de hook de bestaande server-`.env`, of genereert eenmalig.
 
+Optioneel (backups): `BACKUP_ENCRYPTION_KEY` — zie `docs/backups.md`. Lege upload → bestaande server-waarde behouden.
+
 `CPANEL_HOST` / `CPANEL_USER` / `CPANEL_API_TOKEN` zijn voor deze flow **niet** meer nodig.
 
 ### E. Eerste deploy

@@ -8,10 +8,13 @@ beforeEach(function () {
     $this->planten = new Plantensoorten(dirname(__DIR__, 2).'/data/plantensoorten.json');
 });
 
-test('catalogus bevat basis-48 en honderden soorten', function () {
+test('catalogus bevat basis-48 en honderden zichtbare soorten', function () {
     $all = $this->planten->all();
+    $inclHidden = $this->planten->all(includeHidden: true);
+
     expect(count($all))->toBeGreaterThanOrEqual(200)
-        ->and(count($all))->toBeLessThan(800);
+        ->and(count($all))->toBeLessThan(count($inclHidden))
+        ->and(count($inclHidden))->toBe(337);
 
     $withSlug = array_values(array_filter($all, fn ($r) => ! empty($r['slug'])));
     expect(count($withSlug))->toBe(48);
@@ -19,12 +22,39 @@ test('catalogus bevat basis-48 en honderden soorten', function () {
     $monstera = $this->planten->resolveExact('Monstera');
     expect($monstera)->not->toBeNull()
         ->and($monstera['slug'])->toBe('monstera')
-        ->and($monstera['url'])->toBe('/stektips/monstera');
+        ->and($monstera['url'])->toBe('/stektips/monstera')
+        ->and($monstera['zichtbaar'])->toBeTrue();
 
     $tomaat = $this->planten->resolveExact('Tomaat');
     expect($tomaat)->not->toBeNull()
         ->and($tomaat['slug'])->toBeNull()
         ->and($tomaat['url'])->toBeNull();
+});
+
+test('verborgen soorten blijven vindbaar maar niet in search/all', function () {
+    $magnolia = $this->planten->resolveExact('Magnolia');
+    expect($magnolia)->not->toBeNull()
+        ->and($magnolia['zichtbaar'])->toBeFalse()
+        ->and($this->planten->exists($magnolia['id']))->toBeTrue()
+        ->and($this->planten->isVisible($magnolia['id']))->toBeFalse();
+
+    $search = $this->planten->search('Magnolia', 10);
+    expect(collect($search)->pluck('naam')->all())->not->toContain('Magnolia');
+
+    expect(collect($this->planten->all())->pluck('naam')->all())->not->toContain('Magnolia')
+        ->and(collect($this->planten->all(includeHidden: true))->pluck('naam')->all())->toContain('Magnolia');
+});
+
+test('voedselbos-tag filtert autocomplete-zoekresultaten', function () {
+    $vijg = $this->planten->resolveExact('Vijg');
+    expect($vijg)->not->toBeNull()
+        ->and($vijg['tags'])->toContain('voedselbos');
+
+    $tagged = $this->planten->search('vi', 25, 'voedselbos');
+    expect(collect($tagged)->pluck('naam')->all())->toContain('Vijg');
+
+    $monsteraTagged = $this->planten->search('Monstera', 5, 'voedselbos');
+    expect(collect($monsteraTagged)->pluck('naam')->all())->not->toContain('Monstera');
 });
 
 test('search: begint-met vóór bevat, accentongevoelig', function () {

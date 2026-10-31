@@ -8,7 +8,8 @@ use App\Support\Geo;
 test('initiatievenpagina laadt op /initiatieven', function () {
     $this->get('/initiatieven')
         ->assertOk()
-        ->assertSee('Initiatieven', false)
+        ->assertSee('Plantenruilbeurzen, stekjesmarkten en initiatieven', false)
+        ->assertSee('Stekjesmarkt, plantenruilbeurs en ruilinitiatieven', false)
         ->assertDontSee('>Partners<', false)
         ->assertSee('Voedselbosbouw.org', false)
         ->assertSee('MeerBomen Nu', false)
@@ -16,7 +17,7 @@ test('initiatievenpagina laadt op /initiatieven', function () {
 
     $this->get(route('partners'))
         ->assertOk()
-        ->assertSee('Initiatieven', false);
+        ->assertSee('Plantenruilbeurzen, stekjesmarkten en initiatieven', false);
 });
 
 test('oude /partners URL geeft 301 naar /initiatieven', function () {

@@ -47,10 +47,14 @@
   </nav>
   @endisset
 
-  <h1 class="page-title">{{ $soort['naam'] }} stekken en gratis delen</h1>
+  <h1 class="page-title">{{ $pageHeading ?? ($soort['naam'].' stekken') }}</h1>
   @if(!empty($soort['kort']))
     <p class="muted">{{ $soort['kort'] }}@if($categorie !== '') · {{ $categorie }}@endif</p>
   @endif
+
+  @isset($afbeelding)
+    @include('partials.soort-afbeelding', ['afbeelding' => $afbeelding])
+  @endisset
 
   @if($waarschuwing !== '')
     <aside class="warn-card stektips-waarschuwing" role="note">

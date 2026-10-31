@@ -9,6 +9,38 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.25.0] - 2026-10-31
+
+### Added
+
+- Versleutelde backups afgerond: `EncryptedBackupService` maakt DB-dump (mysqldump of PDO-fallback) + `storage/app/public` als AES-256-CBC (GPB1), met rolling retentie (`BACKUP_RETAIN_DAYS`, default 30).
+- HTTP-endpoint `GET /cron/backup` (zelfde `X-Cron-Token` als `/cron`): backup draaien, `?list=1`, ciphertext downloaden (`?download=db|storage|<basename>`).
+- Artisan `backup:decrypt` voor restore; workflow `backup.yml` (dagelijks) trekt staging+prod ciphertext en bewaart die 30 dagen als GitHub-artifact (off-site, zonder sleutel in logs).
+- Deploy schrijft optioneel `BACKUP_ENCRYPTION_KEY` / `BACKUP_RETAIN_DAYS`; hook behoudt bestaande backup-sleutel als de upload leeg is (zelfde patroon als `APP_KEY`).
+- Docs `docs/backups.md` (restore-procedure) + Pest-tests (encrypt/decrypt-roundtrip, retentie, endpoint-auth, path-traversal).
+- Aanbodfoto’s: tot 3 JPEG/PNG/WebP per item (max. 8 MB), mime+decode-check, EXIF-oriëntatie, server-side herschrijven (GD of Imagick) zonder EXIF/GPS, resize/thumbnail, random namen buiten de webroot, rate-limit, media-route. Plantensoort optioneel als er een foto is. Foto’s op kaart/lijst met alt-tekst; wissen bij aanbod- of accountverwijdering (AVG); privacytekst bijgewerkt.
+- Soortfoto’s op stektips-index en soortpagina’s: 48 self-hosted Wikimedia Commons-beelden met geverifieerde CC0/CC-BY/CC-BY-SA + zichtbare attribution (`data/soort-afbeeldingen.json`); neutrale SVG-fallback.
+- Tests op unieke `<title>`-tags op kernroutes, soort- en stadspagina’s.
+- Plantensoorten-catalogus: 337→309 zichtbaar (28 verborgen, records behouden); tag `voedselbos` (94) + API `?tag=voedselbos`; criteria in `docs/plantensoorten-selectie.md`.
+- Doelgroep-landingspagina’s (niet in hoofdmenu/footer, wél in sitemap + SEO/OG/canonical/WebPage-schema): `/volkstuinen`, `/help-mee`, `/natuur`, `/verbinding` — gedeelde Blade-component `x-audience-page`, Nederlandse ik-vorm; titles/H1/CTA’s uit SEO-zoektermen + marketingadvies 31 okt.
+- `/volkstuinen`: “Stekjes delen binnen je eigen volkstuin”; CTA “Zet het eerste stekje van jouw tuin online”; bestuur: QR-poster later (geen belofte dat die al bestaat); aanmelden via `/voor-organisaties/aanmelden` of contact.
+- `/natuur`: “Meer groen, zonder één plant te kopen” rond inheemse/bijen-/vlinderplanten; CTA “Bied je snoeiafval aan als stek”.
+- `/verbinding`: “Leer je buren kennen via een stekje”; CTA “Kijk wat je buren weggeven”.
+- `/help-mee`: “Breng jij mensen graag bij elkaar?”; CTA “Meld je als verbinder: 2 uur per maand, stoppen kan altijd” via bestaand contact/feedback (geen eigen mailflow).
+- Homepage-CTA “Ik help op een andere manier” linkt naar `/help-mee` (geen “binnenkort”-badge meer).
+- Ervaringen delen: ingelogd lid plaatst korte tekst (max. 500), optionele foto via gedeelde `ImageProcessor` (jpeg/png/webp, max. 8 MB, finfo + decode-check, opnieuw encoden zonder EXIF/GPS, resize ~1600px), optionele koppeling soort/aanbod, plaatsnaam alleen gemeenteniveau. Status `pending` tot goedkeuring in `/beheer/ervaringen`. Publieke `/ervaringen` (noindex zolang leeg, niet in menu); homepage-blok achter `ERVARINGEN_HOME_BLOCK_ENABLED` (default uit). Lid kan eigen ervaring wissen; meegenomen in AVG-export en account-verwijdering. Privacytekst bijgewerkt.
+- Overdracht afronden in gesprek (na wederzijds contact) + uitnodiging om ervaring te delen.
+- Mijlpaalmail “eerste stekje” bij eerste aanbod of eerste afgeronde overdracht (Blade-template, ik-vorm). **Hard uit** via `MILESTONE_MAIL_ENABLED=false`: niets queue’en/versturen, alleen log `zou_versturen` zonder PII. Idempotent via `milestones_sent`. Badges op accountpagina (eerste stekje, 5 gedeeld, eerste ervaring) zonder punten/ranglijst.
+- `/initiatieven` heeft een agenda 2026: evenementen (stekjesmarkt / plantenruilbeurs / ruildag / overig) met startdatum, optionele einddatum, plaats+provincie, organisator, externe link, bron/laatst gecontroleerd; komende items chronologisch per maand, filter op provincie/type, verlopen in inklapbaar *Geweest*, lege staat met link naar feedback; vaste ruilinitiatieven blijven als tweede sectie.
+- Beheer: toevoegen/bewerken/verbergen van agenda-evenementen (geen verzonnen seed-data).
+- SEO: title *Stekjesmarkt, plantenruilbeurs en ruilinitiatieven*, H1 *Plantenruilbeurzen, stekjesmarkten en initiatieven*, schema.org Event JSON-LD per komend evenement; `/initiatieven` blijft in de sitemap. Menu-label ongewijzigd.
+
+### Changed
+
+- `AGENTS.md` / `.env.example` / AVG-inventaris: backup-secrets en open punt (sleutel zetten) bijgewerkt.
+- SEO-titels, H1’s en meta volgens keywordonderzoek (`docs/seo/doelgroep-titles-keywords.md` §2–3): home (“Gratis planten en stekjes … in je buurt”), stadspagina’s (“Gratis planten en stekjes in {Stad}”), soortpagina’s (“{Soort} stekken en gratis stekjes” / H1 “…: zo doe je het”, Geranium en Pannenkoekplant behouden), /deelplekken (plantenasiel vooraan), /invasieve-soorten (“Invasieve exoten” + echt aantal), /aanbod, /initiatieven en kennisbank-pijlers. Merk-suffix ` · Gratis planten` alleen als de title ≤60 tekens blijft (`SeoTitle`).
+- Stadspagina’s tonen een blok “Plantenasiel in {Stad}” alleen als er in de data een plantenasiel mét die plaatsnaam staat (niets verzonnen); link naar `/deelplekken` gefilterd op stad + type.
+
 ## [0.24.12] - 2026-10-31
 
 ### Fixed

@@ -18,6 +18,22 @@ return [
     /** Aanbod zichtbaar in zoeken/kaart (dagen). */
     'aanbod_ttl_days' => 60,
 
+    /**
+     * Aanbodfoto’s (AVG: wissen bij verwijderen aanbod/account).
+     * Opslag buiten de webroot via disk `aanbod_fotos`; server-side herschrijven
+     * stript EXIF/GPS. Alleen jpeg/png/webp na mime+decode-check.
+     */
+    'aanbod_fotos' => [
+        'disk' => 'aanbod_fotos',
+        'max_count' => 3,
+        'max_bytes' => 8 * 1024 * 1024,
+        'max_input_dimension' => 10000,
+        'max_output_dimension' => 1600,
+        'thumb_dimension' => 400,
+        'upload_rate_per_hour' => 30,
+        'allowed_mimes' => ['image/jpeg', 'image/png', 'image/webp'],
+    ],
+
     /** Herinneringsmail zoveel dagen vóór expires_at. */
     'aanbod_reminder_days' => 7,
 
@@ -74,6 +90,30 @@ return [
         'tuinvereniging' => 'Tuinvereniging',
     ],
 
+    /** Types voor agenda-evenementen op /initiatieven. */
+    'evenement_types' => [
+        'stekjesmarkt' => 'Stekjesmarkt',
+        'plantenruilbeurs' => 'Plantenruilbeurs',
+        'ruildag' => 'Ruildag',
+        'overig' => 'Overig',
+    ],
+
+    /** Nederlandse provincies (filter + beheer). */
+    'provincies' => [
+        'Drenthe',
+        'Flevoland',
+        'Friesland',
+        'Gelderland',
+        'Groningen',
+        'Limburg',
+        'Noord-Brabant',
+        'Noord-Holland',
+        'Overijssel',
+        'Utrecht',
+        'Zeeland',
+        'Zuid-Holland',
+    ],
+
     /** Gedeeld beheerwachtwoord (session admin_ok). Leeg = /beheer uit. */
     'admin_password' => env('ADMIN_PASSWORD', ''),
 
@@ -91,4 +131,19 @@ return [
      * Liever aparte BACKUP_ENCRYPTION_KEY; valt terug op APP_KEY. Nooit committen.
      */
     'backup_encryption_key' => env('BACKUP_ENCRYPTION_KEY', env('APP_KEY', '')),
+
+    /** Rolling bewaartermijn voor storage/backups/*.enc (dagen). */
+    'backup_retain_days' => (int) env('BACKUP_RETAIN_DAYS', 30),
+
+    /**
+     * Blok met laatste goedgekeurde ervaringen op de homepage.
+     * Default uit — aanzetten na content/moderatie.
+     */
+    'ervaringen_home_block_enabled' => filter_var(env('ERVARINGEN_HOME_BLOCK_ENABLED', false), FILTER_VALIDATE_BOOL),
+
+    /**
+     * Felicitatiemail bij eerste aanbod of eerste afgeronde overdracht.
+     * HARDE EIS: default uit. Bij uit: niets queue'en/versturen, alleen loggen.
+     */
+    'milestone_mail_enabled' => filter_var(env('MILESTONE_MAIL_ENABLED', false), FILTER_VALIDATE_BOOL),
 ];

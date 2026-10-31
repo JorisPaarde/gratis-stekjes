@@ -15,9 +15,12 @@ test('elke soortpagina laadt met 200 en SEO-titel', function () {
         $slug = $soort['slug'];
         $naam = $soort['naam'];
 
+        $expectedTitle = \App\Support\SeoTitle::document($naam.' stekken en gratis stekjes');
+
         $this->get(route('stektips.show', ['slug' => $slug]))
             ->assertOk()
-            ->assertSee($naam.' stekken en gratis delen', false)
+            ->assertSee($naam.' stekken: zo doe je het', false)
+            ->assertSee('<title>'.$expectedTitle.'</title>', false)
             ->assertSee('Gratis '.$naam.'-stekjes in je buurt', false)
             ->assertSee((string) $soort['latijn'], false);
     }

@@ -19,7 +19,7 @@ function aanbodUser(array $extra = []): User
 test('uitlegpagina invasieve soorten is 200', function () {
     $this->get(route('invasieve-soorten'))
         ->assertOk()
-        ->assertSee('Invasieve soorten', false)
+        ->assertSee('Invasieve exoten: deze planten deel je niet', false)
         ->assertSee('Reuzenberenklauw', false)
         ->assertSee('Japanse duizendknoop', false)
         ->assertSee('EU-Unielijst', false);

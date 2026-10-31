@@ -21,7 +21,12 @@ class PlantensoortenController extends Controller
             return response()->json(['error' => 'Zoekopdracht is te lang.'], 400);
         }
 
-        $items = $plantensoorten->search($q, 10);
+        $tag = trim((string) $request->query('tag', ''));
+        if (mb_strlen($tag) > 40) {
+            return response()->json(['error' => 'Tag is te lang.'], 400);
+        }
+
+        $items = $plantensoorten->search($q, 10, $tag !== '' ? $tag : null);
 
         return response()->json([
             'items' => array_map(static function (array $item): array {
@@ -35,6 +40,7 @@ class PlantensoortenController extends Controller
                     'naam' => $item['naam'],
                     'latijn' => $item['latijn'],
                     'synoniemen' => $item['synoniemen'],
+                    'tags' => $item['tags'] ?? [],
                     'url' => $url,
                     'match' => $item['match'] ?? null,
                 ];

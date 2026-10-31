@@ -15,13 +15,16 @@ class InvasieveSoortenController extends Controller
         $soorten = $invasieve->all();
         $meta = $invasieve->meta() ?? [];
 
+        $aantal = count($soorten);
+
         return view('pages.invasieve-soorten', [
-            'title' => 'Invasieve soorten',
-            'metaDescription' => 'Waarom invasieve planten niet op '.$site.' mogen, en welke soorten op de EU-Unielijst staan.',
+            'title' => 'Invasieve exoten: '.$aantal.' planten die je niet deelt',
+            'heading' => 'Invasieve exoten: deze planten deel je niet',
+            'metaDescription' => 'Invasieve exoten van de EU-Unielijst mag je niet aanbieden op '.$site.'. Bekijk de '.$aantal.' soorten en waarom.',
             'canonical' => route('invasieve-soorten'),
             'soorten' => $soorten,
             'meta' => $meta,
-            'aantal' => count($soorten),
+            'aantal' => $aantal,
         ]);
     }
 }

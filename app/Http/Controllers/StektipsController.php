@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\Kennisbank;
+use App\Services\Plantensoorten;
+use App\Services\SoortAfbeeldingen;
 use App\Services\Stektips;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -12,7 +14,7 @@ use Illuminate\View\View;
 
 class StektipsController extends Controller
 {
-    public function index(Request $request, Stektips $stektips, Kennisbank $kennisbank): View
+    public function index(Request $request, Stektips $stektips, Kennisbank $kennisbank, Plantensoorten $plantensoorten, SoortAfbeeldingen $afbeeldingen): View
     {
         $filters = [
             'q' => trim((string) $request->query('q', '')),
@@ -32,7 +34,11 @@ class StektipsController extends Controller
             'soort' => $filters['soort'],
         ]);
 
-        $soorten = $this->filterSoorten($stektips->all(), $filters);
+        $listedSoorten = array_values(array_filter(
+            $stektips->all(),
+            static fn (array $s): bool => $plantensoorten->isSlugListed((string) ($s['slug'] ?? ''))
+        ));
+        $soorten = $this->filterSoorten($listedSoorten, $filters);
 
         $queryForCanonical = array_filter($filters, static fn ($v) => $v !== '' && $v !== null);
 
@@ -54,10 +60,11 @@ class StektipsController extends Controller
             ];
         }
         foreach ($soorten as $soort) {
+            $slug = (string) $soort['slug'];
             $entries[] = [
                 'type' => 'soort',
                 'titel' => (string) $soort['naam'],
-                'url' => route('stektips.show', ['slug' => $soort['slug']]),
+                'url' => route('stektips.show', ['slug' => $slug]),
                 'meta' => trim(
                     ((string) ($soort['wanneer'] ?? '')).
                     ' · '.
@@ -65,6 +72,7 @@ class StektipsController extends Controller
                     (! empty($soort['categorie']) ? ' · '.$soort['categorie'] : '')
                 ),
                 'badges' => ['Soortpagina'],
+                'afbeelding' => $afbeeldingen->forSlug($slug, (string) $soort['naam']),
             ];
         }
 
@@ -76,9 +84,12 @@ class StektipsController extends Controller
         $hasActiveFilters = $queryForCanonical !== [];
         $pillars = $hasActiveFilters ? [] : $kennisbank->pillars();
 
+        $title = 'Stektips: planten stekken en snoeien';
+        $metaDescription = 'Leer planten stekken en snoeien, maak wilgenwater en deel gratis stekjes. Kennisbank met soortpagina’s — van monstera tot vijg.';
+
         return view('pages.stektips-index', [
-            'title' => 'Stektips & kennisbank',
-            'metaDescription' => 'Kennisbank over stekken, snoeien, natuurlijk bewortelen en permacultuur — plus 48 soortpagina’s. Filter en zoek zonder JavaScript.',
+            'title' => $title,
+            'metaDescription' => $metaDescription,
             'canonical' => route('stektips.index', $queryForCanonical),
             'entries' => $entries,
             'pillars' => $pillars,
@@ -87,7 +98,7 @@ class StektipsController extends Controller
             'totalCount' => count($entries),
             'filters' => $filters,
             'categorieen' => $kennisbank->categories(),
-            'alleSoorten' => $stektips->all(),
+            'alleSoorten' => $listedSoorten,
             'seizoenen' => [
                 'lente' => 'Lente',
                 'zomer' => 'Zomer',
@@ -108,9 +119,9 @@ class StektipsController extends Controller
             'schema' => [
                 '@context' => 'https://schema.org',
                 '@type' => 'CollectionPage',
-                'name' => 'Stektips & kennisbank',
+                'name' => $title,
                 'url' => route('stektips.index'),
-                'description' => 'Kennisbank over stekken, snoeien en 48 soortpagina’s.',
+                'description' => $metaDescription,
                 'inLanguage' => 'nl-NL',
             ],
         ]);
@@ -144,6 +155,8 @@ class StektipsController extends Controller
         $categoryLabels = $kennisbank->categoryLabels();
         $meta = (string) ($artikel['meta_description'] ?? $artikel['samenvatting'] ?? $artikel['titel']);
         $pillarSlug = (string) ($artikel['pillar'] ?? ($artikel['categorieen'][0] ?? ''));
+        $heading = (string) ($artikel['h1'] ?? $artikel['titel']);
+        $pageTitle = (string) ($artikel['seo_title'] ?? $artikel['titel']);
         $breadcrumbs = [
             ['naam' => 'Home', 'url' => route('home')],
             ['naam' => 'Stektips', 'url' => route('stektips.index')],
@@ -159,10 +172,11 @@ class StektipsController extends Controller
                 ];
             }
         }
-        $breadcrumbs[] = ['naam' => (string) $artikel['titel'], 'url' => $url];
+        $breadcrumbs[] = ['naam' => $heading, 'url' => $url];
 
         return view('pages.stektips-artikel', [
-            'title' => (string) $artikel['titel'],
+            'title' => $pageTitle,
+            'heading' => $heading,
             'metaDescription' => $meta,
             'canonical' => $url,
             'artikel' => $artikel,
@@ -177,7 +191,7 @@ class StektipsController extends Controller
         ]);
     }
 
-    public function show(string $slug, Stektips $stektips, Kennisbank $kennisbank): View|Response
+    public function show(string $slug, Stektips $stektips, Kennisbank $kennisbank, SoortAfbeeldingen $afbeeldingen): View|Response
     {
         if ($slug === 'artikel') {
             abort(404);
@@ -198,11 +212,17 @@ class StektipsController extends Controller
         $aanbodPlant = is_array($hub) ? (string) ($hub['aanbod_plant'] ?? $naam) : $naam;
         $aanbodUrl = route('aanbod', ['plant' => $aanbodPlant]);
 
+        $title = $naam.' stekken en gratis stekjes';
+        $heading = $naam.' stekken: zo doe je het';
+        $metaDescription = $naam.$metaLatijn.' stekken: zo doe je het. '.$metaKort.'Daarna gratis stekjes delen via '.config('site.name').'.';
+
         return view('pages.stektips-show', [
-            'title' => $naam.' stekken en gratis delen',
-            'metaDescription' => $naam.$metaLatijn.' stekken en gratis delen. '.$metaKort.'Methode, wanneer, moeilijkheid, licht en water — zoek aanbod op '.config('site.name').'.',
+            'title' => $title,
+            'metaDescription' => $metaDescription,
             'canonical' => $url,
             'soort' => $soort,
+            'pageHeading' => $heading,
+            'afbeelding' => $afbeeldingen->forSlug($slug, $naam),
             'verwanten' => $stektips->related($soort),
             'gerelateerdeArtikelen' => $kennisbank->articlesForSoort($slug),
             'aanbodUrl' => $aanbodUrl,

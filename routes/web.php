@@ -7,6 +7,7 @@ use App\Http\Controllers\Account\AanbodVerlengenController;
 use App\Http\Controllers\Account\ConversationController;
 use App\Http\Controllers\Account\DeleteAccountController;
 use App\Http\Controllers\Account\EmailChangeController;
+use App\Http\Controllers\Account\ErvaringController as AccountErvaringController;
 use App\Http\Controllers\Account\ExportController;
 use App\Http\Controllers\Account\InboxController;
 use App\Http\Controllers\Account\PasswordController;
@@ -18,23 +19,28 @@ use App\Http\Controllers\Api\NuTeStekkenController as ApiNuTeStekkenController;
 use App\Http\Controllers\Api\PartnersController as ApiPartnersController;
 use App\Http\Controllers\Api\PlantensoortenController as ApiPlantensoortenController;
 use App\Http\Controllers\Api\ZoekenController as ApiZoekenController;
+use App\Http\Controllers\AudienceLandingController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\BackupCronController;
 use App\Http\Controllers\Beheer\DashboardController as BeheerDashboardController;
+use App\Http\Controllers\Beheer\ErvaringController as BeheerErvaringController;
 use App\Http\Controllers\Beheer\FeedbackController as BeheerFeedbackController;
 use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
 use App\Http\Controllers\Beheer\StatistiekenController as BeheerStatistiekenController;
 use App\Http\Controllers\ContentPageController;
-use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\CronController;
+use App\Http\Controllers\DeelplekkenController;
 use App\Http\Controllers\DeployController;
 use App\Http\Controllers\DeployImportController;
-use App\Http\Controllers\DeelplekkenController;
+use App\Http\Controllers\ErvaringController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\GratisPlantenController;
 use App\Http\Controllers\InvasieveSoortenController;
+use App\Http\Controllers\Media\AanbodFotoController;
 use App\Http\Controllers\OrganisatieController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PartnersController;
@@ -46,6 +52,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::get('/ervaringen', [ErvaringController::class, 'index'])->name('ervaringen.index');
+Route::get('/ervaringen/{ervaring}/foto', [ErvaringController::class, 'photo'])
+    ->whereNumber('ervaring')
+    ->name('ervaringen.foto');
 Route::get('/initiatieven', PartnersController::class)->name('partners');
 Route::get('/deelplekken', DeelplekkenController::class)->name('deelplekken');
 Route::get('/voor-organisaties', [VoorOrganisatiesController::class, 'index'])->name('voor-organisaties');
@@ -70,6 +80,11 @@ Route::get('/hoe-werkt-het', [ContentPageController::class, 'hoeWerktHet'])->nam
 Route::get('/hulpmiddelen', [ContentPageController::class, 'hulpmiddelen'])->name('hulpmiddelen');
 Route::get('/over', [ContentPageController::class, 'over'])->name('over');
 Route::get('/doe-mee', [ContentPageController::class, 'doeMee'])->name('doe-mee');
+
+Route::get('/volkstuinen', [AudienceLandingController::class, 'volkstuinen'])->name('volkstuinen');
+Route::get('/help-mee', [AudienceLandingController::class, 'helpMee'])->name('help-mee');
+Route::get('/natuur', [AudienceLandingController::class, 'natuur'])->name('natuur');
+Route::get('/verbinding', [AudienceLandingController::class, 'verbinding'])->name('verbinding');
 Route::get('/invasieve-soorten', InvasieveSoortenController::class)->name('invasieve-soorten');
 Route::get('/stektips', [StektipsController::class, 'index'])->name('stektips.index');
 Route::get('/stektips/artikel/{slug}', [StektipsController::class, 'artikel'])
@@ -85,6 +100,10 @@ Route::get('/gratis-planten/{stad}', [GratisPlantenController::class, 'show'])
     ->name('gratis-planten.show');
 
 Route::get('/aanbod', ZoekenController::class)->name('aanbod');
+Route::get('/media/aanbod-foto/{foto}/{variant?}', AanbodFotoController::class)
+    ->where(['foto' => '[0-9]+', 'variant' => 'full|thumb'])
+    ->middleware('throttle:120,1')
+    ->name('media.aanbod-foto');
 Route::get('/api/zoeken', ApiZoekenController::class)->name('api.zoeken');
 Route::get('/api/partners', ApiPartnersController::class)->name('api.partners');
 Route::get('/api/deelplekken', ApiDeelplekkenController::class)->name('api.deelplekken');
@@ -94,6 +113,9 @@ Route::get('/api/plantensoorten', ApiPlantensoortenController::class)
     ->name('api.plantensoorten');
 
 Route::get('/cron', CronController::class)->name('cron');
+Route::get('/cron/backup', BackupCronController::class)
+    ->middleware('throttle:10,1')
+    ->name('cron.backup');
 Route::post('/deploy/run', DeployController::class)
     ->middleware('throttle:10,1')
     ->name('deploy.run');
@@ -172,6 +194,19 @@ Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(functio
     // Oude POST /account/aanbod (vóór /nieuw) → zelfde store-action.
     Route::post('/account/aanbod', [AanbodController::class, 'store']);
 
+    Route::get('/account/ervaringen', [AccountErvaringController::class, 'index'])
+        ->name('account.ervaringen');
+    Route::get('/account/ervaringen/nieuw', [AccountErvaringController::class, 'create'])
+        ->name('account.ervaringen.create');
+    Route::post('/account/ervaringen/nieuw', [AccountErvaringController::class, 'store'])
+        ->middleware('throttle:10,1')
+        ->name('account.ervaringen.store');
+    Route::delete('/account/ervaringen/{ervaring}', [AccountErvaringController::class, 'destroy'])
+        ->name('account.ervaringen.destroy');
+    Route::get('/account/ervaringen/{ervaring}/foto', [AccountErvaringController::class, 'photo'])
+        ->whereNumber('ervaring')
+        ->name('account.ervaringen.foto');
+
     Route::get('/account/inbox', InboxController::class)->name('account.inbox');
     Route::get('/account/bericht-starten', StartConversationController::class)
         ->name('account.bericht-starten');
@@ -195,8 +230,20 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::get('/statistieken', [BeheerStatistiekenController::class, 'index'])->name('beheer.statistieken');
     Route::get('/feedback', [BeheerFeedbackController::class, 'index'])->name('beheer.feedback');
     Route::post('/feedback/gelezen', [BeheerFeedbackController::class, 'markRead'])->name('beheer.feedback.read');
+    Route::get('/ervaringen', [BeheerErvaringController::class, 'index'])->name('beheer.ervaringen');
+    Route::post('/ervaringen/goedkeuren', [BeheerErvaringController::class, 'approve'])
+        ->name('beheer.ervaringen.approve');
+    Route::post('/ervaringen/afwijzen', [BeheerErvaringController::class, 'reject'])
+        ->name('beheer.ervaringen.reject');
+    Route::post('/ervaringen/verwijderen', [BeheerErvaringController::class, 'destroy'])
+        ->name('beheer.ervaringen.destroy');
+    Route::get('/ervaringen/{ervaring}/foto', [BeheerErvaringController::class, 'photo'])
+        ->whereNumber('ervaring')
+        ->name('beheer.ervaringen.foto');
     Route::post('/markers', [BeheerDashboardController::class, 'saveMarker'])->name('beheer.markers.save');
     Route::post('/markers/verwijderen', [BeheerDashboardController::class, 'deleteMarker'])->name('beheer.markers.delete');
+    Route::post('/evenementen', [BeheerDashboardController::class, 'saveEvenement'])->name('beheer.evenementen.save');
+    Route::post('/evenementen/verbergen', [BeheerDashboardController::class, 'hideEvenement'])->name('beheer.evenementen.hide');
     Route::post('/meldingen/afgehandeld', [BeheerDashboardController::class, 'markReportHandled'])->name('beheer.reports.handled');
     Route::post('/deelplekken/goedkeuren', [BeheerDashboardController::class, 'approveDeelplek'])
         ->name('beheer.deelplekken.approve');

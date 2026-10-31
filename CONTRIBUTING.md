@@ -22,7 +22,7 @@
 
 ## Secrets
 
-Nooit tokens/wachtwoorden in git of PR-tekst. Exacte namen + hook-install: `AGENTS.md` / `deploy/hook/INSTALL.md` (`DEPLOY_HOOK_TOKEN`, `DEPLOY_TOKEN`, `STAGING_*` / `PROD_*`, `SITE_NAME`, `SMTP_*`, `CRON_TOKEN`, `ADMIN_PASSWORD`).
+Nooit tokens/wachtwoorden in git of PR-tekst. Exacte namen + hook-install: `AGENTS.md` / `deploy/hook/INSTALL.md` (`DEPLOY_HOOK_TOKEN`, `DEPLOY_TOKEN`, `STAGING_*` / `PROD_*`, `SITE_NAME`, `SMTP_*`, `CRON_TOKEN`, `ADMIN_PASSWORD`, optioneel `BACKUP_ENCRYPTION_KEY`).
 
 ## Lokaal
 

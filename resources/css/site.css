@@ -810,3 +810,78 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
   align-items: center;
   margin-top: 1.15rem;
 }
+
+/* Doelgroep-landingspagina’s (niet in hoofdmenu/footer) */
+.audience-landing {
+  max-width: 44rem;
+}
+.audience-eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--forest);
+}
+.audience-body {
+  margin-bottom: 1.5rem;
+}
+.audience-cta {
+  margin: 0 0 2rem;
+}
+.audience-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+.audience-form {
+  margin: 1rem 0 1.5rem;
+  padding: 1.25rem 1.35rem 1.4rem;
+}
+.audience-form label {
+  display: block;
+  font-weight: 700;
+  color: var(--forest-deep);
+  margin: 0 0 0.85rem;
+}
+.audience-form input[type="text"],
+.audience-form input[type="email"],
+.audience-form textarea {
+  margin-top: 0.45rem;
+  width: 100%;
+}
+.audience-form .checkbox {
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+.audience-form .form-actions {
+  margin-top: 0.25rem;
+}
+.audience-series {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+.audience-series-label {
+  margin: 0 0 0.65rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+.audience-series-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+.audience-series-list a {
+  color: var(--forest-deep);
+  font-weight: 600;
+}
+.audience-series-current {
+  font-weight: 700;
+  color: var(--forest);
+}

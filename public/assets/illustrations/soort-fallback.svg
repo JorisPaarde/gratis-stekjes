@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" width="640" height="480" role="img" aria-hidden="true">
+  <title>Neutrale plantillustratie</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E6F2E1"/>
+      <stop offset="100%" stop-color="#C8DFC0"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="480" fill="url(#bg)"/>
+  <g fill="none" stroke="#2F5D3A" stroke-width="10" stroke-linecap="round" opacity="0.55">
+    <path d="M320 420 C320 300 320 220 320 140"/>
+    <path d="M320 260 C250 220 210 170 190 120"/>
+    <path d="M320 280 C390 240 430 190 450 130"/>
+    <path d="M320 330 C270 310 230 300 190 300"/>
+    <path d="M320 340 C370 320 410 310 450 305"/>
+  </g>
+  <g fill="#2F5D3A" opacity="0.35">
+    <ellipse cx="190" cy="118" rx="54" ry="28" transform="rotate(-35 190 118)"/>
+    <ellipse cx="450" cy="128" rx="56" ry="30" transform="rotate(32 450 128)"/>
+    <ellipse cx="190" cy="300" rx="48" ry="24" transform="rotate(-8 190 300)"/>
+    <ellipse cx="450" cy="305" rx="50" ry="24" transform="rotate(10 450 305)"/>
+  </g>
+  <g fill="#E8833A" opacity="0.45">
+    <circle cx="320" cy="128" r="18"/>
+  </g>
+</svg>

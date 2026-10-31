@@ -11,7 +11,7 @@
 
 @section('content')
 <section class="section wrap gratis-planten-index">
-  <h1 class="page-title">Gratis planten in jouw stad</h1>
+  <h1 class="page-title">{{ $title }}</h1>
   <p class="section-intro">Kies een stad en zie wat buren gratis delen — stekjes en planten ophalen met een praatje als enige prijs. Hoofdterm: <strong>gratis planten</strong>, lokaal via stadspagina’s.</p>
 
   @foreach($byProvincie as $provincie => $steden)

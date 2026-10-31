@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Aanbod extends Model
 {
@@ -43,6 +44,11 @@ class Aanbod extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function fotos(): HasMany
+    {
+        return $this->hasMany(AanbodFoto::class, 'aanbod_id')->orderBy('sort_order')->orderBy('id');
     }
 
     public function isExpired(): bool

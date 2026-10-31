@@ -107,10 +107,49 @@
   margin: 0.75rem 0 1rem;
 }
 
+.stektips-entry-img {
+  display: block;
+  width: calc(100% + 2.4rem);
+  max-width: none;
+  height: 9rem;
+  object-fit: cover;
+  margin: -1.2rem -1.2rem 0.75rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  background: #e6f2e1;
+}
+
+.stektips-entry-credit {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+}
+
 .stektips-entry-title {
   margin: 0 0 0.35rem;
   font-size: 1.1rem;
   color: var(--leaf-deep, #163820);
+}
+
+.soort-afbeelding {
+  margin: 1rem 0 1.25rem;
+}
+
+.soort-afbeelding img {
+  display: block;
+  width: 100%;
+  max-height: 22rem;
+  object-fit: cover;
+  border-radius: 0.4rem;
+  background: #e6f2e1;
+}
+
+.soort-afbeelding-credit {
+  margin: 0.4rem 0 0;
+  font-size: 0.85rem;
+  color: var(--ink-soft, #3d4a3f);
+}
+
+.soort-afbeelding-credit a {
+  color: inherit;
 }
 
 .stektips-entry-badges {
