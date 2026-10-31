@@ -146,9 +146,9 @@ jobs:
           DOC='${D%/}'
           OVERRIDE='${OLD_APP_DIR_INPUT}'
           if [ -n "\$OVERRIDE" ]; then
-            /tmp/resolve-old-staging-app-dir.sh --docroot "\$DOC" --override "\$OVERRIDE"
+            bash /tmp/resolve-old-staging-app-dir.sh --docroot "\$DOC" --override "\$OVERRIDE"
           else
-            /tmp/resolve-old-staging-app-dir.sh --docroot "\$DOC"
+            bash /tmp/resolve-old-staging-app-dir.sh --docroot "\$DOC"
           fi
           rm -f /tmp/resolve-old-staging-app-dir.sh
           EOF

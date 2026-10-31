@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.24.12] - 2026-10-31
+
+### Fixed
+
+- Migratie: resolve-script draait via `bash` omdat /tmp op de oude server noexec is (exit 126).
+
 ## [0.24.11] - 2026-10-31
 
 ### Fixed
