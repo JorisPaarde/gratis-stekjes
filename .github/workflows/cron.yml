@@ -1,6 +1,7 @@
 name: Cron queue & expiry
 
 # Roept /cron aan (queue:work + herinneringsmails + geocode-purge) op staging én productie.
+# Productie gebruikt de secrets van environment "production" (eigen URL en CRON_TOKEN).
 on:
   schedule:
     - cron: "*/15 * * * *"
@@ -8,46 +9,41 @@ on:
 
 jobs:
   ping:
+    name: ping (${{ matrix.target }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: staging
+            env_name: ""
+          - target: production
+            env_name: production
+    environment: ${{ matrix.env_name }}
     steps:
-      - name: Cron-endpoints (staging + productie)
+      - name: Cron-endpoint
         env:
-          BASE: ${{ secrets.BASE_URL }}
-          STAGING_BASE: ${{ secrets.STAGING_BASE_URL }}
+          LABEL: ${{ matrix.target }}
+          TARGET_URL: ${{ matrix.target == 'production' && (secrets.PROD_BASE_URL || secrets.BASE_URL) || secrets.STAGING_BASE_URL }}
           CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
         run: |
           set -euo pipefail
           if [ -z "${CRON_TOKEN:-}" ]; then
-            echo "CRON_TOKEN ontbreekt — overgeslagen."
+            echo "${LABEL}: CRON_TOKEN ontbreekt — overgeslagen."
             exit 0
           fi
-
-          ping_one() {
-            local label="$1"
-            local target="$2"
-            if [ -z "${target}" ]; then
-              echo "${label}: URL niet gezet — overgeslagen."
-              return 0
-            fi
-            local code
-            code=$(curl -sS -o "/tmp/cron-${label}.txt" -w '%{http_code}' \
-              -H "X-Cron-Token: ${CRON_TOKEN}" \
-              "${target%/}/cron" || true)
-            echo "${label}: HTTP ${code}"
-            if [ "$code" = "000" ] || [ "$code" = "404" ] || [ "$code" = "502" ] || [ "$code" = "503" ]; then
-              echo "${label}: site nog niet bereikbaar of endpoint ontbreekt — ok voor nu."
-              return 0
-            fi
-            if [ "$code" != "200" ]; then
-              echo "${label}: onverwachte status"
-              head -c 400 "/tmp/cron-${label}.txt" || true
-              return 1
-            fi
-            head -c 400 "/tmp/cron-${label}.txt" || true
-            return 0
-          }
-
-          fail=0
-          ping_one "staging" "${STAGING_BASE:-}" || fail=1
-          ping_one "production" "${BASE:-}" || fail=1
-          exit "$fail"
+          if [ -z "${TARGET_URL:-}" ]; then
+            echo "${LABEL}: URL niet gezet — overgeslagen."
+            exit 0
+          fi
+          code=$(curl -sS -o /tmp/cron.txt -w '%{http_code}' \
+            -H "X-Cron-Token: ${CRON_TOKEN}" \
+            "${TARGET_URL%/}/cron" || true)
+          echo "${LABEL}: HTTP ${code}"
+          if [ "$code" = "000" ] || [ "$code" = "404" ] || [ "$code" = "502" ] || [ "$code" = "503" ]; then
+            echo "${LABEL}: site nog niet bereikbaar of endpoint ontbreekt — ok voor nu."
+            exit 0
+          fi
+          head -c 400 /tmp/cron.txt || true
+          echo
+          [ "$code" = "200" ]
