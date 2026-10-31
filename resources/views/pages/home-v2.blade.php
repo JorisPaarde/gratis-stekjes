@@ -105,12 +105,12 @@
       <x-home-picture
         id="stappen"
         sizes="(max-width: 768px) 100vw, 33vw"
-        alt="Rijen groenten in een moestuin"
+        alt="Kratten met verse groenten op een markt"
       />
       <x-home-picture
         id="stekjes"
         sizes="(max-width: 768px) 100vw, 33vw"
-        alt="Jonge stekjes in zwarte potjes"
+        alt="Iemand verpot een vrouwentong in een terracotta pot"
       />
       <x-home-picture
         id="zaden"
@@ -182,7 +182,7 @@
         <x-home-picture
           id="plantenasiel"
           sizes="(max-width: 768px) 100vw, 45vw"
-          alt="Rijen potplanten die een nieuw huis zoeken"
+          alt="Kamerplanten in potten bij een raam"
         />
       </div>
     </div>
@@ -222,12 +222,12 @@
     <x-home-picture
       id="tuin"
       sizes="(max-width: 768px) 100vw, 50vw"
-      alt="Houten plantenbakken met groene tuingroenten"
+      alt="Handen vol rode en groene koffiebessen"
     />
     <x-home-picture
       id="delen"
       sizes="(max-width: 768px) 100vw, 50vw"
-      alt="Handen die een plantje in de aarde zetten"
+      alt="Hand met een jong plantje in een kluitje aarde"
     />
   </div>
 </section>
