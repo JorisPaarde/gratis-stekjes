@@ -96,17 +96,33 @@ jobs:
           test -f .env || { cp .env.example .env && php artisan key:generate; }
           # Force v2 for the local server (phpunit force=false does not apply here).
           grep -q '^HOMEPAGE_V2=' .env && sed -i 's/^HOMEPAGE_V2=.*/HOMEPAGE_V2=true/' .env || echo 'HOMEPAGE_V2=true' >> .env
+          grep -q '^APP_ENV=' .env && sed -i 's/^APP_ENV=.*/APP_ENV=local/' .env || echo 'APP_ENV=local' >> .env
+          touch database/database.sqlite
           php artisan config:clear
+          php artisan migrate --force --no-interaction
           npx playwright install --with-deps chromium
+          mkdir -p artifacts/homepage-v2
           php artisan serve --host=127.0.0.1 --port=8000 > /tmp/artisan-serve-ci.log 2>&1 &
           echo $! > /tmp/artisan-serve-ci.pid
-          for i in $(seq 1 30); do
-            if curl -fsS "$PLAYWRIGHT_BASE_URL/" >/dev/null; then
+          ready=0
+          for i in $(seq 1 45); do
+            if curl -fsS "$PLAYWRIGHT_BASE_URL/" -o /tmp/home-ci.html; then
+              ready=1
               break
             fi
             sleep 1
           done
-          curl -fsS "$PLAYWRIGHT_BASE_URL/" | grep -q 'page-home-v2'
+          if [ "$ready" != "1" ]; then
+            echo "::error::artisan serve startte niet op :8000"
+            cat /tmp/artisan-serve-ci.log || true
+            exit 1
+          fi
+          grep -q 'page-home-v2' /tmp/home-ci.html || {
+            echo "::error::Homepage mist page-home-v2 (HOMEPAGE_V2 niet actief?)"
+            head -c 2000 /tmp/home-ci.html || true
+            cat /tmp/artisan-serve-ci.log || true
+            exit 1
+          }
           npm run test:e2e:homepage
           kill "$(cat /tmp/artisan-serve-ci.pid)" 2>/dev/null || true
 
