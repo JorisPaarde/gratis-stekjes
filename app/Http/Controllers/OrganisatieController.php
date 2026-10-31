@@ -39,6 +39,30 @@ class OrganisatieController extends Controller
                 ->orderBy('naam')
                 ->get());
 
+        $gerelateerd = [];
+        foreach ($org['gerelateerde_slugs'] ?? [] as $relatedSlug) {
+            if (! is_string($relatedSlug) || $relatedSlug === '' || $relatedSlug === $slug) {
+                continue;
+            }
+            $related = $organisaties->find($relatedSlug);
+            if ($related !== null) {
+                $gerelateerd[] = $related;
+            }
+        }
+
+        $extraLinks = [];
+        foreach ($org['links'] ?? [] as $link) {
+            if (! is_array($link)) {
+                continue;
+            }
+            $label = trim((string) ($link['label'] ?? ''));
+            $url = trim((string) ($link['url'] ?? ''));
+            if ($label === '' || $url === '' || ! preg_match('#^https?://#i', $url)) {
+                continue;
+            }
+            $extraLinks[] = ['label' => $label, 'url' => $url];
+        }
+
         $naam = (string) $org['naam'];
         $kort = (string) ($org['kort'] ?? '');
         $meta = (string) ($org['meta_description'] ?? '');
@@ -52,6 +76,8 @@ class OrganisatieController extends Controller
             'canonical' => route('organisaties.show', ['slug' => $slug]),
             'org' => $org,
             'deelplekken' => $deelplekkenRows,
+            'gerelateerd' => $gerelateerd,
+            'extraLinks' => $extraLinks,
             'typeLabels' => $deelplekken->typeLabels(),
         ]);
     }

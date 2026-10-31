@@ -15,9 +15,19 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - Publieke copy zonder ontwikkel-/SEO-werktaal: stektips-intro, pijler-/soortpagina-zinnen,
   meta-descriptions, CTA’s, stijlgids, registratie, account (mijlpalen + beginscherm),
-  aanbodhints, privacy en kennisbankteksten herschreven naar gewone bezoekerszinnen;
-  footer toont geen zichtbare `noindex` meer.
+  aanbodhints, profielpagina, privacy en kennisbankteksten herschreven naar gewone
+  bezoekerszinnen; footer toont geen zichtbare `noindex` meer.
 - Snoeikalender: «streng vorst» → «strenge vorst».
+
+## [0.30.1] - 2026-10-31
+
+### Added
+
+- Organisatiepagina Stichting Struikroven (`/organisaties/struikroven`): initiatief
+  dat planten redt bij sloop/vernieuwing; Struikrovers; actieagenda-link; geen
+  deelplekken op de kaart.
+- Optionele `links` en `gerelateerde_slugs` in `data/organisaties.json`; kruislink
+  Struikroven ↔ MeerBomen Nu (samenwerking).
 
 ## [0.30.0] - 2026-10-31
 
