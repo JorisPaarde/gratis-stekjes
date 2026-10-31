@@ -28,6 +28,6 @@ class EmailChangeNoticeDutch extends Notification
             ->line($this->newEmail)
             ->line('Als jij dit was: bevestig via de link die we naar het nieuwe adres stuurden. Pas daarna is het nieuwe adres actief.')
             ->line('Was jij dit niet? Log in en wijzig je wachtwoord, of neem contact op.')
-            ->salutation('Groet,'.PHP_EOL.'Joris ('.$site.')');
+            ->salutation('Groet,'.PHP_EOL.$site);
     }
 }
