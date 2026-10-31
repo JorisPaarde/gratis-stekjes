@@ -32,6 +32,8 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Beheer: gebruiker verwijderen via bevestigingspagina (typ `VERWIJDER`); hergebruikt
   `AvgService::purgeUserAccount()`. Eigen account geblokkeerd; geen mail; log zonder
   e-mailadres. Route binnen admin-middleware + throttle.
+- `/stijlgids` niet meer publiek: achter admin-middleware (gast → beheer-login), niet in
+  sitemap, geen links; uit route-audit en audit-crawl gehaald.
 
 ## [0.30.3] - 2026-10-31
 
