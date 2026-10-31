@@ -148,11 +148,11 @@ test('stadspagina toont aanbod binnen straal en lege staat elders', function () 
     $this->get(route('gratis-planten.show', ['stad' => 'haarlem']))
         ->assertOk()
         ->assertSee('Bessenstekjes uit Haarlem-centrum', false)
-        ->assertDontSee('Nog geen openbaar aanbod', false);
+        ->assertDontSee('Er is nog geen aanbod', false);
 
     $this->get(route('gratis-planten.show', ['stad' => 'groningen']))
         ->assertOk()
-        ->assertSee('Nog geen openbaar aanbod', false)
+        ->assertSee('Er is nog geen aanbod', false)
         ->assertDontSee('Bessenstekjes uit Haarlem-centrum', false);
 });
 

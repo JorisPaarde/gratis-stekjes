@@ -12,7 +12,7 @@
 @section('content')
 <section class="section wrap gratis-planten-index">
   <h1 class="page-title">{{ $title }}</h1>
-  <p class="section-intro">Kies een stad en zie wat buren gratis delen — stekjes en planten ophalen met een praatje als enige prijs. Hoofdterm: <strong>gratis planten</strong>, lokaal via stadspagina’s. In België ook via een <strong>zadenbib</strong>.</p>
+  <p class="section-intro">Kies je stad en zie wat buren gratis delen. Je haalt planten, stekjes en zaden op, met een praatje als enige prijs. In België vind je ook een <strong>zadenbib</strong>.</p>
 
   @foreach($byLand as $land => $byProvincie)
     <section class="gp-land" aria-labelledby="land-{{ \Illuminate\Support\Str::slug($land) }}">
@@ -32,9 +32,9 @@
     </section>
   @endforeach
 
-  <p class="muted gp-index-cta">Liever landelijk zoeken? Ga naar het <a href="{{ route('aanbod') }}">aanbod op de kaart</a>
+  <p class="muted gp-index-cta">Liever in heel het land zoeken? Ga naar het <a href="{{ route('aanbod') }}">aanbod op de kaart</a>
     @auth
-      of <a href="{{ route('account.aanbod') }}">plaats zelf aanbod</a>.
+      of <a href="{{ route('account.aanbod') }}">bied zelf iets aan</a>.
     @else
       of <a href="{{ route('account.registreren') }}">maak een account</a> om zelf iets aan te bieden.
     @endauth

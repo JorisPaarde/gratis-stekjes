@@ -87,7 +87,7 @@
   </main>
   <footer class="site-footer">
     <div class="wrap footer-inner">
-      <p><strong>{{ $siteName }}</strong> — planten delen, een praatje als enige prijs.</p>
+      <p><strong>{{ $siteName }}</strong> — gratis planten, stekjes en zaden delen, met een praatje als enige prijs.</p>
       <p class="footer-links">
         <a href="{{ route('privacy') }}">Privacy</a>
         <a href="{{ route('contact') }}">Contact</a>

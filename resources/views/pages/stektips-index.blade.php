@@ -11,7 +11,7 @@
 @section('content')
 <section class="section wrap stektips-page">
   <h1 class="page-title">{{ $title }}</h1>
-  <p class="section-intro">Hier vind je tips om planten zelf te vermeerderen: stekken, snoeien, zaaien, scheuren en meer. Zoek op je plant en zie hoe en wanneer het lukt.</p>
+  <p class="section-intro">Hier vind je tips om zelf nieuwe planten te kweken: stekken, zaaien, scheuren, snoeien en meer. Zoek je plant op en lees hoe en wanneer het lukt.</p>
 
   @if(!empty($pillars))
     <nav class="stektips-pillars" aria-label="Onderwerpen">
@@ -31,9 +31,9 @@
   <form class="form stektips-filters" method="get" action="{{ route('stektips.index') }}" role="search">
     <div class="stektips-filter-grid">
       <label for="stektips-q">Zoeken
-        <input id="stektips-q" type="search" name="q" value="{{ $filters['q'] }}" maxlength="120" placeholder="Bijv. wilgenwater of munt" autocomplete="off">
+        <input id="stektips-q" type="search" name="q" value="{{ $filters['q'] }}" maxlength="120" placeholder="Bijvoorbeeld wilgenwater of munt" autocomplete="off">
       </label>
-      <label for="stektips-categorie">Categorie / onderwerp
+      <label for="stektips-categorie">Onderwerp
         <select id="stektips-categorie" name="categorie">
           <option value="">Alle onderwerpen</option>
           @foreach($categorieen as $cat)
@@ -89,7 +89,7 @@
   </p>
 
   @if($totalCount === 0)
-    <p class="empty-state">Geen treffers voor deze filters. <a href="{{ route('stektips.index') }}">Toon alles</a></p>
+    <p class="empty-state">Niets gevonden met deze keuzes. <a href="{{ route('stektips.index') }}">Toon alles</a></p>
   @else
     <div class="grid-cards stektips-entries">
       @foreach($entries as $entry)
@@ -127,8 +127,8 @@
   @endif
 
   <aside class="soft-card stektips-proef">
-    <h2 class="stektips-proef-title"><a href="{{ route('stektips.show', ['slug' => 'herfstolijfwilg']) }}">Joris' eigen proef</a></h2>
-    <p>50 stekken van de <a href="{{ route('stektips.show', ['slug' => 'herfstolijfwilg']) }}">herfstolijfwilg</a> in <a href="{{ route('stektips.artikel', ['slug' => 'wilgenwater']) }}">wilgenwater</a> zijn een mooie eerste proef. Zet de helft in vochtige stekgrond in een koude bak, noteer per bakje wat er gebeurt, en deel de uitkomst in het voorjaar.</p>
+    <h2 class="stektips-proef-title"><a href="{{ route('stektips.show', ['slug' => 'herfstolijfwilg']) }}">Jouw eigen proef</a></h2>
+    <p>Probeer eens 50 stekken van de <a href="{{ route('stektips.show', ['slug' => 'herfstolijfwilg']) }}">herfstolijfwilg</a> in <a href="{{ route('stektips.artikel', ['slug' => 'wilgenwater']) }}">wilgenwater</a>. Zet de helft in vochtige stekgrond in een koude bak, noteer per bakje wat er gebeurt en deel de uitkomst in het voorjaar.</p>
   </aside>
   <p class="stektips-meer"><a href="{{ route('hulpmiddelen') }}">Hulpmiddelen</a></p>
 </section>

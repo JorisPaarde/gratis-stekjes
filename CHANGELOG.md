@@ -9,6 +9,20 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.30.5] - 2026-10-31
+
+### Changed
+
+- Tekstopschoning (Claude) van de meest bezochte pagina's: home (onder de hero), aanbod,
+  hoe werkt het, contact, stektips, invasieve soorten, deelplekken, gratis planten +
+  stadspagina's (42 stadsintro's), privacy (alleen leesbaarheid), over, voor organisaties,
+  volkstuinen, registreren, inloggen en header/footer. Werktaal weg, warmer en eenvoudiger,
+  zaden genoemd waar het past, meer uitnodiging om een account te maken.
+- Mijn aanbod: fotohint «Voor je privacy haal ik de locatie uit je foto’s.»
+- Profielpagina: locatiehint in de ik-vorm («Ik bewaar alleen ongeveer waar je woont…»).
+- Profielpagina: hint bij onleesbaar telefoonnummer in gewone woorden.
+- `soorten/monstera.json` gelijkgetrokken met de nieuwe monstera-tekst in `data/stektips.json`.
+
 ## [0.30.4] - 2026-10-31
 
 ### Fixed

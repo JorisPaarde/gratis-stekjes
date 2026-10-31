@@ -1,7 +1,7 @@
 {
     "titel": "Stekken: zo maak je gratis nieuwe planten",
-    "samenvatting": "Stekken: methoden (kopstek, bladstek, winterhout), stekken in water of grond, stekgrond en timing. Start hier en deel surplus gratis.",
-    "meta_description": "Stekken: zo maak je gratis nieuwe planten. Stekjes in water of grond, kopstek, winterstek — en deel surplus via Gratis planten.",
+    "samenvatting": "Zo maak je zelf nieuwe planten: de belangrijkste manieren van stekken (kopstek, bladstek, winterhoutstek), stekken in water of grond, stekgrond en het beste moment. Begin hier en deel wat je over hebt gratis.",
+    "meta_description": "Stekken: zo maak je gratis nieuwe planten. Stekjes in water of grond, kopstek en winterhoutstek, en wat je over hebt deel je via Gratis planten.",
     "zoekwoorden": [
         "stekken",
         "stekje",
@@ -47,7 +47,7 @@
     "inhoud": [
         {
             "type": "p",
-            "tekst": "Stekken is planten vermeerderen uit een stuk stengel, blad of wortel. Op Gratis planten is stekken de brug tussen snoeien en delen: wat je overhebt, geef je weg."
+            "tekst": "Stekken is een nieuwe plant kweken uit een stukje stengel, blad of wortel. Stekken en delen horen bij elkaar: wat je over hebt, geef je weg aan iemand in de buurt."
         },
         {
             "type": "h2",
@@ -56,11 +56,11 @@
         {
             "type": "ul",
             "items": [
-                "Kopstek / scheutstek (softwood) — lente en vroege zomer, hoogste slagingskans.",
-                "Bladstek — vooral kamerplanten en vetplanten.",
-                "Halfrijpe stek — nazomer voor struiken en kruiden.",
-                "Winterhoutstek — mid-herfst tot late winter voor bessen, wilg, vijg.",
-                "Scheuren en afleggen — zie vermeerderen overig."
+                "Kopstek of scheutstek (van jonge, zachte scheuten): in de lente en vroege zomer, daar lukt het meestal het best.",
+                "Bladstek: vooral voor kamerplanten en vetplanten.",
+                "Halfrijpe stek: in de nazomer, voor struiken en kruiden.",
+                "Winterhoutstek: van midden in de herfst tot laat in de winter, voor bessen, wilg en vijg.",
+                "Scheuren en afleggen: lees er meer over bij Vermeerderen."
             ]
         },
         {
@@ -69,7 +69,7 @@
         },
         {
             "type": "p",
-            "tekst": "Waterstekken zijn zichtbaar en leuk voor monstera, pothos en tradescantia. Voor houtige tuinplanten is luchtige stekgrond of een zandmix betrouwbaarder. Details: stekken in water of grond en stekgrond zelf maken."
+            "tekst": "Stekken in water is leuk, want je ziet de wortels groeien. Dat werkt goed voor monstera, pothos en tradescantia. Voor houtige tuinplanten is luchtige stekgrond of een mengsel met zand betrouwbaarder. Meer lees je bij stekken in water of grond en stekgrond zelf maken."
         },
         {
             "type": "h2",
@@ -77,15 +77,15 @@
         },
         {
             "type": "p",
-            "tekst": "Volg het seizoen: softwood april–juni, halfrijp juli–september, winterhout na bladval. Zie wanneer stekken voor de kalender."
+            "tekst": "Volg het seizoen: zachte scheuten van april tot juni, halfrijp hout van juli tot september en winterhout na de bladval. Bekijk wanneer stekken voor de hele kalender."
         },
         {
             "type": "h2",
-            "tekst": "Wortelen zonder koopproduct"
+            "tekst": "Wortelen zonder gekochte hulpmiddelen"
         },
         {
             "type": "p",
-            "tekst": "Probeer eerst goede timing en stekgrond. Daarna wilgenwater. Stekpoeder alleen bij lastige soorten — zie natuurlijk bewortelen."
+            "tekst": "Zorg eerst voor het juiste moment en goede stekgrond. Probeer daarna wilgenwater. Gebruik stekpoeder alleen bij lastige soorten. Lees meer bij natuurlijk bewortelen."
         }
     ],
     "bronnen": [
