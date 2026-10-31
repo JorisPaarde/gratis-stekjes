@@ -35,7 +35,15 @@
     if (item.lat == null || item.lon == null) {
       return;
     }
-    L.marker([item.lat, item.lon])
+    // Div-icon i.p.v. Leaflet-default (CDN-bitmap; CSP img-src blokkeert dat).
+    var aanbodIcon = L.divIcon({
+      className: "partner-marker partner-marker--aanbod",
+      html: '<span class="partner-marker-dot" style="background:#1f4d2b" title="Aanbod"></span>',
+      iconSize: [18, 18],
+      iconAnchor: [9, 9],
+      popupAnchor: [0, -8],
+    });
+    L.marker([item.lat, item.lon], { icon: aanbodIcon })
       .bindPopup(
         "<strong>" +
           (item.voornaam || "Iemand") +
