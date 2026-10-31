@@ -94,6 +94,15 @@ Optioneel (backups): `BACKUP_ENCRYPTION_KEY` — zie `docs/backups.md`. Lege upl
 3. Upload `deploy-hook.php` + `lib.php` naar `/home/gratisplanten/public_html/`.
 4. Secrets: zie `AGENTS.md` (PROD_*). Workflow: `deploy-prod-hook.yml` (tags `v*.*.*`). **Niet** bij merges naar staging.
 
+## LiteSpeed / lsphp na deploy
+
+Na release-swap herschrijft de hook `/home/<account>/.lsphp_restart.txt` (**inhoud**,
+niet alleen mtime) in de account-home — hosting bevestigde dat handmatig herschrijven
+lsphp wél herstart, terwijl `touch()` vaak niet aansloeg. Daarnaast: entrypoint-mtimes
+bumpen, `POST` action `lsphp_restart` / `public/deploy-lsphp-restart.php`, en migrate
+via CLI (`action=migrate`) in de nieuwe release-map. De upload-workflow wacht op
+footer-versie + deelplekken-count met retries.
+
 ## Beveiliging
 
 - Alleen `POST` over HTTPS; Bearer-token (hash in config).

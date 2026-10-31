@@ -114,8 +114,9 @@ Workflow **`migrate-stekjes-to-prod.yml` heeft geen `environment:`** — anders 
 1. CI build (`composer --no-dev`, Vite)
 2. Zip-artefact (geen `.env` / `node_modules` / tests)
 3. Chunked POST naar `/deploy-hook.php` + `.env` (0600); storage behouden
-4. **`POST /deploy/run`** → migrate + DeelplekkenSeeder + caches (**moet 200**)
-5. Smoke: 200, footer-versie (`Versie x.y.z`), staging noindex
+4. Na swap: herschrijf `~/.lsphp_restart.txt` (inhoud in account-home) + wacht op lsphp-recycle
+5. Migrate/seed: primair hook `action=migrate` (artisan CLI in nieuwe release-map); fallback `POST /deploy/run` pas ná footer-versie van het artefact (**moet 200**)
+6. Smoke: footer-versie (retries) + `/api/deelplekken` count ≥ JSON + staging noindex
 
 ### Prod (later)
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Deelplek;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -51,6 +52,9 @@ class DeployController extends Controller
             // Secundair: schrijf opnieuw naar de échte docroot (SCRIPT_FILENAME = index.php daar)
             // voor het geval public_path() nog naar release/public wijst.
             $this->writeRobotsTxtToDocroot();
+
+            // Na caches: opcache resetten + LiteSpeed-marker herschrijven (account-home).
+            $this->refreshPhpWorkers();
         } catch (Throwable $e) {
             report($e);
 
@@ -61,11 +65,103 @@ class DeployController extends Controller
             ], 500);
         }
 
+        $deelplekkenCount = 0;
+        try {
+            $deelplekkenCount = (int) Deelplek::query()->visible()->count();
+        } catch (Throwable) {
+            $deelplekkenCount = 0;
+        }
+
         return response()->json([
             'ok' => true,
             'version' => config('site.version'),
+            'deelplekken_count' => $deelplekkenCount,
             'at' => now()->toIso8601String(),
         ]);
+    }
+
+    /**
+     * Best-effort: opcache_reset in dit web-proces, herschrijf
+     * /home/<account>/.lsphp_restart.txt (inhoud, niet alleen mtime), en bump
+     * entrypoint-mtimes. Geen secrets/paden in logs of response.
+     */
+    private function refreshPhpWorkers(): void
+    {
+        clearstatcache(true);
+        if (function_exists('opcache_reset')) {
+            @opcache_reset();
+        }
+
+        $docroot = $this->resolveHttpDocroot();
+        if ($docroot !== null) {
+            foreach (['index.php', '.htaccess'] as $name) {
+                $path = $docroot.DIRECTORY_SEPARATOR.$name;
+                if (is_file($path)) {
+                    @touch($path);
+                }
+            }
+        }
+
+        foreach ($this->lsphpRestartHomeCandidates($docroot) as $home) {
+            $marker = $home.DIRECTORY_SEPARATOR.'.lsphp_restart.txt';
+            $payload = 'restart '.gmdate('c').' '.bin2hex(random_bytes(8))."\n";
+            if (is_file($marker) || is_link($marker)) {
+                @unlink($marker);
+            }
+            @file_put_contents($marker, $payload, LOCK_EX);
+        }
+    }
+
+    /**
+     * Docroot via front-controller SCRIPT_FILENAME (index.php), anders null.
+     */
+    private function resolveHttpDocroot(): ?string
+    {
+        $script = (string) ($_SERVER['SCRIPT_FILENAME'] ?? '');
+        if ($script === '' || ! is_file($script) || basename($script) !== 'index.php') {
+            return null;
+        }
+
+        return dirname($script);
+    }
+
+    /**
+     * Account-home kandidaten voor LiteSpeed-marker (nooit release-map).
+     *
+     * @return list<string>
+     */
+    private function lsphpRestartHomeCandidates(?string $docroot): array
+    {
+        $homes = [];
+        if ($docroot !== null) {
+            $fromDocroot = dirname($docroot);
+            if ($fromDocroot !== '' && $fromDocroot !== '/' && $fromDocroot !== '.') {
+                $homes[$fromDocroot] = true;
+            }
+        }
+
+        // app-staging/current of app-staging/releases/<sha> → account-home.
+        $base = base_path();
+        $real = realpath($base) ?: $base;
+        foreach ([2, 3] as $up) {
+            $candidate = $real;
+            for ($i = 0; $i < $up; $i++) {
+                $candidate = dirname($candidate);
+            }
+            if ($candidate !== '' && $candidate !== '/' && is_dir($candidate.'/.deploy')) {
+                $homes[$candidate] = true;
+            }
+        }
+
+        $envHome = getenv('HOME');
+        if (is_string($envHome) && trim($envHome) !== '' && is_dir($envHome)) {
+            $homes[rtrim($envHome, '/')] = true;
+        }
+
+        return array_values(array_filter(
+            array_keys($homes),
+            static fn (string $h): bool => is_dir($h)
+        ));
     }
 
     /**
