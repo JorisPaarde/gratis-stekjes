@@ -341,7 +341,19 @@ fi
 METHOD="$(printf '%s' "$HOOK_BODY" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("method",""))' 2>/dev/null || true)"
 notice "Hook finish OK (extract=${METHOD:-?})."
 
-# --- migrate via bestaand endpoint (retry bij 404/5xx/connectie na release-swap) ---
+# LiteSpeed: hook touched ~/.lsphp_restart.txt — kort wachten tot workers recyclen
+# vóór POST /deploy/run (403-retry blijft als vangnet).
+if [ "${SKIP_MIGRATE:-}" != "1" ]; then
+  LSPHP_WAIT="${LSPHP_RESTART_WAIT_SECS:-8}"
+  if [ "$LSPHP_WAIT" -gt 0 ] 2>/dev/null; then
+    notice "Wacht ${LSPHP_WAIT}s op lsphp-recycle vóór /deploy/run…"
+    sleep "$LSPHP_WAIT"
+  fi
+fi
+
+# --- migrate via bestaand endpoint ---
+# Retry bij 404/5xx/connectie na release-swap, én bij 403 (stale lsphp kan nog
+# oude release + config:cache met oud DEPLOY_TOKEN serveren).
 if [ "${SKIP_MIGRATE:-}" != "1" ]; then
   max_attempts=5
   attempt=1
@@ -365,10 +377,16 @@ if [ "${SKIP_MIGRATE:-}" != "1" ]; then
     fi
 
     should_retry=0
+    stale_403=0
     if [ "$curl_ec" -ne 0 ] || [ -z "$code" ] || [ "$code" = "000" ]; then
       should_retry=1
     else
       case "$code" in
+        403)
+          # Mogelijk stale lsphp op vorige release (oud token in config:cache).
+          should_retry=1
+          stale_403=1
+          ;;
         404|5??) should_retry=1 ;;
       esac
     fi
@@ -382,8 +400,13 @@ except Exception:
       die "POST /deploy/run faalde (HTTP ${code:-conn}, ${ok})."
     fi
 
-    sleep_secs=$((attempt * 5))
-    notice "POST /deploy/run HTTP ${code:-conn} — poging ${attempt}/${max_attempts}, opnieuw over ${sleep_secs}s…"
+    if [ "$stale_403" -eq 1 ]; then
+      sleep_secs=30
+      notice "POST /deploy/run HTTP 403 (mogelijk stale proces) — poging ${attempt}/${max_attempts}, opnieuw over ${sleep_secs}s…"
+    else
+      sleep_secs=$((attempt * 5))
+      notice "POST /deploy/run HTTP ${code:-conn} — poging ${attempt}/${max_attempts}, opnieuw over ${sleep_secs}s…"
+    fi
     sleep "$sleep_secs"
     attempt=$((attempt + 1))
   done
