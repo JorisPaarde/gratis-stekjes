@@ -296,7 +296,7 @@ test('seeder wist geen aanmeldingen', function () {
     $this->seed(DeelplekkenSeeder::class);
 
     expect(Deelplek::query()->where('naam', 'Demo Voedselbos Utrecht')->where('status', Deelplek::STATUS_APPROVED)->exists())->toBeTrue();
-    expect(Deelplek::query()->where('source', Deelplek::SOURCE_SEED)->count())->toBe(31);
+    expect(Deelplek::query()->where('source', Deelplek::SOURCE_SEED)->count())->toBe(63);
 });
 
 test('sitemap bevat voor-organisaties en organisatiepaginas', function () {

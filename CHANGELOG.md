@@ -9,6 +9,15 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.27.3] - 2026-10-31
+
+### Added
+
+- 32 Belgische zadenbibs/grainothèques als deelplekken (`data/deelplekken.json`, type `zaadbibliotheek`, `country: BE`).
+- `DeelplekkenSeeder` leest `country` en `visible` uit de JSON-rij (default NL / true).
+- Stadspagina’s slaan JSON-rijen met `visible: false` over.
+- Pest: NL-snapshot ongewijzigd, BE-country na seeden, verborgen rij niet op stadspagina.
+
 ## [0.27.2] - 2026-10-31
 
 ### Fixed
