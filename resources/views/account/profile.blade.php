@@ -34,7 +34,12 @@
       <span class="hint">Vul je postcode of woonplaats in. We bewaren alleen ongeveer waar je woont, nooit je straat of huisnummer.</span>
     </label>
     <label>Telefoon (optioneel)
-      <input name="telefoon" maxlength="40" value="{{ old('telefoon', $user->telefoon) }}" autocomplete="tel">
+      @if($user->isUnreadable('telefoon') && old('telefoon') === null)
+        <input name="telefoon" maxlength="40" value="" autocomplete="tel" placeholder="{{ \App\Casts\SafeEncrypted::VIEW_FALLBACK }}">
+        <span class="hint">Opgeslagen nummer is niet leesbaar (andere sleutel). Leeg laten behoudt de oude waarde; vul alleen in om te vervangen.</span>
+      @else
+        <input name="telefoon" maxlength="40" value="{{ old('telefoon', $user->telefoon) }}" autocomplete="tel">
+      @endif
     </label>
     <button class="btn" type="submit">Opslaan</button>
   </form>

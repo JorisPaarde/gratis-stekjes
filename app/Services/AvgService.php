@@ -197,6 +197,8 @@ final class AvgService
     }
 
     /**
+     * Zelf-verwijdering: wachtwoordcheck + uitloggen, daarna {@see purgeUserAccount()}.
+     *
      * @return array{ok: bool, error?: string}
      */
     public function deleteUserAccount(User $user, #[\SensitiveParameter] string $password): array
@@ -205,9 +207,6 @@ final class AvgService
             return ['ok' => false, 'error' => 'Wachtwoord klopt niet.'];
         }
 
-        $userId = (int) $user->id;
-        $email = (string) $user->email;
-
         // Uitloggen vóór delete: Auth::logout() kan anders setRememberToken+save doen
         // en de zojuist verwijderde user weer wegschrijven.
         Auth::logout();
@@ -215,6 +214,20 @@ final class AvgService
             request()->session()->invalidate();
             request()->session()->regenerateToken();
         }
+
+        $this->purgeUserAccount($user);
+
+        return ['ok' => true];
+    }
+
+    /**
+     * Wis gebruiker + gekoppelde data (aanbod, gesprekken, foto’s, tokens).
+     * Geen uitloggen, geen mail. Hergebruikt door zelf-delete en beheer-delete.
+     */
+    public function purgeUserAccount(User $user): void
+    {
+        $userId = (int) $user->id;
+        $email = (string) $user->email;
 
         // Foto’s op disk vóór DB-cascade wissen (AVG).
         app(AanbodFotoService::class)->deleteAllForUser($userId);
@@ -280,8 +293,6 @@ final class AvgService
 
             User::query()->whereKey($userId)->delete();
         });
-
-        return ['ok' => true];
     }
 
     /** @param array<string, mixed> $payload */
