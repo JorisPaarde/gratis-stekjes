@@ -69,10 +69,15 @@ class VoorOrganisatiesController extends Controller
         }
 
         $plek = $result['deelplek'];
-        SafeMail::toAddress((string) $plek->contact_email, new DeelplekAanmeldingBevestiging($plek));
+        $contactEmail = $plek->isUnreadable('contact_email')
+            ? ''
+            : trim((string) ($plek->contact_email ?? ''));
+        if ($contactEmail !== '') {
+            SafeMail::toAddress($contactEmail, new DeelplekAanmeldingBevestiging($plek));
+        }
 
         $adminEmail = trim((string) config('stekjes.admin_email', ''));
-        if ($adminEmail !== '' && strcasecmp($adminEmail, (string) $plek->contact_email) !== 0) {
+        if ($adminEmail !== '' && ($contactEmail === '' || strcasecmp($adminEmail, $contactEmail) !== 0)) {
             SafeMail::toAddress($adminEmail, new DeelplekAanmeldingAdminMelding($plek));
         }
 

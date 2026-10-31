@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Concerns\HasSafeEncryptedAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Message extends Model
 {
+    use HasSafeEncryptedAttributes;
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -22,7 +25,7 @@ class Message extends Model
     protected function casts(): array
     {
         return [
-            'body' => 'encrypted',
+            'body' => \App\Casts\SafeEncrypted::class,
             'read_at' => 'datetime',
             'created_at' => 'datetime',
         ];

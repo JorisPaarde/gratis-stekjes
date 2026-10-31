@@ -20,6 +20,30 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   zaden genoemd waar het past, meer uitnodiging om een account te maken.
 - Mijn aanbod: fotohint «Voor je privacy haal ik de locatie uit je foto’s.»
 
+## [0.30.4] - 2026-10-31
+
+### Fixed
+
+- Beheer-feedback (`/beheer/feedback`) crashte met `DecryptException` / «The MAC is
+  invalid» wanneer `feedback.body` met een andere `APP_KEY` was versleuteld (ruwe
+  import via `StekjesDataMigrator` behoudt ciphertext van de oude host). Encrypted
+  casts in beheer/berichten (`feedback.body`, `messages.body`, `reports.reason`,
+  `deelplekken.contact_email`, `users.telefoon`) gebruiken `SafeEncrypted`: bij
+  decrypt-fout `null` + `isUnreadable()`, views tonen «Inhoud niet leesbaar».
+- Deploy-hook: bestaande server-`APP_KEY` en `APP_PREVIOUS_KEYS` worden **nooit**
+  overschreven. Timestamped unieke `.env.backup-…` (mode 0600, max 10) naast de shared
+  `.env` (buiten docroot). CI faalt op letterlijke merge-conflictmarkeringen.
+- Onleesbare `telefoon` / `contact_email`: geen mail naar onleesbaar adres; profiel
+  wist ciphertext niet bij leeg formulier.
+
+### Changed
+
+- Beheer-gebruikerslijst: kolom «Beheertoegang» verwijderd (alleen weergave;
+  `ADMIN_DASHBOARD_EMAILS` / Dashboard-toegang ongewijzigd).
+- Beheer: gebruiker verwijderen via bevestigingspagina (typ `VERWIJDER`); hergebruikt
+  `AvgService::purgeUserAccount()`. Eigen account geblokkeerd; geen mail; log zonder
+  e-mailadres. Route binnen admin-middleware + throttle.
+
 ## [0.30.3] - 2026-10-31
 
 ### Changed

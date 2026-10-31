@@ -52,7 +52,6 @@
             <th>ID</th>
             <th>Naam</th>
             <th>Bevestigd</th>
-            <th>Beheertoegang</th>
             <th>Laatste mail</th>
             <th></th>
           </tr>
@@ -64,12 +63,12 @@
               $u = $row['user'];
               /** @var \App\Models\MailLog|null $mail */
               $mail = $row['last_mail'];
+              $isSelf = auth()->check() && (int) auth()->id() === (int) $u->id;
             @endphp
             <tr>
               <td>{{ $u->id }}</td>
               <td>{{ $u->name }}</td>
               <td>{{ $u->hasVerifiedEmail() ? 'ja' : 'nee' }}</td>
-              <td>{{ \App\Support\AdminDashboard::userMayAccess($u) ? 'ja' : 'nee' }}</td>
               <td>
                 @if($mail)
                   {{ $mail->type }} · {{ $mail->isOk() ? 'ok' : 'fout' }}
@@ -88,6 +87,9 @@
                     <input type="hidden" name="user_id" value="{{ $u->id }}">
                     <button type="submit" class="linkish">Bevestigingsmail opnieuw sturen</button>
                   </form>
+                @endunless
+                @unless($isSelf)
+                  <a class="linkish" href="{{ route('beheer.users.destroy.confirm', $u) }}">Verwijderen</a>
                 @endunless
               </td>
             </tr>
@@ -127,7 +129,13 @@
               </td>
               <td>{{ $deelplekTypeLabels[$plek->type] ?? $plek->type }}</td>
               <td>{{ $plek->plaats }}<br><span class="muted">{{ $plek->adres }}</span></td>
-              <td>{{ $plek->contact_email }}</td>
+              <td>
+                @if($plek->isUnreadable('contact_email'))
+                  {{ \App\Casts\SafeEncrypted::VIEW_FALLBACK }}
+                @else
+                  {{ $plek->contact_email }}
+                @endif
+              </td>
               <td class="beheer-actions">
                 <form method="post" action="{{ route('beheer.deelplekken.approve') }}">
                   @csrf
@@ -360,7 +368,13 @@
               <td>{{ $r->id }}</td>
               <td>{{ $r->reporter_id }}</td>
               <td>{{ $r->reported_user_id }}</td>
-              <td>{{ \Illuminate\Support\Str::limit($r->reason, 80) }}</td>
+              <td>
+                @if($r->isUnreadable('reason'))
+                  {{ \App\Casts\SafeEncrypted::VIEW_FALLBACK }}
+                @else
+                  {{ \Illuminate\Support\Str::limit((string) ($r->reason ?? ''), 80) }}
+                @endif
+              </td>
               <td>{{ $r->handled ? 'afgehandeld' : 'open' }}</td>
               <td>
                 @unless($r->handled)
