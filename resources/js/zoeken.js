@@ -7,7 +7,7 @@
   var filterEl = document.getElementById("marker-filters");
   if (!form || !list || typeof L === "undefined") return;
 
-  // Beginuitsnede: Nederland + Vlaanderen/Brussel (past op desktop én mobiel).
+  // Beginuitsnede: Nederland + heel België (past op desktop én mobiel).
   var map = L.map(mapEl);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -15,7 +15,7 @@
   }).addTo(map);
   map.fitBounds(
     [
-      [50.65, 2.45],
+      [49.45, 2.4],
       [53.55, 7.25],
     ],
     { padding: [12, 12], maxZoom: 8 }
@@ -356,7 +356,7 @@
           typeLabels = Object.assign(typeLabels, data.types);
         }
         partnerItems = (data && data.items) || [];
-        // Geen fitBounds bij eerste load: beginuitsnede blijft NL + Vlaanderen.
+        // Geen fitBounds bij eerste load: beginuitsnede blijft NL + België.
         refreshMarkers(false);
       })
       .catch(function () {
@@ -380,7 +380,7 @@
           typeLabels = Object.assign(typeLabels, data.types);
         }
         deelplekItems = (data && data.items) || [];
-        // Geen fitBounds bij eerste load: beginuitsnede blijft NL + Vlaanderen.
+        // Geen fitBounds bij eerste load: beginuitsnede blijft NL + België.
         refreshMarkers(false);
       })
       .catch(function () {

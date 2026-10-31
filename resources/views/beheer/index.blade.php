@@ -251,7 +251,7 @@
   </div>
 
   <h2 id="markers">Kaartmarkers</h2>
-  <p class="muted">Plekken op de aanbodkaart: initiatief, voedselbos, plantenasiel, plantenbieb of ruilkast. Coördinaten via PDOK (NL) of Nominatim (Vlaanderen/Brussel) op plaats/postcode. Organisaties zonder bezoeklocatie horen op de initiatievenpagina, niet als marker.</p>
+  <p class="muted">Plekken op de aanbodkaart: initiatief, voedselbos, plantenasiel, plantenbieb of ruilkast. Coördinaten via PDOK (NL) of Nominatim (België) op plaats/postcode. Organisaties zonder bezoeklocatie horen op de initiatievenpagina, niet als marker.</p>
 
   <form class="form beheer-marker-form" method="post" action="{{ route('beheer.markers.save') }}">
     @csrf
@@ -269,7 +269,7 @@
     </label>
     <label>Land
       <select name="country" required>
-        @foreach(($countries ?? ['NL' => 'Nederland', 'BE' => 'België (Vlaanderen / Brussel)']) as $code => $label)
+        @foreach(($countries ?? ['NL' => 'Nederland', 'BE' => 'België']) as $code => $label)
           <option value="{{ $code }}" @selected(old('country', $editing->country ?? 'NL') === $code)>{{ $label }}</option>
         @endforeach
       </select>

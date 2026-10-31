@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Support;
 
 /**
- * Ondersteunde landen voor locatie/adres (NL + Vlaanderen/Brussel via BE).
+ * Ondersteunde landen voor locatie/adres (Nederland + heel België).
  */
 final class Country
 {
@@ -24,7 +24,7 @@ final class Country
     {
         return [
             self::NL => 'Nederland',
-            self::BE => 'België (Vlaanderen / Brussel)',
+            self::BE => 'België',
         ];
     }
 

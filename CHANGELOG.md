@@ -13,16 +13,16 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- Werkgebied uitgebreid naar **Vlaanderen** (Vlaams Gewest + Brussels Hoofdstedelijk Gewest; niet Wallonië), afgebakend via Belgische postcodereeksen 1000–1299, 1500–3999, 8000–9999.
+- Werkgebied uitgebreid naar **heel België** (naast Nederland). Belgische postcodes 1000–9999 (4 cijfers) zijn geldig; Franstalige plaatsnamen worden overgenomen zoals de geocoder ze geeft (geen Franse sitevertaling).
 - Landveld `country` (NL/BE) op accounts, deelplekken, kaartmarkers en geocode-cache; migratie zet bestaande rijen op NL. Formulieren krijgen landkeuze (default NL).
-- Belgische postcodes (4 cijfers) naast NL `1234 AB`: validatie, genormaliseerde opslag en weergave per land. Waalse postcodes krijgen een duidelijke Nederlandstalige foutmelding.
-- Locatiezoeken/geocoding: Nominatim met `countrycodes=nl,be` naast PDOK (NL); plaatsnamen in BE zoals de geocoder ze geeft (gemeente/deelgemeente).
-- Pest: unit-tests postcode/land (incl. Waalse afwijzing), migratietest `country`, feature/E2E met Belgisch adres (Gent 9000).
+- Belgische postcodes naast NL `1234 AB`: validatie, genormaliseerde opslag en weergave per land.
+- Locatiezoeken/geocoding: Nominatim met `countrycodes=nl,be` naast PDOK (NL).
+- Pest: unit-tests postcode/land, migratietest `country`, feature/E2E met Belgische adressen (Gent 9000, Liège 4000, Namur 5000).
 
 ### Changed
 
-- Kaart (aanbod + deelplekken): beginuitsnede via `fitBounds` zodat NL + Vlaanderen op desktop én mobiel in beeld zijn.
-- Teksten/meta/SEO/privacy/deelplekken-H1: werkgebied «Nederland» → «Nederland en Vlaanderen» (geen Belgisch-juridische claims toegevoegd).
+- Kaart (aanbod + deelplekken): beginuitsnede via `fitBounds` zodat NL + heel België op desktop én mobiel in beeld zijn.
+- Teksten/meta/SEO/privacy/deelplekken-H1: werkgebied «Nederland» → «Nederland en België» (geen Belgisch-juridische claims toegevoegd).
 
 ## [0.26.6] - 2026-10-31
 

@@ -199,7 +199,7 @@ final class Steden
             } else {
                 $latF = (float) $lat;
                 $lngF = (float) $lng;
-                // Stadspagina's blijven NL-only; bbox dekt NL (+ marge richting Vlaanderen).
+                // Stadspagina's blijven NL-only; bbox dekt NL (+ marge richting België).
                 if ($latF < 50.5 || $latF > 53.7 || $lngF < 2.4 || $lngF > 7.4) {
                     $errors[] = "steden[$i] coördinaten buiten NL-bbox";
                 }

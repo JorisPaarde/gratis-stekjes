@@ -32,7 +32,7 @@ class ZoekenController extends Controller
             ? 'Gratis '.$plant.'-stekjes'
             : 'Gratis planten en stekjes ophalen';
         $metaDescription = $plant !== ''
-            ? 'Gratis '.$plant.'-stekjes en planten in Nederland en Vlaanderen. Zoek op postcode of plaats en haal ze op met een praatje.'
+            ? 'Gratis '.$plant.'-stekjes en planten in Nederland en België. Zoek op postcode of plaats en haal ze op met een praatje.'
             : 'Gratis planten en stekjes ophalen: zoek op postcode of plaats, bekijk de kaart en haal ze fysiek op.';
 
         return view('pages.aanbod', [

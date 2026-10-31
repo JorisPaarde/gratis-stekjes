@@ -37,7 +37,7 @@ class ProfileController extends Controller
         ], [
             'voornaam.required' => 'Vul een voornaam of bijnaam in.',
             'country.required' => 'Kies een land.',
-            'country.in' => 'Kies Nederland of België (Vlaanderen/Brussel).',
+            'country.in' => 'Kies Nederland of België.',
             'locatie.required' => 'Vul een postcode of plaats in.',
             'telefoon.regex' => 'Telefoonnummer ziet er niet geldig uit.',
         ]);

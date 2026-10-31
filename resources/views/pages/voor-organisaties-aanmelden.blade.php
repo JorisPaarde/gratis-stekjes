@@ -45,7 +45,7 @@
     </label>
     <label>Postcode
       <input name="postcode" maxlength="16" value="{{ old('postcode') }}" autocomplete="postal-code" placeholder="1234 AB of 9000">
-      <span class="hint">NL: 1234 AB. BE: 4 cijfers in Vlaanderen/Brussel (niet Wallonië).</span>
+      <span class="hint">NL: 1234 AB. BE: 4 cijfers (heel België).</span>
     </label>
     <label>Plaats *
       <input name="plaats" required maxlength="120" value="{{ old('plaats') }}" autocomplete="address-level2">

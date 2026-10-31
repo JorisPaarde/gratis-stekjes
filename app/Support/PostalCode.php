@@ -5,44 +5,22 @@ declare(strict_types=1);
 namespace App\Support;
 
 /**
- * Postcodes NL (1234 AB) en BE (4 cijfers, alleen Vlaanderen + Brussel).
- *
- * BE toegestaan: 1000–1299, 1500–3999, 8000–9999.
- * BE geweigerd (Wallonië e.d.): 1300–1499, 4000–7999.
+ * Postcodes NL (1234 AB) en BE (4 cijfers, heel België 1000–9999).
  */
 final class PostalCode
 {
-    public const OUTSIDE_FLANDERS_MESSAGE = 'Dit Belgische adres ligt buiten Vlaanderen en het Brussels Hoofdstedelijk Gewest. Gratis planten is beschikbaar in Nederland, Vlaanderen en Brussel — niet in Wallonië.';
-
     /**
-     * Vlaanderen + Brussels Hoofdstedelijk Gewest (postcodereeksen).
+     * Geldige Belgische postcode (1000–9999).
      */
-    public static function isFlandersPostcode(int|string $pc): bool
+    public static function isBelgianPostcode(int|string $pc): bool
     {
         $n = self::digits4($pc);
-        if ($n === null) {
-            return false;
-        }
 
-        return ($n >= 1000 && $n <= 1299)
-            || ($n >= 1500 && $n <= 3999)
-            || ($n >= 8000 && $n <= 9999);
-    }
-
-    /** Wallonië / uitgesloten Belgische reeksen. */
-    public static function isExcludedBelgianPostcode(int|string $pc): bool
-    {
-        $n = self::digits4($pc);
-        if ($n === null) {
-            return false;
-        }
-
-        return ($n >= 1300 && $n <= 1499)
-            || ($n >= 4000 && $n <= 7999);
+        return $n !== null && $n >= 1000 && $n <= 9999;
     }
 
     /**
-     * Normaliseer voor opslag. Null = ongeldig formaat (niet: Wallonië — dat is apart).
+     * Normaliseer voor opslag. Null = ongeldig formaat.
      *
      * NL: "1234 AB" / "1234ab" → "1234AB"; alleen "1234" → "1234" (bestaande PC4).
      * BE: "9000" → "9000".
@@ -102,11 +80,8 @@ final class PostalCode
             if (! preg_match('/^\d{4}$/', $input)) {
                 return 'Belgische postcode bestaat uit precies 4 cijfers (bijv. 9000).';
             }
-            if (self::isExcludedBelgianPostcode($input)) {
-                return self::OUTSIDE_FLANDERS_MESSAGE;
-            }
-            if (! self::isFlandersPostcode($input)) {
-                return 'Deze Belgische postcode ken ik niet als Vlaanderen of Brussel.';
+            if (! self::isBelgianPostcode($input)) {
+                return 'Belgische postcode moet tussen 1000 en 9999 liggen.';
             }
 
             return true;
@@ -122,6 +97,7 @@ final class PostalCode
 
     /**
      * Bouw publiek locatielabel (postcode of plaats) voor opslag/weergave.
+     * BE: plaatsnamen (NL/FR) zoals de geocoder ze geeft.
      */
     public static function locationLabel(string $raw, string $country, ?string $geoLabel = null): string
     {
@@ -133,7 +109,6 @@ final class PostalCode
             return self::format($normalized, $country);
         }
 
-        // Plaatsnaam: bij BE geocoder-label (gemeente/deelgemeente), anders eerste segment.
         if ($geoLabel !== null && trim($geoLabel) !== '') {
             $plaats = trim(explode(',', $geoLabel)[0]);
 

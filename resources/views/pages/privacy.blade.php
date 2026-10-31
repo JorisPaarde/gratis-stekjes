@@ -8,7 +8,7 @@
 <section class="section wrap prose">
   <h1 class="page-title">Privacyverklaring</h1>
 
-  <p>Deze verklaring beschrijft welke persoonsgegevens {{ config('site.name') }} (gratisplanten.nl) verwerkt, waarom, hoe lang, en welke rechten je hebt. Het werkgebied van de site is Nederland en Vlaanderen (inclusief Brussel); ik voeg geen aparte Belgische juridische claims toe. Ik houd het dicht bij wat de applicatie echt doet (zie ook de technische inventaris in de broncode).</p>
+  <p>Deze verklaring beschrijft welke persoonsgegevens {{ config('site.name') }} (gratisplanten.nl) verwerkt, waarom, hoe lang, en welke rechten je hebt. Het werkgebied van de site is Nederland en België; ik voeg geen aparte Belgische juridische claims toe. Ik houd het dicht bij wat de applicatie echt doet (zie ook de technische inventaris in de broncode).</p>
 
   <h2>Verwerkingsverantwoordelijke</h2>
   <p>
@@ -92,7 +92,7 @@
   </ul>
 
   <h2>Kaart en derden</h2>
-  <p>De aanbodkaart gebruikt Leaflet met tegels van OpenStreetMap. Zoeklocaties in Nederland via de gratis PDOK Locatieserver; voor Vlaanderen/Brussel (en gemengd zoeken) via Nominatim (OpenStreetMap), beperkt tot landen NL en BE. Resultaten cache ik lokaal. Op de kaart alleen benaderde punten. OpenStreetMap/PDOK/Nominatim ontvangen daarbij de gebruikelijke technische verzoeken van je browser of mijn server (geen accountgegevens van {{ config('site.name') }}).</p>
+  <p>De aanbodkaart gebruikt Leaflet met tegels van OpenStreetMap. Zoeklocaties in Nederland via de gratis PDOK Locatieserver; voor België (en gemengd zoeken) via Nominatim (OpenStreetMap), beperkt tot landen NL en BE. Resultaten cache ik lokaal. Op de kaart alleen benaderde punten. OpenStreetMap/PDOK/Nominatim ontvangen daarbij de gebruikelijke technische verzoeken van je browser of mijn server (geen accountgegevens van {{ config('site.name') }}).</p>
 
   <h2>Melden en blokkeren</h2>
   <p>Je kunt een gebruiker melden of blokkeren. Meldingen worden opgeslagen voor de beheerder. Er is geen openbare moderatiewachtrij.</p>

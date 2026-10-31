@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Http;
 use Throwable;
 
 /**
- * Locatiezoeken voor NL (PDOK) en BE/Vlaanderen+Brussel (Nominatim, countrycodes=nl,be).
+ * Locatiezoeken voor NL (PDOK) en heel België (Nominatim, countrycodes=nl,be).
+ * Franstalige plaatsnamen worden overgenomen zoals de geocoder ze geeft (geen sitevertaling).
  */
 final class LocationGeocoder
 {
@@ -35,7 +36,6 @@ final class LocationGeocoder
             ? Country::normalize($country)
             : null;
 
-        // BE met expliciete (ongeldige/Waalse) postcode → meteen weigeren.
         if ($country === Country::BE) {
             $pcCheck = $this->belgianPostcodeFromQuery($query);
             if ($pcCheck !== null) {
@@ -57,10 +57,6 @@ final class LocationGeocoder
                 'country' => $cachedCountry,
                 'postcode' => $this->extractPostcodeFromLabel((string) $cached->label),
             ];
-            $guard = $this->guardFlanders($hit, $country);
-            if ($guard !== null) {
-                return ['ok' => false, 'error' => $guard];
-            }
 
             return ['ok' => true, ...$hit];
         }
@@ -108,7 +104,6 @@ final class LocationGeocoder
         // BE of land onbekend (zoeken): Nominatim met countrycodes=nl,be.
         $hit = $this->nominatim($query, $country === Country::BE ? 'be' : 'nl,be');
         if ($hit === null) {
-            // Fallback: bij zoeken zonder land, PDOK nog proberen (NL-plaatsen).
             if ($country === null) {
                 $pdok = $this->pdok->geocode($query, true);
                 if ($pdok !== null) {
@@ -126,15 +121,10 @@ final class LocationGeocoder
             }
 
             $hint = $country === Country::BE
-                ? 'Locatie niet gevonden. Gebruik een Belgische postcode in Vlaanderen/Brussel (4 cijfers) of een plaatsnaam.'
-                : 'Locatie niet gevonden. Gebruik een postcode of plaats in Nederland of Vlaanderen.';
+                ? 'Locatie niet gevonden. Gebruik een Belgische postcode (4 cijfers) of een plaatsnaam.'
+                : 'Locatie niet gevonden. Gebruik een postcode of plaats in Nederland of België.';
 
             return ['ok' => false, 'error' => $hint];
-        }
-
-        $guard = $this->guardFlanders($hit, $country);
-        if ($guard !== null) {
-            return ['ok' => false, 'error' => $guard];
         }
 
         $this->storeCache($cacheKey, $hit);
@@ -159,37 +149,6 @@ final class LocationGeocoder
             'lon' => $result['lon'],
             'label' => $result['label'],
         ];
-    }
-
-    /**
-     * @param  array{lat: float, lon: float, label: string, country: string, postcode: ?string}  $hit
-     */
-    private function guardFlanders(array $hit, ?string $requestedCountry): ?string
-    {
-        $cc = Country::normalize($hit['country'] ?? Country::NL);
-        if ($cc !== Country::BE) {
-            return null;
-        }
-
-        $pc = $hit['postcode'] ?? null;
-        if ($pc !== null && $pc !== '' && PostalCode::isExcludedBelgianPostcode($pc)) {
-            return PostalCode::OUTSIDE_FLANDERS_MESSAGE;
-        }
-        if ($pc !== null && $pc !== '' && ! PostalCode::isFlandersPostcode($pc)) {
-            return PostalCode::OUTSIDE_FLANDERS_MESSAGE;
-        }
-
-        // Gevraagd land BE maar geen bruikbare postcode: lat/lon in Wallonië-zone weigeren we
-        // niet puur op bbox (overlapt NL); zonder postcode laten we BE-plaatsen toe als
-        // Nominatim ze als BE teruggeeft — postcode-check dekt Waalse PC's.
-        if ($requestedCountry === Country::BE && $pc !== null && $pc !== '') {
-            $valid = PostalCode::validate($pc, Country::BE);
-            if ($valid !== true) {
-                return $valid;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -246,7 +205,7 @@ final class LocationGeocoder
             $postcode = null;
         }
 
-        // Plaats: gemeente / deelgemeente zoals Nominatim die geeft.
+        // Plaats: gemeente/deelgemeente zoals Nominatim die geeft (NL of FR).
         $plaats = (string) (
             $address['city']
             ?? $address['town']
@@ -322,5 +281,4 @@ final class LocationGeocoder
 
         return null;
     }
-
 }

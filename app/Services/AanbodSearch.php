@@ -7,7 +7,6 @@ namespace App\Services;
 use App\Models\Aanbod;
 use App\Support\Country;
 use App\Support\Geo;
-use App\Support\PostalCode;
 
 final class AanbodSearch
 {
@@ -59,16 +58,7 @@ final class AanbodSearch
         if ($q !== '') {
             $resolved = $this->geocoder->resolve($q, null, $allowNetwork);
             if (! ($resolved['ok'] ?? false)) {
-                $error = (string) ($resolved['error'] ?? '');
-                // Alleen buiten werkgebied hard falen; onvindbaar → oude gedrag (on-gesorteerde lijst).
-                if ($error === PostalCode::OUTSIDE_FLANDERS_MESSAGE) {
-                    return [
-                        'meta' => null,
-                        'items' => $items,
-                        'error' => $error,
-                    ];
-                }
-
+                // Onvindbaar → oude gedrag (on-gesorteerde lijst).
                 return ['meta' => null, 'items' => $items];
             }
 

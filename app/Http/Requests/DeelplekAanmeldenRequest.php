@@ -48,7 +48,7 @@ class DeelplekAanmeldenRequest extends FormRequest
             'type.required' => 'Kies een type.',
             'type.in' => 'Kies een geldig type.',
             'country.required' => 'Kies een land.',
-            'country.in' => 'Kies Nederland of België (Vlaanderen/Brussel).',
+            'country.in' => 'Kies Nederland of België.',
             'plaats.required' => 'Vul een plaats in.',
             'contact_email.required' => 'Vul een contact-e-mailadres in.',
             'contact_email.email' => 'Vul een geldig e-mailadres in.',
