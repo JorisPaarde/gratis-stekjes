@@ -25,6 +25,9 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   - Compacte plekkaarten: naam + afstand, type en plaats, adres klein, «Op de kaart» en «Website».
   - «Op de kaart» zoomt in en opent de popup; zoekplek als eigen marker; kaartuitsnede rond de
     dichtstbijzijnde resultaten.
+- «Nu te stekken» (home + aanbod): rij plantkaarten met foto (max. 6, foto eerst, naamsvermelding
+  onder elke foto) die naar de stektip linken; lange teksten, losse labels en RHS-bronnen staan
+  alleen nog op de stektip-pagina's.
 
 ## [0.32.0] - 2026-10-31
 
