@@ -558,3 +558,139 @@ test('safePdoDiagnosis lekt geen waarden of e-mailadressen', function () {
         ->and($encoded)->not->toContain('example.test')
         ->and($encoded)->not->toContain('Duplicate entry');
 });
+
+test('gedeeltelijke v0.24.12-kopie: al_aanwezig, geen verdubbeling, FK-map id→id', function () {
+    $migrator = app(StekjesDataMigrator::class);
+    $payload = stekjes0242FixturePayload();
+    clearAppDataTables();
+
+    // Simuleer mislukte v0.24.12-import: users 1+2 en hun aanbod/feedback al met bron-id's.
+    foreach (array_slice($payload['tables']['users'], 0, 2) as $u) {
+        $row = $u;
+        DB::table('users')->insert($row);
+    }
+    foreach ($payload['tables']['aanbod'] as $a) {
+        DB::table('aanbod')->insert($a);
+    }
+    foreach ($payload['tables']['feedback'] as $f) {
+        DB::table('feedback')->insert($f);
+    }
+    // mail_log deels
+    DB::table('mail_log')->insert($payload['tables']['mail_log'][0]);
+
+    expect(DB::table('users')->count())->toBe(2)
+        ->and(DB::table('aanbod')->count())->toBe(2)
+        ->and(DB::table('feedback')->count())->toBe(1)
+        ->and(DB::table('mail_log')->count())->toBe(1);
+
+    $result = $migrator->import($payload, force: false, dryRun: false, packageSha256: hash('sha256', 'partial-02412-copy'));
+
+    expect($result['ok'])->toBeTrue()
+        ->and($result['tables']['users']['al_aanwezig'])->toBe(2)
+        ->and($result['tables']['users']['toegevoegd'])->toBe(1)
+        ->and($result['tables']['aanbod']['al_aanwezig'])->toBe(2)
+        ->and($result['tables']['aanbod']['toegevoegd'])->toBe(0)
+        ->and($result['tables']['feedback']['al_aanwezig'])->toBe(1)
+        ->and($result['tables']['feedback']['toegevoegd'])->toBe(0)
+        ->and($result['tables']['mail_log']['al_aanwezig'])->toBe(1)
+        ->and($result['tables']['mail_log']['toegevoegd'])->toBe(1);
+
+    // Geen verdubbeling
+    expect(DB::table('users')->count())->toBe(3)
+        ->and(DB::table('aanbod')->count())->toBe(2)
+        ->and(DB::table('feedback')->count())->toBe(1)
+        ->and(DB::table('mail_log')->count())->toBe(2);
+
+    // Aanbod blijft aan bron-user-id 2 (identity-map)
+    expect(DB::table('aanbod')->where('user_id', 2)->count())->toBe(2);
+
+    // Tweede run metzelfde sha → already_imported
+    $second = $migrator->import($payload, force: false, dryRun: false, packageSha256: hash('sha256', 'partial-02412-copy'));
+    expect($second['already_imported'])->toBeTrue()
+        ->and(DB::table('users')->count())->toBe(3)
+        ->and(DB::table('aanbod')->count())->toBe(2)
+        ->and(DB::table('mail_log')->count())->toBe(2);
+});
+
+test('zelfde id andere inhoud: prod-rij behouden, bron krijgt nieuw id', function () {
+    $migrator = app(StekjesDataMigrator::class);
+    $payload = stekjes0242FixturePayload();
+    clearAppDataTables();
+
+    // Prod heeft id=10 met andere inhoud dan bron-aanbod id=10.
+    DB::table('users')->insert([
+        'id' => 99,
+        'name' => 'ProdOnly',
+        'email' => 'prod-only@example.test',
+        'password' => '$2y$04$abcdefghijklmnopqrstuuPRODONLYXXXXXXXXXXXXXXXXXXX',
+        'telefoon' => '',
+        'locatie_label' => '',
+        'active' => 1,
+        'created_at' => '2020-01-01 00:00:00',
+        'updated_at' => '2020-01-01 00:00:00',
+    ]);
+    DB::table('aanbod')->insert([
+        'id' => 10,
+        'user_id' => 99,
+        'type' => 'ophalen',
+        'tekst' => 'Echt prod-aanbod, niet de bron',
+        'visible' => 1,
+        'expires_at' => '2027-01-01 00:00:00',
+        'created_at' => '2020-01-01 00:00:00',
+        'updated_at' => '2020-01-01 00:00:00',
+    ]);
+
+    $result = $migrator->import($payload, force: false, dryRun: false, packageSha256: hash('sha256', 'id-collision-prod'));
+    expect($result['ok'])->toBeTrue()
+        ->and($result['tables']['aanbod']['al_aanwezig'] ?? 0)->toBe(0)
+        ->and($result['tables']['aanbod']['toegevoegd'])->toBe(2);
+
+    $prodRow = DB::table('aanbod')->where('id', 10)->first();
+    expect($prodRow->tekst)->toBe('Echt prod-aanbod, niet de bron')
+        ->and((int) $prodRow->user_id)->toBe(99);
+
+    // Bron-aanbod met oude id 10 staat nu onder een nieuw id.
+    expect(DB::table('aanbod')->where('tekst', 'like', '%0.24.2-export%')->count())->toBe(1)
+        ->and(DB::table('aanbod')->where('tekst', 'like', '%0.24.2-export%')->value('id'))
+        ->not->toBe(10)
+        ->and(DB::table('aanbod')->count())->toBe(3);
+});
+
+test('page_views exacte id-kopie wordt niet opnieuw opgeteld', function () {
+    $migrator = app(StekjesDataMigrator::class);
+    $payload = stekjes0242FixturePayload();
+    $payload['tables']['page_views'] = [
+        [
+            'id' => 5,
+            'date' => '2026-10-01',
+            'path' => '/',
+            'count' => 5,
+        ],
+        [
+            'id' => 6,
+            'date' => '2026-10-03',
+            'path' => '/nieuw',
+            'count' => 2,
+        ],
+    ];
+    $payload['manifest']['tables']['page_views'] = ['count' => 2, 'sha256' => 'synthetic'];
+    clearAppDataTables();
+
+    // Kopie alsof v0.24.12 (of handmatig) id 5 al heeft ingevoegd.
+    DB::table('page_views')->insert([
+        'id' => 5,
+        'date' => '2026-10-01',
+        'path' => '/',
+        'count' => 5,
+    ]);
+
+    $result = $migrator->import($payload, force: false, dryRun: false, packageSha256: hash('sha256', 'pv-exact-copy'));
+    expect($result['ok'])->toBeTrue()
+        ->and($result['tables']['page_views']['al_aanwezig'])->toBe(1)
+        ->and($result['tables']['page_views']['toegevoegd'])->toBe(1)
+        ->and($result['tables']['page_views']['samengevoegd'])->toBe(0)
+        ->and($result['tables']['page_views']['sum_voor'])->toBe(5)
+        ->and($result['tables']['page_views']['sum_na'])->toBe(7);
+
+    expect((int) DB::table('page_views')->where('id', 5)->value('count'))->toBe(5);
+});
