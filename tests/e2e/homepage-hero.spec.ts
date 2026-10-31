@@ -110,16 +110,26 @@ test.describe('Homepage v2 hero above the fold', () => {
   }
 
   async function assertKaartSection(page: Page) {
-    const section = page.locator('#kaart');
-    await expect(section.locator('#kaart-titel')).toBeVisible();
-    await expect(section.locator('#kaart-titel')).toContainText(
-      'Wat staat er bij jou in de buurt?',
-    );
-    await expect(section.getByRole('link', { name: 'Open de kaart' })).toBeVisible();
-    await expect(section.getByRole('link', { name: 'Bekijk deelplekken' })).toBeVisible();
+    // Section id is #buurt — not #kaart (that id is reserved for the Leaflet map box in site.css).
+    const section = page.locator('#buurt');
+    const title = section.locator('#buurt-titel');
+    const openKaart = section.getByRole('link', { name: 'Open de kaart' });
+    const deelplekken = section.getByRole('link', { name: 'Bekijk deelplekken' });
+
+    await title.scrollIntoViewIfNeeded();
+    await expect(title).toBeInViewport();
+    await expect(title).toContainText('Wat staat er bij jou in de buurt?');
+
+    await openKaart.scrollIntoViewIfNeeded();
+    await expect(openKaart).toBeInViewport();
+    await deelplekken.scrollIntoViewIfNeeded();
+    await expect(deelplekken).toBeInViewport();
+
     // No nested interactive credit inside the map preview link.
     await expect(section.locator('.home-kaart-preview .home-pic-credit')).toHaveCount(0);
     await expect(section.locator('.home-kaart-preview a a')).toHaveCount(0);
+    // Must not collide with the Leaflet map box styles.
+    await expect(page.locator('section#kaart')).toHaveCount(0);
   }
 
   test('full page screenshots 393 and 1440', async ({ page }) => {

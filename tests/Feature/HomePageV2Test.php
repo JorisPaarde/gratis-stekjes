@@ -33,6 +33,9 @@ test('homepage v2 is 200 met vlag aan en toont hero B', function () {
     $response->assertSee('assets/images/home-v2/hero-portrait-720.webp', false);
     $response->assertSee('media="(max-width: 767px)"', false);
     $response->assertSee('home-kaart-preview-link', false);
+    $response->assertSee('id="buurt"', false);
+    $response->assertSee('id="buurt-titel"', false);
+    $response->assertDontSee('<section class="section wrap home-section" id="kaart"', false);
     $response->assertSee('Kaart ©', false);
     $response->assertSee('OpenStreetMap', false);
     $response->assertDontSee('via Eigen screenshot', false);

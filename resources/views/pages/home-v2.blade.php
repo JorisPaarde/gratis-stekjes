@@ -54,10 +54,11 @@
   <img src="{{ asset('assets/illustrations/wave-divider.svg') }}" alt="" width="1440" height="80" decoding="async" loading="lazy">
 </div>
 
-<section class="section wrap home-section" id="kaart" aria-labelledby="kaart-titel">
+{{-- id mag niet "kaart" zijn: site.css #kaart is de Leaflet-box (vaste hoogte + overflow). --}}
+<section class="section wrap home-section" id="buurt" aria-labelledby="buurt-titel">
   <div class="home-split">
     <div class="home-split-copy">
-      <h2 id="kaart-titel">Wat staat er bij jou in de buurt?</h2>
+      <h2 id="buurt-titel">Wat staat er bij jou in de buurt?</h2>
       <p class="section-intro">Op de kaart zie je gratis planten, stekjes en zaden die mensen weggeven — én deelplekken zoals een plantenasiel, een plantenruil of een zadenbibliotheek. Zoek op postcode of plaats en spreek een ophaalmoment af.</p>
       <p class="home-actions">
         <a class="btn" href="{{ route('aanbod') }}"><x-icon name="kaart" :size="18" /> Open de kaart</a>
