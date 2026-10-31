@@ -530,12 +530,49 @@ h1.page-title {
 }
 
 .site-footer {
-  margin-top: 0; border-top: 1px solid var(--line);
-  background: var(--bg-2); padding: 2rem 0 2.25rem;
+  margin-top: 0;
+  background: var(--forest-deep);
+  color: #d9e8d4;
+  padding: 2.75rem 0 1.25rem;
 }
-.footer-inner { display: grid; gap: .5rem; }
-.footer-links { display: flex; flex-wrap: wrap; gap: 1rem; margin: 0; }
-.footer-meta { margin: 0; color: var(--ink-soft); font-size: .9rem; }
+.site-footer a { color: #fff; text-decoration: none; }
+.site-footer a:hover, .site-footer a:focus-visible { color: var(--accent-on-dark); text-decoration: underline; }
+.footer-grid { display: grid; gap: 2rem; }
+@media (min-width: 860px) {
+  .footer-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr); gap: 3rem; }
+}
+.footer-merk p { margin: 0 0 1rem; max-width: 22rem; line-height: 1.5; }
+.footer-brand {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.5rem;
+}
+.site-footer a.footer-cta { color: var(--orange-text); text-decoration: none; }
+.site-footer a.footer-cta:hover { color: var(--orange-text); }
+.footer-contact a { text-decoration: underline; text-underline-offset: 0.15em; }
+.footer-links { display: grid; gap: 1.5rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 600px) {
+  .footer-links { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+.footer-kolom h2 {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #a9c9a0;
+  margin: 0 0 0.75rem;
+}
+.footer-kolom ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+.footer-onder {
+  margin-top: 2.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+.footer-meta { margin: 0; color: #a9c9a0; font-size: .85rem; }
 
 .table { width: 100%; border-collapse: collapse; font-size: .95rem; }
 .table th, .table td {

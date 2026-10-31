@@ -1,0 +1,97 @@
+/* /hoe-werkt-het — spelregels, twee routes (zoeken / weggeven), veilig en privé. */
+.page-hoe-werkt-het .section h1.hwh-titel {
+  text-transform: none;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  line-height: 1.05;
+  color: var(--forest);
+  margin: 0 0 0.75rem;
+}
+.page-hoe-werkt-het .section h2 {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-weight: 400;
+}
+
+.hwh-regels {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 720px) {
+  .hwh-regels { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+}
+.hwh-regels li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 0.75rem;
+  align-items: start;
+}
+.hwh-regel-icoon {
+  grid-row: 1 / span 2;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--bg-mint);
+  color: var(--forest);
+}
+.hwh-regels strong { font-size: 1.1rem; color: var(--forest-deep); }
+.hwh-regels span:not(.hwh-regel-icoon) { color: var(--ink-soft); }
+
+.hwh-routes { display: grid; gap: 2.5rem; }
+@media (min-width: 860px) {
+  .hwh-routes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem; }
+}
+.hwh-route .home-pic img { aspect-ratio: 16 / 9; object-fit: cover; }
+.hwh-route h2 { margin-top: 1.1rem; }
+.hwh-stappen {
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+  counter-reset: hwh;
+  display: grid;
+  gap: 0.75rem;
+}
+.hwh-stappen li {
+  counter-increment: hwh;
+  position: relative;
+  padding-left: 2.6rem;
+  color: var(--ink-soft);
+}
+.hwh-stappen li strong { color: var(--ink); }
+.hwh-stappen li::before {
+  content: counter(hwh);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 50%;
+  background: var(--orange);
+  color: var(--orange-text);
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  font-size: 0.95rem;
+}
+.hwh-zoek { margin: 0 0 0.75rem; max-width: none; }
+.hwh-zoek label { color: var(--forest-deep); }
+.hwh-zoek .hero-zoek-veld input { border-color: rgba(31, 77, 43, 0.3); }
+.hwh-route .home-actions { margin: 0 0 0.75rem; }
+.hwh-extra { margin: 0; color: var(--ink-soft); font-size: 0.95rem; }
+
+.hwh-veilig {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+  max-width: 44rem;
+}
+.hwh-veilig li { display: flex; gap: 0.75rem; align-items: flex-start; }
+.hwh-veilig .icon { color: var(--forest); margin-top: 0.15rem; }
