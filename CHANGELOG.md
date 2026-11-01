@@ -9,6 +9,15 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.43.1] - 2026-11-01
+
+### Fixed
+
+- Beheer, statistieken: de feedbackkaart toont als groot getal het aantal **ongelezen**
+  (oranje als er iets is), met het totaal klein ernaast. Eerder stond het totaal groot, waardoor
+  gelezen feedback er nog als nieuw uitzag. De link «Feedback» bovenaan /beheer heeft een teller
+  voor ongelezen.
+
 ## [0.43.0] - 2026-11-01
 
 ### Added

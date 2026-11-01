@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Beheer;
 use App\Http\Controllers\Controller;
 use App\Models\Deelplek;
 use App\Models\Evenement;
+use App\Models\Feedback;
 use App\Models\MailLog;
 use App\Models\PartnerMarker;
 use App\Models\Report;
@@ -106,7 +107,12 @@ class DashboardController extends Controller
                 ->get()
             : collect();
 
+        $feedbackOngelezen = Schema::hasTable('feedback')
+            ? Feedback::query()->whereNull('read_at')->count()
+            : 0;
+
         return view('beheer.index', [
+            'feedbackOngelezen' => $feedbackOngelezen,
             'verenigingen' => $verenigingen,
             'pionierId' => $pionierId,
             'title' => 'Beheer',

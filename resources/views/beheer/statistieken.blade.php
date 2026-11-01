@@ -117,14 +117,12 @@
       <details class="stats-kpi-card">
         <summary>
           <span class="stats-kpi-top">
-            <span class="stats-kpi-value">{{ $feedbackTotal }}</span>
+            <span class="stats-kpi-value{{ $feedbackUnread > 0 ? ' stats-kpi-value--let-op' : '' }}">{{ $feedbackUnread }}</span>
             @if($svgFeedbackSpark !== ''){!! $svgFeedbackSpark !!}@endif
           </span>
           <span class="stats-kpi-label">
-            <a href="{{ route('beheer.feedback') }}">Feedback</a>
-            @if($feedbackUnread > 0)
-              · {{ $feedbackUnread }} ongelezen
-            @endif
+            <a href="{{ route('beheer.feedback') }}">Feedback ongelezen</a>
+            · {{ $feedbackTotal }} totaal
           </span>
         </summary>
         <div class="stats-kpi-expand">
