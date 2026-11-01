@@ -30,6 +30,7 @@
         <dt>Telefoon ingevuld</dt><dd>{{ trim((string) ($u->isUnreadable('telefoon') ? '' : $u->telefoon)) !== '' ? 'ja' : 'nee' }}</dd>
         <dt>Lid sinds</dt><dd>{{ $u->created_at?->timezone('Europe/Amsterdam')->format('d-m-Y') }} <span class="muted">({{ $u->created_at?->diffForHumans() }})</span></dd>
         <dt>Bevestigd</dt><dd>{{ $u->email_verified_at ? $u->email_verified_at->timezone('Europe/Amsterdam')->format('d-m-Y') : 'nee' }}</dd>
+        <dt>Beheerder</dt><dd>{{ $u->is_admin ? 'ja' : 'nee' }}@if(\App\Support\AdminDashboard::userMayAccess($u) && ! $u->is_admin) <span class="muted">(toegang via e-maillijst)</span>@endif</dd>
         <dt>Laatst actief</dt><dd>{{ $u->last_seen_at?->diffForHumans() ?? 'onbekend' }}</dd>
         <dt>Berichtmail</dt><dd>{{ $u->berichtmail !== false ? 'aan' : 'uit' }}</dd>
         <dt>Gesprekken</dt><dd>{{ $gesprekken }} <span class="muted">({{ $overdrachten }} overdracht{{ $overdrachten === 1 ? '' : 'en' }} afgerond)</span></dd>
@@ -130,6 +131,17 @@
       <form method="post" action="{{ route('beheer.gebruikers.reset-naam', $u) }}">
         @csrf
         <button class="btn btn-secondary btn-klein" type="submit">Naam terugzetten naar «Lid»</button>
+      </form>
+    @endif
+    @if(! $u->is_admin)
+      <form method="post" action="{{ route('beheer.gebruikers.beheerder', $u) }}" onsubmit="return confirm({{ \Illuminate\Support\Js::from($u->name.' beheerder maken? Diegene krijgt volledige toegang tot /beheer.') }});">
+        @csrf
+        <button class="btn btn-secondary btn-klein" type="submit">Maak beheerder</button>
+      </form>
+    @elseif(! $isZelf)
+      <form method="post" action="{{ route('beheer.gebruikers.beheerder', $u) }}" onsubmit="return confirm({{ \Illuminate\Support\Js::from('Beheerdersrechten van '.$u->name.' intrekken?') }});">
+        @csrf
+        <button class="btn btn-secondary btn-klein" type="submit">Beheerder af</button>
       </form>
     @endif
     @unless($isZelf)

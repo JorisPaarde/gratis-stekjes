@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 /**
  * Snelkoppeling + optionele account-toegang tot /beheer.
  * Match alleen op unieke users.email — nooit op weergavenaam —
- * of op de account-vlag users.is_admin (gezet via de eenmalige deploy-toekenning).
+ * of op de account-vlag users.is_admin (knop «Maak beheerder» op /beheer/gebruikers/{id}).
  */
 final class AdminDashboard
 {
