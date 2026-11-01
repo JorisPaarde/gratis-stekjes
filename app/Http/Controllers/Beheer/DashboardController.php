@@ -11,6 +11,7 @@ use App\Models\MailLog;
 use App\Models\PartnerMarker;
 use App\Models\Report;
 use App\Models\User;
+use App\Models\Vereniging;
 use App\Notifications\VerifyEmailDutch;
 use App\Services\AvgService;
 use App\Services\DeelplekAanmelding;
@@ -18,6 +19,7 @@ use App\Services\Deelplekken;
 use App\Services\Evenementen;
 use App\Services\MilestoneService;
 use App\Services\PartnerMarkers;
+use App\Services\VerenigingService;
 use App\Support\Country;
 use App\Support\SafeMail;
 use App\Support\ThrottleMessage;
@@ -96,7 +98,16 @@ class DashboardController extends Controller
 
         $pionierId = app(MilestoneService::class)->pionierUserId();
 
+        $verenigingen = VerenigingService::beschikbaar()
+            ? Vereniging::query()->withCount('leden')
+                ->orderByRaw("CASE status WHEN 'pending' THEN 0 WHEN 'approved' THEN 1 ELSE 2 END")
+                ->orderByDesc('created_at')
+                ->limit(200)
+                ->get()
+            : collect();
+
         return view('beheer.index', [
+            'verenigingen' => $verenigingen,
             'pionierId' => $pionierId,
             'title' => 'Beheer',
             'metaDescription' => 'Beheer',
@@ -115,6 +126,18 @@ class DashboardController extends Controller
             'pendingDeelplekken' => $pendingDeelplekken,
             'users' => $users,
         ]);
+    }
+
+    /** Vereniging van leden goedkeuren of verbergen. */
+    public function setVerenigingStatus(Request $request, Vereniging $vereniging): RedirectResponse
+    {
+        $status = (string) $request->input('status');
+        abort_unless(in_array($status, [Vereniging::STATUS_APPROVED, Vereniging::STATUS_HIDDEN], true), 422);
+        $vereniging->update(['status' => $status]);
+
+        return redirect()
+            ->to(route('beheer.index').'#verenigingen')
+            ->with('status', $vereniging->naam.($status === Vereniging::STATUS_APPROVED ? ' staat nu op de site.' : ' is verborgen.'));
     }
 
     /** Exclusieve Pionier-badge naar dit lid verplaatsen (er is er maar één). */

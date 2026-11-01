@@ -112,6 +112,15 @@ final class AvgService
                 'berichtmail' => $user->berichtmail !== false,
             ],
             'aanbod' => $aanbod,
+            'verenigingen' => VerenigingService::beschikbaar()
+                ? $user->verenigingen()->get()->map(fn ($v) => [
+                    'naam' => (string) $v->naam,
+                    'plaats' => (string) $v->plaats,
+                    'status' => (string) $v->status,
+                    'zichtbaar_bij_aanbod' => (bool) $v->pivot->zichtbaar,
+                    'gekoppeld_op' => $v->pivot->created_at ? (string) $v->pivot->created_at : null,
+                ])->values()->all()
+                : [],
             'ervaringen' => $ervaringen,
             'fotos' => $fotos,
         ];
@@ -283,6 +292,11 @@ final class AvgService
 
             if (Schema::hasTable('milestones_sent')) {
                 MilestoneSent::query()->where('user_id', $userId)->delete();
+            }
+
+            if (Schema::hasTable('vereniging_user')) {
+                DB::table('vereniging_user')->where('user_id', $userId)->delete();
+                DB::table('verenigingen')->where('created_by', $userId)->update(['created_by' => null]);
             }
 
             if (Schema::hasTable('password_reset_tokens')) {

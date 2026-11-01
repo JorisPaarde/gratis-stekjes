@@ -4,6 +4,12 @@
 @section('meta_description', $metaDescription)
 @section('canonical', $canonical)
 
+@push('head')
+  @if($vereniging)
+    @vite(['resources/css/gratis-planten.css', 'resources/css/aanbod.css'])
+  @endif
+@endpush
+
 @section('content')
 <section class="section wrap prose">
   <h1 class="page-title">{{ $org['naam'] }}</h1>
@@ -34,6 +40,10 @@
     <p><a href="{{ ($org['plaats'] ?? '') !== '' && ($org['plaats'] ?? '') !== 'Nederland' ? route('deelplekken', ['plaats' => $org['plaats']]) : route('deelplekken') }}">Bekijk deelplekken</a></p>
   @else
     <p class="muted">Niet te bezoeken via mijn <a href="{{ route('deelplekken') }}">kaart</a>; zie hun eigen site.</p>
+  @endif
+
+  @if($vereniging && $blok)
+    @include('partials.vereniging-leden', ['blok' => $blok, 'naam' => $org['naam'], 'slug' => $org['slug']])
   @endif
 
   @if(count($gerelateerd) > 0)

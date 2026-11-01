@@ -333,3 +333,6 @@
   background: var(--bg-mint, #e6f2e1);
   color: var(--forest-deep, #163820);
 }
+
+.zoek-lid { margin: .15rem 0 .35rem; font-size: .88rem; color: var(--ink-soft); }
+.zoek-lid a { color: var(--forest); }

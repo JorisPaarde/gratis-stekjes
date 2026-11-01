@@ -16,6 +16,20 @@
       </li>
     @endforeach
   </ul>
+  @if(count($verenigingen) > 0)
+    <h2>Verenigingen van leden</h2>
+    <p>Volkstuinen, tuinverenigingen en buurttuinen waar leden van Gratis planten bij horen.</p>
+    <ul>
+      @foreach($verenigingen as $v)
+        <li>
+          <a href="{{ $v->url() }}">{{ $v->naam }}</a>
+          <span class="muted"> · {{ $v->plaats }} · {{ $v->leden_count }} {{ $v->leden_count === 1 ? 'lid' : 'leden' }}</span>
+        </li>
+      @endforeach
+    </ul>
+  @endif
+  <p>Ben je lid van een volkstuin of tuinvereniging? <a href="{{ route('account.verenigingen') }}">Koppel je account</a>, dan krijgt je vereniging een eigen pagina met het aanbod van leden.</p>
+
   <p class="muted">
     <a href="{{ route('voor-organisaties') }}">Voor organisaties</a> ·
     <a href="{{ route('voor-organisaties.aanmelden') }}">Plek aanmelden</a> ·

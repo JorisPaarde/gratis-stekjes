@@ -40,6 +40,22 @@ class User extends Authenticatable implements MustVerifyEmail
         'telefoon',
     ];
 
+    /** Verenigingen waar dit lid bij hoort (ook nog niet goedgekeurde). */
+    public function verenigingen(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Vereniging::class, 'vereniging_user')
+            ->withPivot(['zichtbaar', 'created_at']);
+    }
+
+    /** Goedgekeurde verenigingen die het lid openbaar wil tonen. */
+    public function zichtbareVerenigingen(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->verenigingen()
+            ->wherePivot('zichtbaar', true)
+            ->where('verenigingen.status', Vereniging::STATUS_APPROVED)
+            ->orderBy('verenigingen.naam');
+    }
+
     protected function casts(): array
     {
         return [

@@ -45,6 +45,7 @@
   <ul class="list-plain">
     <li>E-mail: niet zichtbaar voor anderen, tenzij jullie in een gesprek beide “ja” kiezen voor verder contact. E-mail sla ik niet versleuteld op: het is je login en moet uniek opzoekbaar zijn.</li>
     <li>Optioneel telefoonnummer (zelfde zichtbaarheidsregel; wél versleuteld in de database)</li>
+    <li>Verenigingen: als je je account aan een volkstuin of tuinvereniging koppelt, bewaar ik die koppeling. Alleen als jij het vinkje aanzet, staat bij je aanbod dat je lid bent. Op de pagina van de vereniging staat alleen het aantal leden, nooit namen. Ontkoppelen kan altijd via Mijn verenigingen.</li>
     <li>Exacte adressen en exacte coördinaten: die sla ik niet op in het gebruikersprofiel; exacte ophaaladressen deel je zelf buiten of in een bericht als je dat wilt</li>
     <li>Contact-e-mail bij organisatie-aanmeldingen (versleuteld)</li>
     <li>Berichtinhoud en meldingsredenen (versleuteld), wachtwoorden (nooit leesbaar opgeslagen), beheerwachtwoord-sessie</li>
