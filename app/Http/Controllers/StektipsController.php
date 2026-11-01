@@ -84,6 +84,37 @@ class StektipsController extends Controller
         $hasActiveFilters = $queryForCanonical !== [];
         $pillars = $hasActiveFilters ? [] : $kennisbank->pillars();
 
+        // Makkelijk om mee te beginnen: bekende, makkelijke soorten met foto (alleen zonder filters).
+        $beginners = [];
+        if (! $hasActiveFilters) {
+            $kandidaten = ['monstera', 'munt', 'hortensia', 'vijg', 'zwarte-bes', 'scindapsus', 'pothos', 'rozemarijn', 'tradescantia', 'wilg', 'lavendel', 'aardbei'];
+            $bySlug = [];
+            foreach ($listedSoorten as $s) {
+                $bySlug[(string) $s['slug']] = $s;
+            }
+            foreach ($kandidaten as $slug) {
+                $s = $bySlug[$slug] ?? null;
+                if ($s === null || ! str_starts_with(mb_strtolower((string) ($s['kans'] ?? '')), 'makkelijk')) {
+                    continue;
+                }
+                $img = $afbeeldingen->forSlug($slug, (string) $s['naam']);
+                if ($img['is_fallback']) {
+                    continue;
+                }
+                $beginners[] = [
+                    'naam' => (string) $s['naam'],
+                    'url' => route('stektips.show', ['slug' => $slug]),
+                    'wanneer' => (string) ($s['wanneer'] ?? ''),
+                    'afbeelding' => $img,
+                ];
+                if (count($beginners) === 6) {
+                    break;
+                }
+            }
+        }
+
+        $faq = $hasActiveFilters ? [] : $this->faq();
+
         $title = 'Stektips: planten stekken en snoeien';
         $metaDescription = 'Leer planten stekken en snoeien, maak wilgenwater en deel gratis stekjes. Tips per soort, van monstera tot vijg.';
 
@@ -116,15 +147,67 @@ class StektipsController extends Controller
                 'beide' => 'Binnen & buiten',
             ],
             'hasActiveFilters' => $hasActiveFilters,
-            'schema' => [
-                '@context' => 'https://schema.org',
-                '@type' => 'CollectionPage',
-                'name' => $title,
-                'url' => route('stektips.index'),
-                'description' => $metaDescription,
-                'inLanguage' => 'nl-NL',
-            ],
+            'beginners' => $beginners,
+            'faq' => $faq,
+            'schema' => $this->indexSchema($title, $metaDescription, $faq),
         ]);
+    }
+
+    /** @return list<array{vraag: string, antwoord: string, link: ?array{label: string, pad: string}}> */
+    private function faq(): array
+    {
+        $path = base_path('data/stektips-faq.json');
+        if (! is_readable($path)) {
+            return [];
+        }
+        $data = json_decode((string) file_get_contents($path), true);
+        $out = [];
+        foreach (($data['vragen'] ?? []) as $row) {
+            if (! is_array($row) || empty($row['vraag']) || empty($row['antwoord'])) {
+                continue;
+            }
+            $link = is_array($row['link'] ?? null) && ! empty($row['link']['pad']) && str_starts_with((string) $row['link']['pad'], '/')
+                ? ['label' => (string) $row['link']['label'], 'pad' => (string) $row['link']['pad']]
+                : null;
+            $out[] = ['vraag' => (string) $row['vraag'], 'antwoord' => (string) $row['antwoord'], 'link' => $link];
+        }
+
+        return $out;
+    }
+
+    /**
+     * @param  list<array{vraag: string, antwoord: string}>  $faq
+     * @return array<string, mixed>
+     */
+    private function indexSchema(string $title, string $metaDescription, array $faq): array
+    {
+        $page = [
+            '@type' => 'CollectionPage',
+            'name' => $title,
+            'url' => route('stektips.index'),
+            'description' => $metaDescription,
+            'inLanguage' => 'nl-NL',
+        ];
+        if ($faq === []) {
+            return ['@context' => 'https://schema.org'] + $page;
+        }
+
+        return [
+            '@context' => 'https://schema.org',
+            '@graph' => [
+                $page,
+                [
+                    '@type' => 'FAQPage',
+                    'url' => route('stektips.index').'#veelgestelde-vragen',
+                    'inLanguage' => 'nl-NL',
+                    'mainEntity' => array_map(static fn (array $f) => [
+                        '@type' => 'Question',
+                        'name' => $f['vraag'],
+                        'acceptedAnswer' => ['@type' => 'Answer', 'text' => $f['antwoord']],
+                    ], $faq),
+                ],
+            ],
+        ];
     }
 
     public function artikel(string $slug, Kennisbank $kennisbank, Stektips $stektips): View|Response
