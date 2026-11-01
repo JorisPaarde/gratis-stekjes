@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Casts\SafeEncrypted;
 use App\Mail\NewMessageMail;
+use App\Models\Aanbod;
 use App\Models\Block;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\Report;
 use App\Models\User;
 use App\Support\FormGuard;
+use App\Support\SafeMail;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\URL;
 use Throwable;
 
 final class MessagingService
@@ -93,7 +96,7 @@ final class MessagingService
             return ['ok' => false, 'error' => 'Je kunt deze gebruiker geen bericht sturen.'];
         }
 
-        Message::query()->create([
+        $message = Message::query()->create([
             'conversation_id' => $conversation->id,
             'sender_id' => $senderId,
             'body' => $body,
@@ -101,16 +104,97 @@ final class MessagingService
         ]);
         RateLimiter::hit($key, 3600);
 
-        $other = User::query()->find($otherId);
-        if ($other && $other->email) {
-            try {
-                Mail::to($other->email)->send(new NewMessageMail);
-            } catch (Throwable) {
-                // Versturen mislukt mag het bericht zelf niet terugdraaien.
-            }
+        try {
+            $this->notifyRecipient($senderId, $otherId, $conversation, $message);
+        } catch (Throwable) {
+            // Melden mislukt mag het bericht zelf niet terugdraaien.
         }
 
         return ['ok' => true];
+    }
+
+    /** Na een eerste mail geen nieuwe mail zolang de ontvanger het gesprek niet opende (max. dit aantal uur). */
+    public const BUNDEL_UREN = 24;
+
+    /**
+     * Mail de ontvanger over een nieuw bericht, tenzij die dat uitzette of al een
+     * mail kreeg voor eerdere, nog ongelezen berichten in dit gesprek.
+     */
+    private function notifyRecipient(int $senderId, int $otherId, Conversation $conversation, Message $message): void
+    {
+        $other = User::query()->find($otherId);
+        if (! $other || ! $other->email || $other->berichtmail === false) {
+            return;
+        }
+
+        $eerderOngelezen = Message::query()
+            ->where('conversation_id', $conversation->id)
+            ->where('sender_id', $senderId)
+            ->whereKeyNot($message->getKey())
+            ->whereNull('read_at')
+            ->where('created_at', '>=', now()->subHours(self::BUNDEL_UREN))
+            ->exists();
+        if ($eerderOngelezen) {
+            return;
+        }
+
+        $sender = User::query()->find($senderId);
+
+        SafeMail::mailable($other->email, new NewMessageMail(
+            afzender: $sender ? (string) $sender->name : '',
+            onderwerp: $this->onderwerp($conversation),
+            gesprekUrl: route('account.gesprek', $conversation),
+            uitzettenUrl: URL::signedRoute('berichtmail.uit', ['user' => $other->id]),
+        ), (int) $other->id);
+    }
+
+    /** Korte omschrijving van het aanbod waar het gesprek over gaat (openbare tekst). */
+    private function onderwerp(Conversation $conversation): ?string
+    {
+        if ($conversation->aanbod_id === null) {
+            return null;
+        }
+        $aanbod = Aanbod::query()->find($conversation->aanbod_id);
+        if (! $aanbod) {
+            return null;
+        }
+
+        $naam = null;
+        if ($aanbod->plantensoort_id !== null) {
+            $naam = app(Plantensoorten::class)->find((int) $aanbod->plantensoort_id)['naam'] ?? null;
+        }
+        if ($naam === null || $naam === '') {
+            $tekst = trim((string) preg_replace('/\s+/', ' ', (string) $aanbod->tekst));
+            $naam = mb_strlen($tekst) > 60 ? rtrim(mb_substr($tekst, 0, 57)).'…' : $tekst;
+        }
+
+        return $naam !== '' ? $naam : null;
+    }
+
+    /** Markeer berichten van de ander in dit gesprek als gelezen. */
+    public function markRead(int $viewerId, Conversation $conversation): void
+    {
+        if (! $conversation->involves($viewerId)) {
+            return;
+        }
+
+        Message::query()
+            ->where('conversation_id', $conversation->id)
+            ->where('sender_id', '!=', $viewerId)
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+    }
+
+    /** Aantal ongelezen berichten van anderen, over al je gesprekken. */
+    public function unreadCount(int $userId): int
+    {
+        return Message::query()
+            ->whereNull('read_at')
+            ->where('sender_id', '!=', $userId)
+            ->whereIn('conversation_id', Conversation::query()
+                ->select('id')
+                ->where(fn ($q) => $q->where('user_a_id', $userId)->orWhere('user_b_id', $userId)))
+            ->count();
     }
 
     /**
@@ -257,7 +341,7 @@ final class MessagingService
             'veiligheidstips' => 'Spreek af op een plek die voor jou veilig voelt, bijvoorbeeld bij je voordeur of overdag op een openbare plek. Deel geen exact huisadres via de site totdat je elkaar vertrouwt.',
             'berichten' => $conversation->messages()->get()->map(function (Message $m) {
                 $body = $m->isUnreadable('body')
-                    ? \App\Casts\SafeEncrypted::VIEW_FALLBACK
+                    ? SafeEncrypted::VIEW_FALLBACK
                     : (string) ($m->body ?? '');
 
                 return [

@@ -9,6 +9,30 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.39.0] - 2026-11-01
+
+### Added
+
+- **Teller voor ongelezen berichten** (nr. 17): oranje getal bij «Account» in het menu (linkt dan naar
+  de inbox), «2 nieuw» per gesprek in de inbox en bij Inbox op Mijn account. Een gesprek openen
+  markeert de berichten van de ander als gelezen. Inbox staat op nieuwste bericht.
+- **Berichtmail uitzetten** (nr. 19): vinkje op het profiel en een link onderaan elke berichtmail
+  (ondertekend, zonder inloggen; de link toont eerst een knop, zodat mailscanners niets uitzetten).
+  Ook als `List-Unsubscribe`-header. Nieuwe kolom `users.berichtmail` (standaard aan), in de
+  gegevensexport.
+
+### Changed
+
+- **Berichtmail** met de voornaam van de afzender in onderwerp en tekst, waar het gesprek over gaat
+  (plantnaam of aanbodtekst) en een directe link naar het gesprek. Nog steeds zonder berichtinhoud
+  of contactgegevens.
+- **Bundelen** (nr. 18): na een mail volgt geen nieuwe zolang de ontvanger het gesprek niet opende
+  (maximaal 24 uur).
+- **Mail-log** (nr. 16): berichtmails gaan via `SafeMail` en komen met ok/mislukt in `mail_log`;
+  ze worden na de response verstuurd. Eerder werd een mislukte mail stil genegeerd.
+- Migratie zet `read_at` van bestaande berichten op hun verzendtijd, zodat de teller op 0 begint.
+- Privacyverklaring en AVG-inventaris bijgewerkt.
+
 ## [0.38.1] - 2026-11-01
 
 ### Changed

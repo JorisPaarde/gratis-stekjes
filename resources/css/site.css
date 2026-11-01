@@ -123,6 +123,12 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .nav-cta:focus-visibl
   background: var(--orange-hover) !important; color: var(--orange-text) !important;
 }
 .nav-logout { display: inline; margin: 0; }
+.nav-badge, .ongelezen-badge {
+  display: inline-block; min-width: 1.35em; padding: .05em .45em;
+  border-radius: var(--radius-pill); background: var(--orange); color: var(--orange-text);
+  font-size: .75rem; font-weight: 700; line-height: 1.4; text-align: center; letter-spacing: 0;
+}
+.ongelezen-badge { margin-left: .4rem; vertical-align: middle; }
 /* Volle nav pas wanneer er ruimte is; eronder alleen hamburger (geen parallelle Menu+nav). */
 @media (min-width: 1200px) {
   .nav-toggle { display: none; }

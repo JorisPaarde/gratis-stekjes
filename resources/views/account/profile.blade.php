@@ -41,6 +41,11 @@
         <input name="telefoon" maxlength="40" value="{{ old('telefoon', $user->telefoon) }}" autocomplete="tel">
       @endif
     </label>
+    <label class="checkbox">
+      <input type="hidden" name="berichtmail" value="0">
+      <input type="checkbox" name="berichtmail" value="1" @checked(old('berichtmail', $user->berichtmail !== false ? '1' : '0') === '1')>
+      Stuur me een mail als iemand me een bericht stuurt
+    </label>
     <button class="btn" type="submit">Opslaan</button>
   </form>
 

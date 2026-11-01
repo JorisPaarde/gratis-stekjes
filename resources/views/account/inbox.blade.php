@@ -27,6 +27,9 @@
       @foreach($rows as $r)
         <li class="inbox-item">
           <a href="{{ route('account.gesprek', $r['id']) }}">Gesprek met {{ $r['andere_naam'] }}</a>
+          @if($r['ongelezen'] > 0)
+            <span class="ongelezen-badge">{{ $r['ongelezen'] }} nieuw</span>
+          @endif
         </li>
       @endforeach
     </ul>

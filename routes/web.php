@@ -31,6 +31,7 @@ use App\Http\Controllers\Beheer\ErvaringController as BeheerErvaringController;
 use App\Http\Controllers\Beheer\FeedbackController as BeheerFeedbackController;
 use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
 use App\Http\Controllers\Beheer\StatistiekenController as BeheerStatistiekenController;
+use App\Http\Controllers\BerichtmailController;
 use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\DeelplekkenController;
@@ -263,3 +264,12 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
         ->whereNumber('user')
         ->name('beheer.users.destroy');
 });
+
+// Mail bij nieuwe berichten uitzetten via ondertekende link (zonder inloggen).
+Route::get('/berichtmail/uit/{user}', [BerichtmailController::class, 'show'])
+    ->middleware(['signed', 'throttle:20,1'])
+    ->whereNumber('user')
+    ->name('berichtmail.uit');
+Route::post('/berichtmail/uit/{user}', [BerichtmailController::class, 'update'])
+    ->middleware(['signed', 'throttle:20,1'])
+    ->whereNumber('user');
