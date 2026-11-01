@@ -9,6 +9,24 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.42.0] - 2026-11-01
+
+### Added
+
+- **Badges met plaatjes** op Mijn account (eigen SVG's in de huisstijl, `public/assets/badges/`):
+  Geworteld, Eerste stekje, Eerste praatje, Eerste overdracht, Gulle gever (5× weggeven),
+  Stekjesheld (10×), Verbinder (3 overdrachten), Verteller (ervaring) en Vaste plant (1 jaar lid).
+  Nog niet verdiende badges zijn grijs, met wat je nog moet doen («Nog 4 keer weggeven te gaan»).
+  Geen ranglijst.
+- **Pionier**: exclusieve gouden badge voor het lid dat als allereerste iets weggaf. Er is er
+  maar één. De migratie kent hem eenmalig toe aan het vroegste uitdeel-aanbod (beheerders
+  uitgezonderd); in /beheer kun je hem met «Maak pionier» naar een ander lid verplaatsen.
+
+### Changed
+
+- Blok «Mijlpalen» op Mijn account heet nu «Badges» en is een raster met plaatjes. «5 gedeeld»
+  heet nu «Gulle gever» en telt alleen weggegeven aanbod; «Eerste ervaring» heet «Verteller».
+
 ## [0.41.0] - 2026-11-01
 
 ### Changed

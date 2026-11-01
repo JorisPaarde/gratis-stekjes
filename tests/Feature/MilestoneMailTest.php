@@ -135,11 +135,11 @@ test('accountpagina toont badges zonder ranglijst', function () {
     $html = $this->actingAs($user)
         ->get(route('account.index'))
         ->assertOk()
-        ->assertSee('Mijlpalen', false)
+        ->assertSee('Badges', false)
         ->assertSee('Eerste stekje', false)
-        ->assertSee('5 gedeeld', false)
-        ->assertSee('Eerste ervaring', false)
-        ->assertSee('Kleine herinneringen aan wat je al deed', false)
+        ->assertSee('Gulle gever', false)
+        ->assertSee('Verteller', false)
+        ->assertDontSee('ranglijst', false)
         ->getContent();
 
     expect($html)->toContain('Mijn ervaringen');

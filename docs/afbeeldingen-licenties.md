@@ -52,3 +52,8 @@ Open Graph-afbeeldingen (1200×630) voor delen op WhatsApp, LinkedIn, Facebook e
 
 Nieuwe soort of stad? Draai `node scripts/og-images.mjs soort` of `… stad`. Een test controleert dat elke stektip en
 elke stad een eigen afbeelding heeft.
+
+## Badges
+
+`public/assets/badges/*.svg` zijn eigen ontwerpen voor Gratis planten (1 nov 2026), in de
+huisstijlkleuren. Geen externe bronnen; vrij te gebruiken onder dezelfde licentie als de site.
