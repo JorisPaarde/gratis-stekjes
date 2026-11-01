@@ -24,6 +24,7 @@
     <label>Voornaam of bijnaam *
       <input name="voornaam" required maxlength="80" autocomplete="nickname" value="{{ old('voornaam') }}">
     </label>
+    @include('partials.naam-check')
     <label>E-mailadres *
       <input type="email" name="email" required maxlength="254" autocomplete="email" value="{{ old('email') }}">
     </label>

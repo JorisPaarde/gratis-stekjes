@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Auth;
 
 use App\Support\FormGuard;
+use App\Support\Naam;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
@@ -19,7 +20,11 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'voornaam' => ['required', 'string', 'max:80', 'not_regex:/@/'],
+            'voornaam' => ['required', 'string', 'max:80', 'not_regex:/@/', function (string $attr, mixed $value, \Closure $fail): void {
+                if (is_string($value) && Naam::bezet($value)) {
+                    $fail(Naam::melding($value));
+                }
+            }],
             'email' => ['required', 'string', 'email:filter', 'max:254'],
             // min:10 i.p.v. Password::min zodat password.min-bericht altijd meekomt naast confirmed.
             'password' => ['required', 'string', 'confirmed', 'min:10', 'max:200'],

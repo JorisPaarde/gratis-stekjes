@@ -302,3 +302,8 @@ Route::get('/berichtmail/uit/{user}', [BerichtmailController::class, 'show'])
 Route::post('/berichtmail/uit/{user}', [BerichtmailController::class, 'update'])
     ->middleware(['signed', 'throttle:20,1'])
     ->whereNumber('user');
+
+// Live controle of een voornaam/bijnaam al bestaat (registratie en profiel).
+Route::get('/naam-check', [ProfileController::class, 'naamCheck'])
+    ->middleware('throttle:40,1')
+    ->name('naam-check');

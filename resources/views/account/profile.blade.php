@@ -22,6 +22,7 @@
     <label>Voornaam of bijnaam *
       <input name="voornaam" required maxlength="80" autocomplete="nickname" value="{{ old('voornaam', $user->name) }}">
     </label>
+    @include('partials.naam-check')
     <fieldset class="adres-blok" data-adres>
       <legend>Je adres</legend>
       <p class="hint">Op de kaart en bij je aanbod staat alleen je postcodegebied, zoals {{ ($user->country ?? 'NL') === 'BE' ? '9000' : '2011' }}. Je volledige adres ziet alleen iemand met wie je allebei “ja” zegt in een gesprek, zodat je kunt afspreken.</p>

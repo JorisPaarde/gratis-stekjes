@@ -7,6 +7,7 @@ use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
 use App\Services\MilestoneService;
+use App\Support\Naam;
 use Illuminate\Support\Facades\Http;
 
 function adresUser(array $extra = []): User
@@ -131,4 +132,39 @@ test('badge profiel compleet', function () {
     $u = adresUser(['adres_straat' => 'Grote Markt', 'adres_huisnummer' => '1', 'adres_postcode' => '2011 AB', 'adres_plaats' => 'Haarlem']);
     $b = collect(app(MilestoneService::class)->badgesFor($u))->firstWhere('key', 'profiel_compleet');
     expect($b['earned'])->toBeTrue();
+});
+
+test('naam die al bestaat: melding met vrije suggesties, bij registreren en profiel', function () {
+    adresUser(['name' => 'Bert', 'email' => 'bert1@example.com']);
+    adresUser(['name' => 'Bert2', 'email' => 'bert2@example.com']);
+
+    expect(Naam::suggesties('bert'))->toBe(['bert3', 'bert4']);
+
+    $this->getJson(route('naam-check', ['naam' => ' BERT ']))
+        ->assertOk()
+        ->assertJson(['vrij' => false, 'suggesties' => ['BERT3', 'BERT4']]);
+    $this->getJson(route('naam-check', ['naam' => 'Annie']))->assertOk()->assertJson(['vrij' => true]);
+
+    $this->from(route('account.registreren'))->post(route('account.registreren'), authFormPayload([
+        'voornaam' => 'bert',
+        'email' => 'nieuwe-bert@example.com',
+        'password' => authTestPassword(),
+        'password_confirmation' => authTestPassword(),
+        'gratis_akkoord' => '1',
+        'privacy' => '1',
+    ]))->assertSessionHasErrors(['voornaam' => Naam::melding('bert')]);
+    expect(User::query()->where('email', 'nieuwe-bert@example.com')->exists())->toBeFalse();
+
+    $u = adresUser(['name' => 'Ada', 'email' => 'ada-naam@example.com']);
+    profielPost($this, $u, ['voornaam' => 'Bert'])->assertSessionHasErrors('voornaam');
+    profielPost($this, $u, ['voornaam' => 'Bert3'])->assertSessionHasNoErrors();
+    expect($u->fresh()->name)->toBe('Bert3');
+});
+
+test('bestaande dubbele naam blijft werken zolang je hem niet wijzigt', function () {
+    adresUser(['name' => 'Jan', 'email' => 'jan1@example.com']);
+    $tweede = adresUser(['name' => 'Jan', 'email' => 'jan2@example.com']);
+
+    profielPost($this, $tweede, ['voornaam' => 'Jan'])->assertSessionHasNoErrors();
+    $this->actingAs($tweede)->getJson(route('naam-check', ['naam' => 'jan']))->assertJson(['vrij' => true]);
 });

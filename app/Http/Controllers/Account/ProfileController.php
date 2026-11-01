@@ -10,6 +10,7 @@ use App\Services\AdresOpzoeken;
 use App\Services\LocationGeocoder;
 use App\Support\Country;
 use App\Support\Geo;
+use App\Support\Naam;
 use App\Support\PostalCode;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -33,7 +34,13 @@ class ProfileController extends Controller
     public function update(Request $request, LocationGeocoder $geocoder): RedirectResponse
     {
         $data = $request->validate([
-            'voornaam' => ['required', 'string', 'max:80', 'not_regex:/@/'],
+            'voornaam' => ['required', 'string', 'max:80', 'not_regex:/@/', function (string $attr, mixed $value, \Closure $fail) use ($request): void {
+                $uid = (int) $request->user()->id;
+                // Alleen bij een andere naam dan je al had: bestaande dubbele namen blijven werken.
+                if (is_string($value) && Naam::normaal($value) !== Naam::normaal((string) $request->user()->name) && Naam::bezet($value, $uid)) {
+                    $fail(Naam::melding($value, $uid));
+                }
+            }],
             'country' => ['required', 'string', Rule::in(Country::codes())],
             'locatie' => ['required', 'string', 'max:120'],
             'telefoon' => ['nullable', 'string', 'max:40', 'regex:/^[0-9+\s().-]{7,40}$/'],
@@ -129,6 +136,28 @@ class ProfileController extends Controller
         return redirect()
             ->route('account.profiel')
             ->with('status', 'Profiel opgeslagen.');
+    }
+
+    /** Live controle of een naam vrij is (registratie en profiel). */
+    public function naamCheck(Request $request): JsonResponse
+    {
+        $naam = mb_substr(trim((string) $request->query('naam', '')), 0, 80);
+        $uid = $request->user()?->id;
+        if ($naam === '' || str_contains($naam, '@')) {
+            return response()->json(['vrij' => true]);
+        }
+        if ($uid !== null && Naam::normaal($naam) === Naam::normaal((string) $request->user()->name)) {
+            return response()->json(['vrij' => true]);
+        }
+        if (! Naam::bezet($naam, $uid !== null ? (int) $uid : null)) {
+            return response()->json(['vrij' => true]);
+        }
+
+        return response()->json([
+            'vrij' => false,
+            'melding' => Naam::melding($naam, $uid !== null ? (int) $uid : null),
+            'suggesties' => Naam::suggesties($naam, 2, $uid !== null ? (int) $uid : null),
+        ]);
     }
 
     /** Postcode + huisnummer opzoeken (alleen NL), voor het profielformulier. */

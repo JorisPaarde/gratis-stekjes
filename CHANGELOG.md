@@ -29,9 +29,14 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Changed
 
+- **Namen zijn uniek** (hoofdletters en spaties tellen niet mee). Bij een bezette naam verschijnt
+  tijdens het typen een melding met klikbare vrije varianten («Bert2», «Bert3») of de tip om een
+  letter toe te voegen. Ook bij opslaan wordt dit gecontroleerd, bij registreren en op het profiel
+  (`/naam-check`, max. 40 per minuut). Bestaande dubbele namen blijven geldig zolang iemand zijn
+  naam niet wijzigt.
 - **Namen:** een voornaam mag geen e-mailadres meer zijn. Bestaande accounts met een e-mailadres
   als naam worden openbaar als «Lid» getoond; in /beheer staat erbij «(e-mail als naam)».
-  Namen blijven niet-uniek; inbox en gesprek tonen de plaats erbij («Jan · 2011»).
+  Inbox en gesprek tonen de plaats erbij («Jan · 2011»).
 - Privacyverklaring en AVG-inventaris bijgewerkt voor het adres.
 
 ## [0.43.3] - 2026-11-01

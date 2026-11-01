@@ -1093,3 +1093,7 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
   .volgende-stap-inner p { flex-basis: calc(100% - 60px); }
   .volgende-stap-inner .btn { width: 100%; text-align: center; }
 }
+
+.naam-check { color: #8a4514; margin: .35rem 0 0; }
+.naam-suggestie { font: inherit; font-weight: 700; margin: .25rem .35rem 0 0; padding: .15rem .6rem; border-radius: var(--radius-pill); border: 1px solid var(--orange); background: #fff; color: var(--forest-deep); cursor: pointer; }
+.naam-suggestie:hover, .naam-suggestie:focus-visible { background: var(--bg-mint); }
