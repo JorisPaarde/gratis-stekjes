@@ -134,3 +134,17 @@
   background: #2a6f7c;
   border: 1px solid #fff;
 }
+
+/* Stedenoverzicht: zoeken en spronglinks */
+.gp-zoek { margin: 1rem 0 0; max-width: 32rem; }
+.gp-zoek label { display: block; font-weight: 700; margin-bottom: .3rem; }
+.gp-zoek input { width: 100%; box-sizing: border-box; font: inherit; padding: .7rem .75rem; border: 1px solid var(--line); border-radius: .55rem; background: #fff; color: var(--ink); min-height: 44px; }
+.gp-sprong { margin: .6rem 0 0; }
+.gp-zoek-leeg { margin: .75rem 0 0; }
+.gp-stad-lijst a { display: inline-block; padding: .3rem 0; min-height: 44px; line-height: 1.9; }
+.gp-stad-lijst--inline a { min-height: 0; line-height: inherit; padding: 0; }
+/* Stadspagina: legenda en acties */
+.gp-acties { display: flex; flex-wrap: wrap; gap: .5rem; }
+.gp-legenda { display: inline-flex; align-items: center; gap: .35rem; margin-right: 1rem; color: var(--ink, #1a1210); }
+.gp-legenda .partner-marker-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; }
+.gp-legenda-aanbod { background: #1f4d2b; border: 1px solid #fff; }

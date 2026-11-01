@@ -9,6 +9,21 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.41.0] - 2026-11-01
+
+### Changed
+
+- **/gratis-planten:** zoekveld dat de stedenlijst filtert (zonder treffer: «Staat jouw plaats er
+  niet bij? Zoek op de kaart», met je zoekterm), spronglinks Nederland en België, en links met
+  alleen de stadsnaam (volledige titel als `title`) met een groter tikvlak.
+- **Stadspagina's:**
+  - Bij geen aanbod een knop «Zoek in de omgeving» (/aanbod?q=stad) naast aanbieden.
+  - Legenda en uitleg bij de kaart: die toont ook vaste deelplekken.
+  - Afstanden «van het centrum».
+  - Het aparte plantenasielblok bovenaan is opgegaan in het deelplekkenblok («Plantenasiel en
+    deelplekken in of bij …», met link naar plantenasiels).
+  - «Heel Utrecht» heet nu «Alle deelplekken in de provincie Utrecht».
+
 ## [0.40.0] - 2026-11-01
 
 ### Changed

@@ -178,7 +178,8 @@ test('soortpagina’s en steden hebben onderling unieke titles', function () {
 test('stadspagina toont plantenasiel-blok alleen bij echte plantenasiels', function () {
     $html = $this->get(route('gratis-planten.show', ['stad' => 'utrecht']))
         ->assertOk()
-        ->assertSee('Plantenasiel in Utrecht', false)
+        ->assertSee('Plantenasiel en deelplekken in of bij Utrecht', false)
+        ->assertSee('Plantenasiels bij Utrecht', false)
         ->getContent();
 
     expect($html)->toContain('/deelplekken?')
@@ -189,5 +190,5 @@ test('stadspagina toont plantenasiel-blok alleen bij echte plantenasiels', funct
     $amsHtml = $this->get(route('gratis-planten.show', ['stad' => 'amsterdam']))
         ->assertOk()
         ->getContent();
-    expect($amsHtml)->not->toContain('Plantenasiel in Amsterdam');
+    expect($amsHtml)->not->toContain('Plantenasiel en deelplekken in of bij Amsterdam');
 });

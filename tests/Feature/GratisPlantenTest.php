@@ -166,7 +166,7 @@ test('footer en homepage linken naar stadsoverzicht', function () {
 test('stadspagina toont deelplekken uit JSON en linkt naar /deelplekken', function () {
     $this->get(route('gratis-planten.show', ['stad' => 'utrecht']))
         ->assertOk()
-        ->assertSee('Deelplekken in of bij Utrecht', false)
+        ->assertSee('Plantenasiel en deelplekken in of bij Utrecht', false)
         ->assertSee('Zadenbibliotheek Utrecht', false)
         ->assertSee(route('deelplekken', ['plaats' => 'Utrecht']), false)
         ->assertSee(route('deelplekken'), false);
@@ -243,5 +243,25 @@ test('NL-stadspagina’s blijven inhoudelijk stabiel (H1 en deelplek-kop)', func
     $this->get(route('gratis-planten.show', ['stad' => 'utrecht']))
         ->assertOk()
         ->assertSee('Gratis planten en stekjes in Utrecht', false)
-        ->assertSee('Plantenasiel in Utrecht', false);
+        ->assertSee('Plantenasiel en deelplekken in of bij Utrecht', false);
+});
+
+test('stedenoverzicht heeft zoekveld, spronglinks en korte stadslinks', function () {
+    $html = $this->get(route('gratis-planten.index'))->assertOk()->getContent();
+    expect($html)->toContain('data-gp-zoek-input')
+        ->and($html)->toContain('href="#land-nederland"')
+        ->and($html)->toContain('href="#land-belgie"')
+        ->and($html)->toContain('Zoek op de kaart')
+        ->and($html)->toContain('>Haarlem</a>')
+        ->and($html)->not->toContain('>Gratis planten in Haarlem</a>');
+});
+
+test('stadspagina: zoek in de omgeving, legenda en afstand vanaf centrum', function () {
+    $this->get(route('gratis-planten.show', ['stad' => 'haarlem']))
+        ->assertOk()
+        ->assertSee(route('aanbod', ['q' => 'Haarlem']), false)
+        ->assertSee('Vaste deelplek', false)
+        ->assertSee('van het centrum', false)
+        ->assertSee('Alle deelplekken in de provincie Noord-Holland', false)
+        ->assertDontSee('>Heel Noord-Holland<', false);
 });
