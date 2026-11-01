@@ -279,7 +279,7 @@ test('approve maakt zichtbaar reject houdt verborgen', function () {
 
     $this->withSession(['admin_ok' => true])
         ->post(route('beheer.deelplekken.approve'), ['id' => $plek->id])
-        ->assertRedirect(route('beheer.index'));
+        ->assertRedirect(route('beheer.aanmeldingen'));
 
     $plek->refresh();
     expect($plek->status)->toBe(Deelplek::STATUS_APPROVED);
@@ -302,7 +302,7 @@ test('approve maakt zichtbaar reject houdt verborgen', function () {
 
     $this->withSession(['admin_ok' => true])
         ->post(route('beheer.deelplekken.reject'), ['id' => $rejected->id])
-        ->assertRedirect(route('beheer.index'));
+        ->assertRedirect(route('beheer.aanmeldingen'));
 
     $rejected->refresh();
     expect($rejected->status)->toBe(Deelplek::STATUS_REJECTED);

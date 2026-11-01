@@ -84,6 +84,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'adres_postcode' => SafeEncrypted::class,
             'adres_plaats' => SafeEncrypted::class,
             'adres_delen' => 'boolean',
+            'last_seen_at' => 'datetime',
             'lat' => 'float',
             'lon' => 'float',
         ];

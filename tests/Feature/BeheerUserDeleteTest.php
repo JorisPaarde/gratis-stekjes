@@ -64,7 +64,7 @@ test('admin kan gebruiker verwijderen inclusief aanbod en berichten', function (
         ->post(route('beheer.users.destroy', $target), [
             'confirm' => 'VERWIJDER',
         ])
-        ->assertRedirect(route('beheer.index'))
+        ->assertRedirect(route('beheer.gebruikers'))
         ->assertSessionHas('status');
 
     expect(User::query()->whereKey($targetId)->exists())->toBeFalse()
@@ -133,20 +133,20 @@ test('admin kan eigen account niet via beheer verwijderen', function () {
 
     $this->actingAs($owner)
         ->get(route('beheer.users.destroy.confirm', $owner))
-        ->assertRedirect(route('beheer.index'))
+        ->assertRedirect(route('beheer.gebruikers'))
         ->assertSessionHasErrors('user');
 
     $this->actingAs($owner)
         ->post(route('beheer.users.destroy', $owner), [
             'confirm' => 'VERWIJDER',
         ])
-        ->assertRedirect(route('beheer.index'))
+        ->assertRedirect(route('beheer.gebruikers'))
         ->assertSessionHasErrors('user');
 
     expect(User::query()->whereKey($owner->id)->exists())->toBeTrue();
 
     $html = $this->actingAs($owner)
-        ->get(route('beheer.index'))
+        ->get(route('beheer.gebruikers.show', $owner))
         ->assertOk()
         ->getContent();
 

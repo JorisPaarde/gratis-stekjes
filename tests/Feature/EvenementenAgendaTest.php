@@ -153,7 +153,7 @@ test('admin kan evenement toevoegen, bewerken en verbergen', function () {
             'gecontroleerd_op' => '2026-04-10',
             'visible' => '1',
         ])
-        ->assertRedirect(route('beheer.index'));
+        ->assertRedirect(route('beheer.agenda'));
 
     $row = Evenement::query()->where('titel', 'Admin markt')->first();
     expect($row)->not->toBeNull()
@@ -175,7 +175,7 @@ test('admin kan evenement toevoegen, bewerken en verbergen', function () {
             'gecontroleerd_op' => '2026-04-10',
             'visible' => '1',
         ])
-        ->assertRedirect(route('beheer.index'));
+        ->assertRedirect(route('beheer.agenda'));
 
     $row->refresh();
     expect($row->titel)->toBe('Admin markt bijgewerkt')
@@ -184,7 +184,7 @@ test('admin kan evenement toevoegen, bewerken en verbergen', function () {
 
     $this->withSession(['admin_ok' => true])
         ->post(route('beheer.evenementen.hide'), ['id' => $row->id])
-        ->assertRedirect(route('beheer.index'));
+        ->assertRedirect(route('beheer.agenda'));
 
     $row->refresh();
     expect($row->visible)->toBeFalse();
