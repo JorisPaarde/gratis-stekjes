@@ -181,6 +181,9 @@ Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(functio
 
     Route::get('/account/profiel', [ProfileController::class, 'edit'])->name('account.profiel');
     Route::post('/account/profiel', [ProfileController::class, 'update']);
+    Route::get('/account/adres-zoeken', [ProfileController::class, 'adresZoeken'])
+        ->middleware('throttle:30,1')
+        ->name('account.adres-zoeken');
 
     Route::get('/account/wachtwoord', [PasswordController::class, 'edit'])->name('account.wachtwoord');
     Route::post('/account/wachtwoord', [PasswordController::class, 'update']);

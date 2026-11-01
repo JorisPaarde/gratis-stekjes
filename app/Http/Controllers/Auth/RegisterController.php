@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use App\Notifications\AccountBestaatAl;
 use App\Notifications\VerifyEmailDutch;
 use App\Support\SafeMail;
 use App\Support\ThrottleMessage;
@@ -64,8 +65,15 @@ class RegisterController extends Controller
         ) {
             // Half-aangemaakt (bijv. eerdere mailfout): opnieuw versturen, zelfde succespad.
             $mailOk = SafeMail::notify($existing, new VerifyEmailDutch);
+        } elseif ($existing->isActive() && $existing->hasVerifiedEmail()) {
+            // Bestaand account: scherm blijft gelijk (geen enumeratie), eigenaar krijgt een mail
+            // met inlog- en wachtwoordlink. Max. één keer per uur per adres.
+            $mailKey = 'account-bestaat:'.sha1($email);
+            if (! RateLimiter::tooManyAttempts($mailKey, 1)) {
+                RateLimiter::hit($mailKey, 3600);
+                SafeMail::notify($existing, new AccountBestaatAl);
+            }
         }
-        // Anders: bestaand (bevestigd) adres → geen enumeratie, geen mail.
 
         $status = $mailOk
             ? 'Check je e-mail om je aanmelding te bevestigen.'

@@ -67,7 +67,7 @@
             @endphp
             <tr>
               <td>{{ $u->id }}</td>
-              <td>{{ $u->name }}@if(($pionierId ?? null) === (int) $u->id) <img src="/assets/badges/pionier.svg" alt="Pionier" title="Pionier" width="22" height="23" style="vertical-align:middle">@endif</td>
+              <td>{{ $u->name }}{!! str_contains((string) $u->name, '@') ? ' <span class="muted" title="Wordt openbaar getoond als «Lid»">(e-mail als naam)</span>' : '' !!}@if(($pionierId ?? null) === (int) $u->id) <img src="/assets/badges/pionier.svg" alt="Pionier" title="Pionier" width="22" height="23" style="vertical-align:middle">@endif</td>
               <td>{{ $u->hasVerifiedEmail() ? 'ja' : 'nee' }}</td>
               <td>
                 @if($mail)

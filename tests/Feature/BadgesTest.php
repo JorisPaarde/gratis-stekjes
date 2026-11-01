@@ -40,7 +40,7 @@ test('alle badges hebben een plaatje en tellen mee', function () {
     $u = badgeUser('b1@example.com');
     $badges = app(MilestoneService::class)->badgesFor($u);
 
-    expect($badges)->toHaveCount(9);
+    expect($badges)->toHaveCount(10);
     foreach ($badges as $b) {
         expect(is_file(public_path(ltrim($b['img'], '/'))))->toBeTrue();
     }

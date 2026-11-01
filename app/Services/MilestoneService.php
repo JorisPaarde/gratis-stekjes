@@ -137,6 +137,23 @@ final class MilestoneService
         return $aanbod?->user;
     }
 
+    /** Voornaam, plek en volledig adres ingevuld (telefoon blijft optioneel). */
+    public function profielCompleet(User $user): bool
+    {
+        return trim((string) $user->name) !== ''
+            && trim((string) $user->locatie_label) !== ''
+            && $user->volledigAdres() !== null;
+    }
+
+    private function profielHint(User $user): string
+    {
+        if (trim((string) $user->locatie_label) === '') {
+            return 'Vul je postcode in op je profiel.';
+        }
+
+        return 'Vul je adres in op je profiel. Alleen wie jij in een gesprek “ja” geeft, ziet het.';
+    }
+
     /**
      * Alle badges met plaatje, status en wat je nog moet doen.
      *
@@ -178,6 +195,9 @@ final class MilestoneService
             ['geworteld', 'Geworteld', trim((string) $user->locatie_label) !== '',
                 'Je plek staat ingevuld. Buren kunnen je vinden.',
                 'Vul op je profiel in waar je ongeveer woont.'],
+            ['profiel_compleet', 'Profiel compleet', $this->profielCompleet($user),
+                'Naam, plek en adres staan erin. Afspreken gaat nu in één keer.',
+                $this->profielHint($user)],
             ['eerste_stekje', 'Eerste stekje', $aanbodCount >= 1 || $overdrachtCount >= 1,
                 'Je hebt je eerste aanbod geplaatst of een overdracht afgerond.',
                 'Plaats je eerste aanbod of rond een overdracht af.'],
