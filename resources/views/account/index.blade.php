@@ -43,22 +43,37 @@
   </div>
 
   @isset($badges)
-  <div class="soft-card" style="margin-top:1rem">
-    <h2>Mijlpalen</h2>
-    <p class="muted" style="margin-top:0">Kleine herinneringen aan wat je al deed.</p>
-    <ul class="prose" style="margin:0;padding-left:1.25rem">
-      @foreach($badges as $badge)
-        <li>
-          @if($badge['earned'])
-            <x-icon name="check" :size="16" /> <strong>{{ $badge['label'] }}</strong>
-          @else
-            <span class="muted">{{ $badge['label'] }}</span>
-          @endif
-          <span class="muted">: {{ $badge['hint'] }}</span>
+  @php
+    $verdiend = collect($badges)->where('earned', true)->count();
+    $pionier = collect($badges)->firstWhere('exclusief', true);
+    $gewoon = collect($badges)->where('exclusief', false)->values();
+  @endphp
+  <div class="soft-card badges-card" style="margin-top:1rem" id="badges">
+    <h2>Badges</h2>
+    <p class="muted" style="margin-top:0">Je hebt er {{ $verdiend }} van de {{ count($badges) }}. Elke stap die je zet, levert er een op.</p>
+
+    @if($pionier)
+      <div class="badge-pionier">
+        <img src="{{ $pionier['img'] }}" alt="" width="96" height="99">
+        <div>
+          <p class="badge-pionier-label">Exclusief · er is er maar één</p>
+          <h3>{{ $pionier['label'] }}</h3>
+          <p>{{ $pionier['hint'] }}</p>
+        </div>
+      </div>
+    @endif
+
+    <ul class="badge-grid">
+      @foreach($gewoon as $badge)
+        <li class="badge-item{{ $badge['earned'] ? ' is-verdiend' : '' }}">
+          <img src="{{ $badge['img'] }}" alt="" width="72" height="72" loading="lazy">
+          <strong>{{ $badge['label'] }}</strong>
+          <span class="visually-hidden">{{ $badge['earned'] ? 'Verdiend.' : 'Nog niet verdiend.' }}</span>
+          <span class="badge-hint">{{ $badge['hint'] }}</span>
         </li>
       @endforeach
     </ul>
-    <p style="margin-top:.75rem"><a href="{{ route('account.ervaringen.create') }}">Deel een ervaring</a></p>
+    <p style="margin-top:.75rem"><a href="{{ route('account.ervaringen.create') }}">Deel een ervaring</a> · <a href="{{ route('account.aanbod') }}">Bied iets aan</a></p>
   </div>
   @endisset
 

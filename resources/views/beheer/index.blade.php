@@ -67,7 +67,7 @@
             @endphp
             <tr>
               <td>{{ $u->id }}</td>
-              <td>{{ $u->name }}</td>
+              <td>{{ $u->name }}@if(($pionierId ?? null) === (int) $u->id) <img src="/assets/badges/pionier.svg" alt="Pionier" title="Pionier" width="22" height="23" style="vertical-align:middle">@endif</td>
               <td>{{ $u->hasVerifiedEmail() ? 'ja' : 'nee' }}</td>
               <td>
                 @if($mail)
@@ -88,6 +88,12 @@
                     <button type="submit" class="linkish">Bevestigingsmail opnieuw sturen</button>
                   </form>
                 @endunless
+                @if(($pionierId ?? null) !== (int) $u->id)
+                  <form method="post" action="{{ route('beheer.users.pionier', $u) }}" onsubmit="return confirm('Pionier-badge naar dit lid verplaatsen? Er is er maar één.');">
+                    @csrf
+                    <button type="submit" class="linkish">Maak pionier</button>
+                  </form>
+                @endif
                 @unless($isSelf)
                   <a class="linkish" href="{{ route('beheer.users.destroy.confirm', $u) }}">Verwijderen</a>
                 @endunless

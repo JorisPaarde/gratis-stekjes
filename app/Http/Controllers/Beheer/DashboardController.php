@@ -16,6 +16,7 @@ use App\Services\AvgService;
 use App\Services\DeelplekAanmelding;
 use App\Services\Deelplekken;
 use App\Services\Evenementen;
+use App\Services\MilestoneService;
 use App\Services\PartnerMarkers;
 use App\Support\Country;
 use App\Support\SafeMail;
@@ -93,7 +94,10 @@ class DashboardController extends Controller
                 ->get();
         }
 
+        $pionierId = app(MilestoneService::class)->pionierUserId();
+
         return view('beheer.index', [
+            'pionierId' => $pionierId,
             'title' => 'Beheer',
             'metaDescription' => 'Beheer',
             'canonical' => route('beheer.index'),
@@ -111,6 +115,16 @@ class DashboardController extends Controller
             'pendingDeelplekken' => $pendingDeelplekken,
             'users' => $users,
         ]);
+    }
+
+    /** Exclusieve Pionier-badge naar dit lid verplaatsen (er is er maar één). */
+    public function setPionier(User $user, MilestoneService $milestones): RedirectResponse
+    {
+        $milestones->setPionier($user);
+
+        return redirect()
+            ->route('beheer.index')
+            ->with('status', 'De Pionier-badge staat nu bij '.$user->name.'.');
     }
 
     public function confirmDestroyUser(User $user): View|RedirectResponse

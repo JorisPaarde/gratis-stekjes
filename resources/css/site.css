@@ -1045,3 +1045,23 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
   .aanbod-kaart-body { padding: .7rem .85rem; gap: .25rem; }
   .aanbod-kaart-tekst { font-size: .95rem; }
 }
+
+/* Badges op Mijn account */
+.badge-grid { list-style: none; margin: .75rem 0 0; padding: 0; display: grid; gap: .9rem; grid-template-columns: repeat(auto-fill, minmax(8.25rem, 1fr)); }
+@media (max-width: 480px) { .badge-grid { gap: .55rem; } .badge-item { padding: .6rem .4rem; } .badge-item img { width: 60px; height: 60px; } .badge-item .badge-hint { font-size: .8rem; } .badge-pionier { flex-direction: column; text-align: center; } }
+.badge-item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: .3rem; padding: .75rem .5rem; border-radius: .9rem; background: #fff; border: 1px solid var(--line); }
+.badge-item img { width: 72px; height: 72px; filter: grayscale(1); opacity: .4; transition: transform .2s ease; }
+.badge-item strong { color: var(--ink-soft); font-size: .98rem; }
+.badge-item .badge-hint { font-size: .85rem; color: var(--ink-soft); line-height: 1.35; }
+.badge-item.is-verdiend { background: var(--bg-mint); border-color: transparent; }
+.badge-item.is-verdiend img { filter: none; opacity: 1; }
+.badge-item.is-verdiend strong { color: var(--forest-deep); }
+.badge-item.is-verdiend:hover img { transform: rotate(-6deg) scale(1.05); }
+.badge-pionier { display: flex; gap: 1rem; align-items: center; margin: .75rem 0 1rem; padding: 1rem; border-radius: 1rem;
+  background: linear-gradient(135deg, #fff6d9, #fbe3a2); border: 2px solid #e8a93a; }
+.badge-pionier img { flex: 0 0 auto; }
+.badge-pionier h3 { margin: 0 0 .25rem; font-size: 1.3rem; color: var(--forest-deep); }
+.badge-pionier p { margin: 0; }
+.badge-pionier-label { font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #8a4514; }
+@media (prefers-reduced-motion: reduce) { .badge-item img { transition: none; } }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
