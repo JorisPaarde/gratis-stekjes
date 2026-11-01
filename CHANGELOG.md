@@ -13,11 +13,11 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- **Beheerder per account:** kolom `users.is_admin` (standaard uit). Een geverifieerd account met
-  `is_admin` krijgt toegang tot /beheer, naast `ADMIN_DASHBOARD_EMAILS`. Zetten gaat via een
-  eenmalige, idempotente stap in de prod-deploy: `POST /deploy/admin-grant` (DEPLOY_TOKEN) met alleen
-  de sha256 van het genormaliseerde e-mailadres uit het secret `GP_ADMIN_GRANT_EMAIL_SHA256`; alleen
-  bij precies één match wordt de vlag gezet. Log/response bevat alleen aantallen, geen persoonsgegevens.
+- **Knop «Maak beheerder» / «Beheerder af»** op /beheer/gebruikers/{id} (alleen voor beheerders,
+  met bevestiging, POST + CSRF). Nieuwe kolom `users.is_admin` (standaard uit, niet mass-assignable);
+  een geverifieerd account met `is_admin` krijgt toegang tot /beheer, naast `ADMIN_DASHBOARD_EMAILS`.
+  Je kunt je eigen beheerdersvlag niet uitzetten. Er heeft nooit eerder zo'n knop bestaan (alleen een
+  leeskolom «Beheertoegang», 0.26.5 → weg in 0.30.4).
 
 ### Fixed
 

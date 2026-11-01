@@ -197,6 +197,24 @@ class GebruikersController extends Controller
             : $user->name.' is geblokkeerd en uitgelogd.');
     }
 
+    /** Beheerdersvlag aan/uit. Eigen vlag uitzetten mag niet (voorkomt buitensluiten). */
+    public function toggleBeheerder(User $user): RedirectResponse
+    {
+        $nieuw = ! (bool) $user->is_admin;
+        if (! $nieuw && Auth::check() && (int) Auth::id() === (int) $user->id) {
+            return back()->withErrors(['user' => 'Je kunt je eigen beheerdersrechten niet intrekken.']);
+        }
+        $user->forceFill(['is_admin' => $nieuw])->save();
+
+        if (! $nieuw) {
+            return back()->with('status', $user->name.' is geen beheerder meer.');
+        }
+
+        return back()->with('status', $user->hasVerifiedEmail()
+            ? $user->name.' is nu beheerder.'
+            : $user->name.' is beheerder, maar heeft pas toegang na het bevestigen van het e-mailadres.');
+    }
+
     /** Naam die een e-mailadres is terugzetten naar «Lid»; het lid kiest daarna zelf een naam. */
     public function resetNaam(User $user): RedirectResponse
     {
