@@ -90,7 +90,7 @@ test('deelplekkenpagina levert kaartcontainer, Leaflet en markers bij openen', f
 
     $items = $this->getJson(route('api.deelplekken'))->assertOk()->json('items');
     expect($items)->not->toBeEmpty();
-    expect(collect($items)->firstWhere('naam', 'Plantenasiel Haarlem'))->not->toBeNull();
+    expect(collect($items)->firstWhere('naam', 'Plantenasiel Zeist — De Boswerf'))->not->toBeNull();
 });
 
 test('zoeken na postcode zoomt rond resultaat (geen landelijke fitBounds)', function () {

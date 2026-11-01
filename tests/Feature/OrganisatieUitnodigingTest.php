@@ -87,13 +87,20 @@ test('voor-organisaties pagina en links vanuit footer en deelplekken', function 
 test('organisatiepagina met deelplekken rendert 200', function () {
     $this->seed(DeelplekkenSeeder::class);
 
-    $this->get(route('organisaties.show', ['slug' => 'plantenasiel-haarlem']))
+    $this->get(route('organisaties.show', ['slug' => 'plantenasiel-zeist']))
         ->assertOk()
-        ->assertSee('Plantenasiel Haarlem', false)
-        ->assertSee('plantenasielhaarlem.nl', false)
+        ->assertSee('Plantenasiel Zeist', false)
+        ->assertSee('plantenasielzeist.nl', false)
         ->assertSee('Bron', false)
         ->assertSee('Op de deelplekkenkaart', false)
         ->assertDontSee('Niet te bezoeken via mijn', false);
+
+    // Deelplek verborgen (niet gratis): organisatiepagina blijft, zonder kaartkoppeling.
+    $this->get(route('organisaties.show', ['slug' => 'plantenasiel-haarlem']))
+        ->assertOk()
+        ->assertSee('Plantenasiel Haarlem', false)
+        ->assertDontSee('Op de deelplekkenkaart', false)
+        ->assertSee('Niet te bezoeken via mijn', false);
 });
 
 test('organisatiepagina zonder deelplek_slugs rendert 200 (geen isNotEmpty op array)', function () {
