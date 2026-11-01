@@ -292,3 +292,49 @@ test('feedbackknop heeft toegankelijke tiptekst', function () {
     expect($html)->toContain('data-feedback-fab-wrap')
         ->and($html)->toContain('id="feedback-fab-tip"');
 });
+
+test('admin verwijdert feedback na bevestiging en de teller daalt', function () {
+    $user = User::factory()->create(['email_verified_at' => now()]);
+    $weg = Feedback::query()->create(['user_id' => $user->id, 'page_path' => '/', 'body' => 'Mag weg']);
+    Feedback::query()->create(['user_id' => $user->id, 'page_path' => '/aanbod', 'body' => 'Blijft staan']);
+    Feedback::query()->create(['user_id' => $user->id, 'page_path' => '/over', 'body' => 'Al gelezen', 'read_at' => now()]);
+
+    $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.feedback'))
+        ->assertOk()
+        ->assertSee(route('beheer.feedback.destroy', ['feedback' => $weg->id]), false)
+        ->assertSee('name="_method" value="DELETE"', false)
+        ->assertSee("return confirm('Deze feedback definitief verwijderen?');", false);
+
+    $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken'))
+        ->assertSee('stats-kpi-value--let-op">2</span>', false)
+        ->assertSee('3 totaal', false);
+
+    $this->withSession(['admin_ok' => true])
+        ->delete(route('beheer.feedback.destroy', ['feedback' => $weg->id]))
+        ->assertRedirect(route('beheer.feedback'))
+        ->assertSessionHas('status', 'Feedback verwijderd.');
+
+    expect(Feedback::query()->find($weg->id))->toBeNull()
+        ->and(Feedback::query()->count())->toBe(2);
+
+    $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken'))
+        ->assertSee('stats-kpi-value--let-op">1</span>', false)
+        ->assertSee('2 totaal', false);
+});
+
+test('gast kan geen feedback verwijderen', function () {
+    $item = Feedback::query()->create(['user_id' => null, 'page_path' => '/', 'body' => 'Blijft']);
+
+    $this->delete(route('beheer.feedback.destroy', ['feedback' => $item->id]))
+        ->assertRedirect(route('beheer.login'));
+
+    $lid = User::factory()->create(['email_verified_at' => now()]);
+    $this->actingAs($lid)
+        ->delete(route('beheer.feedback.destroy', ['feedback' => $item->id]))
+        ->assertRedirect(route('beheer.login'));
+
+    expect(Feedback::query()->find($item->id))->not->toBeNull();
+});

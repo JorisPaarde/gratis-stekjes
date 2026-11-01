@@ -249,6 +249,9 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::get('/statistieken', [BeheerStatistiekenController::class, 'index'])->name('beheer.statistieken');
     Route::get('/feedback', [BeheerFeedbackController::class, 'index'])->name('beheer.feedback');
     Route::post('/feedback/gelezen', [BeheerFeedbackController::class, 'markRead'])->name('beheer.feedback.read');
+    Route::delete('/feedback/{feedback}', [BeheerFeedbackController::class, 'destroy'])
+        ->whereNumber('feedback')
+        ->name('beheer.feedback.destroy');
     Route::get('/ervaringen', [BeheerErvaringController::class, 'index'])->name('beheer.ervaringen');
     Route::post('/ervaringen/goedkeuren', [BeheerErvaringController::class, 'approve'])
         ->name('beheer.ervaringen.approve');
