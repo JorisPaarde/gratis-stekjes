@@ -9,6 +9,14 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.43.1] - 2026-11-01
+
+### Added
+
+- **Deelplekken:** zeven zadenbibliotheken in bibliotheken in Fryslân op de kaart: Akkrum-Nes,
+  Jubbega, Heerenveen, Balk, Bolsward, Lemmer en Sneek. Ze staan ook bij Zadenbibliotheek
+  Nederland op de organisatiepagina.
+
 ## [0.43.0] - 2026-11-01
 
 ### Added
