@@ -9,6 +9,18 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.38.1] - 2026-11-01
+
+### Changed
+
+- **Alleen echt gratis deelplekken zichtbaar** (gratis-check 31 okt, vervangt PR #104): 12 plekken
+  die een betaling of bijdrage vragen of waarover twijfel is, staan op `visible: false` met
+  `verborgen_reden` (`niet-gratis` of `twijfel`). Ze worden niet verwijderd en verdwijnen van
+  /deelplekken, de kaart, de API, de homepage-tellingen en de stadspagina's. Organisatiepagina's
+  blijven bestaan, zonder kaartkoppeling. De Delftse ruilkast (al verborgen) kreeg ook een reden.
+- Adrescorrecties: Zadenbibliotheek Joure (postcode 8501 AN, bron BMF) en Zadenbibliotheek
+  Utrecht (postcode 3565 MD, bron Ons Genot).
+
 ## [0.38.0] - 2026-11-01
 
 ### Added
