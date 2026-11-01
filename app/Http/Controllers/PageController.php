@@ -27,7 +27,7 @@ class PageController extends Controller
         $heading = (string) ($hero['heading'] ?? 'Gratis planten, stekjes en zaden bij jou in de buurt');
         $metaDescription = (string) config('homepage.meta.description', config('site.description'));
         $homeUrl = CanonicalUrl::absolute('/');
-        $logoUrl = CanonicalUrl::asset((string) config('site.og_image', '/assets/icons/icon-512.png'));
+        $logoUrl = CanonicalUrl::asset((string) config('site.logo', '/assets/icons/icon-512.png'));
         $areaServed = [
             ['@type' => 'Country', 'name' => 'NL'],
             ['@type' => 'Country', 'name' => 'BE'],

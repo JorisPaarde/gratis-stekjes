@@ -61,19 +61,39 @@ test('404 heeft geen canonical', function () {
     expect($html)->not->toContain('rel="canonical"');
 });
 
-test('og:image en twitter:card staan sitebreed met absolute URL', function () {
-    config([
-        'app.url' => 'https://gratisplanten.nl',
-        'site.og_image' => '/assets/icons/icon-512.png',
-    ]);
+test('og:image en twitter:card: per pagina een 1200×630-afbeelding met absolute URL', function () {
+    config(['app.url' => 'https://gratisplanten.nl']);
 
-    $html = $this->get('/')->assertOk()->getContent();
-    $abs = CanonicalUrl::asset('/assets/icons/icon-512.png');
+    $cases = [
+        '/' => '/assets/og/home.jpg',
+        '/aanbod' => '/assets/og/aanbod.jpg',
+        '/stektips' => '/assets/og/stektips.jpg',
+        '/stektips/monstera' => '/assets/og/soort/monstera.jpg',
+        '/deelplekken' => '/assets/og/deelplekken.jpg',
+        '/hoe-werkt-het' => '/assets/og/hoe-werkt-het.jpg',
+        '/gratis-planten' => '/assets/og/gratis-planten.jpg',
+        '/gratis-planten/haarlem' => '/assets/og/stad/haarlem.jpg',
+        '/over' => '/assets/og/standaard.jpg',
+    ];
+    foreach ($cases as $url => $pad) {
+        expect(is_file(public_path(ltrim($pad, '/'))))->toBeTrue("ontbreekt: {$pad}");
+        $abs = CanonicalUrl::asset($pad);
+        $html = $this->get($url)->assertOk()->getContent();
+        expect($html)->toContain('property="og:image" content="'.$abs.'"')
+            ->and($html)->toContain('name="twitter:image" content="'.$abs.'"')
+            ->and($html)->toContain('property="og:image:width" content="1200"')
+            ->and($html)->toContain('name="twitter:card" content="summary_large_image"')
+            ->and($abs)->toStartWith('https://gratisplanten.nl/');
+    }
+});
 
-    expect($html)->toContain('property="og:image" content="'.$abs.'"')
-        ->and($html)->toContain('name="twitter:card" content="summary_large_image"')
-        ->and($html)->toContain('name="twitter:image" content="'.$abs.'"')
-        ->and($abs)->toStartWith('https://gratisplanten.nl/');
+test('elke stektip en elke stad heeft een eigen social image', function () {
+    foreach (json_decode((string) file_get_contents(base_path('data/stektips.json')), true)['soorten'] as $s) {
+        expect(is_file(public_path('assets/og/soort/'.$s['slug'].'.jpg')))->toBeTrue('ontbreekt soort '.$s['slug']);
+    }
+    foreach (json_decode((string) file_get_contents(base_path('data/steden.json')), true)['steden'] as $c) {
+        expect(is_file(public_path('assets/og/stad/'.$c['slug'].'.jpg')))->toBeTrue('ontbreekt stad '.$c['slug']);
+    }
 });
 
 test('sitemap heeft lastmod op basis van bestandsdatum, niet nu', function () {

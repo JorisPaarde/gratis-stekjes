@@ -3,6 +3,7 @@
 @section('title', $title)
 @section('meta_description', $metaDescription)
 @section('canonical', $canonical)
+@section('og_image', '/assets/og/home.jpg')
 @section('body_class', 'page-home')
 
 @push('head')

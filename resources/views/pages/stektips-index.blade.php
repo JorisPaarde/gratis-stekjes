@@ -3,6 +3,7 @@
 @section('title', $title)
 @section('meta_description', $metaDescription)
 @section('canonical', $canonical)
+@section('og_image', '/assets/og/stektips.jpg')
 
 @push('head')
   @vite(['resources/css/stektips.css', 'resources/css/nu-te-stekken.css'])
