@@ -11,19 +11,9 @@
 
 @section('content')
 <section class="section wrap beheer-page stats-page">
-  <div class="beheer-header">
-    <div class="stats-heading">
-      <h1 class="page-title">Statistieken</h1>
-      <p class="stats-subtitle muted">Alleen aggregaten — geen namen of e-mailadressen.</p>
-    </div>
-    <div class="beheer-actions">
-      <a href="{{ route('beheer.index') }}">← Beheer</a>
-      <form method="post" action="{{ route('beheer.logout') }}">
-        @csrf
-        <button class="btn btn-secondary" type="submit">Uitloggen</button>
-      </form>
-    </div>
-  </div>
+  @include('beheer.partials.nav')
+
+  <h1 class="page-title">Statistieken</h1>
 
   <details class="stats-panel stats-panel--overview" open>
     <summary class="stats-panel-summary">

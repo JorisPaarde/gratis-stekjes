@@ -170,7 +170,7 @@ test('beheer keurt goed en verbergt; leden kunnen niet', function () {
     koppel($this, $u, ['vereniging' => 'Beheer Tuin', 'plaats' => 'Gouda', 'type' => 'volkstuin']);
     $v = Vereniging::query()->firstOrFail();
 
-    $this->actingAs($admin)->get(route('beheer.index'))->assertOk()->assertSee('Beheer Tuin', false)->assertSee('wacht op controle', false);
+    $this->actingAs($admin)->get(route('beheer.verenigingen'))->assertOk()->assertSee('Beheer Tuin', false)->assertSee('Wacht op controle', false);
     $this->actingAs($admin)->post(route('beheer.verenigingen.status', $v), ['status' => 'approved'])->assertRedirect();
     expect($v->fresh()->status)->toBe('approved');
 

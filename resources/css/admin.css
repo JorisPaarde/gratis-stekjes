@@ -492,3 +492,97 @@
 }
 
 .stats-kpi-value--let-op { color: var(--orange-hover, #d4742e); }
+
+/* ——— Beheer 2.0: navigatie, overzicht, gebruikers ——— */
+.beheer-page .beheer-header { align-items: center; margin-bottom: .5rem; }
+.beheer-merk { margin: 0; font-family: var(--font-display, "Passion One", Georgia, serif); font-size: 1.5rem; text-transform: uppercase; color: var(--forest-deep, #163820); }
+.btn-klein { padding: .45rem .9rem !important; font-size: .82rem !important; min-height: 38px; }
+.beheer-tabs { display: flex; gap: .25rem; overflow-x: auto; -webkit-overflow-scrolling: touch; border-bottom: 2px solid var(--line, rgba(26,18,16,.12)); margin: 0 0 1.25rem; scrollbar-width: thin; }
+.beheer-tabs a { white-space: nowrap; padding: .6rem .8rem; text-decoration: none; color: var(--ink, #1a1210); font-weight: 600; border-bottom: 3px solid transparent; margin-bottom: -2px; display: inline-flex; align-items: center; gap: .35rem; }
+.beheer-tabs a:hover, .beheer-tabs a:focus-visible { color: var(--forest-deep, #163820); background: var(--bg-mint, #e6f2e1); }
+.beheer-tabs a.is-actief { border-bottom-color: var(--orange, #e8833a); color: var(--forest-deep, #163820); }
+.beheer-page h1.page-title { margin-top: .25rem; }
+
+.beheer-kaarten { list-style: none; padding: 0; margin: 0 0 1.5rem; display: grid; gap: .75rem; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); }
+.beheer-kaart { display: flex; flex-direction: column; gap: .25rem; padding: 1rem; border-radius: .9rem; background: #fff7ef; border: 1px solid #f2c9a5; text-decoration: none; color: var(--ink, #1a1210); height: 100%; box-sizing: border-box; }
+.beheer-kaart:hover, .beheer-kaart:focus-visible { border-color: var(--orange, #e8833a); }
+.beheer-kaart-getal { font-family: var(--font-display, "Passion One", Georgia, serif); font-size: 2.2rem; line-height: 1; color: #b4561a; }
+.beheer-kaart-label { font-weight: 600; }
+.beheer-kaart-actie { margin-top: auto; color: var(--forest, #1f4d2b); text-decoration: underline; font-size: .9rem; }
+.beheer-alles-goed { padding: 1rem; border-radius: .9rem; background: var(--bg-mint, #e6f2e1); }
+.beheer-kort { list-style: none; padding: 0; margin: 0 0 1.5rem; display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; }
+.beheer-twee { display: grid; gap: 1.25rem; grid-template-columns: 1fr; margin-bottom: 1rem; }
+@media (min-width: 900px) { .beheer-twee { grid-template-columns: 1fr 1fr; } }
+.beheer-lijst { list-style: none; padding: 0; margin: 0 0 .75rem; }
+.beheer-lijst li { padding: .45rem 0; border-bottom: 1px solid var(--line, rgba(26,18,16,.12)); }
+
+.status { display: inline-block; padding: .05rem .5rem; border-radius: 999px; font-size: .8rem; font-weight: 600; line-height: 1.6; white-space: nowrap; }
+.status--ok { background: #e3f1dc; color: #1f4d2b; }
+.status--wacht { background: #fdf0d9; color: #8a5a12; }
+.status--fout { background: #fbe1dc; color: #a03218; }
+.status--uit { background: #ececec; color: #4a4a4a; }
+
+.beheer-titelrij { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; }
+.beheer-zoek { display: flex; flex-wrap: wrap; gap: .5rem; margin: .25rem 0 .75rem; }
+.beheer-zoek input[type=search] { flex: 1 1 16rem; font: inherit; padding: .55rem .7rem; border: 1px solid var(--line, rgba(26,18,16,.2)); border-radius: .55rem; min-height: 42px; }
+.beheer-zoek select { font: inherit; padding: .5rem; border: 1px solid var(--line, rgba(26,18,16,.2)); border-radius: .55rem; min-height: 42px; background: #fff; }
+.beheer-filters { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 .75rem; }
+.beheer-filters .filter-chip { padding: .3rem .75rem; border-radius: 999px; border: 1px solid var(--line, rgba(26,18,16,.2)); text-decoration: none; color: var(--ink, #1a1210); font-size: .9rem; background: #fff; }
+.beheer-filters .filter-chip.is-actief { background: var(--forest, #1f4d2b); border-color: var(--forest, #1f4d2b); color: #fff; }
+.beheer-naam { font-weight: 700; }
+.beheer-id { font-size: .8rem; margin-left: .25rem; }
+.beheer-icoon { vertical-align: middle; margin-left: .2rem; }
+.beheer-acties-cel { white-space: nowrap; }
+.beheer-acties-cel form { display: inline; }
+.beheer-gebruikers td { vertical-align: middle; }
+.beheer-paginatie { display: flex; gap: 1rem; align-items: center; justify-content: center; margin: 1rem 0 2rem; }
+
+.beheer-dl { display: grid; grid-template-columns: max-content 1fr; gap: .35rem 1rem; margin: 0 0 .75rem; }
+.beheer-dl dt { font-weight: 700; color: var(--forest-deep, #163820); }
+.beheer-dl dd { margin: 0; word-break: break-word; }
+.beheer-badges { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: .4rem; }
+.beheer-badges li { display: flex; align-items: center; gap: .4rem; font-size: .9rem; color: var(--ink-soft, #5c534e); }
+.beheer-badges li img { filter: grayscale(1); opacity: .4; }
+.beheer-badges li.is-verdiend { color: var(--forest-deep, #163820); font-weight: 600; }
+.beheer-badges li.is-verdiend img { filter: none; opacity: 1; }
+.beheer-acties-blok { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
+.beheer-gevaar { border: 2px solid #e5a596; border-radius: .9rem; padding: 1rem; margin: 1rem 0 2rem; background: #fff6f4; }
+.beheer-gevaar h2 { margin-top: 0; color: #a03218; }
+.btn-gevaar { background: #a03218 !important; color: #fff !important; }
+.beheer-details summary { cursor: pointer; font-size: .85rem; }
+.beheer-details code { display: block; font-size: .8rem; white-space: pre-wrap; word-break: break-word; }
+
+/* Mobiel: tabellen als kaarten */
+@media (max-width: 760px) {
+  .beheer-page .beheer-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .beheer-page .beheer-table, .beheer-page .beheer-table tbody, .beheer-page .beheer-table tr, .beheer-page .beheer-table td { display: block; width: 100%; box-sizing: border-box; }
+  .beheer-page .beheer-table tr { border: 1px solid var(--line, rgba(26,18,16,.12)); border-radius: .8rem; padding: .5rem .75rem; margin-bottom: .6rem; background: #fff; }
+  .beheer-page .beheer-table td { border: 0; padding: .2rem 0; }
+  .beheer-page .beheer-table td[data-label]::before { content: attr(data-label) ": "; font-weight: 700; color: var(--forest-deep, #163820); font-size: .82rem; }
+  .beheer-page .beheer-table td[data-label="Naam"]::before { content: none; }
+  .beheer-page .beheer-table td[data-label="Naam"] { font-size: 1.05rem; }
+  .beheer-table-wrap { overflow: visible; }
+}
+
+.beheer-datum { white-space: nowrap; }
+.beheer-klein { font-size: .82rem; }
+@media (min-width: 761px) { .beheer-gebruikers th { white-space: nowrap; } }
+.beheer-acties-cel { white-space: normal; }
+.beheer-acties-inner { display: flex; flex-direction: column; align-items: flex-start; gap: .15rem; white-space: nowrap; }
+.beheer-acties-cel .linkish { padding: 0; min-height: 0; }
+@media (max-width: 760px) {
+  .beheer-page .beheer-gebruikers tr { display: grid; grid-template-columns: 1fr 1fr; column-gap: .75rem; }
+  .beheer-page .beheer-gebruikers td[data-label="Naam"],
+  .beheer-page .beheer-gebruikers td[data-label="Status"],
+  .beheer-page .beheer-gebruikers td[data-label="Laatste mail"],
+  .beheer-page .beheer-gebruikers td.beheer-acties-cel { grid-column: 1 / -1; }
+  .beheer-page .beheer-gebruikers .beheer-acties-inner { flex-direction: row; gap: 1rem; padding-top: .35rem; }
+  .beheer-page .beheer-gebruikers td[data-label="Status"]::before { content: none; }
+}
+.beheer-gebruikers th, .beheer-gebruikers td { padding-left: .45rem; padding-right: .45rem; }
+.beheer-table td.beheer-actions { display: table-cell; }
+.beheer-table td.beheer-actions > * { display: inline-block; margin: 0 .75rem .25rem 0; vertical-align: middle; }
+.beheer-table td.beheer-actions .linkish { padding: 0; min-height: 0; }
+.beheer-email { word-break: break-all; }
+.beheer-badge-rij { display: inline-flex; gap: 2px; margin-top: .2rem; vertical-align: middle; }
+.beheer-badge-rij img { display: block; }

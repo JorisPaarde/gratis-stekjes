@@ -250,6 +250,24 @@ Route::post('/beheer/uitloggen', [BeheerLoginController::class, 'destroy'])->nam
 
 Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::get('/overzicht', [BeheerDashboardController::class, 'index'])->name('beheer.index');
+    Route::get('/verenigingen', [BeheerDashboardController::class, 'verenigingen'])->name('beheer.verenigingen');
+    Route::get('/aanmeldingen', [BeheerDashboardController::class, 'aanmeldingen'])->name('beheer.aanmeldingen');
+    Route::get('/agenda', [BeheerDashboardController::class, 'agenda'])->name('beheer.agenda');
+    Route::get('/kaartmarkers', [BeheerDashboardController::class, 'kaartmarkers'])->name('beheer.kaartmarkers');
+    Route::get('/meldingen', [BeheerDashboardController::class, 'meldingen'])->name('beheer.meldingen');
+        Route::post('/gebruikers/herinner-onbevestigd', [BeheerGebruikersController::class, 'herinnerOnbevestigd'])
+        ->name('beheer.gebruikers.herinner');
+    Route::get('/gebruikers/{user}', [BeheerGebruikersController::class, 'show'])
+        ->whereNumber('user')
+        ->name('beheer.gebruikers.show');
+    Route::post('/gebruikers/{user}/actief', [BeheerGebruikersController::class, 'toggleActief'])
+        ->middleware('throttle:20,1')
+        ->whereNumber('user')
+        ->name('beheer.gebruikers.actief');
+    Route::post('/gebruikers/{user}/naam-reset', [BeheerGebruikersController::class, 'resetNaam'])
+        ->middleware('throttle:20,1')
+        ->whereNumber('user')
+        ->name('beheer.gebruikers.reset-naam');
     Route::get('/statistieken', [BeheerStatistiekenController::class, 'index'])->name('beheer.statistieken');
     Route::get('/gebruikers', [BeheerGebruikersController::class, 'index'])->name('beheer.gebruikers');
     Route::post('/gebruikers/zoeken', [BeheerGebruikersController::class, 'zoek'])

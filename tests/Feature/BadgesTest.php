@@ -111,7 +111,7 @@ test('beheer kan de pionier verplaatsen', function () {
     $lid = badgeUser('lid@example.com', 'Lid');
 
     $this->actingAs($admin)->post(route('beheer.users.pionier', $lid))
-        ->assertRedirect(route('beheer.index'));
+        ->assertRedirect(route('beheer.gebruikers.show', $lid));
     expect(app(MilestoneService::class)->pionierUserId())->toBe($lid->id);
 
     $ander = badgeUser('ander@example.com', 'Ander');

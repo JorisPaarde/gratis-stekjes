@@ -11,12 +11,9 @@
 
 @section('content')
 <section class="section wrap beheer-page">
-  <div class="beheer-header">
-    <h1 class="page-title">Gebruiker verwijderen</h1>
-    <div class="beheer-actions">
-      <a href="{{ route('beheer.index') }}">← Beheer</a>
-    </div>
-  </div>
+  @include('beheer.partials.nav')
+
+  <h1 class="page-title">Gebruiker verwijderen</h1>
 
   @if($errors->has('confirm'))
     <p class="error" role="alert">{{ $errors->first('confirm') }}</p>

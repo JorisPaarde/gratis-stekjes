@@ -84,20 +84,27 @@ test('beheer toont bevestiging en laatste mailstatus en kan resend', function ()
     ]);
 
     $this->withSession(['admin_ok' => true])
-        ->get(route('beheer.index'))
+        ->get(route('beheer.gebruikers'))
         ->assertOk()
         ->assertSee('Gebruikers', false)
         ->assertSee('Onbevestigd', false)
         ->assertSee('Bevestigd', false)
-        ->assertSee('nee', false)
-        ->assertSee('ja', false)
-        ->assertSee('VerifyEmailDutch', false)
-        ->assertSee('fout', false)
+        ->assertSee('Wacht op bevestiging', false)
+        ->assertSee('Bevestigingsmail', false)
+        ->assertDontSee('VerifyEmailDutch', false)
+        ->assertSee('Onbekende fout', false)
+        ->assertSee('Herstuur', false);
+
+    $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.gebruikers.show', $unverified))
+        ->assertOk()
+        ->assertSee('SMTP down', false)
         ->assertSee('Bevestigingsmail opnieuw sturen', false);
 
     $this->withSession(['admin_ok' => true])
+        ->from(route('beheer.gebruikers'))
         ->post(route('beheer.users.resend-verification'), ['user_id' => $unverified->id])
-        ->assertRedirect(route('beheer.index'))
+        ->assertRedirect(route('beheer.gebruikers'))
         ->assertSessionHas('status');
 
     Notification::assertSentTo($unverified, VerifyEmailDutch::class);

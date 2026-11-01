@@ -11,23 +11,12 @@
 
 @section('content')
 <section class="section wrap beheer-page">
-  <div class="beheer-header">
-    <h1 class="page-title">Ervaringen</h1>
-    <div class="beheer-actions">
-      <a href="{{ route('beheer.index') }}">← Beheer</a>
-      <a href="{{ route('beheer.feedback') }}">Feedback</a>
-      <form method="post" action="{{ route('beheer.logout') }}">
-        @csrf
-        <button class="btn btn-secondary" type="submit">Uitloggen</button>
-      </form>
-    </div>
-  </div>
+  @include('beheer.partials.nav')
+
+  <h1 class="page-title">Ervaringen</h1>
 
   <p class="muted">Nieuwste eerst; in afwachting bovenaan. Goedkeuren maakt ze zichtbaar op /ervaringen.</p>
 
-  @if(session('status'))
-    <p class="flash flash-ok" role="status">{{ session('status') }}</p>
-  @endif
 
   @if($rows->isEmpty())
     <div class="empty-state" role="status">
