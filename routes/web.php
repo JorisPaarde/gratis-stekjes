@@ -268,6 +268,10 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
         ->middleware('throttle:20,1')
         ->whereNumber('user')
         ->name('beheer.gebruikers.reset-naam');
+    Route::post('/gebruikers/{user}/beheerder', [BeheerGebruikersController::class, 'toggleBeheerder'])
+        ->middleware('throttle:20,1')
+        ->whereNumber('user')
+        ->name('beheer.gebruikers.beheerder');
     Route::get('/statistieken', [BeheerStatistiekenController::class, 'index'])->name('beheer.statistieken');
     Route::get('/gebruikers', [BeheerGebruikersController::class, 'index'])->name('beheer.gebruikers');
     Route::post('/gebruikers/zoeken', [BeheerGebruikersController::class, 'zoek'])

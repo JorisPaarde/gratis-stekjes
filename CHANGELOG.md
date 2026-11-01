@@ -9,6 +9,25 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.47.1] - 2026-11-01
+
+### Added
+
+- **Knop «Maak beheerder» / «Beheerder af»** op /beheer/gebruikers/{id} (alleen voor beheerders,
+  met bevestiging, POST + CSRF). Nieuwe kolom `users.is_admin` (standaard uit, niet mass-assignable);
+  een geverifieerd account met `is_admin` krijgt toegang tot /beheer, naast `ADMIN_DASHBOARD_EMAILS`.
+  Je kunt je eigen beheerdersvlag niet uitzetten. Er heeft nooit eerder zo'n knop bestaan (alleen een
+  leeskolom «Beheertoegang», 0.26.5 → weg in 0.30.4).
+
+### Fixed
+
+- **Beheermenu op iPhone:** de tabstrip in /beheer ging op iOS Safari op en neer bij het scrollen.
+  Oorzaak: `overflow-x: auto` maakt `overflow-y` impliciet `auto`, en de tabs (3px onderrand met
+  -2px marge) waren 2px hoger dan de strip, dus de strip was een beetje verticaal scrollbaar.
+  Nu `overflow-y: hidden`, vaste tabhoogte, geen negatieve marge, de lijn als inset-schaduw,
+  `overscroll-behavior-x: contain` en `touch-action: pan-x pan-y`, zodat de pagina verticaal
+  blijft scrollen en de strip alleen horizontaal.
+
 ## [0.47.0] - 2026-11-01
 
 ### Added
