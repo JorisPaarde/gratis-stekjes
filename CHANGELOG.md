@@ -9,6 +9,17 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.47.1] - 2026-11-01
+
+### Fixed
+
+- **Beheermenu op iPhone:** de tabstrip in /beheer ging op iOS Safari op en neer bij het scrollen.
+  Oorzaak: `overflow-x: auto` maakt `overflow-y` impliciet `auto`, en de tabs (3px onderrand met
+  -2px marge) waren 2px hoger dan de strip, dus de strip was een beetje verticaal scrollbaar.
+  Nu `overflow-y: hidden`, vaste tabhoogte, geen negatieve marge, de lijn als inset-schaduw,
+  `overscroll-behavior-x: contain` en `touch-action: pan-x pan-y`, zodat de pagina verticaal
+  blijft scrollen en de strip alleen horizontaal.
+
 ## [0.47.0] - 2026-11-01
 
 ### Added
