@@ -37,3 +37,18 @@ Geen foto’s van meerbomen.nu. Geen hotlinking. Herdownloaden/verversen: `php s
 |------|-----------|----------|
 | [Lucide](https://lucide.dev) (subset) | paden in `resources/views/components/icon.blade.php` | ISC — volledige tekst in `docs/LICENSE-LUCIDE.md` |
 | Eigen planticonen (`stekje`, `plant`, `zaad`, `ophalen`, …) |zelfde component | CC0 / Unlicense — gemaakt voor dit project |
+
+## Social images (`public/assets/og/`)
+
+Open Graph-afbeeldingen (1200×630) voor delen op WhatsApp, LinkedIn, Facebook enz. Gegenereerd met
+`node scripts/og-images.mjs` (Playwright nodig; zie kop van het script).
+
+| Bestand | Foto | Licentie |
+|---|---|---|
+| `standaard.jpg`, `home.jpg`, `hoe-werkt-het.jpg`, `stektips.jpg` | home-v2 Pexels-foto's (delen, stekjes, aanmelden) | Pexels License |
+| `aanbod.jpg`, `deelplekken.jpg` | kaartvoorbeeld (home-v2 `kaart`) | ODbL, «© OpenStreetMap-bijdragers» staat in de afbeelding |
+| `gratis-planten.jpg`, `stad/*.jpg` | geen foto (eigen icoon) | eigen werk |
+| `soort/*.jpg` | soortfoto uit `data/soort-afbeeldingen.json` | licentie van de foto (meestal CC BY-SA); maker + licentie staan zichtbaar in de afbeelding. Als bewerking vallen deze afbeeldingen onder dezelfde licentie. |
+
+Nieuwe soort of stad? Draai `node scripts/og-images.mjs soort` of `… stad`. Een test controleert dat elke stektip en
+elke stad een eigen afbeelding heeft.

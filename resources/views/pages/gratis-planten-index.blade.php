@@ -3,6 +3,7 @@
 @section('title', $title)
 @section('meta_description', $metaDescription)
 @section('canonical', $canonical)
+@section('og_image', '/assets/og/gratis-planten.jpg')
 @section('body_class', 'page-gratis-planten')
 
 @push('head')

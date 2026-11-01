@@ -3,6 +3,7 @@
 @section('title', $title)
 @section('meta_description', $metaDescription)
 @section('canonical', $canonical)
+@section('og_image', is_file(public_path('assets/og/soort/'.$soort['slug'].'.jpg')) ? '/assets/og/soort/'.$soort['slug'].'.jpg' : '/assets/og/stektips.jpg')
 
 @push('head')
   @vite(['resources/css/stektips.css'])
