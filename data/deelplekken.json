@@ -54,15 +54,15 @@
       },
       {
         "naam": "Zadenbibliotheek Utrecht",
-        "url": "https://zadenbibliotheekutrecht.nl/Contact/"
+        "url": "https://ons-genot.nl/zadenbibliotheek-utrecht/"
       },
       {
         "naam": "Groningse bibliotheken — Zadenbibliotheek",
         "url": "https://www.groningsebibliotheken.nl/collectie/zadenbibliotheek.html"
       },
       {
-        "naam": "Natuurlijk Noorden — Zadenbibliotheek Fryslân (Joure)",
-        "url": "https://www.natuurlijknoorden.nl/friesland/natuur-buiten-friesland/zadenbibliotheek-fryslan/"
+        "naam": "BMF — Zadenbibliotheek Fryslân (Joure)",
+        "url": "https://www.bmf.nl/laat-je-inspireren/zadenbibliotheek.html"
       },
       {
         "naam": "Zadenbibliotheek Nederland — Nijmegen Hatert",
@@ -119,7 +119,9 @@
       "lat": 52.377503,
       "lng": 4.664929,
       "bron_url": "https://plantenasielhaarlem.nl/contact/",
-      "geraadpleegd": "2026-10-29"
+      "geraadpleegd": "2026-10-31",
+      "visible": false,
+      "verborgen_reden": "niet-gratis"
     },
     {
       "id": "zeist-boswerf",
@@ -203,7 +205,9 @@
       "lat": 52.092903,
       "lng": 5.118167,
       "bron_url": "https://www.plantenasiel.nl/",
-      "geraadpleegd": "2026-10-29"
+      "geraadpleegd": "2026-10-31",
+      "visible": false,
+      "verborgen_reden": "niet-gratis"
     },
     {
       "id": "wageningen-plantenasiel",
@@ -215,7 +219,9 @@
       "lat": 51.967931,
       "lng": 5.66565,
       "bron_url": "https://www.vcwageningen.nl/o/Thuis-Wageningen/activiteiten/Vrijwilliger-Plantenasiel/96106",
-      "geraadpleegd": "2026-10-29"
+      "geraadpleegd": "2026-10-31",
+      "visible": false,
+      "verborgen_reden": "twijfel"
     },
     {
       "id": "leiden-plantenasiel",
@@ -227,7 +233,9 @@
       "lat": 52.162401,
       "lng": 4.489186,
       "bron_url": "https://www.gagoed.nl/plantenasiel-leiden/",
-      "geraadpleegd": "2026-10-29"
+      "geraadpleegd": "2026-10-31",
+      "visible": false,
+      "verborgen_reden": "niet-gratis"
     },
     {
       "id": "groningen-plantenasiel-050",
@@ -239,7 +247,9 @@
       "lat": 53.210467,
       "lng": 6.570787,
       "bron_url": "https://nlandmaps.com/plantenasiel-groningen-i7973370.html",
-      "geraadpleegd": "2026-10-29"
+      "geraadpleegd": "2026-10-31",
+      "visible": false,
+      "verborgen_reden": "twijfel"
     },
     {
       "id": "eindhoven-de-mortel",
@@ -251,7 +261,9 @@
       "lat": 51.487855,
       "lng": 5.443362,
       "bron_url": "https://www.brierke.nl/202604/plant.html",
-      "geraadpleegd": "2026-10-29"
+      "geraadpleegd": "2026-10-31",
+      "visible": false,
+      "verborgen_reden": "niet-gratis"
     },
     {
       "id": "houten-plantenasiel",
@@ -263,7 +275,9 @@
       "lat": 52.034969,
       "lng": 5.163807,
       "bron_url": "https://www.uitinhouten.nl/organisaties/90/plantenasiel-houten/",
-      "geraadpleegd": "2026-10-29"
+      "geraadpleegd": "2026-10-31",
+      "visible": false,
+      "verborgen_reden": "niet-gratis"
     },
     {
       "id": "middelburg-plantaardig",
@@ -275,7 +289,9 @@
       "lat": 51.497316,
       "lng": 3.611392,
       "bron_url": "https://plantaardigmiddelburg.nl/meer/",
-      "geraadpleegd": "2026-10-29"
+      "geraadpleegd": "2026-10-31",
+      "visible": false,
+      "verborgen_reden": "niet-gratis"
     },
     {
       "id": "delft-mekelpark-ruilkast",
@@ -288,7 +304,8 @@
       "lng": 4.374466,
       "bron_url": "https://plantleven.nl/plantenbieb-plantenasiel-nederland-belgie/",
       "geraadpleegd": "2026-10-29",
-      "visible": false
+      "visible": false,
+      "verborgen_reden": "twijfel"
     },
     {
       "id": "medemblik-plantenbieb",
@@ -300,7 +317,9 @@
       "lat": 52.768549,
       "lng": 5.100918,
       "bron_url": "https://plantleven.nl/plantenbieb-plantenasiel-nederland-belgie/",
-      "geraadpleegd": "2026-10-29"
+      "geraadpleegd": "2026-10-31",
+      "visible": false,
+      "verborgen_reden": "twijfel"
     },
     {
       "id": "groesbeek-happy-stekkie",
@@ -325,7 +344,9 @@
       "lat": 52.078857,
       "lng": 4.350498,
       "bron_url": "https://plantleven.nl/plantenbieb-plantenasiel-nederland-belgie/",
-      "geraadpleegd": "2026-10-29"
+      "geraadpleegd": "2026-10-31",
+      "visible": false,
+      "verborgen_reden": "twijfel"
     },
     {
       "id": "valthermond-plantenbieb",
@@ -349,7 +370,9 @@
       "lat": 52.061124,
       "lng": 4.415825,
       "bron_url": "https://www.bewonersorganisatieleidschenveen.nl/index32022.asp?nr=202204261716",
-      "geraadpleegd": "2026-10-29"
+      "geraadpleegd": "2026-10-31",
+      "visible": false,
+      "verborgen_reden": "twijfel"
     },
     {
       "id": "alkmaar-zadenbieb-centrum",
@@ -385,7 +408,9 @@
       "lat": 53.199542,
       "lng": 5.783833,
       "bron_url": "https://eetbaarfryslan.frl/locatie/zadenbibliotheek-leeuwarden-fonteinland/",
-      "geraadpleegd": "2026-10-29"
+      "geraadpleegd": "2026-10-31",
+      "visible": false,
+      "verborgen_reden": "twijfel"
     },
     {
       "id": "leeuwarden-zadenbieb-dbieb",
@@ -405,11 +430,11 @@
       "type": "zaadbibliotheek",
       "plaats": "Joure",
       "provincie": "Fryslân",
-      "adres": "De Merk 31 (Bibliotheek Joure), Joure",
-      "lat": 52.964846,
-      "lng": 5.801219,
-      "bron_url": "https://www.natuurlijknoorden.nl/friesland/natuur-buiten-friesland/zadenbibliotheek-fryslan/",
-      "geraadpleegd": "2026-10-29"
+      "adres": "De Merk 31 (Bibliotheek Joure), 8501 AN Joure",
+      "lat": 52.964845,
+      "lng": 5.801159,
+      "bron_url": "https://www.bmf.nl/laat-je-inspireren/zadenbibliotheek.html",
+      "geraadpleegd": "2026-10-31"
     },
     {
       "id": "utrecht-zadenbibliotheek",
@@ -417,11 +442,11 @@
       "type": "zaadbibliotheek",
       "plaats": "Utrecht",
       "provincie": "Utrecht",
-      "adres": "2e Polderweg 5 (tuindersvereniging Ons Genot), 3554 GR Utrecht",
+      "adres": "2e Polderweg 5 (tuindersvereniging Ons Genot), 3565 MD Utrecht",
       "lat": 52.124049,
       "lng": 5.081672,
-      "bron_url": "https://zadenbibliotheekutrecht.nl/Contact/",
-      "geraadpleegd": "2026-10-29"
+      "bron_url": "https://ons-genot.nl/zadenbibliotheek-utrecht/",
+      "geraadpleegd": "2026-10-31"
     },
     {
       "id": "bedum-zadenbibliotheek",
