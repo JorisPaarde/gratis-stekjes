@@ -292,25 +292,35 @@ hook_curl() {
 }
 
 # --- init ---
-notice "Hook init → ${HOOK_URL}"
-hook_curl -X POST \
-  -F "action=init" \
-  -F "release=${RELEASE_ID}" \
-  -F "total_size=${SIZE}" \
-  -F "total_sha256=${TOTAL_SHA}" \
-  -F "chunk_count=${CHUNK_COUNT}" \
-  "$HOOK_URL"
-
-if [ "$HOOK_HTTP" != "200" ]; then
+# Init soms 403 vóór de hook (WAF/proxy, body zonder hook-foutcode). Dan opnieuw proberen.
+# Echte token-fout (error=forbidden/https_required) niet herhalen: telt mee in de authfail-limiet.
+init_attempt=0
+while :; do
+  init_attempt=$((init_attempt + 1))
+  notice "Hook init → ${HOOK_URL} (poging ${init_attempt})"
+  hook_curl -X POST \
+    -F "action=init" \
+    -F "release=${RELEASE_ID}" \
+    -F "total_size=${SIZE}" \
+    -F "total_sha256=${TOTAL_SHA}" \
+    -F "chunk_count=${CHUNK_COUNT}" \
+    "$HOOK_URL"
+  [ "$HOOK_HTTP" = "200" ] && break
   error_ann "Hook init HTTP ${HOOK_HTTP}"
-  # Body mag error-code bevatten, geen secrets.
   ok="$(printf '%s' "$HOOK_BODY" | python3 -c 'import json,sys
 try:
- d=json.load(sys.stdin); print(d.get("error","?"))
+ d=json.load(sys.stdin); print(d.get("error","?") if isinstance(d,dict) else "?")
 except Exception:
  print("non-json")' 2>/dev/null || echo non-json)"
-  die "Hook init faalde: ${ok}"
-fi
+  # Serverantwoord (geen secrets) kort loggen zodat een blokkade herkenbaar is.
+  echo "Init-antwoord: $(printf '%s' "$HOOK_BODY" | tr -d '\r' | tr '\n' ' ' | cut -c1-200)"
+  case "$ok" in '?'|non-json|rate_limited|server_error) ;; *) die "Hook init faalde: ${ok}" ;; esac
+  case "$HOOK_HTTP" in 403|429|5??) ;; *) die "Hook init faalde: ${ok}" ;; esac
+  if [ "$init_attempt" -ge 4 ]; then
+    die "Hook init faalde na ${init_attempt} pogingen: ${ok}"
+  fi
+  sleep $((init_attempt * 15))
+done
 
 UPLOAD_ID="$(printf '%s' "$HOOK_BODY" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("upload_id",""))')"
 if [ -z "$UPLOAD_ID" ]; then

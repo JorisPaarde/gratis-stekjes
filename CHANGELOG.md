@@ -61,6 +61,11 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
     deelplekken in of bij …», met link naar plantenasiels).
   - «Heel Utrecht» heet nu «Alle deelplekken in de provincie Utrecht».
 
+### Fixed
+
+- **Deploy (hook):** init probeert bij een 403/429/5xx zonder hook-foutcode (blokkade vóór de hook)
+  tot vier keer opnieuw en logt het serverantwoord. Een echte tokenfout wordt niet herhaald.
+
 ## [0.40.0] - 2026-11-01
 
 ### Changed
