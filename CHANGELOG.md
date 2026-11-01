@@ -9,6 +9,17 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.47.0] - 2026-11-01
+
+### Added
+
+- **Oprichtersbadges:** «Een van de eerste 10» (goud), «eerste 50» (zilver) en «eerste 100»
+  (brons), met eigen SVG's. Ze gaan op volgorde van aanmelden; beheerders tellen niet mee.
+  - Bestaande leden krijgen ze automatisch, want het lidnummer wordt berekend.
+  - Je ziet alleen de hoogste tier, met «Je bent lid nummer 7».
+  - Vertrekt een eerder lid, dan schuift de rest op en gaat niemand achteruit.
+  - Wie later lid wordt, ziet ze niet, want ze zijn niet meer te halen.
+
 ## [0.46.0] - 2026-11-01
 
 ### Changed

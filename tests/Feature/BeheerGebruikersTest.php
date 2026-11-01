@@ -145,7 +145,7 @@ test('admin ziet naam, e-mail, aanmelddatum, aanbod en badges; noindex en no-sto
         ->assertSee('Sabientje')
         ->assertSee('sabientje@example.test')
         ->assertSee('20 okt. 2026')
-        ->assertSee('Badges: Geworteld, Eerste stekje', false)
+        ->assertSee('Badges: Een van de eerste 10, Geworteld, Eerste stekje', false)
         ->assertSeeInOrder(['Sabientje', 'sabientje@example.test', '20 okt. 2026', '2 <span class="muted">/ 2</span>'], false);
     expect((string) $res->headers->get('Cache-Control'))->toContain('no-store');
 
