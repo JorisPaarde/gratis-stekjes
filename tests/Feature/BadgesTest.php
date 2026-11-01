@@ -40,7 +40,7 @@ test('alle badges hebben een plaatje en tellen mee', function () {
     $u = badgeUser('b1@example.com');
     $badges = app(MilestoneService::class)->badgesFor($u);
 
-    expect($badges)->toHaveCount(10);
+    expect($badges)->toHaveCount(11); // incl. oprichtersbadge (eerste 100)
     foreach ($badges as $b) {
         expect(is_file(public_path(ltrim($b['img'], '/'))))->toBeTrue();
     }
@@ -117,4 +117,31 @@ test('beheer kan de pionier verplaatsen', function () {
     $ander = badgeUser('ander@example.com', 'Ander');
     $this->actingAs($lid)->post(route('beheer.users.pionier', $ander))->assertRedirect(route('beheer.login'));
     expect(app(MilestoneService::class)->pionierUserId())->toBe($lid->id);
+});
+
+test('oprichtersbadges: hoogste tier op volgorde van aanmelden, beheerders tellen niet mee', function () {
+    config(['stekjes.admin_dashboard_emails' => ['admin-opr@example.com']]);
+    badgeUser('admin-opr@example.com', 'Joris');
+    $leden = collect(range(1, 12))->map(fn ($i) => badgeUser('opr'.$i.'@example.com', 'Lid'.$i));
+    $service = app(MilestoneService::class);
+
+    $eerste = collect($service->badgesFor($leden[0]))->keyBy('key');
+    expect($service->lidnummer($leden[0]))->toBe(1)
+        ->and($eerste->has('eerste_10'))->toBeTrue()
+        ->and($eerste->has('eerste_50'))->toBeFalse()
+        ->and($eerste['eerste_10']['hint'])->toContain('lid nummer 1');
+
+    $elfde = collect($service->badgesFor($leden[10]))->keyBy('key');
+    expect($service->lidnummer($leden[10]))->toBe(11)
+        ->and($elfde->has('eerste_10'))->toBeFalse()
+        ->and($elfde->has('eerste_50'))->toBeTrue();
+
+    // Vertrekt een eerder lid, dan schuift de rest op (nooit achteruit).
+    $leden[0]->delete();
+    expect($service->lidnummer($leden[10]))->toBe(10);
+
+    expect($service->lidnummer(\App\Models\User::query()->where('email', 'admin-opr@example.com')->first()))->toBeNull();
+    foreach (['eerste_10', 'eerste_50', 'eerste_100'] as $k) {
+        expect(is_file(public_path('assets/badges/'.$k.'.svg')))->toBeTrue();
+    }
 });

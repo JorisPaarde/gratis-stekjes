@@ -137,6 +137,53 @@ final class MilestoneService
         return $aanbod?->user;
     }
 
+    /** Oprichterstiers: de hoogste die je haalt wordt getoond. */
+    public const OPRICHTERS = [10 => 'eerste_10', 50 => 'eerste_50', 100 => 'eerste_100'];
+
+    /**
+     * Lidnummer op volgorde van aanmelden (beheerders tellen niet mee). Kan alleen
+     * lager worden (als eerdere leden vertrekken), dus een verdiende badge blijft.
+     */
+    public function lidnummer(User $user): ?int
+    {
+        try {
+            $admins = AdminDashboard::allowedEmails();
+            if ($admins !== [] && in_array(mb_strtolower((string) $user->email), $admins, true)) {
+                return null;
+            }
+
+            return User::query()
+                ->where('id', '<=', $user->id)
+                ->when($admins !== [], fn ($q) => $q->whereNotIn(DB::raw('LOWER(email)'), $admins))
+                ->count();
+        } catch (\Throwable) {
+            return null;
+        }
+    }
+
+    /** @return array{key: string, label: string, earned: bool, hint: string, img: string, exclusief: bool}|null */
+    private function oprichtersBadge(User $user): ?array
+    {
+        $nr = $this->lidnummer($user);
+        if ($nr === null) {
+            return null;
+        }
+        foreach (self::OPRICHTERS as $grens => $key) {
+            if ($nr <= $grens) {
+                return [
+                    'key' => $key,
+                    'label' => 'Een van de eerste '.$grens,
+                    'earned' => true,
+                    'hint' => 'Je bent lid nummer '.$nr.' van '.config('site.name').'. Dank je wel dat je er vanaf het begin bij bent!',
+                    'img' => '/assets/badges/'.$key.'.svg',
+                    'exclusief' => false,
+                ];
+            }
+        }
+
+        return null;
+    }
+
     /** Voornaam, plek en volledig adres ingevuld (telefoon blijft optioneel). */
     public function profielCompleet(User $user): bool
     {
@@ -235,6 +282,11 @@ final class MilestoneService
                 'exclusief' => true,
             ];
         }
+        // Oprichtersbadge alleen tonen als je hem hebt (later niet meer te halen).
+        if (($oprichter = $this->oprichtersBadge($user)) !== null) {
+            $out[] = $oprichter;
+        }
+
         foreach ($badges as [$key, $label, $earned, $hintJa, $hintNee]) {
             $out[] = [
                 'key' => $key,
