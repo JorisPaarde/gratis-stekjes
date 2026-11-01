@@ -36,6 +36,11 @@ class ProfileController extends Controller
         $data = $request->validate([
             'voornaam' => ['required', 'string', 'max:80', 'not_regex:/@/', function (string $attr, mixed $value, \Closure $fail) use ($request): void {
                 $uid = (int) $request->user()->id;
+                if (is_string($value) && Naam::lijktOpEmail($value, (string) $request->user()->email)) {
+                    $fail(Naam::MELDING_EMAIL);
+
+                    return;
+                }
                 // Alleen bij een andere naam dan je al had: bestaande dubbele namen blijven werken.
                 if (is_string($value) && Naam::normaal($value) !== Naam::normaal((string) $request->user()->name) && Naam::bezet($value, $uid)) {
                     $fail(Naam::melding($value, $uid));
@@ -143,8 +148,12 @@ class ProfileController extends Controller
     {
         $naam = mb_substr(trim((string) $request->query('naam', '')), 0, 80);
         $uid = $request->user()?->id;
-        if ($naam === '' || str_contains($naam, '@')) {
+        if ($naam === '') {
             return response()->json(['vrij' => true]);
+        }
+        $email = $request->user()?->email ?? (is_string($request->query('email')) ? $request->query('email') : null);
+        if (Naam::lijktOpEmail($naam, $email)) {
+            return response()->json(['vrij' => false, 'email' => true, 'melding' => Naam::MELDING_EMAIL, 'suggesties' => []]);
         }
         if ($uid !== null && Naam::normaal($naam) === Naam::normaal((string) $request->user()->name)) {
             return response()->json(['vrij' => true]);

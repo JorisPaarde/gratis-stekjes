@@ -8,6 +8,7 @@ use App\Casts\SafeEncrypted;
 use App\Models\Concerns\HasSafeEncryptedAttributes;
 use App\Notifications\ResetPasswordDutch;
 use App\Notifications\VerifyEmailDutch;
+use App\Support\Naam;
 use App\Support\SafeMail;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -94,7 +95,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function publiekeNaam(): string
     {
         $naam = trim((string) $this->name);
-        if ($naam === '' || str_contains($naam, '@')) {
+        if ($naam === '' || Naam::lijktOpEmail($naam, (string) $this->email)) {
             return 'Lid';
         }
 

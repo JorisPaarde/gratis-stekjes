@@ -168,3 +168,31 @@ test('bestaande dubbele naam blijft werken zolang je hem niet wijzigt', function
     profielPost($this, $tweede, ['voornaam' => 'Jan'])->assertSessionHasNoErrors();
     $this->actingAs($tweede)->getJson(route('naam-check', ['naam' => 'jan']))->assertJson(['vrij' => true]);
 });
+
+test('naam die op een e-mailadres lijkt wordt geweigerd en nooit openbaar getoond', function () {
+    expect(Naam::lijktOpEmail('jan@gmail.com'))->toBeTrue()
+        ->and(Naam::lijktOpEmail('jan gmail.com'))->toBeTrue()
+        ->and(Naam::lijktOpEmail('hotmail'))->toBeTrue()
+        ->and(Naam::lijktOpEmail('jan.devries', 'jan.devries@example.com'))->toBeFalse()
+        ->and(Naam::lijktOpEmail('Jan', 'jan@example.com'))->toBeFalse()
+        ->and(Naam::lijktOpEmail('Bert2', 'bert2@example.com'))->toBeFalse()
+        ->and(Naam::lijktOpEmail('Anne-Marie'))->toBeFalse();
+
+    $this->getJson(route('naam-check', ['naam' => 'piet@example.com']))
+        ->assertOk()->assertJson(['vrij' => false, 'email' => true]);
+
+    $this->from(route('account.registreren'))->post(route('account.registreren'), authFormPayload([
+        'voornaam' => 'piet gmail.com',
+        'email' => 'piet.jansen@example.com',
+        'password' => authTestPassword(),
+        'password_confirmation' => authTestPassword(),
+        'gratis_akkoord' => '1',
+        'privacy' => '1',
+    ]))->assertSessionHasErrors(['voornaam' => Naam::MELDING_EMAIL]);
+
+    $oud = adresUser(['name' => 'kees@example.com', 'email' => 'kees.bos@example.com']);
+    expect($oud->publiekeNaam())->toBe('Lid');
+    profielPost($this, $oud, ['voornaam' => 'kees@example.com'])->assertSessionHasErrors('voornaam');
+    profielPost($this, $oud, ['voornaam' => 'Kees'])->assertSessionHasNoErrors();
+    expect($oud->fresh()->publiekeNaam())->toBe('Kees');
+});

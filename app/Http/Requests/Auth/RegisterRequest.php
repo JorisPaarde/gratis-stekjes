@@ -21,6 +21,11 @@ class RegisterRequest extends FormRequest
     {
         return [
             'voornaam' => ['required', 'string', 'max:80', 'not_regex:/@/', function (string $attr, mixed $value, \Closure $fail): void {
+                if (is_string($value) && Naam::lijktOpEmail($value, is_string($this->input('email')) ? $this->input('email') : null)) {
+                    $fail(Naam::MELDING_EMAIL);
+
+                    return;
+                }
                 if (is_string($value) && Naam::bezet($value)) {
                     $fail(Naam::melding($value));
                 }

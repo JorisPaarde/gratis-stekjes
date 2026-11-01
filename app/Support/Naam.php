@@ -17,6 +17,28 @@ final class Naam
         return mb_strtolower(trim(preg_replace('/\s+/u', ' ', $naam) ?? $naam));
     }
 
+    public const MELDING_EMAIL = 'Gebruik een voornaam of bijnaam, geen e-mailadres. Je naam zien anderen; je e-mailadres blijft privé.';
+
+    /**
+     * Lijkt de naam op een e-mailadres (met @ of een maildomein)? Dan niet als openbare naam.
+     */
+    public static function lijktOpEmail(string $naam, ?string $email = null): bool
+    {
+        $n = self::normaal($naam);
+        if ($n === '') {
+            return false;
+        }
+        if (str_contains($n, '@')) {
+            return true;
+        }
+        // Domein in de naam: gmail.com, hotmail.nl, iets.be …
+        if (preg_match('/\.(com|nl|be|net|org|eu|info|io|de|fr)\b/u', $n) || preg_match('/\b(gmail|hotmail|outlook|live|yahoo|icloud|kpnmail|ziggo|telenet|skynet|proton(mail)?)\b/u', $n)) {
+            return true;
+        }
+
+        return false;
+    }
+
     public static function bezet(string $naam, ?int $behalveUserId = null): bool
     {
         $n = self::normaal($naam);

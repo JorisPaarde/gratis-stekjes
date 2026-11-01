@@ -10,6 +10,7 @@
     function toon(d) {
       if (d.vrij) { box.hidden = true; box.textContent = ''; return; }
       box.hidden = false;
+      if (d.email) { box.textContent = d.melding; return; }
       box.textContent = 'Er is al iemand met deze naam. Kies bijvoorbeeld: ';
       (d.suggesties || []).forEach(function (s) {
         var b = document.createElement('button');
@@ -26,7 +27,8 @@
       timer = setTimeout(function () {
         if (ctrl) ctrl.abort();
         ctrl = new AbortController();
-        fetch(box.getAttribute('data-url') + '?naam=' + encodeURIComponent(v), { headers: { Accept: 'application/json' }, credentials: 'same-origin', signal: ctrl.signal })
+        var mail = document.querySelector('input[name=email]');
+        fetch(box.getAttribute('data-url') + '?naam=' + encodeURIComponent(v) + (mail && mail.value ? '&email=' + encodeURIComponent(mail.value) : ''), { headers: { Accept: 'application/json' }, credentials: 'same-origin', signal: ctrl.signal })
           .then(function (r) { return r.ok ? r.json() : { vrij: true }; })
           .then(toon)
           .catch(function () {});

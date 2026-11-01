@@ -34,7 +34,9 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   letter toe te voegen. Ook bij opslaan wordt dit gecontroleerd, bij registreren en op het profiel
   (`/naam-check`, max. 40 per minuut). Bestaande dubbele namen blijven geldig zolang iemand zijn
   naam niet wijzigt.
-- **Namen:** een voornaam mag geen e-mailadres meer zijn. Bestaande accounts met een e-mailadres
+- **Namen:** een voornaam mag geen e-mailadres meer zijn (geen «@» en geen maildomein zoals
+  «gmail.com»); ook live gemeld tijdens het typen. Het e-mailadres hoort bij het account, maar is
+  nooit de gebruikersnaam. Bestaande accounts met een e-mailadres
   als naam worden openbaar als «Lid» getoond; in /beheer staat erbij «(e-mail als naam)».
   Inbox en gesprek tonen de plaats erbij («Jan · 2011»).
 - Privacyverklaring en AVG-inventaris bijgewerkt voor het adres.
