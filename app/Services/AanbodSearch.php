@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Aanbod;
+use App\Models\User;
+use App\Models\Vereniging;
 use App\Support\Country;
 use App\Support\Geo;
 use Illuminate\Database\Eloquent\Builder;
@@ -81,12 +83,17 @@ final class AanbodSearch
     /** @return Builder<Aanbod> */
     private function baseQuery(?string $typeFilter): Builder
     {
+        $with = [
+            'user' => fn ($q) => $q->where('active', true)->whereNotNull('email_verified_at'),
+            'fotos',
+        ];
+        if (VerenigingService::beschikbaar()) {
+            $with[] = 'user.zichtbareVerenigingen';
+        }
+
         return Aanbod::query()
             ->publiclyListed()
-            ->with([
-                'user' => fn ($q) => $q->where('active', true)->whereNotNull('email_verified_at'),
-                'fotos',
-            ])
+            ->with($with)
             ->whereHas('user', function ($q) {
                 $q->where('active', true)
                     ->whereNotNull('email_verified_at')
@@ -121,7 +128,29 @@ final class AanbodSearch
             'lon' => $user?->lon !== null ? Geo::roundCoord((float) $user->lon) : null,
             'user_id' => (int) $aanbod->user_id,
             'fotos' => $fotos->map(fn ($f) => $f->toPublicArray())->values()->all(),
+            'verenigingen' => $this->verenigingenVoor($user),
         ];
+    }
+
+    /**
+     * Goedgekeurde verenigingen die het lid zelf openbaar heeft gezet.
+     *
+     * @return list<array{naam: string, url: string}>
+     */
+    private function verenigingenVoor(?User $user): array
+    {
+        if ($user === null || ! VerenigingService::beschikbaar()) {
+            return [];
+        }
+        try {
+            $rows = $user->relationLoaded('zichtbareVerenigingen')
+                ? $user->zichtbareVerenigingen
+                : $user->zichtbareVerenigingen()->get();
+        } catch (\Throwable) {
+            return [];
+        }
+
+        return $rows->map(fn (Vereniging $v) => ['naam' => (string) $v->naam, 'url' => $v->url()])->values()->all();
     }
 
     /**

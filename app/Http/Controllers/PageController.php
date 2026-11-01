@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Ervaring;
+use App\Models\Vereniging;
 use App\Services\HomeOverzicht;
 use App\Services\Kennisbank;
 use App\Services\NuTeStekken;
@@ -12,6 +13,7 @@ use App\Services\Organisaties;
 use App\Services\Plantensoorten;
 use App\Services\Steden;
 use App\Services\Stektips;
+use App\Services\VerenigingService;
 use App\Support\CanonicalUrl;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Schema;
@@ -265,6 +267,12 @@ class PageController extends Controller
             ];
         }
 
+        if (VerenigingService::beschikbaar()) {
+            foreach (Vereniging::query()->approved()->whereNull('json_slug')->get() as $v) {
+                $entries[] = ['loc' => $v->url(), 'lastmod' => $v->updated_at?->toDateString() ?? $orgLastmod];
+            }
+        }
+
         $stedenLastmod = $this->lastmodFromFiles([base_path('data/steden.json')]);
         foreach ($steden->all() as $stad) {
             $entries[] = [
@@ -308,6 +316,7 @@ class PageController extends Controller
                         $mtime = $t;
                     }
                 }
+
                 continue;
             }
             $t = @filemtime($path);

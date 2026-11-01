@@ -38,6 +38,7 @@
       <li><a href="{{ route('account.aanbod') }}">Mijn aanbod</a></li>
       <li><a href="{{ route('account.inbox') }}">Inbox</a>@if(($ongelezenBerichten ?? 0) > 0) <span class="ongelezen-badge">{{ $ongelezenBerichten }} nieuw</span>@endif</li>
       <li><a href="{{ route('account.ervaringen') }}">Mijn ervaringen</a></li>
+      <li><a href="{{ route('account.verenigingen') }}">Mijn verenigingen</a> <span class="muted">(volkstuin, tuinvereniging, buurttuin)</span></li>
       <li><a href="{{ route('aanbod') }}">Kaart / zoeken</a></li>
     </ul>
   </div>

@@ -9,6 +9,25 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.43.0] - 2026-11-01
+
+### Added
+
+- **Verenigingen:** leden koppelen hun account aan een volkstuin, tuinvereniging, buurttuin of
+  andere vereniging via **Mijn verenigingen** (max. 5 per lid).
+  - Kiezen uit de lijst: goedgekeurde verenigingen plus de organisaties uit `data/organisaties.json`,
+    die dan direct gekoppeld zijn.
+  - Staat hij er niet bij, dan voegt het lid hem toe met plaats en soort. Hij wacht dan op
+    goedkeuring in /beheer (sectie «Verenigingen van leden»), en de beheerder krijgt een mail.
+  - Lidmaatschap is pas openbaar als het lid het vinkje «Toon bij mijn aanbod» aanzet (standaard
+    uit). Dan staat «Lid van …» bij het aanbod: op de kaart, in de lijst en op stadspagina's.
+- **Verenigingspagina** op `/organisaties/{slug}`: aantal gekoppelde leden (geen namen) en het
+  aanbod van leden die hun lidmaatschap tonen. Bij organisaties uit de vaste lijst komt dit blok
+  op de bestaande pagina. Goedgekeurde verenigingen staan in /organisaties en in de sitemap.
+- **Poster met QR-code** (`/organisaties/{slug}/poster`): printbare A4 voor het clubhuis. De QR
+  wordt in de browser gemaakt met de npm-bibliotheek `qrcode`. /volkstuinen verwijst ernaar.
+- Privacyverklaring, AVG-inventaris, gegevensexport en account wissen bijgewerkt.
+
 ## [0.42.0] - 2026-11-01
 
 ### Added

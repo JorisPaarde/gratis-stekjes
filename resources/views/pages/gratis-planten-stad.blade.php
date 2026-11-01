@@ -49,6 +49,7 @@
           @foreach($aanbod as $item)
             <li class="zoek-item">
               <h3>{{ $item['voornaam'] ?: 'Iemand' }} · {{ $item['type'] === 'ophalen' ? 'zoekt' : 'deelt' }}</h3>
+              @include('partials.lid-van', ['verenigingen' => $item['verenigingen'] ?? []])
               <p>{{ $item['tekst'] }}</p>
               <p class="muted">
                 {{ $item['locatie_label'] }}
