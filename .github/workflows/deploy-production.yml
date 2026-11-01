@@ -1,13 +1,15 @@
-name: Deploy production
+name: Deploy production (legacy SSH, retired)
 
+# RETIRED: oude rsync/SSH-deploy. Faalde sinds 0.36.0 bij elke tag
+# ("protocol version mismatch"); productie loopt via deploy-prod-hook.yml
+# (HTTPS hook, zelfde tag-trigger, incl. migrate + smoke).
+# Geen push-trigger meer; bestand blijft alleen voor referentie (handmatig).
 # Layout (waarden uit GitHub Environment "production" secrets, geen hardcodes):
 #   docroot = DEPLOY_PATH  (cPanel main-domain docroot)
 #   app     = APP_DIR      (buiten webroot)
 # App (zonder public/) → APP_DIR; inhoud public/ → docroot; index.php wijst naar de app
 # en zet public path = docroot (asset()/Vite).
 on:
-  push:
-    tags: ["v*.*.*"]
   workflow_dispatch:
     inputs:
       tag:
