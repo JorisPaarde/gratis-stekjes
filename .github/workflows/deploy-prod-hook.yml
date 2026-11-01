@@ -167,4 +167,3 @@ jobs:
           export IMPORT_ENABLED
           echo "::notice::DEPLOY_IMPORT_ENABLED=${IMPORT_ENABLED}"
           ./scripts/deploy-hook-upload.sh
-
