@@ -13,6 +13,7 @@ use App\Http\Controllers\Account\InboxController;
 use App\Http\Controllers\Account\PasswordController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\StartConversationController;
+use App\Http\Controllers\Account\VerenigingController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Api\DeelplekkenController as ApiDeelplekkenController;
 use App\Http\Controllers\Api\NuTeStekkenController as ApiNuTeStekkenController;
@@ -67,6 +68,9 @@ Route::post('/voor-organisaties/aanmelden', [VoorOrganisatiesController::class, 
     ->name('voor-organisaties.aanmelden.store');
 Route::get('/organisaties', [OrganisatieController::class, 'index'])->name('organisaties.index');
 Route::redirect('/organisaties/plant-voor-plant', '/organisaties', 301);
+Route::get('/organisaties/{slug}/poster', [OrganisatieController::class, 'poster'])
+    ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+    ->name('organisaties.poster');
 Route::get('/organisaties/{slug}', [OrganisatieController::class, 'show'])
     ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
     ->name('organisaties.show');
@@ -211,6 +215,17 @@ Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(functio
         ->whereNumber('ervaring')
         ->name('account.ervaringen.foto');
 
+    Route::get('/account/verenigingen', [VerenigingController::class, 'index'])->name('account.verenigingen');
+    Route::post('/account/verenigingen', [VerenigingController::class, 'store'])
+        ->middleware('throttle:20,1')
+        ->name('account.verenigingen.store');
+    Route::post('/account/verenigingen/{vereniging}', [VerenigingController::class, 'update'])
+        ->whereNumber('vereniging')
+        ->name('account.verenigingen.update');
+    Route::delete('/account/verenigingen/{vereniging}', [VerenigingController::class, 'destroy'])
+        ->whereNumber('vereniging')
+        ->name('account.verenigingen.destroy');
+
     Route::get('/account/inbox', InboxController::class)->name('account.inbox');
     Route::get('/account/bericht-starten', StartConversationController::class)
         ->name('account.bericht-starten');
@@ -256,6 +271,10 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::post('/gebruikers/bevestiging-opnieuw', [BeheerDashboardController::class, 'resendVerification'])
         ->middleware('throttle:10,1')
         ->name('beheer.users.resend-verification');
+    Route::post('/verenigingen/{vereniging}/status', [BeheerDashboardController::class, 'setVerenigingStatus'])
+        ->middleware('throttle:30,1')
+        ->whereNumber('vereniging')
+        ->name('beheer.verenigingen.status');
     Route::post('/gebruikers/{user}/pionier', [BeheerDashboardController::class, 'setPionier'])
         ->middleware('throttle:10,1')
         ->whereNumber('user')

@@ -23,7 +23,8 @@
 
   <h2>Voor het bestuur</h2>
   <p>Een volkstuinvereniging kan zich als deelplek aanmelden met het formulier voor organisaties. Kies bij het type <em>tuinvereniging</em>. Na controle kan de plek komen op de pagina met <a href="{{ route('deelplekken') }}">deelplekken</a> en op de <a href="{{ route('gratis-planten.index') }}">stadspagina’s</a> in de buurt. Het is geen officieel partnerschap, het kost niets en er wordt niets verkocht via deze site.</p>
-  <p>Later komt er voor elke vereniging een eigen link en QR-code om in het clubhuis op te hangen. Die poster bestaat nog niet. Wil je hem krijgen zodra hij klaar is? Mail me dan via <a href="{{ route('contact') }}">contact</a>.</p>
+  <h2>Eigen pagina en poster voor jullie tuin</h2>
+  <p>Leden koppelen hun account aan de vereniging via <a href="{{ route('account.verenigingen') }}">Mijn verenigingen</a>. Staat jullie vereniging er nog niet bij, dan voegt het eerste lid hem toe en kijk ik ernaar. Daarna heeft de vereniging een eigen pagina met het aanbod van leden en een poster met QR-code om in het clubhuis op te hangen.</p>
 
   <x-slot:cta>
     <div class="audience-cta-actions">

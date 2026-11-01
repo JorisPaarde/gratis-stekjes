@@ -265,6 +265,7 @@
           lat: item.lat,
           lon: item.lon,
           afstand_km: item.afstand_km != null ? item.afstand_km : null,
+          verenigingen: item.verenigingen || [],
           items: [],
         };
         groups.push(byUser[key]);
@@ -350,6 +351,19 @@
     );
   }
 
+  function lidVanHtml(verenigingen) {
+    if (!verenigingen || !verenigingen.length) return "";
+    return (
+      '<p class="zoek-lid">Lid van ' +
+      verenigingen
+        .map(function (v) {
+          return '<a href="' + escapeHtml(v.url) + '">' + escapeHtml(v.naam) + "</a>";
+        })
+        .join(", ") +
+      "</p>"
+    );
+  }
+
   function aanbodListItem(group) {
     var li = document.createElement("li");
     li.className = "zoek-item zoek-item--aanbod";
@@ -357,6 +371,7 @@
     var titel = group.voornaam + (group.locatie_label ? " · " + group.locatie_label : "");
     li.innerHTML =
       kopHtml(titel, group.afstand_km) +
+      lidVanHtml(group.verenigingen) +
       '<ul class="zoek-regels">' +
       group.items.map(aanbodRegel).join("") +
       "</ul>" +

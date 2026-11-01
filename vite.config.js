@@ -22,6 +22,8 @@ export default defineConfig({
                 'resources/js/deelplekken.js',
                 'resources/js/stad-kaart.js',
                 'resources/js/plantsoort-autocomplete.js',
+                'resources/js/poster.js',
+                'resources/css/poster.css',
                 'resources/css/plantsoort-autocomplete.css',
             ],
             refresh: true,

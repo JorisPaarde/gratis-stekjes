@@ -105,6 +105,41 @@
     </div>
   @endif
 
+  <h2 id="verenigingen">Verenigingen van leden</h2>
+  @if(count($verenigingen ?? []) === 0)
+    <p class="muted">Nog geen verenigingen.</p>
+  @else
+    <div class="beheer-table-wrap">
+      <table class="beheer-table">
+        <thead>
+          <tr><th>Naam</th><th>Plaats</th><th>Soort</th><th>Leden</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody>
+          @foreach($verenigingen as $v)
+            <tr>
+              <td>@if($v->isApproved())<a href="{{ $v->url() }}">{{ $v->naam }}</a>@else{{ $v->naam }}@endif</td>
+              <td>{{ $v->plaats }}</td>
+              <td>{{ $v->typeLabel() }}</td>
+              <td>{{ $v->leden_count }}</td>
+              <td>{{ ['pending' => 'wacht op controle', 'approved' => 'zichtbaar', 'hidden' => 'verborgen'][$v->status] ?? $v->status }}</td>
+              <td class="beheer-actions">
+                @foreach(['approved' => 'Goedkeuren', 'hidden' => 'Verbergen'] as $status => $label)
+                  @if($v->status !== $status && ! ($status === 'approved' && $v->json_slug))
+                    <form method="post" action="{{ route('beheer.verenigingen.status', $v) }}">
+                      @csrf
+                      <input type="hidden" name="status" value="{{ $status }}">
+                      <button type="submit" class="linkish">{{ $label }}</button>
+                    </form>
+                  @endif
+                @endforeach
+              </td>
+            </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+  @endif
+
   <h2 id="deelplek-aanmeldingen">Deelplek-aanmeldingen</h2>
   <p class="muted">Aanmeldingen via <a href="{{ route('voor-organisaties.aanmelden') }}">/voor-organisaties/aanmelden</a>. Pas na goedkeuring zichtbaar op deelplekken en stadspagina’s. Contact-e-mail is niet publiek.</p>
   @if(count($pendingDeelplekken) === 0)
