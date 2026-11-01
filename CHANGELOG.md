@@ -14,7 +14,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 ### Added
 
 - **Volledig adres in het profiel** (optioneel, versleuteld):
-  - Postcode + huisnummer, met de knop «Zoek mijn adres». Die vult straat en plaats in via de PDOK
+  - Postcode + huisnummer: straat en plaats worden tijdens het typen automatisch ingevuld via de PDOK
     Locatieserver (alleen NL; België vul je zelf in). Lookup-route `/account/adres-zoeken`, max.
     30 per minuut.
   - Het adres is nooit openbaar. Het staat in een gesprek pas na wederzijds «ja», en alleen als

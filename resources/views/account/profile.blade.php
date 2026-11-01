@@ -40,10 +40,7 @@
           <input name="huisnummer" maxlength="12" autocomplete="off" inputmode="text" data-adres-nummer value="{{ old('huisnummer', $user->isUnreadable('adres_huisnummer') ? '' : $user->adres_huisnummer) }}" placeholder="12A">
         </label>
       </div>
-      <p class="adres-zoek-rij">
-        <button type="button" class="btn btn-secondary" data-adres-zoek data-url="{{ route('account.adres-zoeken') }}">Zoek mijn adres</button>
-        <span class="hint" data-adres-status role="status" aria-live="polite"></span>
-      </p>
+      <p class="hint adres-status" data-adres-status data-url="{{ route('account.adres-zoeken') }}" role="status" aria-live="polite"></p>
       <div class="adres-rij">
         <label>Straat
           <input name="straat" maxlength="120" autocomplete="address-line1" data-adres-straat value="{{ old('straat', $user->isUnreadable('adres_straat') ? '' : $user->adres_straat) }}">
@@ -87,30 +84,45 @@
   (function () {
     var root = document.querySelector('[data-adres]');
     if (!root) return;
-    var knop = root.querySelector('[data-adres-zoek]');
     var status = root.querySelector('[data-adres-status]');
+    var url = status.getAttribute('data-url');
     var land = root.querySelector('[data-adres-land]');
     var pc = root.querySelector('[data-adres-postcode]');
     var nr = root.querySelector('[data-adres-nummer]');
     var straat = root.querySelector('[data-adres-straat]');
     var plaats = root.querySelector('[data-adres-plaats]');
-    function sync() { knop.hidden = land.value !== 'NL'; }
-    land.addEventListener('change', sync); sync();
-    function zoek() {
-      if (land.value !== 'NL' || !pc.value.trim() || !nr.value.trim()) return;
-      status.textContent = 'Even zoeken…';
-      var url = knop.getAttribute('data-url') + '?postcode=' + encodeURIComponent(pc.value) + '&huisnummer=' + encodeURIComponent(nr.value);
-      fetch(url, { headers: { Accept: 'application/json' }, credentials: 'same-origin' })
+    var timer = null, laatste = '', bezig = null;
+
+    // Zodra postcode + huisnummer kloppen: automatisch straat en plaats opzoeken (alleen NL).
+    function check() {
+      clearTimeout(timer);
+      var p = pc.value.replace(/\s+/g, '').toUpperCase();
+      var n = nr.value.trim();
+      if (land.value !== 'NL' || !/^\d{4}[A-Z]{2}$/.test(p) || !/^\d{1,5}/.test(n)) { status.textContent = ''; return; }
+      var sleutel = p + '|' + n;
+      if (sleutel === laatste) return;
+      timer = setTimeout(function () { zoek(p, n, sleutel); }, 350);
+    }
+
+    function zoek(p, n, sleutel) {
+      if (bezig) bezig.abort();
+      bezig = new AbortController();
+      status.textContent = 'Adres zoeken…';
+      fetch(url + '?postcode=' + encodeURIComponent(p) + '&huisnummer=' + encodeURIComponent(n), {
+        headers: { Accept: 'application/json' }, credentials: 'same-origin', signal: bezig.signal
+      })
         .then(function (r) { return r.json(); })
         .then(function (d) {
+          laatste = sleutel;
           if (!d.ok) { status.textContent = d.error || 'Niet gevonden. Vul straat en plaats zelf in.'; return; }
           straat.value = d.straat; plaats.value = d.plaats; pc.value = d.postcode;
-          status.textContent = 'Gevonden: ' + d.straat + ', ' + d.plaats + (d.toevoegingen && d.toevoegingen.length ? ' (toevoegingen: ' + d.toevoegingen.join(', ') + ')' : '') + '.';
+          status.textContent = '✓ ' + d.straat + ', ' + d.plaats + (d.toevoegingen && d.toevoegingen.length ? ' · toevoegingen op dit nummer: ' + d.toevoegingen.join(', ') : '');
         })
-        .catch(function () { status.textContent = 'Opzoeken lukt nu niet. Vul straat en plaats zelf in.'; });
+        .catch(function (e) { if (e.name !== 'AbortError') status.textContent = 'Opzoeken lukt nu niet. Vul straat en plaats zelf in.'; });
     }
-    knop.addEventListener('click', zoek);
-    nr.addEventListener('change', function () { if (!straat.value) zoek(); });
+
+    [pc, nr].forEach(function (el) { el.addEventListener('input', check); });
+    land.addEventListener('change', check);
   })();
 </script>
 @endpush
