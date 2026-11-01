@@ -6,7 +6,9 @@ namespace App\Support;
 
 use App\Models\MailLog;
 use App\Models\User;
+use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Schema;
 use Throwable;
@@ -58,6 +60,33 @@ final class SafeMail
             self::afterResponse(static function () use ($email, $notification, $userId, $type): void {
                 try {
                     Notification::route('mail', $email)->notify($notification);
+                    self::record($userId, $type, 'ok', null);
+                } catch (Throwable $e) {
+                    Log::error(SafeMail::safeSummary($e));
+                    self::record($userId, $type, 'fail', SafeMail::safeSummary($e));
+                }
+            });
+
+            return true;
+        } catch (Throwable $e) {
+            Log::error(self::safeSummary($e));
+            self::record($userId, $type, 'fail', self::safeSummary($e));
+
+            return false;
+        }
+    }
+
+    /**
+     * Verstuur een Mailable naar een adres na de response; ok/fail komt in mail_log.
+     */
+    public static function mailable(string $email, Mailable $mailable, ?int $userId = null): bool
+    {
+        $type = class_basename($mailable);
+
+        try {
+            self::afterResponse(static function () use ($email, $mailable, $userId, $type): void {
+                try {
+                    Mail::to($email)->send($mailable);
                     self::record($userId, $type, 'ok', null);
                 } catch (Throwable $e) {
                     Log::error(SafeMail::safeSummary($e));

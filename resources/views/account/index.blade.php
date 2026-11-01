@@ -36,7 +36,7 @@
     <h2>Activiteit</h2>
     <ul class="prose" style="margin:0;padding-left:1.25rem">
       <li><a href="{{ route('account.aanbod') }}">Mijn aanbod</a></li>
-      <li><a href="{{ route('account.inbox') }}">Inbox</a></li>
+      <li><a href="{{ route('account.inbox') }}">Inbox</a>@if(($ongelezenBerichten ?? 0) > 0) <span class="ongelezen-badge">{{ $ongelezenBerichten }} nieuw</span>@endif</li>
       <li><a href="{{ route('account.ervaringen') }}">Mijn ervaringen</a></li>
       <li><a href="{{ route('aanbod') }}">Kaart / zoeken</a></li>
     </ul>

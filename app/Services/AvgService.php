@@ -109,6 +109,7 @@ final class AvgService
                 'email_verified_at' => optional($user->email_verified_at)?->toIso8601String(),
                 'created_at' => optional($user->created_at)?->toIso8601String(),
                 'active' => (bool) $user->active,
+                'berichtmail' => $user->berichtmail !== false,
             ],
             'aanbod' => $aanbod,
             'ervaringen' => $ervaringen,

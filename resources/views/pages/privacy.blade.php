@@ -91,7 +91,7 @@
 
   <h2>Mails en hosting</h2>
   <ul class="list-plain">
-    <li>Bevestigingsmails, wachtwoordreset, e-mailwijziging, “je hebt een nieuw bericht” (zonder berichtinhoud of andermans adres), aanbod-herinneringen en, alleen als ik dat aanzet, een felicitatiemail bij je eerste stekje gaan via mijn eigen mailbox bij de hoster.</li>
+    <li>Bevestigingsmails, wachtwoordreset, e-mailwijziging, “je hebt een nieuw bericht” (met de voornaam van de afzender, zonder berichtinhoud of andermans adres; uit te zetten op je profiel of via de link in de mail), aanbod-herinneringen en, alleen als ik dat aanzet, een felicitatiemail bij je eerste stekje gaan via mijn eigen mailbox bij de hoster.</li>
     <li>Organisatie-aanmelders krijgen een bevestiging; ik krijg een melding. Geen mail naar derden buiten de aanmelder.</li>
     <li>Verbinders die zich aanmelden via de pagina Help mee: dat gaat via contact (jij mailt zelf) of via feedback (alleen opgeslagen, zonder automatische bevestigingsmail).</li>
     <li>Gegevens staan op hosting in de EU die ik beheer. Mail gaat via diezelfde hoster.</li>
@@ -107,6 +107,6 @@
   <p>Gratis planten is een gratis dienst. Ik verkoop niets en neem geen betalingen aan; planten en stekjes geef je onderling weg. Op deze site is Nederlands recht van toepassing. Woon je in België, dan houd je de bescherming die het Belgische recht je dwingend geeft. Ben je het ergens niet mee eens, mail me dan eerst, dan zoek ik met je naar een oplossing.</p>
 
   <h2>Wijzigingen</h2>
-  <p>Versie van deze site: {{ config('site.version') }}. Laatst bijgewerkt: 31 oktober 2026. Bij inhoudelijke wijzigingen werk ik deze pagina bij.</p>
+  <p>Versie van deze site: {{ config('site.version') }}. Laatst bijgewerkt: 1 november 2026. Bij inhoudelijke wijzigingen werk ik deze pagina bij.</p>
 </section>
 @endsection

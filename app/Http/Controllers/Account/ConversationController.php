@@ -18,6 +18,7 @@ class ConversationController extends Controller
     {
         $view = $messaging->conversationView((int) $request->user()->id, $gesprek);
         abort_if($view === null, 404);
+        $messaging->markRead((int) $request->user()->id, $gesprek);
 
         return view('account.gesprek', [
             'title' => 'Gesprek',
