@@ -34,6 +34,7 @@ class ProfileController extends Controller
             'country' => ['required', 'string', Rule::in(Country::codes())],
             'locatie' => ['required', 'string', 'max:120'],
             'telefoon' => ['nullable', 'string', 'max:40', 'regex:/^[0-9+\s().-]{7,40}$/'],
+            'berichtmail' => ['nullable', 'boolean'],
         ], [
             'voornaam.required' => 'Vul een voornaam of bijnaam in.',
             'country.required' => 'Kies een land.',
@@ -70,6 +71,10 @@ class ProfileController extends Controller
             'lat' => Geo::roundCoord((float) $resolved['lat']),
             'lon' => Geo::roundCoord((float) $resolved['lon']),
         ]);
+        // Oude formulieren zonder dit veld laten de instelling ongemoeid.
+        if ($request->has('berichtmail')) {
+            $user->berichtmail = $request->boolean('berichtmail');
+        }
         // Onleesbare telefoon (andere APP_KEY) niet wissen met leeg formulier.
         $user->fillEncryptedIfProvided('telefoon', $data['telefoon'] ?? '');
         $user->save();

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   @php($siteName = config('site.name'))
   @php($noindex = (bool) config('site.noindex') || app()->environment('staging'))
-  @php($accountNoindex = request()->is('account', 'account/*'))
+  @php($accountNoindex = request()->is('account', 'account/*', 'berichtmail/*'))
   @php($documentTitle = \App\Support\SeoTitle::document($__env->yieldContent('title')))
   @php($ogPad = trim($__env->yieldContent('og_image')) ?: (string) config('site.og_image', '/assets/og/standaard.jpg'))
   @php($ogImage = \App\Support\CanonicalUrl::asset($ogPad))
@@ -68,7 +68,11 @@
           <a href="{{ route('beheer.index') }}"><x-icon name="kaart" :size="16" /> Dashboard</a>
         @endcan
         @auth
-          <a href="{{ route('account.index') }}"><x-icon name="gebruiker" :size="16" /> Account</a>
+          @if(($ongelezenBerichten ?? 0) > 0)
+            <a href="{{ route('account.inbox') }}"><x-icon name="gebruiker" :size="16" /> Account <span class="nav-badge" aria-label="{{ $ongelezenBerichten }} ongelezen {{ $ongelezenBerichten === 1 ? 'bericht' : 'berichten' }}">{{ $ongelezenBerichten }}</span></a>
+          @else
+            <a href="{{ route('account.index') }}"><x-icon name="gebruiker" :size="16" /> Account</a>
+          @endif
           <form class="nav-logout" method="post" action="{{ route('account.uitloggen') }}">
             @csrf
             <button type="submit" class="nav-cta">Uitloggen</button>

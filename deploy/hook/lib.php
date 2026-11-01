@@ -65,32 +65,48 @@ function deploy_hook_lsphp_restart_homes(string $appDir, string $docroot, ?strin
 }
 
 /**
- * Herschrijf /home/<user>/.lsphp_restart.txt (inhoud wijzigen, niet alleen mtime).
- * LiteSpeed Detached PHP herstart workers bij een verse marker; pure touch()
- * sloeg op deze hosting meermaals niet aan, handmatig herschrijven wel.
- * Robuust als de map ontbreekt; logt geen secrets.
+ * Herschrijf precies /home/<account>/.lsphp_restart.txt (inhoud wijzigen, niet alleen mtime).
+ * Hosting bevestigt: alleen dit bestand in de account-home, door herschrijven, herstart lsphp.
+ * In-place schrijven (geen unlink): unlink vraagt schrijfrecht op de home-map en liet
+ * het bestand bij een mislukte create weg. Robuust als de map ontbreekt; logt geen secrets.
  */
 function deploy_hook_write_lsphp_restart(string $homeDir): bool
 {
+    return deploy_hook_write_lsphp_restart_file($homeDir)['ok'];
+}
+
+/**
+ * @return array{ok:bool,reason:string}
+ */
+function deploy_hook_write_lsphp_restart_file(string $homeDir): array
+{
     $homeDir = rtrim($homeDir, '/');
     if ($homeDir === '' || $homeDir === '/') {
-        return false;
+        return ['ok' => false, 'reason' => 'no_home'];
     }
-    if (! is_dir($homeDir)) {
-        return false;
+    if (! @is_dir($homeDir)) {
+        return ['ok' => false, 'reason' => 'home_not_dir'];
     }
     $marker = $homeDir.'/.lsphp_restart.txt';
     $payload = 'restart '.gmdate('c').' '.bin2hex(random_bytes(8))."\n";
-    // Nieuw inode + verse inhoud: betrouwbaarder dan touch() op bestaande file.
-    if (is_file($marker) || is_link($marker)) {
-        @unlink($marker);
+    $fh = @fopen($marker, 'c');
+    if ($fh === false) {
+        return ['ok' => false, 'reason' => is_file($marker) ? 'marker_not_writable' : 'home_not_writable'];
     }
-    if (@file_put_contents($marker, $payload, LOCK_EX) === false) {
-        return false;
+    @flock($fh, LOCK_EX);
+    $ok = @ftruncate($fh, 0) && @rewind($fh) && @fwrite($fh, $payload) === strlen($payload) && @fflush($fh);
+    @flock($fh, LOCK_UN);
+    @fclose($fh);
+    if (! $ok) {
+        return ['ok' => false, 'reason' => 'write_failed'];
     }
     @chmod($marker, 0644);
+    @touch($marker);
+    clearstatcache(true, $marker);
 
-    return is_file($marker) && @file_get_contents($marker) === $payload;
+    return @file_get_contents($marker) === $payload
+        ? ['ok' => true, 'reason' => 'written']
+        : ['ok' => false, 'reason' => 'verify_failed'];
 }
 
 /**
@@ -102,20 +118,17 @@ function deploy_hook_touch_lsphp_restart(string $homeDir): bool
 }
 
 /**
- * Schrijf herstartmarkers in alle kandidaat-homes. True als minstens één lukte.
+ * Schrijf de herstartmarker in de account-home (config `home_dir`, anders dirname(app_dir),
+ * bv. /home/gratisplanten). Alleen dat ene bestand; geen gok-kandidaten meer.
  *
- * @return array{ok:bool,homes:list<string>}
+ * @return array{ok:bool,homes:list<string>,reason:string}
  */
 function deploy_hook_write_lsphp_restart_markers(string $appDir, string $docroot, ?string $configuredHome = null): array
 {
-    $written = [];
-    foreach (deploy_hook_lsphp_restart_homes($appDir, $docroot, $configuredHome) as $home) {
-        if (deploy_hook_write_lsphp_restart($home)) {
-            $written[] = $home;
-        }
-    }
+    $home = deploy_hook_resolve_home_dir($appDir, $configuredHome);
+    $res = deploy_hook_write_lsphp_restart_file($home);
 
-    return ['ok' => $written !== [], 'homes' => $written];
+    return ['ok' => $res['ok'], 'homes' => $res['ok'] ? [$home] : [], 'reason' => $res['reason']];
 }
 
 /**
@@ -1530,6 +1543,7 @@ function deploy_hook_action_finish(
         'method' => $method,
         'release' => $release,
         'lsphp_restart' => $restart['ok'],
+        'lsphp_restart_reason' => $restart['reason'] ?? '',
     ];
 }
 
@@ -1662,6 +1676,7 @@ function deploy_hook_handle(array $config, ?array $post = null, ?array $files = 
             'body' => [
                 'ok' => $restart['ok'],
                 'lsphp_restart' => $restart['ok'],
+                'reason' => $restart['reason'] ?? '',
                 // Geen absolute home-paden in response (hosting-layout blijft intern).
             ],
         ];

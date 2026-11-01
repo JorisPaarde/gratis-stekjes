@@ -381,3 +381,29 @@
   .stektips-entries .stektips-entry-img { width: 100%; margin: 0 0 0.5rem; height: 6.5rem; }
   .stektips-entries .stektips-entry-credit { font-size: 0.7rem; }
 }
+
+/* Soortpagina: eerst kort overzicht en stappen, daarna de naslagtabel. */
+.stektips-snel {
+  display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0 0;
+}
+.stektips-snel div {
+  background: var(--bg-mint, #eef6ea); border-radius: .6rem; padding: .45rem .75rem; min-width: 8rem; flex: 1 1 10rem;
+}
+.stektips-snel dt { font-size: .78rem; font-weight: 700; color: var(--leaf-deep, #163820); margin: 0; }
+.stektips-snel dd { margin: .1rem 0 0; }
+.stektips-stappen { counter-reset: stap; list-style: none; padding: 0; margin: .75rem 0 1.5rem; }
+.stektips-stappen li {
+  counter-increment: stap; position: relative; padding: 0 0 0 2.6rem; margin: 0 0 .9rem; min-height: 1.9rem;
+}
+.stektips-stappen li::before {
+  content: counter(stap); position: absolute; left: 0; top: -.1rem;
+  width: 1.9rem; height: 1.9rem; border-radius: 50%; display: grid; place-items: center;
+  background: var(--forest, #1f4d2b); color: #fff; font-weight: 700; font-size: .95rem;
+}
+.stektips-stappen strong { color: var(--forest-deep, #163820); }
+/* Lopende tekst in een leesbare kolom (±70 tekens); kaarten, tabellen en foto's blijven breed. */
+.stektips-page .stektips-artikel-body,
+.stektips-page .stektips-stappen,
+.stektips-artikel > .section-intro {
+  max-width: 42rem;
+}

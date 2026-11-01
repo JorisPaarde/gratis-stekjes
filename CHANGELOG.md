@@ -9,6 +9,65 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.41.0] - 2026-11-01
+
+### Changed
+
+- **/gratis-planten:** zoekveld dat de stedenlijst filtert (zonder treffer: «Staat jouw plaats er
+  niet bij? Zoek op de kaart», met je zoekterm), spronglinks Nederland en België, en links met
+  alleen de stadsnaam (volledige titel als `title`) met een groter tikvlak.
+- **Stadspagina's:**
+  - Bij geen aanbod een knop «Zoek in de omgeving» (/aanbod?q=stad) naast aanbieden.
+  - Legenda en uitleg bij de kaart: die toont ook vaste deelplekken.
+  - Afstanden «van het centrum».
+  - Het aparte plantenasielblok bovenaan is opgegaan in het deelplekkenblok («Plantenasiel en
+    deelplekken in of bij …», met link naar plantenasiels).
+  - «Heel Utrecht» heet nu «Alle deelplekken in de provincie Utrecht».
+
+### Fixed
+
+- **Deploy (hook):** init probeert bij een 403/429/5xx zonder hook-foutcode (blokkade vóór de hook)
+  tot vier keer opnieuw en logt het serverantwoord. Een echte tokenfout wordt niet herhaald.
+
+## [0.40.0] - 2026-11-01
+
+### Changed
+
+- **Soortpagina's (alle 106): eerst hoe je het doet.** Onder de foto een strook «In het kort»
+  (methode, moeilijkheid, beste tijd) en daarna genummerde stappen uit de bestaande velden:
+  moment, wat je nodig hebt, knippen/delen/zaaien, laten wortelen, verzorgen, klaar om te delen.
+  Stapnamen volgen het werkwoord (stekken, scheuren, zaaien). De uitgebreide uitleg volgt daarna,
+  de naslagtabel staat onder «Alles op een rij», en bewortelen en aanbod komen pas na de
+  instructie.
+- **Stektip-artikelen:** het blok «Natuurlijk bewortelen» en de aanbodknop staan onder de tekst in
+  plaats van ervoor. Labels «Geschikt voor beginners», «Plek: Binnen en buiten» en «Beste periode:
+  lente en zomer» in plaats van interne velden.
+- Lopende tekst op stektip-pagina's in een leeskolom van ±70 tekens.
+
+## [0.39.0] - 2026-11-01
+
+### Added
+
+- **Teller voor ongelezen berichten** (nr. 17): oranje getal bij «Account» in het menu (linkt dan naar
+  de inbox), «2 nieuw» per gesprek in de inbox en bij Inbox op Mijn account. Een gesprek openen
+  markeert de berichten van de ander als gelezen. Inbox staat op nieuwste bericht.
+- **Berichtmail uitzetten** (nr. 19): vinkje op het profiel en een link onderaan elke berichtmail
+  (ondertekend, zonder inloggen; de link toont eerst een knop, zodat mailscanners niets uitzetten).
+  Ook als `List-Unsubscribe`-header. Nieuwe kolom `users.berichtmail` (standaard aan), in de
+  gegevensexport.
+
+### Changed
+
+- **Berichtmail** met de voornaam van de afzender in onderwerp en tekst, waar het gesprek over gaat
+  (plantnaam of aanbodtekst) en een directe link naar het gesprek. Nog steeds zonder berichtinhoud
+  of contactgegevens.
+- **Bundelen** (nr. 18): na een mail volgt geen nieuwe zolang de ontvanger het gesprek niet opende
+  (maximaal 24 uur).
+- **Mail-log** (nr. 16): berichtmails gaan via `SafeMail` en komen met ok/mislukt in `mail_log`;
+  ze worden na de response verstuurd. Eerder werd een mislukte mail stil genegeerd.
+- Migratie zet `read_at` van bestaande berichten op hun verzendtijd, zodat de teller op 0 begint.
+- Privacyverklaring en AVG-inventaris bijgewerkt.
+
 ## [0.38.1] - 2026-11-01
 
 ### Changed

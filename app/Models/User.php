@@ -31,6 +31,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'lat',
         'lon',
         'country',
+        'berichtmail',
     ];
 
     protected $hidden = [
@@ -45,6 +46,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'active' => 'boolean',
+            'berichtmail' => 'boolean',
             'telefoon' => \App\Casts\SafeEncrypted::class,
             'lat' => 'float',
             'lon' => 'float',

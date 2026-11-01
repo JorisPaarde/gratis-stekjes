@@ -292,25 +292,35 @@ hook_curl() {
 }
 
 # --- init ---
-notice "Hook init → ${HOOK_URL}"
-hook_curl -X POST \
-  -F "action=init" \
-  -F "release=${RELEASE_ID}" \
-  -F "total_size=${SIZE}" \
-  -F "total_sha256=${TOTAL_SHA}" \
-  -F "chunk_count=${CHUNK_COUNT}" \
-  "$HOOK_URL"
-
-if [ "$HOOK_HTTP" != "200" ]; then
+# Init soms 403 vóór de hook (WAF/proxy, body zonder hook-foutcode). Dan opnieuw proberen.
+# Echte token-fout (error=forbidden/https_required) niet herhalen: telt mee in de authfail-limiet.
+init_attempt=0
+while :; do
+  init_attempt=$((init_attempt + 1))
+  notice "Hook init → ${HOOK_URL} (poging ${init_attempt})"
+  hook_curl -X POST \
+    -F "action=init" \
+    -F "release=${RELEASE_ID}" \
+    -F "total_size=${SIZE}" \
+    -F "total_sha256=${TOTAL_SHA}" \
+    -F "chunk_count=${CHUNK_COUNT}" \
+    "$HOOK_URL"
+  [ "$HOOK_HTTP" = "200" ] && break
   error_ann "Hook init HTTP ${HOOK_HTTP}"
-  # Body mag error-code bevatten, geen secrets.
   ok="$(printf '%s' "$HOOK_BODY" | python3 -c 'import json,sys
 try:
- d=json.load(sys.stdin); print(d.get("error","?"))
+ d=json.load(sys.stdin); print(d.get("error","?") if isinstance(d,dict) else "?")
 except Exception:
  print("non-json")' 2>/dev/null || echo non-json)"
-  die "Hook init faalde: ${ok}"
-fi
+  # Serverantwoord (geen secrets) kort loggen zodat een blokkade herkenbaar is.
+  echo "Init-antwoord: $(printf '%s' "$HOOK_BODY" | tr -d '\r' | tr '\n' ' ' | cut -c1-200)"
+  case "$ok" in '?'|non-json|rate_limited|server_error) ;; *) die "Hook init faalde: ${ok}" ;; esac
+  case "$HOOK_HTTP" in 403|429|5??) ;; *) die "Hook init faalde: ${ok}" ;; esac
+  if [ "$init_attempt" -ge 4 ]; then
+    die "Hook init faalde na ${init_attempt} pogingen: ${ok}"
+  fi
+  sleep $((init_attempt * 15))
+done
 
 UPLOAD_ID="$(printf '%s' "$HOOK_BODY" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("upload_id",""))')"
 if [ -z "$UPLOAD_ID" ]; then
@@ -356,7 +366,9 @@ except Exception:
   die "Hook finish faalde (HTTP ${HOOK_HTTP}: ${err})."
 fi
 METHOD="$(printf '%s' "$HOOK_BODY" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("method",""))' 2>/dev/null || true)"
-notice "Hook finish OK (extract=${METHOD:-?})."
+FINISH_RESTART="$(printf '%s' "$HOOK_BODY" | python3 -c 'import json,sys
+d=json.load(sys.stdin); print("%s/%s" % (d.get("lsphp_restart","?"), d.get("lsphp_restart_reason","?")))' 2>/dev/null || echo '?/?')"
+notice "Hook finish OK (extract=${METHOD:-?}, lsphp-marker=${FINISH_RESTART})."
 
 # Soft hook-call: zet HOOK_HTTP/HOOK_BODY, faalt nooit hard (smoke-retry pad).
 hook_curl_soft() {
@@ -377,10 +389,19 @@ hook_curl_soft() {
 # LiteSpeed: herschrijf ~/.lsphp_restart.txt in account-home (inhoud, niet alleen mtime).
 # Finish doet dit al met een nieuwe hook; hier opnieuw via action of docroot-endpoint
 # (vangnet als de server nog een oude hook met touch() draait).
+restart_reason() {
+  python3 -c 'import json,sys
+try:
+ d=json.load(sys.stdin); print(d.get("reason") or d.get("error") or "-")
+except Exception:
+ print("non-json")' 2>/dev/null || echo "?"
+}
+
 trigger_lsphp_restart() {
-  local ok=0 body_ok
+  local ok=0 body_ok diag=""
   # 1) Hook-action (na self-update van lib.php).
   hook_curl_soft -X POST -F "action=lsphp_restart" "$HOOK_URL"
+  diag="hook=HTTP ${HOOK_HTTP:-000}/$(printf '%s' "${HOOK_BODY:-}" | restart_reason)"
   if [ "${HOOK_HTTP:-}" = "200" ]; then
     body_ok="$(printf '%s' "${HOOK_BODY:-}" | python3 -c 'import json,sys
 try:
@@ -401,6 +422,7 @@ except Exception:
       -H "Accept: application/json" \
       "${BASE_URL}/deploy-lsphp-restart.php" 2>/dev/null)
     set -e
+    diag="${diag}; endpoint=HTTP ${code:-000}/$(restart_reason < "$tmp")"
     if [ "${code:-}" = "200" ]; then
       body_ok="$(python3 -c 'import json,sys
 try:
@@ -414,14 +436,14 @@ except Exception:
     rm -f "$tmp"
   fi
   if [ "$ok" -eq 1 ]; then
-    notice "lsphp-restart marker herschreven."
+    notice "lsphp-restart marker herschreven (${diag})."
   else
-    notice "lsphp-restart marker: geen bevestiging (ga door; smoke-retries volgen)."
+    notice "lsphp-restart marker: geen bevestiging (${diag}); smoke-retries volgen."
   fi
   return 0
 }
 
-LSPHP_WAIT="${LSPHP_RESTART_WAIT_SECS:-8}"
+LSPHP_WAIT="${LSPHP_RESTART_WAIT_SECS:-20}"
 ver="$(tr -d '[:space:]' < "${ROOT}/VERSION")"
 EXPECTED_DEELPLEKKEN="$(python3 -c 'import json,sys
 p="'"${ROOT}"'/data/deelplekken.json"
@@ -438,8 +460,11 @@ print(sum(1 for r in (d.get("plekken") or []) if isinstance(r,dict) and vis(r)))
 
 wait_for_footer_version() {
   local label=$1
-  local max_attempts="${SMOKE_VERSION_ATTEMPTS:-6}"
+  # Na een marker heeft LiteSpeed tijd nodig om workers te recyclen: wacht tot ~3 min en
+  # herschrijf de marker niet elke poging (elke herschrijving start de recycle opnieuw).
+  local max_attempts="${SMOKE_VERSION_ATTEMPTS:-18}"
   local sleep_secs="${SMOKE_VERSION_SLEEP_SECS:-10}"
+  local restart_every="${LSPHP_RESTART_EVERY:-4}"
   local attempt=1 code tmp
   while [ "$attempt" -le "$max_attempts" ]; do
     tmp="$(mktemp)"
@@ -460,8 +485,12 @@ wait_for_footer_version() {
     if [ "$attempt" -ge "$max_attempts" ]; then
       break
     fi
-    notice "Footer-versie ${ver} nog niet zichtbaar (${label}) — lsphp-restart + ${sleep_secs}s…"
-    trigger_lsphp_restart
+    if [ $(( attempt % restart_every )) -eq 1 ] || [ "$restart_every" -le 1 ]; then
+      notice "Footer-versie ${ver} nog niet zichtbaar (${label}) — lsphp-restart + ${sleep_secs}s…"
+      trigger_lsphp_restart
+    else
+      echo "Footer-versie ${ver} nog niet zichtbaar (${label}) — wacht ${sleep_secs}s op recycle…"
+    fi
     sleep "$sleep_secs"
     attempt=$((attempt + 1))
   done

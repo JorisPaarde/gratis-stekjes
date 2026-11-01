@@ -20,14 +20,22 @@ class InboxController extends Controller
             ->where(function ($q) use ($uid) {
                 $q->where('user_a_id', $uid)->orWhere('user_b_id', $uid);
             })
+            ->withMax('messages as laatste_bericht_at', 'created_at')
+            ->withCount(['messages as ongelezen' => function ($q) use ($uid) {
+                $q->whereNull('read_at')->where('sender_id', '!=', $uid);
+            }])
             ->latest()
             ->get()
+            // Gesprek met het nieuwste bericht bovenaan; zonder berichten op aanmaakdatum.
+            ->sortByDesc(fn (Conversation $c) => (string) ($c->laatste_bericht_at ?? $c->created_at))
+            ->values()
             ->map(function (Conversation $c) use ($uid) {
                 $other = (int) $c->user_a_id === $uid ? $c->userB : $c->userA;
 
                 return [
                     'id' => $c->id,
                     'andere_naam' => $other?->name ?? 'Onbekend',
+                    'ongelezen' => (int) ($c->ongelezen ?? 0),
                 ];
             });
 

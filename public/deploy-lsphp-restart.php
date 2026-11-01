@@ -54,7 +54,9 @@ try {
             $configuredHome,
         );
         $ok = $restart['ok'];
+        $reason = $restart['reason'] ?? '';
     } else {
+        $reason = 'legacy_lib';
         $ok = false;
         $homes = [];
         $homes[deploy_hook_resolve_home_dir($config['app_dir'], $configuredHome)] = true;
@@ -65,9 +67,7 @@ try {
             }
             $marker = $home.'/.lsphp_restart.txt';
             $payload = 'restart '.gmdate('c').' '.bin2hex(random_bytes(8))."\n";
-            if (is_file($marker) || is_link($marker)) {
-                @unlink($marker);
-            }
+            // In-place herschrijven (geen unlink; zie lib.php).
             if (@file_put_contents($marker, $payload, LOCK_EX) !== false) {
                 $ok = true;
             }
@@ -103,6 +103,7 @@ try {
     deploy_hook_json(200, [
         'ok' => $ok,
         'lsphp_restart' => $ok,
+        'reason' => $reason,
     ]);
 } catch (Throwable $e) {
     deploy_hook_json(500, ['ok' => false, 'error' => 'server_error']);
