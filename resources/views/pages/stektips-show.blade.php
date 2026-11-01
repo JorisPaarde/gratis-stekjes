@@ -28,6 +28,32 @@
   ];
   $waarschuwing = trim((string) ($soort['waarschuwing'] ?? ''));
   $categorie = (string) ($soort['categorie'] ?? '');
+  $txt = static fn (string $key): string => trim((string) ($soort[$key] ?? ''));
+  $hulpmiddel = $txt('hulpmiddel');
+  $nodig = $txt('welk_hout');
+  if ($hulpmiddel !== '' && ! preg_match('/^niet nodig/i', $hulpmiddel)) {
+      $nodig .= ($nodig !== '' ? '. ' : '').'Handig: '.$hulpmiddel;
+  }
+  $verzorgen = trim(implode(' ', array_filter([
+      $txt('licht') !== '' ? 'Licht: '.$txt('licht').'.' : '',
+      $txt('water') !== '' ? 'Water: '.$txt('water').'.' : '',
+  ])));
+  $werkwoord = trim((string) ($soort['seo_werkwoord'] ?? '')) ?: 'stekken';
+  $labels = [
+      'scheuren' => ['Kies het moment', 'Kies de plant', 'Deel de plant', 'Plant de delen', 'Verzorg', 'Klaar om te delen'],
+      'zaaien' => ['Kies het moment', 'Kies het zaad', 'Zaai', 'Laat kiemen', 'Verzorg', 'Klaar om te delen'],
+  ][$werkwoord] ?? ['Kies het moment', 'Kies je stek', 'Knip de stek', 'Laat wortelen', 'Verzorg', 'Klaar om te delen'];
+  // Stappen in de volgorde waarin je ze doet; lege velden vallen weg.
+  $stappen = array_values(array_filter(array_map(
+      static fn (string $titel, string $tekst): array => ['titel' => $titel, 'tekst' => $tekst],
+      $labels,
+      [$txt('wanneer'), $nodig, $txt('lengte_snit'), $txt('water_grond'), $verzorgen, $txt('klaar')],
+  ), static fn (array $stap): bool => $stap['tekst'] !== ''));
+  $snel = array_values(array_filter([
+      ['label' => 'Methode', 'waarde' => $txt('methode')],
+      ['label' => 'Moeilijkheid', 'waarde' => $txt('kans')],
+      ['label' => 'Beste tijd', 'waarde' => $txt('wanneer')],
+  ], static fn (array $r): bool => $r['waarde'] !== ''));
 @endphp
 
 @section('content')
@@ -63,27 +89,22 @@
     </aside>
   @endif
 
-  @include('partials.stektips-seo-ctas', ['seoCtas' => $seoCtas ?? []])
+  @if($snel !== [])
+    <dl class="stektips-snel" aria-label="In het kort">
+      @foreach($snel as $r)
+        <div><dt>{{ $r['label'] }}</dt><dd>{{ $r['waarde'] }}</dd></div>
+      @endforeach
+    </dl>
+  @endif
 
-  <div class="table-scroll" role="region" aria-label="Stektips in een overzicht" tabindex="0">
-    <table class="table stektips-table">
-      <tbody>
-        @foreach($fields as $key => $label)
-          @php
-            $waarde = $soort[$key] ?? null;
-            $isEmpty = ! is_string($waarde) && ! is_numeric($waarde)
-                || (is_string($waarde) && trim($waarde) === '');
-          @endphp
-          @if(! $isEmpty)
-            <tr>
-              <th scope="row">{{ $label }}</th>
-              <td>{{ $waarde }}</td>
-            </tr>
-          @endif
-        @endforeach
-      </tbody>
-    </table>
-  </div>
+  @if($stappen !== [])
+    <h2 id="stappen">Stap voor stap</h2>
+    <ol class="stektips-stappen">
+      @foreach($stappen as $stap)
+        <li><strong>{{ $stap['titel'] }}.</strong> {{ $stap['tekst'] }}</li>
+      @endforeach
+    </ol>
+  @endif
 
   @if(!empty($soort['inhoud']) && is_array($soort['inhoud']))
     <div class="stektips-artikel-body stektips-soort-inhoud">
@@ -109,6 +130,29 @@
       @endforeach
     </div>
   @endif
+
+  <h2 class="stektips-related-title">Alles op een rij</h2>
+  <div class="table-scroll" role="region" aria-label="Stektips in een overzicht" tabindex="0">
+    <table class="table stektips-table">
+      <tbody>
+        @foreach($fields as $key => $label)
+          @php
+            $waarde = $soort[$key] ?? null;
+            $isEmpty = ! is_string($waarde) && ! is_numeric($waarde)
+                || (is_string($waarde) && trim($waarde) === '');
+          @endphp
+          @if(! $isEmpty)
+            <tr>
+              <th scope="row">{{ $label }}</th>
+              <td>{{ $waarde }}</td>
+            </tr>
+          @endif
+        @endforeach
+      </tbody>
+    </table>
+  </div>
+
+  @include('partials.stektips-seo-ctas', ['seoCtas' => $seoCtas ?? []])
 
   @if(!empty($verwanten))
     <h2 class="stektips-related-title">Verwante soorten</h2>

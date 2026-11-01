@@ -40,27 +40,17 @@
       </li>
     @endif
     @if(!empty($artikel['niveau']))
-      <li><span class="stektips-meta-label">Niveau</span> {{ $artikel['niveau'] }}</li>
+      <li><span class="stektips-meta-label">Geschikt voor</span> {{ ['beginner' => 'beginners', 'gevorderd' => 'gevorderden'][$artikel['niveau']] ?? $artikel['niveau'] }}</li>
     @endif
     @if(!empty($artikel['locatie']))
-      <li><span class="stektips-meta-label">Plek</span> {{ $artikel['locatie'] }}</li>
+      <li><span class="stektips-meta-label">Plek</span> {{ ['binnen' => 'Binnen', 'buiten' => 'Buiten', 'beide' => 'Binnen en buiten'][$artikel['locatie']] ?? $artikel['locatie'] }}</li>
     @endif
     @if(!empty($artikel['seizoenen']))
-      <li><span class="stektips-meta-label">Seizoen</span> {{ implode(', ', $artikel['seizoenen']) }}</li>
+      @php $seizoenen = array_values($artikel['seizoenen']); @endphp
+      <li><span class="stektips-meta-label">Beste periode</span> {{ count($seizoenen) >= 4 ? 'het hele jaar' : (count($seizoenen) > 1 ? implode(', ', array_slice($seizoenen, 0, -1)).' en '.end($seizoenen) : $seizoenen[0]) }}</li>
     @endif
   </ul>
 
-  @if($duurzamer)
-    <aside class="soft-card stektips-duurzamer" role="note">
-      <h2 class="stektips-related-title">Duurzamer alternatief</h2>
-      <p>
-        Liever geen kunstmatig stekpoeder gebruiken?
-        <a href="{{ route('stektips.artikel', ['slug' => $duurzamer['slug']]) }}">{{ $duurzamer['titel'] }}</a>
-      </p>
-    </aside>
-  @endif
-
-  @include('partials.stektips-seo-ctas', ['seoCtas' => $seoCtas ?? []])
 
   <div class="stektips-artikel-body">
     @foreach($artikel['inhoud'] ?? [] as $block)
@@ -84,6 +74,18 @@
       @endif
     @endforeach
   </div>
+
+  @if($duurzamer)
+    <aside class="soft-card stektips-duurzamer" role="note">
+      <h2 class="stektips-related-title">Duurzamer alternatief</h2>
+      <p>
+        Liever geen kunstmatig stekpoeder gebruiken?
+        <a href="{{ route('stektips.artikel', ['slug' => $duurzamer['slug']]) }}">{{ $duurzamer['titel'] }}</a>
+      </p>
+    </aside>
+  @endif
+
+  @include('partials.stektips-seo-ctas', ['seoCtas' => $seoCtas ?? []])
 
   @if(!empty($kinderen))
     <h2 class="stektips-related-title">Meer over dit onderwerp</h2>

@@ -9,6 +9,21 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.40.0] - 2026-11-01
+
+### Changed
+
+- **Soortpagina's (alle 106): eerst hoe je het doet.** Onder de foto een strook «In het kort»
+  (methode, moeilijkheid, beste tijd) en daarna genummerde stappen uit de bestaande velden:
+  moment, wat je nodig hebt, knippen/delen/zaaien, laten wortelen, verzorgen, klaar om te delen.
+  Stapnamen volgen het werkwoord (stekken, scheuren, zaaien). De uitgebreide uitleg volgt daarna,
+  de naslagtabel staat onder «Alles op een rij», en bewortelen en aanbod komen pas na de
+  instructie.
+- **Stektip-artikelen:** het blok «Natuurlijk bewortelen» en de aanbodknop staan onder de tekst in
+  plaats van ervoor. Labels «Geschikt voor beginners», «Plek: Binnen en buiten» en «Beste periode:
+  lente en zomer» in plaats van interne velden.
+- Lopende tekst op stektip-pagina's in een leeskolom van ±70 tekens.
+
 ## [0.39.0] - 2026-11-01
 
 ### Added
