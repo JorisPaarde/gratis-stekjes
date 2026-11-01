@@ -167,3 +167,35 @@ jobs:
           export IMPORT_ENABLED
           echo "::notice::DEPLOY_IMPORT_ENABLED=${IMPORT_ENABLED}"
           ./scripts/deploy-hook-upload.sh
+
+      - name: Eenmalige beheerder-toekenning (alleen als secret gezet)
+        if: steps.chk.outputs.skip != '1'
+        env:
+          GRANT_HASH: ${{ secrets.GP_ADMIN_GRANT_EMAIL_SHA256 }}
+        run: |
+          set -euo pipefail
+          if [ -z "${GRANT_HASH:-}" ]; then
+            echo "::notice::Geen GP_ADMIN_GRANT_EMAIL_SHA256 — beheerder-toekenning overgeslagen."
+            exit 0
+          fi
+          echo "::add-mask::${GRANT_HASH}"
+          tmp="$(mktemp)"
+          code="$(curl -sS -o "$tmp" -w '%{http_code}' --connect-timeout 15 --max-time 60 \
+            -X POST -H "Authorization: Bearer ${DEPLOY_TOKEN}" -H "Accept: application/json" \
+            --data-urlencode "email_sha256=${GRANT_HASH}" \
+            "${PROD_BASE_URL%/}/deploy/admin-grant" || true)"
+          # Alleen aantallen/vlaggen tonen; nooit e-mail of id.
+          python3 - "$tmp" "$code" <<'PY'
+          import json, sys
+          path, code = sys.argv[1], sys.argv[2]
+          try:
+              d = json.load(open(path))
+          except Exception:
+              d = {}
+          keys = ("ok", "error", "matches", "granted", "already_admin", "email_verified")
+          print("admin-grant HTTP %s: %s" % (code, {k: d.get(k) for k in keys if k in d}))
+          PY
+          rm -f "$tmp"
+          if [ "$code" != "200" ]; then
+            echo "::warning::Beheerder-toekenning niet gelukt (HTTP ${code}); deploy zelf is wel klaar."
+          fi

@@ -11,6 +11,14 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ## [0.47.1] - 2026-11-01
 
+### Added
+
+- **Beheerder per account:** kolom `users.is_admin` (standaard uit). Een geverifieerd account met
+  `is_admin` krijgt toegang tot /beheer, naast `ADMIN_DASHBOARD_EMAILS`. Zetten gaat via een
+  eenmalige, idempotente stap in de prod-deploy: `POST /deploy/admin-grant` (DEPLOY_TOKEN) met alleen
+  de sha256 van het genormaliseerde e-mailadres uit het secret `GP_ADMIN_GRANT_EMAIL_SHA256`; alleen
+  bij precies één match wordt de vlag gezet. Log/response bevat alleen aantallen, geen persoonsgegevens.
+
 ### Fixed
 
 - **Beheermenu op iPhone:** de tabstrip in /beheer ging op iOS Safari op en neer bij het scrollen.
