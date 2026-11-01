@@ -8,6 +8,7 @@ use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\ShareErrorsFromSessionWhenPresent;
 use App\Http\Middleware\StartSessionWhenNeeded;
 use App\Http\Middleware\StripIndexPhpRedirect;
+use App\Http\Middleware\UpdateLastSeen;
 use App\Http\Middleware\VerifyCsrfTokenWhenSession;
 use App\Support\ThrottleMessage;
 use Illuminate\Foundation\Application;
@@ -36,6 +37,7 @@ return Application::configure(basePath: dirname(__DIR__))
             ValidateCsrfToken::class => VerifyCsrfTokenWhenSession::class,
         ]);
         $middleware->appendToGroup('web', RecordPageView::class);
+        $middleware->appendToGroup('web', UpdateLastSeen::class);
         $middleware->trustProxies(at: '*');
         $middleware->validateCsrfTokens(except: [
             'deploy/run',

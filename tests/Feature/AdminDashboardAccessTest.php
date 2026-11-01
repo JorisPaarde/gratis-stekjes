@@ -114,7 +114,7 @@ test('jpwebcreation-account zonder admin_ok krijgt /beheer/overzicht en POST', f
             'bron' => 'intern',
             'visible' => '1',
         ])
-        ->assertRedirect(route('beheer.index'));
+        ->assertRedirect(route('beheer.kaartmarkers'));
 
     expect(PartnerMarker::query()->where('naam', 'Owner voedselbos')->exists())->toBeTrue();
 });
@@ -211,31 +211,28 @@ test('beheer gebruikers-tabel toont geen Beheertoegang-kolom en geen e-mailadres
     ]]);
 
     $html = $this->withSession(['admin_ok' => true])
-        ->get(route('beheer.index'))
+        ->get(route('beheer.gebruikers'))
         ->assertOk()
         ->assertDontSee('Beheertoegang', false)
         ->assertSee('Eigenaar', false)
         ->assertSee('Gewoon Lid', false)
         ->assertSee('Nog Niet Bevestigd', false)
-        ->assertSee('Verwijderen', false)
-        ->assertSee(route('beheer.users.destroy.confirm', $member), false)
-        ->assertDontSee(jpwebcreationTestEmail(), false)
-        ->assertDontSee('lid-zonder-beheer@example.test', false)
-        ->assertDontSee('andere-owner@example.test', false)
+        ->assertSee(route('beheer.gebruikers.show', $member), false)
+        // E-mail staat in de lijst (sinds 0.45.0), alleen voor beheerders.
+        ->assertSee('lid-zonder-beheer@example.test', false)
         ->getContent();
 
-    expect(preg_match(
-        '/Eigenaar<\/td>\s*<td>ja<\/td>/s',
-        $html
-    ))->toBe(1, 'geverifieerde owner moet Bevestigd=ja tonen');
-    expect(preg_match(
-        '/Gewoon Lid<\/td>\s*<td>ja<\/td>/s',
-        $html
-    ))->toBe(1, 'lid moet Bevestigd=ja tonen');
-    expect(preg_match(
-        '/Nog Niet Bevestigd<\/td>\s*<td>nee<\/td>/s',
-        $html
-    ))->toBe(1, 'ongeverifieerde allowlist-mail moet Bevestigd=nee tonen');
+    // Status per rij: bevestigd vs. wacht op bevestiging.
+    expect(preg_match('/Eigenaar<\/a>(?:(?!<\/tr>).)*status--ok/s', $html))->toBe(1, 'geverifieerde owner moet Bevestigd tonen');
+    expect(preg_match('/Gewoon Lid<\/a>(?:(?!<\/tr>).)*status--ok/s', $html))->toBe(1, 'lid moet Bevestigd tonen');
+    expect(preg_match('/Nog Niet Bevestigd<\/a>(?:(?!<\/tr>).)*status--wacht/s', $html))->toBe(1, 'ongeverifieerd moet Wacht op bevestiging tonen');
+
+    // Verwijderen staat op de detailpagina, niet meer in de lijst.
+    $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.gebruikers.show', $member))
+        ->assertOk()
+        ->assertSee(route('beheer.users.destroy.confirm', $member), false)
+        ->assertSee('lid-zonder-beheer@example.test', false);
 
     expect($owner->email)->not->toBe('')
         ->and($member->email)->not->toBe('')

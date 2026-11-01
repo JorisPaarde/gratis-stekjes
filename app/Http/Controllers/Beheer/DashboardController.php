@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Beheer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Aanbod;
+use App\Models\Conversation;
 use App\Models\Deelplek;
 use App\Models\Evenement;
-use App\Models\Feedback;
 use App\Models\MailLog;
 use App\Models\PartnerMarker;
 use App\Models\Report;
@@ -35,103 +36,111 @@ use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function index(
-        Request $request,
-        PartnerMarkers $partners,
-        Deelplekken $deelplekken,
-        Evenementen $evenementen,
-    ): View {
-        $editId = (int) $request->query('edit', 0);
-        $editing = $editId > 0 ? PartnerMarker::query()->find($editId) : null;
-
-        $editEvenementId = (int) $request->query('edit_evenement', 0);
-        $editingEvenement = $editEvenementId > 0
-            ? Evenement::query()->find($editEvenementId)
-            : null;
-
-        $reports = collect();
-        if (Schema::hasTable('reports')) {
-            $reports = Report::query()
-                ->orderByDesc('id')
-                ->limit(50)
-                ->get();
+    public function index(): View
+    {
+        $kort = ['leden' => 0, 'nieuw_week' => 0, 'actief_week' => 0, 'aanbod_actief' => 0, 'gesprekken_week' => 0];
+        try {
+            $kort['leden'] = User::query()->count();
+            $kort['nieuw_week'] = User::query()->where('created_at', '>=', now()->subWeek())->count();
+            $kort['actief_week'] = Schema::hasColumn('users', 'last_seen_at')
+                ? User::query()->where('last_seen_at', '>=', now()->subWeek())->count()
+                : 0;
+            $kort['aanbod_actief'] = Schema::hasTable('aanbod') ? Aanbod::query()->publiclyListed()->count() : 0;
+            $kort['gesprekken_week'] = Schema::hasTable('conversations')
+                ? Conversation::query()->where('created_at', '>=', now()->subWeek())->count()
+                : 0;
+        } catch (\Throwable) {
+            // Overzicht blijft werken als een telling faalt.
         }
 
-        $pendingDeelplekken = collect();
-        if (Schema::hasTable('deelplekken')) {
-            $pendingDeelplekken = Deelplek::query()
-                ->pending()
-                ->orderByDesc('created_at')
-                ->limit(50)
-                ->get();
-        }
+        $mailfouten = Schema::hasTable('mail_log')
+            ? MailLog::query()->with('user')->where('status', 'fail')
+                ->where('created_at', '>=', now()->subDays(7))
+                ->orderByDesc('id')->limit(5)->get()
+            : collect();
 
-        $users = collect();
-        if (Schema::hasTable('users')) {
-            $users = User::query()
-                ->orderByDesc('id')
-                ->limit(100)
-                ->get()
-                ->map(function (User $user) {
-                    $lastMail = null;
-                    if (Schema::hasTable('mail_log')) {
-                        $lastMail = MailLog::query()
-                            ->where('user_id', $user->id)
-                            ->orderByDesc('id')
-                            ->first();
-                    }
+        return view('beheer.index', [
+            'title' => 'Beheer',
+            'metaDescription' => 'Beheer',
+            'canonical' => route('beheer.index'),
+            'kort' => $kort,
+            'nieuwste' => User::query()->orderByDesc('id')->limit(6)->get(),
+            'mailfouten' => $mailfouten,
+        ]);
+    }
 
-                    return [
-                        'user' => $user,
-                        'last_mail' => $lastMail,
-                    ];
-                });
-        }
-
-        $agenda = collect();
-        if (Schema::hasTable('evenementen')) {
-            $agenda = Evenement::query()
-                ->orderByDesc('start_datum')
-                ->orderByDesc('id')
-                ->limit(200)
-                ->get();
-        }
-
-        $pionierId = app(MilestoneService::class)->pionierUserId();
-
+    public function verenigingen(): View
+    {
         $verenigingen = VerenigingService::beschikbaar()
             ? Vereniging::query()->withCount('leden')
                 ->orderByRaw("CASE status WHEN 'pending' THEN 0 WHEN 'approved' THEN 1 ELSE 2 END")
                 ->orderByDesc('created_at')
-                ->limit(200)
+                ->limit(300)
                 ->get()
             : collect();
 
-        $feedbackOngelezen = Schema::hasTable('feedback')
-            ? Feedback::query()->whereNull('read_at')->count()
-            : 0;
+        return $this->sectie('verenigingen', 'Verenigingen', ['verenigingen' => $verenigingen]);
+    }
 
-        return view('beheer.index', [
-            'feedbackOngelezen' => $feedbackOngelezen,
-            'verenigingen' => $verenigingen,
-            'pionierId' => $pionierId,
-            'title' => 'Beheer',
-            'metaDescription' => 'Beheer',
-            'canonical' => route('beheer.index'),
+    public function aanmeldingen(Deelplekken $deelplekken): View
+    {
+        $pending = Schema::hasTable('deelplekken')
+            ? Deelplek::query()->pending()->orderByDesc('created_at')->limit(100)->get()
+            : collect();
+
+        return $this->sectie('aanmeldingen', 'Deelplek-aanmeldingen', [
+            'pendingDeelplekken' => $pending,
+            'deelplekTypeLabels' => $deelplekken->typeLabels(),
+        ]);
+    }
+
+    public function agenda(Request $request, Evenementen $evenementen): View
+    {
+        $editId = (int) $request->query('edit_evenement', 0);
+
+        return $this->sectie('agenda', 'Agenda', [
+            'editingEvenement' => $editId > 0 ? Evenement::query()->find($editId) : null,
+            'evenementen' => Schema::hasTable('evenementen')
+                ? Evenement::query()->orderByDesc('start_datum')->orderByDesc('id')->limit(200)->get()
+                : collect(),
+            'evenementTypeLabels' => $evenementen->typeLabels(),
+            'provincies' => $evenementen->provincies(),
+            'countries' => Country::labels(),
+        ]);
+    }
+
+    public function kaartmarkers(Request $request, PartnerMarkers $partners): View
+    {
+        $editId = (int) $request->query('edit', 0);
+
+        return $this->sectie('kaartmarkers', 'Kaartmarkers', [
+            'editing' => $editId > 0 ? PartnerMarker::query()->find($editId) : null,
             'markers' => PartnerMarker::query()->orderBy('naam')->orderBy('id')->get(),
             'typeLabels' => $partners->typeLabels(),
             'countries' => Country::labels(),
-            'deelplekTypeLabels' => $deelplekken->typeLabels(),
-            'evenementTypeLabels' => $evenementen->typeLabels(),
-            'provincies' => $evenementen->provincies(),
-            'editing' => $editing,
-            'editingEvenement' => $editingEvenement,
-            'evenementen' => $agenda,
-            'reports' => $reports,
-            'hasReportsTable' => Schema::hasTable('reports'),
-            'pendingDeelplekken' => $pendingDeelplekken,
-            'users' => $users,
         ]);
+    }
+
+    public function meldingen(): View
+    {
+        $heeft = Schema::hasTable('reports');
+
+        return $this->sectie('meldingen', 'Meldingen', [
+            'hasReportsTable' => $heeft,
+            'reports' => $heeft
+                ? Report::query()->orderBy('handled')->orderByDesc('id')->limit(100)->get()
+                : collect(),
+        ]);
+    }
+
+    /** @param array<string, mixed> $data */
+    private function sectie(string $sectie, string $titel, array $data): View
+    {
+        return view('beheer.sectie', array_merge($data, [
+            'sectie' => $sectie,
+            'title' => $titel.' · Beheer',
+            'canonical' => route('beheer.'.$sectie),
+        ]));
     }
 
     /** Vereniging van leden goedkeuren of verbergen. */
@@ -142,7 +151,7 @@ class DashboardController extends Controller
         $vereniging->update(['status' => $status]);
 
         return redirect()
-            ->to(route('beheer.index').'#verenigingen')
+            ->route('beheer.verenigingen')
             ->with('status', $vereniging->naam.($status === Vereniging::STATUS_APPROVED ? ' staat nu op de site.' : ' is verborgen.'));
     }
 
@@ -152,7 +161,7 @@ class DashboardController extends Controller
         $milestones->setPionier($user);
 
         return redirect()
-            ->route('beheer.index')
+            ->route('beheer.gebruikers.show', $user)
             ->with('status', 'De Pionier-badge staat nu bij '.$user->name.'.');
     }
 
@@ -160,7 +169,7 @@ class DashboardController extends Controller
     {
         if (Auth::check() && (int) Auth::id() === (int) $user->id) {
             return redirect()
-                ->route('beheer.index')
+                ->route('beheer.gebruikers')
                 ->withErrors(['user' => 'Je kunt je eigen account niet via beheer verwijderen.']);
         }
 
@@ -177,7 +186,7 @@ class DashboardController extends Controller
     {
         if (Auth::check() && (int) Auth::id() === (int) $user->id) {
             return redirect()
-                ->route('beheer.index')
+                ->route('beheer.gebruikers')
                 ->withErrors(['user' => 'Je kunt je eigen account niet via beheer verwijderen.']);
         }
 
@@ -204,7 +213,7 @@ class DashboardController extends Controller
         ]);
 
         return redirect()
-            ->route('beheer.index')
+            ->route('beheer.gebruikers')
             ->with('status', 'Gebruiker #'.$deletedId.' verwijderd.');
     }
 
@@ -230,14 +239,12 @@ class DashboardController extends Controller
 
         $ok = SafeMail::notify($user, new VerifyEmailDutch);
         if (! $ok) {
-            return redirect()
-                ->route('beheer.index')
+            return back()
                 ->with('status', 'Bevestigingsmail inplannen mislukt voor gebruiker #'.$user->id.'.');
         }
 
-        return redirect()
-            ->route('beheer.index')
-            ->with('status', 'Bevestigingsmail opnieuw gestuurd voor gebruiker #'.$user->id.'.');
+        return back()
+            ->with('status', 'Bevestigingsmail opnieuw gestuurd naar '.$user->name.'.');
     }
 
     public function approveDeelplek(Request $request, DeelplekAanmelding $aanmelding): RedirectResponse
@@ -248,7 +255,7 @@ class DashboardController extends Controller
         }
         $aanmelding->approve($plek);
 
-        return redirect()->route('beheer.index')->with('status', 'Deelplek goedgekeurd en zichtbaar.');
+        return redirect()->route('beheer.aanmeldingen')->with('status', 'Deelplek goedgekeurd en zichtbaar.');
     }
 
     public function rejectDeelplek(Request $request, DeelplekAanmelding $aanmelding): RedirectResponse
@@ -259,7 +266,7 @@ class DashboardController extends Controller
         }
         $aanmelding->reject($plek);
 
-        return redirect()->route('beheer.index')->with('status', 'Deelplek afgewezen.');
+        return redirect()->route('beheer.aanmeldingen')->with('status', 'Deelplek afgewezen.');
     }
 
     public function saveMarker(Request $request, PartnerMarkers $partners): RedirectResponse
@@ -283,7 +290,7 @@ class DashboardController extends Controller
         }
 
         return redirect()
-            ->route('beheer.index')
+            ->route('beheer.kaartmarkers')
             ->with('status', 'Marker opgeslagen.');
     }
 
@@ -297,7 +304,7 @@ class DashboardController extends Controller
         }
 
         return redirect()
-            ->route('beheer.index')
+            ->route('beheer.kaartmarkers')
             ->with('status', 'Marker verwijderd.');
     }
 
@@ -309,7 +316,7 @@ class DashboardController extends Controller
         $id = (int) $request->input('id', 0);
         DB::table('reports')->where('id', $id)->update(['handled' => true]);
 
-        return redirect()->route('beheer.index')->with('status', 'Melding afgehandeld.');
+        return redirect()->route('beheer.meldingen')->with('status', 'Melding afgehandeld.');
     }
 
     public function saveEvenement(Request $request, Evenementen $evenementen): RedirectResponse
@@ -336,7 +343,7 @@ class DashboardController extends Controller
         }
 
         return redirect()
-            ->route('beheer.index')
+            ->route('beheer.agenda')
             ->with('status', 'Evenement opgeslagen.');
     }
 
@@ -350,7 +357,7 @@ class DashboardController extends Controller
         }
 
         return redirect()
-            ->route('beheer.index')
+            ->route('beheer.agenda')
             ->with('status', 'Evenement verborgen.');
     }
 }

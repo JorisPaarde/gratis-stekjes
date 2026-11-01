@@ -11,23 +11,12 @@
 
 @section('content')
 <section class="section wrap beheer-page beheer-feedback-page">
-  <div class="beheer-header">
-    <h1 class="page-title">Feedback</h1>
-    <div class="beheer-actions">
-      <a href="{{ route('beheer.index') }}">← Beheer</a>
-      <a href="{{ route('beheer.statistieken') }}">Statistieken</a>
-      <form method="post" action="{{ route('beheer.logout') }}">
-        @csrf
-        <button class="btn btn-secondary" type="submit">Uitloggen</button>
-      </form>
-    </div>
-  </div>
+  @include('beheer.partials.nav')
+
+  <h1 class="page-title">Feedback</h1>
 
   <p class="muted">Nieuwste eerst. Geen namen of e-mailadressen — alleen pad, tekst en tijdstip (Europe/Amsterdam).</p>
 
-  @if(session('status'))
-    <p class="flash flash-ok" role="status">{{ session('status') }}</p>
-  @endif
 
   @if($items->isEmpty())
     <div class="empty-state" role="status">

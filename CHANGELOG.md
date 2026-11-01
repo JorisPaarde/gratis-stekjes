@@ -9,6 +9,46 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.46.0] - 2026-11-01
+
+### Changed
+
+- **Beheer opnieuw ingedeeld:** één lange pagina wordt tabbladen. Elke tab heeft een teller voor
+  wat op je wacht: Overzicht · Gebruikers · Verenigingen · Aanmeldingen · Meldingen · Ervaringen ·
+  Feedback · Agenda · Kaartmarkers · Statistieken. Elk onderdeel heeft een eigen URL
+  (`/beheer/gebruikers`, `/beheer/verenigingen`, …). Na een actie kom je terug op het juiste
+  onderdeel. Bij inloggen met je account staat er geen dubbele «Uitloggen» meer.
+- **Overzicht** (`/beheer/overzicht`):
+  - «Aandacht nodig»: kaarten voor onbevestigd (> 2 dagen), mislukte mails (7 dagen), wachtende
+    verenigingen, aanmeldingen, meldingen, ervaringen, ongelezen feedback en naam = e-mail.
+  - «In het kort»: leden, actief, aanbod en gesprekken.
+  - Nieuwste leden en laatste mailfouten.
+- **Gebruikers** (`/beheer/gebruikers`):
+  - Zoeken op naam, plaats, e-mail of ID (de zoekterm gaat via de sessie, zoals in 0.45.0, en
+    staat dus niet in de URL). E-mail staat in de lijst onder de naam.
+  - Filters: onbevestigd, mail mislukt, met aanbod, zonder plek, naam = e-mail, inactief 90 d,
+    geblokkeerd.
+  - Sorteren op nieuwste, laatst actief, meeste aanbod of naam. 50 per pagina.
+  - Kolommen: plaats, status als label, lid sinds, laatst actief, aanbod (actief/totaal),
+    gesprekken en laatste mail in gewone taal.
+  - Op mobiel: kaarten.
+  - Knop om alle onbevestigde leden (> 2 dagen) opnieuw te mailen (max. 25 per keer, eens per
+    uur).
+- **Mail in gewone taal:** «Bevestigingsmail · Mailserver niet bereikbaar» in plaats van
+  `VerifyEmailDutch` en Symfony-fouten. De technische melding staat in een uitklapper.
+
+### Added
+
+- **Detailpagina per gebruiker** (`/beheer/gebruikers/{id}`):
+  - Profiel: e-mail, plaats, of adres en telefoon ingevuld zijn, lid sinds, bevestigd, laatst
+    actief, berichtmail, gesprekken, overdrachten en verenigingen.
+  - Badges, aanbod met status en de laatste 10 mails.
+  - Acties: bevestigingsmail opnieuw, maak pionier, naam terugzetten naar «Lid», blokkeren of
+    deblokkeren (logt uit). Verwijderen staat apart in een rood blok.
+  - Berichtinhoud zie je niet.
+- **Laatst actief:** `users.last_seen_at`, bijgewerkt hooguit één keer per uur per lid.
+- Verenigingen tonen hun status als gekleurd label.
+
 ## [0.45.0] - 2026-11-01
 
 ### Added

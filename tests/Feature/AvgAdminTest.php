@@ -129,7 +129,7 @@ test('beheer kan partnermarker opslaan via geocode-cache', function () {
             'bron' => 'intern',
             'visible' => '1',
         ])
-        ->assertRedirect(route('beheer.index'));
+        ->assertRedirect(route('beheer.kaartmarkers'));
 
     $marker = PartnerMarker::query()->first();
     expect($marker)->not->toBeNull();
