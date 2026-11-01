@@ -479,3 +479,5 @@
   background: var(--leaf, #1f4d2b);
   border-radius: 2px;
 }
+
+.stats-kpi-value--let-op { color: var(--orange-hover, #d4742e); }
