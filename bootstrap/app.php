@@ -41,6 +41,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies(at: '*');
         $middleware->validateCsrfTokens(except: [
             'deploy/run',
+            'deploy/admin-grant',
             'deploy/import',
             'deploy/import/init',
             'deploy/import/chunk',

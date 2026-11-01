@@ -37,6 +37,7 @@ use App\Http\Controllers\BerichtmailController;
 use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\DeelplekkenController;
+use App\Http\Controllers\DeployAdminGrantController;
 use App\Http\Controllers\DeployController;
 use App\Http\Controllers\DeployImportController;
 use App\Http\Controllers\ErvaringController;
@@ -128,6 +129,9 @@ Route::get('/cron/backup', BackupCronController::class)
 Route::post('/deploy/run', DeployController::class)
     ->middleware('throttle:10,1')
     ->name('deploy.run');
+Route::post('/deploy/admin-grant', DeployAdminGrantController::class)
+    ->middleware('throttle:10,1')
+    ->name('deploy.admin-grant');
 Route::post('/deploy/import/init', [DeployImportController::class, 'init'])
     ->middleware('throttle:20,1')
     ->name('deploy.import.init');
