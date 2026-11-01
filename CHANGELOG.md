@@ -236,6 +236,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   onder elke foto) die naar de stektip linken; lange teksten, losse labels en RHS-bronnen staan
   alleen nog op de stektip-pagina's.
 
+## [0.32.1] - 2026-10-31
+
+### Changed
+
+- Tekstronde 2 (0.31.2) naar productie, bovenop homepage v3 (0.32.0). Bij overlap blijft
+  homepage v3 leidend (homepage-bestanden en `resources/js/zoeken.js` gelijk aan #138).
+
 ## [0.32.0] - 2026-10-31
 
 ### Added
