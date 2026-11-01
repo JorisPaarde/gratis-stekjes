@@ -3,6 +3,7 @@
 @section('title', $title)
 @section('meta_description', $metaDescription)
 @section('canonical', $canonical)
+@section('og_image', is_file(public_path('assets/og/stad/'.$stad['slug'].'.jpg')) ? '/assets/og/stad/'.$stad['slug'].'.jpg' : '/assets/og/gratis-planten.jpg')
 @section('body_class', 'page-gratis-planten-stad')
 
 @push('head')

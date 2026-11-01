@@ -9,6 +9,21 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.38.0] - 2026-11-01
+
+### Added
+
+- **Social images** (Open Graph, 1200×630) in de huisstijl i.p.v. het app-icoon van 512×512:
+  eigen beeld voor home, aanbod, stektips, deelplekken, hoe werkt het en het stedenoverzicht; per stektip
+  (106) met de soortfoto en zichtbare naamsvermelding; per stad (46). Pagina's zonder eigen beeld krijgen
+  `standaard.jpg`. Ook `og:image:width/height/type/alt`.
+- `scripts/og-images.mjs` om de beelden opnieuw te genereren (Playwright). Uitleg en licenties in
+  `docs/afbeeldingen-licenties.md`.
+
+### Changed
+
+- `site.og_image` is nu de standaard social image; het logo voor schema.org staat apart in `site.logo`.
+
 ## [0.37.0] - 2026-11-01
 
 ### Changed

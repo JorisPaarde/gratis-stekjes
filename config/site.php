@@ -26,5 +26,7 @@ return [
      * Standaard Open Graph / Twitter-beeld (bestaand logo in de repo).
      * Pad relatief t.o.v. public/; absolute URL via CanonicalUrl::asset().
      */
-    'og_image' => '/assets/icons/icon-512.png',
+    'og_image' => '/assets/og/standaard.jpg',
+    /** Logo voor schema.org (Organization). */
+    'logo' => '/assets/icons/icon-512.png',
 ];

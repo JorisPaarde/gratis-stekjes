@@ -7,7 +7,8 @@
   @php($noindex = (bool) config('site.noindex') || app()->environment('staging'))
   @php($accountNoindex = request()->is('account', 'account/*'))
   @php($documentTitle = \App\Support\SeoTitle::document($__env->yieldContent('title')))
-  @php($ogImage = \App\Support\CanonicalUrl::asset((string) config('site.og_image', '/assets/icons/icon-512.png')))
+  @php($ogPad = trim($__env->yieldContent('og_image')) ?: (string) config('site.og_image', '/assets/og/standaard.jpg'))
+  @php($ogImage = \App\Support\CanonicalUrl::asset($ogPad))
   <title>{{ $documentTitle }}</title>
   <meta name="description" content="@yield('meta_description', config('site.description'))">
   @if($noindex || $accountNoindex)
@@ -27,6 +28,12 @@
   <meta property="og:url" content="@yield('canonical')">
   @endif
   <meta property="og:image" content="{{ $ogImage }}">
+  @if(str_starts_with($ogPad, '/assets/og/'))
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/jpeg">
+  @endif
+  <meta property="og:image:alt" content="{{ $documentTitle }}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="{{ $ogImage }}">
   <meta name="theme-color" content="{{ config('site.theme_color') }}">
