@@ -15,7 +15,7 @@
     <h1 class="page-title">Beheer</h1>
     <div class="beheer-actions">
       <a href="{{ route('beheer.statistieken') }}">Statistieken</a>
-      <a href="{{ route('beheer.feedback') }}">Feedback</a>
+      <a href="{{ route('beheer.feedback') }}">Feedback @if(($feedbackOngelezen ?? 0) > 0) <span class="nav-badge" aria-label="{{ $feedbackOngelezen }} ongelezen">{{ $feedbackOngelezen }}</span>@endif</a>
       <a href="{{ route('beheer.ervaringen') }}">Ervaringen</a>
       <form method="post" action="{{ route('beheer.logout') }}">
         @csrf

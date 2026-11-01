@@ -218,8 +218,10 @@ test('statistieken toont feedback count', function () {
         ->assertSee(route('beheer.feedback'), false)
         ->getContent();
 
-    expect($html)->toContain('>2</span>')
-        ->and($html)->toContain('1 ongelezen');
+    // Groot getal = ongelezen (1), totaal klein ernaast (2).
+    expect($html)->toContain('stats-kpi-value--let-op">1</span>')
+        ->and($html)->toContain('Feedback ongelezen')
+        ->and($html)->toContain('2 totaal');
 });
 
 test('accountwissen anonimiseert feedback user_id', function () {
