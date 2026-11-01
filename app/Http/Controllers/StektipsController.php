@@ -8,6 +8,7 @@ use App\Services\Kennisbank;
 use App\Services\Plantensoorten;
 use App\Services\SoortAfbeeldingen;
 use App\Services\Stektips;
+use App\Support\Faq;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
@@ -113,7 +114,7 @@ class StektipsController extends Controller
             }
         }
 
-        $faq = $hasActiveFilters ? [] : $this->faq();
+        $faq = $hasActiveFilters ? [] : Faq::load('stektips-faq.json');
 
         $title = 'Stektips: planten stekken en snoeien';
         $metaDescription = 'Leer planten stekken en snoeien, maak wilgenwater en deel gratis stekjes. Tips per soort, van monstera tot vijg.';
@@ -153,28 +154,6 @@ class StektipsController extends Controller
         ]);
     }
 
-    /** @return list<array{vraag: string, antwoord: string, link: ?array{label: string, pad: string}}> */
-    private function faq(): array
-    {
-        $path = base_path('data/stektips-faq.json');
-        if (! is_readable($path)) {
-            return [];
-        }
-        $data = json_decode((string) file_get_contents($path), true);
-        $out = [];
-        foreach (($data['vragen'] ?? []) as $row) {
-            if (! is_array($row) || empty($row['vraag']) || empty($row['antwoord'])) {
-                continue;
-            }
-            $link = is_array($row['link'] ?? null) && ! empty($row['link']['pad']) && str_starts_with((string) $row['link']['pad'], '/')
-                ? ['label' => (string) $row['link']['label'], 'pad' => (string) $row['link']['pad']]
-                : null;
-            $out[] = ['vraag' => (string) $row['vraag'], 'antwoord' => (string) $row['antwoord'], 'link' => $link];
-        }
-
-        return $out;
-    }
-
     /**
      * @param  list<array{vraag: string, antwoord: string}>  $faq
      * @return array<string, mixed>
@@ -196,16 +175,7 @@ class StektipsController extends Controller
             '@context' => 'https://schema.org',
             '@graph' => [
                 $page,
-                [
-                    '@type' => 'FAQPage',
-                    'url' => route('stektips.index').'#veelgestelde-vragen',
-                    'inLanguage' => 'nl-NL',
-                    'mainEntity' => array_map(static fn (array $f) => [
-                        '@type' => 'Question',
-                        'name' => $f['vraag'],
-                        'acceptedAnswer' => ['@type' => 'Answer', 'text' => $f['antwoord']],
-                    ], $faq),
-                ],
+                Faq::schema(route('stektips.index').'#veelgestelde-vragen', $faq),
             ],
         ];
     }

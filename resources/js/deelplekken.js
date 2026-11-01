@@ -52,9 +52,9 @@
   }
   map.whenReady(function () {
     // Na layout / late size: opnieuw contain-zoom.
-    setTimeout(fitNlBe, 50);
-    setTimeout(fitNlBe, 400);
-    setTimeout(fitNlBe, 1000);
+    setTimeout(function () { if (!heeftGezoomd) fitNlBe(); else map.invalidateSize(); }, 50);
+    setTimeout(function () { if (!heeftGezoomd) fitNlBe(); else map.invalidateSize(); }, 400);
+    setTimeout(function () { if (!heeftGezoomd) fitNlBe(); else map.invalidateSize(); }, 1000);
   });
   var layer = L.layerGroup().addTo(map);
 
@@ -91,6 +91,30 @@
     return (cfg.api || "/api/deelplekken") + (q ? "?" + q : "");
   }
 
+  var markers = [];
+  var heeftGezoomd = false;
+  var heeftFilter = !!(cfg.type || cfg.provincie || cfg.plaats);
+
+  // «Op de kaart» in de lijst: inzoomen en popup openen.
+  document.addEventListener("click", function (ev) {
+    var btn = ev.target.closest ? ev.target.closest(".zoek-op-kaart[data-lat]") : null;
+    if (!btn) return;
+    var lat = parseFloat(btn.getAttribute("data-lat"));
+    var lng = parseFloat(btn.getAttribute("data-lng"));
+    if (!isFinite(lat) || !isFinite(lng)) return;
+    heeftGezoomd = true;
+    var best = null;
+    var bestD = Infinity;
+    markers.forEach(function (m) {
+      var p = m.getLatLng();
+      var d = Math.abs(p.lat - lat) + Math.abs(p.lng - lng);
+      if (d < bestD) { bestD = d; best = m; }
+    });
+    map.setView([lat, lng], 14);
+    if (best && bestD < 0.01) best.openPopup();
+    if (mapEl && mapEl.scrollIntoView) mapEl.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
   fetch(queryUrl(), {
     credentials: "same-origin",
     headers: { Accept: "application/json" },
@@ -125,19 +149,24 @@
           popup +=
             '<br><a href="' +
             escapeHtml(item.bron_url) +
-            '" rel="noopener noreferrer" target="_blank">Bron</a>';
+            '" rel="noopener noreferrer" target="_blank">Website</a>';
         }
         var m = L.marker([lat, lon], { icon: deelplekIcon(item.type) }).bindPopup(
           popup
         );
         layer.addLayer(m);
+        markers.push(m);
         bounds.push([lat, lon]);
       });
       if (status) {
         status.textContent =
           items.length + (items.length === 1 ? " plek" : " plekken");
       }
-      // Bewaar beginuitsnede NL + België; zoom niet naar alleen NL-markers.
+      // Zonder filter: beginuitsnede NL + België. Met filter: naar de gevonden plekken.
+      if (heeftFilter && bounds.length) {
+        heeftGezoomd = true;
+        map.fitBounds(bounds, { padding: [30, 30], maxZoom: 12 });
+      }
     })
     .catch(function () {
       if (status) status.textContent = "De plekken op de kaart laden is niet gelukt.";

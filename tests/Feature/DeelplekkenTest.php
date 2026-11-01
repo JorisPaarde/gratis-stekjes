@@ -54,13 +54,29 @@ test('NL-deelplekkenrijen blijven ongewijzigd (aantal en inhoud)', function () {
 test('deelplekkenpagina laadt met intro, bronlink en meldpad', function () {
     $this->get('/deelplekken')
         ->assertOk()
-        ->assertSee('Plantenasiels, plantenbiebs en ruilkastjes in Nederland en België', false)
+        ->assertSee('Vind een deelplek in de buurt', false)
         ->assertSee('plantenasiel', false)
         ->assertSee('Plantenasiel Haarlem', false)
-        ->assertSee('Bron', false)
-        ->assertSee('Mis je een plek, of klopt er iets niet? Laat het me weten', false)
-        ->assertSee(route('over'), false)
-        ->assertSee('id="deelplekken-kaart"', false);
+        ->assertSee('Website', false)
+        ->assertSee('Gecontroleerd op', false)
+        ->assertSee('Mis je een plek, of klopt er iets niet?', false)
+        ->assertSee(route('voor-organisaties'), false)
+        ->assertSee('id="deelplekken-kaart"', false)
+        ->assertSee('id="veelgestelde-vragen"', false)
+        ->assertSee('"@type":"FAQPage"', false)
+        ->assertSee('Wat is een plantenasiel?', false);
+});
+
+test('deelplekken: type-chips met aantallen; bronlink «Website» bij eigen site, anders «Meer informatie»', function () {
+    $html = $this->get('/deelplekken')->assertOk()->getContent();
+
+    expect($html)->toMatch('/class="dp-chip[^"]*" href="[^"]*type=zaadbibliotheek">Zadenbibliotheken <span>\d+<\/span>/');
+    // plantenasielhaarlem.nl hoort bij Plantenasiel Haarlem → eigen website.
+    expect($html)->toMatch('/plantenasielhaarlem\.nl[^"]*" rel="noopener noreferrer" target="_blank">Website<\/a>/');
+
+    $gefilterd = $this->get('/deelplekken?type=plantenasiel')->assertOk()->getContent();
+    expect($gefilterd)->not->toContain('id="veelgestelde-vragen"')
+        ->and($gefilterd)->toContain('Toon alles');
 });
 
 test('deelplekken filtert op type en provincie', function () {
