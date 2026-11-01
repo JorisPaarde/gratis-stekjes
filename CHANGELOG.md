@@ -9,6 +9,14 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.43.3] - 2026-11-01
+
+### Added
+
+- Beheer, feedback: bij elke melding een knop «Verwijderen». Na een bevestigingsvraag wordt de
+  melding definitief gewist (alleen voor de beheerder, met CSRF). De tellers voor ongelezen en
+  totaal lopen daarna direct mee.
+
 ## [0.43.2] - 2026-11-01
 
 ### Fixed
