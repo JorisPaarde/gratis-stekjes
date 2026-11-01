@@ -9,6 +9,38 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.44.0] - 2026-11-01
+
+### Added
+
+- **Volledig adres in het profiel** (optioneel, versleuteld):
+  - Postcode + huisnummer: straat en plaats worden tijdens het typen automatisch ingevuld via de PDOK
+    Locatieserver (alleen NL; België vul je zelf in). Lookup-route `/account/adres-zoeken`, max.
+    30 per minuut.
+  - Het adres is nooit openbaar. Het staat in een gesprek pas na wederzijds «ja», en alleen als
+    «Deel mijn adres» aan staat (standaard aan), met een link naar de kaart.
+  - Openbaar staat alleen het postcodegebied: bij een volledige NL-postcode alleen de 4 cijfers.
+- **Volgende stap bovenaan elke accountpagina:** ongelezen berichten, dan postcode, dan eerste
+  aanbod, daarna de eerstvolgende badge, met plaatje en knop. Niet op de pagina waar de knop
+  heen gaat.
+- **Badge «Profiel compleet»:** naam, plek en adres ingevuld.
+- **Bestaand e-mailadres bij aanmelden:** het scherm blijft gelijk (geen enumeratie), maar de
+  eigenaar krijgt een mail met inlog- en wachtwoordlink (max. 1 per uur).
+
+### Changed
+
+- **Namen zijn uniek** (hoofdletters en spaties tellen niet mee). Bij een bezette naam verschijnt
+  tijdens het typen een melding met klikbare vrije varianten («Bert2», «Bert3») of de tip om een
+  letter toe te voegen. Ook bij opslaan wordt dit gecontroleerd, bij registreren en op het profiel
+  (`/naam-check`, max. 40 per minuut). Bestaande dubbele namen blijven geldig zolang iemand zijn
+  naam niet wijzigt.
+- **Namen:** een voornaam mag geen e-mailadres meer zijn (geen «@» en geen maildomein zoals
+  «gmail.com»); ook live gemeld tijdens het typen. Het e-mailadres hoort bij het account, maar is
+  nooit de gebruikersnaam. Bestaande accounts met een e-mailadres
+  als naam worden openbaar als «Lid» getoond; in /beheer staat erbij «(e-mail als naam)».
+  Inbox en gesprek tonen de plaats erbij («Jan · 2011»).
+- Privacyverklaring en AVG-inventaris bijgewerkt voor het adres.
+
 ## [0.43.3] - 2026-11-01
 
 ### Added

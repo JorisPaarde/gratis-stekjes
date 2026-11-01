@@ -121,7 +121,7 @@ final class AanbodSearch
             'id' => $aanbod->id,
             'type' => (string) $aanbod->type,
             'tekst' => (string) $aanbod->tekst,
-            'voornaam' => (string) ($user?->name ?? ''),
+            'voornaam' => $user?->publiekeNaam() ?? '',
             'locatie_label' => (string) ($user?->locatie_label ?? ''),
             'country' => Country::normalize((string) ($user?->country ?? Country::NL)),
             'lat' => $user?->lat !== null ? Geo::roundCoord((float) $user->lat) : null,

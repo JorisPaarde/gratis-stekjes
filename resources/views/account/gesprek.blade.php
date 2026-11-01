@@ -13,6 +13,9 @@
 @php($andere = $view['andere'])
 <section class="section wrap">
   <h1 class="page-title">Gesprek met {{ $andere['voornaam'] }}</h1>
+  @if(!empty($andere['locatie_label']))
+    <p class="muted">{{ $andere['voornaam'] }} woont in de buurt van {{ $andere['locatie_label'] }}.</p>
+  @endif
 
   @if(session('error'))
     <p class="flash-error" role="alert">{{ session('error') }}</p>
@@ -25,12 +28,16 @@
 
   <div class="contact-box" style="margin:1rem 0">
     <h2>Verder contact?</h2>
-    <p class="muted">Alleen als jullie allebei “ja” kiezen, zien jullie elkaars e-mail{{ !empty($andere['contact_gedeeld']) ? ' (en telefoon als die is ingevuld)' : '' }}. In de chat zelf staan nooit e-mailadressen.</p>
+    <p class="muted">Alleen als jullie allebei “ja” kiezen, zien jullie elkaars e-mail, en het adres en telefoonnummer als die zijn ingevuld en gedeeld worden. In de chat zelf staan nooit e-mailadressen.</p>
     @if(!empty($view['wederzijds_contact']))
       <p><strong>Contact gedeeld</strong></p>
       <p>E-mail: {{ $andere['email'] ?? '' }}</p>
       @if(!empty($andere['telefoon']))
         <p>Telefoon: {{ $andere['telefoon'] }}</p>
+      @endif
+      @if(!empty($andere['adres']))
+        <p>Adres: {{ $andere['adres'] }}
+          · <a href="https://www.openstreetmap.org/search?query={{ urlencode($andere['adres']) }}" rel="noopener noreferrer" target="_blank">Op de kaart</a></p>
       @endif
       @if(!empty($view['overdracht_afgerond']))
         <p class="muted" style="margin-top:.75rem">Overdracht afgerond.

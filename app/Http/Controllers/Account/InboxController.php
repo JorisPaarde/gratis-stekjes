@@ -34,7 +34,8 @@ class InboxController extends Controller
 
                 return [
                     'id' => $c->id,
-                    'andere_naam' => $other?->name ?? 'Onbekend',
+                    'andere_naam' => $other?->publiekeNaam() ?? 'Onbekend',
+                    'andere_plaats' => (string) ($other?->locatie_label ?? ''),
                     'ongelezen' => (int) ($c->ongelezen ?? 0),
                 ];
             });
