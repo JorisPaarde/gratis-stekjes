@@ -28,33 +28,19 @@
   <h1 class="page-title">{{ $title }}</h1>
   <p class="section-intro">{{ $stad['intro'] }}</p>
 
-  @if(!empty($plantenasiels))
-  <aside class="soft-card gp-plantenasiel" aria-labelledby="plantenasiel-titel">
-    <h2 id="plantenasiel-titel">Plantenasiel in {{ $stad['naam'] }}</h2>
-    <p>
-      @if(count($plantenasiels) === 1)
-        In of bij {{ $stad['naam'] }} ken ik {{ $plantenasiels[0]['naam'] }}.
-      @else
-        In of bij {{ $stad['naam'] }} ken ik {{ count($plantenasiels) }} plantenasiels.
-      @endif
-      <a href="{{ route('deelplekken', ['plaats' => $stad['naam'], 'type' => 'plantenasiel']) }}">Bekijk plantenasiels bij {{ $stad['naam'] }}</a>
-      of het <a href="{{ route('deelplekken', ['type' => 'plantenasiel']) }}">overzicht van alle plantenasiels</a>.
-    </p>
-  </aside>
-  @endif
-
   <div class="gp-layout">
     <div>
       <h2 id="aanbod-titel">Actueel aanbod</h2>
       @if(count($aanbod) === 0)
         <div class="gp-empty soft-card" role="status">
           <p>Er is nog geen aanbod binnen ongeveer {{ (int) $stad['straal_km'] }} km van {{ $stad['naam'] }}.</p>
-          <p>Jij kunt de eerste zijn: zet een plant, stekje of zaad op de site en laat zien dat er in {{ $stad['naam'] }} gedeeld wordt.</p>
-          <p>
+          <p>Zoek iets verder weg, of wees de eerste: zet een plant, stekje of zaad op de site en laat zien dat er in {{ $stad['naam'] }} gedeeld wordt.</p>
+          <p class="gp-acties">
+            <a class="btn" href="{{ route('aanbod', ['q' => $stad['naam']]) }}"><x-icon name="kaart" :size="16" /> Zoek in de omgeving</a>
             @auth
-              <a class="btn" href="{{ route('account.aanbod') }}"><x-icon name="plus" :size="16" /> Zelf iets aanbieden</a>
+              <a class="btn btn-secondary" href="{{ route('account.aanbod') }}"><x-icon name="plus" :size="16" /> Zelf iets aanbieden</a>
             @else
-              <a class="btn" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="16" /> Maak een account en bied iets aan</a>
+              <a class="btn btn-secondary" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="16" /> Account maken en aanbieden</a>
             @endauth
           </p>
         </div>
@@ -67,7 +53,7 @@
               <p class="muted">
                 {{ $item['locatie_label'] }}
                 @if(isset($item['afstand_km']))
-                  · ongeveer {{ $item['afstand_km'] }} km
+                  · ongeveer {{ $item['afstand_km'] }} km van het centrum
                 @endif
               </p>
               @auth
@@ -84,7 +70,7 @@
           @else
             <a class="btn btn-secondary" href="{{ route('account.registreren') }}">Zelf iets aanbieden</a>
           @endauth
-          · <a href="{{ route('aanbod') }}">Kaart van heel het land</a>
+          · <a href="{{ route('aanbod', ['q' => $stad['naam']]) }}">Zoek verder rond {{ $stad['naam'] }}</a>
         </p>
       @endif
     </div>
@@ -92,7 +78,11 @@
     <div>
       <h2 id="kaart-titel">Kaart rond {{ $stad['naam'] }}</h2>
       <div id="stad-kaart" class="gp-kaart" role="img" aria-label="Kaart rond {{ $stad['naam'] }} met ongeveer de plekken waar je iets kunt ophalen"></div>
-      <p class="muted gp-kaart-note">Plekken zijn bij benadering · © OpenStreetMap. Straal ongeveer {{ (int) $stad['straal_km'] }} km.</p>
+      <p class="muted gp-kaart-note">
+        <span class="gp-legenda"><span class="partner-marker-dot gp-legenda-aanbod" aria-hidden="true"></span> Aanbod van leden</span>
+        <span class="gp-legenda"><span class="partner-marker-dot--deelplek" aria-hidden="true"></span> Vaste deelplek</span>
+        <br>De kaart toont ook vaste deelplekken, dus je kunt markers zien als er nog geen aanbod is. Plekken zijn bij benadering, binnen ongeveer {{ (int) $stad['straal_km'] }} km van het centrum · © OpenStreetMap.
+      </p>
     </div>
   </div>
 
@@ -100,6 +90,8 @@
     <h2 id="deelplekken-titel">
       @if(($stad['country'] ?? 'NL') === 'BE')
         Zadenbibs en deelplekken in of bij {{ $stad['naam'] }}
+      @elseif(!empty($plantenasiels))
+        Plantenasiel en deelplekken in of bij {{ $stad['naam'] }}
       @else
         Deelplekken in of bij {{ $stad['naam'] }}
       @endif
@@ -122,7 +114,7 @@
                 · {{ $plek['plaats'] }}
               @endif
               @if(isset($plek['afstand_km']))
-                · ongeveer {{ $plek['afstand_km'] }} km
+                · ongeveer {{ $plek['afstand_km'] }} km van het centrum
               @endif
             </span>
             @if(!empty($plek['bron_url']))
@@ -136,7 +128,10 @@
     @endif
     <p>
       <a href="{{ route('deelplekken', ['plaats' => $stad['naam']]) }}">Deelplekken bij {{ $stad['naam'] }}</a>
-      · <a href="{{ route('deelplekken', ['provincie' => $stad['provincie']]) }}">Heel {{ $stad['provincie'] }}</a>
+      @if(!empty($plantenasiels))
+        · <a href="{{ route('deelplekken', ['plaats' => $stad['naam'], 'type' => 'plantenasiel']) }}">Plantenasiels bij {{ $stad['naam'] }}</a>
+      @endif
+      · <a href="{{ route('deelplekken', ['provincie' => $stad['provincie']]) }}">Alle deelplekken in de provincie {{ $stad['provincie'] }}</a>
       · <a href="{{ route('deelplekken') }}">Alle deelplekken</a>
     </p>
   </section>
