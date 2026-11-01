@@ -52,13 +52,20 @@
             <span @class(['beheer-feedback-status', $item->isRead() ? 'is-gelezen' : 'is-nieuw'])>
               {{ $item->isRead() ? 'gelezen' : 'nieuw' }}
             </span>
-            @unless($item->isRead())
-              <form method="post" action="{{ route('beheer.feedback.read') }}">
+            <div class="beheer-feedback-acties">
+              @unless($item->isRead())
+                <form method="post" action="{{ route('beheer.feedback.read') }}">
+                  @csrf
+                  <input type="hidden" name="id" value="{{ $item->id }}">
+                  <button type="submit" class="linkish">Markeer gelezen</button>
+                </form>
+              @endunless
+              <form method="post" action="{{ route('beheer.feedback.destroy', ['feedback' => $item->id]) }}" onsubmit="return confirm('Deze feedback definitief verwijderen?');">
                 @csrf
-                <input type="hidden" name="id" value="{{ $item->id }}">
-                <button type="submit" class="linkish">Markeer gelezen</button>
+                @method('DELETE')
+                <button type="submit" class="linkish beheer-feedback-verwijder">Verwijderen</button>
               </form>
-            @endunless
+            </div>
           </div>
         </li>
       @endforeach

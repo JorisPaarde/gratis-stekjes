@@ -46,4 +46,13 @@ class FeedbackController extends Controller
             ->route('beheer.feedback')
             ->with('status', 'Feedback gemarkeerd als gelezen.');
     }
+
+    public function destroy(Feedback $feedback): RedirectResponse
+    {
+        $feedback->delete();
+
+        return redirect()
+            ->route('beheer.feedback')
+            ->with('status', 'Feedback verwijderd.');
+    }
 }

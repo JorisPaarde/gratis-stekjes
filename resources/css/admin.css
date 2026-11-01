@@ -118,6 +118,17 @@
   gap: 0.5rem 1rem;
 }
 
+.beheer-feedback-acties {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+}
+
+.beheer-feedback-verwijder {
+  color: #b42318;
+}
+
 .beheer-feedback-status {
   display: inline-flex;
   align-items: center;
