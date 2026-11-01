@@ -141,7 +141,7 @@ final class MessagingService
         $sender = User::query()->find($senderId);
 
         SafeMail::mailable($other->email, new NewMessageMail(
-            afzender: $sender ? (string) $sender->name : '',
+            afzender: $sender ? $sender->publiekeNaam() : '',
             onderwerp: $this->onderwerp($conversation),
             gesprekUrl: route('account.gesprek', $conversation),
             uitzettenUrl: URL::signedRoute('berichtmail.uit', ['user' => $other->id]),
@@ -317,12 +317,15 @@ final class MessagingService
         $mutual = $conversation->hasMutualContact();
         $andere = [
             'id' => $other->id,
-            'voornaam' => $other->name,
+            'voornaam' => $other->publiekeNaam(),
             'locatie_label' => (string) $other->locatie_label,
             'contact_gedeeld' => $mutual,
         ];
         if ($mutual) {
             $andere['email'] = $other->email;
+            if ($other->adres_delen !== false && ($adres = $other->volledigAdres()) !== null) {
+                $andere['adres'] = $adres;
+            }
             if (! $other->isUnreadable('telefoon')) {
                 $tel = trim((string) ($other->telefoon ?? ''));
                 if ($tel !== '') {

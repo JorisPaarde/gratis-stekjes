@@ -181,6 +181,9 @@ Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(functio
 
     Route::get('/account/profiel', [ProfileController::class, 'edit'])->name('account.profiel');
     Route::post('/account/profiel', [ProfileController::class, 'update']);
+    Route::get('/account/adres-zoeken', [ProfileController::class, 'adresZoeken'])
+        ->middleware('throttle:30,1')
+        ->name('account.adres-zoeken');
 
     Route::get('/account/wachtwoord', [PasswordController::class, 'edit'])->name('account.wachtwoord');
     Route::post('/account/wachtwoord', [PasswordController::class, 'update']);
@@ -299,3 +302,8 @@ Route::get('/berichtmail/uit/{user}', [BerichtmailController::class, 'show'])
 Route::post('/berichtmail/uit/{user}', [BerichtmailController::class, 'update'])
     ->middleware(['signed', 'throttle:20,1'])
     ->whereNumber('user');
+
+// Live controle of een voornaam/bijnaam al bestaat (registratie en profiel).
+Route::get('/naam-check', [ProfileController::class, 'naamCheck'])
+    ->middleware('throttle:40,1')
+    ->name('naam-check');

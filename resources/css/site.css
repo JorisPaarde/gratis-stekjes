@@ -1073,3 +1073,27 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
 .vereniging-acties { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
 .linkish { background: none; border: 0; padding: 0; font: inherit; color: var(--forest); text-decoration: underline; text-underline-offset: .15em; cursor: pointer; }
 .linkish:hover, .linkish:focus-visible { color: var(--forest-deep); }
+
+/* Profiel: adres */
+.adres-blok { border: 1px solid var(--line); border-radius: .9rem; padding: 1rem; margin: 0; display: grid; gap: .75rem; }
+.adres-blok legend { font-weight: 700; padding: 0 .35rem; }
+.adres-rij { display: grid; gap: .75rem; grid-template-columns: 2fr 1fr; }
+.adres-rij label { display: grid; gap: .3rem; }
+.adres-zoek-rij { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin: 0; }
+@media (max-width: 480px) { .adres-rij { grid-template-columns: 1fr; } }
+
+/* Volgende stap bovenaan accountpagina's */
+.volgende-stap { background: var(--bg-mint); border-bottom: 1px solid var(--line); }
+.volgende-stap-inner { display: flex; align-items: center; gap: .85rem; padding-top: .7rem; padding-bottom: .7rem; }
+.volgende-stap-inner img { flex: 0 0 auto; }
+.volgende-stap-inner p { margin: 0; flex: 1 1 auto; }
+.volgende-stap-inner .btn { flex: 0 0 auto; white-space: nowrap; }
+@media (max-width: 600px) {
+  .volgende-stap-inner { flex-wrap: wrap; }
+  .volgende-stap-inner p { flex-basis: calc(100% - 60px); }
+  .volgende-stap-inner .btn { width: 100%; text-align: center; }
+}
+
+.naam-check { color: #8a4514; margin: .35rem 0 0; }
+.naam-suggestie { font: inherit; font-weight: 700; margin: .25rem .35rem 0 0; padding: .15rem .6rem; border-radius: var(--radius-pill); border: 1px solid var(--orange); background: #fff; color: var(--forest-deep); cursor: pointer; }
+.naam-suggestie:hover, .naam-suggestie:focus-visible { background: var(--bg-mint); }

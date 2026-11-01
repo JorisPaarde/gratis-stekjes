@@ -7,6 +7,7 @@ namespace App\Providers;
 use App\Logging\MaskPersonalDataProcessor;
 use App\Models\User;
 use App\Services\MessagingService;
+use App\Services\VolgendeStap;
 use App\Support\AdminDashboard;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -60,6 +61,19 @@ class AppServiceProvider extends ServiceProvider
                 $count = 0;
             }
             $view->with('ongelezenBerichten', $count);
+        });
+
+        View::composer('partials.volgende-stap', function ($view): void {
+            $stap = null;
+            try {
+                $user = auth()->user();
+                if ($user !== null) {
+                    $stap = app(VolgendeStap::class)->voor($user);
+                }
+            } catch (Throwable) {
+                $stap = null;
+            }
+            $view->with('volgendeStap', $stap);
         });
 
         RateLimiter::for('plantensoorten-zoek', function (Request $request) {

@@ -40,7 +40,7 @@ class ErvaringController extends Controller
                 'id' => $e->id,
                 'body' => $e->body,
                 'plaatsnaam' => $e->plaatsnaam,
-                'naam' => $e->user?->name ?? 'Lid',
+                'naam' => $e->user?->publiekeNaam() ?? 'Lid',
                 'soort' => $soort['naam'] ?? null,
                 'has_photo' => $e->hasPhoto(),
                 'photo_url' => $e->hasPhoto() ? route('ervaringen.foto', $e) : null,

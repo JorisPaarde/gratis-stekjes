@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Auth;
 
 use App\Support\FormGuard;
+use App\Support\Naam;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
@@ -19,7 +20,16 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'voornaam' => ['required', 'string', 'max:80'],
+            'voornaam' => ['required', 'string', 'max:80', 'not_regex:/@/', function (string $attr, mixed $value, \Closure $fail): void {
+                if (is_string($value) && Naam::lijktOpEmail($value, is_string($this->input('email')) ? $this->input('email') : null)) {
+                    $fail(Naam::MELDING_EMAIL);
+
+                    return;
+                }
+                if (is_string($value) && Naam::bezet($value)) {
+                    $fail(Naam::melding($value));
+                }
+            }],
             'email' => ['required', 'string', 'email:filter', 'max:254'],
             // min:10 i.p.v. Password::min zodat password.min-bericht altijd meekomt naast confirmed.
             'password' => ['required', 'string', 'confirmed', 'min:10', 'max:200'],
@@ -35,6 +45,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'voornaam.required' => 'Vul een voornaam of bijnaam in.',
+            'voornaam.not_regex' => 'Gebruik een voornaam of bijnaam, geen e-mailadres. Die zien anderen.',
             'email.required' => 'Vul een geldig e-mailadres in.',
             'email.email' => 'Vul een geldig e-mailadres in.',
             'password.required' => 'Kies een wachtwoord.',

@@ -36,7 +36,8 @@
   <ul class="list-plain">
     <li>Voornaam of bijnaam</li>
     <li>Wat je uitdeelt of zoekt (vrije tekst) en eventuele foto’s bij dat aanbod</li>
-    <li>Locatie bij benadering (postcode of plaats/wijk) en afgeronde kaartpunten. Nooit een straat of huisnummer via de site</li>
+    <li>Locatie bij benadering (postcodegebied of plaats) en afgeronde kaartpunten. Dat is wat anderen op de kaart en bij je aanbod zien</li>
+    <li>Optioneel je volledige adres (straat, huisnummer, postcode, plaats), versleuteld opgeslagen. Dat ziet alleen iemand met wie je in een gesprek allebei “ja” zegt, en alleen als je delen aan laat staan. Nooit op de kaart of openbaar</li>
     <li>Goedgekeurde deelplekken/organisaties met de publieke info die daarvoor is goedgekeurd</li>
     <li>Goedgekeurde ervaringen: je voornaam/bijnaam, tekst, optionele foto, plaatsnaam (gemeente) en eventuele soortnaam</li>
   </ul>
@@ -46,7 +47,7 @@
     <li>E-mail: niet zichtbaar voor anderen, tenzij jullie in een gesprek beide “ja” kiezen voor verder contact. E-mail sla ik niet versleuteld op: het is je login en moet uniek opzoekbaar zijn.</li>
     <li>Optioneel telefoonnummer (zelfde zichtbaarheidsregel; wél versleuteld in de database)</li>
     <li>Verenigingen: als je je account aan een volkstuin of tuinvereniging koppelt, bewaar ik die koppeling. Alleen als jij het vinkje aanzet, staat bij je aanbod dat je lid bent. Op de pagina van de vereniging staat alleen het aantal leden, nooit namen. Ontkoppelen kan altijd via Mijn verenigingen.</li>
-    <li>Exacte adressen en exacte coördinaten: die sla ik niet op in het gebruikersprofiel; exacte ophaaladressen deel je zelf buiten of in een bericht als je dat wilt</li>
+    <li>Exacte coördinaten: die sla ik niet op. Een adres staat alleen in je profiel als je het zelf invult; ophaaladressen kun je ook zelf buiten de site of in een bericht als je dat wilt</li>
     <li>Contact-e-mail bij organisatie-aanmeldingen (versleuteld)</li>
     <li>Berichtinhoud en meldingsredenen (versleuteld), wachtwoorden (nooit leesbaar opgeslagen), beheerwachtwoord-sessie</li>
   </ul>

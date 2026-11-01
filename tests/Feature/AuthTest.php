@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\User;
+use App\Notifications\AccountBestaatAl;
 use App\Notifications\VerifyEmailDutch;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
@@ -65,7 +66,11 @@ test('registreren met bestaand e-mail geeft geen enumeratie en geen tweede user'
     ]))->assertRedirect(route('account.bevestiging-nodig'));
 
     expect(User::query()->where('email', 'bestaat@example.com')->count())->toBe(1);
-    Notification::assertNothingSent();
+    // Scherm gelijk (geen enumeratie); alleen de eigenaar van het adres krijgt een mail.
+    $bestaand = User::query()->where('email', 'bestaat@example.com')->first();
+    Notification::assertSentTo($bestaand, AccountBestaatAl::class);
+    Notification::assertSentTimes(AccountBestaatAl::class, 1);
+    Notification::assertNotSentTo($bestaand, VerifyEmailDutch::class);
 });
 
 test('wegwerpmail uit domains.txt wordt geweigerd', function () {

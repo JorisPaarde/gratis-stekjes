@@ -26,7 +26,7 @@
     <ul class="inbox-list">
       @foreach($rows as $r)
         <li class="inbox-item">
-          <a href="{{ route('account.gesprek', $r['id']) }}">Gesprek met {{ $r['andere_naam'] }}</a>
+          <a href="{{ route('account.gesprek', $r['id']) }}">Gesprek met {{ $r['andere_naam'] }}</a>@if($r['andere_plaats'] !== '') <span class="muted">· {{ $r['andere_plaats'] }}</span>@endif
           @if($r['ongelezen'] > 0)
             <span class="ongelezen-badge">{{ $r['ongelezen'] }} nieuw</span>
           @endif

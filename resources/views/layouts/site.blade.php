@@ -84,6 +84,11 @@
       </nav>
     </div>
   </header>
+  @auth
+    @if(request()->is('account', 'account/*') && ! request()->is('account/verwijderen', 'account/export'))
+      @include('partials.volgende-stap')
+    @endif
+  @endauth
   <main id="inhoud">
     @if(request()->hasSession() && session('status'))
       <div class="wrap" style="padding-top:1rem">
