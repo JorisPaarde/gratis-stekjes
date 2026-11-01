@@ -17,63 +17,114 @@
       types: @json($typeLabels)
     };
   </script>
-  @vite(['resources/css/deelplekken.css'])
+  @vite(['resources/css/aanbod.css', 'resources/css/deelplekken.css', 'resources/css/stektips.css'])
 @endpush
 
 @section('content')
+@php
+  $isFilter = $filters['type'] !== '' || $filters['provincie'] !== '' || $filters['plaats'] !== '';
+  $bronLabel = function ($plek): string {
+      $host = strtolower((string) parse_url((string) $plek->bron_url, PHP_URL_HOST));
+      $host = preg_replace('/^www\./', '', $host) ?? '';
+      $hostKern = preg_replace('/[^a-z0-9]/', '', (string) strstr($host.'.', '.', true));
+      $naam = preg_replace('/[^a-z0-9]/', '', \Illuminate\Support\Str::ascii(mb_strtolower((string) $plek->naam)));
+      $generiek = ['facebook', 'instagram', 'google', 'nextdoor', 'linktree'];
+      if ($hostKern !== '' && ! in_array($hostKern, $generiek, true)
+          && (str_contains($naam, $hostKern) || str_contains($hostKern, $naam) || similar_text($naam, $hostKern) >= 8)) {
+          return 'Website';
+      }
+      return 'Meer informatie';
+  };
+  $meervoud = [
+      'plantenasiel' => 'Plantenasiels', 'plantenbieb' => 'Plantenbiebs', 'ruilkast' => 'Ruilkasten',
+      'stekjesruilpunt' => 'Stekjesruilpunten', 'zaadbibliotheek' => 'Zadenbibliotheken',
+      'voedselbos' => 'Voedselbossen', 'tuinvereniging' => 'Tuinverenigingen',
+  ];
+@endphp
 <section class="section wrap deelplekken-page">
-  <h1 class="page-title">Plantenasiels, plantenbiebs en ruilkastjes in Nederland en België</h1>
-  <p class="section-intro">Hier vind je plekken waar je planten, stekjes of zaden kunt brengen, ruilen of ophalen: plantenasiels, plantenbiebs, ruilkasten, stekjesruilpunten en zadenbibliotheken. De gegevens komen uit openbare bronnen. Kijk bij de bron voor de actuele openingstijden.</p>
-  <p class="muted"><a href="{{ route('voor-organisaties') }}">Organisatie of plek aanmelden</a> · <a href="{{ route('over') }}">Mis je een plek, of klopt er iets niet? Laat het me weten</a> · of kijk op de <a href="{{ route('aanbod') }}">aanbodkaart</a>.</p>
+  <h1 class="deelplekken-titel">Vind een deelplek in de buurt</h1>
+  <p class="section-intro">Plantenasiels, plantenbiebs, ruilkastjes en zadenbibliotheken in Nederland en België: plekken waar je planten, stekjes of zaden kunt brengen, ruilen of ophalen. Kijk vóór je gaat even op de website van de plek voor de openingstijden.</p>
 
-  <form class="form deelplekken-filters" method="get" action="{{ route('deelplekken') }}" style="max-width:100%;margin:1rem 0">
-    <div class="deelplekken-filter-grid">
-      <label>Type
-        <select name="type">
-          <option value="">Alle types</option>
-          @foreach($typeLabels as $key => $label)
-            <option value="{{ $key }}" @selected($filters['type'] === $key)>{{ $label }}</option>
-          @endforeach
-        </select>
-      </label>
-      <label>Provincie
-        <select name="provincie">
-          <option value="">Alle provincies</option>
-          @foreach($provincies as $p)
-            <option value="{{ $p }}" @selected($filters['provincie'] === $p)>{{ $p }}</option>
-          @endforeach
-        </select>
-      </label>
-      <label>Plaats
-        <input type="search" name="plaats" value="{{ $filters['plaats'] }}" maxlength="120" placeholder="Bijvoorbeeld Utrecht">
-      </label>
-      <button class="btn" type="submit">Filter</button>
+  <form class="zoekbalk deelplekken-zoek" method="get" action="{{ route('deelplekken') }}" role="search">
+    @if($filters['type'] !== '')
+      <input type="hidden" name="type" value="{{ $filters['type'] }}">
+    @endif
+    <div class="zoekbalk-veld zoekbalk-veld--waar">
+      <label for="dp-plaats">Plaats</label>
+      <input id="dp-plaats" type="search" name="plaats" value="{{ $filters['plaats'] }}" maxlength="120" placeholder="Bijvoorbeeld Utrecht of Gent">
     </div>
+    <div class="zoekbalk-veld">
+      <label for="dp-provincie">Provincie</label>
+      <select id="dp-provincie" name="provincie">
+        <option value="">Alle provincies</option>
+        @foreach($provincies as $p)
+          <option value="{{ $p }}" @selected($filters['provincie'] === $p)>{{ $p }}</option>
+        @endforeach
+      </select>
+    </div>
+    <button class="btn zoekbalk-knop" type="submit"><x-icon name="zoeken" :size="18" /> Zoek</button>
   </form>
 
-  <div class="search-layout deelplekken-layout">
-    <div id="deelplekken-kaart" role="img" aria-label="Kaart met deelplekken voor planten"></div>
-    <div>
-      <p class="muted" id="deelplekken-status">{{ $items->count() }} {{ $items->count() === 1 ? 'plek' : 'plekken' }}</p>
-      <ul class="zoek-lijst deelplekken-lijst" id="deelplekken-lijst">
-        @forelse($items as $plek)
-          <li class="zoek-item zoek-item--deelplek" data-kind="deelplek" data-type="{{ $plek->type }}">
-            <span class="badge badge--{{ $plek->type }}">{{ $typeLabels[$plek->type] ?? $plek->type }}</span>
-            <h2>{{ $plek->naam }} · {{ $plek->plaats }}</h2>
-            <p>{{ $plek->adres !== '' ? $plek->adres : $plek->plaats }}@if($plek->provincie) · {{ $plek->provincie }}@endif</p>
-            <p><a href="{{ $plek->bron_url }}" rel="noopener noreferrer" target="_blank">Bron</a>
-              <span class="muted"> · gecontroleerd {{ $plek->geraadpleegd?->format('Y-m-d') }}</span></p>
-          </li>
-        @empty
-          <li class="zoek-item">
-            <p>Geen deelplekken gevonden met deze keuzes. <a href="{{ route('deelplekken') }}">Toon alles</a></p>
-          </li>
-        @endforelse
-      </ul>
-    </div>
-  </div>
+  <nav class="deelplekken-types" aria-label="Soort plek">
+    <a class="dp-chip {{ $filters['type'] === '' ? 'is-actief' : '' }}" href="{{ route('deelplekken') }}">Alles <span>{{ array_sum($typeAantallen) }}</span></a>
+    @foreach($typeLabels as $key => $label)
+      @if(($typeAantallen[$key] ?? 0) > 0)
+        <a class="dp-chip {{ $filters['type'] === $key ? 'is-actief' : '' }}" href="{{ route('deelplekken', ['type' => $key]) }}">{{ $meervoud[$key] ?? $label }} <span>{{ $typeAantallen[$key] }}</span></a>
+      @endif
+    @endforeach
+  </nav>
 
-  <p class="muted" style="margin-top:1rem">Kaart: © OpenStreetMap-bijdragers. De plekken staan ongeveer op het openbare adres uit de bron. Dit is geen officiële lijst van samenwerkingspartners.</p>
+  <div id="deelplekken-kaart" role="img" aria-label="Kaart met deelplekken voor planten"></div>
+
+  <p class="zoek-status" id="deelplekken-status-tekst">
+    {{ $items->count() }} {{ $items->count() === 1 ? 'plek' : 'plekken' }}@if($isFilter) gevonden · <a href="{{ route('deelplekken') }}">Toon alles</a>@endif
+  </p>
+  <span class="visually-hidden" id="deelplekken-status" aria-live="polite"></span>
+
+  <ul class="zoek-lijst deelplekken-lijst" id="deelplekken-lijst">
+    @forelse($items as $plek)
+      <li class="zoek-item zoek-item--plek zoek-item--deelplek" data-kind="deelplek" data-type="{{ $plek->type }}">
+        <div class="zoek-item-kop"><h2>{{ $plek->naam }}</h2></div>
+        <p class="zoek-item-meta"><span class="badge badge--{{ $plek->type }}">{{ $typeLabels[$plek->type] ?? $plek->type }}</span> {{ $plek->plaats }}@if($plek->provincie) · {{ $plek->provincie }}@endif</p>
+        @if($plek->adres !== '')
+          <p class="zoek-item-adres">{{ $plek->adres }}</p>
+        @endif
+        <p class="zoek-item-acties">
+          <button type="button" class="zoek-op-kaart" data-lat="{{ $plek->lat }}" data-lng="{{ $plek->lng }}">Op de kaart</button>
+          @if($plek->bron_url)
+            <a href="{{ $plek->bron_url }}" rel="noopener noreferrer" target="_blank">{{ $bronLabel($plek) }}</a>
+          @endif
+        </p>
+        @if($plek->geraadpleegd)
+          <p class="zoek-item-datum">Gecontroleerd op {{ $plek->geraadpleegd->locale('nl')->translatedFormat('j F Y') }}</p>
+        @endif
+      </li>
+    @empty
+      <li class="zoek-item">
+        <p>Geen deelplekken gevonden met deze keuzes. <a href="{{ route('deelplekken') }}">Toon alles</a></p>
+      </li>
+    @endforelse
+  </ul>
+
+  @if(!empty($faq))
+    <section class="stektips-faq deelplekken-faq" id="veelgestelde-vragen" aria-labelledby="faq-titel">
+      <h2 id="faq-titel">Veelgestelde vragen</h2>
+      @foreach($faq as $f)
+        <details class="stektips-faq-item">
+          <summary>{{ $f['vraag'] }}</summary>
+          <div class="stektips-faq-antwoord">
+            <p>{{ $f['antwoord'] }}</p>
+            @if($f['link'])
+              <p><a href="{{ url($f['link']['pad']) }}">{{ $f['link']['label'] }}</a></p>
+            @endif
+          </div>
+        </details>
+      @endforeach
+    </section>
+  @endif
+
+  <p class="muted deelplekken-voet">Mis je een plek, of klopt er iets niet? <a href="{{ route('voor-organisaties') }}">Organisatie of plek aanmelden</a>. Op de <a href="{{ route('aanbod') }}">aanbodkaart</a> zie je ook wat mensen in de buurt weggeven.<br>
+  Kaart: © OpenStreetMap-bijdragers. De plekken staan ongeveer op het openbare adres uit de bron. Dit is geen officiële lijst van samenwerkingspartners.</p>
 </section>
 @endsection
 

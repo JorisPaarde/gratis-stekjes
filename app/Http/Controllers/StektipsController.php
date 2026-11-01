@@ -8,6 +8,7 @@ use App\Services\Kennisbank;
 use App\Services\Plantensoorten;
 use App\Services\SoortAfbeeldingen;
 use App\Services\Stektips;
+use App\Support\Faq;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
@@ -84,6 +85,37 @@ class StektipsController extends Controller
         $hasActiveFilters = $queryForCanonical !== [];
         $pillars = $hasActiveFilters ? [] : $kennisbank->pillars();
 
+        // Makkelijk om mee te beginnen: bekende, makkelijke soorten met foto (alleen zonder filters).
+        $beginners = [];
+        if (! $hasActiveFilters) {
+            $kandidaten = ['monstera', 'munt', 'hortensia', 'vijg', 'zwarte-bes', 'scindapsus', 'pothos', 'rozemarijn', 'tradescantia', 'wilg', 'lavendel', 'aardbei'];
+            $bySlug = [];
+            foreach ($listedSoorten as $s) {
+                $bySlug[(string) $s['slug']] = $s;
+            }
+            foreach ($kandidaten as $slug) {
+                $s = $bySlug[$slug] ?? null;
+                if ($s === null || ! str_starts_with(mb_strtolower((string) ($s['kans'] ?? '')), 'makkelijk')) {
+                    continue;
+                }
+                $img = $afbeeldingen->forSlug($slug, (string) $s['naam']);
+                if ($img['is_fallback']) {
+                    continue;
+                }
+                $beginners[] = [
+                    'naam' => (string) $s['naam'],
+                    'url' => route('stektips.show', ['slug' => $slug]),
+                    'wanneer' => (string) ($s['wanneer'] ?? ''),
+                    'afbeelding' => $img,
+                ];
+                if (count($beginners) === 6) {
+                    break;
+                }
+            }
+        }
+
+        $faq = $hasActiveFilters ? [] : Faq::load('stektips-faq.json');
+
         $title = 'Stektips: planten stekken en snoeien';
         $metaDescription = 'Leer planten stekken en snoeien, maak wilgenwater en deel gratis stekjes. Tips per soort, van monstera tot vijg.';
 
@@ -116,15 +148,36 @@ class StektipsController extends Controller
                 'beide' => 'Binnen & buiten',
             ],
             'hasActiveFilters' => $hasActiveFilters,
-            'schema' => [
-                '@context' => 'https://schema.org',
-                '@type' => 'CollectionPage',
-                'name' => $title,
-                'url' => route('stektips.index'),
-                'description' => $metaDescription,
-                'inLanguage' => 'nl-NL',
-            ],
+            'beginners' => $beginners,
+            'faq' => $faq,
+            'schema' => $this->indexSchema($title, $metaDescription, $faq),
         ]);
+    }
+
+    /**
+     * @param  list<array{vraag: string, antwoord: string}>  $faq
+     * @return array<string, mixed>
+     */
+    private function indexSchema(string $title, string $metaDescription, array $faq): array
+    {
+        $page = [
+            '@type' => 'CollectionPage',
+            'name' => $title,
+            'url' => route('stektips.index'),
+            'description' => $metaDescription,
+            'inLanguage' => 'nl-NL',
+        ];
+        if ($faq === []) {
+            return ['@context' => 'https://schema.org'] + $page;
+        }
+
+        return [
+            '@context' => 'https://schema.org',
+            '@graph' => [
+                $page,
+                Faq::schema(route('stektips.index').'#veelgestelde-vragen', $faq),
+            ],
+        ];
     }
 
     public function artikel(string $slug, Kennisbank $kennisbank, Stektips $stektips): View|Response

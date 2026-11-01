@@ -9,6 +9,26 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.37.0] - 2026-11-01
+
+### Changed
+
+- **/stektips**: zoekveld «Welke plant wil je stekken?» direct onder de titel; overige filters achter
+  «Meer filters»; onderwerpkaarten compact met korte, volledige zinnen; rij «Makkelijk om mee te
+  beginnen» met foto; zonder filters de eerste 24 resultaten en de rest achter «Toon alle»;
+  mobiel: onderwerpen horizontaal scrollen, resultaten in twee kolommen.
+- **/deelplekken**: kop «Vind een deelplek in de buurt» met uitleg eronder (zoekwoorden in titel en
+  intro behouden); compacte zoekbalk (plaats, provincie); type-chips met aantallen; kaart op volle
+  breedte; plekken als raster van compacte kaarten met «Op de kaart»; bronlink heet «Website» bij de
+  eigen site van een plek en anders «Meer informatie»; controledatum leesbaar.
+
+### Added
+
+- **Veelgestelde vragen** met FAQPage-schema: 10 vragen over stekken op /stektips
+  (`data/stektips-faq.json`) en 7 over plantenasiels, plantenbiebs en zadenbibliotheken op
+  /deelplekken (`data/deelplekken-faq.json`), gekozen op vragen die in Google terugkomen. Alleen op de
+  pagina zonder filters. Gedeelde helper `App\Support\Faq`.
+
 ## [0.36.0] - 2026-10-31
 
 ### Changed
