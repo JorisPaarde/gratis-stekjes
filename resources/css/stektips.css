@@ -279,3 +279,105 @@
 .stektips-seo-ctas .btn {
   margin-top: 0.35rem;
 }
+
+/* —— /stektips index (0.37.0): zoeken eerst, compacte onderwerpen, beginners, FAQ —— */
+.stektips-page .section h1.stektips-titel,
+.stektips-page h1.stektips-titel {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: none;
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  line-height: 1.05;
+  color: var(--forest);
+  margin: 0 0 0.6rem;
+  background: none;
+  padding: 0;
+}
+.stektips-page h2 { text-transform: none; letter-spacing: 0.01em; font-weight: 400; }
+
+.stektips-zoek {
+  background: var(--bg-mint, #e6f2e1);
+  border-radius: var(--radius, 1rem);
+  padding: 1rem 1.1rem;
+  margin: 0 0 1.5rem;
+}
+.stektips-zoek > label { display: block; font-weight: 700; font-size: 1.1rem; color: var(--forest-deep); margin-bottom: 0.45rem; }
+.stektips-zoek-veld { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.stektips-zoek-veld input {
+  flex: 1 1 16rem; min-width: 0; min-height: 48px;
+  font: inherit; font-size: 1.05rem;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid rgba(31, 77, 43, 0.3); border-radius: 0.6rem; background: #fff;
+}
+.stektips-zoek-veld .btn { min-height: 48px; }
+.stektips-meer-filters { margin-top: 0.75rem; }
+.stektips-meer-filters summary {
+  cursor: pointer; font-weight: 600; color: var(--forest-deep);
+  display: inline-block; padding: 0.15rem 0;
+}
+.stektips-meer-filters[open] summary { margin-bottom: 0.75rem; }
+.stektips-meer-filters .stektips-filter-grid label { display: grid; gap: 0.25rem; font-weight: 600; font-size: 0.92rem; }
+.stektips-meer-filters select {
+  font: inherit; padding: 0.5rem 0.6rem; border: 1px solid rgba(31, 77, 43, 0.3); border-radius: 0.5rem; background: #fff;
+}
+.stektips-wis { margin: 0.6rem 0 0; font-size: 0.95rem; }
+
+/* Onderwerpen: compact, alleen de titel onderstreept bij hover */
+.stektips-pillar-list { gap: 0.6rem; }
+@media (min-width: 1000px) { .stektips-pillar-list { grid-template-columns: repeat(5, 1fr); } }
+.stektips-pillar-card {
+  display: flex; flex-direction: column; gap: 0.25rem;
+  padding: 0.75rem 0.85rem;
+  background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--orange);
+  border-radius: 0.7rem;
+  text-decoration: none; color: var(--ink);
+}
+.stektips-pillar-titel { font-weight: 700; color: var(--forest-deep); line-height: 1.25; }
+.stektips-pillar-tekst { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.35; }
+.stektips-pillar-card:hover .stektips-pillar-titel,
+.stektips-pillar-card:focus-visible .stektips-pillar-titel { text-decoration: underline; }
+
+.stektips-beginners { margin: 0 0 2rem; }
+.stektips-beginners h2, .stektips-alle-titel, .stektips-faq h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin: 0 0 0.9rem; }
+
+/* Resultaatkaarten: geen onderstreepte tekst, titel als link-kleur */
+.stektips-entries a.stektips-entry { text-decoration: none; color: var(--ink); }
+.stektips-entries a.stektips-entry .stektips-entry-title {
+  font-family: var(--font-body); text-transform: none; letter-spacing: 0; font-size: 1.1rem; font-weight: 700;
+}
+.stektips-entries a.stektips-entry:hover .stektips-entry-title { text-decoration: underline; }
+
+/* FAQ */
+.stektips-faq { margin: 2.5rem 0 1.5rem; max-width: 50rem; }
+.stektips-faq-item { border-bottom: 1px solid var(--line); }
+.stektips-faq-item summary {
+  cursor: pointer; list-style: none;
+  display: flex; justify-content: space-between; gap: 1rem;
+  padding: 0.95rem 0; font-weight: 700; font-size: 1.05rem; color: var(--forest-deep);
+}
+.stektips-faq-item summary::-webkit-details-marker { display: none; }
+.stektips-faq-item summary::after { content: "+"; font-size: 1.4rem; line-height: 1; color: var(--orange); }
+.stektips-faq-item[open] summary::after { content: "−"; }
+.stektips-faq-antwoord { padding: 0 0 1rem; color: var(--ink-soft); }
+.stektips-faq-antwoord p { margin: 0 0 0.5rem; }
+.stektips-rest { margin-top: 1rem; }
+.stektips-rest > summary { list-style: none; cursor: pointer; display: inline-flex; }
+.stektips-rest > summary::-webkit-details-marker { display: none; }
+.stektips-rest[open] > summary { display: none; }
+.stektips-rest > .stektips-entries { margin-top: 1rem; }
+
+/* Mobiel: compacte onderwerpen (horizontaal scrollen) en twee kolommen resultaten. */
+@media (max-width: 699px) {
+  .stektips-pillar-list {
+    display: flex; overflow-x: auto; gap: 0.6rem;
+    scroll-snap-type: x mandatory; padding-bottom: 0.35rem; margin-inline: -1rem; padding-inline: 1rem;
+  }
+  .stektips-pillar-list li { flex: 0 0 72%; scroll-snap-align: start; }
+  .stektips-entries { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.65rem; }
+  .stektips-entries .stektips-entry { padding: 0 0 0.6rem; }
+  .stektips-entries .stektips-entry > :not(img) { padding-inline: 0.6rem; }
+  .stektips-entries .stektips-entry p:not(.stektips-entry-badges) { font-size: 0.82rem; }
+  .stektips-entries a.stektips-entry .stektips-entry-title { font-size: 0.98rem; }
+  .stektips-entries .stektips-entry-img { width: 100%; margin: 0 0 0.5rem; height: 6.5rem; }
+  .stektips-entries .stektips-entry-credit { font-size: 0.7rem; }
+}

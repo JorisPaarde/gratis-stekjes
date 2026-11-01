@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "omschrijving": "Veelgestelde vragen over stekken op /stektips. Gekozen op basis van vragen die in Google bij 'stekken' terugkomen (oktober 2026). Antwoorden sluiten aan op de kennisbank-artikelen; links zijn relatieve paden.",
+    "bijgewerkt": "2026-11-01"
+  },
+  "vragen": [
+    {
+      "vraag": "Wanneer is de beste tijd om te stekken?",
+      "antwoord": "Dat hangt af van de manier van stekken. Zachte kop- en scheutstekken lukken het best van april tot juni, halfrijpe stekken van juli tot september, en winterhoutstekken van bijvoorbeeld bessen, wilg en vijg na de bladval tot laat in de winter. Kamerplanten kun je het hele jaar stekken, maar in de lente en zomer gaat het sneller.",
+      "link": {"label": "Bekijk de seizoenskalender", "pad": "/stektips/artikel/wanneer-stekken"}
+    },
+    {
+      "vraag": "Hoe lang duurt het voordat een stek wortels krijgt?",
+      "antwoord": "Bij makkelijke kamerplanten en kruiden zie je vaak na twee tot vier weken de eerste wortels. Houtige stekken hebben meer geduld nodig: soms een paar maanden, en een winterstek is vaak pas in het voorjaar klaar. Trek niet aan de stek om te kijken. Nieuwe blaadjes of wortels onder uit het potje zijn een beter teken.",
+      "link": null
+    },
+    {
+      "vraag": "Stekken in water of in aarde: wat is beter?",
+      "antwoord": "Water werkt goed voor kamerplanten zoals monstera, pothos en tradescantia, en je ziet de wortels groeien. Voor houtige tuinplanten, bessen en kruiden is luchtige stekgrond meestal betrouwbaarder, omdat de wortels meteen aan grond wennen.",
+      "link": {"label": "Lees: stekken in water of in grond", "pad": "/stektips/artikel/stekken-in-water-of-grond"}
+    },
+    {
+      "vraag": "Wanneer zet ik een stekje van water in de aarde?",
+      "antwoord": "Als de wortels een paar centimeter lang zijn, ongeveer 3 tot 5 cm. Houd de grond de eerste weken goed vochtig, zodat de overstap niet te groot is. Laat de stek niet maandenlang in water staan: dan wennen de wortels juist slechter aan grond.",
+      "link": null
+    },
+    {
+      "vraag": "Heb ik stekpoeder nodig?",
+      "antwoord": "Voor de meeste makkelijke soorten niet. Het juiste moment, een schone snede en goede stekgrond doen meer. Stekpoeder kan helpen bij lastige houtige soorten. Een natuurlijk alternatief is wilgenwater, dat je zelf maakt van wilgentwijgen.",
+      "link": {"label": "Zo maak je wilgenwater", "pad": "/stektips/artikel/wilgenwater"}
+    },
+    {
+      "vraag": "Welke grond gebruik ik voor stekjes?",
+      "antwoord": "Luchtige, voedselarme grond die water goed doorlaat. Je kunt zaai- en stekgrond kopen of zelf mengen: half potgrond (het liefst turfvrij) en half scherp zand of fijn grind. Gewone potgrond met veel mest is te zwaar voor jonge wortels.",
+      "link": {"label": "Stekgrond zelf maken", "pad": "/stektips/artikel/stekgrond-zelf-maken"}
+    },
+    {
+      "vraag": "Waarom rot mijn stekje?",
+      "antwoord": "Meestal door te veel water of te weinig lucht. Haal de onderste bladeren weg, zodat er geen blad in het water of de grond zit. Ververs het water als het troebel wordt, en houd grond vochtig maar niet nat. Een plastic zakje over de stek houdt de lucht vochtig, maar haal het af en toe weg tegen schimmel.",
+      "link": null
+    },
+    {
+      "vraag": "Hebben stekjes zon nodig?",
+      "antwoord": "Ze hebben veel licht nodig, maar geen felle zon. Die laat het blad uitdrogen voordat er wortels zijn om water op te nemen. Een lichte vensterbank uit de middagzon, of een beschaduwde plek buiten, werkt het best.",
+      "link": null
+    },
+    {
+      "vraag": "Kun je elke plant stekken?",
+      "antwoord": "Nee. Veel kamerplanten, kruiden, bessen en struiken lukken makkelijk, maar sommige planten vermeerder je beter door ze te scheuren, af te leggen of te zaaien. Fruitbomen zoals appel, peer en kers worden uit stek of zaad niet hetzelfde ras; daarvoor is enten de manier.",
+      "link": {"label": "Fruitbomen enten", "pad": "/stektips/artikel/fruitbomen-enten"}
+    },
+    {
+      "vraag": "Wat doe ik met stekjes die ik over heb?",
+      "antwoord": "Geef ze weg. Op Gratis planten zet je ze gratis online voor mensen bij jou in de buurt, die ze zelf komen ophalen. Zo krijgt elk stekje een plek.",
+      "link": {"label": "Zo werkt het", "pad": "/hoe-werkt-het"}
+    }
+  ]
+}

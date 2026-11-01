@@ -1,0 +1,49 @@
+{
+  "meta": {
+    "omschrijving": "Veelgestelde vragen op /deelplekken, op basis van vragen die in Google bij plantenasiel en plantenbieb terugkomen. Algemeen geformuleerd: regels en openingstijden verschillen per plek.",
+    "bijgewerkt": "2026-11-01"
+  },
+  "vragen": [
+    {
+      "vraag": "Wat is een plantenasiel?",
+      "antwoord": "Een opvang voor planten die mensen niet meer kunnen of willen verzorgen, bijvoorbeeld omdat ze te groot zijn geworden of omdat iemand verhuist. Vrijwilligers knappen de planten op en zoeken er een nieuw huis voor. Je kunt er een plant brengen of er een meenemen.",
+      "link": null
+    },
+    {
+      "vraag": "Wat is een plantenbieb?",
+      "antwoord": "Een kastje of plek in de buurt waar je planten, stekjes, zaden of bollen ruilt. Je zet er iets neer en neemt er iets anders voor mee. Vaak staat zo’n kastje bij iemand voor de deur, in een buurthuis of bij een kinderboerderij.",
+      "link": null
+    },
+    {
+      "vraag": "Wat is een zadenbibliotheek?",
+      "antwoord": "Een plek, vaak in een bibliotheek, waar je gratis zaden kunt meenemen om zelf te zaaien. Het idee is dat je na de oogst zelf weer zaad wint en terugbrengt, zodat er elk jaar genoeg is.",
+      "link": {
+        "label": "Toon alle zadenbibliotheken",
+        "pad": "/deelplekken?type=zaadbibliotheek"
+      }
+    },
+    {
+      "vraag": "Is het gratis?",
+      "antwoord": "Bij de meeste plekken wel. Sommige plantenasiels vragen een kleine vrijwillige bijdrage, bijvoorbeeld voor potgrond en potten. Kijk bij twijfel op de website van de plek.",
+      "link": null
+    },
+    {
+      "vraag": "Moet ik iets terugbrengen?",
+      "antwoord": "Bij een plantenbieb of ruilkast is dat de bedoeling: neem je iets mee, zet er dan later ook iets terug. Heb je niets om te ruilen, dan is dat bij de meeste plekken geen probleem. Bij een plantenasiel kun je meestal gewoon een plant uitzoeken.",
+      "link": null
+    },
+    {
+      "vraag": "Wanneer is een plek open?",
+      "antwoord": "Dat verschilt per plek. Een ruilkastje op straat kun je vaak altijd bezoeken, een plantenasiel is meestal maar een paar dagen per week open. Kijk daarom vóór je gaat op de website van de plek.",
+      "link": null
+    },
+    {
+      "vraag": "Mis je een plek, of klopt er iets niet?",
+      "antwoord": "Meld het via het formulier voor organisaties of stuur een mail. Ik controleer de gegevens en zet de plek erbij of pas hem aan.",
+      "link": {
+        "label": "Plek aanmelden",
+        "pad": "/voor-organisaties"
+      }
+    }
+  ]
+}

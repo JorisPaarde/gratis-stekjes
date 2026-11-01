@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Services\InvasieveSoorten;
 use App\Services\Stektips;
+use App\Support\SeoTitle;
 
 test('elke soortpagina laadt met 200 en SEO-titel', function () {
     $stektips = app(Stektips::class);
@@ -17,7 +18,7 @@ test('elke soortpagina laadt met 200 en SEO-titel', function () {
         $seoNaam = trim((string) ($soort['seo_naam'] ?? '')) ?: $naam;
         $seoWerkwoord = trim((string) ($soort['seo_werkwoord'] ?? '')) ?: 'stekken';
 
-        $expectedTitle = \App\Support\SeoTitle::document($seoNaam.' '.$seoWerkwoord.' en gratis stekjes');
+        $expectedTitle = SeoTitle::document($seoNaam.' '.$seoWerkwoord.' en gratis stekjes');
 
         $this->get(route('stektips.show', ['slug' => $slug]))
             ->assertOk()
@@ -100,4 +101,35 @@ test('soortpagina linkt naar verwante soorten', function () {
         ->assertSee('Pothos', false)
         ->assertSee(route('stektips.show', ['slug' => 'philodendron']), false)
         ->assertSee(route('stektips.show', ['slug' => 'pothos']), false);
+});
+
+test('stektips-index: zoekveld eerst, meer filters ingeklapt, beginners en FAQ met FAQPage-schema', function () {
+    $html = $this->get(route('stektips.index'))->assertOk()->getContent();
+
+    expect(strpos($html, 'Welke plant wil je stekken?'))->toBeLessThan(strpos($html, 'stektips-pillar-list'))
+        ->and($html)->toContain('<details class="stektips-meer-filters"')
+        ->and($html)->toContain('Makkelijk om mee te beginnen')
+        ->and($html)->toContain('id="veelgestelde-vragen"')
+        ->and($html)->toContain('Wanneer is de beste tijd om te stekken?')
+        ->and($html)->toContain('"@type":"FAQPage"')
+        ->and($html)->toContain('"@type":"Question"')
+        ->and($html)->not->toContain('…</p>');
+});
+
+test('stektips-index met filter: geen FAQ en geen beginners, filters open', function () {
+    $html = $this->get(route('stektips.index', ['seizoen' => 'zomer']))->assertOk()->getContent();
+
+    expect($html)->not->toContain('id="veelgestelde-vragen"')
+        ->and($html)->not->toContain('Makkelijk om mee te beginnen')
+        ->and($html)->toMatch('/stektips-meer-filters"\s+open/');
+});
+
+test('faq-data: elke link verwijst naar een bestaande pagina', function () {
+    $data = json_decode((string) file_get_contents(base_path('data/stektips-faq.json')), true);
+    expect($data['vragen'])->toHaveCount(10);
+    foreach ($data['vragen'] as $v) {
+        if (! empty($v['link']['pad'])) {
+            $this->get($v['link']['pad'])->assertOk();
+        }
+    }
 });
