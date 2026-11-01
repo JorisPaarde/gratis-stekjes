@@ -30,6 +30,7 @@ use App\Http\Controllers\BackupCronController;
 use App\Http\Controllers\Beheer\DashboardController as BeheerDashboardController;
 use App\Http\Controllers\Beheer\ErvaringController as BeheerErvaringController;
 use App\Http\Controllers\Beheer\FeedbackController as BeheerFeedbackController;
+use App\Http\Controllers\Beheer\GebruikersController as BeheerGebruikersController;
 use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
 use App\Http\Controllers\Beheer\StatistiekenController as BeheerStatistiekenController;
 use App\Http\Controllers\BerichtmailController;
@@ -250,6 +251,10 @@ Route::post('/beheer/uitloggen', [BeheerLoginController::class, 'destroy'])->nam
 Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::get('/overzicht', [BeheerDashboardController::class, 'index'])->name('beheer.index');
     Route::get('/statistieken', [BeheerStatistiekenController::class, 'index'])->name('beheer.statistieken');
+    Route::get('/gebruikers', [BeheerGebruikersController::class, 'index'])->name('beheer.gebruikers');
+    Route::post('/gebruikers/zoeken', [BeheerGebruikersController::class, 'zoek'])
+        ->middleware('throttle:60,1')
+        ->name('beheer.gebruikers.zoek');
     Route::get('/feedback', [BeheerFeedbackController::class, 'index'])->name('beheer.feedback');
     Route::post('/feedback/gelezen', [BeheerFeedbackController::class, 'markRead'])->name('beheer.feedback.read');
     Route::delete('/feedback/{feedback}', [BeheerFeedbackController::class, 'destroy'])
