@@ -9,6 +9,20 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.45.0] - 2026-11-01
+
+### Added
+
+- **Gebruikersoverzicht in het beheer** op `/beheer/gebruikers` (link «Gebruikers» in het beheermenu).
+  Per account: naam, e-mail, aanmelddatum, aantal aanbiedingen en verdiende badges. Nieuwste eerst,
+  25 per pagina.
+  - Zoeken op naam of e-mail (server-side, hoofdletters tellen niet mee). De zoekterm gaat via POST
+    naar de sessie en staat dus nooit in de URL, access-logs of browsergeschiedenis. Er wordt niets
+    gelogd.
+  - Alleen voor beheerders (zelfde `admin`-middleware als `/beheer`); gast en gewoon lid gaan naar de
+    beheer-login. Headers `X-Robots-Tag: noindex, nofollow`, `Cache-Control: no-store, private` en
+    `Referrer-Policy: no-referrer`.
+
 ## [0.44.0] - 2026-11-01
 
 ### Added
