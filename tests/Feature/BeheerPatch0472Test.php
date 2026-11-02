@@ -24,8 +24,8 @@ test('bevestigingsteksten op detailpagina breken niet op een naam met aanhalings
     expect($html)->toContain('onsubmit="return confirm('.$pionier.');"')
         ->and($html)->toContain('onsubmit="return confirm('.$blokkeer.');"')
         ->and($html)->toContain('onsubmit="return confirm('.$beheerder.');"')
-        ->and($html)->not->toContain("confirm('Pionier-badge naar")
-        ->and($html)->not->toContain("confirm('Account blokkeren?");
+        ->and($html)->not->toContain('Pionier-badge naar Jan O&#039;Brien')
+        ->and($html)->not->toContain('Account blokkeren? Jan O&#039;Brien');
 
     // Geen rauwe aanhalingstekens in de JS-string: die zouden het attribuut of de string afbreken.
     foreach ([$pionier, $blokkeer, $beheerder] as $js) {
