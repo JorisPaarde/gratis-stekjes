@@ -64,23 +64,23 @@
                 {
                     "titel": "Kopstek",
                     "wanneer": "april tot juni",
-                    "illustratie": "kopstek",
                     "tekst": "Een zacht, jong topje van 8 tot 12 cm. De snelste manier voor kruiden, kamerplanten en veel vaste planten.",
-                    "slug": "kopstek-en-scheutstek"
+                    "slug": "kopstek-en-scheutstek",
+                    "foto": "s02"
                 },
                 {
                     "titel": "Bladstek",
                     "wanneer": "voorjaar en zomer, binnen",
-                    "illustratie": "bladstek",
                     "tekst": "Uit één blad groeit een nieuw plantje. Werkt bij vetplanten, sanseveria en Kaaps viooltje.",
-                    "slug": "bladstek"
+                    "slug": "bladstek",
+                    "foto": "s03"
                 },
                 {
                     "titel": "Halfrijpe stek",
                     "wanneer": "juli tot september",
-                    "illustratie": "halfrijp",
                     "tekst": "Onderaan al wat stevig, bovenaan nog groen. Ideaal voor lavendel, rozemarijn, hortensia en buxus.",
-                    "slug": "zomerstek-halfhoutstek"
+                    "slug": "zomerstek-halfhoutstek",
+                    "foto": "s04"
                 },
                 {
                     "titel": "Winterhoutstek",
@@ -185,7 +185,8 @@
                     "titel": "Wacht op wortels",
                     "tekst": "Na twee tot zes weken voel je weerstand als je zachtjes trekt, of zie je wortels in het water. Dan mag hij in een eigen potje."
                 }
-            ]
+            ],
+            "foto": "s07"
         },
         {
             "type": "h2",
@@ -196,23 +197,23 @@
             "kolommen": [
                 {
                     "titel": "In water",
-                    "illustratie": "water",
                     "items": [
                         "Leuk: je ziet de wortels groeien",
                         "Werkt goed voor pothos, monstera, munt en tradescantia",
                         "Ververs het water elke paar dagen",
                         "Verpot zodra de wortels 2 tot 5 cm zijn"
-                    ]
+                    ],
+                    "foto": "s08"
                 },
                 {
                     "titel": "In grond",
-                    "illustratie": "grond",
                     "items": [
                         "Betrouwbaarder voor houtige tuinplanten",
                         "Lavendel, rozemarijn, buxus, bessen",
                         "Luchtige stekgrond of potgrond met zand",
                         "Vochtig houden, maar nooit nat"
-                    ]
+                    ],
+                    "foto": "s09"
                 }
             ]
         },
@@ -243,7 +244,8 @@
         },
         {
             "type": "p",
-            "tekst": "Het juiste moment en luchtige grond doen het meeste werk. Wil je een extra zetje? Probeer [[wilgenwater|wilgenwater]]. [[stekpoeder|Stekpoeder]] heb je alleen nodig bij lastige soorten. Lees meer bij [[natuurlijk-bewortelen|natuurlijk bewortelen]]."
+            "tekst": "Het juiste moment en luchtige grond doen het meeste werk. Wil je een extra zetje? Probeer [[wilgenwater|wilgenwater]]. [[stekpoeder|Stekpoeder]] heb je alleen nodig bij lastige soorten. Lees meer bij [[natuurlijk-bewortelen|natuurlijk bewortelen]].",
+            "foto": "s10"
         },
         {
             "type": "videos",
@@ -253,22 +255,26 @@
                 {
                     "id": "1ve5eEls-cg",
                     "titel": "Plantjes stekken",
-                    "kanaal": "Het Klokhuis"
+                    "kanaal": "Het Klokhuis",
+                    "poster": "v1"
                 },
                 {
                     "id": "E0KPdbgFaLw",
                     "titel": "Hoe stekken en zaaien in juli en augustus?",
-                    "kanaal": "Tuinmanieren"
+                    "kanaal": "Tuinmanieren",
+                    "poster": "v2"
                 },
                 {
                     "id": "nEM7h1Ywr14",
                     "titel": "Winterstekken maken van kale takken",
-                    "kanaal": "Groei & Bloei"
+                    "kanaal": "Groei & Bloei",
+                    "poster": "v3"
                 },
                 {
                     "id": "eBXdt0yzlew",
                     "titel": "Gratis planten: afleggen",
-                    "kanaal": "Tuinmanieren"
+                    "kanaal": "Tuinmanieren",
+                    "poster": "v4"
                 }
             ]
         }
@@ -298,5 +304,5 @@
         "stekgrond-zelf-maken"
     ],
     "slug": "stekken",
-    "illustratie": "kopstek"
+    "foto": "s01"
 }

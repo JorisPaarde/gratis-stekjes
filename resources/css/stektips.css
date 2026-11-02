@@ -416,8 +416,26 @@
 /* ——— Kennisbank: rijke blokken (kaarten, stappen, kalender, video's) ——— */
 .kb-hero { display: grid; gap: 1rem; align-items: center; }
 @media (min-width: 760px) { .kb-hero--met-illu { grid-template-columns: 1fr 180px; } }
+@media (min-width: 760px) { .kb-hero--met-foto { grid-template-columns: 1.05fr 0.95fr; align-items: stretch; } }
 .kb-hero-illu { display: none; }
 @media (min-width: 760px) { .kb-hero-illu { display: block; } .kb-hero-illu .illu { width: 180px; height: 180px; } }
+.kb-hero-foto { margin: 0; }
+.kb-hero-foto .kb-pic,
+.kb-hero-foto .kb-pic img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 1.1rem;
+  object-fit: cover;
+  aspect-ratio: 3 / 2;
+}
+.kb-pic { display: block; margin: 0; }
+.kb-pic img { display: block; width: 100%; height: auto; }
+.kb-sectie-foto { margin: 1rem 0 1.25rem; max-width: 42rem; }
+.kb-sectie-foto .kb-pic img { border-radius: 1rem; object-fit: cover; aspect-ratio: 3 / 2; }
+.kb-stappen-illu { margin: .5rem 0 1rem; }
+.kb-stappen-illu .illu { width: 120px; height: 120px; }
+.kb-foto-credits { font-size: .8rem; color: var(--muted, #5b5550); margin: 1.75rem 0 .5rem; }
 
 .kb-inhoud { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: 1rem 0 1.75rem; }
 .kb-inhoud-label { font-weight: 700; font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--forest, #1f4d2b); margin-right: .25rem; }
@@ -434,6 +452,9 @@
 .kb-kaarten { list-style: none; padding: 0; margin: 1rem 0 1.5rem; display: grid; gap: .9rem; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); }
 .kb-kaart { background: #fff; border: 1px solid var(--line, rgba(26,18,16,.12)); border-radius: 1.1rem; padding: 1.1rem; display: flex; flex-direction: column; gap: .35rem; }
 .kb-kaart .illu { width: 84px; height: 84px; }
+.kb-kaart--met-foto { padding-top: .85rem; }
+.kb-kaart-foto { margin: -.25rem -.25rem .35rem; }
+.kb-kaart-foto img { border-radius: .85rem; aspect-ratio: 4 / 3; object-fit: cover; width: 100%; height: auto; }
 .kb-kaart h3 { margin: .35rem 0 0; font-size: 1.15rem; }
 .kb-kaart p { margin: 0; }
 .kb-kaart-wanneer { font-size: .85rem; font-weight: 700; color: #b4561a; }
@@ -449,6 +470,8 @@
 @media (min-width: 640px) { .kb-vergelijk { grid-template-columns: 1fr 1fr; } }
 .kb-vergelijk-kolom { background: #fff; border: 1px solid var(--line, rgba(26,18,16,.12)); border-radius: 1.1rem; padding: 1.1rem; }
 .kb-vergelijk-kolom .illu { width: 72px; height: 72px; }
+.kb-vergelijk-foto { margin: -.25rem -.25rem .55rem; }
+.kb-vergelijk-foto img { border-radius: .85rem; aspect-ratio: 4 / 3; object-fit: cover; width: 100%; height: auto; }
 .kb-vergelijk-kolom h3 { margin: .4rem 0 .3rem; }
 .kb-vergelijk-kolom ul { margin: 0; padding-left: 1.1rem; }
 
@@ -488,11 +511,14 @@
 .kb-video { margin: 0; }
 .kb-video-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 1rem; overflow: hidden; background: linear-gradient(135deg, #1f4d2b, #4c8a3c); }
 .kb-video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-.kb-video-start { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 1rem; color: #fff; text-decoration: none; }
-.kb-video-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); transition: transform .15s; }
+.kb-video-start { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 1rem; color: #fff; text-decoration: none; z-index: 1; }
+.kb-video-poster { position: absolute; inset: 0; z-index: 0; }
+.kb-video-poster img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.kb-video-scrim { position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, rgba(22, 56, 32, .78) 0%, rgba(22, 56, 32, .2) 45%, rgba(22, 56, 32, .08) 100%); pointer-events: none; }
+.kb-video-play { position: absolute; top: 50%; left: 50%; z-index: 2; transform: translate(-50%, -60%); transition: transform .15s; }
 .kb-video-start:hover .kb-video-play, .kb-video-start:focus-visible .kb-video-play { transform: translate(-50%, -60%) scale(1.1); }
-.kb-video-titel { font-weight: 700; font-size: 1.05rem; line-height: 1.25; text-shadow: 0 1px 3px rgba(0,0,0,.35); }
-.kb-video-kanaal { font-size: .85rem; opacity: .85; }
+.kb-video-titel { position: relative; z-index: 2; font-weight: 700; font-size: 1.05rem; line-height: 1.25; text-shadow: 0 1px 3px rgba(0,0,0,.35); }
+.kb-video-kanaal { position: relative; z-index: 2; font-size: .85rem; opacity: .85; }
 .kb-video figcaption { font-size: .85rem; margin-top: .4rem; }
 .kb-video-frame.is-geladen ~ figcaption { display: block; }
 
@@ -518,8 +544,8 @@
   .kb-kalender-label { font-size: .72rem; padding-right: .2rem; }
   .kb-kalender-maand { font-size: .55rem; letter-spacing: -.02em; }
   .kb-kalender-cel { height: 1.3rem; border-radius: .25rem; }
-  .kb-kaart { display: grid; grid-template-columns: 64px 1fr; column-gap: .8rem; row-gap: .2rem; align-items: start; }
-  .kb-kaart .illu { width: 64px; height: 64px; grid-row: span 4; }
+  .kb-kaart:not(.kb-kaart--met-foto) { display: grid; grid-template-columns: 64px 1fr; column-gap: .8rem; row-gap: .2rem; align-items: start; }
+  .kb-kaart:not(.kb-kaart--met-foto) .illu { width: 64px; height: 64px; grid-row: span 4; }
   .kb-kaart h3 { margin: 0; }
-  .kb-vergelijk-kolom .illu { width: 56px; height: 56px; float: left; margin-right: .75rem; }
+  .kb-vergelijk-kolom:not(.kb-vergelijk-kolom--met-foto) .illu { width: 56px; height: 56px; float: left; margin-right: .75rem; }
 }

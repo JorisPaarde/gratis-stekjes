@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.53.0] - 2026-11-02
+
+### Added
+
+- Echte Unsplash-foto’s op `/stektips/artikel/stekken` en `/stektips/artikel/snoeien`: hero, methodekaarten, stappen, vergelijking, sectiefoto’s en zelf-gehoste video-posters (AVIF/WebP/JPG via `<picture>`, lazy behalve hero). SVG blijft op winterhoutstek, afleggen, snoeisnede en de plastic-zak-stap. Credits onderaan elk artikel; geen ytimg vóór klik.
+
 ## [0.52.1] - 2026-11-02
 
 ### Changed
