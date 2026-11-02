@@ -39,7 +39,7 @@ return [
 
     /** Links om de maker te volgen. Leeg = niet tonen. */
     'socials' => array_filter([
-        'Facebook' => env('SOCIAL_FACEBOOK', ''),
+        'Facebook' => env('SOCIAL_FACEBOOK', 'https://www.facebook.com/share/1A2VtiYnvT/'),
         'Instagram' => env('SOCIAL_INSTAGRAM', ''),
         'LinkedIn' => env('SOCIAL_LINKEDIN', ''),
     ]),
