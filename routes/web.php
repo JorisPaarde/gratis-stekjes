@@ -200,6 +200,7 @@ Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(functio
     Route::post('/account/email/annuleren', [EmailChangeController::class, 'cancel'])
         ->name('account.email.annuleren');
 
+    Route::get('/aanbieden', [AanbodController::class, 'create'])->name('aanbieden');
     Route::get('/account/aanbod', [AanbodController::class, 'index'])->name('account.aanbod');
     Route::post('/account/aanbod/nieuw', [AanbodController::class, 'store'])
         ->name('account.aanbod.store');

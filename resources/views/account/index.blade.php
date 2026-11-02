@@ -8,6 +8,8 @@
 <section class="section wrap">
   <h1 class="page-title">Mijn account</h1>
   <p class="section-intro">Hallo {{ $user->name }}, beheer hier je gegevens, wachtwoord en privacy.</p>
+  <p class="account-hoofdactie"><a class="btn btn-groot" href="{{ route('aanbieden') }}"><x-icon name="plus" :size="18" /> Bied iets aan</a>
+    <a class="btn btn-secondary" href="{{ route('account.aanbod') }}">Mijn aanbod</a></p>
 
   <div class="soft-card">
     <h2><x-icon name="gebruiker" :size="20" /> Overzicht</h2>

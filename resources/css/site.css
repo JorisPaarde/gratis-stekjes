@@ -84,6 +84,9 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .nav-cta:focus-visibl
   white-space: nowrap;
   flex-shrink: 0;
 }
+/* Mobiel: hoofdknop naast «Menu», altijd zichtbaar. Desktop: zit in het menu zelf. */
+.site-header .header-cta { display: inline-flex; align-items: center; gap: .3rem; margin-left: auto; padding: .45rem .75rem !important; }
+@media (max-width: 400px) { .site-header .brand { font-size: 1.1rem; } .header-inner { gap: .5rem; } .nav-toggle { padding: .5rem .7rem; } }
 .nav-toggle {
   display: inline-flex; align-items: center; gap: .4rem;
   border: 1px solid var(--line);
@@ -132,6 +135,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .nav-cta:focus-visibl
 /* Volle nav pas wanneer er ruimte is; eronder alleen hamburger (geen parallelle Menu+nav). */
 @media (min-width: 1200px) {
   .nav-toggle { display: none; }
+  .site-header .header-cta { display: none; }
   .site-nav {
     display: flex; flex-direction: row; align-items: center;
     position: static; padding: 0; background: transparent; border: 0; gap: 0;
@@ -1097,3 +1101,5 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
 .naam-check { color: #8a4514; margin: .35rem 0 0; }
 .naam-suggestie { font: inherit; font-weight: 700; margin: .25rem .35rem 0 0; padding: .15rem .6rem; border-radius: var(--radius-pill); border: 1px solid var(--orange); background: #fff; color: var(--forest-deep); cursor: pointer; }
 .naam-suggestie:hover, .naam-suggestie:focus-visible { background: var(--bg-mint); }
+.account-hoofdactie { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin: 0 0 1.25rem; }
+.btn-groot { font-size: 1.05rem; padding: .8rem 1.4rem; display: inline-flex; align-items: center; gap: .4rem; }

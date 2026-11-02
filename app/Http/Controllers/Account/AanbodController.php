@@ -28,9 +28,7 @@ class AanbodController extends Controller
     {
         $user = $request->user();
         if (! $user->hasLocation()) {
-            return redirect()
-                ->route('account.profiel')
-                ->with('status', 'Vul eerst je postcode of plaats in om aanbod te plaatsen.');
+            return $this->eerstLocatie();
         }
 
         return view('account.aanbod', [
@@ -39,6 +37,42 @@ class AanbodController extends Controller
             'canonical' => route('account.aanbod'),
             'user' => $user,
             'mine' => $user->aanbod()->with('fotos')->latest()->get(),
+            ...$this->formData($invasieve),
+        ]);
+    }
+
+    /** Losse pagina met alleen het formulier: de snelste weg naar «iets aanbieden». */
+    public function create(Request $request, InvasieveSoorten $invasieve): View|RedirectResponse
+    {
+        $user = $request->user();
+        if (! $user->hasLocation()) {
+            return $this->eerstLocatie();
+        }
+
+        return view('account.aanbieden', [
+            'title' => 'Bied iets aan',
+            'metaDescription' => 'Zet in een minuut een plant, stekje of zaad gratis online op '.config('site.name').'.',
+            'canonical' => route('aanbieden'),
+            'user' => $user,
+            'aantalAanbod' => $user->aanbod()->count(),
+            'terug' => 'aanbieden',
+            ...$this->formData($invasieve),
+        ]);
+    }
+
+    private function eerstLocatie(): RedirectResponse
+    {
+        session()->put('url.intended', route('aanbieden'));
+
+        return redirect()
+            ->route('account.profiel')
+            ->with('status', 'Vul eerst je postcode of plaats in om aanbod te plaatsen.');
+    }
+
+    /** @return array<string, mixed> */
+    private function formData(InvasieveSoorten $invasieve): array
+    {
+        return [
             'formStarted' => time(),
             'invasieveTerms' => $invasieve->termsForClient(),
             'invasieveUitlegUrl' => route('invasieve-soorten'),
@@ -46,7 +80,7 @@ class AanbodController extends Controller
             'plantensoortenZoekUrl' => '/api/plantensoorten',
             'fotoMaxCount' => (int) config('stekjes.aanbod_fotos.max_count', 3),
             'fotoMaxMb' => (int) round(((int) config('stekjes.aanbod_fotos.max_bytes', 8 * 1024 * 1024)) / 1024 / 1024),
-        ]);
+        ];
     }
 
     public function store(
@@ -111,6 +145,12 @@ class AanbodController extends Controller
         RateLimiter::hit($throttleKey, 3600);
 
         $milestones->maybeSendEersteStekje($user, 'eerste_aanbod');
+
+        if ($request->input('terug') === 'aanbieden') {
+            return redirect()
+                ->route('aanbieden')
+                ->with('status', 'Gelukt, je aanbod staat online! Nog iets over? Bied het hieronder ook aan.');
+        }
 
         return redirect()
             ->route('account.aanbod')

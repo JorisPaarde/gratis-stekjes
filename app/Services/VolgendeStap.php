@@ -50,7 +50,7 @@ final class VolgendeStap
                 'Zet je eerste stekje online',
                 'Een plantje, stekje of zakje zaad dat je over hebt. Het kost je een minuut.',
                 'Iets aanbieden',
-                route('account.aanbod'),
+                route('aanbieden'),
                 'eerste_stekje',
             );
         }
@@ -79,7 +79,7 @@ final class VolgendeStap
     {
         return match ($key) {
             'geworteld', 'profiel_compleet' => ['Naar je profiel', route('account.profiel')],
-            'eerste_stekje', 'gulle_gever', 'stekjesheld' => ['Iets aanbieden', route('account.aanbod')],
+            'eerste_stekje', 'gulle_gever', 'stekjesheld' => ['Iets aanbieden', route('aanbieden')],
             'eerste_praatje' => ['Kijk wat er in de buurt is', route('aanbod')],
             'eerste_overdracht', 'verbinder' => ['Naar je gesprekken', route('account.inbox')],
             'verteller' => ['Deel een ervaring', route('account.ervaringen.create')],

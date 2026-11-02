@@ -56,6 +56,15 @@
   <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="{{ route('home') }}">{{ $siteName }}</a>
+      @unless(request()->routeIs('beheer.*'))
+        @auth
+          @unless(request()->routeIs('aanbieden'))
+            <a class="nav-cta header-cta" href="{{ route('aanbieden') }}"><x-icon name="plus" :size="16" /> Bied aan</a>
+          @endunless
+        @else
+          <a class="nav-cta header-cta" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="16" /> Doe mee</a>
+        @endauth
+      @endunless
       <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="hoofdmenu" data-nav-toggle>
         <x-icon name="menu" :size="18" /> Menu
       </button>
@@ -73,10 +82,9 @@
           @else
             <a href="{{ route('account.index') }}"><x-icon name="gebruiker" :size="16" /> Account</a>
           @endif
-          <form class="nav-logout" method="post" action="{{ route('account.uitloggen') }}">
-            @csrf
-            <button type="submit" class="nav-cta">Uitloggen</button>
-          </form>
+          @unless(request()->routeIs('beheer.*'))
+            <a class="nav-cta" href="{{ route('aanbieden') }}"><x-icon name="plus" :size="16" /> Bied iets aan</a>
+          @endunless
         @else
           <a href="{{ route('account.inloggen') }}"><x-icon name="gebruiker" :size="16" /> Inloggen</a>
           <a class="nav-cta" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="16" /> Doe mee</a>
@@ -86,7 +94,9 @@
   </header>
   @auth
     @if(request()->is('account', 'account/*') && ! request()->is('account/verwijderen', 'account/export'))
-      @include('partials.volgende-stap')
+      @unless(request()->routeIs('beheer.*'))
+        @include('partials.volgende-stap')
+      @endunless
     @endif
   @endauth
   <main id="inhoud">
