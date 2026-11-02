@@ -30,8 +30,8 @@ class ContentPageController extends Controller
     public function over(): View
     {
         return view('pages.over', [
-            'title' => 'Over gratis planten delen',
-            'metaDescription' => 'Waarom '.config('site.name').' bestaat: gratis stekjes delen met een praatje, door heel Nederland en België.',
+            'title' => 'Wie zit er achter '.config('site.name'),
+            'metaDescription' => 'Ik ben '.config('site.maker').', vader van vier, volkstuinder en webbouwer. Waarom ik '.config('site.name').' gratis maak, en hoe je samen met mij meedoet.',
             'canonical' => route('over'),
         ]);
     }

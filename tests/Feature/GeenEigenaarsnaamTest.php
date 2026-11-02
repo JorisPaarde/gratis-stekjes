@@ -1,12 +1,19 @@
 <?php
 
+use App\Models\Deelplek;
+use App\Notifications\DeelplekAanmeldingBevestiging;
+
 /**
  * Naam van de eigenaar en zijn bedrijf staan alleen waar het wettelijk moet (privacy).
+ * Uitzondering (keuze eigenaar, nov 2026): alleen de voornaam staat in config/site.php («maker»)
+ * en wordt getoond op /over («Wie zit erachter») en in het korte blok op /help-mee. Ook de naam van
+ * zijn vader staat daar (config «maker_vader»). Bedrijfsnaam, adres en telefoon staan nergens in de
+ * lopende tekst.
  */
 test('geen eigenaarsnaam of bedrijfsnaam buiten de privacypagina', function () {
     $base = dirname(__DIR__, 2);
     $dirs = ['app', 'resources/views', 'resources/js', 'data', 'lang', 'config', 'routes'];
-    $allowed = ['resources/views/pages/privacy.blade.php'];
+    $allowed = ['resources/views/pages/privacy.blade.php', 'config/site.php'];
     $hits = [];
     foreach ($dirs as $dir) {
         $path = $base.'/'.$dir;
@@ -32,8 +39,17 @@ test('geen eigenaarsnaam of bedrijfsnaam buiten de privacypagina', function () {
 });
 
 test('mails ondertekenen zonder eigenaarsnaam', function () {
-    $plek = new \App\Models\Deelplek(['naam' => 'Testplek']);
-    $mail = (new \App\Notifications\DeelplekAanmeldingBevestiging($plek))->toMail((object) []);
+    $plek = new Deelplek(['naam' => 'Testplek']);
+    $mail = (new DeelplekAanmeldingBevestiging($plek))->toMail((object) []);
     expect((string) $mail->salutation)->not->toContain('Joris');
     expect((string) $mail->salutation)->toContain((string) config('site.name'));
+});
+
+test('over-pagina: voornaam en foto, maar geen bedrijf, adres, telefoon of volkstuinnaam', function () {
+    $html = $this->get(route('over'))->assertOk()->getContent();
+    expect($html)->toContain('Hoi, ik ben '.config('site.maker'))
+        ->and($html)->toContain('/assets/images/maker/maker-240.jpg')
+        ->and($html)->toContain('MensenrechtenMens')
+        ->and($html)->toContain('mensenrechten.nl/actueel/nieuws/2018')
+        ->and($html)->not->toMatch('/jpwebcreation|JP ?Web ?Creation|Bernadottelaan|06[ -]?21|Ons Buiten/i');
 });

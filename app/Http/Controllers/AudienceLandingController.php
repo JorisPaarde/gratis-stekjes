@@ -37,8 +37,8 @@ class AudienceLandingController extends Controller
 
     public function helpMee(): View
     {
-        $title = 'Help mee: vrijwilligerswerk voor planten en natuur';
-        $meta = 'Word verbinder voor '.config('site.name').'. Jij legt contact met volkstuinen en initiatieven, ik regel de site. Zo’n 2 uur per maand.';
+        $title = 'Help mee: poster, deelberichten en partner worden';
+        $meta = 'Help '.config('site.name').' groeien: print een poster met QR-code, deel een bericht, word verbinder of partner. Gratis en zonder reclame.';
         $canonical = route('help-mee');
 
         return view('pages.audience.help-mee', [

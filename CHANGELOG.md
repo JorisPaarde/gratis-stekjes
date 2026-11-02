@@ -9,6 +9,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.48.0] - 2026-11-02
+
+### Added
+
+- /help-mee vernieuwd: printbare posters met QR (algemeen, volkstuin, buurt, bieb), stekjeslabels (8 per A4), drie deelberichten met kopieerknop, deelknoppen Facebook/WhatsApp/LinkedIn, «Volg mij» (via SOCIAL_* env), partnersectie met aanvraagformulier (mail naar beheer, niets opgeslagen).
+- /over: «Wie zit er achter Gratis planten?» met foto en persoonlijk verhaal, incl. link naar MensenrechtenMens 2018.
+
 ## [0.47.2] - 2026-11-02
 
 ### Fixed
