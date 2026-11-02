@@ -138,6 +138,13 @@ class ProfileController extends Controller
         }
         $user->save();
 
+        // Kwam je via «Bied iets aan» zonder locatie? Dan na opslaan terug naar het formulier.
+        if ($user->hasLocation() && $request->session()->get('url.intended') === route('aanbieden')) {
+            $request->session()->forget('url.intended');
+
+            return redirect()->route('aanbieden')->with('status', 'Profiel opgeslagen. Nu kun je iets aanbieden.');
+        }
+
         return redirect()
             ->route('account.profiel')
             ->with('status', 'Profiel opgeslagen.');
