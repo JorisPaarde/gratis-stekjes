@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Aanbod extends Model
 {
+    /** Hoogste aantal per aanbod. */
+    public const AANTAL_MAX = 99;
+
     /** @use HasFactory<AanbodFactory> */
     use HasFactory;
 
@@ -22,6 +25,7 @@ class Aanbod extends Model
         'user_id',
         'type',
         'tekst',
+        'aantal',
         'plantensoort_id',
         'visible',
         'expires_at',
@@ -34,6 +38,7 @@ class Aanbod extends Model
     {
         return [
             'plantensoort_id' => 'integer',
+            'aantal' => 'integer',
             'visible' => 'boolean',
             'expires_at' => 'datetime',
             'expiry_reminder_sent_at' => 'datetime',

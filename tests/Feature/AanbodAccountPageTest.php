@@ -58,7 +58,7 @@ test('GET account/aanbod met bestaand aanbod toont items (200)', function () {
         ->assertSee('Muntstekjes', false)
         ->assertSee('name="tekst"', false)
         ->assertSee('Verwijderen', false)
-        ->assertSee('Weet je het zeker?', false)
+        ->assertSee('Dit aanbod verwijderen?', false)
         ->assertDontSee('Je hebt nog geen aanbod', false);
 });
 

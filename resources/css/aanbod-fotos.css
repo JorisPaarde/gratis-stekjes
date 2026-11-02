@@ -49,3 +49,28 @@
   object-fit: cover;
   border-radius: 0.3rem;
 }
+
+/* ——— Mijn aanbod: compacte kaarten ——— */
+.mijn-aanbod-lijst { list-style: none; padding: 0; margin: 0; display: grid; gap: .75rem; }
+@media (min-width: 760px) { .mijn-aanbod-lijst { grid-template-columns: 1fr 1fr; } }
+.mijn-aanbod { background: #fff; border: 1px solid var(--line, rgba(26,18,16,.12)); border-radius: 1rem; padding: .85rem; display: flex; flex-direction: column; gap: .75rem; scroll-margin-top: 5rem; }
+.mijn-aanbod-kaart { display: flex; gap: .85rem; align-items: center; }
+.mijn-aanbod-foto { width: 88px; height: 88px; border-radius: .7rem; object-fit: cover; flex: 0 0 auto; }
+.mijn-aanbod-foto--leeg { display: inline-flex; align-items: center; justify-content: center; background: var(--bg-mint, #e6f2e1); color: var(--forest, #1f4d2b); }
+.mijn-aanbod-info { min-width: 0; }
+.mijn-aanbod-titel { margin: 0 0 .3rem; font-weight: 700; font-size: 1.1rem; overflow-wrap: anywhere; }
+.mijn-aanbod-meta { margin: 0; display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; font-size: .9rem; }
+.mijn-aanbod-meta .status--fout { display: inline-block; padding: .05rem .5rem; border-radius: 999px; background: #fdecea; color: #a12a1b; font-weight: 600; font-size: .8rem; }
+.mijn-aanbod-acties { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; border-top: 1px solid var(--line, rgba(26,18,16,.08)); padding-top: .7rem; }
+.mijn-aanbod-acties form { margin: 0; }
+.mijn-aanbod-acties .btn-klein { padding: .4rem .9rem !important; font-size: .8rem !important; min-height: 38px; }
+.mijn-aanbod-weg { margin-left: auto !important; }
+.aantal-stepper { display: inline-flex; align-items: center; gap: .25rem; border: 1px solid var(--line, rgba(26,18,16,.15)); border-radius: 999px; padding: .15rem; }
+.stepper-knop { width: 34px; height: 34px; border-radius: 50%; border: 0; background: var(--bg-mint, #e6f2e1); color: var(--forest-deep, #163820); font-size: 1.2rem; font-weight: 700; line-height: 1; cursor: pointer; }
+.stepper-knop:hover, .stepper-knop:focus-visible { background: var(--forest, #1f4d2b); color: #fff; }
+.stepper-waarde { min-width: 3.4rem; text-align: center; font-size: .95rem; }
+.link-knop { background: none; border: 0; padding: .4rem .2rem; font: inherit; font-size: .9rem; text-decoration: underline; cursor: pointer; color: var(--ink, #1a1210); }
+.link-knop--gevaar { color: #a12a1b; }
+.aanbod-aantal-veld input { max-width: 8rem; }
+.aanbod-aantal { color: var(--muted, #5b5550); }
+.mijn-aanbod-lijst { margin-top: .5rem; }

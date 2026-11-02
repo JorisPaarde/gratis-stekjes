@@ -27,29 +27,13 @@
       <p><a class="btn btn-secondary" href="{{ route('aanbod') }}">Naar aanbod &amp; kaart</a></p>
     </div>
   @else
-    <ul class="zoek-lijst">
+    <ul class="mijn-aanbod-lijst">
       @foreach($mine as $row)
         @php
           $expired = $row->isExpired();
           $editing = (int) old('edit_id', request('edit')) === (int) $row->id;
         @endphp
-        <li class="zoek-item">
-          <span class="badge">{{ $row->type }}</span>
-          @if(! $row->visible || $expired)
-            <span class="muted">
-              (
-              @if(! $row->visible)
-                verborgen
-              @endif
-              @if(! $row->visible && $expired)
-                ,
-              @endif
-              @if($expired)
-                verlopen (niet meer in zoeken/kaart)
-              @endif
-              )
-            </span>
-          @endif
+        <li class="mijn-aanbod" id="aanbod-{{ $row->id }}">
           @if($editing)
             <form class="form" method="post" action="{{ route('account.aanbod.update', $row) }}" enctype="multipart/form-data" data-invasieve-form data-aanbod-foto-form>
               @csrf
@@ -125,6 +109,9 @@
                 </label>
               @endif
 
+              <label class="aanbod-aantal-veld">Aantal <span class="hint">(optioneel)</span>
+                <input type="number" name="aantal" min="1" max="{{ \App\Models\Aanbod::AANTAL_MAX }}" inputmode="numeric" value="{{ old('aantal', $row->aantal) }}" placeholder="1">
+              </label>
               <input type="hidden" name="edit_id" value="{{ $row->id }}">
               <label class="checkbox">
                 <input type="checkbox" name="gratis_akkoord" value="1" required checked>
@@ -134,33 +121,62 @@
               <a class="btn btn-secondary" href="{{ route('account.aanbod') }}">Annuleren</a>
             </form>
           @else
-            @if($row->fotos->isNotEmpty())
-              <ul class="aanbod-foto-thumbs">
-                @foreach($row->fotos as $foto)
-                  <li>
-                    <img src="{{ $foto->thumbUrl() }}" alt="{{ $foto->toPublicArray()['alt'] }}" width="120" height="120" loading="lazy">
-                  </li>
-                @endforeach
-              </ul>
-            @endif
-            @if(trim((string) $row->tekst) !== '')
-              <p>{{ $row->tekst }}</p>
-            @endif
-            @if($row->expires_at)
-              <p class="muted">Geldig tot {{ $row->expires_at->timezone('Europe/Amsterdam')->format('d-m-Y') }}</p>
-            @endif
-            <p>
-              <a class="btn btn-secondary" href="{{ route('account.aanbod', ['edit' => $row->id]) }}">Wijzigen</a>
-            </p>
-            <form method="post" action="{{ route('account.aanbod.renew', $row) }}">
-              @csrf
-              <button class="btn btn-secondary" type="submit">Nog {{ (int) config('stekjes.aanbod_ttl_days', 60) }} dagen verlengen</button>
-            </form>
-            <form method="post" action="{{ route('account.aanbod.destroy', $row) }}" onsubmit="return confirm('Weet je het zeker?');">
-              @csrf
-              @method('DELETE')
-              <button class="btn btn-secondary" type="submit">Verwijderen</button>
-            </form>
+            @php
+              $foto = $row->fotos->first();
+              $offline = ! $row->visible || $expired;
+              $dagenOver = $row->expires_at ? (int) now()->diffInDays($row->expires_at, false) : null;
+            @endphp
+            <div class="mijn-aanbod-kaart">
+              @if($foto)
+                <img class="mijn-aanbod-foto" src="{{ $foto->thumbUrl() }}" alt="{{ $foto->toPublicArray()['alt'] }}" width="88" height="88" loading="lazy">
+              @else
+                <span class="mijn-aanbod-foto mijn-aanbod-foto--leeg" aria-hidden="true"><x-icon name="stekje" :size="28" /></span>
+              @endif
+              <div class="mijn-aanbod-info">
+                <p class="mijn-aanbod-titel">{{ trim((string) $row->tekst) !== '' ? $row->tekst : 'Plant (zie foto)' }}</p>
+                <p class="mijn-aanbod-meta">
+                  <span class="badge">{{ $row->type === 'ophalen' ? 'zoek ik' : 'deel ik uit' }}</span>
+                  @if($offline)
+                    <span class="status status--fout">{{ ! $row->visible ? 'offline' : 'verlopen' }}</span>
+                  @elseif($row->expires_at)
+                    <span class="muted">tot {{ $row->expires_at->timezone('Europe/Amsterdam')->format('d-m-Y') }}</span>
+                  @endif
+                </p>
+              </div>
+            </div>
+
+            <div class="mijn-aanbod-acties">
+              @if($row->type === 'uitdelen' && ! $offline)
+                <div class="aantal-stepper" aria-label="Aantal">
+                  <form method="post" action="{{ route('account.aanbod.aantal', $row) }}">
+                    @csrf
+                    <input type="hidden" name="delta" value="-1">
+                    <button type="submit" class="stepper-knop" aria-label="Eén minder{{ ($row->aantal ?? 1) <= 1 ? ' (dan is het op)' : '' }}">−</button>
+                  </form>
+                  <span class="stepper-waarde"><strong>{{ $row->aantal ?? 1 }}</strong> <span class="muted">{{ ($row->aantal ?? 1) === 1 ? 'stuk' : 'stuks' }}</span></span>
+                  <form method="post" action="{{ route('account.aanbod.aantal', $row) }}">
+                    @csrf
+                    <input type="hidden" name="delta" value="1">
+                    <button type="submit" class="stepper-knop" aria-label="Eén meer">+</button>
+                  </form>
+                </div>
+              @endif
+
+              <a class="btn btn-secondary btn-klein" href="{{ route('account.aanbod', ['edit' => $row->id]) }}#aanbod-{{ $row->id }}">Wijzigen</a>
+
+              @if($offline || ($dagenOver !== null && $dagenOver <= 14))
+                <form method="post" action="{{ route('account.aanbod.renew', $row) }}">
+                  @csrf
+                  <button class="btn btn-klein" type="submit">{{ $offline ? 'Weer online' : 'Verlengen' }}</button>
+                </form>
+              @endif
+
+              <form class="mijn-aanbod-weg" method="post" action="{{ route('account.aanbod.destroy', $row) }}" onsubmit="return confirm('Dit aanbod verwijderen?');">
+                @csrf
+                @method('DELETE')
+                <button class="link-knop link-knop--gevaar" type="submit">Verwijderen</button>
+              </form>
+            </div>
           @endif
         </li>
       @endforeach
