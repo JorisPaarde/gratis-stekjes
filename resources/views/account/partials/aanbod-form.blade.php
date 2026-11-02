@@ -44,6 +44,10 @@
   </div>
   <p class="error" hidden data-invasieve-hint role="status"></p>
 
+<label class="aanbod-aantal-veld">Aantal <span class="hint">(optioneel, bijvoorbeeld 5 plantjes)</span>
+  <input type="number" name="aantal" min="1" max="{{ \App\Models\Aanbod::AANTAL_MAX }}" inputmode="numeric" value="{{ old('aantal') }}" placeholder="1">
+</label>
+
   <label for="aanbod-fotos">Foto’s (max. {{ $fotoMaxCount }}, JPEG/PNG/WebP, max. {{ $fotoMaxMb }} MB)
     <span class="hint">Voor je privacy haal ik de locatie uit je foto’s. Minimaal één foto óf een plantensoort is verplicht.</span>
     <input

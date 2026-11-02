@@ -126,6 +126,7 @@ class AanbodController extends Controller
             'user_id' => $user->id,
             'type' => $data['type'],
             'tekst' => $data['tekst'],
+            'aantal' => $data['aantal'],
             'plantensoort_id' => $data['plantensoort_id'],
             'visible' => true,
             'expires_at' => now()->addDays($ttl),
@@ -209,6 +210,7 @@ class AanbodController extends Controller
         $aanbod->update([
             'type' => $data['type'],
             'tekst' => $data['tekst'],
+            'aantal' => $data['aantal'],
             'plantensoort_id' => $data['plantensoort_id'],
         ]);
 
@@ -224,6 +226,26 @@ class AanbodController extends Controller
         return redirect()
             ->route('account.aanbod')
             ->with('status', 'Aanbod bijgewerkt.');
+    }
+
+    /** Snel aantal aanpassen vanuit de lijst (− / +). Bij 0: aanbod is op en gaat offline. */
+    public function aantal(Request $request, Aanbod $aanbod): RedirectResponse
+    {
+        abort_unless($aanbod->user_id === $request->user()->id, 403);
+        $delta = (int) $request->input('delta');
+        abort_unless(in_array($delta, [-1, 1], true), 422);
+
+        $nieuw = max(0, min(Aanbod::AANTAL_MAX, ($aanbod->aantal ?? 1) + $delta));
+        if ($nieuw === 0) {
+            $aanbod->update(['aantal' => null, 'visible' => false]);
+
+            return redirect()->to(route('account.aanbod').'#aanbod-'.$aanbod->id)
+                ->with('status', 'Alles weggegeven? Top! Je aanbod staat nu offline. Met «Weer online» zet je het terug.');
+        }
+        $aanbod->update(['aantal' => $nieuw]);
+
+        return redirect()->to(route('account.aanbod').'#aanbod-'.$aanbod->id)
+            ->with('status', 'Aantal aangepast naar '.$nieuw.'.');
     }
 
     public function renew(Request $request, Aanbod $aanbod): RedirectResponse
@@ -276,6 +298,7 @@ class AanbodController extends Controller
                 'type' => ['required', 'in:uitdelen,ophalen'],
                 'tekst' => ['nullable', 'string', 'max:2000', new GeenInvasieveSoort],
                 'plantensoort_id' => ['nullable', 'integer', 'min:1'],
+                'aantal' => ['nullable', 'integer', 'min:1', 'max:'.Aanbod::AANTAL_MAX],
                 'gratis_akkoord' => ['accepted'],
                 'fotos' => ['nullable', 'array', 'max:'.$maxCount],
                 'fotos.*' => ['file', 'max:'.$maxKb],
@@ -284,6 +307,9 @@ class AanbodController extends Controller
                 'type.required' => 'Kies uitdelen of ophalen.',
                 'gratis_akkoord.accepted' => 'Je moet akkoord gaan: alleen gratis, geen verkoop.',
                 'plantensoort_id.integer' => 'Ongeldige plantensoort.',
+                'aantal.min' => 'Aantal moet minimaal 1 zijn.',
+                'aantal.max' => 'Aantal mag maximaal '.Aanbod::AANTAL_MAX.' zijn.',
+                'aantal.integer' => 'Vul een heel getal in bij aantal.',
                 'fotos.max' => 'Je mag maximaal '.$maxCount.' foto’s uploaden.',
                 'fotos.*.max' => 'Elke foto mag maximaal '.round($maxBytes / 1024 / 1024).' MB zijn.',
             ]
@@ -327,6 +353,7 @@ class AanbodController extends Controller
         return [
             'type' => $data['type'],
             'tekst' => $tekst,
+            'aantal' => isset($data['aantal']) && $data['aantal'] !== '' ? (int) $data['aantal'] : null,
             'plantensoort_id' => $plantensoortId,
             'gratis_akkoord' => $data['gratis_akkoord'],
         ];

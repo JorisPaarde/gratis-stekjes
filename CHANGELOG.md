@@ -9,6 +9,16 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.51.0] - 2026-11-02
+
+### Added
+
+- Aantal bij aanbod (optioneel, 1–99): in het formulier, zichtbaar in zoeken en op de kaart («5 stuks»). In Mijn aanbod snel aanpassen met − / +; bij 0 gaat het aanbod offline («Weer online» zet het terug).
+
+### Changed
+
+- Mijn aanbod: compacte kaarten (foto links, titel, status), acties op één regel; «Verlengen» alleen als het binnen 14 dagen verloopt of offline is; «Verwijderen» als rode tekstlink.
+
 ## [0.50.0] - 2026-11-02
 
 ### Changed
