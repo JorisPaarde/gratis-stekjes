@@ -9,6 +9,17 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.47.2] - 2026-11-02
+
+### Fixed
+
+- **Bevestigingsvragen in /beheer:** de knoppen «Maak pionier» en «Blokkeren» op /beheer/gebruikers/{id}
+  braken op een naam met een aanhalingsteken (' of "). De tekst gaat nu via `Js::from()`, net als bij
+  «Maak beheerder» / «Beheerder af».
+- **Lid-ID's niet meer te raden:** /beheer/gebruikers/{id} (en de POST-acties eronder) gaf een 404 voor
+  een niet-bestaand ID en een redirect voor een bestaand ID. De beheer-check draait nu vóór de
+  route-model binding, dus gasten en gewone leden krijgen altijd dezelfde redirect naar /beheer.
+
 ## [0.47.1] - 2026-11-01
 
 ### Added
