@@ -184,3 +184,17 @@ test('beheermenu linkt naar gebruikers', function () {
     $this->withSession(['admin_ok' => true])->get(route('beheer.index'))
         ->assertOk()->assertSee(route('beheer.gebruikers'), false);
 });
+
+test('beheermenu: 5 hoofdtabs, onderdelen als subtabs, agenda en kaartmarkers via overzicht', function () {
+    $admin = beheerAdmin();
+    $html = $this->actingAs($admin)->get(route('beheer.index'))->assertOk()->getContent();
+    expect(preg_match('/<nav class="beheer-tabs"[^>]*>(.*?)<\/nav>/s', $html, $nav))->toBe(1);
+    expect(substr_count($nav[1], '<a '))->toBe(5)
+        ->and($nav[1])->toContain('Keuren')->and($nav[1])->toContain('Inbox')
+        ->and($nav[1])->not->toContain('Kaartmarkers')
+        ->and($html)->toContain('href="'.route('beheer.kaartmarkers').'"');
+
+    $sub = $this->actingAs($admin)->get(route('beheer.feedback'))->assertOk()->getContent();
+    expect($sub)->toContain('class="beheer-subtabs"')
+        ->and($sub)->toContain('href="'.route('beheer.meldingen').'"');
+});

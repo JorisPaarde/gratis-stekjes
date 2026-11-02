@@ -79,5 +79,6 @@
       @endif
     </div>
   </div>
+  <p class="beheer-inhoud muted">Inhoud beheren: <a href="{{ route('beheer.agenda') }}">Agenda</a> · <a href="{{ route('beheer.kaartmarkers') }}">Kaartmarkers</a></p>
 </section>
 @endsection
