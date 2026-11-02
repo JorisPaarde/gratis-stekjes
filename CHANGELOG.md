@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.50.0] - 2026-11-02
+
+### Changed
+
+- Beheermenu: 5 hoofdtabs zonder scrollen (Overzicht · Gebruikers · Keuren · Inbox · Statistieken). Keuren (verenigingen, deelplekken, ervaringen) en Inbox (meldingen, feedback) tonen hun onderdelen als subtabs met tellers; de hoofdtab springt naar het onderdeel met werk. Agenda en Kaartmarkers via een linkje onderaan het Overzicht.
+
 ## [0.49.0] - 2026-11-02
 
 ### Added

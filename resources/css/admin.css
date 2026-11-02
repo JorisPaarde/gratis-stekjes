@@ -501,8 +501,8 @@
    onderrand (-2px marge + 3px rand) was de strip een paar px verticaal scrollbaar en ging hij op iOS
    op en neer bij het scrollen van de pagina. Daarom: overflow-y hidden, geen negatieve marge, vaste
    hoogte, en de grijze lijn als inset-schaduw (de oranje rand van de actieve tab ligt eroverheen). */
-.beheer-tabs { display: flex; flex-wrap: nowrap; align-items: stretch; gap: .25rem; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; touch-action: pan-x pan-y; box-shadow: inset 0 -2px 0 var(--line, rgba(26,18,16,.12)); margin: 0 0 1.25rem; scrollbar-width: thin; }
-.beheer-tabs a { flex: 0 0 auto; box-sizing: border-box; height: 2.75rem; white-space: nowrap; padding: 0 .8rem; line-height: 1; text-decoration: none; color: var(--ink, #1a1210); font-weight: 600; border-bottom: 3px solid transparent; display: inline-flex; align-items: center; gap: .35rem; }
+.beheer-tabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: stretch; gap: 0; box-shadow: inset 0 -2px 0 var(--line, rgba(26,18,16,.12)); margin: 0 0 1rem; }
+.beheer-tabs a { justify-content: center; min-width: 0; box-sizing: border-box; height: 2.75rem; white-space: nowrap; padding: 0 .4rem; line-height: 1; text-decoration: none; color: var(--ink, #1a1210); font-weight: 600; border-bottom: 3px solid transparent; display: inline-flex; align-items: center; gap: .35rem; }
 .beheer-tabs a:hover, .beheer-tabs a:focus-visible { color: var(--forest-deep, #163820); background: var(--bg-mint, #e6f2e1); }
 .beheer-tabs a.is-actief { border-bottom-color: var(--orange, #e8833a); color: var(--forest-deep, #163820); }
 .beheer-page h1.page-title { margin-top: .25rem; }
@@ -590,3 +590,10 @@
 .beheer-email { word-break: break-all; }
 .beheer-badge-rij { display: inline-flex; gap: 2px; margin-top: .2rem; vertical-align: middle; }
 .beheer-badge-rij img { display: block; }
+
+/* Onderdelen binnen Keuren / Inbox / Inhoud: pillen die doorlopen op een nieuwe regel (nooit scrollen). */
+.beheer-subtabs { display: flex; flex-wrap: wrap; gap: .4rem; margin: -.25rem 0 1.25rem; }
+.beheer-subtabs a { display: inline-flex; align-items: center; gap: .35rem; padding: .4rem .85rem; border-radius: 999px; border: 1px solid var(--line, rgba(26,18,16,.12)); text-decoration: none; color: var(--ink, #1a1210); font-weight: 600; font-size: .9rem; background: #fff; }
+.beheer-subtabs a.is-actief { background: var(--forest-deep, #163820); border-color: var(--forest-deep, #163820); color: #fff; }
+@media (max-width: 480px) { .beheer-tabs { grid-template-columns: repeat(5, auto); justify-content: space-between; } .beheer-tabs a { font-size: .82rem; padding: 0 .2rem; gap: .2rem; } .beheer-tabs .nav-badge { font-size: .68rem; } }
+.beheer-inhoud { margin-top: 1.5rem; }
