@@ -102,6 +102,9 @@
   <h2>Kaart en derden</h2>
   <p>De aanbodkaart gebruikt OpenStreetMap-tegels. Plaatsen en postcodes zoek ik in Nederland op via de gratis PDOK Locatieserver. Voor België (en als je in beide landen zoekt) gebruik ik Nominatim, de zoekdienst van OpenStreetMap, alleen voor Nederland en België. De uitkomsten bewaar ik tijdelijk op mijn eigen server. Op de kaart staan alleen punten bij benadering. OpenStreetMap/PDOK/Nominatim ontvangen daarbij de gebruikelijke technische verzoeken van je browser of mijn server (geen accountgegevens van {{ config('site.name') }}).</p>
 
+  <h2>Video's</h2>
+  <p>Bij sommige stektips staat een YouTube-video. Die laadt pas als je zelf op afspelen klikt. Pas dan maakt je browser verbinding met YouTube (Google), via youtube-nocookie.com, het domein zonder advertentiecookies zolang je niet afspeelt. Op dat moment gelden de voorwaarden en het privacybeleid van YouTube. Klik je niet, dan gaat er niets naar YouTube.</p>
+
   <h2>Melden en blokkeren</h2>
   <p>Je kunt een gebruiker melden of blokkeren. Meldingen bewaar ik voor controle. Er is geen openbare wachtrij van meldingen.</p>
 

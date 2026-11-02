@@ -180,7 +180,7 @@ class StektipsController extends Controller
         ];
     }
 
-    public function artikel(string $slug, Kennisbank $kennisbank, Stektips $stektips): View|Response
+    public function artikel(string $slug, Kennisbank $kennisbank, Stektips $stektips, SoortAfbeeldingen $afbeeldingen): View|Response
     {
         $artikel = $kennisbank->find($slug);
         if ($artikel === null) {
@@ -236,12 +236,69 @@ class StektipsController extends Controller
             'categoryLabels' => $categoryLabels,
             'gerelateerdeSoorten' => $gerelateerdeSoorten,
             'gerelateerdeArtikelen' => $kennisbank->relatedArticles($artikel),
-            'kinderen' => $kennisbank->childrenOf($artikel),
+            'kinderen' => $this->kinderenMetFoto($kennisbank->childrenOf($artikel), $afbeeldingen),
+            'blokken' => $this->blokkenVerrijkt($artikel['inhoud'] ?? [], $stektips, $afbeeldingen),
             'duurzamer' => $duurzamer,
             'seoCtas' => $this->seoCtasForArtikel($artikel, $kennisbank),
             'schema' => $kennisbank->articleSchema($artikel, $url),
             'breadcrumbs' => $breadcrumbs,
         ]);
+    }
+
+    /**
+     * Subartikelen als kaart: met foto van de eerste gerelateerde soort (alleen echte, gelicentieerde foto's).
+     *
+     * @param  list<array<string, mixed>>  $kinderen
+     * @return list<array<string, mixed>>
+     */
+    private function kinderenMetFoto(array $kinderen, SoortAfbeeldingen $afbeeldingen): array
+    {
+        return array_map(function (array $kind) use ($afbeeldingen): array {
+            $kind['foto'] = null;
+            foreach ($kind['gerelateerde_soorten'] ?? [] as $soortSlug) {
+                if (is_string($soortSlug) && $afbeeldingen->hasLicensedImage($soortSlug)) {
+                    $kind['foto'] = $afbeeldingen->forSlug($soortSlug);
+                    break;
+                }
+            }
+
+            return $kind;
+        }, $kinderen);
+    }
+
+    /**
+     * Blok «soorten»: slugs omzetten naar naam, link en foto.
+     *
+     * @param  array<int, mixed>  $inhoud
+     * @return list<array<string, mixed>>
+     */
+    private function blokkenVerrijkt(array $inhoud, Stektips $stektips, SoortAfbeeldingen $afbeeldingen): array
+    {
+        $out = [];
+        foreach ($inhoud as $blok) {
+            if (! is_array($blok)) {
+                continue;
+            }
+            if (($blok['type'] ?? '') === 'soorten') {
+                $items = [];
+                foreach ($blok['items'] ?? [] as $soortSlug) {
+                    $soort = is_string($soortSlug) ? $stektips->find($soortSlug) : null;
+                    if ($soort === null) {
+                        continue;
+                    }
+                    $items[] = [
+                        'naam' => (string) ($soort['naam'] ?? $soortSlug),
+                        'url' => route('stektips.show', ['slug' => $soortSlug]),
+                        'foto' => $afbeeldingen->forSlug($soortSlug, (string) ($soort['naam'] ?? '')),
+                        'kort' => (string) ($soort['kort'] ?? ''),
+                    ];
+                }
+                $blok['items'] = $items;
+            }
+            $out[] = $blok;
+        }
+
+        return $out;
     }
 
     public function show(string $slug, Stektips $stektips, Kennisbank $kennisbank, SoortAfbeeldingen $afbeeldingen): View|Response

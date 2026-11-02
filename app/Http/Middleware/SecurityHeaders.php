@@ -67,6 +67,8 @@ class SecurityHeaders
             "style-src 'self' https://unpkg.com 'unsafe-inline'",
             "img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org",
             "connect-src 'self'",
+            // Video's alleen na klik (stektips), privacyvriendelijk domein.
+            'frame-src https://www.youtube-nocookie.com',
             "font-src 'self' data:",
             "worker-src 'self'",
             "manifest-src 'self'",

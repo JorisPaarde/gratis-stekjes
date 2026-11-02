@@ -1,18 +1,40 @@
 @php
   $tellers = \App\Support\BeheerTellers::alle();
-  $tabs = [
-    ['beheer.index', 'Overzicht', 0],
-    ['beheer.gebruikers', 'Gebruikers', $tellers['onbevestigd'] + $tellers['mailfout']],
-    ['beheer.verenigingen', 'Verenigingen', $tellers['verenigingen']],
-    ['beheer.aanmeldingen', 'Aanmeldingen', $tellers['aanmeldingen']],
-    ['beheer.meldingen', 'Meldingen', $tellers['meldingen']],
-    ['beheer.ervaringen', 'Ervaringen', $tellers['ervaringen']],
-    ['beheer.feedback', 'Feedback', $tellers['feedback']],
-    ['beheer.agenda', 'Agenda', 0],
-    ['beheer.kaartmarkers', 'Kaartmarkers', 0],
-    ['beheer.statistieken', 'Statistieken', 0],
-  ];
   $huidig = request()->route()?->getName() ?? '';
+  $isRoute = fn (string $r) => $huidig === $r || str_starts_with($huidig, $r.'.');
+
+  // Groepen: hoofdtab → onderdelen [route, label, teller]. Hoofdtab linkt naar het eerste onderdeel met werk.
+  $groepen = [
+    'keuren' => ['Keuren', [
+      ['beheer.verenigingen', 'Verenigingen', $tellers['verenigingen']],
+      ['beheer.aanmeldingen', 'Deelplekken', $tellers['aanmeldingen']],
+      ['beheer.ervaringen', 'Ervaringen', $tellers['ervaringen']],
+    ]],
+    'inbox' => ['Inbox', [
+      ['beheer.meldingen', 'Meldingen', $tellers['meldingen']],
+      ['beheer.feedback', 'Feedback', $tellers['feedback']],
+    ]],
+    'inhoud' => ['Inhoud', [
+      ['beheer.agenda', 'Agenda', 0],
+      ['beheer.kaartmarkers', 'Kaartmarkers', 0],
+    ]],
+  ];
+  $groepTab = function (string $key) use ($groepen, $isRoute): array {
+      [$label, $items] = $groepen[$key];
+      $doel = collect($items)->first(fn ($i) => $i[2] > 0) ?? $items[0];
+      $actief = collect($items)->contains(fn ($i) => $isRoute($i[0]));
+
+      return [$doel[0], $label, (int) collect($items)->sum(fn ($i) => $i[2]), $actief];
+  };
+
+  $tabs = [
+    ['beheer.index', 'Overzicht', 0, $isRoute('beheer.index')],
+    ['beheer.gebruikers', 'Gebruikers', $tellers['onbevestigd'] + $tellers['mailfout'], $isRoute('beheer.gebruikers')],
+    $groepTab('keuren'),
+    $groepTab('inbox'),
+    ['beheer.statistieken', 'Statistieken', 0, $isRoute('beheer.statistieken')],
+  ];
+  $subGroep = collect($groepen)->first(fn ($g) => collect($g[1])->contains(fn ($i) => $isRoute($i[0])));
 @endphp
 <div class="beheer-header">
   <p class="beheer-merk">Beheer</p>
@@ -25,11 +47,18 @@
   @endguest
 </div>
 <nav class="beheer-tabs" aria-label="Beheeronderdelen">
-  @foreach($tabs as [$route, $label, $aantal])
-    @php $actief = $huidig === $route || str_starts_with($huidig, $route.'.'); @endphp
+  @foreach($tabs as [$route, $label, $aantal, $actief])
     <a href="{{ route($route) }}" @class(['is-actief' => $actief]) @if($actief) aria-current="page" @endif>{{ $label }}@if($aantal > 0) <span class="nav-badge" aria-label="{{ $aantal }} wacht op actie">{{ $aantal }}</span>@endif</a>
   @endforeach
 </nav>
+@if($subGroep)
+  <nav class="beheer-subtabs" aria-label="{{ $subGroep[0] }}">
+    @foreach($subGroep[1] as [$route, $label, $aantal])
+      @php $actief = $isRoute($route); @endphp
+      <a href="{{ route($route) }}" @class(['is-actief' => $actief]) @if($actief) aria-current="page" @endif>{{ $label }}@if($aantal > 0) <span class="nav-badge">{{ $aantal }}</span>@endif</a>
+    @endforeach
+  </nav>
+@endif
 
 @if(session('status'))
   <p class="flash flash-ok" role="status">{{ session('status') }}</p>

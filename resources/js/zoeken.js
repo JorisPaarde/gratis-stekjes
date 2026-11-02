@@ -345,6 +345,7 @@
       escapeHtml(aanbodTypeLabels[item.type] || item.type) +
       "</span> " +
       escapeHtml(item.tekst || "") +
+      (item.aantal > 1 ? ' <span class="aanbod-aantal">(' + item.aantal + " stuks)</span>" : "") +
       "</span>" +
       bericht +
       "</li>"
@@ -538,7 +539,8 @@
             "<br>" +
             escapeHtml(aanbodTypeLabels[item.type] || item.type) +
             ": " +
-            escapeHtml(item.tekst || "");
+            escapeHtml(item.tekst || "") +
+            (item.aantal > 1 ? " (" + item.aantal + " stuks)" : "");
         });
         var m = L.marker([group.lat, group.lon], { icon: aanbodIcon() }).bindPopup(popup);
         aanbodLayer.addLayer(m);

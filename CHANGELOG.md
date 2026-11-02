@@ -9,6 +9,40 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.52.1] - 2026-11-02
+
+### Changed
+
+- Stektips-video's vervangen door best bekeken en best gewaardeerde NL-video's: stekken + Groei & Bloei «Winterstekken maken» en Tuinmanieren «Afleggen» (i.p.v. Tuinen.nl sedum en Tip van Lodewijk); snoeien + Tuinmanieren «Wat snoei je in maart?» (i.p.v. Hendrik Jan, 1,4k views).
+
+## [0.52.0] - 2026-11-02
+
+### Added
+
+- Stektips-artikelen: rijke blokken (methodekaarten met eigen illustraties, stekkalender per maand, stappenplan, water-vs-grond, soorten met foto, snoeikalender met «nu», tips) en «Op deze pagina»-navigatie.
+- Nederlandstalige YouTube-video's (Het Klokhuis, Tuinmanieren, Tuinen.nl, 247Green, Hendrik Jan) als klik-om-te-laden via youtube-nocookie; CSP `frame-src` alleen dat domein; privacyverklaring bijgewerkt.
+- Subartikelen als kaarten met foto of illustratie; «Bied het gratis aan»-blok onderaan.
+
+### Changed
+
+- /stektips/artikel/stekken en /snoeien volledig herschreven en opnieuw ingedeeld.
+
+## [0.51.0] - 2026-11-02
+
+### Added
+
+- Aantal bij aanbod (optioneel, 1–99): in het formulier, zichtbaar in zoeken en op de kaart («5 stuks»). In Mijn aanbod snel aanpassen met − / +; bij 0 gaat het aanbod offline («Weer online» zet het terug).
+
+### Changed
+
+- Mijn aanbod: compacte kaarten (foto links, titel, status), acties op één regel; «Verlengen» alleen als het binnen 14 dagen verloopt of offline is; «Verwijderen» als rode tekstlink.
+
+## [0.50.0] - 2026-11-02
+
+### Changed
+
+- Beheermenu: 5 hoofdtabs zonder scrollen (Overzicht · Gebruikers · Keuren · Inbox · Statistieken). Keuren (verenigingen, deelplekken, ervaringen) en Inbox (meldingen, feedback) tonen hun onderdelen als subtabs met tellers; de hoofdtab springt naar het onderdeel met werk. Agenda en Kaartmarkers via een linkje onderaan het Overzicht.
+
 ## [0.49.0] - 2026-11-02
 
 ### Added

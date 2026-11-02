@@ -204,6 +204,9 @@ Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(functio
     Route::get('/account/aanbod', [AanbodController::class, 'index'])->name('account.aanbod');
     Route::post('/account/aanbod/nieuw', [AanbodController::class, 'store'])
         ->name('account.aanbod.store');
+    Route::post('/account/aanbod/{aanbod}/aantal', [AanbodController::class, 'aantal'])
+        ->middleware('throttle:60,1')
+        ->name('account.aanbod.aantal');
     Route::post('/account/aanbod/{aanbod}/verlengen', [AanbodController::class, 'renew'])
         ->name('account.aanbod.renew');
     Route::delete('/account/aanbod/{aanbod}', [AanbodController::class, 'destroy'])

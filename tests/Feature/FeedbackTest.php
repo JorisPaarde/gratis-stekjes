@@ -250,7 +250,7 @@ test('geen feedbackknop op beheerpaginas', function () {
     $html = $this->withSession(['admin_ok' => true])
         ->get(route('beheer.index'))
         ->assertOk()
-        ->assertSee(route('beheer.feedback'), false)
+        ->assertSee('>Inbox', false)
         ->getContent();
 
     expect($html)->not->toContain('data-feedback-fab');
