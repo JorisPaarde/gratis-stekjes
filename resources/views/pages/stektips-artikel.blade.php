@@ -25,10 +25,17 @@
     </ol>
   </nav>
 
-  <h1 class="page-title">{{ $heading ?? $artikel['titel'] }}</h1>
-  @if(!empty($artikel['samenvatting']))
-    <p class="section-intro">{{ $artikel['samenvatting'] }}</p>
-  @endif
+  <header @class(['kb-hero', 'kb-hero--met-illu' => !empty($artikel['illustratie'])])>
+    <div>
+      <h1 class="page-title">{{ $heading ?? $artikel['titel'] }}</h1>
+      @if(!empty($artikel['samenvatting']))
+        <p class="section-intro">{{ $artikel['samenvatting'] }}</p>
+      @endif
+    </div>
+    @if(!empty($artikel['illustratie']))
+      <div class="kb-hero-illu">@include('partials.illustraties.stek', ['naam' => $artikel['illustratie']])</div>
+    @endif
+  </header>
 
   <ul class="stektips-meta-list">
     @if(!empty($artikel['categorieen']))
@@ -52,26 +59,22 @@
   </ul>
 
 
+  @php
+    $kopjes = collect($blokken)->filter(fn ($b) => in_array($b['type'] ?? '', ['h2', 'videos'], true) && (($b['tekst'] ?? $b['titel'] ?? '') !== ''))
+      ->map(fn ($b) => (string) ($b['tekst'] ?? $b['titel']))->values();
+  @endphp
+  @if($kopjes->count() >= 3)
+    <nav class="kb-inhoud" aria-label="Op deze pagina">
+      <span class="kb-inhoud-label">Op deze pagina</span>
+      @foreach($kopjes as $kop)
+        <a href="#{{ \Illuminate\Support\Str::slug($kop) }}">{{ $kop }}</a>
+      @endforeach
+    </nav>
+  @endif
+
   <div class="stektips-artikel-body">
-    @foreach($artikel['inhoud'] ?? [] as $block)
-      @php $type = $block['type'] ?? ''; @endphp
-      @if($type === 'h2')
-        <h2>{{ $block['tekst'] ?? '' }}</h2>
-      @elseif($type === 'p')
-        <p>{{ $block['tekst'] ?? '' }}</p>
-      @elseif($type === 'ol' && !empty($block['items']))
-        <ol>
-          @foreach($block['items'] as $item)
-            <li>{{ $item }}</li>
-          @endforeach
-        </ol>
-      @elseif($type === 'ul' && !empty($block['items']))
-        <ul>
-          @foreach($block['items'] as $item)
-            <li>{{ $item }}</li>
-          @endforeach
-        </ul>
-      @endif
+    @foreach($blokken as $block)
+      @include('partials.kennisbank-blok', ['block' => $block])
     @endforeach
   </div>
 
@@ -88,11 +91,21 @@
   @include('partials.stektips-seo-ctas', ['seoCtas' => $seoCtas ?? []])
 
   @if(!empty($kinderen))
-    <h2 class="stektips-related-title">Meer over dit onderwerp</h2>
-    <ul class="stektips-related">
+    <h2 class="stektips-related-title" id="meer-over-dit-onderwerp">Meer over dit onderwerp</h2>
+    <ul class="kb-kinderen">
       @foreach($kinderen as $kind)
         <li>
-          <a href="{{ route('stektips.artikel', ['slug' => $kind['slug']]) }}">{{ $kind['titel'] }}</a>
+          <a href="{{ route('stektips.artikel', ['slug' => $kind['slug']]) }}">
+            @if(!empty($kind['foto']))
+              <img src="{{ $kind['foto']['url'] }}" alt="" width="320" height="200" loading="lazy" decoding="async">
+            @elseif(!empty($kind['illustratie']))
+              <span class="kb-kind-illu">@include('partials.illustraties.stek', ['naam' => $kind['illustratie']])</span>
+            @endif
+            <span class="kb-kind-tekst">
+              <strong>{{ $kind['titel'] }}</strong>
+              @if(!empty($kind['samenvatting']))<span>{{ \Illuminate\Support\Str::limit($kind['samenvatting'], 110) }}</span>@endif
+            </span>
+          </a>
         </li>
       @endforeach
     </ul>
@@ -133,9 +146,41 @@
     </ul>
   @endif
 
+  <aside class="kb-delen">
+    @include('partials.illustraties.stek', ['naam' => 'delen'])
+    <div>
+      <p class="kb-delen-titel">Te veel stekjes of snoeisel?</p>
+      <p>Geef het gratis weg aan iemand in de buurt. Zo krijgt elk stekje een tweede leven.</p>
+      <a class="btn" href="{{ auth()->check() ? route('aanbieden') : route('account.registreren') }}">Bied het gratis aan</a>
+    </div>
+  </aside>
+
   <p class="stektips-actions">
     <a class="btn btn-secondary" href="{{ route('stektips.index') }}">Alle stektips</a>
     <a href="{{ route('hulpmiddelen') }}">Hulpmiddelen</a>
   </p>
 </section>
 @endsection
+
+@push('scripts')
+<script>
+  document.querySelectorAll('[data-video-id]').forEach(function (frame) {
+    var start = frame.querySelector('.kb-video-start');
+    if (!start) return;
+    start.addEventListener('click', function (e) {
+      e.preventDefault();
+      var id = frame.getAttribute('data-video-id');
+      var iframe = document.createElement('iframe');
+      iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?autoplay=1&rel=0&hl=nl&cc_lang_pref=nl';
+      iframe.title = frame.getAttribute('data-video-titel') || 'Video';
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      iframe.allowFullscreen = true;
+      iframe.loading = 'lazy';
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      frame.innerHTML = '';
+      frame.appendChild(iframe);
+      frame.classList.add('is-geladen');
+    });
+  });
+</script>
+@endpush

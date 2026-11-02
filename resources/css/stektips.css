@@ -402,8 +402,124 @@
 }
 .stektips-stappen strong { color: var(--forest-deep, #163820); }
 /* Lopende tekst in een leesbare kolom (±70 tekens); kaarten, tabellen en foto's blijven breed. */
-.stektips-page .stektips-artikel-body,
+.stektips-page .stektips-artikel-body > p,
+.stektips-page .stektips-artikel-body > ul:not([class]),
+.stektips-page .stektips-artikel-body > ol:not([class]),
+.stektips-page .stektips-artikel-body > h2,
+.stektips-page .stektips-artikel-body > .kb-tip,
+.stektips-page .stektips-artikel-body > .kb-stappen,
 .stektips-page .stektips-stappen,
 .stektips-artikel > .section-intro {
   max-width: 42rem;
+}
+
+/* ——— Kennisbank: rijke blokken (kaarten, stappen, kalender, video's) ——— */
+.kb-hero { display: grid; gap: 1rem; align-items: center; }
+@media (min-width: 760px) { .kb-hero--met-illu { grid-template-columns: 1fr 180px; } }
+.kb-hero-illu { display: none; }
+@media (min-width: 760px) { .kb-hero-illu { display: block; } .kb-hero-illu .illu { width: 180px; height: 180px; } }
+
+.kb-inhoud { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: 1rem 0 1.75rem; }
+.kb-inhoud-label { font-weight: 700; font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--forest, #1f4d2b); margin-right: .25rem; }
+.kb-inhoud a { padding: .3rem .75rem; border-radius: 999px; background: var(--bg-mint, #e6f2e1); color: var(--forest-deep, #163820); text-decoration: none; font-size: .9rem; font-weight: 600; }
+.kb-inhoud a:hover, .kb-inhoud a:focus-visible { background: var(--forest, #1f4d2b); color: #fff; }
+
+.stektips-artikel-body h2 { scroll-margin-top: 5rem; margin-top: 2.25rem; }
+
+.kb-tip { display: flex; gap: .75rem; padding: 1rem 1.15rem; margin: 1.25rem 0; border-radius: 1rem; background: #fff7ef; border: 1px solid #f2c9a5; }
+.kb-tip p { margin: .2rem 0; }
+.kb-tip-icoon { font-size: 1.4rem; line-height: 1; }
+.kb-tip-titel { font-weight: 700; }
+
+.kb-kaarten { list-style: none; padding: 0; margin: 1rem 0 1.5rem; display: grid; gap: .9rem; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); }
+.kb-kaart { background: #fff; border: 1px solid var(--line, rgba(26,18,16,.12)); border-radius: 1.1rem; padding: 1.1rem; display: flex; flex-direction: column; gap: .35rem; }
+.kb-kaart .illu { width: 84px; height: 84px; }
+.kb-kaart h3 { margin: .35rem 0 0; font-size: 1.15rem; }
+.kb-kaart p { margin: 0; }
+.kb-kaart-wanneer { font-size: .85rem; font-weight: 700; color: #b4561a; }
+.kb-kaart-link { margin-top: auto; padding-top: .5rem; font-weight: 700; }
+
+.kb-stappen { list-style: none; counter-reset: stap; padding: 0; margin: 1rem 0 1.5rem; display: grid; gap: .6rem; }
+.kb-stappen li { counter-increment: stap; position: relative; padding: .85rem 1rem .85rem 3.4rem; background: #fff; border: 1px solid var(--line, rgba(26,18,16,.12)); border-radius: 1rem; }
+.kb-stappen li::before { content: counter(stap); position: absolute; left: .9rem; top: .85rem; width: 1.8rem; height: 1.8rem; border-radius: 50%; background: var(--forest, #1f4d2b); color: #fff; font-weight: 700; display: grid; place-items: center; }
+.kb-stappen p { margin: 0; }
+.kb-stap-titel { font-weight: 700; }
+
+.kb-vergelijk { display: grid; gap: .9rem; margin: 1rem 0 1.5rem; }
+@media (min-width: 640px) { .kb-vergelijk { grid-template-columns: 1fr 1fr; } }
+.kb-vergelijk-kolom { background: #fff; border: 1px solid var(--line, rgba(26,18,16,.12)); border-radius: 1.1rem; padding: 1.1rem; }
+.kb-vergelijk-kolom .illu { width: 72px; height: 72px; }
+.kb-vergelijk-kolom h3 { margin: .4rem 0 .3rem; }
+.kb-vergelijk-kolom ul { margin: 0; padding-left: 1.1rem; }
+
+.kb-kalender { margin: 1rem 0 1.5rem; }
+.kb-kalender-grid { display: grid; gap: 3px; overflow-x: auto; }
+.kb-kalender-rij { display: grid; grid-template-columns: minmax(7rem, 9rem) repeat(12, minmax(1.4rem, 1fr)); gap: 3px; align-items: center; min-width: 26rem; }
+.kb-kalender-label { font-weight: 600; font-size: .85rem; padding-right: .4rem; }
+.kb-kalender-maand { font-size: .72rem; text-align: center; text-transform: uppercase; color: var(--muted, #5b5550); }
+.kb-kalender-maand.is-nu { color: #b4561a; font-weight: 700; }
+.kb-kalender-cel { height: 1.6rem; border-radius: .35rem; background: #f1efe9; }
+.kb-kalender-cel.is-nu { outline: 2px solid #e8833a; outline-offset: -2px; }
+.kb-kleur-groen.is-aan { background: #6aa84f; }
+.kb-kleur-licht.is-aan { background: #a8d08d; }
+.kb-kleur-oranje.is-aan { background: #e8833a; }
+.kb-kleur-bruin.is-aan { background: #8a5a3b; }
+.kb-kleur-blauw.is-aan { background: #7fa8e0; }
+.kb-kalender figcaption { font-size: .85rem; color: var(--muted, #5b5550); margin-top: .5rem; }
+
+.kb-maanden { list-style: none; padding: 0; margin: 1rem 0 1.5rem; display: grid; gap: .6rem; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); }
+.kb-maand { background: #fff; border: 1px solid var(--line, rgba(26,18,16,.12)); border-radius: 1rem; padding: .85rem 1rem; }
+.kb-maand.is-nu { border-color: #e8833a; box-shadow: 0 0 0 2px #fbe0c8; }
+.kb-maand p { margin: 0; font-size: .95rem; }
+.kb-maand-naam { font-weight: 700; margin-bottom: .25rem !important; color: var(--forest-deep, #163820); }
+.kb-nu-label { display: inline-block; margin-left: .3rem; padding: 0 .45rem; border-radius: 999px; background: #e8833a; color: #fff; font-size: .72rem; vertical-align: middle; }
+
+.kb-soorten-titel { margin-top: 1.5rem; }
+.kb-soorten { list-style: none; padding: 0; margin: .75rem 0 .5rem; display: grid; gap: .75rem; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); }
+.kb-soorten a { display: flex; flex-direction: column; height: 100%; text-decoration: none; color: inherit; background: #fff; border: 1px solid var(--line, rgba(26,18,16,.12)); border-radius: 1rem; overflow: hidden; }
+.kb-soorten a:hover, .kb-soorten a:focus-visible { border-color: var(--forest, #1f4d2b); }
+.kb-soorten img { width: 100%; height: 7.5rem; object-fit: cover; }
+.kb-soort-naam { font-weight: 700; padding: .55rem .7rem 0; }
+.kb-soort-kort { font-size: .85rem; padding: .15rem .7rem .7rem; color: var(--muted, #5b5550); }
+.kb-credits { font-size: .75rem; color: var(--muted, #5b5550); }
+
+.kb-videos { display: grid; gap: 1rem; margin: 1rem 0 .5rem; max-width: 56rem; }
+@media (min-width: 760px) { .kb-videos { grid-template-columns: 1fr 1fr; } }
+.kb-video { margin: 0; }
+.kb-video-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 1rem; overflow: hidden; background: linear-gradient(135deg, #1f4d2b, #4c8a3c); }
+.kb-video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.kb-video-start { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 1rem; color: #fff; text-decoration: none; }
+.kb-video-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); transition: transform .15s; }
+.kb-video-start:hover .kb-video-play, .kb-video-start:focus-visible .kb-video-play { transform: translate(-50%, -60%) scale(1.1); }
+.kb-video-titel { font-weight: 700; font-size: 1.05rem; line-height: 1.25; text-shadow: 0 1px 3px rgba(0,0,0,.35); }
+.kb-video-kanaal { font-size: .85rem; opacity: .85; }
+.kb-video figcaption { font-size: .85rem; margin-top: .4rem; }
+.kb-video-frame.is-geladen ~ figcaption { display: block; }
+
+.kb-kinderen { list-style: none; padding: 0; margin: 1rem 0 1.5rem; display: grid; gap: .8rem; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); }
+.kb-kinderen a { display: flex; flex-direction: column; height: 100%; background: #fff; border: 1px solid var(--line, rgba(26,18,16,.12)); border-radius: 1rem; overflow: hidden; text-decoration: none; color: inherit; }
+.kb-kinderen a:hover, .kb-kinderen a:focus-visible { border-color: var(--forest, #1f4d2b); }
+.kb-kinderen img { width: 100%; height: 8.5rem; object-fit: cover; }
+.kb-kind-illu { display: grid; place-items: center; height: 8.5rem; background: #f6fbf3; }
+.kb-kind-tekst { display: flex; flex-direction: column; gap: .3rem; padding: .8rem .9rem 1rem; font-size: .92rem; }
+.kb-kind-tekst strong { font-size: 1.02rem; color: var(--forest-deep, #163820); }
+
+.kb-delen { display: flex; gap: 1rem; align-items: center; margin: 2rem 0 1rem; padding: 1.1rem 1.25rem; border-radius: 1.25rem; background: var(--bg-mint, #e6f2e1); }
+.kb-delen .illu { width: 88px; height: 88px; flex: 0 0 auto; }
+.kb-delen p { margin: 0 0 .5rem; }
+.kb-delen-titel { font-weight: 700; font-size: 1.1rem; }
+@media (max-width: 520px) { .kb-delen { flex-direction: column; align-items: flex-start; } }
+
+/* Rijke blokken mogen breder dan de leeskolom. */
+.stektips-page .stektips-artikel-body { max-width: none; }
+.kb-hero .section-intro { max-width: 42rem; }
+@media (max-width: 600px) {
+  .kb-kalender-rij { min-width: 0; grid-template-columns: 5.4rem repeat(12, minmax(0, 1fr)); gap: 2px; }
+  .kb-kalender-label { font-size: .72rem; padding-right: .2rem; }
+  .kb-kalender-maand { font-size: .55rem; letter-spacing: -.02em; }
+  .kb-kalender-cel { height: 1.3rem; border-radius: .25rem; }
+  .kb-kaart { display: grid; grid-template-columns: 64px 1fr; column-gap: .8rem; row-gap: .2rem; align-items: start; }
+  .kb-kaart .illu { width: 64px; height: 64px; grid-row: span 4; }
+  .kb-kaart h3 { margin: 0; }
+  .kb-vergelijk-kolom .illu { width: 56px; height: 56px; float: left; margin-right: .75rem; }
 }
