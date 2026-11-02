@@ -45,49 +45,166 @@
     "inhoud": [
         {
             "type": "p",
-            "tekst": "Snoeien houdt planten gezond en in model. Op dit platform telt vooral wat je met het snoeisel doet: stekken en delen in plaats van de container."
+            "tekst": "Snoeien houdt planten gezond, compact en bloeiend. En het levert iets op: snoeisel is gratis stekmateriaal. Wat je niet zelf gebruikt, geef je weg."
+        },
+        {
+            "type": "tip",
+            "titel": "Snoeisel is geen afval",
+            "tekst": "Gooi gezonde takjes niet meteen in de groenbak. Van lavendel, vlinderstruik, bessen en vijg kun je direct stekken maken."
         },
         {
             "type": "h2",
-            "tekst": "Snoeien wanneer? Vuistregels"
-        },
-        {
-            "type": "ul",
-            "items": [
-                "Bloeit op nieuw hout (vlinderstruik, veel rozen): snoei in late winter / vroeg voorjaar.",
-                "Bloeit op oud hout (bolhortensia, sering): snoei spaarzaam en op het juiste moment — anders geen bloei.",
-                "Vijg en fruit: volg de tips per soort; vaak voorjaar + zomerpinch.",
-                "Lavendel: na de bloei in late zomer, niet in oud kaal hout."
-            ]
-        },
-        {
-            "type": "h2",
-            "tekst": "Snoeikalender (NL, indicatief)"
-        },
-        {
-            "type": "ul",
-            "items": [
-                "Januari: plannen; vorstvrij alleen dood of beschadigd hout; winterhoutstek nemen van geschikte struiken.",
-                "Februari: snoeien februari — winterharde struiken die op nieuw hout bloeien (vlinderstruik, veel rozen), als het niet hard vriest.",
-                "Maart: piekmaand snoeien maart — hortensia (typeafhankelijk), vlinderstruik, lavendel-correctie, olijf, rozen, vijg (na vorst).",
-                "April: nazorg na maart-snoei; hagen later; zachte soorten nog even uitstellen bij late vorst.",
-                "Mei: lichte correctie; zomerstekken voorbereiden van jong snoeisel.",
-                "Juni: zomerpinch (vijg); halfrijpe stek van snoeisel waar de groei rustig genoeg is.",
-                "Juli: vormsnoei spaarzaam bij hitte; halfrijpe stek van kruiden en struiken.",
-                "Augustus: lavendel na de bloei; verder vooral dood hout en stekmateriaal van halfrijp hout.",
-                "September: lichte vormsnoei; winterhout voorbereiden; minder drastisch dan in het voorjaar.",
-                "Oktober: opruimen van dood hout; stekken van snoeisel dat nog goed is; vorstgevoelige soorten met rust laten.",
-                "November: milde wintersnoei van winterharde soorten plannen; strenge vorst mijden.",
-                "December: alleen dood hout, tenzij mild en soortgeschikt."
-            ]
-        },
-        {
-            "type": "h2",
-            "tekst": "Van snoei naar stek"
+            "tekst": "Eerst: bloeit hij op nieuw of op oud hout?"
         },
         {
             "type": "p",
-            "tekst": "Elke snoeipagina hieronder linkt naar stekken van dezelfde plant. Gebruik wilgenwater en deel surplus via het aanbod. Zie ook snoeiafval als stek."
+            "tekst": "Dit is de belangrijkste vraag. Snoei je op het verkeerde moment, dan knip je de bloemknoppen van volgend jaar weg."
+        },
+        {
+            "type": "vergelijk",
+            "kolommen": [
+                {
+                    "titel": "Bloeit op nieuw hout",
+                    "illustratie": "nieuw-hout",
+                    "items": [
+                        "Bloemen aan scheuten van dit jaar",
+                        "Snoei in februari of maart, gerust flink",
+                        "Vlinderstruik, pluimhortensia, Annabelle, de meeste rozen",
+                        "Ook lavendel (licht, na de bloei)"
+                    ]
+                },
+                {
+                    "titel": "Bloeit op oud hout",
+                    "illustratie": "oud-hout",
+                    "items": [
+                        "Knoppen zitten al op takken van vorig jaar",
+                        "Snoei direct na de bloei, en spaarzaam",
+                        "Forsythia, sering, boerenhortensia, ribes",
+                        "Bij boerenhortensia alleen de oude bloemen eraf in het voorjaar"
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "De goede snoeisnede"
+        },
+        {
+            "type": "stappen",
+            "items": [
+                {
+                    "titel": "Schoon en scherp gereedschap",
+                    "tekst": "Een scherpe schaar maakt een gladde wond die snel heelt. Maak hem schoon als je van een zieke plant naar een gezonde gaat."
+                },
+                {
+                    "titel": "Eerst dood, ziek en kruisend hout",
+                    "tekst": "Haal eerst weg wat dood is, ziek oogt of tegen een andere tak schuurt. Vaak is de struik dan al veel mooier."
+                },
+                {
+                    "titel": "Knip schuin boven een knop",
+                    "tekst": "Ongeveer een halve centimeter boven een knop die naar buiten wijst. Zo groeit de nieuwe tak naar buiten en blijft het hart open."
+                },
+                {
+                    "titel": "Dikke takken in drie stappen",
+                    "tekst": "Eerst een zaagsnede onderin, dan de tak eraf, daarna het stompje net buiten de verdikking bij de stam (de takkraag)."
+                },
+                {
+                    "titel": "Niet bij vorst of hitte",
+                    "tekst": "Bij strenge vorst of felle zon herstellen wonden slecht. Kies een droge, milde dag."
+                }
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Snoeikalender"
+        },
+        {
+            "type": "maanden",
+            "items": [
+                {
+                    "maand": "Januari",
+                    "tekst": "Plannen. Bij vorstvrij weer alleen dood of beschadigd hout. Winterhoutstek nemen van bessen en wilg."
+                },
+                {
+                    "maand": "Februari",
+                    "tekst": "Struiken die op nieuw hout bloeien, als het niet hard vriest. Fruitbomen in de wintersnoei."
+                },
+                {
+                    "maand": "Maart",
+                    "tekst": "Topmaand: vlinderstruik, rozen, pluimhortensia, oude bloemen van boerenhortensia. Vijg en olijf na de laatste vorst."
+                },
+                {
+                    "maand": "April",
+                    "tekst": "Vroege bloeiers zoals forsythia direct na de bloei. Bij late vorst gevoelige soorten nog even laten."
+                },
+                {
+                    "maand": "Mei",
+                    "tekst": "Lichte correcties. Jonge scheuten van het snoeisel zijn perfecte kopstekken."
+                },
+                {
+                    "maand": "Juni",
+                    "tekst": "Sering na de bloei. Vijg toppen. Eerste heggen, maar let op nestelende vogels."
+                },
+                {
+                    "maand": "Juli",
+                    "tekst": "Spaarzame vormsnoei, liefst niet bij hitte. Halfrijpe stekken van kruiden en struiken."
+                },
+                {
+                    "maand": "Augustus",
+                    "tekst": "Lavendel na de bloei: knip terug tot net boven het oude hout. Tweede heggensnoei."
+                },
+                {
+                    "maand": "September",
+                    "tekst": "Lichte vormsnoei. Laatste halfrijpe stekken, bijvoorbeeld van buxus."
+                },
+                {
+                    "maand": "Oktober",
+                    "tekst": "Dood hout opruimen. Vaste planten met zaadhoofden mag je laten staan voor vogels en insecten."
+                },
+                {
+                    "maand": "November",
+                    "tekst": "Na de bladval: winterhoutstek van bessen, vijg en wilg. Grote snoeiklussen plannen."
+                },
+                {
+                    "maand": "December",
+                    "tekst": "Rustmaand. Alleen dood of gebroken hout, en gereedschap slijpen."
+                }
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Van snoeisel naar stek"
+        },
+        {
+            "type": "p",
+            "tekst": "Elke snoeipagina hieronder linkt naar het stekken van dezelfde plant. Zet het snoeisel in een emmer water tot je tijd hebt, probeer [[wilgenwater|wilgenwater]], en deel wat je over hebt via het aanbod. Meer tips staan bij [[snoeiafval-als-stek|snoeiafval als stek]]."
+        },
+        {
+            "type": "videos",
+            "titel": "Kijk hoe het moet",
+            "intro": "Nederlandstalige video's met duidelijke uitleg over wanneer en hoe je snoeit.",
+            "items": [
+                {
+                    "id": "DDDNKRT0mvY",
+                    "titel": "Snoeien van planten en struiken: hoe doe je dat?",
+                    "kanaal": "Tuinmanieren"
+                },
+                {
+                    "id": "SplNsb3qI9U",
+                    "titel": "Wanneer snoei je welke planten?",
+                    "kanaal": "Tuinmanieren"
+                },
+                {
+                    "id": "Bd_bxIDexU4",
+                    "titel": "Snoeien in de herfst en winter",
+                    "kanaal": "Tuinmanieren"
+                },
+                {
+                    "id": "kqokX6NH5k8",
+                    "titel": "Vaste planten snoeien",
+                    "kanaal": "Hendrik Jan de Tuinman"
+                }
+            ]
         }
     ],
     "bronnen": [
@@ -116,5 +233,6 @@
         "vijg-snoeien",
         "snoeiafval-als-stek"
     ],
-    "slug": "snoeien"
+    "slug": "snoeien",
+    "illustratie": "snoeisnede"
 }

@@ -9,6 +9,18 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.52.0] - 2026-11-02
+
+### Added
+
+- Stektips-artikelen: rijke blokken (methodekaarten met eigen illustraties, stekkalender per maand, stappenplan, water-vs-grond, soorten met foto, snoeikalender met «nu», tips) en «Op deze pagina»-navigatie.
+- Nederlandstalige YouTube-video's (Het Klokhuis, Tuinmanieren, Tuinen.nl, 247Green, Hendrik Jan) als klik-om-te-laden via youtube-nocookie; CSP `frame-src` alleen dat domein; privacyverklaring bijgewerkt.
+- Subartikelen als kaarten met foto of illustratie; «Bied het gratis aan»-blok onderaan.
+
+### Changed
+
+- /stektips/artikel/stekken en /snoeien volledig herschreven en opnieuw ingedeeld.
+
 ## [0.51.0] - 2026-11-02
 
 ### Added
