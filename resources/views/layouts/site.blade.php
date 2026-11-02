@@ -71,7 +71,7 @@
       <nav id="hoofdmenu" class="site-nav" data-nav>
         <a href="{{ route('aanbod') }}"><x-icon name="kaart" :size="16" /> Aanbod</a>
         <a href="{{ route('hoe-werkt-het') }}"><x-icon name="info" :size="16" /> Hoe werkt het</a>
-        <a href="{{ route('stektips.index') }}"><x-icon name="stekje" :size="16" /> Stektips</a>
+        <a href="{{ route('vermeerderen') }}" @if(request()->routeIs('vermeerderen', 'stektips.*')) aria-current="page" @endif><x-icon name="stekje" :size="16" /> Vermeerderen</a>
         <a href="{{ route('deelplekken') }}"><x-icon name="locatie" :size="16" /> Deelplekken</a>
         @can('see-admin-dashboard')
           <a href="{{ route('beheer.index') }}"><x-icon name="kaart" :size="16" /> Dashboard</a>
@@ -130,9 +130,14 @@
           </ul>
         </div>
         <div class="footer-kolom">
-          <h2>Zelf stekken</h2>
+          <h2>Zelf vermeerderen</h2>
           <ul>
-            <li><a href="{{ route('stektips.index') }}">Stektips</a></li>
+            <li><a href="{{ route('vermeerderen') }}">Planten vermeerderen</a></li>
+            <li><a href="{{ route('stektips.artikel', ['slug' => 'stekken']) }}">Stekken</a></li>
+            <li><a href="{{ route('stektips.artikel', ['slug' => 'scheuren']) }}">Scheuren</a></li>
+            <li><a href="{{ route('stektips.artikel', ['slug' => 'zaaien']) }}">Zaaien</a></li>
+            <li><a href="{{ route('stektips.artikel', ['slug' => 'snoeien']) }}">Snoeien</a></li>
+            <li><a href="{{ route('stektips.index') }}">Tips per plant</a></li>
             <li><a href="{{ route('hulpmiddelen') }}">Hulpmiddelen</a></li>
             <li><a href="{{ route('invasieve-soorten') }}">Invasieve soorten</a></li>
           </ul>

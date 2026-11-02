@@ -10,13 +10,23 @@
     @break
 
   @case('p')
-    {{-- [[slug|tekst]] wordt een link naar dat artikel. --}}
+    {{-- [[slug|tekst]] wordt een link naar dat artikel; [[@stektips|tekst]] naar het overzicht per plant. --}}
     @if(!empty($block['foto']))
       <figure class="kb-sectie-foto">
         <x-artikel-picture :id="$block['foto']" sizes="(max-width: 760px) 100vw, 42rem" />
       </figure>
     @endif
-    <p>{!! preg_replace_callback('/\[\[([a-z0-9-]+)\|([^\]]+)\]\]/', fn ($m) => '<a href="'.e(route('stektips.artikel', ['slug' => $m[1]])).'">'.$m[2].'</a>', e($block['tekst'] ?? '')) !!}</p>
+    @php
+      $linkRoutes = ['@stektips' => 'stektips.index', '@aanbod' => 'aanbod', '@vermeerderen' => 'vermeerderen'];
+      $html = preg_replace_callback('/\[\[(@?[a-z0-9-]+)\|([^\]]+)\]\]/', function ($m) use ($linkRoutes) {
+          $url = str_starts_with($m[1], '@')
+              ? (isset($linkRoutes[$m[1]]) ? route($linkRoutes[$m[1]]) : null)
+              : route('stektips.artikel', ['slug' => $m[1]]);
+
+          return $url === null ? $m[2] : '<a href="'.e($url).'">'.$m[2].'</a>';
+      }, e($block['tekst'] ?? ''));
+    @endphp
+    <p>{!! $html !!}</p>
     @break
 
   @case('ol')

@@ -16,10 +16,10 @@
     "enten op wilg"
   ],
   "categorieen": [
-    "vermeerderen"
+    "enten"
   ],
-  "pillar": "vermeerderen",
-  "is_pillar": false,
+  "pillar": "enten",
+  "is_pillar": true,
   "gerelateerde_soorten": [
     "appel",
     "peer",
@@ -144,5 +144,10 @@
   ],
   "duurzamer_alternatief": null,
   "howto": true,
-  "seo_title": "Fruitbomen enten: copuleren, oculeren en familieboom"
+  "seo_title": "Fruitbomen enten: copuleren, oculeren en familieboom",
+  "illustratie": "enten",
+  "child_slugs": [
+    "onderstammen-per-fruitboom",
+    "fruitboom-uit-pit-of-zaad"
+  ]
 }

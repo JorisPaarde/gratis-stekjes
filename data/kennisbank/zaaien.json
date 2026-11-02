@@ -1,0 +1,279 @@
+{
+    "slug": "zaaien",
+    "titel": "Zaaien en zaad oogsten: gratis planten uit zaad",
+    "h1": "Zaaien en zaad oogsten",
+    "seo_title": "Zaaien en zaad oogsten: bloemen, kruiden en groente",
+    "samenvatting": "Uit één zakje zaad komen tientallen planten, en zaad oogsten uit je eigen tuin kost niets. Zo zaai je binnen en buiten, en zo bewaar en deel je je eigen zaad.",
+    "meta_description": "Zaaien en zaad oogsten: voorzaaien binnen, buiten zaaien, verspenen en zelf zaad bewaren. Voor bloemen, kruiden en groente, en deel je zaad gratis.",
+    "zoekwoorden": [
+        "zaaien",
+        "zaad oogsten",
+        "zaad bewaren",
+        "voorzaaien",
+        "zaaien binnen",
+        "zaaikalender",
+        "zaden verzamelen",
+        "zaadruil"
+    ],
+    "categorieen": [
+        "zaaien"
+    ],
+    "pillar": "zaaien",
+    "is_pillar": true,
+    "illustratie": "zaaien",
+    "gerelateerde_soorten": [
+        "basilicum",
+        "bieslook"
+    ],
+    "seizoenen": [
+        "lente",
+        "zomer",
+        "herfst"
+    ],
+    "maanden": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+    ],
+    "niveau": "beginner",
+    "locatie": "beide",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Zaaien is de goedkoopste manier om veel planten te krijgen. Eén zakje geeft tientallen plantjes, en als je zelf zaad oogst, heb je volgend jaar weer genoeg om te zaaien en weg te geven."
+        },
+        {
+            "type": "tip",
+            "titel": "Kijk op het zakje",
+            "tekst": "Op het zaadzakje staat wanneer je zaait, hoe diep en of het binnen of buiten moet. Zaad dat licht nodig heeft om te kiemen, dek je niet af."
+        },
+        {
+            "type": "h2",
+            "tekst": "Vijf manieren van zaaien"
+        },
+        {
+            "type": "kaarten",
+            "items": [
+                {
+                    "titel": "Voorzaaien binnen",
+                    "wanneer": "februari tot april",
+                    "illustratie": "zaaien",
+                    "tekst": "Tomaat, paprika, basilicum en zomerbloemen op een lichte vensterbank, zodat ze een voorsprong hebben."
+                },
+                {
+                    "titel": "Buiten zaaien",
+                    "wanneer": "april tot juni",
+                    "illustratie": "zaaien",
+                    "tekst": "Goudsbloem, Oost-Indische kers, radijs, bonen, sla en wortel zaai je direct in de grond."
+                },
+                {
+                    "titel": "Tweejarigen en vaste planten",
+                    "wanneer": "juni tot augustus",
+                    "illustratie": "zaaien",
+                    "tekst": "Vingerhoedskruid, stokroos en akelei zaai je in de zomer. Ze bloeien het jaar erna."
+                },
+                {
+                    "titel": "Koudkiemers",
+                    "wanneer": "oktober tot januari",
+                    "illustratie": "zaad",
+                    "tekst": "Sommige vaste planten en bomen kiemen pas na een koude periode. Zaai ze in het najaar in een pot buiten."
+                },
+                {
+                    "titel": "Zelfzaaiers laten staan",
+                    "wanneer": "het hele jaar",
+                    "illustratie": "zaad",
+                    "tekst": "Akelei, goudsbloem en vergeet-mij-niet zaaien zichzelf uit. De zaailingen kun je oppotten en weggeven."
+                }
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer zaai je wat?"
+        },
+        {
+            "type": "kalender",
+            "titel": "Zaaikalender",
+            "rijen": [
+                {
+                    "label": "Voorzaaien binnen",
+                    "maanden": [
+                        2,
+                        3,
+                        4
+                    ],
+                    "kleur": "licht"
+                },
+                {
+                    "label": "Buiten zaaien",
+                    "maanden": [
+                        4,
+                        5,
+                        6
+                    ],
+                    "kleur": "groen"
+                },
+                {
+                    "label": "Tweejarigen",
+                    "maanden": [
+                        6,
+                        7,
+                        8
+                    ],
+                    "kleur": "groen"
+                },
+                {
+                    "label": "Najaarszaai en koudkiemers",
+                    "maanden": [
+                        1,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "kleur": "bruin"
+                },
+                {
+                    "label": "Zaad oogsten",
+                    "maanden": [
+                        7,
+                        8,
+                        9,
+                        10
+                    ],
+                    "kleur": "oranje"
+                }
+            ],
+            "noot": "Indicatief. Zaai warmteminnaars zoals tomaat en courgette pas buiten na de laatste nachtvorst (half mei)."
+        },
+        {
+            "type": "h2",
+            "tekst": "Zo zaai je binnen"
+        },
+        {
+            "type": "stappen",
+            "items": [
+                {
+                    "titel": "Bakje met zaaigrond",
+                    "tekst": "Gebruik fijne, arme zaaigrond of gezeefde potgrond. Een eierdoos of een schoon plastic bakje met gaatjes werkt ook."
+                },
+                {
+                    "titel": "Zaai dun",
+                    "tekst": "Strooi kleine zaadjes dun over de grond. Grote zaden zoals bonen leg je los in een potje."
+                },
+                {
+                    "titel": "Niet te diep",
+                    "tekst": "Dek af met een laagje grond zo dik als het zaadje. Lichtkiemers druk je alleen aan."
+                },
+                {
+                    "titel": "Vochtig en warm",
+                    "tekst": "Geef water met een plantenspuit, zet een deksel of plastic zakje erover en zet het bakje warm en licht. De meeste zaden kiemen rond 18 °C."
+                },
+                {
+                    "titel": "Verspenen",
+                    "tekst": "Hebben de plantjes hun eerste echte blaadjes, zet ze dan elk in een eigen potje. Pak ze bij een blaadje, niet bij het stengeltje."
+                },
+                {
+                    "titel": "Afharden",
+                    "tekst": "Zet ze een week of twee overdag buiten en 's nachts binnen, voordat ze de tuin in gaan."
+                }
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Zelf zaad oogsten en bewaren"
+        },
+        {
+            "type": "stappen",
+            "items": [
+                {
+                    "titel": "Wacht tot het zaad rijp is",
+                    "tekst": "Zaaddozen en peulen worden bruin en droog. Oogst op een droge dag, voordat ze openspringen."
+                },
+                {
+                    "titel": "Laat nadrogen",
+                    "tekst": "Leg de zaaddozen een week in een open papieren zak of op een krant, binnen op een droge plek."
+                },
+                {
+                    "titel": "Maak schoon",
+                    "tekst": "Wrijf het zaad los en blaas of zeef het kaf weg. Tomatenzaad laat je eerst een paar dagen in een glaasje water staan, dan spoel je het af en laat je het drogen."
+                },
+                {
+                    "titel": "Bewaar koel en droog",
+                    "tekst": "In een papieren envelop met naam en jaartal, in een afgesloten pot op een koele, donkere plek."
+                }
+            ]
+        },
+        {
+            "type": "tip",
+            "titel": "Komt het zaad zuiver terug?",
+            "tekst": "Bonen, erwten, sla en tomaat geven meestal dezelfde plant. Courgette en pompoen kruisen makkelijk, en zaad van F1-rassen geeft een verrassing."
+        },
+        {
+            "type": "h2",
+            "tekst": "Kruiden die je makkelijk zaait"
+        },
+        {
+            "type": "soorten",
+            "items": [
+                "basilicum",
+                "bieslook",
+                "tijm",
+                "oregano",
+                "citroenmelisse",
+                "salie"
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Zaad over? Een zakje zaad bied je net zo makkelijk gratis aan als een plant. Fruitbomen uit een pit lees je bij [[fruitboom-uit-pit-of-zaad|fruitboom uit pit of zaad]]."
+        },
+        {
+            "type": "videos",
+            "titel": "Kijk hoe het moet",
+            "intro": "Nederlandstalige video's over zaaien en zaad oogsten.",
+            "items": [
+                {
+                    "id": "qIAZ8DyVd1k",
+                    "titel": "De stokroos vermeerderen door zaaien in de herfst",
+                    "kanaal": "Tuinmanieren"
+                },
+                {
+                    "id": "WeFZH1jZ8Zc",
+                    "titel": "Zelf zaden oogsten",
+                    "kanaal": "Angelo Dorny"
+                },
+                {
+                    "id": "mLB4MWKLLzE",
+                    "titel": "Gratis planten: zaaien en stekken",
+                    "kanaal": "Tuinmanieren"
+                }
+            ]
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — How to sow seeds indoors",
+            "url": "https://www.rhs.org.uk/propagation/how-to-sow-seeds-indoors"
+        },
+        {
+            "titel": "RHS — Seed: collecting and storing",
+            "url": "https://www.rhs.org.uk/propagation/seed-collecting-storing"
+        },
+        {
+            "titel": "RHS — Seed-sowing techniques (groente)",
+            "url": "https://www.rhs.org.uk/advice/beginners-guide/vegetable-basics/seed-sowing-techniques"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": false,
+    "child_slugs": [
+        "fruitboom-uit-pit-of-zaad",
+        "kruiden-vermeerderen"
+    ]
+}

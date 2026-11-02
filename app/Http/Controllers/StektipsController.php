@@ -9,12 +9,16 @@ use App\Services\Plantensoorten;
 use App\Services\SoortAfbeeldingen;
 use App\Services\Stektips;
 use App\Support\Faq;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class StektipsController extends Controller
 {
+    /** Kennisbankartikel dat als hub op /vermeerderen staat. */
+    public const HUB_SLUG = 'vermeerderen';
+
     public function index(Request $request, Stektips $stektips, Kennisbank $kennisbank, Plantensoorten $plantensoorten, SoortAfbeeldingen $afbeeldingen): View
     {
         $filters = [
@@ -180,14 +184,24 @@ class StektipsController extends Controller
         ];
     }
 
-    public function artikel(string $slug, Kennisbank $kennisbank, Stektips $stektips, SoortAfbeeldingen $afbeeldingen): View|Response
+    /** Overkoepelende hub «Planten vermeerderen» (data/kennisbank/vermeerderen.json) op /vermeerderen. */
+    public function vermeerderen(Kennisbank $kennisbank, Stektips $stektips, SoortAfbeeldingen $afbeeldingen): View|Response|RedirectResponse
     {
+        return $this->artikel(self::HUB_SLUG, $kennisbank, $stektips, $afbeeldingen, alsHub: true);
+    }
+
+    public function artikel(string $slug, Kennisbank $kennisbank, Stektips $stektips, SoortAfbeeldingen $afbeeldingen, bool $alsHub = false): View|Response|RedirectResponse
+    {
+        if ($slug === self::HUB_SLUG && ! $alsHub) {
+            return redirect()->route('vermeerderen', status: 301);
+        }
+
         $artikel = $kennisbank->find($slug);
         if ($artikel === null) {
             abort(404);
         }
 
-        $url = route('stektips.artikel', ['slug' => $slug]);
+        $url = $alsHub ? route('vermeerderen') : route('stektips.artikel', ['slug' => $slug]);
         $gerelateerdeSoorten = [];
         foreach ($artikel['gerelateerde_soorten'] ?? [] as $soortSlug) {
             if (! is_string($soortSlug)) {
@@ -210,11 +224,11 @@ class StektipsController extends Controller
         $pillarSlug = (string) ($artikel['pillar'] ?? ($artikel['categorieen'][0] ?? ''));
         $heading = (string) ($artikel['h1'] ?? $artikel['titel']);
         $pageTitle = (string) ($artikel['seo_title'] ?? $artikel['titel']);
-        $breadcrumbs = [
-            ['naam' => 'Home', 'url' => route('home')],
-            ['naam' => 'Stektips', 'url' => route('stektips.index')],
-        ];
-        if ($pillarSlug !== '' && empty($artikel['is_pillar']) && isset($categoryLabels[$pillarSlug])) {
+        $breadcrumbs = [['naam' => 'Home', 'url' => route('home')]];
+        if (! $alsHub) {
+            $breadcrumbs[] = ['naam' => 'Vermeerderen', 'url' => route('vermeerderen')];
+        }
+        if (! $alsHub && $pillarSlug !== '' && empty($artikel['is_pillar']) && isset($categoryLabels[$pillarSlug])) {
             $hub = collect($kennisbank->pillars())->first(
                 static fn (array $p): bool => ($p['pillar'] ?? '') === $pillarSlug || ($p['slug'] ?? '') === $pillarSlug
             );

@@ -103,6 +103,56 @@
       <path d="M60 52 C70 48 74 40 72 34 C64 38 60 44 60 52Z" fill="{{ $leaf }}"/>
       <path d="M22 90 C30 86 40 88 48 84 M98 90 C90 86 80 88 72 84" stroke="{{ $dark }}" stroke-width="4" fill="none" stroke-linecap="round"/>
       @break
+    @case('scheuren')
+      {{-- pol in twee delen met wortels --}}
+      @foreach([[38,-1],[82,1]] as [$x,$r])
+        <ellipse cx="{{ $x }}" cy="74" rx="18" ry="10" fill="{{ $soil }}" opacity=".7"/>
+        <path d="M{{ $x - 8 }} 82 L{{ $x - 12 }} 98 M{{ $x }} 84 L{{ $x }} 102 M{{ $x + 8 }} 82 L{{ $x + 12 }} 98" stroke="{{ $dark }}" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M{{ $x }} 66 C{{ $x - 14 }} 56 {{ $x - 16 }} 40 {{ $x - 10 }} 30 C{{ $x - 2 }} 40 {{ $x }} 52 {{ $x }} 66Z" fill="{{ $leaf }}"/>
+        <path d="M{{ $x }} 66 C{{ $x + 14 }} 56 {{ $x + 16 }} 40 {{ $x + 10 }} 30 C{{ $x + 2 }} 40 {{ $x }} 52 {{ $x }} 66Z" fill="{{ $leaf }}" opacity=".85"/>
+      @endforeach
+      <path d="M60 22 L60 104" stroke="{{ $oranje }}" stroke-width="3" stroke-dasharray="5 4" stroke-linecap="round"/>
+      @break
+    @case('zaaien')
+      {{-- zaaibakje met kiemplantjes --}}
+      <path d="M22 76 L28 100 L92 100 L98 76Z" fill="{{ $oranje }}" opacity=".85"/>
+      <rect x="20" y="70" width="80" height="8" rx="3" fill="{{ $oranje }}"/>
+      <ellipse cx="60" cy="74" rx="38" ry="3.5" fill="{{ $soil }}"/>
+      @foreach([36, 52, 68, 84] as $i => $x)
+        @php $h = [22, 30, 26, 18][$i]; @endphp
+        <path d="M{{ $x }} 73 L{{ $x }} {{ 73 - $h }}" stroke="{{ $leaf }}" stroke-width="2.5" stroke-linecap="round"/>
+        <ellipse cx="{{ $x - 5 }}" cy="{{ 73 - $h }}" rx="5.5" ry="3" fill="{{ $leaf }}" transform="rotate(-25 {{ $x - 5 }} {{ 73 - $h }})"/>
+        <ellipse cx="{{ $x + 5 }}" cy="{{ 73 - $h }}" rx="5.5" ry="3" fill="{{ $leaf }}" transform="rotate(25 {{ $x + 5 }} {{ 73 - $h }})"/>
+      @endforeach
+      @break
+    @case('zaad')
+      {{-- papieren zaadzakje met zaadjes --}}
+      <path d="M36 30 L84 30 L84 96 L36 96Z" fill="#f3e7cf" stroke="{{ $soil }}" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M36 30 L60 44 L84 30" fill="none" stroke="{{ $soil }}" stroke-width="2.5" stroke-linejoin="round"/>
+      <circle cx="60" cy="66" r="11" fill="#f2c94c"/>
+      <circle cx="60" cy="66" r="5" fill="{{ $soil }}"/>
+      @foreach([[90,92],[96,84],[86,100],[28,96],[24,88]] as [$x,$y])
+        <ellipse cx="{{ $x }}" cy="{{ $y }}" rx="3" ry="2" fill="{{ $soil }}"/>
+      @endforeach
+      @break
+    @case('uitloper')
+      {{-- aardbeiplant met uitloper en jong plantje --}}
+      <rect x="12" y="84" width="96" height="16" rx="6" fill="{{ $soil }}" opacity=".4"/>
+      <path d="M34 84 C30 70 22 64 18 58 M34 84 C36 68 44 62 50 58 M34 84 L34 56" stroke="{{ $leaf }}" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="18" cy="56" r="7" fill="{{ $leaf }}"/><circle cx="50" cy="56" r="7" fill="{{ $leaf }}"/><circle cx="34" cy="52" r="7" fill="{{ $leaf }}"/>
+      <circle cx="44" cy="74" r="4" fill="#d9534f"/>
+      <path d="M38 84 C56 76 72 76 86 84" stroke="{{ $leaf }}" stroke-width="2" fill="none" stroke-dasharray="1 0"/>
+      <path d="M86 84 L86 68 M86 74 C80 70 78 66 80 62 M86 74 C92 70 94 66 92 62" stroke="{{ $leaf }}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M86 86 L82 96 M86 86 L90 96" stroke="{{ $dark }}" stroke-width="1.6" stroke-linecap="round"/>
+      @break
+    @case('enten')
+      {{-- onderstam met ent, verbonden met band --}}
+      <path d="M60 104 L60 66" stroke="{{ $soil }}" stroke-width="8" stroke-linecap="round"/>
+      <path d="M60 66 L60 28" stroke="#a0714f" stroke-width="6" stroke-linecap="round"/>
+      <rect x="53" y="58" width="14" height="14" rx="3" fill="{{ $oranje }}"/>
+      <circle cx="64" cy="40" r="3" fill="{{ $leaf }}"/><circle cx="56" cy="48" r="3" fill="{{ $leaf }}"/>
+      <path d="M60 30 C70 24 74 18 72 12 C64 16 60 22 60 30Z" fill="{{ $leaf }}"/>
+      @break
     @default
       <path d="M60 96 L60 40" stroke="{{ $leaf }}" stroke-width="4" stroke-linecap="round"/>
       <path d="M60 50 C48 46 42 36 46 28 C56 32 60 40 60 50Z" fill="{{ $leaf }}"/>

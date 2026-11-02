@@ -9,6 +9,19 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.54.0] - 2026-11-02
+
+### Added
+
+- Hub **/vermeerderen** «Planten vermeerderen»: zes manieren als kaarten, «welke manier past bij jouw plant?», vermeerderkalender, makkelijke soorten en video's. Oude /stektips/artikel/vermeerderen → 301.
+- Nieuwe pijlers **Scheuren en delen**, **Zaaien en zaad oogsten** (bloemen, kruiden én moestuin) en **Afleggen en marcotteren**, elk met kaarten, kalender, stappenplan, soorten met foto en geverifieerde NL-video's.
+- Illustraties scheuren, zaaien, zaad, uitloper en enten. Interne links `[[@stektips|…]]` in tekstblokken.
+
+### Changed
+
+- Menu: «Stektips» wordt **«Vermeerderen»**; footerkolom «Zelf vermeerderen» met Stekken, Scheuren, Zaaien, Snoeien en Tips per plant.
+- Categorieën: Stekken, Scheuren, Zaaien, Afleggen, Snoeien, Enten, Natuurlijk bewortelen, Permacultuur («Vermeerderen overig» verdeeld). Kruimelpad via Vermeerderen.
+
 ## [0.53.0] - 2026-11-02
 
 ### Added

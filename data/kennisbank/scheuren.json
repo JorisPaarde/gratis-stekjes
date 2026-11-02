@@ -1,0 +1,245 @@
+{
+    "slug": "scheuren",
+    "titel": "Scheuren en delen: van één plant meerdere maken",
+    "h1": "Planten scheuren en delen",
+    "seo_title": "Vaste planten scheuren: wanneer en hoe",
+    "samenvatting": "Scheuren is een pol in stukken delen, elk stuk met eigen wortels. Zo maak je in een kwartier van één vaste plant er drie of vier, en de oude plant knapt er ook nog van op.",
+    "meta_description": "Vaste planten scheuren: wanneer (voorjaar of najaar) en hoe in 6 stappen. Hosta, siergras, bieslook en kamerplanten delen, en de stukken gratis weggeven.",
+    "zoekwoorden": [
+        "scheuren",
+        "vaste planten scheuren",
+        "planten scheuren",
+        "planten delen",
+        "hosta scheuren",
+        "siergras scheuren",
+        "bieslook scheuren",
+        "wanneer scheuren"
+    ],
+    "categorieen": [
+        "scheuren"
+    ],
+    "pillar": "scheuren",
+    "is_pillar": true,
+    "illustratie": "scheuren",
+    "gerelateerde_soorten": [
+        "hosta",
+        "daglelie",
+        "siergras",
+        "bieslook",
+        "rabarber"
+    ],
+    "seizoenen": [
+        "lente",
+        "herfst"
+    ],
+    "maanden": [
+        3,
+        4,
+        9,
+        10
+    ],
+    "niveau": "beginner",
+    "locatie": "beide",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Scheuren of delen is de makkelijkste manier om vaste planten te vermeerderen. Je haalt de pol uit de grond, deelt hem in stukken en plant die weer in. Elk stuk is meteen een volwaardige plant."
+        },
+        {
+            "type": "tip",
+            "titel": "Kale plek in het midden?",
+            "tekst": "Wordt een pol in het hart kaal en bloeit hij minder, dan is het tijd om te scheuren. Bij de meeste vaste planten is dat elke drie tot vijf jaar."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wat kun je scheuren?"
+        },
+        {
+            "type": "kaarten",
+            "items": [
+                {
+                    "titel": "Vaste planten",
+                    "wanneer": "voorjaar of najaar",
+                    "illustratie": "scheuren",
+                    "tekst": "Hosta, daglelie, vrouwenmantel, ooievaarsbek, aster en veel andere borderplanten die een pol vormen."
+                },
+                {
+                    "titel": "Siergrassen",
+                    "wanneer": "voorjaar",
+                    "illustratie": "scheuren",
+                    "tekst": "Deel grassen als ze net weer gaan groeien. Grote pollen gaan makkelijker met een spade of zaag."
+                },
+                {
+                    "titel": "Kruiden",
+                    "wanneer": "voorjaar of najaar",
+                    "illustratie": "scheuren",
+                    "tekst": "Bieslook, munt, oregano, citroenmelisse en lavas. Een pot bieslook uit de supermarkt kun je meteen in vieren delen."
+                },
+                {
+                    "titel": "Kamerplanten",
+                    "wanneer": "bij het verpotten",
+                    "illustratie": "grond",
+                    "tekst": "Sanseveria, lepelplant, varens en calathea delen makkelijk. Aloë maakt kindjes die je los kunt halen."
+                },
+                {
+                    "titel": "Groente",
+                    "wanneer": "in de winterrust",
+                    "illustratie": "scheuren",
+                    "tekst": "Rabarber deel je eens in de vijf jaar, als hij rust. Elk stuk met een dikke knop groeit door."
+                }
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer scheur je?"
+        },
+        {
+            "type": "kalender",
+            "titel": "Scheurkalender",
+            "rijen": [
+                {
+                    "label": "Zomer- en herfstbloeiers",
+                    "maanden": [
+                        3,
+                        4
+                    ],
+                    "kleur": "groen"
+                },
+                {
+                    "label": "Voorjaarsbloeiers",
+                    "maanden": [
+                        9,
+                        10
+                    ],
+                    "kleur": "oranje"
+                },
+                {
+                    "label": "Siergrassen",
+                    "maanden": [
+                        3,
+                        4,
+                        5
+                    ],
+                    "kleur": "licht"
+                },
+                {
+                    "label": "Kamerplanten",
+                    "maanden": [
+                        3,
+                        4,
+                        5,
+                        6
+                    ],
+                    "kleur": "licht"
+                },
+                {
+                    "label": "Rabarber",
+                    "maanden": [
+                        1,
+                        2,
+                        3,
+                        11,
+                        12
+                    ],
+                    "kleur": "bruin"
+                }
+            ],
+            "noot": "Vuistregel: scheur niet als de plant in bloei staat. Voorjaarsbloeiers na de bloei of in het najaar, de rest in het voorjaar."
+        },
+        {
+            "type": "h2",
+            "tekst": "Zo scheur je een vaste plant"
+        },
+        {
+            "type": "stappen",
+            "items": [
+                {
+                    "titel": "Geef de dag ervoor water",
+                    "tekst": "Een vochtige kluit blijft beter heel en de plant heeft reserve."
+                },
+                {
+                    "titel": "Steek de hele pol uit",
+                    "tekst": "Steek rondom met een spade en til de pol eruit. Schud of spoel losse grond eraf, dan zie je waar je kunt delen."
+                },
+                {
+                    "titel": "Deel in stukken",
+                    "tekst": "Kleine pollen trek je met de hand uit elkaar. Grote pollen deel je met een spade, een mes of twee spitvorken rug aan rug."
+                },
+                {
+                    "titel": "Elk stuk wortels én knoppen",
+                    "tekst": "Een stuk moet eigen wortels en minstens twee of drie scheuten of knoppen hebben. Het oude, kale hart mag op de composthoop."
+                },
+                {
+                    "titel": "Plant meteen terug",
+                    "tekst": "Op dezelfde diepte als eerst, in grond met wat compost. Druk aan en geef flink water."
+                },
+                {
+                    "titel": "Deel uit wat je over hebt",
+                    "tekst": "In een pot met grond blijft een stuk weken goed. Zet het op Gratis planten en iemand in de buurt is er blij mee."
+                }
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Makkelijk om te scheuren"
+        },
+        {
+            "type": "soorten",
+            "items": [
+                "hosta",
+                "daglelie",
+                "siergras",
+                "bieslook",
+                "munt",
+                "oregano",
+                "citroenmelisse",
+                "rabarber",
+                "sedum",
+                "aloe-vera"
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Kruiden staan uitgebreider bij [[kruiden-vermeerderen|kruiden vermeerderen]]. Ook afleggen en uitlopers staan bij [[scheuren-en-afleggen|scheuren en afleggen]]."
+        },
+        {
+            "type": "videos",
+            "titel": "Kijk hoe het moet",
+            "intro": "Nederlandstalige video's over scheuren, gekozen op uitleg en waardering.",
+            "items": [
+                {
+                    "id": "F6TSnwGjVuU",
+                    "titel": "Gratis planten: vermeerderen en zaaien in de herfst",
+                    "kanaal": "Tuinmanieren"
+                },
+                {
+                    "id": "Rsxfx6Ztclw",
+                    "titel": "Vaste planten scheuren",
+                    "kanaal": "Tuinseizoen"
+                },
+                {
+                    "id": "6WIQFEyoO4Q",
+                    "titel": "Vaste planten scheuren",
+                    "kanaal": "Groei & Bloei"
+                },
+                {
+                    "id": "uiSJc15Ba0U",
+                    "titel": "De tuin in met Lodewijk: planten scheuren",
+                    "kanaal": "247Green"
+                }
+            ]
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — Perennials: dividing",
+            "url": "https://www.rhs.org.uk/plants/types/perennials/dividing"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": false,
+    "child_slugs": [
+        "scheuren-en-afleggen",
+        "kruiden-vermeerderen"
+    ]
+}
