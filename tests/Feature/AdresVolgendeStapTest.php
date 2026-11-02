@@ -112,7 +112,7 @@ test('volgende stap bovenaan accountpagina: postcode, eerste stekje, daarna badg
     $u = adresUser(['email' => 'stap@example.com']);
     $this->actingAs($u)->get(route('account.index'))->assertOk()->assertSee('Zet je eerste stekje online', false);
     // Op de pagina waar de stap naartoe wijst, geen dubbele balk.
-    $this->actingAs($u)->get(route('account.aanbod'))->assertOk()->assertDontSee('class="volgende-stap"', false);
+    $this->actingAs($u)->get(route('aanbieden'))->assertOk()->assertDontSee('class="volgende-stap"', false);
 
     Aanbod::query()->create(['user_id' => $u->id, 'type' => 'uitdelen', 'tekst' => 'Munt', 'visible' => true, 'expires_at' => now()->addDays(9)]);
     $this->actingAs($u)->get(route('account.index'))->assertOk()

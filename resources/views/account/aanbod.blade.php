@@ -18,69 +18,7 @@
     <p class="error" role="alert">{{ $errors->first() }}</p>
   @endif
 
-  <form class="form" method="post" action="{{ route('account.aanbod.store') }}" enctype="multipart/form-data" data-invasieve-form data-aanbod-foto-form>
-    @csrf
-    @include('partials.honeypot')
-    <label>Type *
-      <select name="type" required>
-        <option value="uitdelen" @selected(old('type', 'uitdelen') === 'uitdelen')>Ik deel uit</option>
-        <option value="ophalen" @selected(old('type') === 'ophalen')>Ik zoek / wil ophalen</option>
-      </select>
-    </label>
-    <div
-      class="plantsoort-autocomplete"
-      data-plantsoort-autocomplete
-      data-plantsoort-url="{{ $plantensoortenZoekUrl }}"
-    >
-      <label for="aanbod-tekst">Plantensoort
-        <span class="hint">Typ een naam; ik toon suggesties. Of upload een foto, dan mag dit leeg blijven. Staat jouw soort er niet bij? Typ dan vrij verder.</span>
-        <input
-          type="text"
-          name="tekst"
-          id="aanbod-tekst"
-          maxlength="2000"
-          placeholder="Bijvoorbeeld monstera of munt"
-          value="{{ old('tekst') }}"
-          data-invasieve-input
-          data-plantsoort-input
-          data-aanbod-tekst
-          aria-autocomplete="list"
-          aria-controls="aanbod-plantsoort-listbox"
-          aria-expanded="false"
-          autocomplete="off"
-        >
-      </label>
-      <input type="hidden" name="plantensoort_id" value="{{ old('plantensoort_id') }}" data-plantsoort-id>
-      <ul
-        id="aanbod-plantsoort-listbox"
-        class="plantsoort-listbox"
-        role="listbox"
-        hidden
-        data-plantsoort-listbox
-      ></ul>
-      <p class="visually-hidden" role="status" aria-live="polite" data-plantsoort-status></p>
-    </div>
-    <p class="error" hidden data-invasieve-hint role="status"></p>
-
-    <label for="aanbod-fotos">Foto’s (max. {{ $fotoMaxCount }}, JPEG/PNG/WebP, max. {{ $fotoMaxMb }} MB)
-      <span class="hint">Voor je privacy haal ik de locatie uit je foto’s. Minimaal één foto óf een plantensoort is verplicht.</span>
-      <input
-        type="file"
-        name="fotos[]"
-        id="aanbod-fotos"
-        accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
-        multiple
-        data-aanbod-fotos
-        data-aanbod-fotos-max="{{ $fotoMaxCount }}"
-      >
-    </label>
-
-    <label class="checkbox">
-      <input type="checkbox" name="gratis_akkoord" value="1" required @checked(old('gratis_akkoord'))>
-      <span>Alleen gratis, geen verkoop.</span>
-    </label>
-    <button class="btn" type="submit">Plaatsen</button>
-  </form>
+  @include('account.partials.aanbod-form')
 
   <h2>Jouw items</h2>
   @if(count($mine) === 0)
@@ -237,50 +175,4 @@
 </section>
 @endsection
 
-@push('scripts')
-@vite(['resources/js/plantsoort-autocomplete.js'])
-<script>
-(function () {
-  var terms = @json($invasieveTerms);
-  var uitleg = @json($invasieveUitlegUrl);
-  if (!terms || !terms.length) return;
-
-  function normalize(text) {
-    return String(text || '')
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-      .toLowerCase()
-      .replace(/[×✕]/g, 'x')
-      .replace(/['’‘ʼ`´]/g, '')
-      .replace(/[^a-z0-9]+/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-  }
-
-  function findMatch(text) {
-    var hay = ' ' + normalize(text) + ' ';
-    for (var i = 0; i < terms.length; i++) {
-      if (hay.indexOf(' ' + terms[i] + ' ') !== -1) return terms[i];
-    }
-    return null;
-  }
-
-  document.querySelectorAll('[data-invasieve-form]').forEach(function (form) {
-    var input = form.querySelector('[data-invasieve-input]');
-    var hint = form.querySelector('[data-invasieve-hint]');
-    if (!input || !hint) return;
-    function check() {
-      var hit = findMatch(input.value);
-      if (hit) {
-        hint.hidden = false;
-        hint.textContent = 'Let op: dit lijkt op een invasieve soort (“' + hit + '”). Die mag je niet aanbieden, dus ik blokkeer dat. Uitleg: ' + uitleg;
-      } else {
-        hint.hidden = true;
-        hint.textContent = '';
-      }
-    }
-    input.addEventListener('input', check);
-    check();
-  });
-})();
-</script>
-@endpush
+@include('account.partials.aanbod-form-scripts')

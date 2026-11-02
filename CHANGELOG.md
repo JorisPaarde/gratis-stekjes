@@ -9,6 +9,18 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.49.0] - 2026-11-02
+
+### Added
+
+- «Bied iets aan» altijd binnen één tik: oranje hoofdknop in het menu (ingelogd), op mobiel naast «Menu», grote knop bovenaan Mijn account.
+- Nieuwe pagina /aanbieden met alleen het formulier; na plaatsen terug met «Nog iets over?». Zonder locatie eerst profiel, daarna automatisch terug.
+
+### Changed
+
+- «Uitloggen» uit het menu (staat op Mijn account). Volgende-stap «eerste stekje» wijst naar /aanbieden.
+- Beheer: geen «Bied iets aan»-knop en geen volgende-stap-balk.
+
 ## [0.48.1] - 2026-11-02
 
 ### Changed
