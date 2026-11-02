@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.48.1] - 2026-11-02
+
+### Changed
+
+- /over: logischer volgorde voor bezoekers (eerst wat de site is, dan wie, waarom, en tot slot meedoen met knoppen en «Volg mij»).
+
 ## [0.48.0] - 2026-11-02
 
 ### Added
