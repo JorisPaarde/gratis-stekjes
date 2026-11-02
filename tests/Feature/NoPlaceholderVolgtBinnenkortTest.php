@@ -88,7 +88,7 @@ test('privacy, over en initiatieven tonen geen Volgt binnenkort en geen we/wij/o
             ->assertDontSee('info@jpwebcreation.nl', false),
         'over' => $this->get(route('over'))
             ->assertOk()
-            ->assertDontSee('Joris', false)
+            ->assertSee('Hoi, ik ben', false)
             ->assertDontSee('JP Web Creation', false)
             ->assertSee('zonder reclame', false)
             ->assertDontSee('Volgt binnenkort', false),

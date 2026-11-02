@@ -1,0 +1,36 @@
+/* Meedoen (/help-mee) en Wie zit erachter (/over) */
+.maker{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0 2rem}
+.maker-foto{border-radius:50%;object-fit:cover;flex:0 0 auto;width:220px;height:220px;box-shadow:0 2px 10px rgb(0 0 0 / .12)}
+.maker > picture{flex:0 0 auto;display:block;line-height:0}
+.maker-tekst{min-width:0}
+.maker-tekst h2:first-child{margin-top:0}
+.maker--kort{align-items:center;padding:1rem 1.25rem;border-radius:14px;background:rgb(46 125 50 / .07);gap:1rem}
+.maker--kort .maker-foto{width:96px;height:96px}
+.maker--kort p{margin:.25rem 0}
+@media (max-width:600px){
+  .maker{flex-direction:column;align-items:center;text-align:left}
+  .maker-foto{width:160px;height:160px}
+  .maker--kort{flex-direction:row}
+  .maker--kort .maker-foto{width:72px;height:72px}
+}
+.meedoen-snel{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin:1.25rem 0}
+.meedoen-tegel{display:flex;gap:.5rem;align-items:center;padding:.9rem 1rem;border:1px solid rgb(0 0 0 / .1);border-radius:12px;text-decoration:none;font-weight:600;background:#fff}
+.meedoen-tegel:hover,.meedoen-tegel:focus-visible{border-color:currentColor}
+.meedoen-tegel span{font-size:1.4rem}
+.meedoen-posters{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem}
+.meedoen-posters a{display:flex;flex-direction:column;gap:.2rem;padding:1rem;border:1px solid rgb(0 0 0 / .1);border-radius:12px;text-decoration:none;height:100%;background:#fff}
+.meedoen-posters a span{font-size:.9rem;opacity:.75}
+.meedoen-posters a:hover{border-color:currentColor}
+.meedoen-tip{padding:.9rem 1rem;border-left:4px solid #2e7d32;background:rgb(46 125 50 / .06);border-radius:0 10px 10px 0}
+.meedoen-berichten{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.75rem}
+.meedoen-bericht{margin:0;padding:1rem;border:1px solid rgb(0 0 0 / .1);border-radius:12px;display:flex;flex-direction:column;gap:.5rem;background:#fff}
+.meedoen-bericht figcaption{font-weight:700}
+.meedoen-bericht p{margin:0;flex:1;white-space:pre-line}
+.meedoen-bericht button{align-self:flex-start}
+.meedoen-deel{display:flex;flex-wrap:wrap;gap:.5rem}
+.meedoen-partners li{margin:.35rem 0}
+.meedoen-form{max-width:36rem}
+.meedoen-form label{display:block;margin:.6rem 0}
+.meedoen-form input,.meedoen-form select,.meedoen-form textarea{display:block;width:100%;margin-top:.25rem}
+.meedoen-form textarea{min-height:7rem}
+.btn-klein{padding:.35rem .8rem;font-size:.9rem}

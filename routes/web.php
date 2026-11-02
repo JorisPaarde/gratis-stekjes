@@ -44,6 +44,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\GratisPlantenController;
 use App\Http\Controllers\InvasieveSoortenController;
 use App\Http\Controllers\Media\AanbodFotoController;
+use App\Http\Controllers\MeedoenController;
 use App\Http\Controllers\OrganisatieController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PartnersController;
@@ -92,6 +93,11 @@ Route::get('/doe-mee', [ContentPageController::class, 'doeMee'])->name('doe-mee'
 
 Route::get('/volkstuinen', [AudienceLandingController::class, 'volkstuinen'])->name('volkstuinen');
 Route::get('/help-mee', [AudienceLandingController::class, 'helpMee'])->name('help-mee');
+Route::post('/help-mee/partner', [MeedoenController::class, 'partner'])
+    ->middleware('throttle:10,1')
+    ->name('help-mee.partner');
+Route::get('/poster', [MeedoenController::class, 'poster'])->name('poster');
+Route::get('/stekjeslabels', [MeedoenController::class, 'labels'])->name('stekjeslabels');
 Route::get('/natuur', [AudienceLandingController::class, 'natuur'])->name('natuur');
 Route::get('/verbinding', [AudienceLandingController::class, 'verbinding'])->name('verbinding');
 Route::get('/invasieve-soorten', InvasieveSoortenController::class)->name('invasieve-soorten');
@@ -255,7 +261,7 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::get('/agenda', [BeheerDashboardController::class, 'agenda'])->name('beheer.agenda');
     Route::get('/kaartmarkers', [BeheerDashboardController::class, 'kaartmarkers'])->name('beheer.kaartmarkers');
     Route::get('/meldingen', [BeheerDashboardController::class, 'meldingen'])->name('beheer.meldingen');
-        Route::post('/gebruikers/herinner-onbevestigd', [BeheerGebruikersController::class, 'herinnerOnbevestigd'])
+    Route::post('/gebruikers/herinner-onbevestigd', [BeheerGebruikersController::class, 'herinnerOnbevestigd'])
         ->name('beheer.gebruikers.herinner');
     Route::get('/gebruikers/{user}', [BeheerGebruikersController::class, 'show'])
         ->whereNumber('user')

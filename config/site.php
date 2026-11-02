@@ -29,4 +29,18 @@ return [
     'og_image' => '/assets/og/standaard.jpg',
     /** Logo voor schema.org (Organization). */
     'logo' => '/assets/icons/icon-512.png',
+
+    /** Maker (voornaam), getoond in het blok «Waarom ik dit doe» op /help-mee en /over. */
+    'maker' => env('SITE_MAKER', 'Joris'),
+    /** Vader van de maker, genoemd op /over (keuze eigenaar). */
+    'maker_vader' => 'Edo Paardekooper',
+    /** Artikel College voor de Rechten van de Mens: MensenrechtenMens 2018. */
+    'maker_vader_url' => 'https://www.mensenrechten.nl/actueel/nieuws/2018/12/09/edo-paardekooper-overman-wint-titel-mensenrechtenmens-2018',
+
+    /** Links om de maker te volgen. Leeg = niet tonen. */
+    'socials' => array_filter([
+        'Facebook' => env('SOCIAL_FACEBOOK', 'https://www.facebook.com/share/1A2VtiYnvT/'),
+        'Instagram' => env('SOCIAL_INSTAGRAM', ''),
+        'LinkedIn' => env('SOCIAL_LINKEDIN', ''),
+    ]),
 ];
