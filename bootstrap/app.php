@@ -16,6 +16,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
@@ -48,6 +49,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => AdminAuth::class,
         ]);
+        // Beheer-check vóór route-model binding: anders geeft /beheer/gebruikers/{id} een 404 voor
+        // een niet-bestaand ID en een redirect voor een bestaand ID, en verraadt dat welke ID's bestaan.
+        $middleware->prependToPriorityList(before: SubstituteBindings::class, prepend: AdminAuth::class);
         $middleware->redirectGuestsTo(fn () => route('account.inloggen'));
         $middleware->redirectUsersTo(fn () => route('account.index'));
     })
