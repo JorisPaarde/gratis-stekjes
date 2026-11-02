@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.52.1] - 2026-11-02
+
+### Changed
+
+- Stektips-video's vervangen door best bekeken en best gewaardeerde NL-video's: stekken + Groei & Bloei «Winterstekken maken» en Tuinmanieren «Afleggen» (i.p.v. Tuinen.nl sedum en Tip van Lodewijk); snoeien + Tuinmanieren «Wat snoei je in maart?» (i.p.v. Hendrik Jan, 1,4k views).
+
 ## [0.52.0] - 2026-11-02
 
 ### Added
