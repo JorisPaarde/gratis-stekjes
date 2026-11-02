@@ -122,7 +122,7 @@
       </form>
     @endif
     @unless($isPionier)
-      <form method="post" action="{{ route('beheer.users.pionier', $u) }}" onsubmit="return confirm('Pionier-badge naar {{ $u->name }} verplaatsen? Er is er maar één.');">
+      <form method="post" action="{{ route('beheer.users.pionier', $u) }}" onsubmit="return confirm({{ \Illuminate\Support\Js::from('Pionier-badge naar '.$u->name.' verplaatsen? Er is er maar één.') }});">
         @csrf
         <button class="btn btn-secondary btn-klein" type="submit">Maak pionier</button>
       </form>
@@ -145,7 +145,7 @@
       </form>
     @endif
     @unless($isZelf)
-      <form method="post" action="{{ route('beheer.gebruikers.actief', $u) }}" onsubmit="return confirm('{{ $u->active ? 'Account blokkeren? '.$u->name.' wordt uitgelogd en kan niet meer inloggen.' : 'Blokkade opheffen?' }}');">
+      <form method="post" action="{{ route('beheer.gebruikers.actief', $u) }}" onsubmit="return confirm({{ \Illuminate\Support\Js::from($u->active ? 'Account blokkeren? '.$u->name.' wordt uitgelogd en kan niet meer inloggen.' : 'Blokkade opheffen?') }});">
         @csrf
         <button class="btn btn-secondary btn-klein" type="submit">{{ $u->active ? 'Blokkeren' : 'Blokkade opheffen' }}</button>
       </form>
