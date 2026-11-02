@@ -25,14 +25,22 @@
     </ol>
   </nav>
 
-  <header @class(['kb-hero', 'kb-hero--met-illu' => !empty($artikel['illustratie'])])>
+  <header @class([
+    'kb-hero',
+    'kb-hero--met-foto' => !empty($artikel['foto']),
+    'kb-hero--met-illu' => empty($artikel['foto']) && !empty($artikel['illustratie']),
+  ])>
     <div>
       <h1 class="page-title">{{ $heading ?? $artikel['titel'] }}</h1>
       @if(!empty($artikel['samenvatting']))
         <p class="section-intro">{{ $artikel['samenvatting'] }}</p>
       @endif
     </div>
-    @if(!empty($artikel['illustratie']))
+    @if(!empty($artikel['foto']))
+      <div class="kb-hero-foto">
+        <x-artikel-picture :id="$artikel['foto']" :eager="true" sizes="(max-width: 759px) 100vw, 44vw" />
+      </div>
+    @elseif(!empty($artikel['illustratie']))
       <div class="kb-hero-illu">@include('partials.illustraties.stek', ['naam' => $artikel['illustratie']])</div>
     @endif
   </header>
@@ -109,6 +117,13 @@
         </li>
       @endforeach
     </ul>
+  @endif
+
+  @php
+    $fotoMakers = \App\Support\ArtikelFotos::makersVoorArtikel((string) ($artikel['slug'] ?? ''));
+  @endphp
+  @if($fotoMakers !== [])
+    <p class="kb-foto-credits">Foto’s: {{ implode(', ', $fotoMakers) }} / Unsplash</p>
   @endif
 
   @if(!empty($artikel['bronnen']))

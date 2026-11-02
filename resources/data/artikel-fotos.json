@@ -1,0 +1,832 @@
+{
+    "widths": [
+        480,
+        800,
+        1200,
+        1600
+    ],
+    "bron": "Unsplash",
+    "licentie": "Unsplash License",
+    "licentie_url": "https://unsplash.com/license",
+    "fotos": {
+        "s01": {
+            "id": "s01",
+            "alt": "Vensterbank met een rij glazen potjes waarin stekjes wortelen",
+            "maker": "Elly M",
+            "artikel": "stekken",
+            "slot": "hero",
+            "video": null,
+            "width": 1600,
+            "height": 1068,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/s01-480.avif",
+                    "webp": "assets/images/artikelen/s01-480.webp",
+                    "jpg": "assets/images/artikelen/s01-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/s01-800.avif",
+                    "webp": "assets/images/artikelen/s01-800.webp",
+                    "jpg": "assets/images/artikelen/s01-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/s01-1200.avif",
+                    "webp": "assets/images/artikelen/s01-1200.webp",
+                    "jpg": "assets/images/artikelen/s01-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/s01-1600.avif",
+                    "webp": "assets/images/artikelen/s01-1600.webp",
+                    "jpg": "assets/images/artikelen/s01-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "s02": {
+            "id": "s02",
+            "alt": "Kopstek van een kamerplant in een glazen fles met water",
+            "maker": "Ahmad Attari",
+            "artikel": "stekken",
+            "slot": "kaart-kopstek",
+            "video": null,
+            "width": 1600,
+            "height": 1068,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/s02-480.avif",
+                    "webp": "assets/images/artikelen/s02-480.webp",
+                    "jpg": "assets/images/artikelen/s02-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/s02-800.avif",
+                    "webp": "assets/images/artikelen/s02-800.webp",
+                    "jpg": "assets/images/artikelen/s02-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/s02-1200.avif",
+                    "webp": "assets/images/artikelen/s02-1200.webp",
+                    "jpg": "assets/images/artikelen/s02-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/s02-1600.avif",
+                    "webp": "assets/images/artikelen/s02-1600.webp",
+                    "jpg": "assets/images/artikelen/s02-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "s03": {
+            "id": "s03",
+            "alt": "Bladstekken van vetplanten in een kweekbakje met aarde",
+            "maker": "8kka ame",
+            "artikel": "stekken",
+            "slot": "kaart-bladstek",
+            "video": null,
+            "width": 1600,
+            "height": 901,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/s03-480.avif",
+                    "webp": "assets/images/artikelen/s03-480.webp",
+                    "jpg": "assets/images/artikelen/s03-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/s03-800.avif",
+                    "webp": "assets/images/artikelen/s03-800.webp",
+                    "jpg": "assets/images/artikelen/s03-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/s03-1200.avif",
+                    "webp": "assets/images/artikelen/s03-1200.webp",
+                    "jpg": "assets/images/artikelen/s03-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/s03-1600.avif",
+                    "webp": "assets/images/artikelen/s03-1600.webp",
+                    "jpg": "assets/images/artikelen/s03-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "s04": {
+            "id": "s04",
+            "alt": "Jonge stek van rozemarijn in een klein potje met aarde",
+            "maker": "Christine",
+            "artikel": "stekken",
+            "slot": "kaart-halfrijp",
+            "video": null,
+            "width": 1600,
+            "height": 2400,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/s04-480.avif",
+                    "webp": "assets/images/artikelen/s04-480.webp",
+                    "jpg": "assets/images/artikelen/s04-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/s04-800.avif",
+                    "webp": "assets/images/artikelen/s04-800.webp",
+                    "jpg": "assets/images/artikelen/s04-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/s04-1200.avif",
+                    "webp": "assets/images/artikelen/s04-1200.webp",
+                    "jpg": "assets/images/artikelen/s04-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/s04-1600.avif",
+                    "webp": "assets/images/artikelen/s04-1600.webp",
+                    "jpg": "assets/images/artikelen/s04-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "s07": {
+            "id": "s07",
+            "alt": "Handen knippen met een schaartje een stek van een plant, met ontsmettingsmiddel ernaast",
+            "maker": "feey",
+            "artikel": "stekken",
+            "slot": "stappen-kopstek",
+            "video": null,
+            "width": 1600,
+            "height": 2000,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/s07-480.avif",
+                    "webp": "assets/images/artikelen/s07-480.webp",
+                    "jpg": "assets/images/artikelen/s07-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/s07-800.avif",
+                    "webp": "assets/images/artikelen/s07-800.webp",
+                    "jpg": "assets/images/artikelen/s07-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/s07-1200.avif",
+                    "webp": "assets/images/artikelen/s07-1200.webp",
+                    "jpg": "assets/images/artikelen/s07-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/s07-1600.avif",
+                    "webp": "assets/images/artikelen/s07-1600.webp",
+                    "jpg": "assets/images/artikelen/s07-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "s08": {
+            "id": "s08",
+            "alt": "Stekken van gatenplant in glazen potten met water op een aanrecht",
+            "maker": "Brina Blum",
+            "artikel": "stekken",
+            "slot": "vergelijk-water",
+            "video": null,
+            "width": 1600,
+            "height": 1067,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/s08-480.avif",
+                    "webp": "assets/images/artikelen/s08-480.webp",
+                    "jpg": "assets/images/artikelen/s08-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/s08-800.avif",
+                    "webp": "assets/images/artikelen/s08-800.webp",
+                    "jpg": "assets/images/artikelen/s08-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/s08-1200.avif",
+                    "webp": "assets/images/artikelen/s08-1200.webp",
+                    "jpg": "assets/images/artikelen/s08-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/s08-1600.avif",
+                    "webp": "assets/images/artikelen/s08-1600.webp",
+                    "jpg": "assets/images/artikelen/s08-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "s09": {
+            "id": "s09",
+            "alt": "Drie jonge stekjes in terracotta potjes met aarde",
+            "maker": "Christine",
+            "artikel": "stekken",
+            "slot": "vergelijk-grond",
+            "video": null,
+            "width": 1600,
+            "height": 1067,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/s09-480.avif",
+                    "webp": "assets/images/artikelen/s09-480.webp",
+                    "jpg": "assets/images/artikelen/s09-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/s09-800.avif",
+                    "webp": "assets/images/artikelen/s09-800.webp",
+                    "jpg": "assets/images/artikelen/s09-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/s09-1200.avif",
+                    "webp": "assets/images/artikelen/s09-1200.webp",
+                    "jpg": "assets/images/artikelen/s09-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/s09-1600.avif",
+                    "webp": "assets/images/artikelen/s09-1600.webp",
+                    "jpg": "assets/images/artikelen/s09-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "s10": {
+            "id": "s10",
+            "alt": "Witte wortels groeien uit een knoop van een stengel in water",
+            "maker": "feey",
+            "artikel": "stekken",
+            "slot": "wortelen",
+            "video": null,
+            "width": 1600,
+            "height": 2400,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/s10-480.avif",
+                    "webp": "assets/images/artikelen/s10-480.webp",
+                    "jpg": "assets/images/artikelen/s10-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/s10-800.avif",
+                    "webp": "assets/images/artikelen/s10-800.webp",
+                    "jpg": "assets/images/artikelen/s10-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/s10-1200.avif",
+                    "webp": "assets/images/artikelen/s10-1200.webp",
+                    "jpg": "assets/images/artikelen/s10-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/s10-1600.avif",
+                    "webp": "assets/images/artikelen/s10-1600.webp",
+                    "jpg": "assets/images/artikelen/s10-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "n01": {
+            "id": "n01",
+            "alt": "Snoeischaar knipt een groene scheut boven een knop",
+            "maker": "Margarita Shtyfura",
+            "artikel": "snoeien",
+            "slot": "hero",
+            "video": null,
+            "width": 1600,
+            "height": 1067,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/n01-480.avif",
+                    "webp": "assets/images/artikelen/n01-480.webp",
+                    "jpg": "assets/images/artikelen/n01-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/n01-800.avif",
+                    "webp": "assets/images/artikelen/n01-800.webp",
+                    "jpg": "assets/images/artikelen/n01-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/n01-1200.avif",
+                    "webp": "assets/images/artikelen/n01-1200.webp",
+                    "jpg": "assets/images/artikelen/n01-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/n01-1600.avif",
+                    "webp": "assets/images/artikelen/n01-1600.webp",
+                    "jpg": "assets/images/artikelen/n01-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "n02": {
+            "id": "n02",
+            "alt": "Paarse bloeiaar van de vlinderstruik (buddleja), bloeit op nieuw hout",
+            "maker": "Aditi Panatu",
+            "artikel": "snoeien",
+            "slot": "vergelijk-nieuw-hout",
+            "video": null,
+            "width": 1600,
+            "height": 1200,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/n02-480.avif",
+                    "webp": "assets/images/artikelen/n02-480.webp",
+                    "jpg": "assets/images/artikelen/n02-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/n02-800.avif",
+                    "webp": "assets/images/artikelen/n02-800.webp",
+                    "jpg": "assets/images/artikelen/n02-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/n02-1200.avif",
+                    "webp": "assets/images/artikelen/n02-1200.webp",
+                    "jpg": "assets/images/artikelen/n02-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/n02-1600.avif",
+                    "webp": "assets/images/artikelen/n02-1600.webp",
+                    "jpg": "assets/images/artikelen/n02-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "n03": {
+            "id": "n03",
+            "alt": "Gele bloesem van forsythia aan oude takken",
+            "maker": "Yoksel Zok",
+            "artikel": "snoeien",
+            "slot": "vergelijk-oud-hout",
+            "video": null,
+            "width": 1600,
+            "height": 2397,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/n03-480.avif",
+                    "webp": "assets/images/artikelen/n03-480.webp",
+                    "jpg": "assets/images/artikelen/n03-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/n03-800.avif",
+                    "webp": "assets/images/artikelen/n03-800.webp",
+                    "jpg": "assets/images/artikelen/n03-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/n03-1200.avif",
+                    "webp": "assets/images/artikelen/n03-1200.webp",
+                    "jpg": "assets/images/artikelen/n03-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/n03-1600.avif",
+                    "webp": "assets/images/artikelen/n03-1600.webp",
+                    "jpg": "assets/images/artikelen/n03-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "n05": {
+            "id": "n05",
+            "alt": "Gesnoeide fruitboom met kale takken in de winter",
+            "maker": "MChe Lee",
+            "artikel": "snoeien",
+            "slot": "snoeikalender",
+            "video": null,
+            "width": 1600,
+            "height": 1067,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/n05-480.avif",
+                    "webp": "assets/images/artikelen/n05-480.webp",
+                    "jpg": "assets/images/artikelen/n05-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/n05-800.avif",
+                    "webp": "assets/images/artikelen/n05-800.webp",
+                    "jpg": "assets/images/artikelen/n05-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/n05-1200.avif",
+                    "webp": "assets/images/artikelen/n05-1200.webp",
+                    "jpg": "assets/images/artikelen/n05-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/n05-1600.avif",
+                    "webp": "assets/images/artikelen/n05-1600.webp",
+                    "jpg": "assets/images/artikelen/n05-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "n06": {
+            "id": "n06",
+            "alt": "Snoeischaar op afgeknipte takjes en touw, klaar om te stekken",
+            "maker": "Sofia Holmberg",
+            "artikel": "snoeien",
+            "slot": "snoeisel-naar-stek",
+            "video": null,
+            "width": 1600,
+            "height": 2400,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/n06-480.avif",
+                    "webp": "assets/images/artikelen/n06-480.webp",
+                    "jpg": "assets/images/artikelen/n06-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/n06-800.avif",
+                    "webp": "assets/images/artikelen/n06-800.webp",
+                    "jpg": "assets/images/artikelen/n06-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/n06-1200.avif",
+                    "webp": "assets/images/artikelen/n06-1200.webp",
+                    "jpg": "assets/images/artikelen/n06-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/n06-1600.avif",
+                    "webp": "assets/images/artikelen/n06-1600.webp",
+                    "jpg": "assets/images/artikelen/n06-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "v1": {
+            "id": "v1",
+            "alt": "Vensterbank met stekjes in vaasjes en potjes",
+            "maker": "Kambiz Daneshjou",
+            "artikel": "stekken",
+            "slot": "video-1ve5eEls-cg",
+            "video": "1ve5eEls-cg",
+            "width": 1600,
+            "height": 1060,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/v1-480.avif",
+                    "webp": "assets/images/artikelen/v1-480.webp",
+                    "jpg": "assets/images/artikelen/v1-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/v1-800.avif",
+                    "webp": "assets/images/artikelen/v1-800.webp",
+                    "jpg": "assets/images/artikelen/v1-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/v1-1200.avif",
+                    "webp": "assets/images/artikelen/v1-1200.webp",
+                    "jpg": "assets/images/artikelen/v1-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/v1-1600.avif",
+                    "webp": "assets/images/artikelen/v1-1600.webp",
+                    "jpg": "assets/images/artikelen/v1-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "v2": {
+            "id": "v2",
+            "alt": "Jonge zaailingen en stekjes in een kweekbak",
+            "maker": "Markus Spiske",
+            "artikel": "stekken",
+            "slot": "video-E0KPdbgFaLw",
+            "video": "E0KPdbgFaLw",
+            "width": 1600,
+            "height": 1067,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/v2-480.avif",
+                    "webp": "assets/images/artikelen/v2-480.webp",
+                    "jpg": "assets/images/artikelen/v2-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/v2-800.avif",
+                    "webp": "assets/images/artikelen/v2-800.webp",
+                    "jpg": "assets/images/artikelen/v2-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/v2-1200.avif",
+                    "webp": "assets/images/artikelen/v2-1200.webp",
+                    "jpg": "assets/images/artikelen/v2-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/v2-1600.avif",
+                    "webp": "assets/images/artikelen/v2-1600.webp",
+                    "jpg": "assets/images/artikelen/v2-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "v3": {
+            "id": "v3",
+            "alt": "Kale takken in de winter, geschikt voor winterstekken",
+            "maker": "Michel Meuleman",
+            "artikel": "stekken",
+            "slot": "video-nEM7h1Ywr14",
+            "video": "nEM7h1Ywr14",
+            "width": 1600,
+            "height": 1071,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/v3-480.avif",
+                    "webp": "assets/images/artikelen/v3-480.webp",
+                    "jpg": "assets/images/artikelen/v3-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/v3-800.avif",
+                    "webp": "assets/images/artikelen/v3-800.webp",
+                    "jpg": "assets/images/artikelen/v3-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/v3-1200.avif",
+                    "webp": "assets/images/artikelen/v3-1200.webp",
+                    "jpg": "assets/images/artikelen/v3-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/v3-1600.avif",
+                    "webp": "assets/images/artikelen/v3-1600.webp",
+                    "jpg": "assets/images/artikelen/v3-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "v4": {
+            "id": "v4",
+            "alt": "Plant met zichtbare wortels, uit de pot gehaald",
+            "maker": "Mario Heller",
+            "artikel": "stekken",
+            "slot": "video-eBXdt0yzlew",
+            "video": "eBXdt0yzlew",
+            "width": 1600,
+            "height": 1064,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/v4-480.avif",
+                    "webp": "assets/images/artikelen/v4-480.webp",
+                    "jpg": "assets/images/artikelen/v4-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/v4-800.avif",
+                    "webp": "assets/images/artikelen/v4-800.webp",
+                    "jpg": "assets/images/artikelen/v4-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/v4-1200.avif",
+                    "webp": "assets/images/artikelen/v4-1200.webp",
+                    "jpg": "assets/images/artikelen/v4-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/v4-1600.avif",
+                    "webp": "assets/images/artikelen/v4-1600.webp",
+                    "jpg": "assets/images/artikelen/v4-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "v5": {
+            "id": "v5",
+            "alt": "Hand met snoeischaar snoeit een groene struik",
+            "maker": "Margarita Shtyfura",
+            "artikel": "snoeien",
+            "slot": "video-DDDNKRT0mvY",
+            "video": "DDDNKRT0mvY",
+            "width": 1600,
+            "height": 1067,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/v5-480.avif",
+                    "webp": "assets/images/artikelen/v5-480.webp",
+                    "jpg": "assets/images/artikelen/v5-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/v5-800.avif",
+                    "webp": "assets/images/artikelen/v5-800.webp",
+                    "jpg": "assets/images/artikelen/v5-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/v5-1200.avif",
+                    "webp": "assets/images/artikelen/v5-1200.webp",
+                    "jpg": "assets/images/artikelen/v5-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/v5-1600.avif",
+                    "webp": "assets/images/artikelen/v5-1600.webp",
+                    "jpg": "assets/images/artikelen/v5-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "v6": {
+            "id": "v6",
+            "alt": "Pluimhortensia in bloei in de tuin",
+            "maker": "Annie Spratt",
+            "artikel": "snoeien",
+            "slot": "video-SplNsb3qI9U",
+            "video": "SplNsb3qI9U",
+            "width": 1600,
+            "height": 1199,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/v6-480.avif",
+                    "webp": "assets/images/artikelen/v6-480.webp",
+                    "jpg": "assets/images/artikelen/v6-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/v6-800.avif",
+                    "webp": "assets/images/artikelen/v6-800.webp",
+                    "jpg": "assets/images/artikelen/v6-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/v6-1200.avif",
+                    "webp": "assets/images/artikelen/v6-1200.webp",
+                    "jpg": "assets/images/artikelen/v6-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/v6-1600.avif",
+                    "webp": "assets/images/artikelen/v6-1600.webp",
+                    "jpg": "assets/images/artikelen/v6-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "v7": {
+            "id": "v7",
+            "alt": "Handen met handschoenen snoeien een kale boom in de winter",
+            "maker": "Jakub Żerdzicki",
+            "artikel": "snoeien",
+            "slot": "video-Bd_bxIDexU4",
+            "video": "Bd_bxIDexU4",
+            "width": 1600,
+            "height": 1067,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/v7-480.avif",
+                    "webp": "assets/images/artikelen/v7-480.webp",
+                    "jpg": "assets/images/artikelen/v7-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/v7-800.avif",
+                    "webp": "assets/images/artikelen/v7-800.webp",
+                    "jpg": "assets/images/artikelen/v7-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/v7-1200.avif",
+                    "webp": "assets/images/artikelen/v7-1200.webp",
+                    "jpg": "assets/images/artikelen/v7-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/v7-1600.avif",
+                    "webp": "assets/images/artikelen/v7-1600.webp",
+                    "jpg": "assets/images/artikelen/v7-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        },
+        "v8": {
+            "id": "v8",
+            "alt": "Snoeischaar knipt een twijg in het voorjaar",
+            "maker": "Margarita Shtyfura",
+            "artikel": "snoeien",
+            "slot": "video-GvUVTIS1x_s",
+            "video": "GvUVTIS1x_s",
+            "width": 1600,
+            "height": 1067,
+            "variants": [
+                {
+                    "w": 480,
+                    "avif": "assets/images/artikelen/v8-480.avif",
+                    "webp": "assets/images/artikelen/v8-480.webp",
+                    "jpg": "assets/images/artikelen/v8-480.jpg"
+                },
+                {
+                    "w": 800,
+                    "avif": "assets/images/artikelen/v8-800.avif",
+                    "webp": "assets/images/artikelen/v8-800.webp",
+                    "jpg": "assets/images/artikelen/v8-800.jpg"
+                },
+                {
+                    "w": 1200,
+                    "avif": "assets/images/artikelen/v8-1200.avif",
+                    "webp": "assets/images/artikelen/v8-1200.webp",
+                    "jpg": "assets/images/artikelen/v8-1200.jpg"
+                },
+                {
+                    "w": 1600,
+                    "avif": "assets/images/artikelen/v8-1600.avif",
+                    "webp": "assets/images/artikelen/v8-1600.webp",
+                    "jpg": "assets/images/artikelen/v8-1600.jpg"
+                }
+            ],
+            "bron": "Unsplash",
+            "licentie": "Unsplash License",
+            "licentie_url": "https://unsplash.com/license"
+        }
+    }
+}

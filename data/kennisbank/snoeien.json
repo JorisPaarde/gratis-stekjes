@@ -65,23 +65,23 @@
             "kolommen": [
                 {
                     "titel": "Bloeit op nieuw hout",
-                    "illustratie": "nieuw-hout",
                     "items": [
                         "Bloemen aan scheuten van dit jaar",
                         "Snoei in februari of maart, gerust flink",
                         "Vlinderstruik, pluimhortensia, Annabelle, de meeste rozen",
                         "Ook lavendel (licht, na de bloei)"
-                    ]
+                    ],
+                    "foto": "n02"
                 },
                 {
                     "titel": "Bloeit op oud hout",
-                    "illustratie": "oud-hout",
                     "items": [
                         "Knoppen zitten al op takken van vorig jaar",
                         "Snoei direct na de bloei, en spaarzaam",
                         "Forsythia, sering, boerenhortensia, ribes",
                         "Bij boerenhortensia alleen de oude bloemen eraf in het voorjaar"
-                    ]
+                    ],
+                    "foto": "n03"
                 }
             ]
         },
@@ -112,7 +112,8 @@
                     "titel": "Niet bij vorst of hitte",
                     "tekst": "Bij strenge vorst of felle zon herstellen wonden slecht. Kies een droge, milde dag."
                 }
-            ]
+            ],
+            "illustratie": "snoeisnede"
         },
         {
             "type": "h2",
@@ -169,7 +170,8 @@
                     "maand": "December",
                     "tekst": "Rustmaand. Alleen dood of gebroken hout, en gereedschap slijpen."
                 }
-            ]
+            ],
+            "foto": "n05"
         },
         {
             "type": "h2",
@@ -177,7 +179,8 @@
         },
         {
             "type": "p",
-            "tekst": "Elke snoeipagina hieronder linkt naar het stekken van dezelfde plant. Zet het snoeisel in een emmer water tot je tijd hebt, probeer [[wilgenwater|wilgenwater]], en deel wat je over hebt via het aanbod. Meer tips staan bij [[snoeiafval-als-stek|snoeiafval als stek]]."
+            "tekst": "Elke snoeipagina hieronder linkt naar het stekken van dezelfde plant. Zet het snoeisel in een emmer water tot je tijd hebt, probeer [[wilgenwater|wilgenwater]], en deel wat je over hebt via het aanbod. Meer tips staan bij [[snoeiafval-als-stek|snoeiafval als stek]].",
+            "foto": "n06"
         },
         {
             "type": "videos",
@@ -187,22 +190,26 @@
                 {
                     "id": "DDDNKRT0mvY",
                     "titel": "Snoeien van planten en struiken: hoe doe je dat?",
-                    "kanaal": "Tuinmanieren"
+                    "kanaal": "Tuinmanieren",
+                    "poster": "v5"
                 },
                 {
                     "id": "SplNsb3qI9U",
                     "titel": "Wanneer snoei je welke planten?",
-                    "kanaal": "Tuinmanieren"
+                    "kanaal": "Tuinmanieren",
+                    "poster": "v6"
                 },
                 {
                     "id": "Bd_bxIDexU4",
                     "titel": "Snoeien in de herfst en winter",
-                    "kanaal": "Tuinmanieren"
+                    "kanaal": "Tuinmanieren",
+                    "poster": "v7"
                 },
                 {
                     "id": "GvUVTIS1x_s",
                     "titel": "Wat snoei je in maart?",
-                    "kanaal": "Tuinmanieren"
+                    "kanaal": "Tuinmanieren",
+                    "poster": "v8"
                 }
             ]
         }
@@ -234,5 +241,5 @@
         "snoeiafval-als-stek"
     ],
     "slug": "snoeien",
-    "illustratie": "snoeisnede"
+    "foto": "n01"
 }
