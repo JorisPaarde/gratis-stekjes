@@ -34,18 +34,39 @@ final class ArtikelFotos
     }
 
     /**
-     * Unieke fotografennamen voor een artikel (volgorde van eerste voorkomen).
+     * Id van de eigen kaartfoto van een artikel (veld `kaart_voor` in het manifest), of null.
+     * Bewust geen terugval op soortfoto's of andere artikelen: dat gaf dubbele en lege kaartjes.
+     */
+    public static function kaartFotoId(string $artikelSlug): ?string
+    {
+        foreach (self::manifest()['fotos'] ?? [] as $id => $foto) {
+            if (is_array($foto) && ($foto['kaart_voor'] ?? null) === $artikelSlug) {
+                return (string) $id;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Unieke fotografennamen voor een artikel (volgorde van eerste voorkomen):
+     * eigen foto's plus de kaartfoto's die op de pagina staan.
      *
+     * @param  list<string>  $extraIds  foto-id's van kaartjes op deze pagina
      * @return list<string>
      */
-    public static function makersVoorArtikel(string $artikelSlug): array
+    public static function makersVoorArtikel(string $artikelSlug, array $extraIds = []): array
     {
         $seen = [];
         $makers = [];
-        foreach (self::manifest()['fotos'] ?? [] as $foto) {
-            if (! is_array($foto) || ($foto['artikel'] ?? '') !== $artikelSlug) {
-                continue;
+        $fotos = self::manifest()['fotos'] ?? [];
+        $opPagina = array_filter($fotos, fn ($foto) => is_array($foto) && ($foto['artikel'] ?? '') === $artikelSlug);
+        foreach ($extraIds as $id) {
+            if (is_array($fotos[$id] ?? null)) {
+                $opPagina[$id] = $fotos[$id];
             }
+        }
+        foreach ($opPagina as $foto) {
             $maker = trim((string) ($foto['maker'] ?? ''));
             if ($maker === '' || isset($seen[$maker])) {
                 continue;

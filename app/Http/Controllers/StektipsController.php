@@ -8,6 +8,7 @@ use App\Services\Kennisbank;
 use App\Services\Plantensoorten;
 use App\Services\SoortAfbeeldingen;
 use App\Services\Stektips;
+use App\Support\ArtikelFotos;
 use App\Support\Faq;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -250,7 +251,7 @@ class StektipsController extends Controller
             'categoryLabels' => $categoryLabels,
             'gerelateerdeSoorten' => $gerelateerdeSoorten,
             'gerelateerdeArtikelen' => $kennisbank->relatedArticles($artikel),
-            'kinderen' => $this->kinderenMetFoto($kennisbank->childrenOf($artikel), $afbeeldingen),
+            'kinderen' => $this->kinderenMetFoto($kennisbank->childrenOf($artikel)),
             'blokken' => $this->blokkenVerrijkt($artikel['inhoud'] ?? [], $stektips, $afbeeldingen),
             'duurzamer' => $duurzamer,
             'seoCtas' => $this->seoCtasForArtikel($artikel, $kennisbank),
@@ -260,21 +261,17 @@ class StektipsController extends Controller
     }
 
     /**
-     * Subartikelen als kaart: met foto van de eerste gerelateerde soort (alleen echte, gelicentieerde foto's).
+     * Subartikelen als kaart, elk met de eigen kaartfoto uit het artikel-fotomanifest (`kaart_voor`).
+     * Geen terugval op soortfoto's: die gaf dubbele foto's (bijv. twee keer lavendel) en lege kaartjes.
+     * Dat elk kaartartikel een unieke foto heeft, bewaakt KaartFotosTest.
      *
      * @param  list<array<string, mixed>>  $kinderen
      * @return list<array<string, mixed>>
      */
-    private function kinderenMetFoto(array $kinderen, SoortAfbeeldingen $afbeeldingen): array
+    private function kinderenMetFoto(array $kinderen): array
     {
-        return array_map(function (array $kind) use ($afbeeldingen): array {
-            $kind['foto'] = null;
-            foreach ($kind['gerelateerde_soorten'] ?? [] as $soortSlug) {
-                if (is_string($soortSlug) && $afbeeldingen->hasLicensedImage($soortSlug)) {
-                    $kind['foto'] = $afbeeldingen->forSlug($soortSlug);
-                    break;
-                }
-            }
+        return array_map(function (array $kind): array {
+            $kind['foto_id'] = ArtikelFotos::kaartFotoId((string) ($kind['slug'] ?? ''));
 
             return $kind;
         }, $kinderen);

@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.55.1] - 2026-11-03
+
+### Fixed
+
+- «Meer over dit onderwerp»: elk kaartje heeft nu een eigen, passende Unsplash-foto (27 kaartartikelen; o.a. vlinderstruik, olijfboom, rozen, een herkenbare vijg, uitlopers, zaaien, afleggen). Geen lege kaartjes meer en geen dubbele foto's (lavendel twee keer, appel drie keer). Oorzaak: kaartjes leenden de foto van de eerste gerelateerde soort; nu komt de foto uit het artikel-fotomanifest (`kaart_voor`), zonder terugval. Responsive `<picture>` (AVIF/WebP/JPG 480/800, lazy, alt-tekst); makers in de credits per pagina. `KaartFotosTest` bewaakt dat elk kaartje een unieke foto heeft.
+
 ## [0.55.0] - 2026-11-03
 
 ### Added
