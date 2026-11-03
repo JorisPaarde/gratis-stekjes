@@ -29,13 +29,6 @@ class ZoekenController extends Controller
                 ),
             ]);
         }
-        if ($q === '') {
-            return response()->json(['error' => 'Vul een postcode of plaats in.'], 400);
-        }
-        if (mb_strlen($q) > 120) {
-            return response()->json(['error' => 'Zoekopdracht is te lang.'], 400);
-        }
-
         $type = (string) $request->query('type', '');
         if ($type !== 'uitdelen' && $type !== 'ophalen') {
             $type = null;
@@ -46,18 +39,34 @@ class ZoekenController extends Controller
             $plant = mb_substr($plant, 0, 80);
         }
 
+        if ($q === '' && $plant === '') {
+            return response()->json(['error' => 'Vul een postcode, plaats of plant in.'], 400);
+        }
+        if (mb_strlen($q) > 120) {
+            return response()->json(['error' => 'Zoekopdracht is te lang.'], 400);
+        }
+
         $key = 'search:'.$request->ip();
         if (RateLimiter::tooManyAttempts($key, 60)) {
             return response()->json(['error' => 'Te vaak gezocht. Probeer later opnieuw.'], 429);
         }
         RateLimiter::hit($key, 3600);
 
-        $result = $search->search($q, $type, true, $plant !== '' ? $plant : null);
-
-        $payload = [
-            'meta' => $result['meta'],
-            'items' => $result['items'],
-        ];
+        if ($q === '') {
+            // Alleen het 2e veld (plant): sorteren vanaf het eigen adres van het ingelogde lid,
+            // anders nieuwste eerst. Geen coördinaten van het lid in de payload, alleen afstand_km.
+            $user = $request->user();
+            $payload = [
+                'meta' => ['modus' => 'plant', 'plant' => $plant] + AanbodSearch::plantSortering($user),
+                'items' => $search->zoekOpPlant($plant, $type, AanbodSearch::accountOrigin($user)),
+            ];
+        } else {
+            $result = $search->search($q, $type, true, $plant !== '' ? $plant : null);
+            $payload = [
+                'meta' => $result['meta'],
+                'items' => $result['items'],
+            ];
+        }
 
         // Privacy: geen e-mail/telefoon in API-payload
         $json = json_encode($payload, JSON_UNESCAPED_UNICODE);

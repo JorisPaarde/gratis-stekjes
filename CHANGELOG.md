@@ -9,6 +9,20 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.59.0] - 2026-11-03
+
+### Added
+
+- **/aanbod: alleen op plant zoeken.** Het 1e veld («Postcode of plaats») is niet meer
+  verplicht. Vul je alleen het 2e veld («Plant, stekje of zaad») in, dan zoekt de site alleen
+  op dat veld (`/api/zoeken?plant=…` zonder `q`, geen geocoding) en sorteert op afstand vanaf
+  de opgeslagen coördinaten van het ingelogde lid. Fallback voor gasten en leden zonder adres:
+  nieuwste eerst, met een hint om in te loggen of een adres in te vullen. De site gebruikt
+  geen browserlocatie, dus die vraagt de site ook nu niet. De API en HTML tonen alleen
+  `afstand_km`, nooit het adres of de coördinaten van de zoeker (`meta` heeft `modus`,
+  `plant`, `sortering`, `reden`). Werkt ook zonder JS (server-side lijst op `/aanbod?plant=`).
+  Zoeken met het 1e veld of met beide velden werkt zoals voorheen; beide leeg geeft nog 400.
+
 ## [0.58.2] - 2026-11-03
 
 ### Fixed
