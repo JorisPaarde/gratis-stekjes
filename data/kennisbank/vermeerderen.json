@@ -100,7 +100,7 @@
                     "wanneer": "zomer",
                     "illustratie": "uitloper",
                     "tekst": "Aardbei, graslelie en aloë maken zelf jonge plantjes. Losmaken en oppotten is genoeg.",
-                    "slug": "scheuren-en-afleggen"
+                    "slug": "uitlopers"
                 },
                 {
                     "titel": "Enten",
@@ -110,6 +110,13 @@
                     "slug": "fruitbomen-enten"
                 }
             ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Wat kun je nu vermeerderen?"
+        },
+        {
+            "type": "nu"
         },
         {
             "type": "h2",
@@ -205,6 +212,16 @@
                     "kleur": "oranje"
                 },
                 {
+                    "label": "Uitlopers en kindjes",
+                    "maanden": [
+                        6,
+                        7,
+                        8,
+                        9
+                    ],
+                    "kleur": "groen"
+                },
+                {
                     "label": "Afleggen",
                     "maanden": [
                         3,
@@ -295,6 +312,7 @@
         "scheuren",
         "zaaien",
         "afleggen",
+        "uitlopers",
         "snoeien",
         "natuurlijk-bewortelen",
         "fruitbomen-enten",

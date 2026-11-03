@@ -50,6 +50,45 @@
     </aside>
     @break
 
+  @case('nu')
+    {{-- Wat kun je deze maand vermeerderen? Uit data/nu-te-stekken.json (Europe/Amsterdam). --}}
+    @php
+      $nu = app(\App\Services\NuTeStekken::class)->blockForViews();
+      $nuLabels = ['stek' => 'Stekken', 'scheut' => 'Stekken', 'deling' => 'Scheuren', 'zaad' => 'Zaaien', 'enten' => 'Enten', 'afleggen' => 'Afleggen'];
+      $nuPijler = ['stek' => 'stekken', 'scheut' => 'stekken', 'deling' => 'scheuren', 'zaad' => 'zaaien', 'enten' => 'fruitbomen-enten', 'afleggen' => 'afleggen'];
+    @endphp
+    @if($nu)
+      <p class="kb-nu-intro">In {{ $nu['maand_naam'] }} kun je dit doen:</p>
+      <ul class="kb-nu">
+        @foreach($nu['groepen'] as $groep)
+          <li class="kb-nu-groep">
+            <p class="kb-nu-kop">
+              @php $m = (string) ($groep['methode'] ?? ''); @endphp
+              @if(isset($nuPijler[$m]))
+                <a class="badge" href="{{ route('stektips.artikel', ['slug' => $nuPijler[$m]]) }}">{{ $nuLabels[$m] }}</a>
+              @endif
+              <strong>{{ $groep['titel'] ?? '' }}</strong>
+            </p>
+            <p>{{ $groep['tip'] ?? '' }}</p>
+            @if(!empty($groep['planten']))
+              <p class="kb-nu-planten">
+                @foreach(array_slice($groep['planten'], 0, 8) as $plant)
+                  @php $sep = $loop->last ? '' : ', '; @endphp
+                  @if(!empty($plant['stek_url']))
+                    <a href="{{ $plant['stek_url'] }}">{{ $plant['naam'] }}</a>{{ $sep }}
+                  @else
+                    {{ $plant['naam'] }}{{ $sep }}
+                  @endif
+                @endforeach
+                @if(count($groep['planten']) > 8)<span class="muted"> en meer</span>@endif
+              </p>
+            @endif
+          </li>
+        @endforeach
+      </ul>
+    @endif
+    @break
+
   @case('kaarten')
     <ul class="kb-kaarten">
       @foreach($block['items'] ?? [] as $kaart)
