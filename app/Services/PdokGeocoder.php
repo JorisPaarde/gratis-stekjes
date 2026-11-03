@@ -39,17 +39,25 @@ final class PdokGeocoder
             return null;
         }
 
+        $params = [
+            'q' => $query,
+            'rows' => 1,
+            'fl' => 'centroide_ll,weergavenaam,type,score',
+        ];
+        // Postcode (2037 of 2037 KB): alleen postcodes zoeken. Anders wint een woonplaats
+        // met dezelfde code (2037 = Nederweert) en staat het lid ver van zijn echte plek.
+        if (preg_match('/^(\d{4})\s*([A-Za-z]{2})?$/', trim($query), $pc)) {
+            $params['q'] = $pc[1].strtoupper($pc[2] ?? '');
+            $params['fq'] = 'type:postcode';
+        }
+
         try {
             $response = Http::timeout(5)
                 ->acceptJson()
                 ->withHeaders([
                     'User-Agent' => 'GratisPlanten/'.config('site.version', '0'),
                 ])
-                ->get($base, [
-                    'q' => $query,
-                    'rows' => 1,
-                    'fl' => 'centroide_ll,weergavenaam,type,score',
-                ]);
+                ->get($base, $params);
         } catch (Throwable) {
             return null;
         }
