@@ -143,6 +143,9 @@
 
   // —— Lijst: twee begrensde groepen (aanbod, plekken), dichtstbij eerst na zoeken ——
   var center = null; // { lat, lon, label } na een zoekopdracht
+  // Alleen het 2e veld (plant) ingevuld: { plant, sortering: "afstand"|"recent", reden }.
+  // Afstand komt van de server (vanaf het eigen adres); coördinaten van het lid krijgen we niet.
+  var plantModus = null;
   var limits = { aanbod: 6, plekken: 6, dichtbij: 9 };
   var STAP = { aanbod: 6, plekken: 6, dichtbij: 9 };
 
@@ -414,6 +417,26 @@
     list.innerHTML = "";
     var groups = groupAanbod(showAanbod() ? aanbodItems : []);
 
+    if (plantModus) {
+      if (!groups.length) return;
+      list.appendChild(
+        groepKop(
+          "Aanbod met “" +
+            plantModus.plant +
+            "”" +
+            (plantModus.sortering === "afstand" ? ", dichtstbij jouw adres" : ", nieuwste eerst"),
+          null
+        )
+      );
+      groups.slice(0, limits.aanbod).forEach(function (g) {
+        list.appendChild(aanbodListItem(g));
+      });
+      if (groups.length > limits.aanbod) {
+        list.appendChild(meerKnop("aanbod", groups.length - limits.aanbod));
+      }
+      return;
+    }
+
     if (center) {
       // Na zoeken: één lijst, aanbod en plekken door elkaar, puur op afstand.
       var alles = groups.concat(plekken).sort(function (a, b) {
@@ -487,6 +510,18 @@
 
   function updateStatus(plekCount) {
     var aanbodCount = showAanbod() ? aanbodItems.length : 0;
+    if (plantModus) {
+      var hint =
+        plantModus.sortering === "afstand"
+          ? " Dichtstbij jouw adres eerst."
+          : plantModus.reden === "geen_adres"
+            ? " Nieuwste eerst. Vul je postcode of plaats in bij je profiel om op afstand te sorteren."
+            : " Nieuwste eerst. Log in om te sorteren op afstand vanaf je eigen adres.";
+      status.textContent = aanbodCount
+        ? aanbodCount + " aanbod met “" + plantModus.plant + "”." + hint
+        : "Nog geen aanbod met “" + plantModus.plant + "”.";
+      return;
+    }
     if (!aanbodCount && !plekCount) {
       status.textContent =
         (partnerItems.length || deelplekItems.length)
@@ -673,7 +708,7 @@
         return r.ok ? r.json() : { items: [] };
       })
       .then(function (data) {
-        if (center) return; // intussen gezocht: zoekresultaat wint
+        if (center || plantModus) return; // intussen gezocht: zoekresultaat wint
         aanbodItems = (data && data.items) || [];
         resetLimits();
         refreshMarkers(false);
@@ -681,8 +716,53 @@
       .catch(function () {});
   }
 
+  function fitOpAanbod() {
+    var pts = [];
+    aanbodItems.forEach(function (item) {
+      if (item.lat != null && item.lon != null) pts.push([item.lat, item.lon]);
+    });
+    if (!pts.length) return;
+    map.fitBounds(pts, { padding: [24, 24], maxZoom: 12 });
+    var minZ = map.getBoundsZoom(L.latLngBounds(nlBeBounds), false, L.point(16, 16));
+    if (map.getZoom() < minZ) fitNlBe();
+  }
+
+  // Alleen het 2e veld: zoek alleen op plant; de server sorteert vanaf het eigen adres
+  // van het ingelogde lid, of (gast / geen adres) nieuwste eerst.
+  function zoekOpPlant(plant) {
+    heeftGezocht = true;
+    center = null;
+    tekenZoekpunt();
+    var serverLijst = document.getElementById("plant-aanbod");
+    if (serverLijst) serverLijst.hidden = true; // JS-lijst toont hetzelfde, met foto's en berichtknop
+    status.textContent = "Zoeken…";
+    status.dataset.empty = "";
+    fetch(api + "?plant=" + encodeURIComponent(plant), {
+      credentials: "same-origin",
+      headers: { Accept: "application/json" },
+    })
+      .then(function (r) {
+        return r.json().then(function (data) {
+          if (!r.ok) throw new Error((data && data.error) || "Zoeken is niet gelukt");
+          return data;
+        });
+      })
+      .then(function (data) {
+        var meta = (data && data.meta) || {};
+        aanbodItems = (data && data.items) || [];
+        plantModus = { plant: plant, sortering: meta.sortering || "recent", reden: meta.reden || null };
+        resetLimits();
+        refreshMarkers(false);
+        fitOpAanbod();
+      })
+      .catch(function (err) {
+        status.textContent = err.message || "Zoeken is niet gelukt";
+      });
+  }
+
   function zoek(q) {
     heeftGezocht = true;
+    plantModus = null;
     var plantEl = document.getElementById("zoek-plant");
     var plant =
       (plantEl && plantEl.value.trim()) ||
@@ -753,8 +833,23 @@
   form.addEventListener("submit", function (ev) {
     var qEl = document.getElementById("zoek-q");
     var q = qEl ? qEl.value.trim() : "";
-    // Zonder plaats: server-side plantfilter (werkt zonder JS / progressive enhancement)
     if (!q) {
+      // Alleen het 2e veld: alleen op plant zoeken (zonder JS doet de server hetzelfde).
+      var pEl = document.getElementById("zoek-plant");
+      var p = pEl ? pEl.value.trim() : "";
+      ev.preventDefault();
+      if (!p) {
+        status.textContent = "Vul een postcode, plaats of plant in.";
+        if (qEl) qEl.focus();
+        return;
+      }
+      if (window.history && window.history.replaceState) {
+        var pp = new URLSearchParams(window.location.search);
+        pp.delete("q");
+        pp.set("plant", p);
+        window.history.replaceState(null, "", window.location.pathname + "?" + pp.toString());
+      }
+      zoekOpPlant(p);
       return;
     }
     ev.preventDefault();
@@ -783,6 +878,8 @@
   if (startQ && startQ.trim()) {
     if (startQEl) startQEl.value = startQ.trim();
     zoek(startQ.trim());
+  } else if (cfg.plant_filter && String(cfg.plant_filter).trim()) {
+    zoekOpPlant(String(cfg.plant_filter).trim());
   } else {
     loadRecentAanbod();
   }

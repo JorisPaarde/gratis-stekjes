@@ -65,6 +65,55 @@ final class AanbodSearch
     }
 
     /**
+     * Alleen op plant zoeken (1e veld leeg). Gesorteerd op afstand vanaf $origin
+     * (opgeslagen coördinaten van het ingelogde lid); zonder origin nieuwste eerst.
+     * De origin zelf komt nooit in de items; alleen afstand_km.
+     *
+     * @param  array{lat: float, lon: float}|null  $origin
+     * @return list<array<string, mixed>>
+     */
+    public function zoekOpPlant(string $plant, ?string $typeFilter, ?array $origin): array
+    {
+        $items = $this->search(null, $typeFilter, false, $plant)['items'];
+        if ($origin === null) {
+            return $items;
+        }
+
+        return $this->sortByDistance($items, $origin['lat'], $origin['lon']);
+    }
+
+    /**
+     * Opgeslagen coördinaten van het ingelogde lid, of null (gast / geen adres).
+     *
+     * @return array{lat: float, lon: float}|null
+     */
+    public static function accountOrigin(?User $user): ?array
+    {
+        if ($user === null || $user->lat === null || $user->lon === null) {
+            return null;
+        }
+
+        return ['lat' => (float) $user->lat, 'lon' => (float) $user->lon];
+    }
+
+    /**
+     * Waarom er (niet) op afstand gesorteerd wordt bij alleen-plant-zoeken.
+     *
+     * @return array{sortering: 'afstand'|'recent', reden: ?string}
+     */
+    public static function plantSortering(?User $user): array
+    {
+        if ($user === null) {
+            return ['sortering' => 'recent', 'reden' => 'niet_ingelogd'];
+        }
+        if (self::accountOrigin($user) === null) {
+            return ['sortering' => 'recent', 'reden' => 'geen_adres'];
+        }
+
+        return ['sortering' => 'afstand', 'reden' => null];
+    }
+
+    /**
      * Nieuwste publieke aanbiedingen, zonder locatiezoekopdracht (geen geocoding).
      *
      * @return list<array<string, mixed>>

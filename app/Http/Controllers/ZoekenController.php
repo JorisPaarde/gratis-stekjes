@@ -24,7 +24,13 @@ class ZoekenController extends Controller
         }
 
         $plantItems = [];
-        if ($plant !== '') {
+        $plantSortering = null;
+        if ($plant !== '' && $q === '') {
+            // Alleen het 2e veld: dichtstbij het eigen adres van het ingelogde lid, anders nieuwste eerst.
+            $user = $request->user();
+            $plantSortering = AanbodSearch::plantSortering($user);
+            $plantItems = $search->zoekOpPlant($plant, null, AanbodSearch::accountOrigin($user));
+        } elseif ($plant !== '') {
             $plantItems = $search->search(null, null, false, $plant)['items'];
         }
 
@@ -48,6 +54,7 @@ class ZoekenController extends Controller
             'plant' => $plant,
             'q' => $q,
             'plantItems' => $plantItems,
+            'plantSortering' => $plantSortering,
         ]);
     }
 }
