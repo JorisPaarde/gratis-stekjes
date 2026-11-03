@@ -95,10 +95,17 @@ test('organisatiepagina met deelplekken rendert 200', function () {
         ->assertSee('Op de deelplekkenkaart', false)
         ->assertDontSee('Niet te bezoeken via mijn', false);
 
-    // Deelplek verborgen (niet gratis): organisatiepagina blijft, zonder kaartkoppeling.
+    // Haarlem weer zichtbaar (vrijwillige bijdrage): kaartkoppeling aanwezig.
     $this->get(route('organisaties.show', ['slug' => 'plantenasiel-haarlem']))
         ->assertOk()
         ->assertSee('Plantenasiel Haarlem', false)
+        ->assertSee('Op de deelplekkenkaart', false)
+        ->assertDontSee('Niet te bezoeken via mijn', false);
+
+    // Middelburg blijft verborgen (asielplanten te koop): org-pagina zonder kaartkoppeling.
+    $this->get(route('organisaties.show', ['slug' => 'plantaardig-middelburg']))
+        ->assertOk()
+        ->assertSee('Plantaardig Middelburg', false)
         ->assertDontSee('Op de deelplekkenkaart', false)
         ->assertSee('Niet te bezoeken via mijn', false);
 });

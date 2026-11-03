@@ -145,15 +145,34 @@ test('stadspagina toont aanbod binnen straal en lege staat elders', function () 
         'expires_at' => now()->addDays(30),
     ]);
 
-    $this->get(route('gratis-planten.show', ['stad' => 'haarlem']))
+    $html = $this->get(route('gratis-planten.show', ['stad' => 'haarlem']))
         ->assertOk()
         ->assertSee('Bessenstekjes uit Haarlem-centrum', false)
-        ->assertDontSee('Er is nog geen aanbod', false);
+        ->assertDontSee('Er is nog geen aanbod', false)
+        ->getContent();
+
+    // SEO: aanbod staat in de server-HTML (Blade-lijst), niet alleen in window.STEKJES_STAD.
+    expect($html)->toMatch('/<ul class="zoek-lijst gp-aanbod-lijst">[\s\S]*Bessenstekjes uit Haarlem-centrum/');
+    expect(preg_match('/<ul class="zoek-lijst gp-aanbod-lijst">(.*?)<\/ul>/s', $html, $lijst))->toBe(1);
+    // Publieke kaartjes: geen e-mail of achternaam in het aanbodblok.
+    expect($lijst[1])->not->toContain('@')
+        ->and($lijst[1])->not->toContain($near->email)
+        ->and($lijst[1])->toContain('Sam');
 
     $this->get(route('gratis-planten.show', ['stad' => 'groningen']))
         ->assertOk()
         ->assertSee('Er is nog geen aanbod', false)
         ->assertDontSee('Bessenstekjes uit Haarlem-centrum', false);
+});
+
+test('haarlem-stadspagina toont deelplek binnen 12 km', function () {
+    $this->seed(\Database\Seeders\DeelplekkenSeeder::class);
+
+    $this->get(route('gratis-planten.show', ['stad' => 'haarlem']))
+        ->assertOk()
+        ->assertSee('Plantenasiel Haarlem', false)
+        ->assertSee('Plantenasiel en deelplekken in of bij Haarlem', false)
+        ->assertDontSee('Ik ken geen vaste deelplek', false);
 });
 
 test('footer en homepage linken naar stadsoverzicht', function () {

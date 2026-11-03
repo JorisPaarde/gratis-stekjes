@@ -9,6 +9,26 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.56.0] - 2026-11-03
+
+### Added
+
+- Vier plantenasiels weer zichtbaar op kaart/deelplekken/stadspagina’s: Haarlem, Leiden, Houten
+  en Het Plantenhuis Utrecht. Ze vragen alleen een vrijwillige bijdrage/donatie (FAQ: dat mag);
+  adressen en coördinaten bleven uit de bestaande seed. Plantaardig Middelburg blijft verborgen
+  (asielplanten worden verkocht in de stadstuinwinkel). Deploy-seed (`DeelplekkenSeeder`) is
+  idempotent en draait via de bestaande deploy-hook.
+
+### Fixed
+
+- **/deelplekken provinciefilter**: toont altijd alle 12 NL-provincies (Fryslân i.p.v. Friesland,
+  passend bij de data) plus Belgische provincies uit zichtbare deelplekken. Oorzaak: filter
+  kwam alleen uit distinct DB-waarden, waardoor o.a. Noord-Brabant en Zuid-Holland ontbraken
+  zolang daar geen zichtbare plek stond.
+- **/initiatieven**: lege agenda zonder «nog geen data»; korte zin + feedbacklink.
+- Stadspagina’s renderen aanbod al server-side in Blade (SEO); test bewaakt dat de HTML-lijst
+  het aanbod bevat als er aanbod is (lege staat blijft bij echt geen aanbod).
+
 ## [0.55.1] - 2026-11-03
 
 ### Fixed

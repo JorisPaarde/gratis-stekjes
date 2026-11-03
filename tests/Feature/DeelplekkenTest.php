@@ -18,7 +18,7 @@ test('deelplekken JSON is geldig en bevat genoeg plekken', function () {
 
     $data = $service->loadJson();
     expect($data['plekken'])->toHaveCount(88);
-    expect($data['meta']['geraadpleegd'])->toBe('2026-10-31');
+    expect($data['meta']['geraadpleegd'])->toBe('2026-11-03');
     expect($data['meta']['bronnen'])->not->toBeEmpty();
     expect($data['meta']['niet_opgenomen'])->not->toBeEmpty();
 });
@@ -57,7 +57,8 @@ test('deelplekkenpagina laadt met intro, bronlink en meldpad', function () {
         ->assertSee('Vind een deelplek in de buurt', false)
         ->assertSee('plantenasiel', false)
         ->assertSee('Plantenasiel Zeist — De Boswerf', false)
-        ->assertDontSee('Plantenasiel Haarlem', false)
+        ->assertSee('Plantenasiel Haarlem', false)
+        ->assertDontSee('Plantaardig Middelburg', false)
         ->assertSee('Website', false)
         ->assertSee('Gecontroleerd op', false)
         ->assertSee('Mis je een plek, of klopt er iets niet?', false)
@@ -66,6 +67,27 @@ test('deelplekkenpagina laadt met intro, bronlink en meldpad', function () {
         ->assertSee('id="veelgestelde-vragen"', false)
         ->assertSee('"@type":"FAQPage"', false)
         ->assertSee('Wat is een plantenasiel?', false);
+});
+
+test('provinciefilter toont alle 12 NL-provincies plus Belgische uit de data', function () {
+    $html = $this->get('/deelplekken')->assertOk()->getContent();
+
+    foreach ([
+        'Drenthe', 'Flevoland', 'Fryslân', 'Gelderland', 'Groningen', 'Limburg',
+        'Noord-Brabant', 'Noord-Holland', 'Overijssel', 'Utrecht', 'Zeeland', 'Zuid-Holland',
+    ] as $provincie) {
+        expect($html)->toContain('>'.$provincie.'<');
+    }
+
+    expect($html)->toContain('>Antwerpen<')
+        ->and($html)->toContain('>West-Vlaanderen<')
+        ->and($html)->not->toContain('>Friesland<');
+
+    $provincies = app(Deelplekken::class)->provincies();
+    expect($provincies)->toContain('Noord-Brabant')
+        ->and($provincies)->toContain('Zuid-Holland')
+        ->and($provincies)->toContain('Fryslân')
+        ->and($provincies)->toContain('Antwerpen');
 });
 
 test('deelplekken: type-chips met aantallen; bronlink «Website» bij eigen site, anders «Meer informatie»', function () {
@@ -97,7 +119,7 @@ test('deelplekken API toont bron_url en afgeronde coördinaten', function () {
         ->assertOk()
         ->assertJsonPath('items.0.kind', 'deelplek');
 
-    expect($response->json('items'))->toHaveCount(74);
+    expect($response->json('items'))->toHaveCount(78);
 
     $zeist = collect($response->json('items'))->firstWhere('naam', 'Plantenasiel Zeist — De Boswerf');
     expect($zeist)->not->toBeNull();
@@ -146,8 +168,8 @@ test('seeder vult deelplekken uit JSON met NL-default en BE-country', function (
     $haarlem = Deelplek::query()->where('slug', 'haarlem-plantenasiel')->first();
     expect($haarlem)->not->toBeNull();
     expect($haarlem->country)->toBe('NL');
-    // Verborgen na gratis-check (vraagt een bijdrage), niet verwijderd.
-    expect($haarlem->visible)->toBeFalse();
+    // Opnieuw zichtbaar: alleen vrijwillige bijdrage (FAQ: dat mag bij plantenasiels).
+    expect($haarlem->visible)->toBeTrue();
 
     $be = Deelplek::query()->where('slug', 'be-londerzeel-zadenbib')->first();
     expect($be)->not->toBeNull();
@@ -161,7 +183,7 @@ test('seeder vult deelplekken uit JSON met NL-default en BE-country', function (
 
     expect(Deelplek::query()->where('country', 'BE')->count())->toBe(37);
     expect(Deelplek::query()->where('country', 'NL')->count())->toBe(51);
-    expect(Deelplek::query()->visible()->count())->toBe(74);
+    expect(Deelplek::query()->visible()->count())->toBe(78);
 });
 
 test('herhaald seeden blijft bij 88 plekken zonder dubbelen', function () {
@@ -234,18 +256,28 @@ test('verborgen JSON-rij verschijnt niet op stadspagina', function () {
     }
 });
 
-test('gratis-check: niet-gratis en twijfelplekken verborgen, niet verwijderd', function () {
+test('gratis-check: betaalde/twijfelplekken verborgen; vrijwillige-bijdrage-asielen weer zichtbaar', function () {
     $plekken = collect(app(Deelplekken::class)->loadJson()['plekken']);
 
+    $zichtbaarMetVrijwilligeBijdrage = [
+        'haarlem-plantenasiel', 'utrecht-plantenhuis', 'leiden-plantenasiel', 'houten-plantenasiel',
+    ];
     $nietGratis = [
-        'haarlem-plantenasiel', 'utrecht-plantenhuis', 'leiden-plantenasiel',
-        'eindhoven-de-mortel', 'houten-plantenasiel', 'middelburg-plantaardig',
+        'eindhoven-de-mortel', 'middelburg-plantaardig',
     ];
     $twijfel = [
         'wageningen-plantenasiel', 'groningen-plantenasiel-050', 'medemblik-plantenbieb',
         'voorburg-koningkerk-plantenbieb', 'leidschenveen-plantenbieb', 'leeuwarden-zadenbieb-fonteinland',
         'delft-mekelpark-ruilkast',
     ];
+
+    foreach ($zichtbaarMetVrijwilligeBijdrage as $slug) {
+        $row = $plekken->firstWhere('id', $slug);
+        expect($row)->not->toBeNull();
+        expect($row['visible'] ?? true)->toBeTrue();
+        expect($row)->not->toHaveKey('verborgen_reden');
+        expect(Deelplek::query()->where('slug', $slug)->value('visible'))->toBeTruthy();
+    }
 
     foreach ([...$nietGratis, ...$twijfel] as $slug) {
         $row = $plekken->firstWhere('id', $slug);
@@ -257,18 +289,23 @@ test('gratis-check: niet-gratis en twijfelplekken verborgen, niet verwijderd', f
 
     $html = $this->get(route('deelplekken'))->assertOk()->getContent();
     $apiNamen = collect($this->getJson(route('api.deelplekken'))->json('items'))->pluck('naam');
-    foreach (['Plantenasiel Haarlem', 'Het Plantenhuis', 'Plantenasiel Leiden', 'Plantenbieb Medemblik', 'Zadenbibliotheek Leeuwarden Fonteinland'] as $naam) {
+    foreach (['Plantenasiel Haarlem', 'Het Plantenhuis', 'Plantenasiel Leiden', 'Plantenasiel Houten'] as $naam) {
+        expect($html)->toContain($naam);
+        expect($apiNamen->contains(fn ($n) => str_contains((string) $n, $naam)))->toBeTrue();
+    }
+    foreach (['Plantaardig Middelburg', 'Plantenbieb Medemblik', 'Zadenbibliotheek Leeuwarden Fonteinland'] as $naam) {
         expect($html)->not->toContain($naam);
         expect($apiNamen->contains(fn ($n) => str_contains((string) $n, $naam)))->toBeFalse();
     }
 
     $this->get(route('gratis-planten.show', ['stad' => 'haarlem']))
         ->assertOk()
-        ->assertDontSee('Plantenasiel Haarlem', false);
+        ->assertSee('Plantenasiel Haarlem', false)
+        ->assertDontSee('Ik ken geen vaste deelplek', false);
     $this->get(route('gratis-planten.show', ['stad' => 'utrecht']))
         ->assertOk()
         ->assertSee('Zadenbibliotheek Utrecht', false)
-        ->assertDontSee('Het Plantenhuis', false);
+        ->assertSee('Het Plantenhuis', false);
 });
 
 test('gecorrigeerde adressen van Joure en Utrecht', function () {

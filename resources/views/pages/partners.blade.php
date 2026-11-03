@@ -80,9 +80,7 @@
       <p>Geen evenementen voor deze filters. <a href="{{ route('partners') }}">Toon alles</a></p>
     </div>
   @else
-    <div class="empty-state partners-agenda-empty" role="status">
-      <p>Nog geen data voor 2026 bekend; ken jij er een? <a href="{{ route('feedback.create', ['page_path' => '/initiatieven']) }}">Meld het</a> via het feedbackformulier.</p>
-    </div>
+    <p class="muted partners-agenda-empty" role="status">Er staan nog geen evenementen gepland. Ken je er een? <a href="{{ route('feedback.create', ['page_path' => '/initiatieven']) }}">Meld het</a> via het feedbackformulier.</p>
   @endif
 
   @if($hasPast)

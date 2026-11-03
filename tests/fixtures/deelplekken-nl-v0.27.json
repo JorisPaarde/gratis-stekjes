@@ -9,9 +9,7 @@
     "lat": 52.377503,
     "lng": 4.664929,
     "bron_url": "https://plantenasielhaarlem.nl/contact/",
-    "geraadpleegd": "2026-10-31",
-    "visible": false,
-    "verborgen_reden": "niet-gratis"
+    "geraadpleegd": "2026-11-03"
   },
   {
     "id": "zeist-boswerf",
@@ -95,9 +93,7 @@
     "lat": 52.092903,
     "lng": 5.118167,
     "bron_url": "https://www.plantenasiel.nl/",
-    "geraadpleegd": "2026-10-31",
-    "visible": false,
-    "verborgen_reden": "niet-gratis"
+    "geraadpleegd": "2026-11-03"
   },
   {
     "id": "wageningen-plantenasiel",
@@ -123,9 +119,7 @@
     "lat": 52.162401,
     "lng": 4.489186,
     "bron_url": "https://www.gagoed.nl/plantenasiel-leiden/",
-    "geraadpleegd": "2026-10-31",
-    "visible": false,
-    "verborgen_reden": "niet-gratis"
+    "geraadpleegd": "2026-11-03"
   },
   {
     "id": "groningen-plantenasiel-050",
@@ -165,9 +159,7 @@
     "lat": 52.034969,
     "lng": 5.163807,
     "bron_url": "https://www.uitinhouten.nl/organisaties/90/plantenasiel-houten/",
-    "geraadpleegd": "2026-10-31",
-    "visible": false,
-    "verborgen_reden": "niet-gratis"
+    "geraadpleegd": "2026-11-03"
   },
   {
     "id": "middelburg-plantaardig",
@@ -179,7 +171,7 @@
     "lat": 51.497316,
     "lng": 3.611392,
     "bron_url": "https://plantaardigmiddelburg.nl/meer/",
-    "geraadpleegd": "2026-10-31",
+    "geraadpleegd": "2026-11-03",
     "visible": false,
     "verborgen_reden": "niet-gratis"
   },
