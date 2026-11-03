@@ -17,10 +17,31 @@
 .meedoen-tegel{display:flex;gap:.5rem;align-items:center;padding:.9rem 1rem;border:1px solid rgb(0 0 0 / .1);border-radius:12px;text-decoration:none;font-weight:600;background:#fff}
 .meedoen-tegel:hover,.meedoen-tegel:focus-visible{border-color:currentColor}
 .meedoen-tegel span{font-size:1.4rem}
-.meedoen-posters{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem}
-.meedoen-posters a{display:flex;flex-direction:column;gap:.2rem;padding:1rem;border:1px solid rgb(0 0 0 / .1);border-radius:12px;text-decoration:none;height:100%;background:#fff}
-.meedoen-posters a span{font-size:.9rem;opacity:.75}
-.meedoen-posters a:hover{border-color:currentColor}
+/* Posterkaarten: mini-poster + duidelijke actie */
+.meedoen-posters{list-style:none;padding:0;margin:1rem 0 .5rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem}
+.poster-kaart{display:grid;grid-template-columns:88px 1fr;grid-template-areas:'mini tekst' 'actie actie';align-items:center;gap:.8rem .9rem;height:100%;box-sizing:border-box;padding:.85rem;border:1px solid var(--line);border-radius:14px;text-decoration:none;color:var(--forest-deep);background:#fff;transition:border-color .15s,box-shadow .15s,transform .15s}
+.poster-kaart:hover,.poster-kaart:focus-visible{border-color:var(--forest);box-shadow:var(--shadow);transform:translateY(-2px)}
+.poster-mini{grid-area:mini;position:relative;display:grid;grid-template-rows:33% 1fr auto;aspect-ratio:210/297;width:100%;overflow:hidden;border-radius:6px;background:#fff;box-shadow:0 1px 2px rgb(0 0 0 / .12),0 4px 12px rgb(0 0 0 / .1);border:1px solid var(--line);container-type:inline-size}
+.poster-mini picture,.poster-mini img{display:block;width:100%;height:100%;min-height:0}
+.poster-mini img{object-fit:cover}
+.poster-mini-kop{padding:6cqw 7cqw 0;font-family:var(--font-display);text-transform:uppercase;font-size:9.5cqw;line-height:.98;color:var(--forest-deep)}
+.poster-mini-qr{position:absolute;left:7cqw;bottom:16cqw;width:30cqw;aspect-ratio:1;border-radius:3cqw;background:#fff;border:3cqw solid var(--bg-mint);box-sizing:border-box;
+  background-image:linear-gradient(var(--forest-deep),var(--forest-deep)),linear-gradient(var(--forest-deep),var(--forest-deep)),linear-gradient(var(--forest-deep),var(--forest-deep)),repeating-linear-gradient(90deg,var(--forest-deep) 0 2cqw,transparent 2cqw 4cqw);
+  background-size:7cqw 7cqw,7cqw 7cqw,7cqw 7cqw,8cqw 8cqw;background-position:1.5cqw 1.5cqw,calc(100% - 1.5cqw) 1.5cqw,1.5cqw calc(100% - 1.5cqw),calc(100% - 2cqw) calc(100% - 2cqw);background-repeat:no-repeat}
+.poster-mini-voet{height:11cqw;background:var(--forest-deep)}
+.poster-kaart-tekst{grid-area:tekst;display:flex;flex-direction:column;justify-content:center;gap:.2rem;flex:1;min-width:0}
+.poster-kaart-tekst strong{font-size:1.05rem;line-height:1.25}
+.poster-kaart-voor{font-size:.9rem;color:var(--ink-soft)}
+.poster-kaart-actie{grid-area:actie;display:flex;justify-content:center;font-weight:700;align-items:center;gap:.35rem;white-space:nowrap;background:var(--orange);color:var(--orange-text);border-radius:999px;padding:.4rem .85rem;font-size:.9rem;line-height:1.2}
+.poster-kaart:hover .poster-kaart-actie,.poster-kaart:focus-visible .poster-kaart-actie{background:var(--orange-hover)}
+.poster-kaart-uitleg{font-size:.9rem;margin:.25rem 0 1rem}
+@media (max-width:560px){
+  .meedoen-posters{grid-template-columns:1fr;gap:.75rem}
+  .poster-kaart{grid-template-columns:96px 1fr;grid-template-areas:'mini tekst' 'mini actie';align-items:start;gap:.3rem .9rem;padding:.75rem}
+  .poster-kaart-tekst{align-self:end;padding-top:.6rem}
+  .poster-kaart-actie{justify-self:start;align-self:start;margin-top:.4rem}
+}
+@media (prefers-reduced-motion:reduce){.poster-kaart{transition:none}.poster-kaart:hover,.poster-kaart:focus-visible{transform:none}}
 .meedoen-tip{padding:.9rem 1rem;border-left:4px solid #2e7d32;background:rgb(46 125 50 / .06);border-radius:0 10px 10px 0}
 .meedoen-berichten{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.75rem}
 .meedoen-bericht{margin:0;padding:1rem;border:1px solid rgb(0 0 0 / .1);border-radius:12px;display:flex;flex-direction:column;gap:.5rem;background:#fff}
