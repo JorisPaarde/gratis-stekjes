@@ -9,6 +9,16 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.58.2] - 2026-11-03
+
+### Fixed
+
+- Artisan `gp:herbereken-postcodes`: herberekent lat/lon van NL-leden met een postcode als
+  locatie (4 cijfers) via de gefixte `PdokGeocoder`. Idempotent (alleen bij verschil), fout per
+  postcode = overslaan + loggen, pauze tussen PDOK-verzoeken. Draait eenmalig via migratie
+  `2026_11_03_140000_herbereken_postcode_coordinaten` bij de deploy en breekt die nooit.
+  Leden hoeven hun profiel dus niet opnieuw op te slaan. Aanbod heeft geen eigen coördinaten.
+
 ## [0.58.1] - 2026-11-03
 
 ### Fixed
