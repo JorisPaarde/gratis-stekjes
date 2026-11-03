@@ -451,10 +451,13 @@ class StektipsController extends Controller
      */
     private function filterSoorten(array $soorten, array $filters): array
     {
-        // Soortpagina’s hebben geen kennisbank-categorie; bij artikelfilter op categorie tonen we ze niet.
-        if ($filters['categorie'] !== '') {
+        // Categorie = manier van vermeerderen (stekken, scheuren, …): soorten waarvoor die manier werkt.
+        // Andere categorieën (snoeien, permacultuur, …) gelden alleen voor artikelen.
+        $methode = $filters['categorie'];
+        if ($methode !== '' && ! isset(Stektips::METHODES[$methode])) {
             return [];
         }
+        $stektips = app(Stektips::class);
 
         $q = mb_strtolower($filters['q'], 'UTF-8');
         $seizoen = $filters['seizoen'];
@@ -466,6 +469,9 @@ class StektipsController extends Controller
         foreach ($soorten as $soort) {
             $slug = (string) ($soort['slug'] ?? '');
             if ($soortSlug !== '' && $slug !== $soortSlug) {
+                continue;
+            }
+            if ($methode !== '' && ! in_array($methode, $stektips->methodes($soort), true)) {
                 continue;
             }
 

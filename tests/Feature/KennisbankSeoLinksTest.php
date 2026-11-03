@@ -73,10 +73,10 @@ test('aanbod plant-filter werkt zonder JS en api accepteert plant', function () 
         ->assertJsonStructure(['meta', 'items']);
 });
 
-test('stektips-overzicht toont alle acht pillarkaarten', function () {
+test('stektips-overzicht toont alle negen pillarkaarten', function () {
     $kb = app(Kennisbank::class);
     $meta = $kb->pillarMeta();
-    expect($meta)->toHaveCount(8);
+    expect($meta)->toHaveCount(9);
 
     $html = $this->get(route('stektips.index'))
         ->assertOk()

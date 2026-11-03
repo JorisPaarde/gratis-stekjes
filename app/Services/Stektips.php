@@ -23,6 +23,49 @@ final class Stektips
         ));
     }
 
+    /** Manieren van vermeerderen (sleutels = kennisbank-categorieën). */
+    public const METHODES = [
+        'stekken' => 'Stekken',
+        'scheuren' => 'Scheuren',
+        'zaaien' => 'Zaaien',
+        'afleggen' => 'Afleggen',
+        'uitlopers' => 'Uitlopers en kindjes',
+        'enten' => 'Enten',
+    ];
+
+    /** Herkenningspatronen in de vrije tekst «methode» en «kort» van een soort. */
+    private const METHODE_PATRONEN = [
+        'stekken' => '/stek|top van \d|hout in een pot|in water/u',
+        'scheuren' => '/scheur|\bdelen\b|deel de|\bpol\b|pollen|wortelstok|deling/u',
+        'zaaien' => '/zaai|zaad|\bpit\b|pitten/u',
+        'afleggen' => '/afleg|marcot|heuvelen/u',
+        'uitlopers' => '/uitloper|kindje|zijscheut|broedbol|bolletje|stolon|knolletje/u',
+        'enten' => '/\benten\b|oculeer|oculeren/u',
+    ];
+
+    /**
+     * Welke manieren werken voor deze soort? Expliciet veld «methodes» wint; anders afgeleid uit de tekst.
+     *
+     * @param  array<string, mixed>  $soort
+     * @return list<string>
+     */
+    public function methodes(array $soort): array
+    {
+        if (isset($soort['methodes']) && is_array($soort['methodes'])) {
+            return array_values(array_filter($soort['methodes'], static fn ($m) => is_string($m) && isset(self::METHODES[$m])));
+        }
+
+        $tekst = mb_strtolower(((string) ($soort['methode'] ?? '')).' '.((string) ($soort['kort'] ?? '')), 'UTF-8');
+        $uit = [];
+        foreach (self::METHODE_PATRONEN as $methode => $patroon) {
+            if (preg_match($patroon, $tekst) === 1) {
+                $uit[] = $methode;
+            }
+        }
+
+        return $uit;
+    }
+
     /** @return array<string, mixed>|null */
     public function find(string $slug): ?array
     {

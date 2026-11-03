@@ -549,3 +549,12 @@
   .kb-kaart h3 { margin: 0; }
   .kb-vergelijk-kolom:not(.kb-vergelijk-kolom--met-foto) .illu { width: 56px; height: 56px; float: left; margin-right: .75rem; }
 }
+
+/* «Wat kun je nu vermeerderen?» */
+.kb-nu-intro { font-weight: 600; }
+.kb-nu { list-style: none; padding: 0; margin: .75rem 0 1.5rem; display: grid; gap: .75rem; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); }
+.kb-nu-groep { background: #fff; border: 1px solid var(--line, rgba(26,18,16,.12)); border-left: 4px solid #e8833a; border-radius: .9rem; padding: .9rem 1rem; }
+.kb-nu-groep p { margin: 0 0 .4rem; font-size: .95rem; }
+.kb-nu-kop { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
+.kb-nu-kop .badge { text-decoration: none; }
+.kb-nu-planten { font-size: .88rem !important; color: var(--muted, #5b5550); }

@@ -17,6 +17,10 @@
             "naam": "Afleggen"
         },
         {
+            "slug": "uitlopers",
+            "naam": "Uitlopers en kindjes"
+        },
+        {
             "slug": "snoeien",
             "naam": "Snoeien"
         },
@@ -64,6 +68,10 @@
         "afleggen": {
             "hub_slug": "afleggen",
             "naam": "Afleggen"
+        },
+        "uitlopers": {
+            "hub_slug": "uitlopers",
+            "naam": "Uitlopers en kindjes"
         },
         "snoeien": {
             "hub_slug": "snoeien",

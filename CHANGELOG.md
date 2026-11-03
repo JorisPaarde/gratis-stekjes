@@ -9,6 +9,14 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.55.0] - 2026-11-03
+
+### Added
+
+- Pijler **Uitlopers, kindjes en bollen** (/stektips/artikel/uitlopers): uitlopers, kindjes, worteluitlopers, broedbolletjes; kalender, stappenplan, soorten met foto, 4 NL-video's.
+- Hub /vermeerderen: blok **«Wat kun je nu vermeerderen?»** met de groepen van deze maand (uit nu-te-stekken), en rij «Uitlopers en kindjes» in de kalender.
+- Filter **«Manier of onderwerp»** op /stektips: bij een manier (stekken, scheuren, zaaien, afleggen, uitlopers, enten) ook de soorten waarvoor die werkt. Manieren per soort afgeleid uit de tekst (`Stektips::methodes()`), later te overschrijven met veld `methodes`.
+
 ## [0.54.0] - 2026-11-02
 
 ### Added

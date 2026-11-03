@@ -24,6 +24,7 @@
       'scheuren' => 'Een pol in stukken delen: de snelste manier voor vaste planten en kruiden.',
       'zaaien' => 'Voorzaaien, buiten zaaien en zelf zaad oogsten en bewaren.',
       'afleggen' => 'Een tak laten wortelen aan de moederplant, en marcotteren.',
+      'uitlopers' => 'Aardbei, graslelie, aloë en bollen maken zelf jonge plantjes.',
       'fruitbomen-enten' => 'Fruitbomen van een vast ras: enten en oculeren.',
     ];
   @endphp
@@ -37,9 +38,9 @@
     <details class="stektips-meer-filters" @if($hasExtraFilters) open @endif>
       <summary>Meer filters</summary>
       <div class="stektips-filter-grid">
-        <label for="stektips-categorie">Onderwerp
+        <label for="stektips-categorie">Manier of onderwerp
           <select id="stektips-categorie" name="categorie">
-            <option value="">Alle onderwerpen</option>
+            <option value="">Alle manieren en onderwerpen</option>
             @foreach($categorieen as $cat)
               <option value="{{ $cat['slug'] }}" @selected($filters['categorie'] === $cat['slug'])>{{ $cat['naam'] }}</option>
             @endforeach
