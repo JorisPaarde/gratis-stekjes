@@ -5,8 +5,24 @@
             "naam": "Stekken"
         },
         {
+            "slug": "scheuren",
+            "naam": "Scheuren"
+        },
+        {
+            "slug": "zaaien",
+            "naam": "Zaaien"
+        },
+        {
+            "slug": "afleggen",
+            "naam": "Afleggen"
+        },
+        {
             "slug": "snoeien",
             "naam": "Snoeien"
+        },
+        {
+            "slug": "enten",
+            "naam": "Enten"
         },
         {
             "slug": "natuurlijk-bewortelen",
@@ -15,10 +31,6 @@
         {
             "slug": "permacultuur",
             "naam": "Permacultuur"
-        },
-        {
-            "slug": "vermeerderen",
-            "naam": "Vermeerderen overig"
         }
     ],
     "niveaus": [
@@ -41,9 +53,25 @@
             "hub_slug": "stekken",
             "naam": "Stekken"
         },
+        "scheuren": {
+            "hub_slug": "scheuren",
+            "naam": "Scheuren"
+        },
+        "zaaien": {
+            "hub_slug": "zaaien",
+            "naam": "Zaaien"
+        },
+        "afleggen": {
+            "hub_slug": "afleggen",
+            "naam": "Afleggen"
+        },
         "snoeien": {
             "hub_slug": "snoeien",
             "naam": "Snoeien"
+        },
+        "enten": {
+            "hub_slug": "fruitbomen-enten",
+            "naam": "Enten"
         },
         "natuurlijk-bewortelen": {
             "hub_slug": "natuurlijk-bewortelen",
@@ -52,10 +80,6 @@
         "permacultuur": {
             "hub_slug": "permacultuur-gilde-voedselbos",
             "naam": "Permacultuur"
-        },
-        "vermeerderen": {
-            "hub_slug": "vermeerderen",
-            "naam": "Vermeerderen overig"
         }
     }
 }

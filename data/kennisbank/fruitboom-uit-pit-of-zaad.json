@@ -11,9 +11,10 @@
     "zaailing fruitboom"
   ],
   "categorieen": [
-    "vermeerderen"
+    "zaaien",
+    "enten"
   ],
-  "pillar": "vermeerderen",
+  "pillar": "zaaien",
   "is_pillar": false,
   "gerelateerde_soorten": [
     "appel",

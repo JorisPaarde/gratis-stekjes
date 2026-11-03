@@ -1,0 +1,221 @@
+{
+    "slug": "afleggen",
+    "titel": "Afleggen en marcotteren: wortels aan de moederplant",
+    "h1": "Afleggen en marcotteren",
+    "seo_title": "Afleggen: planten vermeerderen zonder stekglas",
+    "samenvatting": "Bij afleggen laat je een tak wortelen terwijl hij nog aan de moederplant vastzit. Langzaam, maar bijna altijd raak, ook bij struiken die lastig stekken.",
+    "meta_description": "Afleggen en marcotteren: zo laat je een tak wortelen aan de moederplant. Voor hazelaar, klimop, braam en aardbei, met stappenplan en kalender.",
+    "zoekwoorden": [
+        "afleggen",
+        "planten afleggen",
+        "marcotteren",
+        "luchtafleggen",
+        "kopafleggen",
+        "aardbei uitlopers",
+        "struiken vermeerderen"
+    ],
+    "categorieen": [
+        "afleggen"
+    ],
+    "pillar": "afleggen",
+    "is_pillar": true,
+    "illustratie": "afleggen",
+    "gerelateerde_soorten": [
+        "hazelaar",
+        "klimop",
+        "braam",
+        "aardbei",
+        "forsythia"
+    ],
+    "seizoenen": [
+        "lente",
+        "zomer",
+        "herfst"
+    ],
+    "maanden": [
+        3,
+        4,
+        6,
+        7,
+        8,
+        9,
+        10
+    ],
+    "niveau": "beginner",
+    "locatie": "buiten",
+    "inhoud": [
+        {
+            "type": "p",
+            "tekst": "Afleggen is de geduldige manier van vermeerderen. De tak blijft aan de moederplant vastzitten en krijgt dus water en voeding tot hij eigen wortels heeft. Mislukt het, dan ben je niets kwijt."
+        },
+        {
+            "type": "tip",
+            "titel": "Laat de natuur het doen",
+            "tekst": "Kijk eens onder een klimop, braam of hazelaar: vaak hebben takken die de grond raken al wortels gemaakt. Die kun je zo losknippen."
+        },
+        {
+            "type": "h2",
+            "tekst": "Vier manieren"
+        },
+        {
+            "type": "kaarten",
+            "items": [
+                {
+                    "titel": "Gewoon afleggen",
+                    "wanneer": "voorjaar of najaar",
+                    "illustratie": "afleggen",
+                    "tekst": "Een lage, soepele tak in de grond pinnen. Voor hazelaar, forsythia, kamperfoelie, klimop en veel struiken."
+                },
+                {
+                    "titel": "Kopafleggen",
+                    "wanneer": "juli tot september",
+                    "illustratie": "afleggen",
+                    "tekst": "Het topje van een lange scheut in de grond steken. Werkt heel goed bij braam en Japanse wijnbes."
+                },
+                {
+                    "titel": "Uitlopers vastzetten",
+                    "wanneer": "juni tot augustus",
+                    "illustratie": "uitloper",
+                    "tekst": "Aardbeien maken uitlopers met jonge plantjes. Zet ze vast in een potje, na een paar weken knip je ze los."
+                },
+                {
+                    "titel": "Marcotteren",
+                    "wanneer": "voorjaar",
+                    "illustratie": "halfrijp",
+                    "tekst": "Luchtafleggen: een tak in de lucht laten wortelen in vochtig mos. Voor rubberplant, rhododendron en vijg.",
+                    "slug": "marcotteren"
+                }
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Wanneer leg je af?"
+        },
+        {
+            "type": "kalender",
+            "titel": "Aflegkalender",
+            "rijen": [
+                {
+                    "label": "Gewoon afleggen",
+                    "maanden": [
+                        3,
+                        4,
+                        9,
+                        10
+                    ],
+                    "kleur": "bruin"
+                },
+                {
+                    "label": "Kopafleggen",
+                    "maanden": [
+                        7,
+                        8,
+                        9
+                    ],
+                    "kleur": "groen"
+                },
+                {
+                    "label": "Aardbei-uitlopers",
+                    "maanden": [
+                        6,
+                        7,
+                        8
+                    ],
+                    "kleur": "oranje"
+                },
+                {
+                    "label": "Marcotteren",
+                    "maanden": [
+                        4,
+                        5,
+                        6
+                    ],
+                    "kleur": "licht"
+                }
+            ],
+            "noot": "Losknippen doe je pas als er genoeg wortels zijn: bij uitlopers na enkele weken, bij struiken vaak pas na een jaar."
+        },
+        {
+            "type": "h2",
+            "tekst": "Zo leg je een tak af"
+        },
+        {
+            "type": "stappen",
+            "items": [
+                {
+                    "titel": "Kies een soepele tak",
+                    "tekst": "Een jonge tak laag aan de plant, die je zonder knakken tot de grond kunt buigen."
+                },
+                {
+                    "titel": "Maak een ondiep geultje",
+                    "tekst": "Ongeveer 10 cm diep, op de plek waar de tak de grond raakt. Meng er wat compost of zand door."
+                },
+                {
+                    "titel": "Kras de bast licht",
+                    "tekst": "Maak aan de onderkant, net onder een knop, een klein sneetje of schraap een stukje bast weg. Daar vormen zich de wortels."
+                },
+                {
+                    "titel": "Pin vast en dek af",
+                    "tekst": "Leg de tak in het geultje, zet vast met een haakje van ijzerdraad of een steen en dek af met grond. Buig het topje omhoog langs een stokje."
+                },
+                {
+                    "titel": "Houd vochtig en wacht",
+                    "tekst": "Geef in droge periodes water. Na een paar maanden tot een jaar voel je weerstand als je zachtjes trekt."
+                },
+                {
+                    "titel": "Knip los en verplant",
+                    "tekst": "Knip de tak tussen moederplant en wortels door. Laat hem nog een paar weken staan en verplant hem dan, of geef hem weg."
+                }
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Makkelijk om af te leggen"
+        },
+        {
+            "type": "soorten",
+            "items": [
+                "hazelaar",
+                "klimop",
+                "forsythia",
+                "braam",
+                "aardbei",
+                "kiwibes",
+                "druif",
+                "blauwe-bes"
+            ]
+        },
+        {
+            "type": "p",
+            "tekst": "Meer over luchtafleggen staat bij [[marcotteren|marcotteren]], en scheuren en afleggen samen bij [[scheuren-en-afleggen|scheuren en afleggen]]."
+        },
+        {
+            "type": "videos",
+            "titel": "Kijk hoe het moet",
+            "intro": "Afleggen in een paar minuten uitgelegd.",
+            "items": [
+                {
+                    "id": "eBXdt0yzlew",
+                    "titel": "Gratis planten: afleggen",
+                    "kanaal": "Tuinmanieren"
+                }
+            ]
+        }
+    ],
+    "bronnen": [
+        {
+            "titel": "RHS — Layering plants",
+            "url": "https://www.rhs.org.uk/propagation/layering"
+        },
+        {
+            "titel": "RHS — Air layering plants",
+            "url": "https://www.rhs.org.uk/propagation/air-layering-plants"
+        }
+    ],
+    "duurzamer_alternatief": null,
+    "howto": false,
+    "child_slugs": [
+        "marcotteren",
+        "scheuren-en-afleggen"
+    ]
+}

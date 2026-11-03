@@ -12,7 +12,7 @@
 @section('content')
 <section class="section wrap stektips-page">
   <h1 class="stektips-titel">{{ $title }}</h1>
-  <p class="section-intro">Zelf nieuwe planten kweken: stekken, zaaien, scheuren en snoeien. Zoek je plant op en lees hoe en wanneer het lukt.</p>
+  <p class="section-intro">Zelf nieuwe planten kweken: stekken, zaaien, scheuren en snoeien. Zoek je plant op en lees hoe en wanneer het lukt. Alle manieren op een rij staan bij <a href="{{ route('vermeerderen') }}">planten vermeerderen</a>.</p>
 
   @php
     $hasExtraFilters = collect($filters)->except('q')->filter(fn ($v) => $v !== '' && $v !== null)->isNotEmpty();
@@ -21,7 +21,10 @@
       'snoeien' => 'Wanneer je snoeit, en hoe je van snoeisel stekjes maakt.',
       'natuurlijk-bewortelen' => 'Wortels zonder stekpoeder, bijvoorbeeld met wilgenwater.',
       'permacultuur-gilde-voedselbos' => 'Planten in lagen, en vermeerderen wat lokaal goed groeit.',
-      'vermeerderen' => 'Scheuren, afleggen en enten, als stekken niet de beste route is.',
+      'scheuren' => 'Een pol in stukken delen: de snelste manier voor vaste planten en kruiden.',
+      'zaaien' => 'Voorzaaien, buiten zaaien en zelf zaad oogsten en bewaren.',
+      'afleggen' => 'Een tak laten wortelen aan de moederplant, en marcotteren.',
+      'fruitbomen-enten' => 'Fruitbomen van een vast ras: enten en oculeren.',
     ];
   @endphp
 

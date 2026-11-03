@@ -101,6 +101,7 @@ Route::get('/stekjeslabels', [MeedoenController::class, 'labels'])->name('stekje
 Route::get('/natuur', [AudienceLandingController::class, 'natuur'])->name('natuur');
 Route::get('/verbinding', [AudienceLandingController::class, 'verbinding'])->name('verbinding');
 Route::get('/invasieve-soorten', InvasieveSoortenController::class)->name('invasieve-soorten');
+Route::get('/vermeerderen', [StektipsController::class, 'vermeerderen'])->name('vermeerderen');
 Route::get('/stektips', [StektipsController::class, 'index'])->name('stektips.index');
 Route::get('/stektips/artikel/{slug}', [StektipsController::class, 'artikel'])
     ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
