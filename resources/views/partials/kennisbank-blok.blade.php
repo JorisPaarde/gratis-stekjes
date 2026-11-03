@@ -10,8 +10,23 @@
     @break
 
   @case('p')
-    {{-- [[slug|tekst]] wordt een link naar dat artikel. --}}
-    <p>{!! preg_replace_callback('/\[\[([a-z0-9-]+)\|([^\]]+)\]\]/', fn ($m) => '<a href="'.e(route('stektips.artikel', ['slug' => $m[1]])).'">'.$m[2].'</a>', e($block['tekst'] ?? '')) !!}</p>
+    {{-- [[slug|tekst]] wordt een link naar dat artikel; [[@stektips|tekst]] naar het overzicht per plant. --}}
+    @if(!empty($block['foto']))
+      <figure class="kb-sectie-foto">
+        <x-artikel-picture :id="$block['foto']" sizes="(max-width: 760px) 100vw, 42rem" />
+      </figure>
+    @endif
+    @php
+      $linkRoutes = ['@stektips' => 'stektips.index', '@aanbod' => 'aanbod', '@vermeerderen' => 'vermeerderen'];
+      $html = preg_replace_callback('/\[\[(@?[a-z0-9-]+)\|([^\]]+)\]\]/', function ($m) use ($linkRoutes) {
+          $url = str_starts_with($m[1], '@')
+              ? (isset($linkRoutes[$m[1]]) ? route($linkRoutes[$m[1]]) : null)
+              : route('stektips.artikel', ['slug' => $m[1]]);
+
+          return $url === null ? $m[2] : '<a href="'.e($url).'">'.$m[2].'</a>';
+      }, e($block['tekst'] ?? ''));
+    @endphp
+    <p>{!! $html !!}</p>
     @break
 
   @case('ol')
@@ -35,11 +50,52 @@
     </aside>
     @break
 
+  @case('nu')
+    {{-- Wat kun je deze maand vermeerderen? Uit data/nu-te-stekken.json (Europe/Amsterdam). --}}
+    @php
+      $nu = app(\App\Services\NuTeStekken::class)->blockForViews();
+      $nuLabels = ['stek' => 'Stekken', 'scheut' => 'Stekken', 'deling' => 'Scheuren', 'zaad' => 'Zaaien', 'enten' => 'Enten', 'afleggen' => 'Afleggen'];
+      $nuPijler = ['stek' => 'stekken', 'scheut' => 'stekken', 'deling' => 'scheuren', 'zaad' => 'zaaien', 'enten' => 'fruitbomen-enten', 'afleggen' => 'afleggen'];
+    @endphp
+    @if($nu)
+      <p class="kb-nu-intro">In {{ $nu['maand_naam'] }} kun je dit doen:</p>
+      <ul class="kb-nu">
+        @foreach($nu['groepen'] as $groep)
+          <li class="kb-nu-groep">
+            <p class="kb-nu-kop">
+              @php $m = (string) ($groep['methode'] ?? ''); @endphp
+              @if(isset($nuPijler[$m]))
+                <a class="badge" href="{{ route('stektips.artikel', ['slug' => $nuPijler[$m]]) }}">{{ $nuLabels[$m] }}</a>
+              @endif
+              <strong>{{ $groep['titel'] ?? '' }}</strong>
+            </p>
+            <p>{{ $groep['tip'] ?? '' }}</p>
+            @if(!empty($groep['planten']))
+              <p class="kb-nu-planten">
+                @foreach(array_slice($groep['planten'], 0, 8) as $plant)
+                  @php $sep = $loop->last ? '' : ', '; @endphp
+                  @if(!empty($plant['stek_url']))
+                    <a href="{{ $plant['stek_url'] }}">{{ $plant['naam'] }}</a>{{ $sep }}
+                  @else
+                    {{ $plant['naam'] }}{{ $sep }}
+                  @endif
+                @endforeach
+                @if(count($groep['planten']) > 8)<span class="muted"> en meer</span>@endif
+              </p>
+            @endif
+          </li>
+        @endforeach
+      </ul>
+    @endif
+    @break
+
   @case('kaarten')
     <ul class="kb-kaarten">
       @foreach($block['items'] ?? [] as $kaart)
-        <li class="kb-kaart">
-          @if(!empty($kaart['illustratie']))
+        <li @class(['kb-kaart', 'kb-kaart--met-foto' => !empty($kaart['foto'])])>
+          @if(!empty($kaart['foto']))
+            <x-artikel-picture :id="$kaart['foto']" class="kb-kaart-foto" sizes="(max-width: 600px) 100vw, 18rem" />
+          @elseif(!empty($kaart['illustratie']))
             @include('partials.illustraties.stek', ['naam' => $kaart['illustratie']])
           @endif
           <h3>{{ $kaart['titel'] ?? '' }}</h3>
@@ -54,6 +110,14 @@
     @break
 
   @case('stappen')
+    @if(!empty($block['foto']))
+      <figure class="kb-sectie-foto">
+        <x-artikel-picture :id="$block['foto']" sizes="(max-width: 760px) 100vw, 42rem" />
+      </figure>
+    @endif
+    @if(!empty($block['illustratie']))
+      <div class="kb-stappen-illu">@include('partials.illustraties.stek', ['naam' => $block['illustratie']])</div>
+    @endif
     <ol class="kb-stappen">
       @foreach($block['items'] ?? [] as $stap)
         <li>
@@ -67,8 +131,10 @@
   @case('vergelijk')
     <div class="kb-vergelijk">
       @foreach($block['kolommen'] ?? [] as $kolom)
-        <div class="kb-vergelijk-kolom">
-          @if(!empty($kolom['illustratie']))
+        <div @class(['kb-vergelijk-kolom', 'kb-vergelijk-kolom--met-foto' => !empty($kolom['foto'])])>
+          @if(!empty($kolom['foto']))
+            <x-artikel-picture :id="$kolom['foto']" class="kb-vergelijk-foto" sizes="(max-width: 640px) 100vw, 28rem" />
+          @elseif(!empty($kolom['illustratie']))
             @include('partials.illustraties.stek', ['naam' => $kolom['illustratie']])
           @endif
           <h3>{{ $kolom['titel'] ?? '' }}</h3>
@@ -106,6 +172,11 @@
     @break
 
   @case('maanden')
+    @if(!empty($block['foto']))
+      <figure class="kb-sectie-foto">
+        <x-artikel-picture :id="$block['foto']" sizes="(max-width: 760px) 100vw, 56rem" />
+      </figure>
+    @endif
     <ol class="kb-maanden">
       @foreach($block['items'] ?? [] as $i => $item)
         <li @class(['kb-maand', 'is-nu' => $i + 1 === $huidigeMaand])>
@@ -148,7 +219,11 @@
         <figure class="kb-video">
           <div class="kb-video-frame" data-video-id="{{ $vid }}" data-video-titel="{{ $video['titel'] ?? '' }}">
             <a class="kb-video-start" href="https://www.youtube.com/watch?v={{ $vid }}" rel="noopener noreferrer" target="_blank">
+              @if(!empty($video['poster']))
+                <x-artikel-picture :id="$video['poster']" class="kb-video-poster" sizes="(max-width: 759px) 100vw, 28rem" :decorative="true" />
+              @endif
               <span class="kb-video-play" aria-hidden="true"><svg viewBox="0 0 68 48" width="68" height="48"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.3.2 34 .2 34 .2S12.7.2 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 13 0 24 0 24s0 11 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.7 47.8 34 47.8 34 47.8s21.3 0 26.6-1.5c2.9-.8 5.1-3.1 5.9-6C68 35 68 24 68 24s0-11-1.5-16.3z" fill="#e8833a"/><path d="M45 24 27 14v20z" fill="#fff"/></svg></span>
+              <span class="kb-video-scrim" aria-hidden="true"></span>
               <span class="kb-video-titel">{{ $video['titel'] ?? '' }}</span>
               <span class="kb-video-kanaal">{{ $video['kanaal'] ?? 'YouTube' }}</span>
             </a>

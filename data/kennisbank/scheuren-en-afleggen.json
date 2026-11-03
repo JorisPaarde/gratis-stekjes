@@ -13,8 +13,8 @@
         "heuvelen"
     ],
     "categorieen": [
-        "vermeerderen",
-        "permacultuur"
+        "scheuren",
+        "afleggen"
     ],
     "gerelateerde_soorten": [
         "hosta",
@@ -90,6 +90,6 @@
     ],
     "duurzamer_alternatief": null,
     "howto": true,
-    "pillar": "vermeerderen",
+    "pillar": "scheuren",
     "illustratie": "afleggen"
 }

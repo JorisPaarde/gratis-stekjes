@@ -1,61 +1,290 @@
 {
-    "titel": "Vermeerderen overig",
-    "samenvatting": "Scheuren, afleggen en enten naast stekken. Handig in permacultuur en voedselbos wanneer stekken niet de beste route is.",
-    "meta_description": "Planten vermeerderen door scheuren, afleggen en enten. Aanvulling op stekken in de kennisbank van Gratis planten.",
+    "slug": "vermeerderen",
+    "titel": "Planten vermeerderen: alle manieren op een rij",
+    "h1": "Planten vermeerderen",
+    "seo_title": "Planten vermeerderen: stekken, scheuren, zaaien en afleggen",
+    "samenvatting": "Van één plant twee, tien of honderd maken, zonder iets te kopen. Stekken, scheuren, zaaien, afleggen en meer: welke manier past bij jouw plant, en wanneer doe je het?",
+    "meta_description": "Planten vermeerderen: stekken, scheuren, zaaien, afleggen en enten op een rij. Welke manier past bij jouw plant, en wat je over hebt deel je gratis.",
     "zoekwoorden": [
+        "planten vermeerderen",
         "vermeerderen",
-        "planten scheuren",
+        "gratis planten",
+        "stekken",
+        "scheuren",
+        "zaaien",
         "afleggen",
-        "enten",
-        "planten afleggen"
+        "planten delen"
     ],
     "categorieen": [
-        "vermeerderen"
+        "stekken",
+        "scheuren",
+        "zaaien",
+        "afleggen"
     ],
-    "pillar": "vermeerderen",
-    "is_pillar": true,
+    "illustratie": "scheuren",
     "gerelateerde_soorten": [
+        "munt",
         "hosta",
         "aardbei",
-        "framboos",
-        "appel",
-        "peer",
-        "pioenroos"
+        "basilicum"
     ],
     "seizoenen": [
         "lente",
-        "herfst"
+        "zomer",
+        "herfst",
+        "winter"
     ],
     "maanden": [
+        1,
+        2,
         3,
         4,
         5,
+        6,
+        7,
+        8,
         9,
         10,
-        11
+        11,
+        12
     ],
     "niveau": "beginner",
-    "locatie": "buiten",
+    "locatie": "beide",
     "inhoud": [
         {
             "type": "p",
-            "tekst": "Niet alles hoeft een stekje te zijn. Scheuren en afleggen zijn vaak zekerder; enten (volume hoog in zoekdata) is specialistischer en hier vooral ter verwijzing."
+            "tekst": "Vermeerderen is van één plant meer planten maken. Dat kan op veel manieren, en bijna allemaal zijn ze gratis. Het mooiste: wat je over hebt, geef je weg aan iemand in de buurt."
+        },
+        {
+            "type": "tip",
+            "titel": "Welke manier?",
+            "tekst": "Kijk naar de plant zelf. Groeit hij als een pol, dan scheur je. Heeft hij stengels of takken, dan stek je. Maakt hij zaad, dan zaai je. Raken lange takken de grond, dan leg je af."
         },
         {
             "type": "h2",
-            "tekst": "Scheuren en afleggen"
+            "tekst": "Zes manieren om te vermeerderen"
         },
         {
-            "type": "p",
-            "tekst": "Zie het artikel scheuren en afleggen voor vaste planten, hosta, aardbei-uitlopers en tip layering bij bramen/framboos."
+            "type": "kaarten",
+            "items": [
+                {
+                    "titel": "Stekken",
+                    "wanneer": "bijna het hele jaar",
+                    "illustratie": "kopstek",
+                    "tekst": "Een stukje stengel, blad of tak laten wortelen. Voor kamerplanten, kruiden, struiken en bessen.",
+                    "slug": "stekken"
+                },
+                {
+                    "titel": "Scheuren",
+                    "wanneer": "voorjaar en najaar",
+                    "illustratie": "scheuren",
+                    "tekst": "Een pol in stukken delen, elk stuk met wortels. De snelste manier voor vaste planten, grassen en veel kruiden.",
+                    "slug": "scheuren"
+                },
+                {
+                    "titel": "Zaaien",
+                    "wanneer": "februari tot en met oktober",
+                    "illustratie": "zaaien",
+                    "tekst": "Uit zaad komt een hele nieuwe plant. Voor bloemen, groente en kruiden, en zaad oogsten kost niets.",
+                    "slug": "zaaien"
+                },
+                {
+                    "titel": "Afleggen",
+                    "wanneer": "voorjaar en najaar",
+                    "illustratie": "afleggen",
+                    "tekst": "Een tak laten wortelen terwijl hij nog aan de moederplant vastzit. Bijna altijd raak, ook bij lastige struiken.",
+                    "slug": "afleggen"
+                },
+                {
+                    "titel": "Uitlopers en kindjes",
+                    "wanneer": "zomer",
+                    "illustratie": "uitloper",
+                    "tekst": "Aardbei, graslelie en aloë maken zelf jonge plantjes. Losmaken en oppotten is genoeg.",
+                    "slug": "uitlopers"
+                },
+                {
+                    "titel": "Enten",
+                    "wanneer": "winter en zomer",
+                    "illustratie": "enten",
+                    "tekst": "Voor fruitbomen van een vast ras. Iets voor gevorderden, met een onderstam en een scherp mes.",
+                    "slug": "fruitbomen-enten"
+                }
+            ]
         },
         {
             "type": "h2",
-            "tekst": "Enten"
+            "tekst": "Wat kun je nu vermeerderen?"
+        },
+        {
+            "type": "nu"
+        },
+        {
+            "type": "h2",
+            "tekst": "Welke manier past bij jouw plant?"
+        },
+        {
+            "type": "ul",
+            "items": [
+                "Groeit hij als een pol of bos, zoals hosta, bieslook of siergras? Scheuren.",
+                "Heeft hij stengels of takken, zoals lavendel, pothos of vlinderstruik? Stekken.",
+                "Maakt hij zaad, zoals goudsbloem, tomaat of akelei? Zaaien.",
+                "Raken lange, soepele takken de grond, zoals bij braam, klimop of hazelaar? Afleggen.",
+                "Maakt hij uitlopers of kindjes, zoals aardbei, graslelie of aloë? Losmaken en oppotten.",
+                "Een fruitboom van een bepaald ras? Enten, want uit een pit komt een ander ras."
+            ]
         },
         {
             "type": "p",
-            "tekst": "Enten en oculeren vragen oefening en onderstam. Voor fruitbomen is dat de echte rasvaste route — zie het artikel Fruitbomen enten (copuleren, spleetenten, oculeren, familieboom, entmes/entwas, en waarom enten op wilg niet werkt). Zaaien van pitten geeft geen gelijk ras; zie Fruitboom uit pit of zaad."
+            "tekst": "Per plant staat precies wat werkt bij de [[@stektips|tips per plant]]: zoek je plant op en je ziet de beste manier en het beste moment."
+        },
+        {
+            "type": "h2",
+            "tekst": "Wat kun je wanneer doen?"
+        },
+        {
+            "type": "kalender",
+            "titel": "Vermeerderkalender",
+            "rijen": [
+                {
+                    "label": "Kopstek",
+                    "maanden": [
+                        4,
+                        5,
+                        6
+                    ],
+                    "kleur": "groen"
+                },
+                {
+                    "label": "Halfrijpe stek",
+                    "maanden": [
+                        7,
+                        8,
+                        9
+                    ],
+                    "kleur": "oranje"
+                },
+                {
+                    "label": "Winterhoutstek",
+                    "maanden": [
+                        1,
+                        2,
+                        11,
+                        12
+                    ],
+                    "kleur": "bruin"
+                },
+                {
+                    "label": "Scheuren",
+                    "maanden": [
+                        3,
+                        4,
+                        9,
+                        10
+                    ],
+                    "kleur": "groen"
+                },
+                {
+                    "label": "Voorzaaien binnen",
+                    "maanden": [
+                        2,
+                        3,
+                        4
+                    ],
+                    "kleur": "licht"
+                },
+                {
+                    "label": "Buiten zaaien",
+                    "maanden": [
+                        4,
+                        5,
+                        6
+                    ],
+                    "kleur": "licht"
+                },
+                {
+                    "label": "Zaad oogsten",
+                    "maanden": [
+                        7,
+                        8,
+                        9,
+                        10
+                    ],
+                    "kleur": "oranje"
+                },
+                {
+                    "label": "Uitlopers en kindjes",
+                    "maanden": [
+                        6,
+                        7,
+                        8,
+                        9
+                    ],
+                    "kleur": "groen"
+                },
+                {
+                    "label": "Afleggen",
+                    "maanden": [
+                        3,
+                        4,
+                        9,
+                        10
+                    ],
+                    "kleur": "bruin"
+                }
+            ],
+            "noot": "Indicatief voor Nederland en België. De oranje rand is de huidige maand. Volg vooral de plant en het weer."
+        },
+        {
+            "type": "h2",
+            "tekst": "Makkelijk om mee te beginnen"
+        },
+        {
+            "type": "soorten",
+            "items": [
+                "munt",
+                "pothos",
+                "hosta",
+                "bieslook",
+                "aardbei",
+                "wilg",
+                "lavendel",
+                "basilicum"
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Snoeien en vermeerderen"
+        },
+        {
+            "type": "p",
+            "tekst": "Snoeisel is vaak perfect stekmateriaal. Lees bij [[snoeien|snoeien]] wanneer je wat knipt, en bij [[snoeiafval-als-stek|snoeiafval als stek]] hoe je er nieuwe planten van maakt."
+        },
+        {
+            "type": "videos",
+            "titel": "Kijk hoe het moet",
+            "intro": "Nederlandstalige video's die laten zien hoe makkelijk gratis planten maken is.",
+            "items": [
+                {
+                    "id": "mLB4MWKLLzE",
+                    "titel": "Gratis planten: zaaien en stekken",
+                    "kanaal": "Tuinmanieren"
+                },
+                {
+                    "id": "F6TSnwGjVuU",
+                    "titel": "Gratis planten: vermeerderen en zaaien in de herfst",
+                    "kanaal": "Tuinmanieren"
+                },
+                {
+                    "id": "E0KPdbgFaLw",
+                    "titel": "Hoe stekken en zaaien in juli en augustus?",
+                    "kanaal": "Tuinmanieren"
+                },
+                {
+                    "id": "eBXdt0yzlew",
+                    "titel": "Gratis planten: afleggen",
+                    "kanaal": "Tuinmanieren"
+                }
+            ]
         }
     ],
     "bronnen": [
@@ -68,18 +297,25 @@
             "url": "https://www.rhs.org.uk/propagation/layering"
         },
         {
-            "titel": "RHS — Grafting fruit trees",
-            "url": "https://www.rhs.org.uk/fruit/fruit-trees/grafting-ornamental"
+            "titel": "RHS — How to sow seeds indoors",
+            "url": "https://www.rhs.org.uk/propagation/how-to-sow-seeds-indoors"
+        },
+        {
+            "titel": "RHS — Softwood cuttings",
+            "url": "https://www.rhs.org.uk/propagation/softwood-cuttings"
         }
     ],
     "duurzamer_alternatief": null,
     "howto": false,
     "child_slugs": [
-        "scheuren-en-afleggen",
+        "stekken",
+        "scheuren",
+        "zaaien",
+        "afleggen",
+        "uitlopers",
+        "snoeien",
+        "natuurlijk-bewortelen",
         "fruitbomen-enten",
-        "onderstammen-per-fruitboom",
-        "marcotteren",
-        "fruitboom-uit-pit-of-zaad"
-    ],
-    "slug": "vermeerderen"
+        "permacultuur-gilde-voedselbos"
+    ]
 }

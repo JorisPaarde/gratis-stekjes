@@ -9,6 +9,76 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.57.0] - 2026-11-03
+
+### Added
+
+- Rol **stats_viewer** (`users.is_stats_viewer`): leest alleen `/beheer/statistieken`
+  (Gate `see-stats` = admin óf stats_viewer). Overige `/beheer`-routes, POST/DELETE en
+  `/stijlgids` blijven admin-only. Geen beheerknoppen in de navigatie; accountmenu-link
+  «Statistieken» alleen voor stats_viewer/admin. Stats-pagina toont geen persoonsgegevens;
+  feedbacklinks alleen voor admins.
+- Stats_viewer telt niet mee in leden-/signup-/actief-tellingen (statistieken, beheeroverzicht,
+  mijlpalen), staat niet in openbare lijsten/kaart/aanbieders, plaatst geen aanbod, en
+  pageviews van dit account worden niet geregistreerd.
+- Artisan `gp:stats-lezer {email}` (idempotent; wachtwoord uit env `GP_PLANTJES_PASSWORD`)
+  + `POST /deploy/stats-lezer` + workflow `stats-lezer.yml` (`target` staging|production;
+  secrets `GP_PLANTJES_EMAIL`, `GP_PLANTJES_PASSWORD`, `DEPLOY_TOKEN`). Production pas na
+  merge naar master + prod-deploy.
+
+## [0.56.0] - 2026-11-03
+
+### Added
+
+- Vier plantenasiels weer zichtbaar op kaart/deelplekken/stadspagina’s: Haarlem, Leiden, Houten
+  en Het Plantenhuis Utrecht. Ze vragen alleen een vrijwillige bijdrage/donatie (FAQ: dat mag);
+  adressen en coördinaten bleven uit de bestaande seed. Plantaardig Middelburg blijft verborgen
+  (asielplanten worden verkocht in de stadstuinwinkel). Deploy-seed (`DeelplekkenSeeder`) is
+  idempotent en draait via de bestaande deploy-hook.
+
+### Fixed
+
+- **/deelplekken provinciefilter**: toont altijd alle 12 NL-provincies (Fryslân i.p.v. Friesland,
+  passend bij de data) plus Belgische provincies uit zichtbare deelplekken. Oorzaak: filter
+  kwam alleen uit distinct DB-waarden, waardoor o.a. Noord-Brabant en Zuid-Holland ontbraken
+  zolang daar geen zichtbare plek stond.
+- **/initiatieven**: lege agenda zonder «nog geen data»; korte zin + feedbacklink.
+- Stadspagina’s renderen aanbod al server-side in Blade (SEO); test bewaakt dat de HTML-lijst
+  het aanbod bevat als er aanbod is (lege staat blijft bij echt geen aanbod).
+
+## [0.55.1] - 2026-11-03
+
+### Fixed
+
+- «Meer over dit onderwerp»: elk kaartje heeft nu een eigen, passende Unsplash-foto (27 kaartartikelen; o.a. vlinderstruik, olijfboom, rozen, een herkenbare vijg, uitlopers, zaaien, afleggen). Geen lege kaartjes meer en geen dubbele foto's (lavendel twee keer, appel drie keer). Oorzaak: kaartjes leenden de foto van de eerste gerelateerde soort; nu komt de foto uit het artikel-fotomanifest (`kaart_voor`), zonder terugval. Responsive `<picture>` (AVIF/WebP/JPG 480/800, lazy, alt-tekst); makers in de credits per pagina. `KaartFotosTest` bewaakt dat elk kaartje een unieke foto heeft.
+
+## [0.55.0] - 2026-11-03
+
+### Added
+
+- Pijler **Uitlopers, kindjes en bollen** (/stektips/artikel/uitlopers): uitlopers, kindjes, worteluitlopers, broedbolletjes; kalender, stappenplan, soorten met foto, 4 NL-video's.
+- Hub /vermeerderen: blok **«Wat kun je nu vermeerderen?»** met de groepen van deze maand (uit nu-te-stekken), en rij «Uitlopers en kindjes» in de kalender.
+- Filter **«Manier of onderwerp»** op /stektips: bij een manier (stekken, scheuren, zaaien, afleggen, uitlopers, enten) ook de soorten waarvoor die werkt. Manieren per soort afgeleid uit de tekst (`Stektips::methodes()`), later te overschrijven met veld `methodes`.
+
+## [0.54.0] - 2026-11-02
+
+### Added
+
+- Hub **/vermeerderen** «Planten vermeerderen»: zes manieren als kaarten, «welke manier past bij jouw plant?», vermeerderkalender, makkelijke soorten en video's. Oude /stektips/artikel/vermeerderen → 301.
+- Nieuwe pijlers **Scheuren en delen**, **Zaaien en zaad oogsten** (bloemen, kruiden én moestuin) en **Afleggen en marcotteren**, elk met kaarten, kalender, stappenplan, soorten met foto en geverifieerde NL-video's.
+- Illustraties scheuren, zaaien, zaad, uitloper en enten. Interne links `[[@stektips|…]]` in tekstblokken.
+
+### Changed
+
+- Menu: «Stektips» wordt **«Vermeerderen»**; footerkolom «Zelf vermeerderen» met Stekken, Scheuren, Zaaien, Snoeien en Tips per plant.
+- Categorieën: Stekken, Scheuren, Zaaien, Afleggen, Snoeien, Enten, Natuurlijk bewortelen, Permacultuur («Vermeerderen overig» verdeeld). Kruimelpad via Vermeerderen.
+
+## [0.53.0] - 2026-11-02
+
+### Added
+
+- Echte Unsplash-foto’s op `/stektips/artikel/stekken` en `/stektips/artikel/snoeien`: hero, methodekaarten, stappen, vergelijking, sectiefoto’s en zelf-gehoste video-posters (AVIF/WebP/JPG via `<picture>`, lazy behalve hero). SVG blijft op winterhoutstek, afleggen, snoeisnede en de plastic-zak-stap. Credits onderaan elk artikel; geen ytimg vóór klik.
+
 ## [0.52.1] - 2026-11-02
 
 ### Changed

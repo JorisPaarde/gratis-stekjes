@@ -58,8 +58,10 @@
       <a class="brand" href="{{ route('home') }}">{{ $siteName }}</a>
       @unless(request()->routeIs('beheer.*'))
         @auth
-          @unless(request()->routeIs('aanbieden'))
-            <a class="nav-cta header-cta" href="{{ route('aanbieden') }}"><x-icon name="plus" :size="16" /> Bied aan</a>
+          @unless(auth()->user()?->isStatsViewer())
+            @unless(request()->routeIs('aanbieden'))
+              <a class="nav-cta header-cta" href="{{ route('aanbieden') }}"><x-icon name="plus" :size="16" /> Bied aan</a>
+            @endunless
           @endunless
         @else
           <a class="nav-cta header-cta" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="16" /> Doe mee</a>
@@ -71,10 +73,12 @@
       <nav id="hoofdmenu" class="site-nav" data-nav>
         <a href="{{ route('aanbod') }}"><x-icon name="kaart" :size="16" /> Aanbod</a>
         <a href="{{ route('hoe-werkt-het') }}"><x-icon name="info" :size="16" /> Hoe werkt het</a>
-        <a href="{{ route('stektips.index') }}"><x-icon name="stekje" :size="16" /> Stektips</a>
+        <a href="{{ route('vermeerderen') }}" @if(request()->routeIs('vermeerderen', 'stektips.*')) aria-current="page" @endif><x-icon name="stekje" :size="16" /> Vermeerderen</a>
         <a href="{{ route('deelplekken') }}"><x-icon name="locatie" :size="16" /> Deelplekken</a>
         @can('see-admin-dashboard')
           <a href="{{ route('beheer.index') }}"><x-icon name="kaart" :size="16" /> Dashboard</a>
+        @elsecan('see-stats')
+          <a href="{{ route('beheer.statistieken') }}"><x-icon name="kaart" :size="16" /> Statistieken</a>
         @endcan
         @auth
           @if(($ongelezenBerichten ?? 0) > 0)
@@ -83,7 +87,9 @@
             <a href="{{ route('account.index') }}"><x-icon name="gebruiker" :size="16" /> Account</a>
           @endif
           @unless(request()->routeIs('beheer.*'))
-            <a class="nav-cta" href="{{ route('aanbieden') }}"><x-icon name="plus" :size="16" /> Bied iets aan</a>
+            @unless(auth()->user()?->isStatsViewer())
+              <a class="nav-cta" href="{{ route('aanbieden') }}"><x-icon name="plus" :size="16" /> Bied iets aan</a>
+            @endunless
           @endunless
         @else
           <a href="{{ route('account.inloggen') }}"><x-icon name="gebruiker" :size="16" /> Inloggen</a>
@@ -130,9 +136,14 @@
           </ul>
         </div>
         <div class="footer-kolom">
-          <h2>Zelf stekken</h2>
+          <h2>Zelf vermeerderen</h2>
           <ul>
-            <li><a href="{{ route('stektips.index') }}">Stektips</a></li>
+            <li><a href="{{ route('vermeerderen') }}">Planten vermeerderen</a></li>
+            <li><a href="{{ route('stektips.artikel', ['slug' => 'stekken']) }}">Stekken</a></li>
+            <li><a href="{{ route('stektips.artikel', ['slug' => 'scheuren']) }}">Scheuren</a></li>
+            <li><a href="{{ route('stektips.artikel', ['slug' => 'zaaien']) }}">Zaaien</a></li>
+            <li><a href="{{ route('stektips.artikel', ['slug' => 'snoeien']) }}">Snoeien</a></li>
+            <li><a href="{{ route('stektips.index') }}">Tips per plant</a></li>
             <li><a href="{{ route('hulpmiddelen') }}">Hulpmiddelen</a></li>
             <li><a href="{{ route('invasieve-soorten') }}">Invasieve soorten</a></li>
           </ul>

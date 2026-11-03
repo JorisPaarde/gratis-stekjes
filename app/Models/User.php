@@ -12,11 +12,13 @@ use App\Support\Naam;
 use App\Support\SafeMail;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Schema;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -76,6 +78,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'is_admin' => 'boolean',
+            'is_stats_viewer' => 'boolean',
             'password' => 'hashed',
             'active' => 'boolean',
             'berichtmail' => 'boolean',
@@ -89,6 +92,27 @@ class User extends Authenticatable implements MustVerifyEmail
             'lat' => 'float',
             'lon' => 'float',
         ];
+    }
+
+    /** Stats-lezer-bot: geen lidtellingen, geen publieke lijsten, geen aanbod. */
+    public function isStatsViewer(): bool
+    {
+        return (bool) ($this->is_stats_viewer ?? false);
+    }
+
+    /**
+     * Leden voor tellingen/mijlpalen: stats_viewer-accounts tellen niet mee.
+     *
+     * @param  Builder<User>  $query
+     * @return Builder<User>
+     */
+    public function scopeMembers(Builder $query): Builder
+    {
+        if (Schema::hasColumn('users', 'is_stats_viewer')) {
+            $query->where('is_stats_viewer', false);
+        }
+
+        return $query;
     }
 
     /**

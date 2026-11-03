@@ -25,14 +25,22 @@
     </ol>
   </nav>
 
-  <header @class(['kb-hero', 'kb-hero--met-illu' => !empty($artikel['illustratie'])])>
+  <header @class([
+    'kb-hero',
+    'kb-hero--met-foto' => !empty($artikel['foto']),
+    'kb-hero--met-illu' => empty($artikel['foto']) && !empty($artikel['illustratie']),
+  ])>
     <div>
       <h1 class="page-title">{{ $heading ?? $artikel['titel'] }}</h1>
       @if(!empty($artikel['samenvatting']))
         <p class="section-intro">{{ $artikel['samenvatting'] }}</p>
       @endif
     </div>
-    @if(!empty($artikel['illustratie']))
+    @if(!empty($artikel['foto']))
+      <div class="kb-hero-foto">
+        <x-artikel-picture :id="$artikel['foto']" :eager="true" sizes="(max-width: 759px) 100vw, 44vw" />
+      </div>
+    @elseif(!empty($artikel['illustratie']))
       <div class="kb-hero-illu">@include('partials.illustraties.stek', ['naam' => $artikel['illustratie']])</div>
     @endif
   </header>
@@ -96,10 +104,8 @@
       @foreach($kinderen as $kind)
         <li>
           <a href="{{ route('stektips.artikel', ['slug' => $kind['slug']]) }}">
-            @if(!empty($kind['foto']))
-              <img src="{{ $kind['foto']['url'] }}" alt="" width="320" height="200" loading="lazy" decoding="async">
-            @elseif(!empty($kind['illustratie']))
-              <span class="kb-kind-illu">@include('partials.illustraties.stek', ['naam' => $kind['illustratie']])</span>
+            @if(!empty($kind['foto_id']))
+              <x-artikel-picture :id="$kind['foto_id']" class="kb-kind-foto" sizes="(max-width: 640px) 100vw, 360px" />
             @endif
             <span class="kb-kind-tekst">
               <strong>{{ $kind['titel'] }}</strong>
@@ -109,6 +115,16 @@
         </li>
       @endforeach
     </ul>
+  @endif
+
+  @php
+    $fotoMakers = \App\Support\ArtikelFotos::makersVoorArtikel(
+        (string) ($artikel['slug'] ?? ''),
+        array_values(array_filter(array_column($kinderen ?? [], 'foto_id'))),
+    );
+  @endphp
+  @if($fotoMakers !== [])
+    <p class="kb-foto-credits">Foto’s: {{ implode(', ', $fotoMakers) }} / Unsplash</p>
   @endif
 
   @if(!empty($artikel['bronnen']))

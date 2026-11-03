@@ -37,7 +37,9 @@ test('initiatievenpagina toont SEO-title, H1, lege agenda en vaste initiatieven'
         ->assertOk()
         ->assertSee('Stekjesmarkt, plantenruilbeurs en ruilinitiatieven', false)
         ->assertSee('Plantenruilbeurzen, stekjesmarkten en initiatieven', false)
-        ->assertSee('Nog geen data voor 2026 bekend', false)
+        ->assertSee('Er staan nog geen evenementen gepland', false)
+        ->assertDontSee('nog geen data', false)
+        ->assertDontSee('Nog geen data', false)
         ->assertSee('Meld het', false)
         ->assertSee('Vaste ruilinitiatieven', false)
         ->assertSee('Voedselbosbouw.org', false)
@@ -73,7 +75,9 @@ test('komende evenementen chronologisch per maand en verborgen blijven weg', fun
         ->assertSee('mei 2026', false)
         ->assertSee('juni 2026', false)
         ->assertDontSee('Verborgen markt', false)
-        ->assertDontSee('Nog geen data voor 2026 bekend', false)
+        ->assertDontSee('nog geen data', false)
+        ->assertDontSee('Nog geen data', false)
+        ->assertDontSee('Er staan nog geen evenementen gepland', false)
         ->getContent();
 
     expect(strpos($html, 'Mei-markt'))->toBeLessThan(strpos($html, 'Juni-beurs'));

@@ -211,6 +211,7 @@ class PageController extends Controller
             ['loc' => CanonicalUrl::absolute('/'), 'lastmod' => $staticLastmod],
             ['loc' => route('hoe-werkt-het'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/hoe-werkt-het.blade.php')])],
             ['loc' => route('aanbod'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/aanbod.blade.php')])],
+            ['loc' => route('vermeerderen'), 'lastmod' => $this->lastmodFromFiles([base_path('data/kennisbank/vermeerderen.json')])],
             ['loc' => route('stektips.index'), 'lastmod' => $this->lastmodFromFiles([base_path('data/stektips.json'), base_path('data/kennisbank')])],
             ['loc' => route('hulpmiddelen'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/hulpmiddelen.blade.php')])],
             ['loc' => route('over'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/over.blade.php')])],
@@ -241,7 +242,7 @@ class PageController extends Controller
         $kennisDir = base_path('data/kennisbank');
         foreach ($kennisbank->all() as $artikel) {
             $slug = (string) ($artikel['slug'] ?? '');
-            if ($slug === '') {
+            if ($slug === '' || $slug === StektipsController::HUB_SLUG) {
                 continue;
             }
             $file = $kennisDir.'/'.$slug.'.json';

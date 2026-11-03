@@ -49,6 +49,19 @@ class AppServiceProvider extends ServiceProvider
             return AdminDashboard::userMayAccess($user);
         });
 
+        // Admin óf geverifieerde stats_viewer — alleen voor GET /beheer/statistieken.
+        Gate::define('see-stats', function (?User $user): bool {
+            if (Gate::allows('see-admin-dashboard')) {
+                return true;
+            }
+
+            if (! $user instanceof User || ! $user->hasVerifiedEmail()) {
+                return false;
+            }
+
+            return (bool) ($user->is_stats_viewer ?? false);
+        });
+
         // Teller voor ongelezen berichten in de navigatie (alleen ingelogd; fouten breken de pagina niet).
         View::composer(['layouts.site', 'account.index'], function ($view): void {
             $count = 0;

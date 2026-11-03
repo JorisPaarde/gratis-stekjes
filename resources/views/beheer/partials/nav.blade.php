@@ -1,5 +1,9 @@
 @php
-  $tellers = \App\Support\BeheerTellers::alle();
+  $isAdmin = \Illuminate\Support\Facades\Gate::allows('see-admin-dashboard');
+  $tellers = $isAdmin ? \App\Support\BeheerTellers::alle() : [
+    'onbevestigd' => 0, 'mailfout' => 0, 'verenigingen' => 0, 'aanmeldingen' => 0,
+    'meldingen' => 0, 'feedback' => 0, 'ervaringen' => 0,
+  ];
   $huidig = request()->route()?->getName() ?? '';
   $isRoute = fn (string $r) => $huidig === $r || str_starts_with($huidig, $r.'.');
 
@@ -27,17 +31,23 @@
       return [$doel[0], $label, (int) collect($items)->sum(fn ($i) => $i[2]), $actief];
   };
 
-  $tabs = [
-    ['beheer.index', 'Overzicht', 0, $isRoute('beheer.index')],
-    ['beheer.gebruikers', 'Gebruikers', $tellers['onbevestigd'] + $tellers['mailfout'], $isRoute('beheer.gebruikers')],
-    $groepTab('keuren'),
-    $groepTab('inbox'),
-    ['beheer.statistieken', 'Statistieken', 0, $isRoute('beheer.statistieken')],
-  ];
-  $subGroep = collect($groepen)->first(fn ($g) => collect($g[1])->contains(fn ($i) => $isRoute($i[0])));
+  $tabs = $isAdmin
+    ? [
+      ['beheer.index', 'Overzicht', 0, $isRoute('beheer.index')],
+      ['beheer.gebruikers', 'Gebruikers', $tellers['onbevestigd'] + $tellers['mailfout'], $isRoute('beheer.gebruikers')],
+      $groepTab('keuren'),
+      $groepTab('inbox'),
+      ['beheer.statistieken', 'Statistieken', 0, $isRoute('beheer.statistieken')],
+    ]
+    : [
+      ['beheer.statistieken', 'Statistieken', 0, $isRoute('beheer.statistieken')],
+    ];
+  $subGroep = $isAdmin
+    ? collect($groepen)->first(fn ($g) => collect($g[1])->contains(fn ($i) => $isRoute($i[0])))
+    : null;
 @endphp
 <div class="beheer-header">
-  <p class="beheer-merk">Beheer</p>
+  <p class="beheer-merk">{{ $isAdmin ? 'Beheer' : 'Statistieken' }}</p>
   @guest
     {{-- Alleen bij inloggen met beheerwachtwoord; met een account log je uit via het menu. --}}
     <form method="post" action="{{ route('beheer.logout') }}">

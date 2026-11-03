@@ -27,6 +27,10 @@ class AanbodController extends Controller
     public function index(Request $request, InvasieveSoorten $invasieve): View|RedirectResponse
     {
         $user = $request->user();
+        if ($user->isStatsViewer()) {
+            return redirect()->route('account.index')
+                ->with('status', 'Dit account kan geen aanbod plaatsen.');
+        }
         if (! $user->hasLocation()) {
             return $this->eerstLocatie();
         }
@@ -45,6 +49,10 @@ class AanbodController extends Controller
     public function create(Request $request, InvasieveSoorten $invasieve): View|RedirectResponse
     {
         $user = $request->user();
+        if ($user->isStatsViewer()) {
+            return redirect()->route('account.index')
+                ->with('status', 'Dit account kan geen aanbod plaatsen.');
+        }
         if (! $user->hasLocation()) {
             return $this->eerstLocatie();
         }
@@ -86,10 +94,14 @@ class AanbodController extends Controller
     public function store(
         Request $request,
         Plantensoorten $plantensoorten,
-        AanbodFotoService $fotos,
         MilestoneService $milestones,
     ): RedirectResponse {
         $user = $request->user();
+        if ($user->isStatsViewer()) {
+            abort(403);
+        }
+        // Pas na stats_viewer-check: foto-service vereist GD/Imagick.
+        $fotos = app(AanbodFotoService::class);
         if (! $user->hasLocation()) {
             return redirect()->route('account.profiel');
         }

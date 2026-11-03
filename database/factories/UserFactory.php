@@ -44,4 +44,14 @@ class UserFactory extends Factory
             'active' => false,
         ]);
     }
+
+    public function statsViewer(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_stats_viewer' => true,
+            'is_admin' => false,
+            'email_verified_at' => now(),
+            'name' => 'Plantjes (stats)',
+        ]);
+    }
 }

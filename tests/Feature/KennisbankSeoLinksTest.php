@@ -73,10 +73,10 @@ test('aanbod plant-filter werkt zonder JS en api accepteert plant', function () 
         ->assertJsonStructure(['meta', 'items']);
 });
 
-test('stektips-overzicht toont alle vijf pillarkaarten', function () {
+test('stektips-overzicht toont alle negen pillarkaarten', function () {
     $kb = app(Kennisbank::class);
     $meta = $kb->pillarMeta();
-    expect($meta)->toHaveCount(5);
+    expect($meta)->toHaveCount(9);
 
     $html = $this->get(route('stektips.index'))
         ->assertOk()
@@ -100,7 +100,9 @@ test('pijlers en top-seo-paginas laden onder 500 met bronnen', function () {
         'stekken',
         'snoeien',
         'natuurlijk-bewortelen',
-        'vermeerderen',
+        'scheuren',
+        'zaaien',
+        'afleggen',
         'permacultuur-gilde-voedselbos',
         'hortensia-snoeien',
         'vlinderstruik-snoeien',

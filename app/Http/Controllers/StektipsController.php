@@ -8,13 +8,18 @@ use App\Services\Kennisbank;
 use App\Services\Plantensoorten;
 use App\Services\SoortAfbeeldingen;
 use App\Services\Stektips;
+use App\Support\ArtikelFotos;
 use App\Support\Faq;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class StektipsController extends Controller
 {
+    /** Kennisbankartikel dat als hub op /vermeerderen staat. */
+    public const HUB_SLUG = 'vermeerderen';
+
     public function index(Request $request, Stektips $stektips, Kennisbank $kennisbank, Plantensoorten $plantensoorten, SoortAfbeeldingen $afbeeldingen): View
     {
         $filters = [
@@ -180,14 +185,24 @@ class StektipsController extends Controller
         ];
     }
 
-    public function artikel(string $slug, Kennisbank $kennisbank, Stektips $stektips, SoortAfbeeldingen $afbeeldingen): View|Response
+    /** Overkoepelende hub «Planten vermeerderen» (data/kennisbank/vermeerderen.json) op /vermeerderen. */
+    public function vermeerderen(Kennisbank $kennisbank, Stektips $stektips, SoortAfbeeldingen $afbeeldingen): View|Response|RedirectResponse
     {
+        return $this->artikel(self::HUB_SLUG, $kennisbank, $stektips, $afbeeldingen, alsHub: true);
+    }
+
+    public function artikel(string $slug, Kennisbank $kennisbank, Stektips $stektips, SoortAfbeeldingen $afbeeldingen, bool $alsHub = false): View|Response|RedirectResponse
+    {
+        if ($slug === self::HUB_SLUG && ! $alsHub) {
+            return redirect()->route('vermeerderen', status: 301);
+        }
+
         $artikel = $kennisbank->find($slug);
         if ($artikel === null) {
             abort(404);
         }
 
-        $url = route('stektips.artikel', ['slug' => $slug]);
+        $url = $alsHub ? route('vermeerderen') : route('stektips.artikel', ['slug' => $slug]);
         $gerelateerdeSoorten = [];
         foreach ($artikel['gerelateerde_soorten'] ?? [] as $soortSlug) {
             if (! is_string($soortSlug)) {
@@ -210,11 +225,11 @@ class StektipsController extends Controller
         $pillarSlug = (string) ($artikel['pillar'] ?? ($artikel['categorieen'][0] ?? ''));
         $heading = (string) ($artikel['h1'] ?? $artikel['titel']);
         $pageTitle = (string) ($artikel['seo_title'] ?? $artikel['titel']);
-        $breadcrumbs = [
-            ['naam' => 'Home', 'url' => route('home')],
-            ['naam' => 'Stektips', 'url' => route('stektips.index')],
-        ];
-        if ($pillarSlug !== '' && empty($artikel['is_pillar']) && isset($categoryLabels[$pillarSlug])) {
+        $breadcrumbs = [['naam' => 'Home', 'url' => route('home')]];
+        if (! $alsHub) {
+            $breadcrumbs[] = ['naam' => 'Vermeerderen', 'url' => route('vermeerderen')];
+        }
+        if (! $alsHub && $pillarSlug !== '' && empty($artikel['is_pillar']) && isset($categoryLabels[$pillarSlug])) {
             $hub = collect($kennisbank->pillars())->first(
                 static fn (array $p): bool => ($p['pillar'] ?? '') === $pillarSlug || ($p['slug'] ?? '') === $pillarSlug
             );
@@ -236,7 +251,7 @@ class StektipsController extends Controller
             'categoryLabels' => $categoryLabels,
             'gerelateerdeSoorten' => $gerelateerdeSoorten,
             'gerelateerdeArtikelen' => $kennisbank->relatedArticles($artikel),
-            'kinderen' => $this->kinderenMetFoto($kennisbank->childrenOf($artikel), $afbeeldingen),
+            'kinderen' => $this->kinderenMetFoto($kennisbank->childrenOf($artikel)),
             'blokken' => $this->blokkenVerrijkt($artikel['inhoud'] ?? [], $stektips, $afbeeldingen),
             'duurzamer' => $duurzamer,
             'seoCtas' => $this->seoCtasForArtikel($artikel, $kennisbank),
@@ -246,21 +261,17 @@ class StektipsController extends Controller
     }
 
     /**
-     * Subartikelen als kaart: met foto van de eerste gerelateerde soort (alleen echte, gelicentieerde foto's).
+     * Subartikelen als kaart, elk met de eigen kaartfoto uit het artikel-fotomanifest (`kaart_voor`).
+     * Geen terugval op soortfoto's: die gaf dubbele foto's (bijv. twee keer lavendel) en lege kaartjes.
+     * Dat elk kaartartikel een unieke foto heeft, bewaakt KaartFotosTest.
      *
      * @param  list<array<string, mixed>>  $kinderen
      * @return list<array<string, mixed>>
      */
-    private function kinderenMetFoto(array $kinderen, SoortAfbeeldingen $afbeeldingen): array
+    private function kinderenMetFoto(array $kinderen): array
     {
-        return array_map(function (array $kind) use ($afbeeldingen): array {
-            $kind['foto'] = null;
-            foreach ($kind['gerelateerde_soorten'] ?? [] as $soortSlug) {
-                if (is_string($soortSlug) && $afbeeldingen->hasLicensedImage($soortSlug)) {
-                    $kind['foto'] = $afbeeldingen->forSlug($soortSlug);
-                    break;
-                }
-            }
+        return array_map(function (array $kind): array {
+            $kind['foto_id'] = ArtikelFotos::kaartFotoId((string) ($kind['slug'] ?? ''));
 
             return $kind;
         }, $kinderen);
@@ -437,10 +448,13 @@ class StektipsController extends Controller
      */
     private function filterSoorten(array $soorten, array $filters): array
     {
-        // Soortpagina’s hebben geen kennisbank-categorie; bij artikelfilter op categorie tonen we ze niet.
-        if ($filters['categorie'] !== '') {
+        // Categorie = manier van vermeerderen (stekken, scheuren, …): soorten waarvoor die manier werkt.
+        // Andere categorieën (snoeien, permacultuur, …) gelden alleen voor artikelen.
+        $methode = $filters['categorie'];
+        if ($methode !== '' && ! isset(Stektips::METHODES[$methode])) {
             return [];
         }
+        $stektips = app(Stektips::class);
 
         $q = mb_strtolower($filters['q'], 'UTF-8');
         $seizoen = $filters['seizoen'];
@@ -452,6 +466,9 @@ class StektipsController extends Controller
         foreach ($soorten as $soort) {
             $slug = (string) ($soort['slug'] ?? '');
             if ($soortSlug !== '' && $slug !== $soortSlug) {
+                continue;
+            }
+            if ($methode !== '' && ! in_array($methode, $stektips->methodes($soort), true)) {
                 continue;
             }
 

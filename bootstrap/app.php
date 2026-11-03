@@ -7,6 +7,7 @@ use App\Http\Middleware\RecordPageView;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\ShareErrorsFromSessionWhenPresent;
 use App\Http\Middleware\StartSessionWhenNeeded;
+use App\Http\Middleware\StatsAuth;
 use App\Http\Middleware\StripIndexPhpRedirect;
 use App\Http\Middleware\UpdateLastSeen;
 use App\Http\Middleware\VerifyCsrfTokenWhenSession;
@@ -42,16 +43,19 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies(at: '*');
         $middleware->validateCsrfTokens(except: [
             'deploy/run',
+            'deploy/stats-lezer',
             'deploy/import',
             'deploy/import/init',
             'deploy/import/chunk',
         ]);
         $middleware->alias([
             'admin' => AdminAuth::class,
+            'stats' => StatsAuth::class,
         ]);
         // Beheer-check vóór route-model binding: anders geeft /beheer/gebruikers/{id} een 404 voor
         // een niet-bestaand ID en een redirect voor een bestaand ID, en verraadt dat welke ID's bestaan.
         $middleware->prependToPriorityList(before: SubstituteBindings::class, prepend: AdminAuth::class);
+        $middleware->prependToPriorityList(before: SubstituteBindings::class, prepend: StatsAuth::class);
         $middleware->redirectGuestsTo(fn () => route('account.inloggen'));
         $middleware->redirectUsersTo(fn () => route('account.index'));
     })
