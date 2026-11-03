@@ -152,10 +152,10 @@
   <div class="wrap home-signup-inner">
     <div class="home-signup-copy">
       <h2 id="doe-mee-titel">Doe mee, het is gratis</h2>
-      <p>Met één account kun je iets aanbieden én iets ophalen. Liever op een andere manier helpen? Tip een volkstuinpark of een initiatief bij jou in de buurt.</p>
+      <p>Met één account kun je iets aanbieden én iets ophalen. Of help op een andere manier: een poster, een bericht of doorvertellen helpt al.</p>
       <p class="home-actions">
         <a class="btn" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="18" /> Maak gratis een account</a>
-        <a class="btn btn-on-dark" href="{{ route('help-mee') }}">Op een andere manier helpen</a>
+        <a class="btn btn-on-dark" href="{{ route('help-mee') }}"><x-icon name="delen" :size="18" /> Help mee</a>
       </p>
     </div>
     <div class="home-signup-media" aria-hidden="true">
