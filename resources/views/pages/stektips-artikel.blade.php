@@ -104,10 +104,8 @@
       @foreach($kinderen as $kind)
         <li>
           <a href="{{ route('stektips.artikel', ['slug' => $kind['slug']]) }}">
-            @if(!empty($kind['foto']))
-              <img src="{{ $kind['foto']['url'] }}" alt="" width="320" height="200" loading="lazy" decoding="async">
-            @elseif(!empty($kind['illustratie']))
-              <span class="kb-kind-illu">@include('partials.illustraties.stek', ['naam' => $kind['illustratie']])</span>
+            @if(!empty($kind['foto_id']))
+              <x-artikel-picture :id="$kind['foto_id']" class="kb-kind-foto" sizes="(max-width: 640px) 100vw, 360px" />
             @endif
             <span class="kb-kind-tekst">
               <strong>{{ $kind['titel'] }}</strong>
@@ -120,7 +118,10 @@
   @endif
 
   @php
-    $fotoMakers = \App\Support\ArtikelFotos::makersVoorArtikel((string) ($artikel['slug'] ?? ''));
+    $fotoMakers = \App\Support\ArtikelFotos::makersVoorArtikel(
+        (string) ($artikel['slug'] ?? ''),
+        array_values(array_filter(array_column($kinderen ?? [], 'foto_id'))),
+    );
   @endphp
   @if($fotoMakers !== [])
     <p class="kb-foto-credits">Foto’s: {{ implode(', ', $fotoMakers) }} / Unsplash</p>
