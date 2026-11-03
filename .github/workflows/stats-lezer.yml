@@ -7,6 +7,11 @@ name: Stats-lezer account
 # Production-target: alleen zinvol ná merge naar master én prod-deploy (code + migratie
 # moeten op productie staan). Staging werkt na merge naar staging + staging-deploy.
 on:
+  # workflow_dispatch werkt pas als dit bestand op master staat; tot dan draait een push
+  # naar staging die dit bestand wijzigt de staging-variant.
+  push:
+    branches: [staging]
+    paths: ['.github/workflows/stats-lezer.yml']
   workflow_dispatch:
     inputs:
       target:
@@ -23,13 +28,13 @@ permissions:
 
 jobs:
   stats-lezer:
-    name: stats-lezer (${{ inputs.target }})
+    name: stats-lezer (${{ inputs.target || 'staging' }})
     runs-on: ubuntu-latest
-    environment: ${{ inputs.target }}
+    environment: ${{ inputs.target || 'staging' }}
     steps:
-      - name: Draai gp:stats-lezer op ${{ inputs.target }}
+      - name: Draai gp:stats-lezer op ${{ inputs.target || 'staging' }}
         env:
-          TARGET: ${{ inputs.target }}
+          TARGET: ${{ inputs.target || 'staging' }}
           STAGING_BASE: ${{ secrets.STAGING_BASE_URL }}
           PROD_BASE: ${{ secrets.PROD_BASE_URL }}
           DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
