@@ -29,16 +29,16 @@
   <p class="section-intro">
     @if(!empty($plant))
       Je ziet aanbod met <strong>{{ $plant }}</strong>.
-      Vul een postcode of plaats in om dichtbij te zoeken. Straatadressen staan niet op de site.
+      Vul een postcode of plaats in om dichtbij te zoeken, of laat die leeg om alleen op plant te zoeken. Straatadressen staan niet op de site.
     @else
-      Zoek op postcode of plaats in Nederland of België. Je ziet aanbod van leden en vaste plekken zoals zadenbibliotheken en plantenasiels, het dichtstbij eerst. Straatadressen van leden staan niet op de site.
+      Zoek op postcode of plaats in Nederland of België, of alleen op plant. Je ziet aanbod van leden en vaste plekken zoals zadenbibliotheken en plantenasiels, het dichtstbij eerst. Straatadressen van leden staan niet op de site.
     @endif
   </p>
 
   <form class="zoekbalk" id="zoek-form" method="get" action="{{ route('aanbod') }}" role="search">
     <div class="zoekbalk-veld zoekbalk-veld--waar">
       <label for="zoek-q">Postcode of plaats</label>
-      <input type="text" name="q" id="zoek-q" maxlength="120" value="{{ $q ?? '' }}" placeholder="Bijvoorbeeld 2011 of Haarlem" autocomplete="postal-code" @if(empty($plant)) required @endif>
+      <input type="text" name="q" id="zoek-q" maxlength="120" value="{{ $q ?? '' }}" placeholder="Bijvoorbeeld 2011 of Haarlem" autocomplete="postal-code">
     </div>
     <div class="zoekbalk-veld">
       <label for="zoek-plant">Plant, stekje of zaad <span class="zoekbalk-optioneel">(optioneel)</span></label>
@@ -48,8 +48,21 @@
   </form>
 
   @if(!empty($plant) && isset($plantItems))
-    <section class="stektips-plant-aanbod" aria-labelledby="plant-aanbod-titel">
-      <h2 id="plant-aanbod-titel" class="stektips-related-title">Aanbod met “{{ $plant }}” (alle plaatsen)</h2>
+    <section class="stektips-plant-aanbod" id="plant-aanbod" aria-labelledby="plant-aanbod-titel">
+      @if(!empty($plantSortering) && $plantSortering['sortering'] === 'afstand')
+        <h2 id="plant-aanbod-titel" class="stektips-related-title">Aanbod met “{{ $plant }}”, dichtstbij jouw adres</h2>
+      @elseif(!empty($plantSortering))
+        <h2 id="plant-aanbod-titel" class="stektips-related-title">Aanbod met “{{ $plant }}”, nieuwste eerst</h2>
+        <p class="muted">
+          @if($plantSortering['reden'] === 'geen_adres')
+            Vul je postcode of plaats in bij <a href="{{ route('account.profiel') }}">je profiel</a> om op afstand te sorteren.
+          @else
+            <a href="{{ route('account.inloggen') }}">Log in</a> om te sorteren op afstand vanaf je eigen adres, of vul hierboven een postcode of plaats in.
+          @endif
+        </p>
+      @else
+        <h2 id="plant-aanbod-titel" class="stektips-related-title">Aanbod met “{{ $plant }}” (alle plaatsen)</h2>
+      @endif
       @if(count($plantItems) === 0)
         <p class="empty-state" role="status">Er is nog geen aanbod met “{{ $plant }}”. <a href="{{ route('account.registreren') }}">Doe mee</a> en deel zelf iets, of zoek hierboven op plaats.</p>
       @else
@@ -57,7 +70,7 @@
           @foreach($plantItems as $item)
             <li class="zoek-item">
               <strong>{{ $item['voornaam'] ?? '' }}</strong>
-              <span class="muted"> · {{ $item['locatie_label'] ?? '' }} · {{ $item['type'] ?? '' }}</span>
+              <span class="muted"> · {{ $item['locatie_label'] ?? '' }} · {{ $item['type'] ?? '' }}@isset($item['afstand_km']) · <span class="zoek-item-afstand">{{ str_replace('.', ',', $item['afstand_km'] < 10 ? number_format($item['afstand_km'], 1) : (string) round($item['afstand_km'])) }} km</span>@endisset</span>
               <p>{{ $item['tekst'] ?? '' }}</p>
             </li>
           @endforeach
