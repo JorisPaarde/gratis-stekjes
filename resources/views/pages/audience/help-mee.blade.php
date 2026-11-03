@@ -38,13 +38,26 @@
   <ul class="meedoen-posters">
     @foreach(\App\Http\Controllers\MeedoenController::POSTERS as $key => $p)
       <li>
-        <a href="{{ route('poster', ['voor' => $key]) }}">
-          <strong>{{ $p['kop'] }}</strong>
-          <span>{{ $p['titel'] }}</span>
+        <a class="poster-kaart" href="{{ route('poster', ['voor' => $key]) }}">
+          <span class="poster-mini" aria-hidden="true">
+            <picture>
+              <source type="image/webp" srcset="/assets/images/posters/{{ $key }}-480.webp">
+              <img src="/assets/images/posters/{{ $key }}-480.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" style="object-position: {{ $p['foto']['positie'] }}">
+            </picture>
+            <span class="poster-mini-kop">{{ $p['kop'] }}</span>
+            <span class="poster-mini-qr"></span>
+            <span class="poster-mini-voet"></span>
+          </span>
+          <span class="poster-kaart-tekst">
+            <strong>{{ $p['kop'] }}</strong>
+            <span class="poster-kaart-voor">{{ $p['titel'] }}</span>
+          </span>
+          <span class="poster-kaart-actie">Bekijk en print poster <span aria-hidden="true">→</span></span>
         </a>
       </li>
     @endforeach
   </ul>
+  <p class="muted poster-kaart-uitleg">Klik op een poster. Je ziet hem dan op ware grootte en kunt hem printen of als pdf bewaren.</p>
   <p class="meedoen-tip"><strong>Tip: stekjeslabels.</strong> Geef je een stekje weg? Steek er een labeltje bij met de QR-code. Zo wordt elk stekje een uitnodiging. <a href="{{ route('stekjeslabels') }}">Print 8 labels op A4</a>.</p>
   <p class="muted">Lid van een volkstuin? <a href="{{ route('account.verenigingen') }}">Koppel je vereniging</a>, dan krijgt jullie tuin een eigen poster met het aanbod van leden.</p>
 

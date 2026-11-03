@@ -23,6 +23,43 @@
   .poster { border: 0; border-radius: 0; width: 210mm; height: 297mm; max-width: none; padding: 18mm 16mm; }
 }
 
+/* Poster met foto (/poster?voor=…). Maten in cqw, zodat scherm en A4-print dezelfde verhouding hebben. */
+.poster-tip { font-size: .9rem; margin: -.25rem 0 1rem; }
+.poster--foto {
+  container-type: inline-size; padding: 0; overflow: hidden; display: grid; grid-template-rows: 33% 1fr auto;
+  text-align: left; border-radius: 1rem; box-shadow: var(--shadow);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.poster--foto .poster-foto { position: relative; margin: 0; min-height: 0; background: var(--bg-mint); }
+.poster--foto .poster-foto picture, .poster--foto .poster-foto > picture img { display: block; width: 100%; height: 100%; }
+.poster--foto .poster-foto > picture img { object-fit: cover; }
+.poster--foto .poster-merk {
+  position: absolute; top: 4cqw; left: 5cqw; background: #fff; color: var(--forest-deep); border-radius: 999px;
+  padding: 1.2cqw 3cqw 1.2cqw 1.4cqw; gap: 1.6cqw; font-size: 3.6cqw; line-height: 1; box-shadow: 0 2px 8px rgb(0 0 0 / .18);
+}
+.poster--foto .poster-merk img { width: 6.4cqw; height: 6.4cqw; }
+.poster--foto .poster-body { padding: 5cqw 6.5cqw 3.5cqw; display: flex; flex-direction: column; min-height: 0; }
+.poster--foto h1 { font-size: 7.8cqw; line-height: .98; margin: 0 0 2.4cqw; letter-spacing: .01em; color: var(--forest-deep); }
+.poster--foto .poster-sub { font-size: 3.2cqw; line-height: 1.35; margin: 0 0 3.5cqw; color: var(--ink-soft); max-width: 90%; }
+.poster--foto .poster-midden { display: grid; grid-template-columns: 31cqw 1fr; gap: 5cqw; align-items: center; margin-top: auto; margin-bottom: auto; }
+.poster--foto .poster-qr-vak { background: var(--bg-mint); border-radius: 3cqw; padding: 2.6cqw 2.6cqw 1.6cqw; text-align: center; }
+.poster--foto .poster-qr { width: 100%; margin: 0; background: #fff; border-radius: 1.6cqw; padding: 1.2cqw; box-sizing: border-box; }
+.poster--foto .poster-scan { font-family: var(--font-display); text-transform: uppercase; font-size: 3.3cqw; letter-spacing: .04em; margin: 1.2cqw 0 0; color: var(--forest-deep); }
+.poster--foto .poster-stappen { margin: 0; max-width: none; gap: 2.6cqw; font-size: 2.9cqw; line-height: 1.3; color: var(--forest-deep); }
+.poster--foto .poster-stappen li { align-items: flex-start; gap: 2.2cqw; }
+.poster--foto .poster-stappen b { flex: 0 0 5.6cqw; height: 5.6cqw; font-size: 3.1cqw; font-family: var(--font-display); font-weight: 400; }
+.poster--foto .poster-voet { background: var(--forest-deep); color: #fff; padding: 3cqw 6.5cqw 2.4cqw; margin: 0; font-size: inherit; }
+.poster--foto .poster-voet p { margin: 0; }
+.poster--foto .poster-url { font-family: var(--font-display); font-size: 4.8cqw; font-weight: 400; letter-spacing: .02em; color: var(--accent-on-dark); word-break: break-word; line-height: 1.05; }
+.poster--foto .poster-voet-tekst { font-size: 2.9cqw; margin-top: .8cqw !important; }
+.poster--foto .poster-credit { font-size: 2cqw; opacity: .75; margin-top: 1.2cqw !important; }
+.poster--foto .poster-credit a { color: inherit; }
+@media print {
+  .poster-tip { display: none !important; }
+  .poster--foto { padding: 0; box-shadow: none; display: grid; border-radius: 0; }
+  .poster--foto .poster-credit a { text-decoration: none; }
+}
+
 /* Stekjeslabels: 8 per A4 (2 × 4) */
 .labels-vel { display: grid; grid-template-columns: 1fr 1fr; gap: 0; max-width: 210mm; margin: 0 auto; background: #fff; border: 1px solid var(--line); }
 .label { display: flex; gap: .75rem; align-items: center; padding: 6mm; border: 1px dashed #b8c4b0; min-height: 60mm; box-sizing: border-box; }

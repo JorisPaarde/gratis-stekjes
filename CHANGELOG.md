@@ -9,6 +9,24 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.60.0] - 2026-11-03
+
+### Changed
+
+- **/help-mee: postersectie.** Elke poster is nu een duidelijke kaart met een klein
+  voorbeeld van de poster en de knop «Bekijk en print poster». Op mobiel staan de kaarten
+  onder elkaar met het voorbeeld links.
+- **/poster: nieuwe opmaak met foto.** Bovenaan een echte foto per poster, daaronder kop,
+  QR-code met «Scan mij», de 3 stappen en een donkergroene balk met het adres. Print op één
+  A4 (staand), achtergrondkleuren printen mee. Tip in beeld: kies A4 en marges «Geen».
+
+### Added
+
+- Vier foto’s van Unsplash (Unsplash License), lokaal in `public/assets/images/posters/`
+  (480 en 1600 px, webp + jpg). Maker en bron staan in `MeedoenController::POSTERS`, klein op
+  de poster en in `docs/afbeeldingen-licenties.md`.
+- Tests voor de posterkaarten, de foto’s en de fotocredit.
+
 ## [0.59.0] - 2026-11-03
 
 ### Added

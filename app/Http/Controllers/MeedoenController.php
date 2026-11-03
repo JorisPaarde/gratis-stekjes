@@ -15,31 +15,65 @@ use Illuminate\View\View;
 /** Help mee: posters, stekjeslabels, deelberichten en partneraanvragen. */
 class MeedoenController extends Controller
 {
-    /** @var array<string, array{titel: string, kop: string, sub: string, doel: string}> */
+    /**
+     * Posters voor /poster?voor=…. Foto's: Unsplash (Unsplash License), self-hosted in
+     * public/assets/images/posters/{key}-{480,1600}.{webp,jpg}. Bron per foto ook in
+     * docs/afbeeldingen-licenties.md.
+     *
+     * @var array<string, array{titel: string, kop: string, sub: string, doel: string, foto: array{alt: string, maker: string, bron_url: string, licentie: string, positie: string}}>
+     */
     public const POSTERS = [
         'algemeen' => [
             'titel' => 'Algemeen',
             'kop' => 'Plantje over?',
             'sub' => 'Geef planten, stekjes en zaden gratis weg aan iemand in de buurt.',
             'doel' => 'home',
+            'foto' => [
+                'alt' => 'Twee mensen geven elkaar kleine kamerplanten in potjes door',
+                'maker' => 'feey',
+                'bron_url' => 'https://unsplash.com/photos/Sh6CfogtXIA',
+                'licentie' => 'Unsplash License',
+                'positie' => 'center 45%',
+            ],
         ],
         'volkstuin' => [
             'titel' => 'Volkstuin of tuinvereniging',
             'kop' => 'Te veel zaailingen of stekjes?',
             'sub' => 'Deel ze met andere tuinders en met de buurt. Gratis, je haalt het zelf op.',
             'doel' => 'volkstuinen',
+            'foto' => [
+                'alt' => 'Hand met jonge zaailingen boven een kweekbak',
+                'maker' => 'Zoe Richardson',
+                'bron_url' => 'https://unsplash.com/photos/tbiV-yc903g',
+                'licentie' => 'Unsplash License',
+                'positie' => 'center 40%',
+            ],
         ],
         'buurt' => [
             'titel' => 'Buurt, supermarkt of prikbord',
             'kop' => 'Gratis groen bij jou in de buurt',
             'sub' => 'Buren geven planten, stekjes en zaden weg. Kijk wat er te halen is.',
             'doel' => 'aanbod',
+            'foto' => [
+                'alt' => 'Planten in potten op de stoep bij een voordeur',
+                'maker' => 'Anatol Rurac',
+                'bron_url' => 'https://unsplash.com/photos/TBcNquxo1JM',
+                'licentie' => 'Unsplash License',
+                'positie' => 'center 60%',
+            ],
         ],
         'bieb' => [
             'titel' => 'Bibliotheek of buurthuis',
             'kop' => 'Stekje mee, stekje terug',
             'sub' => 'Vind planten, stekjes en zaden die mensen in de buurt gratis weggeven.',
             'doel' => 'home',
+            'foto' => [
+                'alt' => 'Stekjes met wortels in glazen potten op de vensterbank',
+                'maker' => 'Kambiz Daneshjou',
+                'bron_url' => 'https://unsplash.com/photos/CFQYiGUfQJc',
+                'licentie' => 'Unsplash License',
+                'positie' => 'center 55%',
+            ],
         ],
     ];
 
