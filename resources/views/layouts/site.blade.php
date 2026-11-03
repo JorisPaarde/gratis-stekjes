@@ -75,6 +75,7 @@
         <a href="{{ route('hoe-werkt-het') }}"><x-icon name="info" :size="16" /> Hoe werkt het</a>
         <a href="{{ route('vermeerderen') }}" @if(request()->routeIs('vermeerderen', 'stektips.*')) aria-current="page" @endif><x-icon name="stekje" :size="16" /> Vermeerderen</a>
         <a href="{{ route('deelplekken') }}"><x-icon name="locatie" :size="16" /> Deelplekken</a>
+        <a href="{{ route('help-mee') }}" @if(request()->routeIs('help-mee')) aria-current="page" @endif><x-icon name="delen" :size="16" /> Help mee</a>
         @can('see-admin-dashboard')
           <a href="{{ route('beheer.index') }}"><x-icon name="kaart" :size="16" /> Dashboard</a>
         @elsecan('see-stats')
@@ -152,6 +153,7 @@
           <h2>Over Gratis planten</h2>
           <ul>
             <li><a href="{{ route('hoe-werkt-het') }}">Hoe werkt het</a></li>
+            <li><a href="{{ route('help-mee') }}">Help mee</a></li>
             <li><a href="{{ route('over') }}">Over</a></li>
             <li><a href="{{ route('voor-organisaties') }}">Voor organisaties</a></li>
             <li><a href="{{ route('contact') }}">Contact</a></li>

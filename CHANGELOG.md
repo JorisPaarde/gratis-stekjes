@@ -9,6 +9,15 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.58.0] - 2026-11-03
+
+### Added
+
+- **/help-mee** vindbaar vanuit drie plekken: «Help mee» in het hoofdmenu (desktop én
+  mobiel hamburgermenu; er is geen aparte tabstrip), in de footerkolom «Over Gratis
+  planten», en op de homepage in het bestaande Doe-mee-blok (korte zin + knop «Help mee»,
+  copy uit de help-mee-pagina). Overige doelgroeppagina’s blijven buiten menu/footer.
+
 ## [0.57.0] - 2026-11-03
 
 ### Added

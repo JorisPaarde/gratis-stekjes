@@ -861,7 +861,7 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
   margin-top: 1.15rem;
 }
 
-/* Doelgroep-landingspagina’s (niet in hoofdmenu/footer) */
+/* Doelgroep-landingspagina’s (volkstuinen/natuur/verbinding niet in menu/footer; Help mee wel) */
 .audience-landing {
   max-width: 44rem;
 }
