@@ -150,16 +150,36 @@ final class Deelplekken
         return $query->get();
     }
 
-    /** @return list<string> */
+    /**
+     * Filteropties: vaste 12 NL-provincies (Fryslân i.p.v. Friesland, zoals in de data)
+     * plus Belgische provincies die in zichtbare deelplekken voorkomen.
+     *
+     * @return list<string>
+     */
     public function provincies(): array
     {
-        return Deelplek::query()->visible()
+        /** @var list<string> $configured */
+        $configured = config('stekjes.provincies', []);
+        $nl = array_values(array_map(
+            static fn (string $p): string => $p === 'Friesland' ? 'Fryslân' : $p,
+            $configured
+        ));
+
+        $fromData = Deelplek::query()->visible()
             ->distinct()
             ->orderBy('provincie')
             ->pluck('provincie')
             ->filter()
             ->values()
             ->all();
+
+        $extra = array_values(array_filter(
+            $fromData,
+            static fn (string $p): bool => ! in_array($p, $nl, true)
+        ));
+        sort($extra, SORT_STRING);
+
+        return array_values(array_unique([...$nl, ...$extra]));
     }
 
     /**
