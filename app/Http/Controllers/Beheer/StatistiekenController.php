@@ -20,13 +20,16 @@ class StatistiekenController extends Controller
 {
     public function index(): Response
     {
-        $leden = User::query()->count();
-        $confirmed = User::query()->whereNotNull('email_verified_at')->count();
-        $unconfirmed = User::query()->whereNull('email_verified_at')->count();
+        $leden = User::query()->members()->count();
+        $confirmed = User::query()->members()->whereNotNull('email_verified_at')->count();
+        $unconfirmed = User::query()->members()->whereNull('email_verified_at')->count();
 
         // Distinct members who ever had ≥1 listing (any visibility / expiry status).
         $ledenMetAanbod = Schema::hasTable('aanbod')
-            ? (int) Aanbod::query()->distinct()->count('user_id')
+            ? (int) Aanbod::query()
+                ->whereHas('user', fn ($q) => $q->members())
+                ->distinct()
+                ->count('user_id')
             : 0;
         $ledenZonderAanbod = max(0, $leden - $ledenMetAanbod);
 
@@ -263,6 +266,7 @@ class StatistiekenController extends Controller
     {
         $from = now()->subDays($days - 1)->startOfDay();
         $rows = User::query()
+            ->members()
             ->where('created_at', '>=', $from)
             ->selectRaw('DATE(created_at) as day, COUNT(*) as aggregate')
             ->groupBy('day')

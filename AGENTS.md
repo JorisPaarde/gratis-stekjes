@@ -81,6 +81,7 @@ Optioneel (backups): `BACKUP_ENCRYPTION_KEY` — AES-sleutel voor `backup:databa
 - **`deploy-staging-cpanel.yml`** — actief: push `staging` of `workflow_dispatch`. Build → zip → chunked upload → `/deploy/run` → smoke. Ontbrekende hele secret-set → skip (notice). Gedeeltelijk → fail. Hook 404 → fail met INSTALL-stappen.
 - **`deploy-prod-hook.yml`** — tags `v*.*.*` + `workflow_dispatch`; environment `production`. **Niet** bij merges naar staging.
 - **`backup.yml`** — dagelijks + `workflow_dispatch`: `GET /cron/backup` op staging én prod → download ciphertext → GitHub artifact (30 dagen). Vereist `CRON_TOKEN` + base-URL secrets; sleutel blijft op de server / in `BACKUP_ENCRYPTION_KEY`.
+- **`stats-lezer.yml`** — `workflow_dispatch` met input `target` (`staging`|`production`): `POST /deploy/stats-lezer` → artisan `gp:stats-lezer`. Secrets: `GP_PLANTJES_EMAIL`, `GP_PLANTJES_PASSWORD`, `DEPLOY_TOKEN`, plus `STAGING_BASE_URL` / `PROD_BASE_URL`. Production pas na merge naar `master` + prod-deploy.
 - **`scripts/deploy-hook-upload.sh`** — client (chunk 5 MiB, sha256).
 - **`scripts/make-deploy-hook-config.sh`** — token + `gh secret set` + print config-hash.
 - **`deploy-staging.yml`** — **retired** (oude SSH). Alleen `workflow_dispatch` + `ALLOW_LEGACY_SSH_STAGING=1`. **Niet heractiveren** voor dataverhuis.

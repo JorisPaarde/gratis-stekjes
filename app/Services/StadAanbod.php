@@ -30,9 +30,10 @@ final class StadAanbod
 
         $rows = Aanbod::query()
             ->publiclyListed()
-            ->with(['user' => fn ($q) => $q->where('active', true)->whereNotNull('email_verified_at')])
+            ->with(['user' => fn ($q) => $q->members()->where('active', true)->whereNotNull('email_verified_at')])
             ->whereHas('user', function ($q) {
-                $q->where('active', true)
+                $q->members()
+                    ->where('active', true)
                     ->whereNotNull('email_verified_at')
                     ->whereNotNull('lat')
                     ->whereNotNull('lon');

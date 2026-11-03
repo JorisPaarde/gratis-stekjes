@@ -8,8 +8,12 @@
 <section class="section wrap">
   <h1 class="page-title">Mijn account</h1>
   <p class="section-intro">Hallo {{ $user->name }}, beheer hier je gegevens, wachtwoord en privacy.</p>
-  <p class="account-hoofdactie"><a class="btn btn-groot" href="{{ route('aanbieden') }}"><x-icon name="plus" :size="18" /> Bied iets aan</a>
-    <a class="btn btn-secondary" href="{{ route('account.aanbod') }}">Mijn aanbod</a></p>
+  @if($user->isStatsViewer())
+    <p class="account-hoofdactie"><a class="btn btn-groot" href="{{ route('beheer.statistieken') }}">Statistieken</a></p>
+  @else
+    <p class="account-hoofdactie"><a class="btn btn-groot" href="{{ route('aanbieden') }}"><x-icon name="plus" :size="18" /> Bied iets aan</a>
+      <a class="btn btn-secondary" href="{{ route('account.aanbod') }}">Mijn aanbod</a></p>
+  @endif
 
   <div class="soft-card">
     <h2><x-icon name="gebruiker" :size="20" /> Overzicht</h2>
@@ -37,11 +41,16 @@
   <div class="soft-card" style="margin-top:1rem">
     <h2>Activiteit</h2>
     <ul class="prose" style="margin:0;padding-left:1.25rem">
-      <li><a href="{{ route('account.aanbod') }}">Mijn aanbod</a></li>
+      @unless($user->isStatsViewer())
+        <li><a href="{{ route('account.aanbod') }}">Mijn aanbod</a></li>
+      @endunless
       <li><a href="{{ route('account.inbox') }}">Inbox</a>@if(($ongelezenBerichten ?? 0) > 0) <span class="ongelezen-badge">{{ $ongelezenBerichten }} nieuw</span>@endif</li>
       <li><a href="{{ route('account.ervaringen') }}">Mijn ervaringen</a></li>
       <li><a href="{{ route('account.verenigingen') }}">Mijn verenigingen</a> <span class="muted">(volkstuin, tuinvereniging, buurttuin)</span></li>
       <li><a href="{{ route('aanbod') }}">Kaart / zoeken</a></li>
+      @can('see-stats')
+        <li><a href="{{ route('beheer.statistieken') }}">Statistieken</a></li>
+      @endcan
     </ul>
   </div>
 

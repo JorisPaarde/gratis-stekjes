@@ -19,6 +19,10 @@ class LoginController extends Controller
             return redirect()->route('beheer.index');
         }
 
+        if (Gate::allows('see-stats')) {
+            return redirect()->route('beheer.statistieken');
+        }
+
         $password = (string) config('stekjes.admin_password', '');
         if ($password === '') {
             return response('Admin niet geconfigureerd.', 503)

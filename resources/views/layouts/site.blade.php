@@ -58,8 +58,10 @@
       <a class="brand" href="{{ route('home') }}">{{ $siteName }}</a>
       @unless(request()->routeIs('beheer.*'))
         @auth
-          @unless(request()->routeIs('aanbieden'))
-            <a class="nav-cta header-cta" href="{{ route('aanbieden') }}"><x-icon name="plus" :size="16" /> Bied aan</a>
+          @unless(auth()->user()?->isStatsViewer())
+            @unless(request()->routeIs('aanbieden'))
+              <a class="nav-cta header-cta" href="{{ route('aanbieden') }}"><x-icon name="plus" :size="16" /> Bied aan</a>
+            @endunless
           @endunless
         @else
           <a class="nav-cta header-cta" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="16" /> Doe mee</a>
@@ -75,6 +77,8 @@
         <a href="{{ route('deelplekken') }}"><x-icon name="locatie" :size="16" /> Deelplekken</a>
         @can('see-admin-dashboard')
           <a href="{{ route('beheer.index') }}"><x-icon name="kaart" :size="16" /> Dashboard</a>
+        @elsecan('see-stats')
+          <a href="{{ route('beheer.statistieken') }}"><x-icon name="kaart" :size="16" /> Statistieken</a>
         @endcan
         @auth
           @if(($ongelezenBerichten ?? 0) > 0)
@@ -83,7 +87,9 @@
             <a href="{{ route('account.index') }}"><x-icon name="gebruiker" :size="16" /> Account</a>
           @endif
           @unless(request()->routeIs('beheer.*'))
-            <a class="nav-cta" href="{{ route('aanbieden') }}"><x-icon name="plus" :size="16" /> Bied iets aan</a>
+            @unless(auth()->user()?->isStatsViewer())
+              <a class="nav-cta" href="{{ route('aanbieden') }}"><x-icon name="plus" :size="16" /> Bied iets aan</a>
+            @endunless
           @endunless
         @else
           <a href="{{ route('account.inloggen') }}"><x-icon name="gebruiker" :size="16" /> Inloggen</a>

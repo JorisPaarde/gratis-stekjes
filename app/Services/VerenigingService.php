@@ -217,12 +217,13 @@ final class VerenigingService
     public function ledenBlok(Vereniging $vereniging, AanbodSearch $search): array
     {
         try {
-            $leden = $vereniging->leden()->count();
+            $leden = $vereniging->leden()->members()->count();
             $aanbod = Aanbod::query()
                 ->publiclyListed()
                 ->with(['user', 'fotos'])
                 ->whereHas('user', function ($q) use ($vereniging): void {
-                    $q->where('active', true)
+                    $q->members()
+                        ->where('active', true)
                         ->whereNotNull('email_verified_at')
                         ->whereHas('verenigingen', fn ($v) => $v
                             ->where('verenigingen.id', $vereniging->id)

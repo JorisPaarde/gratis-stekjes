@@ -111,12 +111,21 @@
             @if($svgFeedbackSpark !== ''){!! $svgFeedbackSpark !!}@endif
           </span>
           <span class="stats-kpi-label">
-            <a href="{{ route('beheer.feedback') }}">Feedback ongelezen</a>
+            @can('see-admin-dashboard')
+              <a href="{{ route('beheer.feedback') }}">Feedback ongelezen</a>
+            @else
+              Feedback ongelezen
+            @endcan
             · {{ $feedbackTotal }} totaal
           </span>
         </summary>
         <div class="stats-kpi-expand">
-          <p class="stats-kpi-caption"><a href="{{ route('beheer.feedback') }}">Bekijk alle feedback</a> — {{ $feedbackTotal }} totaal, {{ $feedbackUnread }} ongelezen.</p>
+          <p class="stats-kpi-caption">
+            @can('see-admin-dashboard')
+              <a href="{{ route('beheer.feedback') }}">Bekijk alle feedback</a> —
+            @endcan
+            {{ $feedbackTotal }} totaal, {{ $feedbackUnread }} ongelezen.
+          </p>
           {!! $svgFeedback !!}
         </div>
       </details>

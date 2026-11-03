@@ -81,6 +81,12 @@ class RecordPageView
             return;
         }
 
+        // Stats-lezer-bot: geen paginabezoeken in de tellingen.
+        $viewer = $request->user();
+        if ($viewer !== null && method_exists($viewer, 'isStatsViewer') && $viewer->isStatsViewer()) {
+            return;
+        }
+
         $path = $this->normalizePath($request->getPathInfo());
         if ($path === null || $this->isExcluded($path)) {
             return;

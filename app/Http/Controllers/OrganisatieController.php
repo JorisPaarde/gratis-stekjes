@@ -18,7 +18,9 @@ class OrganisatieController extends Controller
     public function index(Organisaties $organisaties): View
     {
         $verenigingen = VerenigingService::beschikbaar()
-            ? Vereniging::query()->approved()->whereNull('json_slug')->withCount('leden')->orderBy('plaats')->orderBy('naam')->get()
+            ? Vereniging::query()->approved()->whereNull('json_slug')
+                ->withCount(['leden' => fn ($q) => $q->members()])
+                ->orderBy('plaats')->orderBy('naam')->get()
             : collect();
 
         return view('pages.organisaties-index', [

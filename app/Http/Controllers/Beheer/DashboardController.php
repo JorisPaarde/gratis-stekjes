@@ -40,10 +40,10 @@ class DashboardController extends Controller
     {
         $kort = ['leden' => 0, 'nieuw_week' => 0, 'actief_week' => 0, 'aanbod_actief' => 0, 'gesprekken_week' => 0];
         try {
-            $kort['leden'] = User::query()->count();
-            $kort['nieuw_week'] = User::query()->where('created_at', '>=', now()->subWeek())->count();
+            $kort['leden'] = User::query()->members()->count();
+            $kort['nieuw_week'] = User::query()->members()->where('created_at', '>=', now()->subWeek())->count();
             $kort['actief_week'] = Schema::hasColumn('users', 'last_seen_at')
-                ? User::query()->where('last_seen_at', '>=', now()->subWeek())->count()
+                ? User::query()->members()->where('last_seen_at', '>=', now()->subWeek())->count()
                 : 0;
             $kort['aanbod_actief'] = Schema::hasTable('aanbod') ? Aanbod::query()->publiclyListed()->count() : 0;
             $kort['gesprekken_week'] = Schema::hasTable('conversations')
@@ -64,7 +64,7 @@ class DashboardController extends Controller
             'metaDescription' => 'Beheer',
             'canonical' => route('beheer.index'),
             'kort' => $kort,
-            'nieuwste' => User::query()->orderByDesc('id')->limit(6)->get(),
+            'nieuwste' => User::query()->members()->orderByDesc('id')->limit(6)->get(),
             'mailfouten' => $mailfouten,
         ]);
     }
@@ -72,7 +72,7 @@ class DashboardController extends Controller
     public function verenigingen(): View
     {
         $verenigingen = VerenigingService::beschikbaar()
-            ? Vereniging::query()->withCount('leden')
+            ? Vereniging::query()->withCount(['leden' => fn ($q) => $q->members()])
                 ->orderByRaw("CASE status WHEN 'pending' THEN 0 WHEN 'approved' THEN 1 ELSE 2 END")
                 ->orderByDesc('created_at')
                 ->limit(300)

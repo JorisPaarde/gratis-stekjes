@@ -39,6 +39,7 @@ use App\Http\Controllers\CronController;
 use App\Http\Controllers\DeelplekkenController;
 use App\Http\Controllers\DeployController;
 use App\Http\Controllers\DeployImportController;
+use App\Http\Controllers\DeployStatsLezerController;
 use App\Http\Controllers\ErvaringController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\GratisPlantenController;
@@ -135,6 +136,9 @@ Route::get('/cron/backup', BackupCronController::class)
 Route::post('/deploy/run', DeployController::class)
     ->middleware('throttle:10,1')
     ->name('deploy.run');
+Route::post('/deploy/stats-lezer', DeployStatsLezerController::class)
+    ->middleware('throttle:10,1')
+    ->name('deploy.stats-lezer');
 Route::post('/deploy/import/init', [DeployImportController::class, 'init'])
     ->middleware('throttle:20,1')
     ->name('deploy.import.init');
@@ -259,6 +263,11 @@ Route::post('/beheer', [BeheerLoginController::class, 'store'])
     ->middleware('throttle:5,1');
 Route::post('/beheer/uitloggen', [BeheerLoginController::class, 'destroy'])->name('beheer.logout');
 
+// Stats-lezer (admin óf is_stats_viewer): alleen aggregaatstatistieken.
+Route::middleware('stats')->prefix('beheer')->group(function () {
+    Route::get('/statistieken', [BeheerStatistiekenController::class, 'index'])->name('beheer.statistieken');
+});
+
 Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::get('/overzicht', [BeheerDashboardController::class, 'index'])->name('beheer.index');
     Route::get('/verenigingen', [BeheerDashboardController::class, 'verenigingen'])->name('beheer.verenigingen');
@@ -283,7 +292,6 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
         ->middleware('throttle:20,1')
         ->whereNumber('user')
         ->name('beheer.gebruikers.beheerder');
-    Route::get('/statistieken', [BeheerStatistiekenController::class, 'index'])->name('beheer.statistieken');
     Route::get('/gebruikers', [BeheerGebruikersController::class, 'index'])->name('beheer.gebruikers');
     Route::post('/gebruikers/zoeken', [BeheerGebruikersController::class, 'zoek'])
         ->middleware('throttle:60,1')

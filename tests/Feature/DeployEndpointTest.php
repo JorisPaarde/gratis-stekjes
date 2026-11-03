@@ -21,6 +21,37 @@ test('deploy endpoint weigert zonder bearer token', function () {
         ->assertJsonPath('error', 'forbidden');
 });
 
+test('deploy stats-lezer endpoint draait gp:stats-lezer zonder PII in response', function () {
+    config(['stekjes.deploy_endpoint_enabled' => true]);
+    RateLimiter::clear('deploy-stats-lezer:127.0.0.1');
+
+    $email = 'plantjes-deploy@example.test';
+    $this->withToken('test-deploy-token', 'Bearer')
+        ->withHeaders(['X-GP-Plantjes-Password' => 'TestOnly-Deploy-Pass-9'])
+        ->postJson('/deploy/stats-lezer', ['email' => $email])
+        ->assertOk()
+        ->assertJsonPath('ok', true)
+        ->assertJsonMissingPath('email')
+        ->assertJsonMissingPath('password')
+        ->assertJsonMissingPath('GP_PLANTJES_PASSWORD');
+
+    $user = \App\Models\User::query()->where('email', $email)->first();
+    expect($user)->not->toBeNull()
+        ->and((bool) $user->is_stats_viewer)->toBeTrue()
+        ->and((bool) $user->is_admin)->toBeFalse();
+});
+
+test('deploy stats-lezer weigert zonder wachtwoord-header', function () {
+    config(['stekjes.deploy_endpoint_enabled' => true]);
+    RateLimiter::clear('deploy-stats-lezer:127.0.0.1');
+
+    $this->withToken('test-deploy-token', 'Bearer')
+        ->postJson('/deploy/stats-lezer', ['email' => 'x@example.test'])
+        ->assertStatus(422)
+        ->assertJsonPath('error', 'missing_password');
+});
+
+
 test('deploy endpoint weigert met verkeerde token', function () {
     config(['stekjes.deploy_endpoint_enabled' => true]);
 
