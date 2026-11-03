@@ -9,6 +9,23 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.57.0] - 2026-11-03
+
+### Added
+
+- Rol **stats_viewer** (`users.is_stats_viewer`): leest alleen `/beheer/statistieken`
+  (Gate `see-stats` = admin óf stats_viewer). Overige `/beheer`-routes, POST/DELETE en
+  `/stijlgids` blijven admin-only. Geen beheerknoppen in de navigatie; accountmenu-link
+  «Statistieken» alleen voor stats_viewer/admin. Stats-pagina toont geen persoonsgegevens;
+  feedbacklinks alleen voor admins.
+- Stats_viewer telt niet mee in leden-/signup-/actief-tellingen (statistieken, beheeroverzicht,
+  mijlpalen), staat niet in openbare lijsten/kaart/aanbieders, plaatst geen aanbod, en
+  pageviews van dit account worden niet geregistreerd.
+- Artisan `gp:stats-lezer {email}` (idempotent; wachtwoord uit env `GP_PLANTJES_PASSWORD`)
+  + `POST /deploy/stats-lezer` + workflow `stats-lezer.yml` (`target` staging|production;
+  secrets `GP_PLANTJES_EMAIL`, `GP_PLANTJES_PASSWORD`, `DEPLOY_TOKEN`). Production pas na
+  merge naar master + prod-deploy.
+
 ## [0.56.0] - 2026-11-03
 
 ### Added

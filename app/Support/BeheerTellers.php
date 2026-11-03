@@ -42,6 +42,7 @@ final class BeheerTellers
     public static function onbevestigdQuery(): Builder
     {
         return User::query()
+            ->members()
             ->where('active', true)
             ->whereNull('email_verified_at')
             ->where('created_at', '<=', now()->subDays(self::ONBEVESTIGD_DAGEN));

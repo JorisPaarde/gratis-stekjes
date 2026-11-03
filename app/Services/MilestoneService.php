@@ -126,6 +126,7 @@ final class MilestoneService
         $aanbod = Aanbod::query()
             ->where('type', 'uitdelen')
             ->whereHas('user', function ($q) use ($admins): void {
+                $q->members();
                 if ($admins !== []) {
                     $q->whereNotIn(DB::raw('LOWER(email)'), $admins);
                 }
@@ -147,12 +148,17 @@ final class MilestoneService
     public function lidnummer(User $user): ?int
     {
         try {
+            if ($user->isStatsViewer()) {
+                return null;
+            }
+
             $admins = AdminDashboard::allowedEmails();
             if ($admins !== [] && in_array(mb_strtolower((string) $user->email), $admins, true)) {
                 return null;
             }
 
             return User::query()
+                ->members()
                 ->where('id', '<=', $user->id)
                 ->when($admins !== [], fn ($q) => $q->whereNotIn(DB::raw('LOWER(email)'), $admins))
                 ->count();

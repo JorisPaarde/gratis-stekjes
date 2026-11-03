@@ -1,0 +1,102 @@
+name: Stats-lezer account
+
+# Idempotent: maakt/werkt gp:stats-lezer bij via POST /deploy/stats-lezer (noshell HTTPS).
+# Secrets (repo of environment): GP_PLANTJES_EMAIL, GP_PLANTJES_PASSWORD, DEPLOY_TOKEN,
+#   plus STAGING_BASE_URL (staging) of PROD_BASE_URL (production).
+#
+# Production-target: alleen zinvol ná merge naar master én prod-deploy (code + migratie
+# moeten op productie staan). Staging werkt na merge naar staging + staging-deploy.
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Omgeving (production pas na master-deploy)"
+        type: choice
+        options:
+          - staging
+          - production
+        required: true
+        default: staging
+
+permissions:
+  contents: read
+
+jobs:
+  stats-lezer:
+    name: stats-lezer (${{ inputs.target }})
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.target }}
+    steps:
+      - name: Draai gp:stats-lezer op ${{ inputs.target }}
+        env:
+          TARGET: ${{ inputs.target }}
+          STAGING_BASE: ${{ secrets.STAGING_BASE_URL }}
+          PROD_BASE: ${{ secrets.PROD_BASE_URL }}
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+          GP_PLANTJES_EMAIL: ${{ secrets.GP_PLANTJES_EMAIL }}
+          GP_PLANTJES_PASSWORD: ${{ secrets.GP_PLANTJES_PASSWORD }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${DEPLOY_TOKEN:-}" ]; then
+            echo "::error::DEPLOY_TOKEN ontbreekt in environment ${TARGET}."
+            exit 1
+          fi
+          if [ -z "${GP_PLANTJES_EMAIL:-}" ]; then
+            echo "::error::GP_PLANTJES_EMAIL ontbreekt."
+            exit 1
+          fi
+          if [ -z "${GP_PLANTJES_PASSWORD:-}" ]; then
+            echo "::error::GP_PLANTJES_PASSWORD ontbreekt."
+            exit 1
+          fi
+
+          echo "::add-mask::${DEPLOY_TOKEN}"
+          echo "::add-mask::${GP_PLANTJES_EMAIL}"
+          echo "::add-mask::${GP_PLANTJES_PASSWORD}"
+
+          if [ "${TARGET}" = "production" ]; then
+            BASE_URL="${PROD_BASE:-}"
+            if [ -z "${BASE_URL}" ]; then
+              echo "::error::PROD_BASE_URL ontbreekt (production pas na merge naar master + deploy)."
+              exit 1
+            fi
+            echo "::notice::Production: vereist dat 0.57.0+ op master staat en is gedeployed."
+          else
+            BASE_URL="${STAGING_BASE:-}"
+            if [ -z "${BASE_URL}" ]; then
+              echo "::error::STAGING_BASE_URL ontbreekt."
+              exit 1
+            fi
+          fi
+
+          BASE_URL="${BASE_URL%/}"
+          code=$(curl -sS -o /tmp/stats-lezer.json -w '%{http_code}' \
+            -X POST \
+            -H "Authorization: Bearer ${DEPLOY_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -H "X-GP-Plantjes-Password: ${GP_PLANTJES_PASSWORD}" \
+            -d "{\"email\":$(printf '%s' "${GP_PLANTJES_EMAIL}" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))')}" \
+            "${BASE_URL}/deploy/stats-lezer" || true)
+
+          echo "${TARGET}: HTTP ${code}"
+          # Response mag geen e-mail/wachtwoord bevatten; toon alleen ok/error-sleutels.
+          if command -v python3 >/dev/null 2>&1 && [ -f /tmp/stats-lezer.json ]; then
+            python3 - <<'PY'
+          import json
+          try:
+              data = json.load(open("/tmp/stats-lezer.json"))
+          except Exception:
+              print("response: (geen JSON)")
+              raise SystemExit(0)
+          safe = {k: data[k] for k in ("ok", "error", "at") if k in data}
+          print("response:", json.dumps(safe))
+          PY
+          fi
+
+          if [ "${code}" != "200" ]; then
+            echo "::error::stats-lezer faalde (HTTP ${code})."
+            exit 1
+          fi
+          echo "::notice::Stats-lezer OK op ${TARGET}."

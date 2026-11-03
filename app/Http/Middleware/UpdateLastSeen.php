@@ -19,7 +19,7 @@ final class UpdateLastSeen
 
         try {
             $user = $request->user();
-            if ($user !== null) {
+            if ($user !== null && ! (method_exists($user, 'isStatsViewer') && $user->isStatsViewer())) {
                 $seen = $user->last_seen_at;
                 if ($seen === null || $seen->lt(now()->subHour())) {
                     DB::table('users')->where('id', $user->id)->update(['last_seen_at' => now()]);

@@ -95,7 +95,8 @@ final class AanbodSearch
             ->publiclyListed()
             ->with($with)
             ->whereHas('user', function ($q) {
-                $q->where('active', true)
+                $q->members()
+                    ->where('active', true)
                     ->whereNotNull('email_verified_at')
                     ->whereNotNull('lat')
                     ->whereNotNull('lon');
