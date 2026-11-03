@@ -9,6 +9,36 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.58.2] - 2026-11-03
+
+### Fixed
+
+- Artisan `gp:herbereken-postcodes`: herberekent lat/lon van NL-leden met een postcode als
+  locatie (4 cijfers) via de gefixte `PdokGeocoder`. Idempotent (alleen bij verschil), fout per
+  postcode = overslaan + loggen, pauze tussen PDOK-verzoeken. Draait eenmalig via migratie
+  `2026_11_03_140000_herbereken_postcode_coordinaten` bij de deploy en breekt die nooit.
+  Leden hoeven hun profiel dus niet opnieuw op te slaan. Aanbod heeft geen eigen coördinaten.
+
+## [0.58.1] - 2026-11-03
+
+### Fixed
+
+- Zoeken: aanbod van leden met een NL-postcode zonder letters (bijv. `2037`) of met spatie
+  (`2037 KB`) stond op de verkeerde plek. PDOK gaf dan de woonplaats met dezelfde code
+  (2037 = Nederweert) i.p.v. de postcode (Haarlem), waardoor het aanbod bij «haarlem» op
+  141 km viel en buiten de lijst bleef. `PdokGeocoder` zoekt postcodes nu met
+  `fq=type:postcode`; migratie wist de foute postcode-regels uit `geocode_cache`.
+  Bestaande leden met zo'n postcode slaan hun profiel één keer opnieuw op.
+
+## [0.58.0] - 2026-11-03
+
+### Added
+
+- **/help-mee** vindbaar vanuit drie plekken: «Help mee» in het hoofdmenu (desktop én
+  mobiel hamburgermenu; er is geen aparte tabstrip), in de footerkolom «Over Gratis
+  planten», en op de homepage in het bestaande Doe-mee-blok (korte zin + knop «Help mee»,
+  copy uit de help-mee-pagina). Overige doelgroeppagina’s blijven buiten menu/footer.
+
 ## [0.57.0] - 2026-11-03
 
 ### Added

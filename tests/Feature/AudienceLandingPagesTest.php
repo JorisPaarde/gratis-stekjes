@@ -70,7 +70,7 @@ test('doelgroep-landingspagina’s geven 200 met SEO-title, H1, CTA en schema', 
     }
 });
 
-test('doelgroeppagina’s staan in sitemap maar niet in menu of footer', function () {
+test('doelgroeppagina’s staan in sitemap; Help mee ook in menu, footer en homepage', function () {
     $xml = $this->get(route('sitemap'))->assertOk()->getContent();
     $home = $this->get('/')->assertOk()->getContent();
 
@@ -81,14 +81,21 @@ test('doelgroeppagina’s staan in sitemap maar niet in menu of footer', functio
     expect(preg_match('/<nav id="hoofdmenu"[^>]*>(.*?)<\/nav>/s', $home, $nav))->toBe(1);
     expect(preg_match('/<nav class="footer-links"[^>]*>(.*?)<\/nav>/s', $home, $footer))->toBe(1);
 
-    foreach (['volkstuinen', 'help-mee', 'natuur', 'verbinding'] as $slug) {
+    // Help mee is bewust vindbaar; overige doelgroeppagina’s blijven buiten menu/footer.
+    expect($nav[1])->toContain('href="'.route('help-mee').'"')
+        ->and($nav[1])->toContain('Help mee');
+    expect($footer[1])->toContain('href="'.route('help-mee').'"')
+        ->and($footer[1])->toContain('Help mee');
+
+    foreach (['volkstuinen', 'natuur', 'verbinding'] as $slug) {
         expect($nav[1])->not->toContain($slug);
         expect($footer[1])->not->toContain($slug);
     }
 
-    // Homepage-CTA mag wél naar Help mee (buiten nav/footer); geen “binnenkort”-badge meer in dat paneel.
+    // Homepage Doe-mee-blok: knop «Help mee», geen “binnenkort”-badge.
     expect(preg_match('/<section class="home-signup" id="doe-mee"[^>]*>(.*?)<\/section>/s', $home, $cta))->toBe(1);
     expect($cta[1])->toMatch('/href="[^"]*help-mee"/')
+        ->and($cta[1])->toMatch('/Help mee\s*<\/a>/')
         ->and($cta[1])->not->toContain('badge-soon')
         ->and($cta[1])->not->toContain('binnenkort');
     expect($home)->not->toMatch('/href="[^"]*\/volkstuinen"/')
