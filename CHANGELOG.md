@@ -9,6 +9,19 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.68.1] - 2026-11-04
+
+### Added
+
+- Eenmalige ledenupdate-mail via site-SMTP (`MAIL_*`, from info@gratisplanten.nl /
+  «Gratis planten»; nooit Resend): artisan `gp:ledenupdate-mail`
+  (`--dry-run` standaard, `--ids`, `--send --id=N`), tabel `ledenupdate_mails`
+  (idempotent per user), `POST /deploy/ledenupdate-mail` (mode dry-run|ids|send)
+  + workflow `ledenupdate-mail.yml` (target staging|production, mode dry-run|send;
+  send: dry-run → ids-guard → één-voor-één met pauze 180–240s). Ontvangers:
+  active+verified `User::members()` minus admins/stats-lezer. Output zonder
+  e-mail- of straatadressen; postcode-alinea alleen zonder geldige postcode.
+
 ## [0.68.0] - 2026-11-04
 
 ### Added

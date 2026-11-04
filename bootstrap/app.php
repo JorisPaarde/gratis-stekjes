@@ -46,6 +46,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'deploy/stats-lezer',
             'deploy/normaliseer-locaties',
             'deploy/postcode-herinnering-lijst',
+            'deploy/ledenupdate-mail',
             'deploy/import-struikroven-agenda',
             'deploy/import',
             'deploy/import/init',
