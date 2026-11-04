@@ -107,6 +107,8 @@ Route::get('/stektips', [StektipsController::class, 'index'])->name('stektips.in
 Route::get('/stektips/artikel/{slug}', [StektipsController::class, 'artikel'])
     ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
     ->name('stektips.artikel');
+// Oude spelling (zonder tweede i); canonieke slug is sansevieria.
+Route::redirect('/stektips/sanseveria', '/stektips/sansevieria', 301);
 Route::get('/stektips/{slug}', [StektipsController::class, 'show'])
     ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
     ->name('stektips.show');

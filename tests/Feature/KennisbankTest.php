@@ -107,6 +107,7 @@ test('sitemap bevat kennisbank-artikelen', function () {
     expect($xml)->toContain(route('stektips.artikel', ['slug' => 'wilgenwater']));
     expect($xml)->toContain(route('stektips.artikel', ['slug' => 'stekpoeder']));
     expect($xml)->toContain(route('stektips.show', ['slug' => 'munt']));
+    expect($xml)->toContain('<loc>'.route('vermeerderen').'</loc>');
 });
 
 test('artikel-slug botst niet met soort-slug en reserved pad', function () {

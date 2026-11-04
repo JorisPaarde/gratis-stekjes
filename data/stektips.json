@@ -94,7 +94,7 @@
       "kans": "Makkelijk",
       "klaar": "Direct na het poten van een beworteld kindplantje",
       "verwanten": [
-        "sanseveria",
+        "sansevieria",
         "jadeplant"
       ],
       "waarschuwing": "",
@@ -2413,8 +2413,8 @@
       "waarschuwing": ""
     },
     {
-      "slug": "sanseveria",
-      "naam": "Sanseveria",
+      "slug": "sansevieria",
+      "naam": "Sansevieria",
       "latijn": "Dracaena trifasciata",
       "categorie": "kamerplant",
       "waarom": "Robuuste kamerplant; bladstek of scheuren van de pol",
@@ -2811,7 +2811,7 @@
       "kans": "Gemiddeld",
       "klaar": "Kan maanden duren bij bladstek; scheuren is sneller",
       "verwanten": [
-        "sanseveria",
+        "sansevieria",
         "aloe-vera"
       ],
       "waarschuwing": "Bladstekken vragen geduld; scheuren van een grote plant is sneller.",
