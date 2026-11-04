@@ -207,10 +207,6 @@ foreach ($soorten as $soort) {
                 continue;
             }
             $title = mb_strtolower((string) ($page['title'] ?? ''), 'UTF-8');
-            // Skip duidelijke niet-planttreffers (bijv. planetoïde “Begonia”).
-            if (str_contains($title, 'asteroid') || str_contains($title, 'shape model') || str_contains($title, 'coat of arms')) {
-                continue;
-            }
             $meta = $info['extmetadata'] ?? [];
             $licShort = (string) ($meta['LicenseShortName']['value'] ?? $meta['License']['value'] ?? '');
             $licUrl = html_entity_decode(strip_tags((string) ($meta['LicenseUrl']['value'] ?? '')), ENT_QUOTES | ENT_HTML5, 'UTF-8');
@@ -219,6 +215,38 @@ foreach ($soorten as $soort) {
             $desc = trim(html_entity_decode(strip_tags((string) ($meta['ImageDescription']['value'] ?? '')), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
             $pageUrl = (string) ($info['descriptionurl'] ?? '');
             $fileUrl = (string) ($info['thumburl'] ?? $info['url'] ?? '');
+            // Skip duidelijke niet-planttreffers (planetoïde “Begonia”, schelpen bij «Cassis», …).
+            $hayTitleDesc = $title.' '.mb_strtolower($desc, 'UTF-8');
+            $blockedTitleHints = [
+                'asteroid',
+                'shape model',
+                'coat of arms',
+                'cassis cornuta',
+                'giant helmet',
+                'seashell',
+                'sea shell',
+                'zeeschelp',
+                'schelp van',
+                'shell of own',
+                'conch shell',
+                'fossil',
+                'coin ',
+                ' medal',
+            ];
+            $skip = false;
+            foreach ($blockedTitleHints as $hint) {
+                if (str_contains($hayTitleDesc, $hint)) {
+                    $skip = true;
+                    break;
+                }
+            }
+            // Los woord «shell» / «schelp» in titel of beschrijving (niet in plantnamen).
+            if (! $skip && preg_match('/\b(shell|schelp|helmet)\b/u', $hayTitleDesc)) {
+                $skip = true;
+            }
+            if ($skip) {
+                continue;
+            }
 
             $norm = licenceOk($licShort, $licUrl, $allowedLicenceHints, $blockedHints);
             if ($norm === null) {
@@ -274,6 +302,7 @@ foreach ($soorten as $soort) {
         file_put_contents($dest, $jpeg);
         $chosen['bytes'] = strlen($jpeg);
         $chosen['width_max'] = 1200;
+        $chosen['sha256'] = hash('sha256', $jpeg);
         $results['soorten'][$slug] = $chosen;
         $ok++;
         echo "  → kandidaat (te_bekijken) {$chosen['licentie']} — {$chosen['auteur']}\n";

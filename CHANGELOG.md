@@ -9,6 +9,22 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.66.3] - 2026-11-04
+
+### Fixed
+
+- Soortfoto’s: regressiebescherming tegen verkeerde Wikimedia-treffers (zoals de
+  Cassis-schelp bij Zwarte bes in 0.25.0). Elke goedgekeurde soortfoto heeft nu een
+  `sha256`-allowlist; CI faalt bij ontbrekend/dubbel bestand, mismatch key/slug/pad,
+  of stille bytevervanging. Soort-URL’s krijgen `?h=`-cachebuster; de service worker
+  haalt `/assets/images/soorten/` en `/assets/og/` network-first. Het fetch-script
+  weigert schelp-/shell-treffers.
+
+### Notes
+
+- Op prod toont `/stektips/zwarte-bes` al Ribes nigrum (Jerzy Opioła); de schelp was
+  niet meer reproduceerbaar op site/OG/staging. Deze release voorkomt terugkeer.
+
 ## [0.66.2] - 2026-11-04
 
 ### Changed
