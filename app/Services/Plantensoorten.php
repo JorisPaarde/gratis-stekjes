@@ -235,6 +235,141 @@ final class Plantensoorten
     }
 
     /**
+     * Maximaal aantal tikfouten: 1 bij korte termen (≤6), 2 bij langere.
+     */
+    public function maxEditDistance(string $normalizedQuery): int
+    {
+        $len = strlen($normalizedQuery);
+
+        return $len <= 6 ? 1 : 2;
+    }
+
+    /**
+     * Dichtstbijzijnde soorten op naam/synoniem/Latijn (Levenshtein na normalize).
+     * Alleen zichtbare soorten. Optioneel alleen met stektips-slug.
+     *
+     * @return list<array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, tags: list<string>, zichtbaar: bool, url: ?string, match: ?string, distance: int}>
+     */
+    public function suggestClose(string $query, int $limit = 3, bool $onlyWithSlug = false, ?int $maxDistance = null): array
+    {
+        $q = $this->normalize($query);
+        if ($q === '' || mb_strlen($q) < 2) {
+            return [];
+        }
+
+        $limit = max(1, min(10, $limit));
+        $maxDistance ??= $this->maxEditDistance($q);
+        $maxDistance = max(0, $maxDistance);
+
+        /** @var list<array{distance: int, row: array<string, mixed>, match: ?string}> $scored */
+        $scored = [];
+
+        foreach ($this->rows() as $row) {
+            if (! $row['zichtbaar']) {
+                continue;
+            }
+            if ($onlyWithSlug && ($row['slug'] ?? null) === null) {
+                continue;
+            }
+
+            $best = null;
+            $bestMatch = null;
+            foreach ($this->nameCandidates($row) as $candidate) {
+                [$norm, $label] = $candidate;
+                if ($norm === '' || abs(strlen($norm) - strlen($q)) > $maxDistance) {
+                    continue;
+                }
+                $dist = levenshtein($q, $norm);
+                if ($dist > $maxDistance) {
+                    continue;
+                }
+                if ($best === null || $dist < $best) {
+                    $best = $dist;
+                    $bestMatch = $label === $row['naam'] ? null : $label;
+                }
+            }
+
+            if ($best === null) {
+                continue;
+            }
+
+            $scored[] = [
+                'distance' => $best,
+                'row' => $row,
+                'match' => $bestMatch,
+            ];
+        }
+
+        usort($scored, static function (array $a, array $b): int {
+            if ($a['distance'] !== $b['distance']) {
+                return $a['distance'] <=> $b['distance'];
+            }
+
+            return strcasecmp((string) $a['row']['naam'], (string) $b['row']['naam']);
+        });
+
+        $out = [];
+        foreach (array_slice($scored, 0, $limit) as $item) {
+            $public = $this->toPublic($item['row']);
+            $public['match'] = $item['match'];
+            $public['distance'] = $item['distance'];
+            $out[] = $public;
+        }
+
+        return $out;
+    }
+
+    /**
+     * Stektips-slugs die bij een zoekterm horen: search() plus (bij 0 hits) tikfout-suggesties.
+     *
+     * @return list<string>
+     */
+    public function stektipsSlugsForQuery(string $query): array
+    {
+        $slugs = [];
+        foreach ($this->search($query, 25) as $hit) {
+            $slug = $hit['slug'] ?? null;
+            if (is_string($slug) && $slug !== '') {
+                $slugs[$slug] = true;
+            }
+        }
+
+        if ($slugs === []) {
+            foreach ($this->suggestClose($query, 10, onlyWithSlug: true) as $hit) {
+                $slug = $hit['slug'] ?? null;
+                if (is_string($slug) && $slug !== '') {
+                    $slugs[$slug] = true;
+                }
+            }
+        }
+
+        return array_keys($slugs);
+    }
+
+    /**
+     * @param  array{naam: string, latijn: string, synoniemen: list<string>, naam_norm: string, latijn_norm: string, syn_norms: list<string>}  $row
+     * @return list<array{0: string, 1: string}>
+     */
+    private function nameCandidates(array $row): array
+    {
+        $out = [];
+        if ($row['naam_norm'] !== '') {
+            $out[] = [$row['naam_norm'], $row['naam']];
+        }
+        if ($row['latijn_norm'] !== '') {
+            $out[] = [$row['latijn_norm'], $row['latijn']];
+        }
+        foreach ($row['syn_norms'] as $i => $synNorm) {
+            if ($synNorm === '') {
+                continue;
+            }
+            $out[] = [$synNorm, $row['synoniemen'][$i] ?? $synNorm];
+        }
+
+        return $out;
+    }
+
+    /**
      * @return list<array{id: int, naam: string, latijn: string, synoniemen: list<string>, slug: ?string, categorie: string, zichtbaar: bool, tags: list<string>, naam_norm: string, latijn_norm: string, syn_norms: list<string>}>
      */
     private function rows(): array

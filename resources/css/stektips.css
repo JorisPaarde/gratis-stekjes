@@ -321,6 +321,14 @@
   font: inherit; padding: 0.5rem 0.6rem; border: 1px solid rgba(31, 77, 43, 0.3); border-radius: 0.5rem; background: #fff;
 }
 .stektips-wis { margin: 0.6rem 0 0; font-size: 0.95rem; }
+.stektips-bedoel-je {
+  margin: 0.75rem 0 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--forest-deep);
+}
+.stektips-bedoel-je a { text-decoration: underline; text-underline-offset: 0.15em; }
+.kb-hero .stektips-zoek { margin-top: 0.85rem; margin-bottom: 0.85rem; }
 
 /* Onderwerpen: compact, alleen de titel onderstreept bij hover */
 .stektips-pillar-list { gap: 0.6rem; }

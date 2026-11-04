@@ -38,6 +38,7 @@
         <button class="btn" type="submit"><x-icon name="zoeken" :size="18" /> Zoek</button>
       </div>
     </form>
+    <p class="hero-plantzoeker-link"><a href="{{ route('vermeerderen') }}">Zoek je hoe je een plant vermeerdert?</a></p>
     <p class="home-hero-account">
       Zelf iets weggeven?
       <a class="btn btn-on-dark" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="18" /> Maak gratis een account</a>

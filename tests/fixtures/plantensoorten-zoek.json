@@ -1,0 +1,45 @@
+{
+  "versie": 1,
+  "soorten": [
+    {
+      "id": 9001,
+      "naam": "Monstera",
+      "latijn": "Monstera fixturea",
+      "synoniemen": ["Gatenplant", "Volksnaam Gaten"],
+      "slug": "fixture-monstera",
+      "categorie": "kamerplant",
+      "zichtbaar": true,
+      "tags": []
+    },
+    {
+      "id": 9002,
+      "naam": "Tongplant",
+      "latijn": "Sansevieria fixturea",
+      "synoniemen": ["Vrouwentong", "Sansevieria"],
+      "slug": "fixture-tongplant",
+      "categorie": "kamerplant",
+      "zichtbaar": true,
+      "tags": []
+    },
+    {
+      "id": 9003,
+      "naam": "Zonder Pagina",
+      "latijn": "Nullus paginus",
+      "synoniemen": ["Alleen Aanbod"],
+      "slug": null,
+      "categorie": "kamerplant",
+      "zichtbaar": true,
+      "tags": []
+    },
+    {
+      "id": 9004,
+      "naam": "Verborgen Plant",
+      "latijn": "Occultus plantus",
+      "synoniemen": ["Geheime naam"],
+      "slug": "verborgen-plant",
+      "categorie": "kamerplant",
+      "zichtbaar": false,
+      "tags": []
+    }
+  ]
+}
