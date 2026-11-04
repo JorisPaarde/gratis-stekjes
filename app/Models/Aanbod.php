@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Aanbod extends Model
 {
+    /** Laagste aantal per aanbod (kolom NOT NULL DEFAULT 1). */
+    public const AANTAL_MIN = 1;
+
     /** Hoogste aantal per aanbod. */
     public const AANTAL_MAX = 99;
 

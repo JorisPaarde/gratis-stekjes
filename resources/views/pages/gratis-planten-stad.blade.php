@@ -50,7 +50,7 @@
             <li class="zoek-item">
               <h3>{{ $item['voornaam'] ?: 'Iemand' }} · {{ $item['type'] === 'ophalen' ? 'zoekt' : 'deelt' }}</h3>
               @include('partials.lid-van', ['verenigingen' => $item['verenigingen'] ?? []])
-              <p>{{ $item['tekst'] }}</p>
+              <p>{{ $item['tekst'] }} @include('partials.aanbod-aantal', ['aantal' => $item['aantal'] ?? 1])</p>
               <p class="muted">
                 {{ $item['locatie_label'] }}
                 @if(isset($item['afstand_km']))

@@ -71,7 +71,7 @@
             <li class="zoek-item">
               <strong>{{ $item['voornaam'] ?? '' }}</strong>
               <span class="muted"> · {{ $item['locatie_label'] ?? '' }} · {{ $item['type'] ?? '' }}@isset($item['afstand_km']) · <span class="zoek-item-afstand">{{ str_replace('.', ',', $item['afstand_km'] < 10 ? number_format($item['afstand_km'], 1) : (string) round($item['afstand_km'])) }} km</span>@endisset</span>
-              <p>{{ $item['tekst'] ?? '' }}</p>
+              <p>{{ $item['tekst'] ?? '' }} @include('partials.aanbod-aantal', ['aantal' => $item['aantal'] ?? 1])</p>
             </li>
           @endforeach
         </ul>

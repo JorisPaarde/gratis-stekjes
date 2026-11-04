@@ -113,7 +113,7 @@
               @endif
               <span class="aanbod-kaart-body">
                 <span class="badge">{{ $aanbodTypeLabels[$item['type'] ?? ''] ?? ($item['type'] ?? '') }}</span>
-                <span class="aanbod-kaart-tekst">{{ \Illuminate\Support\Str::limit((string) ($item['tekst'] ?? ''), 90) }}</span>
+                <span class="aanbod-kaart-tekst">{{ \Illuminate\Support\Str::limit((string) ($item['tekst'] ?? ''), 90) }} @include('partials.aanbod-aantal', ['aantal' => $item['aantal'] ?? 1])</span>
                 <span class="aanbod-kaart-meta">{{ $item['voornaam'] ?? '' }}@if($plaats !== '') · {{ $plaats }}@endif</span>
               </span>
             </a>
