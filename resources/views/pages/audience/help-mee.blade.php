@@ -14,6 +14,7 @@
     ['Kort en simpel', "Plantje over? Op Gratis planten geef je planten, stekjes en zaden gratis weg aan iemand in de buurt. Zelf ophalen, en vaak een praatje erbij. Kijk wat er bij jou in de buurt is: {$site}"],
     ['Persoonlijk', "Ik deel mijn stekjes via Gratis planten. Geen geld, geen gedoe: je haalt het op en maakt een praatje. Heb jij ook iets over, of zoek je iets groens? {$site}"],
     ['Voor de app van je volkstuin', "Hoi tuinders! Te veel zaailingen, stekjes of vaste planten? Op Gratis planten zet je ze gratis online. Koppel je account aan de vereniging, dan zie je elkaars aanbod. ".route('help-mee')],
+    ['Onder een snoeipost', "Leuk! Tip: gooi je snoeisel niet weg, veel takjes kun je gewoon stekken. Heb je straks stekjes over, dan kun je ze gratis aanbieden aan iemand in de buurt op gratisplanten.nl"],
   ];
 @endphp
 
