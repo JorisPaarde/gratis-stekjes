@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\Deelplek;
 use App\Models\PartnerMarker;
+use App\Support\RecentAanbod;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Throwable;
@@ -79,12 +80,17 @@ final class HomeOverzicht
     /** @return list<array<string, mixed>> */
     private function recentAanbod(): array
     {
-        if (! $this->tablesExist(['aanbod', 'users'])) {
+        if (! $this->tablesExist(['aanbod', 'users', 'aanbod_fotos'])) {
             return [];
         }
 
         try {
-            return $this->search->recent(self::AANBOD_LIMIT);
+            // Pas tonen bij genoeg landelijk actief aanbod mét foto (volle grid).
+            if (! RecentAanbod::shouldShow($this->search->countPublicWithFoto())) {
+                return [];
+            }
+
+            return $this->search->recentWithFoto(self::AANBOD_LIMIT);
         } catch (Throwable $e) {
             Log::warning('Home: recent aanbod laden mislukt', ['error' => $e->getMessage()]);
 

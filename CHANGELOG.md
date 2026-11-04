@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.66.2] - 2026-11-04
+
+### Changed
+
+- Master (prod 0.66.1) teruggemerged in staging.
+
 ## [0.66.1] - 2026-11-04
 
 ### Added
@@ -70,6 +76,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - Organisatiepagina Struikroven: websitelinks naar `https://struikroven.nu`.
 - Printbare posters (`/poster?voor=…`): QR en leesbaar adres altijd naar productie (`canonical_host`), niet naar lokale/staging `APP_URL`.
+
+## [0.63.1] - 2026-11-04
+
+### Changed
+
+- Teaser-blokken «Net aangeboden» (homepage) en «Actueel aanbod» (stadspagina’s) blijven verborgen tot er minstens 8 actieve aanbiedingen mét foto in de scope zijn (`GP_RECENT_AANBOD_MIN`, default 8). Reden: een bijna lege fotogrid (zoals 2 kaartjes) schrikt af; bij 8 ziet het er levendig uit. Op stadspagina’s blijven CTAs («Zelf iets aanbieden» / «Zoek verder») en de kaart staan, zonder lege kop.
 
 ## [0.63.0] - 2026-11-04
 
@@ -654,6 +666,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - «Nu te stekken» (home + aanbod): rij plantkaarten met foto (max. 6, foto eerst, naamsvermelding
   onder elke foto) die naar de stektip linken; lange teksten, losse labels en RHS-bronnen staan
   alleen nog op de stektip-pagina's.
+
+## [0.32.1] - 2026-10-31
+
+### Changed
+
+- Tekstronde 2 (0.31.2) naar productie, bovenop homepage v3 (0.32.0). Bij overlap blijft
+  homepage v3 leidend (homepage-bestanden en `resources/js/zoeken.js` gelijk aan #138).
 
 ## [0.32.0] - 2026-10-31
 
