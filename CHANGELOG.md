@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.61.1] - 2026-11-04
+
+### Fixed
+
+- Kortere placeholder in de plantzoeker, zodat hij op mobiel (390) niet afkapt.
+
 ## [0.61.0] - 2026-11-04
 
 ### Added
