@@ -129,7 +129,10 @@ test('stadspagina FAQPage-schema is geldige JSON', function () {
     }
 });
 
-test('stadspagina toont aanbod binnen straal en lege staat elders', function () {
+test('stadspagina toont aanbod binnen straal (bij drempel) en elders geen lege kop', function () {
+    // Straal-filter + SEO-HTML; drempel tijdelijk 1 mét foto.
+    config(['gratisplanten.recent_aanbod_min' => 1]);
+
     $near = User::factory()->create([
         'name' => 'Sam',
         'locatie_label' => 'Haarlem',
@@ -137,12 +140,24 @@ test('stadspagina toont aanbod binnen straal en lege staat elders', function () 
         'lon' => 4.646,
         'telefoon' => '',
     ]);
-    Aanbod::query()->create([
+    $a = Aanbod::query()->create([
         'user_id' => $near->id,
         'type' => 'uitdelen',
         'tekst' => 'Bessenstekjes uit Haarlem-centrum',
         'visible' => true,
         'expires_at' => now()->addDays(30),
+    ]);
+    \App\Models\AanbodFoto::query()->create([
+        'aanbod_id' => $a->id,
+        'disk' => 'aanbod_fotos',
+        'path' => 'test/bessen.jpg',
+        'thumb_path' => 'test/bessen-t.jpg',
+        'mime' => 'image/jpeg',
+        'width' => 400,
+        'height' => 300,
+        'bytes' => 1200,
+        'sort_order' => 0,
+        'alt' => '',
     ]);
 
     $html = $this->get(route('gratis-planten.show', ['stad' => 'haarlem']))
@@ -159,10 +174,16 @@ test('stadspagina toont aanbod binnen straal en lege staat elders', function () 
         ->and($lijst[1])->not->toContain($near->email)
         ->and($lijst[1])->toContain('Sam');
 
-    $this->get(route('gratis-planten.show', ['stad' => 'groningen']))
+    // Onder de drempel: geen h2 «Actueel aanbod» / lege tekst; wel CTAs + kaart.
+    $groningen = $this->get(route('gratis-planten.show', ['stad' => 'groningen']))
         ->assertOk()
-        ->assertSee('Er is nog geen aanbod', false)
-        ->assertDontSee('Bessenstekjes uit Haarlem-centrum', false);
+        ->assertDontSee('Bessenstekjes uit Haarlem-centrum', false)
+        ->assertDontSee('id="aanbod-titel"', false)
+        ->assertDontSee('Er is nog geen aanbod', false)
+        ->assertSee('Zelf iets aanbieden', false)
+        ->assertSee('Zoek verder rond Groningen', false)
+        ->getContent();
+    expect($groningen)->toContain('id="stad-kaart"');
 });
 
 test('haarlem-stadspagina toont deelplek binnen 12 km', function () {
