@@ -44,6 +44,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             'deploy/run',
             'deploy/stats-lezer',
+            'deploy/normaliseer-locaties',
             'deploy/import',
             'deploy/import/init',
             'deploy/import/chunk',

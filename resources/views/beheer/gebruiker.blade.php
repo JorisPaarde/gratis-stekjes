@@ -25,7 +25,17 @@
       <h2>Profiel</h2>
       <dl class="beheer-dl">
         <dt>E-mail</dt><dd>{{ $u->email }}@if($u->pending_email) <span class="muted">(wijziging naar {{ $u->pending_email }} wacht)</span>@endif</dd>
-        <dt>Plaats</dt><dd>{{ $u->locatie_label ?: '—' }}{{ $u->country === 'BE' ? ' (België)' : '' }}</dd>
+        <dt>Land</dt><dd>{{ $u->country === 'BE' ? 'België' : 'Nederland' }}</dd>
+        <dt>Locatie</dt>
+        <dd>
+          @if($u->postcode_gebied || $u->woonplaats)
+            {{ $u->postcode_gebied ?: '—' }} · {{ $u->woonplaats ?: '—' }}
+          @elseif($u->locatie_label)
+            {{ $u->locatie_label }}
+          @else
+            —
+          @endif
+        </dd>
         <dt>Adres ingevuld</dt><dd>{{ $u->volledigAdres() !== null ? 'ja' : 'nee' }}{{ $u->volledigAdres() !== null ? ($u->adres_delen !== false ? ' · wordt gedeeld na wederzijds ja' : ' · delen staat uit') : '' }}</dd>
         <dt>Telefoon ingevuld</dt><dd>{{ trim((string) ($u->isUnreadable('telefoon') ? '' : $u->telefoon)) !== '' ? 'ja' : 'nee' }}</dd>
         <dt>Lid sinds</dt><dd>{{ $u->created_at?->timezone('Europe/Amsterdam')->format('d-m-Y') }} <span class="muted">({{ $u->created_at?->diffForHumans() }})</span></dd>

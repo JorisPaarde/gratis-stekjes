@@ -71,9 +71,15 @@ final class DeelplekAanmelding
             : ($resolved['postcode'] !== null
                 ? PostalCode::format((string) $resolved['postcode'], $country)
                 : '');
-        // BE: plaatsnaam zoals geocoder die geeft (gemeente/deelgemeente).
-        if ($country === Country::BE && trim((string) $resolved['label']) !== '' && ! preg_match('/^\d{4}$/', (string) $resolved['label'])) {
-            $plaats = trim(mb_substr((string) $resolved['label'], 0, 120));
+        // BE: plaatsnaam zoals geocoder die geeft (gemeente/deelgemeente), nooit «9000 Gent».
+        if ($country === Country::BE) {
+            $geoPlaats = trim((string) ($resolved['woonplaats'] ?? ''));
+            if ($geoPlaats === '') {
+                $geoPlaats = PostalCode::plaatsFromGeoLabel((string) ($resolved['label'] ?? ''));
+            }
+            if ($geoPlaats !== '') {
+                $plaats = mb_substr($geoPlaats, 0, 120);
+            }
         }
         $adresRegel = trim(($pcStored !== '' ? $pcStored.' ' : '').$plaats);
 

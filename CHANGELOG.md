@@ -23,6 +23,24 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Aanmeldvinkje op registreren is generiek per initiatief (`?struikrover=1` blijft werken).
 - `/struikroven` blijft inhoudelijk gelijk aan 0.64.1 (zelfde teksten, volgorde en links).
 
+## [0.65.0] - 2026-11-04
+
+### Added
+
+- Profiel: verplichte postcode (NL `1234`/`1234 AB`, BE 4 cijfers) met automatisch
+  ingevulde plaats ter bevestiging; fallback «Weet je je postcode niet?» (alleen plaatsnaam).
+- Kolommen `users.postcode_gebied` en `users.woonplaats`; openbaar label altijd
+  «postcodegebied plaats» (bijv. `1326 Almere`), nooit volledige postcode of huisnummer.
+- Beheer `/beheer/gebruikers`: kolommen land + «postcode · plaats», filter «Zonder locatie».
+- Artisan `gp:normaliseer-locaties` (standaard dry-run; schrijven met `--no-dry-run`) +
+  `POST /deploy/normaliseer-locaties` + workflow `normaliseer-locaties.yml`
+  (`target` staging|production, `apply` alleen bij expliciet true).
+- Geocodefouten/timeouts: `Log::warning` met land + invoertype (geen persoonsgegevens).
+
+### Changed
+
+- PDOK/Nominatim: woonplaats meenemen bij postcode-zoeken; reverse-geocode voor normalisatie.
+
 ## [0.64.1] - 2026-11-04
 
 ### Changed
