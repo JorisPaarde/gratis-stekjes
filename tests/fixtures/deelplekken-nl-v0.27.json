@@ -463,18 +463,6 @@
     "geraadpleegd": "2026-10-29"
   },
   {
-    "id": "utrecht-roverstuin",
-    "naam": "De Roverstuin Utrecht (Beton-T)",
-    "type": "plantenasiel",
-    "plaats": "Utrecht",
-    "provincie": "Utrecht",
-    "adres": "Koningin Wilhelminalaan 4 (Beton-T / Vechtclub), Utrecht",
-    "lat": 52.076247,
-    "lng": 5.108286,
-    "bron_url": "https://www.vechtclub.nl/beton-t/de-roverstuin/",
-    "geraadpleegd": "2026-10-31"
-  },
-  {
     "id": "amsterdam-oba-spaarndammerbuurt-zadenbibliotheek",
     "naam": "Zadenbibliotheek OBA Spaarndammerbuurt",
     "type": "zaadbibliotheek",

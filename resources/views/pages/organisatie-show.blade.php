@@ -5,6 +5,9 @@
 @section('canonical', $canonical)
 
 @push('head')
+  @if(!empty($org['secties']))
+    @vite(['resources/css/stektips.css'])
+  @endif
   @if($vereniging)
     @vite(['resources/css/gratis-planten.css', 'resources/css/aanbod.css'])
   @endif
@@ -15,7 +18,22 @@
   <h1 class="page-title">{{ $org['naam'] }}</h1>
   <p class="muted">{{ $org['plaats'] }}@if(!empty($org['type'])) · {{ $typeLabels[$org['type']] ?? $org['type'] }}@endif</p>
 
-  <p>{{ $org['kort'] }}</p>
+  <p @class(['section-intro' => !empty($org['secties'])])>{{ $org['kort'] }}</p>
+
+  @if(!empty($org['secties']))
+    <p class="org-acties">
+      <a class="btn" href="{{ route('aanbod') }}"><x-icon name="zoeken" :size="18" /> Zoek gratis planten</a>
+      <a class="btn btn-secondary" href="{{ auth()->check() ? route('aanbieden') : route('account.registreren') }}"><x-icon name="plus" :size="18" /> Planten over? Bied ze aan</a>
+      @foreach($extraLinks as $link)
+        <a class="btn btn-secondary" href="{{ $link['url'] }}" rel="noopener noreferrer" target="_blank">{{ $link['label'] }}</a>
+      @endforeach
+    </p>
+    <div class="stektips-page stektips-artikel-body org-secties">
+      @foreach($org['secties'] as $block)
+        @include('partials.kennisbank-blok', ['block' => $block])
+      @endforeach
+    </div>
+  @endif
 
   <p>
     <a href="{{ $org['website'] }}" rel="noopener noreferrer" target="_blank">Website</a>
