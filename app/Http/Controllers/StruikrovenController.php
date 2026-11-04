@@ -18,8 +18,8 @@ class StruikrovenController extends Controller
         $org = $organisaties->find(self::ORGANISATIE_SLUG);
         $acties = $evenementen->upcomingForOrganisatie(self::ORGANISATIE_SLUG);
 
-        $title = 'Struikroven: gratis planten delen in je buurt';
-        $meta = 'Planten over van een Struikroofactie, of op zoek naar groen? Via '.config('site.name').' deel je ze gratis met iemand in de buurt. Zelf ophalen, geen verkoop.';
+        $title = 'Struikroven redt planten van de sloop';
+        $meta = 'Struikroven redt planten bij sloop en vernieuwing. Via '.config('site.name').' deel je overgebleven planten, stekjes en zaden gratis met iemand in de buurt.';
         $canonical = route('struikroven');
 
         return view('pages.struikroven', [

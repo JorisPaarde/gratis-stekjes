@@ -129,6 +129,8 @@ test('struikroven pagina 200, Struikrovers, geen deelplekken, kruislink MeerBome
         ->assertSee('Struikrovers', false)
         ->assertSee('Bekijk hun actieagenda', false)
         ->assertSee('https://struikroven.nu/agenda', false)
+        ->assertSee('Planten delen na een actie', false)
+        ->assertSee('/struikroven', false)
         ->assertSee('Niet te bezoeken via mijn', false)
         ->assertDontSee('Op de deelplekkenkaart', false)
         ->assertSee(route('organisaties.show', ['slug' => 'meerbomen-nu']), false)

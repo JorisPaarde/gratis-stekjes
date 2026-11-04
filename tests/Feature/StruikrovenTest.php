@@ -27,23 +27,48 @@ afterEach(function () {
     Carbon::setTestNow();
 });
 
-test('/struikroven geeft 200 met knoppen, uitleg en lege acties', function () {
+test('/struikroven geeft 200 met kopvolgorde, knoppen en lege acties', function () {
     $html = $this->get(route('struikroven'))
         ->assertOk()
+        ->assertSee('Struikroven redt planten van de sloop', false)
+        ->assertSee('Wie zijn de Struikrovers?', false)
+        ->assertSee('Meer over Struikroven', false)
+        ->assertSee('https://struikroven.nu', false)
+        ->assertSee('Over de stichting', false)
+        ->assertSee(route('organisaties.show', ['slug' => 'struikroven']), false)
+        ->assertSee('Doe je mee met Struikroven?', false)
         ->assertSee('Planten zoeken in je buurt', false)
         ->assertSee('Planten over? Bied ze gratis aan', false)
         ->assertSee(route('aanbod'), false)
         ->assertSee(route('account.registreren', ['struikrover' => 1]), false)
-        ->assertSee('Alles is gratis', false)
+        ->assertSee('Zoeken kan zonder account', false)
+        ->assertSee('Zo werkt het', false)
+        ->assertSee('Alles is gratis, er wordt niets verkocht', false)
+        ->assertSee('geen straatadressen', false)
         ->assertSee('Komende Struikroven-acties', false)
         ->assertSee('Er staan nu geen Struikroven-acties gepland', false)
+        ->assertSee('Voor Struikrovers', false)
+        ->assertSee('/poster?voor=struikroven', false)
+        ->assertSee('formaat=a5', false)
+        ->assertSee('Kopieer tekst', false)
+        ->assertSee('gratisplanten.nl/struikroven', false)
+        ->assertDontSee('Wat is Gratis planten?', false)
         ->assertDontSee('Joris', false)
         ->assertDontSee('JP Web', false)
         ->assertDontSee('struikroven-logo', false)
         ->getContent();
 
+    $h1 = strpos($html, 'Struikroven redt planten van de sloop');
+    $mee = strpos($html, 'Doe je mee met Struikroven?');
+    $werkt = strpos($html, 'Zo werkt het');
+    $voor = strpos($html, 'Voor Struikrovers');
+    expect($h1)->toBeInt()->and($mee)->toBeInt()->and($werkt)->toBeInt()->and($voor)->toBeInt();
+    expect($h1 < $mee && $mee < $werkt && $werkt < $voor)->toBeTrue();
+
     expect($html)->toContain('rel="canonical"')
-        ->and($html)->toContain('application/ld+json');
+        ->and($html)->toContain('application/ld+json')
+        ->and($html)->toContain('id="struikroven-deeltekst"')
+        ->and($html)->toContain('Planten over na een struikroofactie?');
 });
 
 test('/struikroven toont gekoppelde komende acties en negeert andere', function () {
@@ -180,6 +205,21 @@ test('poster voor=struikroven geeft 200 met QR naar productie', function () {
         ->and($html)->toContain('class="poster-url">gratisplanten.nl/struikroven</p>');
 });
 
+test('A5-flyer voor=struikroven geeft 200 met QR bron=flyer-struikroven', function () {
+    $html = $this->get(route('poster', ['voor' => 'struikroven', 'formaat' => 'a5']))
+        ->assertOk()
+        ->assertSee('Planten over na de actie?', false)
+        ->assertSee('struikroven-1600.webp', false)
+        ->assertSee('poster--a5', false)
+        ->assertSee('size: A5', false)
+        ->assertSee('Planten over na een actie? Zet ze er gratis op.', false)
+        ->assertDontSee('Joris', false)
+        ->getContent();
+
+    expect($html)->toContain('data-qr-url="https://gratisplanten.nl/struikroven?bron=flyer-struikroven"')
+        ->and($html)->toContain('class="poster-url">gratisplanten.nl/struikroven</p>');
+});
+
 test('/struikroven staat in sitemap; organisatiepagina blijft', function () {
     $xml = $this->get(route('sitemap'))->assertOk()->getContent();
     expect($xml)->toContain('/struikroven')
@@ -187,7 +227,9 @@ test('/struikroven staat in sitemap; organisatiepagina blijft', function () {
 
     $this->get(route('organisaties.show', ['slug' => 'struikroven']))
         ->assertOk()
-        ->assertSee('https://struikroven.nu', false);
+        ->assertSee('https://struikroven.nu', false)
+        ->assertSee('Planten delen na een actie', false)
+        ->assertSee('/struikroven', false);
 });
 
 test('ingelogde bezoeker krijgt aanbieden-link op /struikroven', function () {
