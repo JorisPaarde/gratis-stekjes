@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\Evenementen;
+use App\Services\InitiatiefPaginas;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class PartnersController extends Controller
 {
-    public function __invoke(Request $request, Evenementen $evenementen): View
+    public function __invoke(Request $request, Evenementen $evenementen, InitiatiefPaginas $initiatiefPaginas): View
     {
         $site = config('site.name');
         $type = trim((string) $request->query('type', ''));
@@ -70,6 +71,7 @@ class PartnersController extends Controller
             'hasUpcoming' => $upcomingFlat->isNotEmpty(),
             'hasPast' => $split['past']->isNotEmpty(),
             'evenementen' => $evenementen,
+            'organisatieInitiatieven' => $initiatiefPaginas->metPagina(),
             'schema' => [
                 '@context' => 'https://schema.org',
                 '@graph' => $graph,
