@@ -22,7 +22,7 @@ class NormaliseerLocaties extends Command
     protected $signature = 'gp:normaliseer-locaties
         {--dry-run : Toon wat er zou gebeuren zonder te schrijven (standaard aan tenzij --no-dry-run)}
         {--no-dry-run : Schrijf wijzigingen}
-        {--pauze-ms=200 : Pauze tussen netwerkverzoeken}';
+        {--pauze-ms=1000 : Pauze tussen netwerkverzoeken (Nominatim ≤1 req/s)}';
 
     protected $description = 'Normaliseer ledenlocaties naar postcodegebied + woonplaats (idempotent)';
 
@@ -154,9 +154,10 @@ class NormaliseerLocaties extends Command
             return;
         }
 
-        // (c) plaatsnaam (of overig tekstueel label)
+        // (c) plaatsnaam (of overig tekstueel label): eerst forward lookup (plaats → pc4),
+        // daarna reverse als fallback.
         if ($label !== '' && ! PostalCode::looksLikePostcode($label, $land)) {
-            $this->categorieReverse($user, $land, $label, 'plaatsnaam', $geocoder, $dryRun, $pauzeMs);
+            $this->categoriePlaatsnaam($user, $land, $label, $geocoder, $dryRun, $pauzeMs);
 
             return;
         }
@@ -231,6 +232,50 @@ class NormaliseerLocaties extends Command
 
         $nieuwLabel = PostalCode::publicLabel($gebied, $plaats);
         $this->pasToe($user, $gebied, $plaats, $nieuwLabel, $dryRun, 'kaal_postcode');
+    }
+
+    private function categoriePlaatsnaam(
+        User $user,
+        string $land,
+        string $label,
+        LocationGeocoder $geocoder,
+        bool $dryRun,
+        int $pauzeMs,
+    ): void {
+        // Forward: plaatsnaam → postcodegebied + woonplaats (PDOK meest voorkomende PC4).
+        try {
+            $hit = $geocoder->resolve($label, $land, true);
+        } catch (Throwable $e) {
+            Log::warning('gp:normaliseer-locaties geocode-fout', [
+                'land' => $land,
+                'invoertype' => 'plaats',
+                'fout' => class_basename($e),
+            ]);
+            $hit = null;
+        }
+        if ($pauzeMs > 0) {
+            usleep($pauzeMs * 1000);
+        }
+
+        if (is_array($hit) && ($hit['ok'] ?? false)) {
+            $gebied = $hit['postcode'] ?? null;
+            $plaats = trim((string) ($hit['woonplaats'] ?? ''));
+            if ($plaats === '') {
+                $plaats = PostalCode::plaatsFromGeoLabel((string) ($hit['label'] ?? ''), $label);
+            }
+            if ($plaats === '') {
+                $plaats = mb_substr($label, 0, 80);
+            }
+            if ($gebied !== null && $plaats !== '') {
+                $nieuwLabel = PostalCode::publicLabel($gebied, $plaats);
+                $this->pasToe($user, $gebied, $plaats, $nieuwLabel, $dryRun, 'plaatsnaam');
+
+                return;
+            }
+        }
+
+        // Fallback: reverse vanaf opgeslagen coördinaten.
+        $this->categorieReverse($user, $land, $label, 'plaatsnaam', $geocoder, $dryRun, $pauzeMs);
     }
 
     private function categorieReverse(

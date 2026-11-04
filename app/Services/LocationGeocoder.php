@@ -52,7 +52,10 @@ final class LocationGeocoder
         $cacheKey = $this->cacheKey($query, $country);
         $cached = GeocodeCache::query()->find($cacheKey);
         if ($cached) {
-            return ['ok' => true, ...$this->hitFromCache($cached, $country, $query)];
+            $fromCache = $this->hitFromCache($cached, $country, $query, $isPostcode);
+            if ($fromCache !== null) {
+                return ['ok' => true, ...$fromCache];
+            }
         }
 
         // Ook oude PDOK-cache zonder landprefix (alleen bij NL/null).
@@ -61,7 +64,10 @@ final class LocationGeocoder
             if ($legacyKey !== $cacheKey) {
                 $legacy = GeocodeCache::query()->find($legacyKey);
                 if ($legacy) {
-                    return ['ok' => true, ...$this->hitFromCache($legacy, $country ?? Country::NL, $query)];
+                    $fromLegacy = $this->hitFromCache($legacy, $country ?? Country::NL, $query, $isPostcode);
+                    if ($fromLegacy !== null) {
+                        return ['ok' => true, ...$fromLegacy];
+                    }
                 }
             }
         }
@@ -173,6 +179,9 @@ final class LocationGeocoder
     }
 
     /**
+     * Gestructureerde Nominatim-zoekopdracht (postalcode=…&country=…), geen vrije q=.
+     * Verplicht nette User-Agent; callers (command) moeten ≤1 req/s aanhouden.
+     *
      * @return array{lat: float, lon: float, label: string, country: string, postcode: ?string, woonplaats: ?string}|null
      */
     private function nominatimPostalcode(string $postcode, string $countrycodes): ?array
@@ -182,15 +191,17 @@ final class LocationGeocoder
             return null;
         }
 
+        $isBe = $countrycodes === 'be';
+
         try {
             $response = Http::timeout(6)
                 ->acceptJson()
                 ->withHeaders([
-                    'User-Agent' => 'GratisPlanten/'.config('site.version', '0').' ('.config('site.contact_email', 'info@gratisplanten.nl').')',
+                    'User-Agent' => $this->nominatimUserAgent(),
                 ])
                 ->get($base, [
                     'postalcode' => $postcode,
-                    'country' => $countrycodes === 'be' ? 'Belgium' : 'Netherlands',
+                    'country' => $isBe ? 'Belgium' : 'Netherlands',
                     'format' => 'json',
                     'addressdetails' => 1,
                     'limit' => 1,
@@ -198,7 +209,7 @@ final class LocationGeocoder
                 ]);
         } catch (Throwable $e) {
             Log::warning('geocode timeout/fout', [
-                'land' => strtoupper($countrycodes === 'be' ? 'BE' : 'NL'),
+                'land' => strtoupper($isBe ? 'BE' : 'NL'),
                 'invoertype' => 'postcode',
                 'bron' => 'nominatim',
                 'fout' => class_basename($e),
@@ -209,7 +220,7 @@ final class LocationGeocoder
 
         if (! $response->successful()) {
             Log::warning('geocode http-fout', [
-                'land' => strtoupper($countrycodes === 'be' ? 'BE' : 'NL'),
+                'land' => strtoupper($isBe ? 'BE' : 'NL'),
                 'invoertype' => 'postcode',
                 'bron' => 'nominatim',
                 'status' => $response->status(),
@@ -218,7 +229,17 @@ final class LocationGeocoder
             return null;
         }
 
-        return $this->parseNominatimRow($response->json(), $postcode, $countrycodes === 'be' ? Country::BE : Country::NL);
+        return $this->parseNominatimRow(
+            $response->json(),
+            $postcode,
+            $isBe ? Country::BE : Country::NL,
+            preferMunicipality: $isBe,
+        );
+    }
+
+    private function nominatimUserAgent(): string
+    {
+        return 'GratisPlanten/'.config('site.version', '0').' ('.config('site.contact_email', 'info@gratisplanten.nl').')';
     }
 
     /**
@@ -235,7 +256,7 @@ final class LocationGeocoder
             $response = Http::timeout(6)
                 ->acceptJson()
                 ->withHeaders([
-                    'User-Agent' => 'GratisPlanten/'.config('site.version', '0').' ('.config('site.contact_email', 'info@gratisplanten.nl').')',
+                    'User-Agent' => $this->nominatimUserAgent(),
                 ])
                 ->get($base, [
                     'q' => $query,
@@ -270,7 +291,12 @@ final class LocationGeocoder
             ? Country::BE
             : Country::NL;
 
-        return $this->parseNominatimRow($response->json(), $query, $fallbackCountry);
+        return $this->parseNominatimRow(
+            $response->json(),
+            $query,
+            $fallbackCountry,
+            preferMunicipality: $fallbackCountry === Country::BE,
+        );
     }
 
     /**
@@ -292,7 +318,7 @@ final class LocationGeocoder
             $response = Http::timeout(6)
                 ->acceptJson()
                 ->withHeaders([
-                    'User-Agent' => 'GratisPlanten/'.config('site.version', '0').' ('.config('site.contact_email', 'info@gratisplanten.nl').')',
+                    'User-Agent' => $this->nominatimUserAgent(),
                 ])
                 ->get($base, [
                     'lat' => $lat,
@@ -328,14 +354,14 @@ final class LocationGeocoder
             return null;
         }
 
-        return $this->parseNominatimRow([$row], null, $country);
+        return $this->parseNominatimRow([$row], null, $country, preferMunicipality: $country === Country::BE);
     }
 
     /**
      * @param  mixed  $rows
      * @return array{lat: float, lon: float, label: string, country: string, postcode: ?string, woonplaats: ?string}|null
      */
-    private function parseNominatimRow(mixed $rows, ?string $query, string $fallbackCountry): ?array
+    private function parseNominatimRow(mixed $rows, ?string $query, string $fallbackCountry, bool $preferMunicipality = false): ?array
     {
         if (! is_array($rows) || $rows === []) {
             return null;
@@ -363,18 +389,35 @@ final class LocationGeocoder
             $postcode = PostalCode::gebied($query, $country);
         }
 
-        $plaats = (string) (
-            $address['city']
-            ?? $address['town']
-            ?? $address['village']
-            ?? $address['municipality']
-            ?? $address['suburb']
-            ?? $address['city_district']
-            ?? ''
-        );
+        // BE-postcodes: gemeente/stad (Boutersem) vóór deelgemeente/dorp (Vertrijk).
+        if ($preferMunicipality || $country === Country::BE) {
+            $plaats = (string) (
+                $address['municipality']
+                ?? $address['city']
+                ?? $address['town']
+                ?? $address['village']
+                ?? $address['suburb']
+                ?? $address['city_district']
+                ?? ''
+            );
+        } else {
+            $plaats = (string) (
+                $address['city']
+                ?? $address['town']
+                ?? $address['village']
+                ?? $address['municipality']
+                ?? $address['suburb']
+                ?? $address['city_district']
+                ?? ''
+            );
+        }
         $display = (string) ($row['display_name'] ?? ($query ?? ''));
         if ($plaats === '') {
             $plaats = PostalCode::plaatsFromGeoLabel($display, $query);
+        }
+        // «3370, Vertrijk, Boutersem, …»: bij kale postcode-display gemeente uit display_name.
+        if ($plaats === '' && $preferMunicipality && preg_match('/^\d{4}\s*,\s*[^,]+,\s*([^,]+)/u', $display, $m)) {
+            $plaats = trim($m[1]);
         }
 
         $label = PostalCode::publicLabel($postcode, $plaats !== '' ? $plaats : null);
@@ -417,9 +460,10 @@ final class LocationGeocoder
     }
 
     /**
-     * @return array{lat: float, lon: float, label: string, country: string, postcode: ?string, woonplaats: ?string}
+     * @return array{lat: float, lon: float, label: string, country: string, postcode: ?string, woonplaats: ?string}|null
+     *         null = incomplete cache (bijv. kale postcode zonder woonplaats) → opnieuw ophalen
      */
-    private function hitFromCache(GeocodeCache $cached, ?string $requested, string $query): array
+    private function hitFromCache(GeocodeCache $cached, ?string $requested, string $query, bool $isPostcode = false): ?array
     {
         $label = (string) $cached->label;
         $country = $this->countryFromCache($cached, $requested);
@@ -431,6 +475,11 @@ final class LocationGeocoder
         }
         if ($woonplaats === '' && ! preg_match('/^\d{4}/', $label)) {
             $woonplaats = trim(explode(',', $label)[0]);
+        }
+
+        // Incomplete: postcode-invoer zonder woonplaats in cache-label → netwerk opnieuw.
+        if ($isPostcode && $woonplaats === '') {
+            return null;
         }
 
         return [

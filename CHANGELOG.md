@@ -9,6 +9,19 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.66.3] - 2026-11-04
+
+### Fixed
+
+- Locatie-lookup (centraal in `LocationGeocoder` / `PdokGeocoder`): kale NL-PC4
+  (2033/2037→Haarlem, 5688→Oirschot) krijgt betrouwbaar een woonplaats via PDOK
+  `fq=type:postcode` (meest voorkomende woonplaats bij meerdere treffers; incomplete
+  cache zonder woonplaats wordt genegeerd). BE-postcode via gestructureerde Nominatim
+  (`postalcode`+`country`, nette User-Agent; gemeente/stad vóór deelgemeente —
+  3370→Boutersem). NL-plaatsnaam zonder postcode krijgt PC4 via PDOK
+  (Spierdijk→1641). `gp:normaliseer-locaties` gebruikt forward lookup voor plaatsnamen
+  en pauzeert standaard 1 s (Nominatim ≤1 req/s). Twijfellijst blijft id · label · land · reden.
+
 ## [0.66.2] - 2026-11-04
 
 ### Changed
