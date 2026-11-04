@@ -101,6 +101,9 @@
     </div>
   </header>
   @auth
+    @unless(request()->routeIs('beheer.*'))
+      @include('partials.postcode-herinnering')
+    @endunless
     @if(request()->is('account', 'account/*') && ! request()->is('account/verwijderen', 'account/export'))
       @unless(request()->routeIs('beheer.*'))
         @include('partials.volgende-stap')

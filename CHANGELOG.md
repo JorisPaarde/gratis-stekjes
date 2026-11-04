@@ -9,6 +9,20 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.68.0] - 2026-11-04
+
+### Added
+
+- Na login: dismissible postcode-herinneringsbanner voor leden zonder geldige
+  postcode («Vul je postcode in, dan zie je wat er bij jou in de buurt is» →
+  `/account/profiel`). Wegklikken geldt alleen voor de sessie; bij volgende
+  login opnieuw tot er een geldige postcode is.
+- `User::hasValidPostcode()` / `postcodeValidityReason()` (0.65.0-regel +
+  plaatslabel/geocode) als centrale check voor later buurtzoeken.
+- Artisan `gp:postcode-herinnering-lijst` (lees-only, stuurt geen mail) +
+  `POST /deploy/postcode-herinnering-lijst` + workflow
+  `postcode-herinnering-lijst.yml` (`target` staging|production, geen apply).
+
 ## [0.66.2] - 2026-11-04
 
 ### Changed

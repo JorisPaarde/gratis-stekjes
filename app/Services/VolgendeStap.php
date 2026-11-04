@@ -34,15 +34,7 @@ final class VolgendeStap
             );
         }
 
-        if (trim((string) $user->locatie_label) === '') {
-            return $this->stap(
-                'Vul je postcode in',
-                'Dan zie je wat er bij jou in de buurt te halen is, en vinden buren jouw aanbod.',
-                'Naar je profiel',
-                route('account.profiel'),
-                'geworteld',
-            );
-        }
+        // Postcode-herinnering zit in de dismissible banner (hasValidPostcode), niet hier.
 
         $heeftAanbod = Schema::hasTable('aanbod') && Aanbod::query()->where('user_id', $user->id)->exists();
         if (! $heeftAanbod) {

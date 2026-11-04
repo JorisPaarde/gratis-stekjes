@@ -1098,6 +1098,33 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
   .volgende-stap-inner .btn { width: 100%; text-align: center; }
 }
 
+/* Postcode-herinnering na login (sessie-dismissible) */
+.postcode-herinnering { background: #fff8f1; border-bottom: 1px solid rgba(232,131,58,.35); }
+.postcode-herinnering-inner {
+  display: flex; align-items: center; gap: .85rem;
+  padding-top: .75rem; padding-bottom: .75rem;
+}
+.postcode-herinnering-inner p { margin: 0; flex: 1 1 auto; color: var(--ink); }
+.postcode-herinnering-acties {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .5rem;
+  flex: 0 0 auto;
+}
+.postcode-herinnering-weg { margin: 0; }
+.postcode-herinnering-sluit {
+  font: inherit; cursor: pointer; background: transparent;
+  border: 1px solid var(--line); border-radius: var(--radius-pill);
+  color: var(--ink-soft); padding: .35rem .85rem;
+}
+.postcode-herinnering-sluit:hover,
+.postcode-herinnering-sluit:focus-visible {
+  background: #fff; color: var(--ink); border-color: rgba(232,131,58,.45);
+}
+@media (max-width: 600px) {
+  .postcode-herinnering-inner { flex-wrap: wrap; }
+  .postcode-herinnering-acties { width: 100%; }
+  .postcode-herinnering-acties .btn { flex: 1 1 auto; text-align: center; }
+}
+
 .naam-check { color: #8a4514; margin: .35rem 0 0; }
 .naam-suggestie { font: inherit; font-weight: 700; margin: .25rem .35rem 0 0; padding: .15rem .6rem; border-radius: var(--radius-pill); border: 1px solid var(--orange); background: #fff; color: var(--forest-deep); cursor: pointer; }
 .naam-suggestie:hover, .naam-suggestie:focus-visible { background: var(--bg-mint); }
