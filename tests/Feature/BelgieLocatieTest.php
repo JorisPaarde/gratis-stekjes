@@ -11,17 +11,18 @@ use Illuminate\Support\Facades\Http;
 function seedGeoBelgie(): void
 {
     foreach ([
-        'be:9000' => ['lat' => 51.054, 'lon' => 3.723, 'label' => '9000'],
+        'be:9000' => ['lat' => 51.054, 'lon' => 3.723, 'label' => '9000 Gent', 'woonplaats' => 'Gent'],
         'be:Gent' => ['lat' => 51.054, 'lon' => 3.723, 'label' => 'Gent'],
-        'be:9000 Gent' => ['lat' => 51.054, 'lon' => 3.723, 'label' => 'Gent'],
-        'nl,be:9000' => ['lat' => 51.054, 'lon' => 3.723, 'label' => '9000'],
-        'be:4000' => ['lat' => 50.633, 'lon' => 5.567, 'label' => '4000'],
+        'be:9000 Gent' => ['lat' => 51.054, 'lon' => 3.723, 'label' => '9000 Gent'],
+        'nl,be:9000' => ['lat' => 51.054, 'lon' => 3.723, 'label' => '9000 Gent'],
+        'be:4000' => ['lat' => 50.633, 'lon' => 5.567, 'label' => '4000 Liège', 'woonplaats' => 'Liège'],
         'be:Liège' => ['lat' => 50.633, 'lon' => 5.567, 'label' => 'Liège'],
-        'be:4000 Liège' => ['lat' => 50.633, 'lon' => 5.567, 'label' => 'Liège'],
-        'nl,be:4000' => ['lat' => 50.633, 'lon' => 5.567, 'label' => '4000'],
-        'be:5000' => ['lat' => 50.467, 'lon' => 4.867, 'label' => '5000'],
+        'be:4000 Liège' => ['lat' => 50.633, 'lon' => 5.567, 'label' => '4000 Liège'],
+        'nl,be:4000' => ['lat' => 50.633, 'lon' => 5.567, 'label' => '4000 Liège'],
+        'be:5000' => ['lat' => 50.467, 'lon' => 4.867, 'label' => '5000 Namur', 'woonplaats' => 'Namur'],
         'be:Namur' => ['lat' => 50.467, 'lon' => 4.867, 'label' => 'Namur'],
-        'be:5000 Namur' => ['lat' => 50.467, 'lon' => 4.867, 'label' => 'Namur'],
+        'be:5000 Namur' => ['lat' => 50.467, 'lon' => 4.867, 'label' => '5000 Namur'],
+        'nl,be:5000' => ['lat' => 50.467, 'lon' => 4.867, 'label' => '5000 Namur'],
     ] as $key => $geo) {
         GeocodeCache::query()->updateOrCreate(
             ['query_key' => Geo::normalizeQuery($key)],
@@ -45,6 +46,7 @@ test('profiel accepteert Belgisch adres in Vlaanderen (Gent 9000)', function () 
         ->post(route('account.profiel'), [
             'voornaam' => 'An',
             'country' => 'BE',
+            'locatie_modus' => 'postcode',
             'locatie' => '9000',
             'telefoon' => '',
         ])
@@ -52,7 +54,9 @@ test('profiel accepteert Belgisch adres in Vlaanderen (Gent 9000)', function () 
 
     $user->refresh();
     expect($user->country)->toBe('BE')
-        ->and($user->locatie_label)->toBe('9000')
+        ->and($user->locatie_label)->toBe('9000 Gent')
+        ->and($user->postcode_gebied)->toBe('9000')
+        ->and($user->woonplaats)->toBe('Gent')
         ->and($user->lat)->toBe(51.054)
         ->and($user->lon)->toBe(3.723);
 });
@@ -74,7 +78,8 @@ test('profiel accepteert Waals adres (Liège 4000) met Franse plaatsnaam', funct
 
     $user->refresh();
     expect($user->country)->toBe('BE')
-        ->and($user->locatie_label)->toBe('4000')
+        ->and($user->locatie_label)->toBe('4000 Liège')
+        ->and($user->woonplaats)->toBe('Liège')
         ->and($user->lat)->toBe(50.633)
         ->and($user->lon)->toBe(5.567);
 
@@ -83,12 +88,15 @@ test('profiel accepteert Waals adres (Liège 4000) met Franse plaatsnaam', funct
         ->post(route('account.profiel'), [
             'voornaam' => 'Marie',
             'country' => 'BE',
+            'locatie_modus' => 'plaats',
             'locatie' => 'Liège',
             'telefoon' => '',
         ])
         ->assertRedirect(route('account.profiel'));
 
-    expect($user->fresh()->locatie_label)->toBe('Liège');
+    expect($user->fresh()->locatie_label)->toBe('Liège')
+        ->and($user->fresh()->postcode_gebied)->toBeNull()
+        ->and($user->fresh()->woonplaats)->toBe('Liège');
 });
 
 test('profiel accepteert Waals adres Namur 5000', function () {
@@ -107,7 +115,7 @@ test('profiel accepteert Waals adres Namur 5000', function () {
         ->assertSessionHasNoErrors();
 
     expect($user->fresh()->country)->toBe('BE')
-        ->and($user->fresh()->locatie_label)->toBe('5000');
+        ->and($user->fresh()->locatie_label)->toBe('5000 Namur');
 });
 
 test('deelplek-aanmelding met Gent 9000 slaagt en zet country BE', function () {
@@ -178,7 +186,9 @@ test('aanbod van Belgische gebruiker verschijnt in zoek-API met country BE', fun
     $user = User::factory()->create([
         'name' => 'An',
         'country' => 'BE',
-        'locatie_label' => '9000',
+        'locatie_label' => '9000 Gent',
+        'postcode_gebied' => '9000',
+        'woonplaats' => 'Gent',
         'lat' => 51.054,
         'lon' => 3.723,
     ]);
@@ -195,5 +205,5 @@ test('aanbod van Belgische gebruiker verschijnt in zoek-API met country BE', fun
     $items = $response->json('items');
     expect($items)->not->toBeEmpty()
         ->and($items[0]['country'])->toBe('BE')
-        ->and($items[0]['locatie_label'])->toBe('9000');
+        ->and($items[0]['locatie_label'])->toBe('9000 Gent');
 });
