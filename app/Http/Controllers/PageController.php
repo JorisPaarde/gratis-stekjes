@@ -224,6 +224,7 @@ class PageController extends Controller
             ['loc' => route('invasieve-soorten'), 'lastmod' => $this->lastmodFromFiles([base_path('data/niet-aanbieden.json')])],
             ['loc' => route('gratis-planten.index'), 'lastmod' => $this->lastmodFromFiles([base_path('data/steden.json')])],
             ['loc' => route('volkstuinen'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/audience/volkstuinen.blade.php')])],
+            ['loc' => route('struikroven'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/struikroven.blade.php')])],
             ['loc' => route('help-mee'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/audience/help-mee.blade.php')])],
             ['loc' => route('natuur'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/audience/natuur.blade.php')])],
             ['loc' => route('verbinding'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/audience/verbinding.blade.php')])],

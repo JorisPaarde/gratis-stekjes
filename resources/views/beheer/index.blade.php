@@ -50,6 +50,7 @@
   <h2>In het kort</h2>
   <ul class="beheer-kort">
     <li><strong>{{ $kort['leden'] }}</strong> leden <span class="muted">({{ $kort['nieuw_week'] }} nieuw deze week)</span></li>
+    <li><strong>{{ $kort['struikrovers'] }}</strong> {{ $kort['struikrovers'] === 1 ? 'Struikrover' : 'Struikrovers' }}</li>
     <li><strong>{{ $kort['actief_week'] }}</strong> actief in de afgelopen 7 dagen</li>
     <li><strong>{{ $kort['aanbod_actief'] }}</strong> actief aanbod</li>
     <li><strong>{{ $kort['gesprekken_week'] }}</strong> {{ $kort['gesprekken_week'] === 1 ? 'nieuw gesprek' : 'nieuwe gesprekken' }} deze week</li>

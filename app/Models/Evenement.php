@@ -21,6 +21,7 @@ class Evenement extends Model
         'plaats',
         'provincie',
         'organisator',
+        'organisatie_slug',
         'url',
         'bron',
         'gecontroleerd_op',

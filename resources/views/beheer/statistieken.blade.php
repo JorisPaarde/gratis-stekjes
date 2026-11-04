@@ -59,6 +59,20 @@
       <details class="stats-kpi-card">
         <summary>
           <span class="stats-kpi-top">
+            <span class="stats-kpi-value">{{ $struikrovers }}</span>
+          </span>
+          <span class="stats-kpi-label">Struikrovers</span>
+        </summary>
+        <div class="stats-kpi-expand">
+          <p class="stats-kpi-caption">{{ $struikrovers }} van {{ $leden }} leden heeft «Ik ben Struikrover» aangevinkt.</p>
+        </div>
+      </details>
+    </li>
+
+    <li>
+      <details class="stats-kpi-card">
+        <summary>
+          <span class="stats-kpi-top">
             <span class="stats-kpi-value">{{ $ledenMetAanbod }}</span>
           </span>
           <span class="stats-kpi-label">Leden die iets aangeboden hebben</span>
