@@ -43,9 +43,10 @@
   <meta name="gp-app-version" content="{{ config('site.version') }}">
   @vite(['resources/css/app.css', 'resources/js/app.js'])
   <link rel="manifest" href="{{ url('/manifest.webmanifest') }}">
-  <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
-  <link rel="icon" type="image/png" href="{{ asset('assets/icons/icon-192.png') }}" sizes="192x192">
-  <link rel="apple-touch-icon" href="{{ asset('assets/icons/apple-touch-icon.png') }}">
+  <link rel="icon" href="{{ asset('favicon.ico') }}?v={{ config('site.version') }}" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}?v={{ config('site.version') }}">
+  <link rel="icon" type="image/png" href="{{ asset('assets/icons/icon-192.png') }}?v={{ config('site.version') }}" sizes="192x192">
+  <link rel="apple-touch-icon" href="{{ asset('assets/icons/apple-touch-icon.png') }}?v={{ config('site.version') }}">
   @isset($schema)
   <script type="application/ld+json">{!! json_encode($schema, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES) !!}</script>
   @endisset
