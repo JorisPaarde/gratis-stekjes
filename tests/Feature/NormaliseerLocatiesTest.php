@@ -27,6 +27,10 @@ function fakeNormaliseerGeo(): void
 
     Http::fake(function (Request $request) {
         $url = $request->url();
+        $q = (string) ($request['q'] ?? '');
+        $fq = (string) ($request['fq'] ?? '');
+        $hasPostcodeFq = str_contains($url, 'fq=type') || $fq === 'type:postcode';
+
         if (str_contains($url, 'reverse') || str_contains($url, '/reverse')) {
             $lat = (float) $request['lat'];
             // Haarlem-achtig
@@ -36,6 +40,7 @@ function fakeNormaliseerGeo(): void
                         'woonplaatsnaam' => 'Haarlem',
                         'postcode' => '2011AB',
                         'weergavenaam' => '2011AB Haarlem',
+                        'type' => 'postcode',
                     ]]]], 200);
                 }
 
@@ -53,6 +58,7 @@ function fakeNormaliseerGeo(): void
                         'woonplaatsnaam' => 'Utrecht',
                         'postcode' => '3511AB',
                         'weergavenaam' => '3511AB Utrecht',
+                        'type' => 'postcode',
                     ]]]], 200);
                 }
 
@@ -65,6 +71,40 @@ function fakeNormaliseerGeo(): void
             }
 
             return Http::response(['response' => ['docs' => []]], 200);
+        }
+
+        // Forward plaatsnaam Spierdijk → 1641
+        if (strcasecmp($q, 'Spierdijk') === 0) {
+            if ($hasPostcodeFq) {
+                return Http::response(['response' => ['docs' => [
+                    ['type' => 'postcode', 'woonplaatsnaam' => 'Spierdijk', 'postcode' => '1641AA', 'weergavenaam' => 'Straat, 1641AA Spierdijk', 'centroide_ll' => 'POINT(4.941 52.656)', 'score' => 8],
+                    ['type' => 'postcode', 'woonplaatsnaam' => 'Spierdijk', 'postcode' => '1641AB', 'weergavenaam' => 'Straat, 1641AB Spierdijk', 'centroide_ll' => 'POINT(4.942 52.656)', 'score' => 8],
+                    ['type' => 'postcode', 'woonplaatsnaam' => 'Spierdijk', 'postcode' => '1643AA', 'weergavenaam' => 'Straat, 1643AA Spierdijk', 'centroide_ll' => 'POINT(4.94 52.65)', 'score' => 7],
+                ]]], 200);
+            }
+
+            return Http::response(['response' => ['docs' => [[
+                'type' => 'woonplaats',
+                'woonplaatsnaam' => 'Spierdijk',
+                'weergavenaam' => 'Spierdijk, Koggenland, Noord-Holland',
+                'centroide_ll' => 'POINT(4.94089424 52.65605933)',
+                'score' => 12,
+            ]]]], 200);
+        }
+
+        // Forward plaatsnaam Haarlem (als resolve i.p.v. reverse)
+        if (strcasecmp($q, 'Haarlem') === 0) {
+            if ($hasPostcodeFq) {
+                return Http::response(['response' => ['docs' => [[
+                    'type' => 'postcode', 'woonplaatsnaam' => 'Haarlem', 'postcode' => '2011AB',
+                    'weergavenaam' => '2011AB Haarlem', 'centroide_ll' => 'POINT(4.637 52.381)', 'score' => 9,
+                ]]]], 200);
+            }
+
+            return Http::response(['response' => ['docs' => [[
+                'type' => 'woonplaats', 'woonplaatsnaam' => 'Haarlem',
+                'weergavenaam' => 'Haarlem, Noord-Holland', 'centroide_ll' => 'POINT(4.637 52.381)', 'score' => 12,
+            ]]]], 200);
         }
 
         return Http::response(['response' => ['docs' => []]], 200);
@@ -99,7 +139,8 @@ test('gp:normaliseer-locaties categoriseert kaal postcode, plaatsnaam, half adre
     $plaats = User::factory()->create(['country' => 'NL', 'locatie_label' => 'Haarlem', 'lat' => 52.381, 'lon' => 4.637]);
     $half = User::factory()->create(['country' => 'NL', 'locatie_label' => 'Kerkstraat 12', 'lat' => 52.09, 'lon' => 5.12]);
     $twijfelLand = User::factory()->create(['country' => 'NL', 'locatie_label' => '3370', 'lat' => 50.84, 'lon' => 4.83]);
-    $twijfelGeo = User::factory()->create(['country' => 'NL', 'locatie_label' => 'Spierdijk', 'lat' => null, 'lon' => null]);
+    $spierdijk = User::factory()->create(['country' => 'NL', 'locatie_label' => 'Spierdijk', 'lat' => null, 'lon' => null]);
+    $twijfelOnbekend = User::factory()->create(['country' => 'NL', 'locatie_label' => 'Xyzonbekenddorp', 'lat' => null, 'lon' => null]);
 
     $this->artisan('gp:normaliseer-locaties', ['--no-dry-run' => true, '--pauze-ms' => 0])
         ->assertSuccessful();
@@ -113,7 +154,9 @@ test('gp:normaliseer-locaties categoriseert kaal postcode, plaatsnaam, half adre
         ->and($plaats->fresh()->woonplaats)->toBe('Haarlem')
         ->and($half->fresh()->locatie_label)->toBe('3511 Utrecht')
         ->and($twijfelLand->fresh()->locatie_label)->toBe('3370') // land komt niet overeen
-        ->and($twijfelGeo->fresh()->locatie_label)->toBe('Spierdijk');
+        ->and($spierdijk->fresh()->locatie_label)->toBe('1641 Spierdijk')
+        ->and($spierdijk->fresh()->postcode_gebied)->toBe('1641')
+        ->and($twijfelOnbekend->fresh()->locatie_label)->toBe('Xyzonbekenddorp');
 });
 
 test('gp:normaliseer-locaties is idempotent', function () {
