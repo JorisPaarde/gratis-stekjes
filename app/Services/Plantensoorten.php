@@ -82,6 +82,53 @@ final class Plantensoorten
     }
 
     /**
+     * Tags van een stektips-slug (voedselbos, inheems, …). Leeg als onbekend.
+     *
+     * @return list<string>
+     */
+    public function tagsForSlug(string $slug): array
+    {
+        if ($slug === '') {
+            return [];
+        }
+        foreach ($this->rows() as $row) {
+            if (($row['slug'] ?? null) === $slug) {
+                return array_values($row['tags'] ?? []);
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * Stektips-slugs met een gegeven tag (alleen zichtbare catalogusrijen met slug).
+     *
+     * @return list<string>
+     */
+    public function slugsWithTag(string $tag): array
+    {
+        $tagNorm = mb_strtolower(trim($tag), 'UTF-8');
+        if ($tagNorm === '') {
+            return [];
+        }
+        $out = [];
+        foreach ($this->rows() as $row) {
+            if (! ($row['zichtbaar'] ?? true)) {
+                continue;
+            }
+            $slug = $row['slug'] ?? null;
+            if (! is_string($slug) || $slug === '') {
+                continue;
+            }
+            if (in_array($tagNorm, $row['tags'] ?? [], true)) {
+                $out[] = $slug;
+            }
+        }
+
+        return $out;
+    }
+
+    /**
      * Zoek op Nederlandse naam, synoniem of Latijnse naam (alleen zichtbare soorten).
      * Ranking: exacte naam → naam begint-met → synoniem/Latijn begint-met → bevat.
      * Accent- en hoofdletterongevoelig. Bij synoniem-match: veld `match` = dat synoniem.

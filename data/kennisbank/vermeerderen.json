@@ -253,6 +253,48 @@
         },
         {
             "type": "h2",
+            "tekst": "Voedselbos"
+        },
+        {
+            "type": "p",
+            "tekst": "Eetbare struiken, kruiden en bomen die goed passen in een voedselbos of eetbare tuin. Filter alle voedselbos-tips via [[@stektips|het overzicht]] met tag voedselbos."
+        },
+        {
+            "type": "soorten",
+            "items": [
+                "sleedoorn",
+                "daslook",
+                "meidoorn",
+                "hondsroos",
+                "bosaardbei",
+                "aardpeer",
+                "mierikswortel",
+                "eeuwig-moes"
+            ]
+        },
+        {
+            "type": "h2",
+            "tekst": "Inheems"
+        },
+        {
+            "type": "p",
+            "tekst": "Nederlandse en Belgische wilde planten om te zaaien of te scheuren. Bij giftige soorten staat dat duidelijk vermeld. Filter via tag inheems in [[@stektips|het overzicht]]."
+        },
+        {
+            "type": "soorten",
+            "items": [
+                "gewone-margriet",
+                "knoopkruid",
+                "moerasspirea",
+                "grote-kattenstaart",
+                "akelei",
+                "vingerhoedskruid",
+                "gele-lis",
+                "dotterbloem"
+            ]
+        },
+        {
+            "type": "h2",
             "tekst": "Snoeien en vermeerderen"
         },
         {

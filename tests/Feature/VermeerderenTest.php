@@ -79,3 +79,28 @@ test('methodes worden afgeleid uit de tekst van een soort', function () {
         ->and($s->methodes($s->find('bieslook')))->toContain('scheuren')->toContain('zaaien')
         ->and($s->methodes($s->find('munt')))->toContain('stekken');
 });
+
+test('hub toont voedselbos- en inheems-filters en secties', function () {
+    $hub = $this->get(route('vermeerderen'))->assertOk()->getContent();
+    expect($hub)->toContain('Voedselbos')
+        ->and($hub)->toContain('Inheems')
+        ->and($hub)->toContain(route('stektips.index', ['tag' => 'voedselbos']))
+        ->and($hub)->toContain(route('stektips.index', ['tag' => 'inheems']))
+        ->and($hub)->toContain(route('stektips.show', ['slug' => 'daslook']))
+        ->and($hub)->toContain(route('stektips.show', ['slug' => 'vingerhoedskruid']));
+});
+
+test('tag-filter voedselbos en inheems filtert soorten', function () {
+    $vb = $this->get(route('stektips.index', ['tag' => 'voedselbos']))->assertOk()->getContent();
+    expect($vb)->toContain(route('stektips.show', ['slug' => 'daslook']))
+        ->and($vb)->toContain(route('stektips.show', ['slug' => 'sleedoorn']))
+        ->and($vb)->not->toContain(route('stektips.show', ['slug' => 'vingerhoedskruid']));
+
+    $ih = $this->get(route('stektips.index', ['tag' => 'inheems']))->assertOk()->getContent();
+    expect($ih)->toContain(route('stektips.show', ['slug' => 'vingerhoedskruid']))
+        ->and($ih)->toContain(route('stektips.show', ['slug' => 'gewone-margriet']));
+
+    $show = $this->get(route('stektips.show', ['slug' => 'vingerhoedskruid']))->assertOk()->getContent();
+    expect($show)->toContain('Giftig')
+        ->and($show)->toContain('badge--inheems');
+});

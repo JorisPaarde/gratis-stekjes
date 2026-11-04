@@ -1,11 +1,12 @@
 {
   "meta": {
     "omschrijving": "Plantensoorten voor autocomplete bij stekje aanbieden. Alleen soorten die hobbyisten realistisch kunnen vermeerderen en delen (stek, scheuren, uitlopers, offsets, zaden), plus typische voedselbos-soorten. Verborgen soorten blijven in de data voor bestaande aanbod-referenties. Geen soorten van de EU-Unielijst invasieve exoten. Zie docs/plantensoorten-selectie.md.",
-    "aantal": 353,
-    "met_stektips_pagina": 106,
-    "zichtbaar": 325,
+    "aantal": 374,
+    "met_stektips_pagina": 146,
+    "zichtbaar": 346,
     "verborgen": 28,
-    "voedselbos": 100
+    "voedselbos": 114,
+    "inheems": 34
   },
   "soorten": [
     {
@@ -1871,13 +1872,15 @@
       "naam": "Duizendblad",
       "latijn": "Achillea millefolium",
       "synoniemen": [
-        "Achillea"
+        "Achillea",
+        "Gerwe"
       ],
-      "slug": null,
+      "slug": "duizendblad",
       "categorie": "tuin",
       "zichtbaar": true,
       "tags": [
-        "voedselbos"
+        "voedselbos",
+        "inheems"
       ]
     },
     {
@@ -1916,13 +1919,18 @@
     {
       "id": 166,
       "naam": "Sleutelbloem",
-      "latijn": "Primula",
+      "latijn": "Primula veris",
       "synoniemen": [
-        "Primula"
+        "Primula",
+        "Gulden sleutelbloem",
+        "Cowslip"
       ],
-      "slug": null,
+      "slug": "sleutelbloem",
       "categorie": "tuin",
-      "zichtbaar": true
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
     },
     {
       "id": 167,
@@ -1989,35 +1997,47 @@
     {
       "id": 173,
       "naam": "Klokjesbloem",
-      "latijn": "Campanula",
+      "latijn": "Campanula trachelium",
       "synoniemen": [
-        "Campanula"
+        "Campanula",
+        "Ruig klokje"
       ],
-      "slug": null,
+      "slug": "klokjesbloem",
       "categorie": "tuin",
-      "zichtbaar": true
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
     },
     {
       "id": 174,
       "naam": "Vingerhoedskruid",
       "latijn": "Digitalis purpurea",
       "synoniemen": [
-        "Digitalis"
+        "Digitalis",
+        "Foxglove"
       ],
-      "slug": null,
+      "slug": "vingerhoedskruid",
       "categorie": "tuin",
-      "zichtbaar": true
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
     },
     {
       "id": 175,
       "naam": "Akelei",
       "latijn": "Aquilegia vulgaris",
       "synoniemen": [
-        "Aquilegia"
+        "Aquilegia",
+        "Wilde akelei"
       ],
-      "slug": null,
+      "slug": "akelei",
       "categorie": "tuin",
-      "zichtbaar": true
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
     },
     {
       "id": 176,
@@ -2073,13 +2093,17 @@
     {
       "id": 180,
       "naam": "IJzerhard",
-      "latijn": "Verbena bonariensis",
+      "latijn": "Verbena officinalis",
       "synoniemen": [
-        "Verbena bonariensis"
+        "Echt ijzerhard",
+        "Vervain"
       ],
-      "slug": null,
+      "slug": "ijzerhard",
       "categorie": "tuin",
-      "zichtbaar": true
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
     },
     {
       "id": 181,
@@ -2136,11 +2160,16 @@
       "naam": "Kaasjeskruid",
       "latijn": "Malva sylvestris",
       "synoniemen": [
-        "Malva"
+        "Malva",
+        "Groot kaasjeskruid"
       ],
-      "slug": null,
+      "slug": "kaasjeskruid",
       "categorie": "tuin",
-      "zichtbaar": true
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ]
     },
     {
       "id": 186,
@@ -2153,12 +2182,18 @@
     },
     {
       "id": 187,
-      "naam": "Grote margriet",
-      "latijn": "Leucanthemum × superbum",
-      "synoniemen": [],
-      "slug": null,
+      "naam": "Gewone margriet",
+      "latijn": "Leucanthemum vulgare",
+      "synoniemen": [
+        "Margriet",
+        "Oxeye daisy"
+      ],
+      "slug": "gewone-margriet",
       "categorie": "tuin",
-      "zichtbaar": true
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
     },
     {
       "id": 188,
@@ -2299,13 +2334,17 @@
     {
       "id": 201,
       "naam": "Longkruid",
-      "latijn": "Pulmonaria",
+      "latijn": "Pulmonaria officinalis",
       "synoniemen": [
-        "Pulmonaria"
+        "Pulmonaria",
+        "Gevlekt longkruid"
       ],
-      "slug": null,
+      "slug": "longkruid",
       "categorie": "tuin",
-      "zichtbaar": true
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
     },
     {
       "id": 202,
@@ -2378,25 +2417,35 @@
     },
     {
       "id": 208,
-      "naam": "Kattestaart",
+      "naam": "Grote kattenstaart",
       "latijn": "Lythrum salicaria",
       "synoniemen": [
-        "Lythrum"
+        "Lythrum",
+        "Kattestaart",
+        "Purple loosestrife"
       ],
-      "slug": null,
+      "slug": "grote-kattenstaart",
       "categorie": "tuin",
-      "zichtbaar": true
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
     },
     {
       "id": 209,
       "naam": "Moerasspirea",
       "latijn": "Filipendula ulmaria",
       "synoniemen": [
-        "Filipendula"
+        "Filipendula",
+        "Spirea ulmaria",
+        "Meadowsweet"
       ],
-      "slug": null,
+      "slug": "moerasspirea",
       "categorie": "tuin",
-      "zichtbaar": true
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
     },
     {
       "id": 210,
@@ -2734,13 +2783,15 @@
       "naam": "Smeerwortel",
       "latijn": "Symphytum officinale",
       "synoniemen": [
-        "Comfrey"
+        "Comfrey",
+        "Gewone smeerwortel"
       ],
-      "slug": null,
+      "slug": "smeerwortel",
       "categorie": "tuin",
       "zichtbaar": true,
       "tags": [
-        "voedselbos"
+        "voedselbos",
+        "inheems"
       ]
     },
     {
@@ -2748,13 +2799,15 @@
       "naam": "Brandnetel",
       "latijn": "Urtica dioica",
       "synoniemen": [
-        "Grote brandnetel"
+        "Grote brandnetel",
+        "Netel"
       ],
-      "slug": null,
+      "slug": "brandnetel",
       "categorie": "tuin",
       "zichtbaar": true,
       "tags": [
-        "voedselbos"
+        "voedselbos",
+        "inheems"
       ]
     },
     {
@@ -3299,9 +3352,12 @@
     {
       "id": 292,
       "naam": "Artisjok",
-      "latijn": "Cynara cardunculus",
-      "synoniemen": [],
-      "slug": null,
+      "latijn": "Cynara cardunculus var. scolymus",
+      "synoniemen": [
+        "Kroonartisjok",
+        "Globe artichoke"
+      ],
+      "slug": "artisjok",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3313,9 +3369,10 @@
       "naam": "Aardpeer",
       "latijn": "Helianthus tuberosus",
       "synoniemen": [
-        "Topinamboer"
+        "Topinamboer",
+        "Jerusalem artichoke"
       ],
-      "slug": null,
+      "slug": "aardpeer",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3326,8 +3383,11 @@
       "id": 294,
       "naam": "Mierikswortel",
       "latijn": "Armoracia rusticana",
-      "synoniemen": [],
-      "slug": null,
+      "synoniemen": [
+        "Mierik",
+        "Horseradish"
+      ],
+      "slug": "mierikswortel",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
@@ -3552,12 +3612,17 @@
       "id": 310,
       "naam": "Bosbes",
       "latijn": "Vaccinium myrtillus",
-      "synoniemen": [],
-      "slug": null,
+      "synoniemen": [
+        "Blauwe bosbes",
+        "Wilde bosbes",
+        "Bilberry"
+      ],
+      "slug": "bosbes",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
-        "voedselbos"
+        "voedselbos",
+        "inheems"
       ]
     },
     {
@@ -3607,13 +3672,15 @@
       "naam": "Bosaardbei",
       "latijn": "Fragaria vesca",
       "synoniemen": [
-        "Maandaardbei"
+        "Maandaardbei",
+        "Wilde aardbei"
       ],
-      "slug": null,
+      "slug": "bosaardbei",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
-        "voedselbos"
+        "voedselbos",
+        "inheems"
       ]
     },
     {
@@ -3733,7 +3800,8 @@
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
-        "voedselbos"
+        "voedselbos",
+        "inheems"
       ]
     },
     {
@@ -3806,12 +3874,16 @@
       "id": 329,
       "naam": "Zuring",
       "latijn": "Rumex acetosa",
-      "synoniemen": [],
-      "slug": null,
+      "synoniemen": [
+        "Veldzuring",
+        "Sorrel"
+      ],
+      "slug": "zuring",
       "categorie": "moestuin",
       "zichtbaar": true,
       "tags": [
-        "voedselbos"
+        "voedselbos",
+        "inheems"
       ]
     },
     {
@@ -4128,6 +4200,332 @@
       "zichtbaar": true,
       "tags": [
         "voedselbos"
+      ]
+    },
+    {
+      "id": 354,
+      "naam": "Sleedoorn",
+      "latijn": "Prunus spinosa",
+      "synoniemen": [
+        "Slee",
+        "Blackthorn"
+      ],
+      "slug": "sleedoorn",
+      "categorie": "eetbaar",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ]
+    },
+    {
+      "id": 355,
+      "naam": "Daslook",
+      "latijn": "Allium ursinum",
+      "synoniemen": [
+        "Wilde knoflook",
+        "Look",
+        "Ramson"
+      ],
+      "slug": "daslook",
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ]
+    },
+    {
+      "id": 356,
+      "naam": "Zevenblad",
+      "latijn": "Aegopodium podagraria",
+      "synoniemen": [
+        "Geitenpoot",
+        "Ground elder"
+      ],
+      "slug": "zevenblad",
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ]
+    },
+    {
+      "id": 357,
+      "naam": "Turkse rabarber",
+      "latijn": "Rheum palmatum",
+      "synoniemen": [
+        "Sier-rabarber",
+        "Rheum palmatum"
+      ],
+      "slug": "turkse-rabarber",
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
+    },
+    {
+      "id": 358,
+      "naam": "Kardoen",
+      "latijn": "Cynara cardunculus",
+      "synoniemen": [
+        "Cardoon",
+        "Kardons"
+      ],
+      "slug": "kardoen",
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
+    },
+    {
+      "id": 359,
+      "naam": "Eeuwig moes",
+      "latijn": "Brassica oleracea var. palmifolia",
+      "synoniemen": [
+        "Eeuwigmoes",
+        "Perennial kale",
+        "Bladkool"
+      ],
+      "slug": "eeuwig-moes",
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
+    },
+    {
+      "id": 360,
+      "naam": "Heemst",
+      "latijn": "Althaea officinalis",
+      "synoniemen": [
+        "Echte heemst",
+        "Marsh mallow"
+      ],
+      "slug": "heemst",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ]
+    },
+    {
+      "id": 361,
+      "naam": "Meidoorn",
+      "latijn": "Crataegus monogyna",
+      "synoniemen": [
+        "Eenstijlige meidoorn",
+        "Hagedoorn"
+      ],
+      "slug": "meidoorn",
+      "categorie": "eetbaar",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ]
+    },
+    {
+      "id": 362,
+      "naam": "Lijsterbes",
+      "latijn": "Sorbus aucuparia",
+      "synoniemen": [
+        "Wilde lijsterbes",
+        "Rowan"
+      ],
+      "slug": "lijsterbes",
+      "categorie": "eetbaar",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ]
+    },
+    {
+      "id": 363,
+      "naam": "Hondsroos",
+      "latijn": "Rosa canina",
+      "synoniemen": [
+        "Hagebut",
+        "Dog rose"
+      ],
+      "slug": "hondsroos",
+      "categorie": "eetbaar",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ]
+    },
+    {
+      "id": 364,
+      "naam": "Look-zonder-look",
+      "latijn": "Alliaria petiolata",
+      "synoniemen": [
+        "Lookzonderlook",
+        "Garlic mustard"
+      ],
+      "slug": "look-zonder-look",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ]
+    },
+    {
+      "id": 365,
+      "naam": "Watermunt",
+      "latijn": "Mentha aquatica",
+      "synoniemen": [
+        "Aquatische munt"
+      ],
+      "slug": "watermunt",
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ]
+    },
+    {
+      "id": 366,
+      "naam": "Goede Hendrik",
+      "latijn": "Blitum bonus-henricus",
+      "synoniemen": [
+        "Brave hendrik",
+        "Chenopodium bonus-henricus",
+        "Ganzevoet"
+      ],
+      "slug": "goede-hendrik",
+      "categorie": "moestuin",
+      "zichtbaar": true,
+      "tags": [
+        "voedselbos"
+      ]
+    },
+    {
+      "id": 367,
+      "naam": "Koninginnekruid",
+      "latijn": "Eupatorium cannabinum",
+      "synoniemen": [
+        "Leverkruid",
+        "Hemp agrimony"
+      ],
+      "slug": "koninginnekruid",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
+    },
+    {
+      "id": 368,
+      "naam": "Knoopkruid",
+      "latijn": "Centaurea jacea",
+      "synoniemen": [
+        "Gewoon knoopkruid",
+        "Brown knapweed"
+      ],
+      "slug": "knoopkruid",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
+    },
+    {
+      "id": 369,
+      "naam": "Wilde peen",
+      "latijn": "Daucus carota",
+      "synoniemen": [
+        "Peen",
+        "Queen Anne's lace"
+      ],
+      "slug": "wilde-peen",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
+    },
+    {
+      "id": 370,
+      "naam": "Robertskruid",
+      "latijn": "Geranium robertianum",
+      "synoniemen": [
+        "Stinkende ooievaarsbek",
+        "Herb Robert"
+      ],
+      "slug": "robertskruid",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
+    },
+    {
+      "id": 371,
+      "naam": "Gewone brunel",
+      "latijn": "Prunella vulgaris",
+      "synoniemen": [
+        "Brunel",
+        "Selfheal"
+      ],
+      "slug": "gewone-brunel",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
+    },
+    {
+      "id": 372,
+      "naam": "Dagkoekoeksbloem",
+      "latijn": "Silene dioica",
+      "synoniemen": [
+        "Rode koekoeksbloem",
+        "Red campion"
+      ],
+      "slug": "dagkoekoeksbloem",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
+    },
+    {
+      "id": 373,
+      "naam": "Gele lis",
+      "latijn": "Iris pseudacorus",
+      "synoniemen": [
+        "Lies",
+        "Yellow flag iris"
+      ],
+      "slug": "gele-lis",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
+    },
+    {
+      "id": 374,
+      "naam": "Dotterbloem",
+      "latijn": "Caltha palustris",
+      "synoniemen": [
+        "Gewone dotterbloem",
+        "Marsh marigold"
+      ],
+      "slug": "dotterbloem",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
       ]
     }
   ]

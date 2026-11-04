@@ -9,6 +9,16 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.69.0] - 2026-11-04
+
+### Added
+
+- Veertig nieuwe stektip-pagina’s voor voedselbos- en inheemse planten (o.a. sleedoorn,
+  daslook, meidoorn, aardpeer, knoopkruid, gewone margriet, vingerhoedskruid met giftig-
+  waarschuwing). Tags `voedselbos` en `inheems` in plantzoeker/catalogus; filter op
+  `/stektips` en secties op `/vermeerderen`. Elke nieuwe soortfoto met Wikimedia-
+  licentie, sha256-allowlist en `?h=`-cachebuster (voortbordurend op 0.66.5).
+
 ## [0.68.2] - 2026-11-04
 
 ### Changed
