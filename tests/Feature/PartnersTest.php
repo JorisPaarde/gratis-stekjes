@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\OrganisatieInitiatief;
 use App\Models\PartnerMarker;
 use App\Support\Geo;
 
@@ -18,6 +19,31 @@ test('initiatievenpagina laadt op /initiatieven', function () {
     $this->get(route('partners'))
         ->assertOk()
         ->assertSee('Plantenruilbeurzen, stekjesmarkten en initiatieven', false);
+});
+
+test('initiatieven toont kaart voor org met initiatief_slug en niet zonder', function () {
+    // Struikroven heeft een seed-pagina → kaart met absolute /struikroven-link.
+    $this->get(route('partners'))
+        ->assertOk()
+        ->assertSee('href="'.route('initiatief.show', ['slug' => 'struikroven']).'"', false)
+        ->assertSee('>Struikroven</a>', false)
+        ->assertDontSee('/organisaties/struikroven', false);
+
+    // Org zonder initiatief_slug (alleen organisatie_slug) → geen initiatiefkaart.
+    OrganisatieInitiatief::query()->updateOrCreate(
+        ['organisatie_slug' => 'velt'],
+        [
+            'initiatief_slug' => null,
+            'pagina_titel' => '',
+            'intro_tekst' => 'Deze tekst mag niet als initiatiefkaart verschijnen.',
+            'korte_naam' => 'Velt-zonder-pagina',
+        ]
+    );
+
+    $html = $this->get(route('partners'))->assertOk()->getContent();
+    expect($html)->not->toContain('Velt-zonder-pagina')
+        ->and($html)->not->toContain('Deze tekst mag niet als initiatiefkaart verschijnen.')
+        ->and($html)->toContain('href="'.route('initiatief.show', ['slug' => 'struikroven']).'"');
 });
 
 test('oude /partners URL geeft 301 naar /initiatieven', function () {
