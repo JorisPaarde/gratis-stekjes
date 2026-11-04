@@ -16,17 +16,31 @@ final class LedenupdateMailContent
 
     public const PROFIEL_URL = 'https://gratisplanten.nl/account/profiel';
 
+    /** Aanhef-typen voor dry-run/log (nooit de naam zelf). */
+    public const AANHEF_NAAM = 'naam';
+
+    public const AANHEF_AFGELEID = 'afgeleid';
+
+    public const AANHEF_ZONDER = 'zonder naam';
+
+    /** Lokale delen die geen voornaam zijn. */
+    private const GENERIEK = [
+        'info', 'contact', 'mail', 'email', 'admin', 'hallo', 'hello', 'hoi', 'post', 'noreply',
+        'no', 'webmaster', 'support', 'service', 'office', 'kantoor', 'sales', 'team', 'test',
+        'user', 'gebruiker', 'postmaster', 'secretariaat', 'redactie', 'familie', 'fam',
+    ];
+
     /**
-     * @return array{naam: string, nr: int, tier: int, vraag_postcode: bool}|null
-     *         null als naam, lidnummer of tier ontbreekt
+     * @return array{naam: string, nr: int, tier: int, vraag_postcode: bool, aanhef: string}|null
+     *         null als lidnummer of tier ontbreekt, of de naam leeg is
      */
     public static function placeholders(User $user, MilestoneService $milestones): ?array
     {
-        $naam = trim((string) $user->name);
         $nr = $milestones->lidnummer($user);
         $tier = self::tierFor($nr);
+        [$naam, $aanhef] = self::aanhef($user);
 
-        if ($naam === '' || Naam::lijktOpEmail($naam, (string) $user->email) || $nr === null || $tier === null) {
+        if ($aanhef === null || $nr === null || $tier === null) {
             return null;
         }
 
@@ -35,7 +49,55 @@ final class LedenupdateMailContent
             'nr' => $nr,
             'tier' => $tier,
             'vraag_postcode' => ! $user->hasValidPostcode(),
+            'aanhef' => $aanhef,
         ];
+    }
+
+    /**
+     * Naam voor «Hoi …,». Normale naam: ongewijzigd. Naam die op een e-mailadres lijkt:
+     * voornaam afgeleid uit het lokale deel van het e-mailadres, of geen naam («Hoi,»).
+     * Wijzigt het user-record niet.
+     *
+     * @return array{0: string, 1: string|null} [naam, aanhef-type] — type null = lege naam (blokkerend)
+     */
+    public static function aanhef(User $user): array
+    {
+        $naam = trim((string) $user->name);
+        if ($naam === '') {
+            return ['', null];
+        }
+        if (! Naam::lijktOpEmail($naam, (string) $user->email)) {
+            return [$naam, self::AANHEF_NAAM];
+        }
+
+        $afgeleid = self::voornaamUitEmail((string) $user->email);
+        if ($afgeleid === null) {
+            return ['', self::AANHEF_ZONDER];
+        }
+
+        return [$afgeleid, self::AANHEF_AFGELEID];
+    }
+
+    /** Voornaam uit het deel vóór @ (bijv. jan.devries → Jan), of null als het geen naam lijkt. */
+    public static function voornaamUitEmail(string $email): ?string
+    {
+        $lokaal = mb_strtolower(trim(explode('@', $email, 2)[0]));
+        $delen = preg_split('/[._+\-0-9]+/u', $lokaal, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        $token = (string) ($delen[0] ?? '');
+        $token = (string) preg_replace('/[0-9]+/u', '', $token);
+
+        if ($token === '' || ! preg_match('/^\p{L}+$/u', $token) || mb_strlen($token) < 2) {
+            return null;
+        }
+        if (in_array($token, self::GENERIEK, true)) {
+            return null;
+        }
+        // Initialen: 2–3 letters zonder klinker (bijv. «jk», «pvd»).
+        if (mb_strlen($token) <= 3 && ! preg_match('/[aeiouy\x{00E0}-\x{00FF}]/u', $token)) {
+            return null;
+        }
+
+        return mb_strtoupper(mb_substr($token, 0, 1)).mb_substr($token, 1);
     }
 
     /** Hoogste (strakste) oprichterstier: 10, 50 of 100. */
@@ -55,12 +117,12 @@ final class LedenupdateMailContent
     }
 
     /**
-     * @param  array{naam: string, nr: int, tier: int, vraag_postcode: bool}  $data
+     * @param  array{naam: string, nr: int, tier: int, vraag_postcode: bool, aanhef?: string}  $data
      */
     public static function plainBody(array $data): string
     {
         $lines = [
-            'Hoi '.$data['naam'].',',
+            ($data['naam'] !== '' ? 'Hoi '.$data['naam'].',' : 'Hoi,'),
             '',
             'Leuk dat je meedoet met Gratis planten. Er is de laatste tijd veel bijgekomen, dus even kort wat je nu kunt:',
             '',
@@ -90,7 +152,7 @@ final class LedenupdateMailContent
     /**
      * Eenvoudige HTML-variant met dezelfde tekst en klikbare profiellink.
      *
-     * @param  array{naam: string, nr: int, tier: int, vraag_postcode: bool}  $data
+     * @param  array{naam: string, nr: int, tier: int, vraag_postcode: bool, aanhef?: string}  $data
      */
     public static function htmlBody(array $data): string
     {
@@ -115,11 +177,8 @@ final class LedenupdateMailContent
     public static function missingFields(User $user, MilestoneService $milestones): array
     {
         $missing = [];
-        $naam = trim((string) $user->name);
-        if ($naam === '') {
+        if (self::aanhef($user)[1] === null) {
             $missing[] = 'naam';
-        } elseif (Naam::lijktOpEmail($naam, (string) $user->email)) {
-            $missing[] = 'naam (lijkt op e-mailadres)';
         }
         $nr = $milestones->lidnummer($user);
         if ($nr === null) {

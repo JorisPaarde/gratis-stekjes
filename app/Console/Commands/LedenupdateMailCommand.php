@@ -79,71 +79,86 @@ class LedenupdateMailCommand extends Command
 
     private function dryRun(MilestoneService $milestones): int
     {
-        $failed = [];
-        $rows = [];
+        $blokkerend = 0;
+        $regels = [];
         $ids = [];
+        $voorbeelden = [];
+        $telling = ['postcode_ja' => 0, 'postcode_nee' => 0, 'tier' => [], 'aanhef' => []];
 
         self::recipientsQuery()
             ->select(['id', 'name', 'email', 'country', 'locatie_label', 'postcode_gebied', 'woonplaats', 'lat', 'lon', 'is_admin', 'is_stats_viewer', 'active', 'email_verified_at'])
-            ->chunkById(200, function ($users) use ($milestones, &$failed, &$rows, &$ids): void {
+            ->chunkById(200, function ($users) use ($milestones, &$blokkerend, &$regels, &$ids, &$voorbeelden, &$telling): void {
                 foreach ($users as $user) {
                     $id = (int) $user->id;
                     $ids[] = $id;
+                    $nr = $milestones->lidnummer($user);
+                    $tier = LedenupdateMailContent::tierFor($nr);
+                    $aanhef = LedenupdateMailContent::aanhef($user)[1];
+                    $postcodeZin = ! $user->hasValidPostcode();
                     $missing = LedenupdateMailContent::missingFields($user, $milestones);
+
+                    $regel = sprintf(
+                        '  #%d · lidnummer %s · tier %s · postcode-zin %s · aanhef %s',
+                        $id,
+                        $nr ?? '-',
+                        $tier ?? '-',
+                        $postcodeZin ? 'ja' : 'nee',
+                        $aanhef ?? '-',
+                    );
                     if ($missing !== []) {
-                        $failed[] = sprintf('#%d mist: %s', $id, implode(', ', $missing));
-
-                        continue;
+                        $blokkerend++;
+                        $regel .= ' · BLOKKEREND: mist '.implode(', ', $missing);
+                    } else {
+                        $telling[$postcodeZin ? 'postcode_ja' : 'postcode_nee']++;
+                        $telling['tier'][$tier] = ($telling['tier'][$tier] ?? 0) + 1;
+                        $telling['aanhef'][$aanhef] = ($telling['aanhef'][$aanhef] ?? 0) + 1;
+                        $data = LedenupdateMailContent::placeholders($user, $milestones);
+                        if ($data !== null) {
+                            $sleutel = ($postcodeZin ? 'met' : 'zonder').' postcode-zin, aanhef '.$aanhef;
+                            if (! isset($voorbeelden[$sleutel])) {
+                                // Publieke repo-log: nooit echte of afgeleide naam.
+                                $voorbeelden[$sleutel] = LedenupdateMailContent::plainBody(
+                                    array_merge($data, ['naam' => $data['naam'] !== '' ? '[naam]' : ''])
+                                );
+                            }
+                        }
                     }
-
-                    $data = LedenupdateMailContent::placeholders($user, $milestones);
-                    if ($data === null) {
-                        $failed[] = sprintf('#%d mist: placeholders', $id);
-
-                        continue;
-                    }
-
-                    $rows[] = [
-                        'id' => $id,
-                        'data' => $data,
-                    ];
+                    $regels[] = $regel;
                 }
             });
 
         $this->info('Ledenupdate-mail (dry-run, geen mail verstuurd)');
         $this->line('Totaal kandidaten: '.count($ids));
-
-        if ($failed !== []) {
-            $this->error('Dry-run mislukt: lege verplichte velden');
-            foreach ($failed as $line) {
-                $this->line($line);
-            }
-
-            return self::FAILURE;
+        $this->line('Onderwerp: '.LedenupdateMailContent::SUBJECT);
+        foreach ($regels as $regel) {
+            $this->line($regel);
         }
 
-        foreach ($rows as $row) {
-            /** @var array{naam: string, nr: int, tier: int, vraag_postcode: bool} $data */
-            $data = $row['data'];
-            $this->line(sprintf(
-                '  #%d · lidnummer %d · tier %d · naam %s · postcode-zin %s',
-                $row['id'],
-                $data['nr'],
-                $data['tier'],
-                'ja',
-                $data['vraag_postcode'] ? 'ja' : 'nee',
-            ));
-            $this->line('  Onderwerp: '.LedenupdateMailContent::SUBJECT);
-            $this->line('  --- body ---');
-            // Publieke repo-log: geen e-mailadres en geen echte naam; naam als [naam].
-            foreach (explode("\n", LedenupdateMailContent::plainBody(array_merge($data, ['naam' => '[naam]']))) as $line) {
+        ksort($telling['tier']);
+        $this->line(sprintf(
+            'Samenvatting: postcode-zin ja %d · nee %d · tiers %s · aanhef %s · blokkerend %d',
+            $telling['postcode_ja'],
+            $telling['postcode_nee'],
+            implode(', ', array_map(fn ($t, $n) => $t.'='.$n, array_keys($telling['tier']), $telling['tier'])) ?: '-',
+            implode(', ', array_map(fn ($t, $n) => $t.'='.$n, array_keys($telling['aanhef']), $telling['aanhef'])) ?: '-',
+            $blokkerend,
+        ));
+
+        foreach ($voorbeelden as $sleutel => $body) {
+            $this->line('--- voorbeeld ('.$sleutel.') ---');
+            foreach (explode("\n", $body) as $line) {
                 $this->line('  '.$line);
             }
-            $this->line('  --- /body ---');
-            $this->newLine();
+            $this->line('--- /voorbeeld ---');
         }
 
         $this->line('Lid-id\'s: '.($ids !== [] ? implode(', ', $ids) : '-'));
+
+        if ($blokkerend > 0) {
+            $this->error(sprintf('Dry-run mislukt: %d lid/leden met blokkerende fout', $blokkerend));
+
+            return self::FAILURE;
+        }
 
         return self::SUCCESS;
     }

@@ -69,7 +69,9 @@ test('gp:ledenupdate-mail dry-run faalt bij lege naam en toont geen e-mail', fun
     $out = Artisan::output();
 
     expect($exit)->toBe(1)
-        ->and($out)->toContain('#'.$leeg->id.' mist: naam')
+        ->and($out)->toContain('#'.$leeg->id.' · lidnummer 2 · tier 10 · postcode-zin ja · aanhef - · BLOKKEREND: mist naam')
+        ->and($out)->toContain('#'.$ok->id.' · lidnummer 1 · tier 10 · postcode-zin ja · aanhef naam')
+        ->and($out)->toContain('Dry-run mislukt')
         ->and($out)->not->toContain('ok-lu@example.com')
         ->and($out)->not->toContain('leeg-lu@example.com')
         ->and($out)->not->toContain((string) $ok->email);
@@ -90,7 +92,7 @@ test('gp:ledenupdate-mail dry-run toont gerenderde body zonder e-mail of straat'
 
     expect($exit)->toBe(0)
         ->and($out)->toContain('#'.$u->id)
-        ->and($out)->toContain('lidnummer 1 · tier 10 · naam ja · postcode-zin ja')
+        ->and($out)->toContain('lidnummer 1 · tier 10 · postcode-zin ja · aanhef naam')
         ->and($out)->toContain('Onderwerp: '.LedenupdateMailContent::SUBJECT)
         ->and($out)->toContain('Hoi [naam],')
         ->and($out)->not->toContain('Pia')
@@ -181,15 +183,70 @@ test('LedenupdateMail mailable subject en from via MAIL_*', function () {
         ->and($mail->envelope()->from->name)->toBe('Gratis planten');
 });
 
-test('ledenupdate: naam die op e-mailadres lijkt telt als ontbrekend', function () {
-    $u = ledenupdateUser(['name' => 'iemand@example.com', 'email' => 'iemand@example.com']);
+test('voornaamUitEmail leidt voornaam af of geeft null', function (string $email, ?string $verwacht) {
+    expect(LedenupdateMailContent::voornaamUitEmail($email))->toBe($verwacht);
+})->with([
+    ['jan.devries@example.com', 'Jan'],
+    ['marieke123@example.com', 'Marieke'],
+    ['ANNA_b@example.com', 'Anna'],
+    ['piet-jan@example.com', 'Piet'],
+    ['kees+gp@example.com', 'Kees'],
+    ['12sanne@example.com', 'Sanne'],
+    ['info@example.com', null],
+    ['contact@example.com', null],
+    ['noreply@example.com', null],
+    ['webmaster@example.com', null],
+    ['hallo@example.com', null],
+    ['12345@example.com', null],
+    ['j.devries@example.com', null],
+    ['pvd@example.com', null],
+    ['jk76@example.com', null],
+]);
+
+test('ledenupdate: e-mail als naam → afgeleide voornaam, niet in output, DB ongewijzigd', function () {
+    $u = ledenupdateUser(['name' => 'jan.devries@example.com', 'email' => 'jan.devries@example.com']);
+
+    $data = LedenupdateMailContent::placeholders($u, app(\App\Services\MilestoneService::class));
+    expect($data['naam'])->toBe('Jan')
+        ->and($data['aanhef'])->toBe(LedenupdateMailContent::AANHEF_AFGELEID)
+        ->and(LedenupdateMailContent::plainBody($data))->toStartWith("Hoi Jan,\n");
 
     $exit = Artisan::call('gp:ledenupdate-mail', ['--dry-run' => true]);
     $out = Artisan::output();
 
-    expect($exit)->toBe(1)
-        ->and($out)->toContain('#'.$u->id.' mist: naam (lijkt op e-mailadres)')
-        ->and($out)->not->toContain('iemand@example.com');
+    expect($exit)->toBe(0)
+        ->and($out)->toContain('#'.$u->id.' · lidnummer 1 · tier 10 · postcode-zin ja · aanhef afgeleid')
+        ->and($out)->toContain('Hoi [naam],')
+        ->and($out)->not->toContain('Jan')
+        ->and($out)->not->toContain('jan.devries')
+        ->and($out)->not->toContain('@');
+    expect($u->fresh()->name)->toBe('jan.devries@example.com');
+});
+
+test('ledenupdate: e-mail als naam zonder bruikbare voornaam → «Hoi,»', function () {
+    Mail::fake();
+    $u = ledenupdateUser(['name' => 'info@example.com', 'email' => 'info@example.com']);
+
+    $data = LedenupdateMailContent::placeholders($u, app(\App\Services\MilestoneService::class));
+    expect($data['naam'])->toBe('')
+        ->and($data['aanhef'])->toBe(LedenupdateMailContent::AANHEF_ZONDER)
+        ->and(LedenupdateMailContent::plainBody($data))->toStartWith("Hoi,\n");
+
+    $exit = Artisan::call('gp:ledenupdate-mail', ['--dry-run' => true]);
+    $out = Artisan::output();
+    expect($exit)->toBe(0)
+        ->and($out)->toContain('aanhef zonder naam')
+        ->and($out)->toContain('  Hoi,')
+        ->and($out)->not->toContain('@');
+
+    expect(Artisan::call('gp:ledenupdate-mail', ['--send' => true, '--id' => (string) $u->id]))->toBe(0);
+    Mail::assertSent(LedenupdateMail::class, fn ($m) => str_starts_with(LedenupdateMailContent::plainBody($m->data), "Hoi,\n"));
+});
+
+test('ledenupdate: normale naam blijft ongewijzigd', function () {
+    $u = ledenupdateUser(['name' => 'Anouk', 'email' => 'iets.anders@example.com']);
+    $data = LedenupdateMailContent::placeholders($u, app(\App\Services\MilestoneService::class));
+    expect($data['naam'])->toBe('Anouk')->and($data['aanhef'])->toBe('naam');
 });
 
 test('ledenupdate tekstdeel bevat geen HTML-entities', function () {
