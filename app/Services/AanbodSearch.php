@@ -129,6 +129,32 @@ final class AanbodSearch
             ->all();
     }
 
+    /**
+     * Nieuwste publieke aanbiedingen mét foto (voor homepage-teaserkaartjes).
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function recentWithFoto(int $limit, ?string $typeFilter = null): array
+    {
+        $limit = max(1, min($limit, 50));
+
+        return $this->baseQuery($typeFilter)
+            ->whereHas('fotos')
+            ->limit($limit)
+            ->get()
+            ->map(fn (Aanbod $a) => $this->toPublicItem($a))
+            ->all();
+    }
+
+    /**
+     * Aantal actieve publieke aanbiedingen mét minstens één foto
+     * (zelfde filters als {@see recent()}, plus foto). Voor teaser-drempel.
+     */
+    public function countPublicWithFoto(?string $typeFilter = null): int
+    {
+        return $this->eligibleQuery($typeFilter)->whereHas('fotos')->count();
+    }
+
     /** @return Builder<Aanbod> */
     private function baseQuery(?string $typeFilter): Builder
     {
@@ -140,9 +166,21 @@ final class AanbodSearch
             $with[] = 'user.zichtbareVerenigingen';
         }
 
+        return $this->eligibleQuery($typeFilter)
+            ->with($with)
+            ->latest('created_at')
+            ->orderByDesc('id');
+    }
+
+    /**
+     * Zelfde scope als zoeken/recent: zichtbaar, niet verlopen, actief lid met coördinaten.
+     *
+     * @return Builder<Aanbod>
+     */
+    private function eligibleQuery(?string $typeFilter): Builder
+    {
         return Aanbod::query()
             ->publiclyListed()
-            ->with($with)
             ->whereHas('user', function ($q) {
                 $q->members()
                     ->where('active', true)
@@ -153,9 +191,7 @@ final class AanbodSearch
             ->when(
                 in_array($typeFilter, ['uitdelen', 'ophalen'], true),
                 fn ($q) => $q->where('type', $typeFilter)
-            )
-            ->latest('created_at')
-            ->orderByDesc('id');
+            );
     }
 
     /** @return array<string, mixed> */

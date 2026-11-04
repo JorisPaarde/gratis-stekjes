@@ -30,21 +30,8 @@
 
   <div class="gp-layout">
     <div>
-      <h2 id="aanbod-titel">Actueel aanbod</h2>
-      @if(count($aanbod) === 0)
-        <div class="gp-empty soft-card" role="status">
-          <p>Er is nog geen aanbod binnen ongeveer {{ (int) $stad['straal_km'] }} km van {{ $stad['naam'] }}.</p>
-          <p>Zoek iets verder weg, of wees de eerste: zet een plant, stekje of zaad op de site en laat zien dat er in {{ $stad['naam'] }} gedeeld wordt.</p>
-          <p class="gp-acties">
-            <a class="btn" href="{{ route('aanbod', ['q' => $stad['naam']]) }}"><x-icon name="kaart" :size="16" /> Zoek in de omgeving</a>
-            @auth
-              <a class="btn btn-secondary" href="{{ route('account.aanbod') }}"><x-icon name="plus" :size="16" /> Zelf iets aanbieden</a>
-            @else
-              <a class="btn btn-secondary" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="16" /> Account maken en aanbieden</a>
-            @endauth
-          </p>
-        </div>
-      @else
+      @if(!empty($toonAanbod))
+        <h2 id="aanbod-titel">Actueel aanbod</h2>
         <ul class="zoek-lijst gp-aanbod-lijst">
           @foreach($aanbod as $item)
             <li class="zoek-item">
@@ -65,15 +52,15 @@
             </li>
           @endforeach
         </ul>
-        <p class="gp-cta-inline">
-          @auth
-            <a class="btn btn-secondary" href="{{ route('account.aanbod') }}">Zelf iets aanbieden</a>
-          @else
-            <a class="btn btn-secondary" href="{{ route('account.registreren') }}">Zelf iets aanbieden</a>
-          @endauth
-          · <a href="{{ route('aanbod', ['q' => $stad['naam']]) }}">Zoek verder rond {{ $stad['naam'] }}</a>
-        </p>
       @endif
+      <p class="gp-cta-inline">
+        @auth
+          <a class="btn btn-secondary" href="{{ route('account.aanbod') }}">Zelf iets aanbieden</a>
+        @else
+          <a class="btn btn-secondary" href="{{ route('account.registreren') }}">Zelf iets aanbieden</a>
+        @endauth
+        · <a href="{{ route('aanbod', ['q' => $stad['naam']]) }}">Zoek verder rond {{ $stad['naam'] }}</a>
+      </p>
     </div>
 
     <div>
