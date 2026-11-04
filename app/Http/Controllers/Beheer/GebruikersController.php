@@ -40,7 +40,7 @@ class GebruikersController extends Controller
         'onbevestigd' => 'Onbevestigd',
         'mailfout' => 'Mail mislukt',
         'met_aanbod' => 'Met aanbod',
-        'zonder_plek' => 'Zonder plek',
+        'zonder_locatie' => 'Zonder locatie',
         'naam_email' => 'Naam = e-mail',
         'inactief' => 'Inactief (90 d)',
         'geblokkeerd' => 'Geblokkeerd',
@@ -248,7 +248,10 @@ class GebruikersController extends Controller
             'onbevestigd' => $query->whereNull('email_verified_at')->where('active', true),
             'mailfout' => $query->whereIn('id', BeheerTellers::mailFoutUserIds()->all() ?: [-1]),
             'met_aanbod' => $query->whereHas('aanbod'),
-            'zonder_plek' => $query->where(fn ($q) => $q->whereNull('locatie_label')->orWhere('locatie_label', '')),
+            'zonder_locatie' => $query->where(fn ($q) => $q
+                ->where(fn ($w) => $w->whereNull('locatie_label')->orWhere('locatie_label', ''))
+                ->orWhereNull('lat')
+                ->orWhereNull('lon')),
             'naam_email' => $query->where(fn ($q) => $q->where('name', 'like', '%@%')
                 ->orWhere('name', 'like', '%gmail%')->orWhere('name', 'like', '%hotmail%')
                 ->orWhere('name', 'like', '%.com%')->orWhere('name', 'like', '%.nl%')),

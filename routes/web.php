@@ -40,6 +40,7 @@ use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\DeelplekkenController;
 use App\Http\Controllers\DeployController;
+use App\Http\Controllers\DeployNormaliseerLocatiesController;
 use App\Http\Controllers\DeployImportController;
 use App\Http\Controllers\DeployStatsLezerController;
 use App\Http\Controllers\ErvaringController;
@@ -144,6 +145,9 @@ Route::post('/deploy/run', DeployController::class)
 Route::post('/deploy/stats-lezer', DeployStatsLezerController::class)
     ->middleware('throttle:10,1')
     ->name('deploy.stats-lezer');
+Route::post('/deploy/normaliseer-locaties', DeployNormaliseerLocatiesController::class)
+    ->middleware('throttle:10,1')
+    ->name('deploy.normaliseer-locaties');
 Route::post('/deploy/import/init', [DeployImportController::class, 'init'])
     ->middleware('throttle:20,1')
     ->name('deploy.import.init');
@@ -201,6 +205,9 @@ Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(functio
     Route::get('/account/adres-zoeken', [ProfileController::class, 'adresZoeken'])
         ->middleware('throttle:30,1')
         ->name('account.adres-zoeken');
+    Route::get('/account/locatie-preview', [ProfileController::class, 'locatiePreview'])
+        ->middleware('throttle:30,1')
+        ->name('account.locatie-preview');
 
     Route::get('/account/wachtwoord', [PasswordController::class, 'edit'])->name('account.wachtwoord');
     Route::post('/account/wachtwoord', [PasswordController::class, 'update']);

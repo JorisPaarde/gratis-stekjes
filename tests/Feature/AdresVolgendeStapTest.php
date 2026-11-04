@@ -23,7 +23,7 @@ function adresUser(array $extra = []): User
 function profielPost($test, User $u, array $extra)
 {
     Http::fake(['*' => Http::response(['response' => ['docs' => [
-        ['centroide_ll' => 'POINT(4.637 52.381)', 'weergavenaam' => '2011AB Haarlem', 'type' => 'postcode', 'score' => 10],
+        ['centroide_ll' => 'POINT(4.637 52.381)', 'weergavenaam' => '2011AB Haarlem', 'woonplaatsnaam' => 'Haarlem', 'postcode' => '2011AB', 'type' => 'postcode', 'score' => 10],
     ]]])]);
 
     return $test->actingAs($u)->post(route('account.profiel'), array_merge([
@@ -42,7 +42,9 @@ test('adres opslaan: versleuteld, openbaar alleen postcodegebied', function () {
 
     $f = $u->fresh();
     expect($f->volledigAdres())->toBe('Grote Markt 12A, 2011 AB Haarlem')
-        ->and($f->locatie_label)->toBe('2011')
+        ->and($f->locatie_label)->toBe('2011 Haarlem')
+        ->and($f->postcode_gebied)->toBe('2011')
+        ->and($f->woonplaats)->toBe('Haarlem')
         ->and((bool) $f->adres_delen)->toBeTrue();
 
     $raw = DB::table('users')->where('id', $u->id)->value('adres_straat');

@@ -57,7 +57,8 @@
         <thead>
           <tr>
             <th>Naam</th>
-            <th>Plaats</th>
+            <th>Land</th>
+            <th>Locatie</th>
             <th>Status</th>
             <th>Lid sinds</th>
             <th>Laatst actief</th>
@@ -86,7 +87,16 @@
                   </span>
                 @endif
               </td>
-              <td data-label="Plaats">{{ $u->locatie_label ?: '—' }}</td>
+              <td data-label="Land">{{ $u->country === 'BE' ? 'BE' : 'NL' }}</td>
+              <td data-label="Locatie">
+                @if($u->postcode_gebied || $u->woonplaats)
+                  {{ $u->postcode_gebied ?: '—' }} · {{ $u->woonplaats ?: '—' }}
+                @elseif($u->locatie_label)
+                  {{ $u->locatie_label }}
+                @else
+                  —
+                @endif
+              </td>
               <td data-label="Status">@include('beheer.partials.status', ['u' => $u, 'mailFout' => $mailFout])</td>
               <td data-label="Lid sinds" class="beheer-datum"><span title="{{ $u->created_at?->diffForHumans() }}">{{ $u->created_at?->timezone('Europe/Amsterdam')->translatedFormat('j M Y') }}</span></td>
               <td data-label="Laatst actief" class="beheer-datum">{{ $u->last_seen_at ? $u->last_seen_at->diffForHumans(['parts' => 1, 'short' => true]) : '—' }}</td>

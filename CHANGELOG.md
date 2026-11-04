@@ -9,15 +9,17 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.66.2] - 2026-11-04
+
+### Changed
+
+- Master (prod 0.66.1) teruggemerged in staging.
+
 ## [0.66.1] - 2026-11-04
 
 ### Added
 
 - `/initiatieven`: organisaties met een gevulde `initiatief_slug` krijgen automatisch een soft-card (korte intro) die naar `/{slug}` linkt (bijv. Struikroven → `/struikroven`). Organisaties zonder pagina ongewijzigd.
-
-### Notes
-
-- Plaatsveld (0.65.0) zit nog niet in deze release.
 
 ## [0.66.0] - 2026-11-04
 
@@ -32,6 +34,24 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Organisatie mét initiatief-slug: `/organisaties/{org-slug}` doet 301 naar `/{slug}`; links op organisaties-index, voor-organisaties, gerelateerde orgs en sitemap gaan rechtstreeks naar `/{slug}`. Zonder slug blijft alles zoals voorheen.
 - Aanmeldvinkje op registreren is generiek per initiatief (`?struikrover=1` blijft werken).
 - `/struikroven` blijft inhoudelijk gelijk aan 0.64.1 (zelfde teksten, volgorde en links).
+
+## [0.65.0] - 2026-11-04
+
+### Added
+
+- Profiel: verplichte postcode (NL `1234`/`1234 AB`, BE 4 cijfers) met automatisch
+  ingevulde plaats ter bevestiging; fallback «Weet je je postcode niet?» (alleen plaatsnaam).
+- Kolommen `users.postcode_gebied` en `users.woonplaats`; openbaar label altijd
+  «postcodegebied plaats» (bijv. `1326 Almere`), nooit volledige postcode of huisnummer.
+- Beheer `/beheer/gebruikers`: kolommen land + «postcode · plaats», filter «Zonder locatie».
+- Artisan `gp:normaliseer-locaties` (standaard dry-run; schrijven met `--no-dry-run`) +
+  `POST /deploy/normaliseer-locaties` + workflow `normaliseer-locaties.yml`
+  (`target` staging|production, `apply` alleen bij expliciet true).
+- Geocodefouten/timeouts: `Log::warning` met land + invoertype (geen persoonsgegevens).
+
+### Changed
+
+- PDOK/Nominatim: woonplaats meenemen bij postcode-zoeken; reverse-geocode voor normalisatie.
 
 ## [0.64.1] - 2026-11-04
 

@@ -33,6 +33,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'active',
         'telefoon',
         'locatie_label',
+        'postcode_gebied',
+        'woonplaats',
         'lat',
         'lon',
         'country',
