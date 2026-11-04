@@ -481,6 +481,9 @@ h1.page-title {
 }
 .badge--partner { background: var(--bg-mint); color: var(--forest-deep); }
 .badge--voedselbos { background: rgba(90, 91, 66, 0.18); color: #3d3e2e; }
+.badge--inheems { background: rgba(31, 77, 43, 0.14); color: #163820; }
+.stektips-tag-filters { display: flex; flex-wrap: wrap; gap: .45rem; margin: .65rem 0 0; }
+.stektips-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin: .35rem 0 .85rem; }
 .badge--plantenasiel { background: rgba(232, 131, 58, 0.18); color: #8a4514; }
 .badge--plantenbieb { background: rgba(31, 77, 43, 0.16); color: #163820; }
 .badge--ruilkast { background: rgba(90, 91, 66, 0.16); color: #4a3420; }

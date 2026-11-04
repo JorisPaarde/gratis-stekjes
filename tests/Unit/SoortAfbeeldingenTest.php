@@ -31,8 +31,8 @@ test('elke stektip-soort heeft geverifieerde metadata of fallback', function () 
     $meta = soortAfbeeldingenMeta();
     $missing = $meta['missing'] ?? [];
 
-    expect(count($svc->all()))->toBe(106)
-        ->and(count($slugs))->toBe(106)
+    expect(count($svc->all()))->toBe(146)
+        ->and(count($slugs))->toBe(146)
         ->and(count($missing))->toBe(0);
 
     foreach ($slugs as $slug) {

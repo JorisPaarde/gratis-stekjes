@@ -73,6 +73,13 @@
             @endforeach
           </select>
         </label>
+        <label for="stektips-tag">Voedselbos of inheems
+          <select id="stektips-tag" name="tag">
+            <option value="">Alle tags</option>
+            <option value="voedselbos" @selected(($filters['tag'] ?? '') === 'voedselbos')>Voedselbos</option>
+            <option value="inheems" @selected(($filters['tag'] ?? '') === 'inheems')>Inheems</option>
+          </select>
+        </label>
         <div class="stektips-filter-actions">
           <button class="btn btn-secondary" type="submit">Filters toepassen</button>
         </div>

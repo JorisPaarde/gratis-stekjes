@@ -10,7 +10,7 @@ test('elke soortpagina laadt met 200 en SEO-titel', function () {
     $stektips = app(Stektips::class);
     $soorten = $stektips->all();
 
-    expect($soorten)->toHaveCount(106);
+    expect($soorten)->toHaveCount(146);
 
     foreach ($soorten as $soort) {
         $slug = $soort['slug'];
