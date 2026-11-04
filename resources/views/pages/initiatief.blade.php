@@ -10,22 +10,37 @@
 @endpush
 
 @section('content')
+@php
+  $slug = $init->initiatief_slug;
+  $korte = $init->korte_naam !== '' ? $init->korte_naam : (string) ($org['naam'] ?? $slug);
+  $deelId = $slug.'-deeltekst';
+  $aanmeldParam = trim((string) $init->aanmeld_param);
+  $agendaUrl = trim((string) $init->agenda_url);
+  $agendaHost = $agendaUrl !== '' ? (preg_replace('#^https?://#i', '', $agendaUrl) ?: $agendaUrl) : '';
+@endphp
 <section class="section wrap struikroven-page">
-  <h1 class="page-title">Struikroven redt planten van de sloop</h1>
-  <h2>Wie zijn de Struikrovers?</h2>
-  <p>
-    Als huizen worden gesloopt of opgeknapt, verdwijnt vaak veel gezond groen uit voor- en achtertuinen. Zonde, want volwassen planten en struiken geven karakter aan een buurt.
-  </p>
-  <p>
-    Daarom organiseert Stichting Struikroven struikroofacties. Buurtbewoners halen dan samen de planten uit de grond en geven ze een tweede leven in hun eigen tuin, op hun balkon, in de buurt of in een logeertuin. Meedoen is gratis en iedereen is welkom, jong en oud.
-  </p>
-  <p class="struikroven-links muted">
-    <a href="https://struikroven.nu" rel="noopener noreferrer" target="_blank">Meer over Struikroven</a>
-    ·
-    <a href="{{ route('organisaties.show', ['slug' => 'struikroven']) }}">Over de stichting</a>
-  </p>
+  <h1 class="page-title">{{ $init->pagina_titel !== '' ? $init->pagina_titel : $korte }}</h1>
+  @if($init->intro_titel !== '')
+    <h2>{{ $init->intro_titel }}</h2>
+  @endif
+  @foreach($init->introAlineas() as $alinea)
+    <p>{{ $alinea }}</p>
+  @endforeach
+  @if(trim((string) $init->site_url) !== '' || trim((string) $init->secundaire_link_label) !== '')
+    <p class="struikroven-links muted">
+      @if(trim((string) $init->site_url) !== '')
+        <a href="{{ $init->site_url }}" rel="noopener noreferrer" target="_blank">{{ $init->site_link_tekst !== '' ? $init->site_link_tekst : 'Meer info' }}</a>
+      @endif
+      @if(trim((string) $init->site_url) !== '' && trim((string) $init->secundaire_link_label) !== '')
+        ·
+      @endif
+      @if(trim((string) $init->secundaire_link_label) !== '')
+        <a href="{{ route('organisaties.show', ['slug' => $init->organisatie_slug]) }}">{{ $init->secundaire_link_label }}</a>
+      @endif
+    </p>
+  @endif
 
-  <h2>Doe je mee met Struikroven?</h2>
+  <h2>Doe je mee met {{ $korte }}?</h2>
   <p>
     Of heb je zelf planten die een tweede leven verdienen? Op Gratis planten deel je planten, stekjes en zaden gratis met iemand in de buurt. Kijk hier verder.
   </p>
@@ -34,7 +49,7 @@
     @auth
       <a class="btn btn-secondary struikroven-cta" href="{{ route('aanbieden') }}">Planten over? Bied ze gratis aan</a>
     @else
-      <a class="btn btn-secondary struikroven-cta" href="{{ route('account.registreren', ['struikrover' => 1]) }}">Planten over? Bied ze gratis aan</a>
+      <a class="btn btn-secondary struikroven-cta" href="{{ route('account.registreren', $aanmeldParam !== '' ? [$aanmeldParam => 1] : []) }}">Planten over? Bied ze gratis aan</a>
     @endauth
   </div>
   <p class="muted struikroven-cta-hint">Zoeken kan zonder account. Aanbieden vraagt een gratis account.</p>
@@ -49,11 +64,13 @@
     Op de site staan geen straatadressen: alleen een postcode of plaats, zodat je ziet wat er in de buurt is.
   </p>
 
-  <h2>Komende Struikroven-acties</h2>
+  <h2>Komende {{ $korte }}-acties</h2>
   @if($acties->isEmpty())
     <div class="empty-state" role="status">
-      <p>Er staan nu geen Struikroven-acties gepland op deze agenda. Zodra er iets bij komt, zie je het hier.</p>
-      <p class="muted">De actieagenda van Struikroven zelf staat op <a href="https://struikroven.nu/agenda" rel="noopener noreferrer" target="_blank">struikroven.nu/agenda</a>.</p>
+      <p>{{ $init->acties_leeg_tekst !== '' && $init->acties_leeg_tekst !== null ? $init->acties_leeg_tekst : 'Er staan nu geen acties gepland op deze agenda. Zodra er iets bij komt, zie je het hier.' }}</p>
+      @if($agendaUrl !== '')
+        <p class="muted">De actieagenda van {{ $korte }} zelf staat op <a href="{{ $agendaUrl }}" rel="noopener noreferrer" target="_blank">{{ $agendaHost }}</a>.</p>
+      @endif
     </div>
   @else
     <ul class="struikroven-acties list-plain">
@@ -78,16 +95,16 @@
     </ul>
   @endif
 
-  <h2>Voor Struikrovers</h2>
-  <p>Wil je Gratis planten bij een actie of in je nieuwsbrief noemen? Gebruik dit gerust.</p>
+  <h2>{{ $init->leden_titel !== '' ? $init->leden_titel : 'Voor leden' }}</h2>
+  <p>{{ $init->leden_intro !== '' && $init->leden_intro !== null ? $init->leden_intro : 'Wil je Gratis planten bij een actie of in je nieuwsbrief noemen? Gebruik dit gerust.' }}</p>
   <ul class="struikroven-materiaal list-plain">
-    <li><a href="{{ route('poster', ['voor' => 'struikroven']) }}">A4-poster om te printen</a></li>
-    <li><a href="{{ route('poster', ['voor' => 'struikroven', 'formaat' => 'a5']) }}">A5-flyer om te printen</a></li>
+    <li><a href="{{ route('poster', ['voor' => $slug]) }}">A4-poster om te printen</a></li>
+    <li><a href="{{ route('poster', ['voor' => $slug, 'formaat' => 'a5']) }}">A5-flyer om te printen</a></li>
   </ul>
   <div class="struikroven-kopieer">
-    <label class="struikroven-kopieer-label" for="struikroven-deeltekst">Tekst voor nieuwsbrief of socials</label>
-    <textarea id="struikroven-deeltekst" class="struikroven-deeltekst" readonly rows="4">Planten over na een struikroofactie? Of zoek je juist groen voor je tuin? Op Gratis planten deel je planten, stekjes en zaden gratis met mensen in de buurt. Kijk op gratisplanten.nl/struikroven</textarea>
-    <button type="button" class="btn btn-secondary btn-klein" data-kopieer="struikroven-deeltekst">Kopieer tekst</button>
+    <label class="struikroven-kopieer-label" for="{{ $deelId }}">Tekst voor nieuwsbrief of socials</label>
+    <textarea id="{{ $deelId }}" class="struikroven-deeltekst" readonly rows="4">{{ $init->kopieertekst }}</textarea>
+    <button type="button" class="btn btn-secondary btn-klein" data-kopieer="{{ $deelId }}">Kopieer tekst</button>
   </div>
 </section>
 @endsection

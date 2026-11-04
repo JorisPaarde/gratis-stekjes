@@ -9,6 +9,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use App\Notifications\AccountBestaatAl;
 use App\Notifications\VerifyEmailDutch;
+use App\Services\InitiatiefPaginas;
 use App\Support\SafeMail;
 use App\Support\ThrottleMessage;
 use Illuminate\Http\RedirectResponse;
@@ -20,20 +21,28 @@ use Illuminate\View\View;
 
 class RegisterController extends Controller
 {
-    public function create(Request $request): View
+    public function create(Request $request, InitiatiefPaginas $initiatieven): View
     {
-        $struikrover = $request->boolean('struikrover') || (bool) old('struikrover');
+        $vinkjes = $this->aanmeldVinkjes($initiatieven);
+        $checked = [];
+        foreach ($vinkjes as $vink) {
+            $param = $vink['param'];
+            $checked[$param] = $request->boolean($param) || (bool) old($param);
+        }
 
         return view('auth.register', [
             'title' => 'Registreren',
             'metaDescription' => 'Account maken bij '.config('site.name').'. Bevestig je e-mail om verder te gaan.',
             'canonical' => route('account.registreren'),
             'formStarted' => time(),
-            'struikroverChecked' => $struikrover,
+            'aanmeldVinkjes' => $vinkjes,
+            'aanmeldChecked' => $checked,
+            // BC voor oudere tests/partials.
+            'struikroverChecked' => $checked['struikrover'] ?? false,
         ]);
     }
 
-    public function store(RegisterRequest $request): RedirectResponse
+    public function store(RegisterRequest $request, InitiatiefPaginas $initiatieven): RedirectResponse
     {
         if ($request->isBot()) {
             return redirect()
@@ -64,7 +73,13 @@ class RegisterController extends Controller
                 'active' => true,
             ];
             if (Schema::hasColumn('users', 'struikrover')) {
+                // Struikrover-param óf generiek vinkje met die param.
                 $payload['struikrover'] = $struikrover;
+                foreach ($this->aanmeldVinkjes($initiatieven) as $vink) {
+                    if ($vink['param'] === 'struikrover' && $request->boolean($vink['param'])) {
+                        $payload['struikrover'] = true;
+                    }
+                }
             }
             $user = User::query()->create($payload);
             $mailOk = SafeMail::notify($user, new VerifyEmailDutch);
@@ -94,5 +109,30 @@ class RegisterController extends Controller
             ->with('status', $status)
             ->with('status_level', $mailOk ? 'ok' : 'warn')
             ->withInput(['email' => $email]);
+    }
+
+    /**
+     * @return list<array{param: string, label: string}>
+     */
+    private function aanmeldVinkjes(InitiatiefPaginas $initiatieven): array
+    {
+        $out = [];
+        $seen = [];
+        foreach ($initiatieven->metPagina() as $init) {
+            $param = trim((string) $init->aanmeld_param);
+            $label = trim((string) $init->aanmeld_label);
+            if ($param === '' || $label === '' || isset($seen[$param])) {
+                continue;
+            }
+            $seen[$param] = true;
+            $out[] = ['param' => $param, 'label' => $label];
+        }
+
+        // Fallback als migratie/seed nog niet draait: oude Struikrover-vinkje.
+        if ($out === []) {
+            $out[] = ['param' => 'struikrover', 'label' => 'Ik ben Struikrover'];
+        }
+
+        return $out;
     }
 }

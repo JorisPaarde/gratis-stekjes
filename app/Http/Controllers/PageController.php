@@ -224,7 +224,6 @@ class PageController extends Controller
             ['loc' => route('invasieve-soorten'), 'lastmod' => $this->lastmodFromFiles([base_path('data/niet-aanbieden.json')])],
             ['loc' => route('gratis-planten.index'), 'lastmod' => $this->lastmodFromFiles([base_path('data/steden.json')])],
             ['loc' => route('volkstuinen'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/audience/volkstuinen.blade.php')])],
-            ['loc' => route('struikroven'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/struikroven.blade.php')])],
             ['loc' => route('help-mee'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/audience/help-mee.blade.php')])],
             ['loc' => route('natuur'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/audience/natuur.blade.php')])],
             ['loc' => route('verbinding'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/audience/verbinding.blade.php')])],
@@ -264,10 +263,18 @@ class PageController extends Controller
             ];
         }
 
-        $orgLastmod = $this->lastmodFromFiles([base_path('data/organisaties.json')]);
+        $orgLastmod = $this->lastmodFromFiles([
+            base_path('data/organisaties.json'),
+            resource_path('views/pages/initiatief.blade.php'),
+        ]);
+        $initiatieven = app(\App\Services\InitiatiefPaginas::class);
         foreach ($organisaties->all() as $org) {
+            $init = $initiatieven->findByOrganisatieSlug((string) $org['slug']);
+            $loc = ($init !== null && $init->heeftPagina())
+                ? route('initiatief.show', ['slug' => $init->initiatief_slug])
+                : route('organisaties.show', ['slug' => $org['slug']]);
             $entries[] = [
-                'loc' => route('organisaties.show', ['slug' => $org['slug']]),
+                'loc' => $loc,
                 'lastmod' => $orgLastmod,
             ];
         }

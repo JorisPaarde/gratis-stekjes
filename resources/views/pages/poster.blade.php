@@ -7,7 +7,7 @@
 
 @php
   $foto = $poster['foto'];
-  $fotoPad = '/assets/images/posters/'.$voor;
+  $fotoPad = '/assets/images/posters/'.($fotoKey ?? $voor);
   $isA5 = ($formaat ?? 'a4') === 'a5';
   $stappenLijst = $stappen ?? [
     'Scan de code en kijk wat er bij jou in de buurt te halen is.',
@@ -29,8 +29,8 @@
 <section class="section wrap">
   <div class="poster-tools">
     <button type="button" class="btn" data-print>Print of bewaar als pdf</button>
-    @if($voor === 'struikroven')
-      <a href="{{ route('struikroven') }}">Terug naar Struikroven</a>
+    @if(!empty($initiatiefTerug))
+      <a href="{{ route('initiatief.show', ['slug' => $initiatiefTerug->initiatief_slug]) }}">Terug naar {{ $initiatiefTerug->korte_naam !== '' ? $initiatiefTerug->korte_naam : $initiatiefTerug->initiatief_slug }}</a>
     @else
       <a href="{{ route('help-mee') }}#poster">Terug naar Help mee</a>
     @endif

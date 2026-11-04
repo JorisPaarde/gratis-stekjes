@@ -20,6 +20,7 @@
     ]],
     'inhoud' => ['Inhoud', [
       ['beheer.agenda', 'Agenda', 0],
+      ['beheer.organisaties', 'Organisaties', 0],
       ['beheer.kaartmarkers', 'Kaartmarkers', 0],
     ]],
   ];

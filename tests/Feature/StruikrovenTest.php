@@ -220,16 +220,13 @@ test('A5-flyer voor=struikroven geeft 200 met QR bron=flyer-struikroven', functi
         ->and($html)->toContain('class="poster-url">gratisplanten.nl/struikroven</p>');
 });
 
-test('/struikroven staat in sitemap; organisatiepagina blijft', function () {
+test('/struikroven staat in sitemap; organisatie-URL redirect naar initiatief', function () {
     $xml = $this->get(route('sitemap'))->assertOk()->getContent();
     expect($xml)->toContain('/struikroven')
-        ->and($xml)->toContain('/organisaties/struikroven');
+        ->and($xml)->not->toContain('/organisaties/struikroven');
 
     $this->get(route('organisaties.show', ['slug' => 'struikroven']))
-        ->assertOk()
-        ->assertSee('https://struikroven.nu', false)
-        ->assertSee('Planten delen na een actie', false)
-        ->assertSee('/struikroven', false);
+        ->assertRedirect(route('initiatief.show', ['slug' => 'struikroven']));
 });
 
 test('ingelogde bezoeker krijgt aanbieden-link op /struikroven', function () {

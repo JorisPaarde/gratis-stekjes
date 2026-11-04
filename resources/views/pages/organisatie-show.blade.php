@@ -55,7 +55,7 @@
     <ul>
       @foreach($gerelateerd as $related)
         <li>
-          <a href="{{ route('organisaties.show', ['slug' => $related['slug']]) }}">{{ $related['naam'] }}</a>
+          <a href="{{ app(\App\Services\InitiatiefPaginas::class)->publiekeUrlVoorOrganisatie($related['slug']) }}">{{ $related['naam'] }}</a>
         </li>
       @endforeach
     </ul>
