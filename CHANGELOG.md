@@ -9,7 +9,6 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
-<<<<<<< HEAD
 ## [0.67.0] - 2026-11-04
 
 ### Changed
@@ -18,13 +17,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Bestaande NULL-waarden worden via migratie op 1 gezet; kolom daarna `NOT NULL DEFAULT 1` (MySQL/MariaDB-safe).
 - Aantal alleen tonen als het hoger is dan 1 (`3 stuks`): zoeklijst/kaartpopup (zoals eerder), aanbodkaart op home, en detail/plantlijst. Bij 1 niets.
 - Mijn aanbod −/+: bij 0 blijft het aanbod offline; er wordt geen 0 (en geen NULL) meer opgeslagen — aantal blijft 1.
-=======
+
 ## [0.66.2] - 2026-11-04
 
 ### Changed
 
 - Master (prod 0.66.1) teruggemerged in staging.
->>>>>>> origin/staging
 
 ## [0.66.1] - 2026-11-04
 
