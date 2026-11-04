@@ -9,6 +9,17 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.68.2] - 2026-11-04
+
+### Changed
+
+- Ledenupdate-mail: bij een naam die op een e-mailadres lijkt een voornaam afleiden uit het
+  deel vóór @ (eerste deel, zonder cijfers, hoofdletter); lijkt dat geen naam (generiek woord,
+  initialen, te kort) dan «Hoi,». User-record blijft ongewijzigd; log toont alleen het
+  aanheftype (naam/afgeleid/zonder naam), nooit naam of adres.
+- Dry-run toont alle regels per lid (id, lidnummer, tier, postcode-zin, aanhef) plus
+  samenvatting en faalt pas aan het eind bij een blokkerende fout.
+
 ## [0.68.1] - 2026-11-04
 
 ### Added
