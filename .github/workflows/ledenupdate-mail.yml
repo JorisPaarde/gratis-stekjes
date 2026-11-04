@@ -1,0 +1,226 @@
+name: Ledenupdate-mail
+
+# Eenmalige ledenupdate via POST /deploy/ledenupdate-mail (noshell HTTPS).
+# mode=dry-run: alleen dry-run. mode=send: dry-run → ids-guard → per id send + sleep 180–240s.
+# Secrets: DEPLOY_TOKEN + STAGING_BASE_URL of PROD_BASE_URL (environment).
+# Output bevat geen e-mailadressen. Nooit Resend — server gebruikt MAIL_* SMTP.
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Omgeving (production pas na master-deploy)"
+        type: choice
+        options:
+          - staging
+          - production
+        required: true
+        default: staging
+      mode:
+        description: "dry-run (alleen tonen) of send (één-voor-één versturen)"
+        type: choice
+        options:
+          - dry-run
+          - send
+        required: true
+        default: dry-run
+
+permissions:
+  contents: read
+
+jobs:
+  ledenupdate-mail:
+    name: ledenupdate-mail (${{ inputs.target }}, ${{ inputs.mode }})
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.target }}
+    timeout-minutes: 420
+    steps:
+      - name: Draai gp:ledenupdate-mail op ${{ inputs.target }}
+        env:
+          TARGET: ${{ inputs.target }}
+          MODE: ${{ inputs.mode }}
+          STAGING_BASE: ${{ secrets.STAGING_BASE_URL }}
+          PROD_BASE: ${{ secrets.PROD_BASE_URL }}
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${DEPLOY_TOKEN:-}" ]; then
+            echo "::error::DEPLOY_TOKEN ontbreekt in environment ${TARGET}."
+            exit 1
+          fi
+          echo "::add-mask::${DEPLOY_TOKEN}"
+
+          if [ "${TARGET}" = "production" ]; then
+            BASE_URL="${PROD_BASE:-}"
+            if [ -z "${BASE_URL}" ]; then
+              echo "::error::PROD_BASE_URL ontbreekt (production pas na merge naar master + deploy)."
+              exit 1
+            fi
+          else
+            BASE_URL="${STAGING_BASE:-}"
+            if [ -z "${BASE_URL}" ]; then
+              echo "::error::STAGING_BASE_URL ontbreekt."
+              exit 1
+            fi
+          fi
+          BASE_URL="${BASE_URL%/}"
+
+          post_mode() {
+            local mode="$1"
+            local extra_json="${2:-}"
+            local body
+            if [ -n "${extra_json}" ]; then
+              body=$(printf '{"mode":"%s",%s}' "${mode}" "${extra_json}")
+            else
+              body=$(printf '{"mode":"%s"}' "${mode}")
+            fi
+            local outfile="/tmp/ledenupdate-${mode}.json"
+            local code
+            code=$(curl -sS -o "${outfile}" -w '%{http_code}' \
+              -X POST \
+              -H "Authorization: Bearer ${DEPLOY_TOKEN}" \
+              -H "Content-Type: application/json" \
+              -H "Accept: application/json" \
+              -d "${body}" \
+              "${BASE_URL}/deploy/ledenupdate-mail" || true)
+            echo "${code}" > "/tmp/ledenupdate-${mode}.http"
+            echo "${outfile}"
+          }
+
+          print_output() {
+            local file="$1"
+            python3 - <<PY
+          import json, sys
+          path = "${file}"
+          try:
+              data = json.load(open(path))
+          except Exception:
+              print("response: (geen JSON)")
+              sys.exit(0)
+          for k in ("ok", "error", "mode", "at"):
+              if k in data:
+                  print(f"{k}: {data[k]}")
+          out = data.get("output") or ""
+          if out:
+              print("--- artisan output ---")
+              print(out)
+          PY
+          }
+
+          echo "::notice::Dry-run op ${TARGET}…"
+          dry_file=$(post_mode dry-run)
+          dry_code=$(cat /tmp/ledenupdate-dry-run.http)
+          print_output "${dry_file}"
+          if [ "${dry_code}" != "200" ]; then
+            echo "::error::dry-run faalde (HTTP ${dry_code}). Workflow stopt."
+            exit 1
+          fi
+
+          if [ "${MODE}" = "dry-run" ]; then
+            echo "::notice::ledenupdate-mail dry-run OK op ${TARGET}."
+            exit 0
+          fi
+
+          echo "::warning::SEND-modus — mails gaan één-voor-één via SMTP op ${TARGET}."
+
+          ids_file=$(post_mode ids)
+          ids_code=$(cat /tmp/ledenupdate-ids.http)
+          print_output "${ids_file}"
+          if [ "${ids_code}" != "200" ]; then
+            echo "::error::ids faalde (HTTP ${ids_code})."
+            exit 1
+          fi
+
+          # Guard: ids uit dry-run «Lid-id's:» moeten gelijk zijn aan mode=ids.
+          python3 - <<'PY'
+          import json, re, sys
+
+          dry = json.load(open("/tmp/ledenupdate-dry-run.json"))
+          ids_payload = json.load(open("/tmp/ledenupdate-ids.json"))
+          dry_out = dry.get("output") or ""
+          ids_out = (ids_payload.get("output") or "").strip()
+
+          m = re.search(r"Lid-id's:\s*(.+)", dry_out)
+          if not m:
+              print("::error::Dry-run output mist «Lid-id's:»-regel.")
+              sys.exit(1)
+          dry_ids = m.group(1).strip()
+          if dry_ids == "-":
+              dry_ids = ""
+
+          def norm(s: str) -> list[str]:
+              s = s.strip()
+              if not s:
+                  return []
+              return [p.strip() for p in s.split(",") if p.strip()]
+
+          a = norm(dry_ids)
+          b = norm(ids_out)
+          if a != b:
+              print("::error::Kandidatenset wijkt af van dry-run. Abort.")
+              print(f"dry-run ({len(a)}): {', '.join(a)}")
+              print(f"ids     ({len(b)}): {', '.join(b)}")
+              sys.exit(1)
+          print(f"Guard OK: {len(a)} ids komen overeen met dry-run.")
+          open("/tmp/ledenupdate-id-list.txt", "w").write(",".join(a))
+          PY
+
+          IDS=$(cat /tmp/ledenupdate-id-list.txt)
+          if [ -z "${IDS}" ]; then
+            echo "::notice::Geen ontvangers — niets te versturen."
+            exit 0
+          fi
+
+          IFS=',' read -r -a ID_ARR <<< "${IDS}"
+          TOTAL=${#ID_ARR[@]}
+          echo "::notice::Versturen naar ${TOTAL} leden (pauze 180–240s tussen mails)…"
+
+          i=0
+          for raw in "${ID_ARR[@]}"; do
+            id=$(echo "${raw}" | tr -d '[:space:]')
+            [ -z "${id}" ] && continue
+            i=$((i + 1))
+            ts=$(TZ=Europe/Amsterdam date '+%Y-%m-%d %H:%M:%S %Z')
+            echo "─── [${i}/${TOTAL}] id=${id} @ ${ts} ───"
+
+            send_file=$(post_mode send "\"id\":${id}")
+            # post_mode always writes ledenupdate-send.* — rename per attempt
+            send_code=$(cat /tmp/ledenupdate-send.http)
+            cp /tmp/ledenupdate-send.json "/tmp/ledenupdate-send-${id}.json" || true
+            print_output "/tmp/ledenupdate-send-${id}.json"
+
+            if [ "${send_code}" != "200" ]; then
+              echo "::error::Send id=${id} faalde (HTTP ${send_code}) @ ${ts}. Workflow stopt."
+              exit 1
+            fi
+
+            # Artisan «al verstuurd» of «verstuurd» telt als succes.
+            if ! python3 - <<PY
+          import json, sys
+          data = json.load(open("/tmp/ledenupdate-send-${id}.json"))
+          if not data.get("ok"):
+              sys.exit(1)
+          out = (data.get("output") or "").lower()
+          if "smtp" in out and "fout" in out:
+              sys.exit(1)
+          sys.exit(0)
+          PY
+            then
+              echo "::error::Send id=${id} niet ok @ ${ts}. Workflow stopt."
+              exit 1
+            fi
+
+            echo "result id=${id}: OK @ ${ts}"
+
+            if [ "${i}" -lt "${TOTAL}" ]; then
+              sleep_s=$(python3 - <<'PY'
+          import random
+          print(random.randint(180, 240))
+          PY
+              )
+              echo "Pauze ${sleep_s}s vóór volgende…"
+              sleep "${sleep_s}"
+            fi
+          done
+
+          echo "::notice::ledenupdate-mail send voltooid op ${TARGET} (${TOTAL} ids)."

@@ -9,6 +9,56 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.69.0] - 2026-11-04
+
+### Added
+
+- Veertig nieuwe stektip-pagina’s voor voedselbos- en inheemse planten (o.a. sleedoorn,
+  daslook, meidoorn, aardpeer, knoopkruid, gewone margriet, vingerhoedskruid met giftig-
+  waarschuwing). Tags `voedselbos` en `inheems` in plantzoeker/catalogus; filter op
+  `/stektips` en secties op `/vermeerderen`. Elke nieuwe soortfoto met Wikimedia-
+  licentie, sha256-allowlist en `?h=`-cachebuster (voortbordurend op 0.66.5).
+
+## [0.68.2] - 2026-11-04
+
+### Changed
+
+- Ledenupdate-mail: bij een naam die op een e-mailadres lijkt een voornaam afleiden uit het
+  deel vóór @ (eerste deel, zonder cijfers, hoofdletter); lijkt dat geen naam (generiek woord,
+  initialen, te kort) dan «Hoi,». User-record blijft ongewijzigd; log toont alleen het
+  aanheftype (naam/afgeleid/zonder naam), nooit naam of adres.
+- Dry-run toont alle regels per lid (id, lidnummer, tier, postcode-zin, aanhef) plus
+  samenvatting en faalt pas aan het eind bij een blokkerende fout.
+
+## [0.68.1] - 2026-11-04
+
+### Added
+
+- Eenmalige ledenupdate-mail via site-SMTP (`MAIL_*`, from info@gratisplanten.nl /
+  «Gratis planten»; nooit Resend): artisan `gp:ledenupdate-mail`
+  (`--dry-run` standaard, `--ids`, `--send --id=N`), tabel `ledenupdate_mails`
+  (idempotent per user), `POST /deploy/ledenupdate-mail` (mode dry-run|ids|send)
+  + workflow `ledenupdate-mail.yml` (target staging|production, mode dry-run|send;
+  send: dry-run → ids-guard → één-voor-één met pauze 180–240s). Ontvangers:
+  active+verified `User::members()` minus admins/stats-lezer. Output zonder
+  e-mail- of straatadressen; postcode-alinea alleen zonder geldige postcode.
+
+## [0.68.0] - 2026-11-04
+
+### Added
+
+- Na login: dismissible postcode-herinneringsbanner voor leden zonder geldige
+  postcode («Vul je postcode in, dan zie je wat er bij jou in de buurt is» →
+  `/account/profiel`). Wegklikken geldt alleen voor de sessie; bij volgende
+  login opnieuw tot er een geldige postcode is.
+- `User::hasValidPostcode()` / `postcodeValidityReason()` (0.65.0-regel +
+  plaatslabel/geocode) als centrale check voor later buurtzoeken.
+- Artisan `gp:postcode-herinnering-lijst` (lees-only, stuurt geen mail) +
+  `POST /deploy/postcode-herinnering-lijst` + workflow
+  `postcode-herinnering-lijst.yml` (`target` staging|production, geen apply). Met `--alle` (standaard via
+  endpoint/workflow) ook overzicht van alle leden: postcode ja/nee, lidnummer,
+  oprichters-tier (10/50/100/geen), aantallen en id's met lidnummer > 100.
+
 ## [0.67.0] - 2026-11-04
 
 ### Changed
@@ -17,6 +67,46 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Bestaande NULL-waarden worden via migratie op 1 gezet; kolom daarna `NOT NULL DEFAULT 1` (MySQL/MariaDB-safe).
 - Aantal alleen tonen als het hoger is dan 1 (`3 stuks`): zoeklijst/kaartpopup (zoals eerder), aanbodkaart op home, en detail/plantlijst. Bij 1 niets.
 - Mijn aanbod −/+: bij 0 blijft het aanbod offline; er wordt geen 0 (en geen NULL) meer opgeslagen — aantal blijft 1.
+
+## [0.66.5] - 2026-11-04
+
+### Fixed
+
+- Soortfoto’s: regressiebescherming tegen verkeerde Wikimedia-treffers (zoals de
+  Cassis-schelp bij Zwarte bes in 0.25.0). Elke goedgekeurde soortfoto heeft nu een
+  `sha256`-allowlist; CI faalt bij ontbrekend/dubbel bestand, mismatch key/slug/pad,
+  of stille bytevervanging. Soort-URL’s krijgen `?h=`-cachebuster; de service worker
+  haalt `/assets/images/soorten/` en `/assets/og/` network-first. Het fetch-script
+  weigert schelp-/shell-treffers.
+
+### Notes
+
+- Op prod toont `/stektips/zwarte-bes` al Ribes nigrum (Jerzy Opioła); de schelp was
+  niet meer reproduceerbaar op site/OG/staging. Deze release voorkomt terugkeer.
+
+## [0.66.4] - 2026-11-04
+
+### Added
+
+- Eenmalige Struikroven-agenda-import: vastgelegde JSON
+  `data/imports/struikroven-agenda-2026-11-04.json` (komende acties vanaf 4 nov 2026),
+  artisan `gp:import-struikroven-agenda` (dry-run zonder `--apply`; idempotent op bron-URL + datum;
+  Struikroven-vlag `organisatie_slug=struikroven`), `POST /deploy/import-struikroven-agenda` +
+  workflow `import-struikroven-agenda.yml` (`target` staging|production, `apply` default false).
+- Evenementen: optionele `lat`/`lon` (geocode van plaats/adres bij import) voor kaart/JSON-LD.
+
+## [0.66.3] - 2026-11-04
+
+### Fixed
+
+- Locatie-lookup (centraal in `LocationGeocoder` / `PdokGeocoder`): kale NL-PC4
+  (2033/2037→Haarlem, 5688→Oirschot) krijgt betrouwbaar een woonplaats via PDOK
+  `fq=type:postcode` (meest voorkomende woonplaats bij meerdere treffers; incomplete
+  cache zonder woonplaats wordt genegeerd). BE-postcode via gestructureerde Nominatim
+  (`postalcode`+`country`, nette User-Agent; gemeente/stad vóór deelgemeente —
+  3370→Boutersem). NL-plaatsnaam zonder postcode krijgt PC4 via PDOK
+  (Spierdijk→1641). `gp:normaliseer-locaties` gebruikt forward lookup voor plaatsnamen
+  en pauzeert standaard 1 s (Nominatim ≤1 req/s). Twijfellijst blijft id · label · land · reden.
 
 ## [0.66.2] - 2026-11-04
 

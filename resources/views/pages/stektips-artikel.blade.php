@@ -36,6 +36,10 @@
         <form class="stektips-zoek" method="get" action="{{ route('stektips.index') }}" role="search">
           @include('partials.plant-zoeker', ['zoekId' => 'vermeerderen-q', 'zoekValue' => ''])
         </form>
+        <p class="stektips-tag-filters" aria-label="Filter op type">
+          <a class="badge badge--voedselbos" href="{{ route('stektips.index', ['tag' => 'voedselbos']) }}">Voedselbos</a>
+          <a class="badge badge--inheems" href="{{ route('stektips.index', ['tag' => 'inheems']) }}">Inheems</a>
+        </p>
       @endif
       @if(!empty($artikel['samenvatting']))
         <p class="section-intro">{{ $artikel['samenvatting'] }}</p>

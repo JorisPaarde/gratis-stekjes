@@ -1,0 +1,30 @@
+{
+    "slug": "bosbes",
+    "naam": "Bosbes",
+    "latijn": "Vaccinium myrtillus",
+    "categorie": "eetbaar",
+    "tags": [
+        "voedselbos",
+        "inheems"
+    ],
+    "waarom": "Zure bosvrucht; stek of scheuren op zure grond",
+    "methode": "Halfrijpe stek of scheuren",
+    "wanneer": "Stek jul-aug; scheuren mrt-apr",
+    "welk_hout": "Halfrijpe scheut, of pol met wortel",
+    "lengte_snit": "Stek 8-12 cm; onderste blad weg",
+    "water_grond": "Zure, luchtige grond (geen kalk); stek vochtig houden",
+    "licht": "Halfschaduw tot zon",
+    "water": "Vochtig, nooit uitdrogen",
+    "hulpmiddel": "Eventueel stekpoeder of wilgenwater",
+    "kans": "Gemiddeld",
+    "klaar": "Als nieuwe groei zichtbaar is",
+    "verwanten": [
+        "blauwe-bes",
+        "bosaardbei"
+    ],
+    "waarschuwing": "Heeft zure grond nodig (pH laag). Op kalkrijke klei lukt het slecht.",
+    "ervaringen": "",
+    "bronnen": "RHS — Vaccinium — https://www.rhs.org.uk/plants/vaccinium",
+    "kort": "Halfrijpe stek of scheuren op zure grond",
+    "seo_werkwoord": "stekken"
+}

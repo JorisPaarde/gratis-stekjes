@@ -19,6 +19,8 @@ class Evenement extends Model
         'start_datum',
         'eind_datum',
         'plaats',
+        'lat',
+        'lon',
         'provincie',
         'organisator',
         'organisatie_slug',
@@ -35,6 +37,8 @@ class Evenement extends Model
             'eind_datum' => 'date',
             'gecontroleerd_op' => 'date',
             'visible' => 'boolean',
+            'lat' => 'float',
+            'lon' => 'float',
         ];
     }
 

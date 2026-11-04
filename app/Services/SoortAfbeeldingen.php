@@ -43,7 +43,7 @@ final class SoortAfbeeldingen
             if (is_file($path)) {
                 return [
                     'slug' => $slug,
-                    'url' => asset((string) $row['bestand']),
+                    'url' => self::urlWithContentHash((string) $row['bestand'], (string) ($row['sha256'] ?? '')),
                     'alt' => (string) ($row['alt'] ?? ($naam !== '' ? $naam : $slug)),
                     'auteur' => (string) ($row['auteur'] ?? ''),
                     'licentie' => (string) ($row['licentie'] ?? ''),
@@ -116,5 +116,20 @@ final class SoortAfbeeldingen
         }
 
         return $n;
+    }
+
+    /**
+     * Cache-busting query zodat SW/browser/CDN een stille vervanging van het
+     * JPEG (zelfde pad, andere bytes — zoals de Cassis-schelp → Ribes) meteen tonen.
+     */
+    private static function urlWithContentHash(string $bestand, string $sha256): string
+    {
+        $url = asset($bestand);
+        $hash = strtolower(trim($sha256));
+        if ($hash === '' || ! preg_match('/^[a-f0-9]{12,64}$/', $hash)) {
+            return $url;
+        }
+
+        return $url.(str_contains($url, '?') ? '&' : '?').'h='.substr($hash, 0, 12);
     }
 }

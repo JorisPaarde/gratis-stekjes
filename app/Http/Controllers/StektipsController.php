@@ -29,7 +29,11 @@ class StektipsController extends Controller
             'maand' => trim((string) $request->query('maand', '')),
             'locatie' => trim((string) $request->query('locatie', '')),
             'soort' => trim((string) $request->query('soort', '')),
+            'tag' => mb_strtolower(trim((string) $request->query('tag', '')), 'UTF-8'),
         ];
+        if ($filters['tag'] !== '' && ! in_array($filters['tag'], ['voedselbos', 'inheems'], true)) {
+            $filters['tag'] = '';
+        }
 
         $artikelen = $kennisbank->filter([
             'q' => $filters['q'],
@@ -50,14 +54,23 @@ class StektipsController extends Controller
         $soorten = $this->filterSoorten($listedSoorten, $filters, $catalogSlugs);
 
         // Exact één plant → meteen naar die pagina (naam/synoniem/tikfout).
-        // Geen redirect als de enige plant alleen via vrije tekst matcht terwijl er artikelen zijn
-        // (bijv. «wilgenwater» raakt Wilg in de tekst én het artikel).
-        if ($filters['q'] !== '' && count($soorten) === 1) {
-            $only = $soorten[0];
-            $slug = (string) ($only['slug'] ?? '');
-            $viaCatalogus = $slug !== '' && in_array($slug, $catalogSlugs, true);
-            if ($slug !== '' && ($viaCatalogus || count($artikelen) === 0)) {
-                return redirect()->route('stektips.show', ['slug' => $slug]);
+        // Bij meerdere treffers: als precies één soort exacte Nederlandse naam heeft
+        // (bijv. «Munt» naast «Watermunt»), dan die. Geen redirect als de enige plant
+        // alleen via vrije tekst matcht terwijl er artikelen zijn (bijv. «wilgenwater»).
+        if ($filters['q'] !== '') {
+            $qNorm = mb_strtolower($filters['q'], 'UTF-8');
+            $exactNaam = array_values(array_filter(
+                $soorten,
+                static fn (array $s): bool => mb_strtolower((string) ($s['naam'] ?? ''), 'UTF-8') === $qNorm
+            ));
+            $redirectKandidaten = count($exactNaam) === 1 ? $exactNaam : (count($soorten) === 1 ? $soorten : []);
+            if (count($redirectKandidaten) === 1) {
+                $only = $redirectKandidaten[0];
+                $slug = (string) ($only['slug'] ?? '');
+                $viaCatalogus = $slug !== '' && in_array($slug, $catalogSlugs, true);
+                if ($slug !== '' && ($viaCatalogus || count($artikelen) === 0)) {
+                    return redirect()->route('stektips.show', ['slug' => $slug]);
+                }
             }
         }
 
@@ -92,7 +105,11 @@ class StektipsController extends Controller
                     ((string) ($soort['kans'] ?? '')).
                     (! empty($soort['categorie']) ? ' · '.$soort['categorie'] : '')
                 ),
-                'badges' => ['Soort'],
+                'badges' => array_values(array_filter([
+                    'Soort',
+                    in_array('voedselbos', $plantensoorten->tagsForSlug($slug), true) ? 'Voedselbos' : null,
+                    in_array('inheems', $plantensoorten->tagsForSlug($slug), true) ? 'Inheems' : null,
+                ])),
                 'afbeelding' => $afbeeldingen->forSlug($slug, (string) $soort['naam']),
             ];
         }
@@ -339,7 +356,7 @@ class StektipsController extends Controller
         return $out;
     }
 
-    public function show(string $slug, Stektips $stektips, Kennisbank $kennisbank, SoortAfbeeldingen $afbeeldingen): View|Response
+    public function show(string $slug, Stektips $stektips, Kennisbank $kennisbank, SoortAfbeeldingen $afbeeldingen, Plantensoorten $plantensoorten): View|Response
     {
         if ($slug === 'artikel') {
             abort(404);
@@ -386,6 +403,7 @@ class StektipsController extends Controller
             'soort' => $soort,
             'pageHeading' => $heading,
             'afbeelding' => $afbeeldingen->forSlug($slug, $naam),
+            'soortTags' => $plantensoorten->tagsForSlug($slug),
             'verwanten' => $stektips->related($soort),
             'gerelateerdeArtikelen' => $kennisbank->articlesForSoort($slug),
             'aanbodUrl' => $aanbodUrl,
@@ -470,7 +488,7 @@ class StektipsController extends Controller
 
     /**
      * @param  list<array<string, mixed>>  $soorten
-     * @param  array{q: string, categorie: string, seizoen: string, maand: string, locatie: string, soort: string}  $filters
+     * @param  array{q: string, categorie: string, seizoen: string, maand: string, locatie: string, soort: string, tag?: string}  $filters
      * @param  list<string>  $catalogSlugs  Slugs uit Plantensoorten (naam/synoniem/Latijn/tikfout)
      * @return list<array<string, mixed>>
      */
@@ -483,6 +501,7 @@ class StektipsController extends Controller
             return [];
         }
         $stektips = app(Stektips::class);
+        $plantensoorten = app(Plantensoorten::class);
 
         $q = mb_strtolower($filters['q'], 'UTF-8');
         $catalogLookup = array_fill_keys($catalogSlugs, true);
@@ -490,11 +509,16 @@ class StektipsController extends Controller
         $maand = (int) $filters['maand'];
         $locatie = $filters['locatie'];
         $soortSlug = $filters['soort'];
+        $tag = (string) ($filters['tag'] ?? '');
+        $tagSlugs = $tag !== '' ? array_fill_keys($plantensoorten->slugsWithTag($tag), true) : [];
 
         $out = [];
         foreach ($soorten as $soort) {
             $slug = (string) ($soort['slug'] ?? '');
             if ($soortSlug !== '' && $slug !== $soortSlug) {
+                continue;
+            }
+            if ($tag !== '' && ! isset($tagSlugs[$slug])) {
                 continue;
             }
             if ($methode !== '' && ! in_array($methode, $stektips->methodes($soort), true)) {
