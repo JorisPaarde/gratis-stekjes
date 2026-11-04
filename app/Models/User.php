@@ -8,7 +8,9 @@ use App\Casts\SafeEncrypted;
 use App\Models\Concerns\HasSafeEncryptedAttributes;
 use App\Notifications\ResetPasswordDutch;
 use App\Notifications\VerifyEmailDutch;
+use App\Support\Country;
 use App\Support\Naam;
+use App\Support\PostalCode;
 use App\Support\SafeMail;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -171,6 +173,46 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->lat !== null
             && $this->lon !== null
             && trim((string) $this->locatie_label) !== '';
+    }
+
+    /**
+     * Geldige postcode: zelfde 0.65.0-regel (NL 4 cijfers + optioneel 2 letters, BE 4 cijfers)
+     * én een plaatslabel met geocode. Centraal zodat lookup-search dit later meeneemt.
+     */
+    public function hasValidPostcode(): bool
+    {
+        return $this->postcodeValidityReason() === null;
+    }
+
+    /**
+     * Waarom de postcode (nog) niet geldig is voor buurtzoeken.
+     *
+     * @return null|'leeg'|'ongeldig_formaat'|'geen_plaats'
+     */
+    public function postcodeValidityReason(): ?string
+    {
+        $country = Country::normalize((string) ($this->country ?? Country::NL));
+        $gebied = trim((string) ($this->postcode_gebied ?? ''));
+        $label = trim((string) ($this->locatie_label ?? ''));
+
+        $kandidaat = $gebied;
+        if ($kandidaat === '' && $label !== '' && PostalCode::looksLikePostcode($label, $country)) {
+            $kandidaat = $label;
+        }
+
+        if ($kandidaat === '') {
+            return 'leeg';
+        }
+
+        if (PostalCode::validate($kandidaat, $country) !== true) {
+            return 'ongeldig_formaat';
+        }
+
+        if (! $this->hasLocation()) {
+            return 'geen_plaats';
+        }
+
+        return null;
     }
 
     public function hasPendingEmail(): bool

@@ -11,6 +11,7 @@ use App\Http\Controllers\Account\ErvaringController as AccountErvaringController
 use App\Http\Controllers\Account\ExportController;
 use App\Http\Controllers\Account\InboxController;
 use App\Http\Controllers\Account\PasswordController;
+use App\Http\Controllers\Account\PostcodeHerinneringController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\StartConversationController;
 use App\Http\Controllers\Account\VerenigingController;
@@ -43,6 +44,7 @@ use App\Http\Controllers\DeployController;
 use App\Http\Controllers\DeployImportStruikrovenAgendaController;
 use App\Http\Controllers\DeployNormaliseerLocatiesController;
 use App\Http\Controllers\DeployImportController;
+use App\Http\Controllers\DeployPostcodeHerinneringController;
 use App\Http\Controllers\DeployStatsLezerController;
 use App\Http\Controllers\ErvaringController;
 use App\Http\Controllers\FeedbackController;
@@ -149,6 +151,9 @@ Route::post('/deploy/stats-lezer', DeployStatsLezerController::class)
 Route::post('/deploy/normaliseer-locaties', DeployNormaliseerLocatiesController::class)
     ->middleware('throttle:10,1')
     ->name('deploy.normaliseer-locaties');
+Route::post('/deploy/postcode-herinnering-lijst', DeployPostcodeHerinneringController::class)
+    ->middleware('throttle:10,1')
+    ->name('deploy.postcode-herinnering-lijst');
 Route::post('/deploy/import-struikroven-agenda', DeployImportStruikrovenAgendaController::class)
     ->middleware('throttle:10,1')
     ->name('deploy.import-struikroven-agenda');
@@ -206,6 +211,8 @@ Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(functio
 
     Route::get('/account/profiel', [ProfileController::class, 'edit'])->name('account.profiel');
     Route::post('/account/profiel', [ProfileController::class, 'update']);
+    Route::post('/account/postcode-herinnering/weg', [PostcodeHerinneringController::class, 'dismiss'])
+        ->name('account.postcode-herinnering.weg');
     Route::get('/account/adres-zoeken', [ProfileController::class, 'adresZoeken'])
         ->middleware('throttle:30,1')
         ->name('account.adres-zoeken');

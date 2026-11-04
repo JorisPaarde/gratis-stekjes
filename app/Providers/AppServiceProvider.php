@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Http\Controllers\Account\PostcodeHerinneringController;
 use App\Logging\MaskPersonalDataProcessor;
 use App\Models\User;
 use App\Services\MessagingService;
@@ -87,6 +88,25 @@ class AppServiceProvider extends ServiceProvider
                 $stap = null;
             }
             $view->with('volgendeStap', $stap);
+        });
+
+        View::composer('partials.postcode-herinnering', function ($view): void {
+            $toon = false;
+            try {
+                $user = auth()->user();
+                if (
+                    $user instanceof User
+                    && ! $user->isStatsViewer()
+                    && ! $user->hasValidPostcode()
+                    && ! session(PostcodeHerinneringController::SESSION_KEY)
+                    && ! request()->routeIs('account.profiel')
+                ) {
+                    $toon = true;
+                }
+            } catch (Throwable) {
+                $toon = false;
+            }
+            $view->with('toonPostcodeHerinnering', $toon);
         });
 
         RateLimiter::for('plantensoorten-zoek', function (Request $request) {

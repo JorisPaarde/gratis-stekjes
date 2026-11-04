@@ -106,10 +106,12 @@ test('naam mag geen e-mailadres zijn; bestaande e-mailnamen openbaar als Lid', f
     expect($json)->not->toContain('ada@example.com')->and($json)->toContain('"voornaam":"Lid"');
 });
 
-test('volgende stap bovenaan accountpagina: postcode, eerste stekje, daarna badge; ongelezen eerst', function () {
-    $zonderPlek = adresUser(['locatie_label' => '', 'lat' => null, 'lon' => null]);
+test('volgende stap bovenaan accountpagina: eerste stekje, daarna badge; ongelezen eerst', function () {
+    // Postcode-herinnering zit in aparte banner (zie PostcodeHerinneringTest).
+    $zonderPlek = adresUser(['locatie_label' => '', 'postcode_gebied' => null, 'lat' => null, 'lon' => null]);
     $this->actingAs($zonderPlek)->get(route('account.index'))->assertOk()
-        ->assertSee('class="volgende-stap"', false)->assertSee('Vul je postcode in', false);
+        ->assertSee('class="postcode-herinnering"', false)
+        ->assertSee('Zet je eerste stekje online', false);
 
     $u = adresUser(['email' => 'stap@example.com']);
     $this->actingAs($u)->get(route('account.index'))->assertOk()->assertSee('Zet je eerste stekje online', false);
