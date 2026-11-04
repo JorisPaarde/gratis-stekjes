@@ -106,14 +106,23 @@ class MeedoenController extends Controller
         $voor = array_key_exists((string) $request->query('voor'), self::POSTERS) ? (string) $request->query('voor') : 'algemeen';
         $p = self::POSTERS[$voor];
 
+        // Printbare posters: QR en leesbaar adres altijd naar productie,
+        // nooit naar staging/local APP_URL (anders scannen bezoekers de verkeerde site).
+        $path = (string) (parse_url(route($p['doel']), PHP_URL_PATH) ?: '/');
+        if ($path !== '/' && str_ends_with($path, '/')) {
+            $path = rtrim($path, '/');
+        }
+        $host = (string) config('site.canonical_host', 'gratisplanten.nl');
+        $prodUrl = 'https://'.$host.($path === '/' ? '' : $path);
+
         return view('pages.poster', [
             'title' => 'Poster: '.$p['kop'],
             'metaDescription' => 'Printbare poster met QR-code voor '.config('site.name').'.',
             'canonical' => route('help-mee'),
             'poster' => $p,
             'voor' => $voor,
-            'url' => route($p['doel']).'?bron=poster-'.$voor,
-            'kortUrl' => preg_replace('#^https?://#', '', route($p['doel'])),
+            'url' => $prodUrl.'?bron=poster-'.$voor,
+            'kortUrl' => $host.($path === '/' ? '' : $path),
         ]);
     }
 

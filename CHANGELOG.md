@@ -15,11 +15,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - Samenwerking Struikroven: landingspagina `/struikroven` met knoppen zoeken/aanbieden, korte uitleg en komende acties uit `/beheer/agenda` (organisatie-koppeling).
 - Vinkje «Ik ben Struikrover» bij aanmelden (voorgevinkt via `/struikroven`); telling op beheer-overzicht en statistieken.
-- Poster `/poster?voor=struikroven` (A4, QR naar `/struikroven?bron=poster-struikroven`).
+- Poster `/poster?voor=struikroven` (A4, QR naar `https://gratisplanten.nl/struikroven?bron=poster-struikroven`).
 
 ### Changed
 
 - Organisatiepagina Struikroven: websitelinks naar `https://struikroven.nu`.
+- Printbare posters (`/poster?voor=…`): QR en leesbaar adres altijd naar productie (`canonical_host`), niet naar lokale/staging `APP_URL`.
 
 ## [0.63.0] - 2026-11-04
 
