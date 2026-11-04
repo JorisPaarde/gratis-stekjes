@@ -31,7 +31,7 @@ test('elke soortpagina laadt met 200 en SEO-titel', function () {
 
 test('nieuwe sier- en kamerplanten staan in overzicht en sitemap', function () {
     $nieuwe = [
-        'monstera', 'pothos', 'scindapsus', 'sanseveria', 'graslelie', 'pilea',
+        'monstera', 'pothos', 'scindapsus', 'sansevieria', 'graslelie', 'pilea',
         'echeveria', 'jadeplant', 'aloe-vera', 'begonia', 'tradescantia', 'philodendron',
         'zamioculcas', 'kerstcactus', 'pelargonium', 'fuchsia', 'hortensia', 'lavendel',
         'lepelplant', 'rubberplant', 'peperomia', 'calathea', 'sedum', 'huislook',
