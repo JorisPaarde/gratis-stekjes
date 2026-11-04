@@ -30,7 +30,10 @@ final class StadAanbod
 
         $rows = Aanbod::query()
             ->publiclyListed()
-            ->with(['user' => fn ($q) => $q->members()->where('active', true)->whereNotNull('email_verified_at')])
+            ->with([
+                'user' => fn ($q) => $q->members()->where('active', true)->whereNotNull('email_verified_at'),
+                'fotos',
+            ])
             ->whereHas('user', function ($q) {
                 $q->members()
                     ->where('active', true)
@@ -60,6 +63,24 @@ final class StadAanbod
         usort($items, static fn ($a, $b) => ($a['afstand_km'] ?? 999) <=> ($b['afstand_km'] ?? 999));
 
         return $items;
+    }
+
+    /**
+     * Aantal actieve aanbiedingen mét foto binnen de stadsstraal
+     * (zelfde locatiefilter als {@see aanbodWithin()}).
+     *
+     * @param  array{lat: float, lng: float, straal_km: float}  $stad
+     */
+    public function countWithFotoWithin(array $stad): int
+    {
+        $count = 0;
+        foreach ($this->aanbodWithin($stad) as $item) {
+            if (($item['fotos'] ?? []) !== []) {
+                $count++;
+            }
+        }
+
+        return $count;
     }
 
     /**

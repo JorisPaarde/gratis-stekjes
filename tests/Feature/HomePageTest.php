@@ -90,6 +90,7 @@ test('zonder deelplekken en aanbod verdwijnt het blok (geen lege staat)', functi
 });
 
 test('blok toont maximaal zes nieuwste aanbiedingen', function () {
+    // Drempel default 8 mét foto: genoeg items-met-foto om «Net aangeboden» te tonen.
     $user = User::factory()->create([
         'name' => 'Sam',
         'locatie_label' => 'Haarlem',
@@ -98,21 +99,34 @@ test('blok toont maximaal zes nieuwste aanbiedingen', function () {
         'active' => true,
         'email_verified_at' => now(),
     ]);
-    foreach (range(1, 8) as $i) {
-        Aanbod::query()->create([
+    foreach (range(1, 10) as $i) {
+        $a = Aanbod::query()->create([
             'user_id' => $user->id,
             'type' => 'uitdelen',
             'tekst' => 'Stekje nummer '.$i,
             'visible' => true,
             'expires_at' => now()->addDays(30),
-        ])->forceFill(['created_at' => now()->subMinutes(10 - $i)])->save();
+        ]);
+        $a->forceFill(['created_at' => now()->subMinutes(20 - $i)])->save();
+        \App\Models\AanbodFoto::query()->create([
+            'aanbod_id' => $a->id,
+            'disk' => 'aanbod_fotos',
+            'path' => 'test/stekje-'.$i.'.jpg',
+            'thumb_path' => 'test/stekje-'.$i.'-t.jpg',
+            'mime' => 'image/jpeg',
+            'width' => 400,
+            'height' => 300,
+            'bytes' => 1200,
+            'sort_order' => 0,
+            'alt' => '',
+        ]);
     }
 
     $html = $this->get('/')->assertOk()->getContent();
 
     expect($html)->toContain('Net aangeboden')
         ->and(substr_count($html, 'class="aanbod-kaart"'))->toBe(6)
-        ->and($html)->toContain('Stekje nummer 8')
+        ->and($html)->toContain('Stekje nummer 10')
         ->and($html)->not->toContain('Stekje nummer 1<')
         ->and($html)->toContain(route('aanbod', ['q' => 'Haarlem']));
 });
