@@ -33,6 +33,7 @@ class AanbodFactory extends Factory
             'user_id' => User::factory(),
             'type' => fake()->randomElement(['uitdelen', 'ophalen']),
             'tekst' => fake()->randomElement($planten).' — '.fake()->sentence(6),
+            'aantal' => 1,
             'visible' => true,
             'expires_at' => now()->addDays(45),
             'expiry_reminder_sent_at' => null,

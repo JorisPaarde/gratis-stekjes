@@ -11,7 +11,7 @@
       @foreach($blok['aanbod'] as $item)
         <li class="zoek-item">
           <h3>{{ $item['voornaam'] ?: 'Iemand' }} · {{ $item['type'] === 'ophalen' ? 'zoekt' : 'deelt' }}</h3>
-          <p>{{ $item['tekst'] }}</p>
+          <p>{{ $item['tekst'] }} @include('partials.aanbod-aantal', ['aantal' => $item['aantal'] ?? 1])</p>
           <p class="muted">{{ $item['locatie_label'] }}</p>
           @auth
             <p><a href="{{ route('account.bericht-starten', ['aanbod_id' => $item['id'], 'user_id' => $item['user_id']]) }}">Bericht sturen</a></p>

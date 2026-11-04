@@ -59,6 +59,15 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   endpoint/workflow) ook overzicht van alle leden: postcode ja/nee, lidnummer,
   oprichters-tier (10/50/100/geen), aantallen en id's met lidnummer > 100.
 
+## [0.67.0] - 2026-11-04
+
+### Changed
+
+- Aantal bij aanbod is verplicht: geheel getal, standaard 1, minimaal 1, maximaal 99 (niet meer optioneel/leeg).
+- Bestaande NULL-waarden worden via migratie op 1 gezet; kolom daarna `NOT NULL DEFAULT 1` (MySQL/MariaDB-safe).
+- Aantal alleen tonen als het hoger is dan 1 (`3 stuks`): zoeklijst/kaartpopup (zoals eerder), aanbodkaart op home, en detail/plantlijst. Bij 1 niets.
+- Mijn aanbod −/+: bij 0 blijft het aanbod offline; er wordt geen 0 (en geen NULL) meer opgeslagen — aantal blijft 1.
+
 ## [0.66.5] - 2026-11-04
 
 ### Fixed

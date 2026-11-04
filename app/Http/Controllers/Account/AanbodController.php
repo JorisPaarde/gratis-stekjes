@@ -247,9 +247,10 @@ class AanbodController extends Controller
         $delta = (int) $request->input('delta');
         abort_unless(in_array($delta, [-1, 1], true), 422);
 
-        $nieuw = max(0, min(Aanbod::AANTAL_MAX, ($aanbod->aantal ?? 1) + $delta));
+        $nieuw = max(0, min(Aanbod::AANTAL_MAX, (int) ($aanbod->aantal ?? 1) + $delta));
         if ($nieuw === 0) {
-            $aanbod->update(['aantal' => null, 'visible' => false]);
+            // Kolom blijft ≥1 (NOT NULL); offline via visible, geen 0 opslaan.
+            $aanbod->update(['aantal' => 1, 'visible' => false]);
 
             return redirect()->to(route('account.aanbod').'#aanbod-'.$aanbod->id)
                 ->with('status', 'Alles weggegeven? Top! Je aanbod staat nu offline. Met «Weer online» zet je het terug.');
@@ -304,13 +305,18 @@ class AanbodController extends Controller
         $maxBytes = (int) config('stekjes.aanbod_fotos.max_bytes', 8 * 1024 * 1024);
         $maxKb = (int) ceil($maxBytes / 1024);
 
+        // Standaard 1: leeg of ontbrekend veld wordt 1 (niet meer nullable).
+        if (! $request->filled('aantal')) {
+            $request->merge(['aantal' => 1]);
+        }
+
         $validator = validator(
             $request->all(),
             [
                 'type' => ['required', 'in:uitdelen,ophalen'],
                 'tekst' => ['nullable', 'string', 'max:2000', new GeenInvasieveSoort],
                 'plantensoort_id' => ['nullable', 'integer', 'min:1'],
-                'aantal' => ['nullable', 'integer', 'min:1', 'max:'.Aanbod::AANTAL_MAX],
+                'aantal' => ['required', 'integer', 'min:1', 'max:'.Aanbod::AANTAL_MAX],
                 'gratis_akkoord' => ['accepted'],
                 'fotos' => ['nullable', 'array', 'max:'.$maxCount],
                 'fotos.*' => ['file', 'max:'.$maxKb],
@@ -319,6 +325,7 @@ class AanbodController extends Controller
                 'type.required' => 'Kies uitdelen of ophalen.',
                 'gratis_akkoord.accepted' => 'Je moet akkoord gaan: alleen gratis, geen verkoop.',
                 'plantensoort_id.integer' => 'Ongeldige plantensoort.',
+                'aantal.required' => 'Vul een aantal in (minimaal 1).',
                 'aantal.min' => 'Aantal moet minimaal 1 zijn.',
                 'aantal.max' => 'Aantal mag maximaal '.Aanbod::AANTAL_MAX.' zijn.',
                 'aantal.integer' => 'Vul een heel getal in bij aantal.',
@@ -365,7 +372,7 @@ class AanbodController extends Controller
         return [
             'type' => $data['type'],
             'tekst' => $tekst,
-            'aantal' => isset($data['aantal']) && $data['aantal'] !== '' ? (int) $data['aantal'] : null,
+            'aantal' => (int) $data['aantal'],
             'plantensoort_id' => $plantensoortId,
             'gratis_akkoord' => $data['gratis_akkoord'],
         ];

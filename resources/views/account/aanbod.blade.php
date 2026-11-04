@@ -109,8 +109,8 @@
                 </label>
               @endif
 
-              <label class="aanbod-aantal-veld">Aantal <span class="hint">(optioneel)</span>
-                <input type="number" name="aantal" min="1" max="{{ \App\Models\Aanbod::AANTAL_MAX }}" inputmode="numeric" value="{{ old('aantal', $row->aantal) }}" placeholder="1">
+              <label class="aanbod-aantal-veld">Aantal
+                <input type="number" name="aantal" min="1" max="{{ \App\Models\Aanbod::AANTAL_MAX }}" required inputmode="numeric" value="{{ old('aantal', $row->aantal ?? 1) }}">
               </label>
               <input type="hidden" name="edit_id" value="{{ $row->id }}">
               <label class="checkbox">
