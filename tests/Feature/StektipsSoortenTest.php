@@ -31,7 +31,7 @@ test('elke soortpagina laadt met 200 en SEO-titel', function () {
 
 test('nieuwe sier- en kamerplanten staan in overzicht en sitemap', function () {
     $nieuwe = [
-        'monstera', 'pothos', 'scindapsus', 'sanseveria', 'graslelie', 'pilea',
+        'monstera', 'pothos', 'scindapsus', 'sansevieria', 'graslelie', 'pilea',
         'echeveria', 'jadeplant', 'aloe-vera', 'begonia', 'tradescantia', 'philodendron',
         'zamioculcas', 'kerstcactus', 'pelargonium', 'fuchsia', 'hortensia', 'lavendel',
         'lepelplant', 'rubberplant', 'peperomia', 'calathea', 'sedum', 'huislook',
@@ -106,7 +106,7 @@ test('soortpagina linkt naar verwante soorten', function () {
 test('stektips-index: zoekveld eerst, meer filters ingeklapt, beginners en FAQ met FAQPage-schema', function () {
     $html = $this->get(route('stektips.index'))->assertOk()->getContent();
 
-    expect(strpos($html, 'Welke plant wil je stekken?'))->toBeLessThan(strpos($html, 'stektips-pillar-list'))
+    expect(strpos($html, 'Welke plant wil je vermeerderen?'))->toBeLessThan(strpos($html, 'stektips-pillar-list'))
         ->and($html)->toContain('<details class="stektips-meer-filters"')
         ->and($html)->toContain('Makkelijk om mee te beginnen')
         ->and($html)->toContain('id="veelgestelde-vragen"')

@@ -1498,23 +1498,6 @@
       "width_max": 1200,
       "status": "goedgekeurd"
     },
-    "sanseveria": {
-      "slug": "sanseveria",
-      "naam": "Sanseveria",
-      "latijn": "Dracaena trifasciata",
-      "auteur": "Fanti Salms",
-      "licentie": "CC BY-SA",
-      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:Dracaena_Trifasciata_Plant.jpg",
-      "bron_titel": "File:Dracaena Trifasciata Plant.jpg",
-      "originele_mime": "image/jpeg",
-      "alt": "Sanseveria (Dracaena trifasciata)",
-      "bestand": "assets/images/soorten/sanseveria.jpg",
-      "notitie": "Dracaena Trifasciata Plant",
-      "bytes": 204490,
-      "width_max": 1200,
-      "status": "goedgekeurd"
-    },
     "scindapsus": {
       "slug": "scindapsus",
       "naam": "Scindapsus",
@@ -1801,6 +1784,23 @@
       "bestand": "assets/images/soorten/zwarte-vlier.jpg",
       "notitie": "Umbels of immature fruits of the \"Black elderberry\" (Sambucus nigra), also known as Holder. The black elderberry is a native shrub that can grow up to 10 meters in height. The black berries of the umb",
       "bytes": 144825,
+      "width_max": 1200,
+      "status": "goedgekeurd"
+    },
+    "sansevieria": {
+      "slug": "sansevieria",
+      "naam": "Sansevieria",
+      "latijn": "Dracaena trifasciata",
+      "auteur": "Fanti Salms",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Dracaena_Trifasciata_Plant.jpg",
+      "bron_titel": "File:Dracaena Trifasciata Plant.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Sansevieria (Dracaena trifasciata)",
+      "bestand": "assets/images/soorten/sansevieria.jpg",
+      "notitie": "Dracaena Trifasciata Plant",
+      "bytes": 204490,
       "width_max": 1200,
       "status": "goedgekeurd"
     }

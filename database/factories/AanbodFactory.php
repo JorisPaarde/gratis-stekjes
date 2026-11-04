@@ -26,7 +26,7 @@ class AanbodFactory extends Factory
             'Rozemarijnstek',
             'Salie-scheuten',
             'Vijgstek',
-            'Sanseveria-blad',
+            'Sansevieria-blad',
         ];
 
         return [

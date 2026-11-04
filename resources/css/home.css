@@ -58,7 +58,21 @@
   color: #f5faf3;
   margin: 0 0 1.25rem;
 }
-.page-home .hero-zoek { margin-bottom: 0.9rem; }
+.page-home .hero-zoek { margin-bottom: 0.45rem; }
+.page-home .hero-plantzoeker-link {
+  margin: 0 0 0.9rem;
+  font-size: 0.98rem;
+  font-weight: 600;
+}
+.page-home .hero-plantzoeker-link a {
+  color: #f5faf3;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+.page-home .hero-plantzoeker-link a:hover,
+.page-home .hero-plantzoeker-link a:focus-visible {
+  color: #fff;
+}
 .page-home .home-hero-account {
   display: flex;
   flex-wrap: wrap;

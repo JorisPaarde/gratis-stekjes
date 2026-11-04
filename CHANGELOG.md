@@ -9,6 +9,19 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.61.0] - 2026-11-04
+
+### Added
+
+- Plantzoeker 'Welke plant wil je vermeerderen?' direct onder de titel op /vermeerderen en /stektips; zoekt ook op andere namen (vrouwentong, gatenplant) en vangt tikfouten op (monstra). Bij precies één plant direct naar die pagina, bij 0 resultaten 'Bedoel je …?' (#218).
+- Tekstlink 'Zoek je hoe je een plant vermeerdert?' op de homepage onder het postcodeveld (#218).
+- Andere namen voor de plantpagina's die ze nog misten (#217).
+
+### Fixed
+
+- Sanseveria heet nu overal Sansevieria; /stektips/sanseveria stuurt met een 301 door naar /stektips/sansevieria (#217).
+- Sitemap bevat nu alle 36 artikelen (#217).
+
 ## [0.60.0] - 2026-11-03
 
 ### Changed
