@@ -8,8 +8,10 @@ use App\Models\Deelplek;
 use App\Models\Vereniging;
 use App\Services\AanbodSearch;
 use App\Services\Deelplekken;
+use App\Services\InitiatiefPaginas;
 use App\Services\Organisaties;
 use App\Services\VerenigingService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
@@ -32,8 +34,14 @@ class OrganisatieController extends Controller
         ]);
     }
 
-    public function show(string $slug, Organisaties $organisaties, Deelplekken $deelplekken, VerenigingService $verenigingen, AanbodSearch $search): View|Response
-    {
+    public function show(
+        string $slug,
+        Organisaties $organisaties,
+        Deelplekken $deelplekken,
+        VerenigingService $verenigingen,
+        AanbodSearch $search,
+        InitiatiefPaginas $initiatieven,
+    ): View|Response|RedirectResponse {
         $org = $organisaties->find($slug);
         $vereniging = $verenigingen->publiek($slug);
         if ($org === null) {
@@ -48,6 +56,12 @@ class OrganisatieController extends Controller
                 'vereniging' => $vereniging,
                 'blok' => $verenigingen->ledenBlok($vereniging, $search),
             ]);
+        }
+
+        // Organisatie met initiatiefpagina: canonieke URL is /{initiatief_slug}.
+        $init = $initiatieven->findByOrganisatieSlug($slug);
+        if ($init !== null && $init->heeftPagina()) {
+            return redirect()->to(route('initiatief.show', ['slug' => $init->initiatief_slug]), 301);
         }
 
         $deelplekSlugs = is_array($org['deelplek_slugs'] ?? null) ? $org['deelplek_slugs'] : [];
@@ -78,10 +92,12 @@ class OrganisatieController extends Controller
             }
             $label = trim((string) ($link['label'] ?? ''));
             $url = trim((string) ($link['url'] ?? ''));
-            if ($label === '' || $url === '' || ! preg_match('#^https?://#i', $url)) {
+            $external = (bool) preg_match('#^https?://#i', $url);
+            $internal = (bool) preg_match('#^/[A-Za-z0-9._~/-]*$#', $url);
+            if ($label === '' || $url === '' || (! $external && ! $internal)) {
                 continue;
             }
-            $extraLinks[] = ['label' => $label, 'url' => $url];
+            $extraLinks[] = ['label' => $label, 'url' => $url, 'external' => $external];
         }
 
         $naam = (string) $org['naam'];

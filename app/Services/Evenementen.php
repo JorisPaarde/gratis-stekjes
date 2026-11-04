@@ -8,6 +8,7 @@ use App\Models\Evenement;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Schema;
 
 final class Evenementen
 {
@@ -64,6 +65,35 @@ final class Evenementen
         }
 
         return $query->get();
+    }
+
+    /**
+     * Komende zichtbare evenementen gekoppeld aan een organisatie-slug
+     * (bijv. struikroven via /beheer/agenda).
+     *
+     * @return Collection<int, Evenement>
+     */
+    public function upcomingForOrganisatie(string $slug, ?CarbonInterface $today = null): Collection
+    {
+        $slug = trim($slug);
+        if ($slug === '' || ! preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $slug)) {
+            return collect();
+        }
+
+        if (! Schema::hasColumn('evenementen', 'organisatie_slug')) {
+            return collect();
+        }
+
+        $today ??= Carbon::now('Europe/Amsterdam')->startOfDay();
+
+        return Evenement::query()
+            ->visible()
+            ->where('organisatie_slug', $slug)
+            ->orderBy('start_datum')
+            ->orderBy('id')
+            ->get()
+            ->filter(fn (Evenement $e) => $e->isUpcoming($today))
+            ->values();
     }
 
     /**
@@ -193,6 +223,10 @@ final class Evenementen
         $plaats = trim(mb_substr((string) ($fields['plaats'] ?? ''), 0, 120));
         $provincie = trim((string) ($fields['provincie'] ?? ''));
         $organisator = trim(mb_substr((string) ($fields['organisator'] ?? ''), 0, 160));
+        $organisatieSlug = trim(mb_substr((string) ($fields['organisatie_slug'] ?? ''), 0, 80));
+        if ($organisatieSlug !== '' && ! preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $organisatieSlug)) {
+            return ['ok' => false, 'error' => 'Organisatie-koppeling is ongeldig.'];
+        }
         $url = trim(mb_substr((string) ($fields['url'] ?? ''), 0, 500));
         $bron = trim(mb_substr((string) ($fields['bron'] ?? ''), 0, 500));
         $visible = ! empty($fields['visible']);
@@ -253,6 +287,9 @@ final class Evenementen
             'gecontroleerd_op' => $gecontroleerd?->format('Y-m-d'),
             'visible' => $visible,
         ];
+        if (Schema::hasColumn('evenementen', 'organisatie_slug')) {
+            $payload['organisatie_slug'] = $organisatieSlug !== '' ? $organisatieSlug : null;
+        }
 
         $existing = $id ? Evenement::query()->find($id) : null;
         if ($existing) {

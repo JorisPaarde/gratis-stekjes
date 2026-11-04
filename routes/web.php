@@ -32,7 +32,9 @@ use App\Http\Controllers\Beheer\ErvaringController as BeheerErvaringController;
 use App\Http\Controllers\Beheer\FeedbackController as BeheerFeedbackController;
 use App\Http\Controllers\Beheer\GebruikersController as BeheerGebruikersController;
 use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
+use App\Http\Controllers\Beheer\OrganisatiesController as BeheerOrganisatiesController;
 use App\Http\Controllers\Beheer\StatistiekenController as BeheerStatistiekenController;
+use App\Http\Controllers\InitiatiefController;
 use App\Http\Controllers\BerichtmailController;
 use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\CronController;
@@ -93,6 +95,7 @@ Route::get('/over', [ContentPageController::class, 'over'])->name('over');
 Route::get('/doe-mee', [ContentPageController::class, 'doeMee'])->name('doe-mee');
 
 Route::get('/volkstuinen', [AudienceLandingController::class, 'volkstuinen'])->name('volkstuinen');
+Route::get('/struikroven', [InitiatiefController::class, 'struikroven'])->name('struikroven');
 Route::get('/help-mee', [AudienceLandingController::class, 'helpMee'])->name('help-mee');
 Route::post('/help-mee/partner', [MeedoenController::class, 'partner'])
     ->middleware('throttle:10,1')
@@ -275,6 +278,14 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::get('/verenigingen', [BeheerDashboardController::class, 'verenigingen'])->name('beheer.verenigingen');
     Route::get('/aanmeldingen', [BeheerDashboardController::class, 'aanmeldingen'])->name('beheer.aanmeldingen');
     Route::get('/agenda', [BeheerDashboardController::class, 'agenda'])->name('beheer.agenda');
+    Route::get('/organisaties', [BeheerOrganisatiesController::class, 'index'])->name('beheer.organisaties');
+    Route::get('/organisaties/{organisatieSlug}', [BeheerOrganisatiesController::class, 'edit'])
+        ->where('organisatieSlug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+        ->name('beheer.organisaties.edit');
+    Route::post('/organisaties/{organisatieSlug}', [BeheerOrganisatiesController::class, 'update'])
+        ->middleware('throttle:30,1')
+        ->where('organisatieSlug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+        ->name('beheer.organisaties.update');
     Route::get('/kaartmarkers', [BeheerDashboardController::class, 'kaartmarkers'])->name('beheer.kaartmarkers');
     Route::get('/meldingen', [BeheerDashboardController::class, 'meldingen'])->name('beheer.meldingen');
     Route::post('/gebruikers/herinner-onbevestigd', [BeheerGebruikersController::class, 'herinnerOnbevestigd'])
@@ -355,3 +366,8 @@ Route::post('/berichtmail/uit/{user}', [BerichtmailController::class, 'update'])
 Route::get('/naam-check', [ProfileController::class, 'naamCheck'])
     ->middleware('throttle:40,1')
     ->name('naam-check');
+
+// Initiatiefpagina’s: catch-all als laatste, alleen bestaande slugs (anders 404).
+Route::get('/{slug}', [InitiatiefController::class, 'show'])
+    ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+    ->name('initiatief.show');

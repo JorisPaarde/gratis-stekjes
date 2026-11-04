@@ -122,27 +122,27 @@ test('organisatiepagina zonder deelplek_slugs rendert 200 (geen isNotEmpty op ar
         ->assertNotFound();
 });
 
-test('struikroven pagina 200, Struikrovers, geen deelplekken, kruislink MeerBomen Nu', function () {
+test('struikroven heeft initiatiefpagina: org-URL 301, kruislink MeerBomen Nu naar /struikroven', function () {
     $this->get(route('organisaties.show', ['slug' => 'struikroven']))
+        ->assertRedirect(route('initiatief.show', ['slug' => 'struikroven']));
+
+    $this->get(route('struikroven'))
         ->assertOk()
-        ->assertSee('Stichting Struikroven', false)
-        ->assertSee('Struikrovers', false)
-        ->assertSee('Bekijk hun actieagenda', false)
-        ->assertSee('https://www.struikroven.nu/agenda', false)
-        ->assertSee('Niet te bezoeken via mijn', false)
-        ->assertDontSee('Op de deelplekkenkaart', false)
-        ->assertSee(route('organisaties.show', ['slug' => 'meerbomen-nu']), false)
-        ->assertSee('MeerBomen Nu', false);
+        ->assertSee('Wie zijn de Struikrovers?', false)
+        ->assertSee('https://struikroven.nu', false)
+        ->assertSee('https://struikroven.nu/agenda', false);
 
     $this->get(route('organisaties.show', ['slug' => 'meerbomen-nu']))
         ->assertOk()
-        ->assertSee(route('organisaties.show', ['slug' => 'struikroven']), false)
-        ->assertSee('Stichting Struikroven', false);
+        ->assertSee(route('initiatief.show', ['slug' => 'struikroven']), false)
+        ->assertSee('Stichting Struikroven', false)
+        ->assertDontSee(route('organisaties.show', ['slug' => 'struikroven']), false);
 
     $this->get(route('organisaties.index'))
         ->assertOk()
         ->assertSee('Stichting Struikroven', false)
-        ->assertSee(route('organisaties.show', ['slug' => 'struikroven']), false);
+        ->assertSee(route('initiatief.show', ['slug' => 'struikroven']), false)
+        ->assertDontSee('/organisaties/struikroven', false);
 });
 
 test('alle organisatiepaginas 200 met config/route-cache en APP_DEBUG=false', function () {
@@ -180,19 +180,26 @@ test('alle organisatiepaginas 200 met config/route-cache en APP_DEBUG=false', fu
         DB::reconnect('sqlite');
         $this->artisan('migrate', ['--force' => true])->assertSuccessful();
         $this->seed(DeelplekkenSeeder::class);
+        $this->withoutVite();
 
         $slugs = collect(app(Organisaties::class)->all())->pluck('slug')->filter()->values();
         expect($slugs)->toContain('velt');
         expect($slugs->count())->toBeGreaterThanOrEqual(10);
 
         foreach ($slugs as $slug) {
-            $this->get('/organisaties/'.$slug)
-                ->assertOk()
-                ->assertDontSee('Er ging iets mis', false);
+            $response = $this->get('/organisaties/'.$slug);
+            // Initiatiefpagina’s: 301 naar /{slug}; overige org-pagina’s: 200.
+            if (in_array($response->getStatusCode(), [301, 302], true)) {
+                expect($response->headers->get('Location'))->toContain('/');
+
+                continue;
+            }
+            $response->assertOk()->assertDontSee('Er ging iets mis', false);
         }
 
         $this->get('/organisaties')->assertOk();
         $this->get('/voor-organisaties')->assertOk();
+        $this->get('/struikroven')->assertOk();
     } finally {
         $this->artisan('config:clear');
         $this->artisan('route:clear');
@@ -341,7 +348,9 @@ test('sitemap bevat voor-organisaties en organisatiepaginas', function () {
     expect($xml)->toContain('/voor-organisaties');
     expect($xml)->toContain('/organisaties/plantenasiel-haarlem');
     expect($xml)->toContain('/organisaties/voedselbosbouw');
-    expect($xml)->toContain('/organisaties/struikroven');
+    // Struikroven heeft initiatiefpagina → canonieke URL /struikroven, niet /organisaties/….
+    expect($xml)->toContain('/struikroven');
+    expect($xml)->not->toContain('/organisaties/struikroven');
     expect($xml)->toContain('/organisaties/meerbomen-nu');
     expect($xml)->toContain('/organisaties/het-bomenproject');
     expect($xml)->not->toContain('/organisaties/stekjesroute');

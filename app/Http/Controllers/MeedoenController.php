@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Notifications\PartnerAanvraag;
+use App\Services\InitiatiefPaginas;
 use App\Support\FormGuard;
 use App\Support\SafeMail;
 use Illuminate\Http\RedirectResponse;
@@ -75,6 +76,19 @@ class MeedoenController extends Controller
                 'positie' => 'center 55%',
             ],
         ],
+        'struikroven' => [
+            'titel' => 'Struikroven',
+            'kop' => 'Planten over of op zoek? Ruil ze gratis in je buurt',
+            'sub' => 'Alles is gratis. Je spreekt zelf af en haalt de planten op.',
+            'doel' => 'struikroven',
+            'foto' => [
+                'alt' => 'Planten in potten op de stoep bij een voordeur',
+                'maker' => 'Anatol Rurac',
+                'bron_url' => 'https://unsplash.com/photos/TBcNquxo1JM',
+                'licentie' => 'Unsplash License',
+                'positie' => 'center 60%',
+            ],
+        ],
     ];
 
     /** @var array<string, string> */
@@ -88,19 +102,79 @@ class MeedoenController extends Controller
         'anders' => 'Anders',
     ];
 
-    public function poster(Request $request): View
+    public function poster(Request $request, InitiatiefPaginas $initiatieven): View
     {
-        $voor = array_key_exists((string) $request->query('voor'), self::POSTERS) ? (string) $request->query('voor') : 'algemeen';
-        $p = self::POSTERS[$voor];
+        $voorQuery = (string) $request->query('voor', 'algemeen');
+        $init = $initiatieven->findByInitiatiefSlug($voorQuery);
+        $isInitiatief = $init !== null;
+
+        if (array_key_exists($voorQuery, self::POSTERS)) {
+            $voor = $voorQuery;
+            $p = self::POSTERS[$voor];
+            $path = (string) (parse_url(route($p['doel']), PHP_URL_PATH) ?: '/');
+        } elseif ($isInitiatief) {
+            // Onbekende initiatief-slug: hergebruik algemene posterfoto, QR naar /{slug}.
+            $voor = $voorQuery;
+            $basis = self::POSTERS['algemeen'];
+            $p = array_merge($basis, [
+                'titel' => $init->korte_naam !== '' ? $init->korte_naam : $voor,
+                'kop' => 'Planten over of op zoek? Ruil ze gratis in je buurt',
+                'sub' => 'Alles is gratis. Je spreekt zelf af en haalt de planten op.',
+                'doel' => 'initiatief.show',
+            ]);
+            $path = '/'.$init->initiatief_slug;
+        } else {
+            $voor = 'algemeen';
+            $p = self::POSTERS[$voor];
+            $path = (string) (parse_url(route($p['doel']), PHP_URL_PATH) ?: '/');
+        }
+
+        // Struikroven heeft eigen posterassets; andere initiatieven zonder assets → algemeen-beeld.
+        $fotoKey = array_key_exists($voor, self::POSTERS) ? $voor : 'algemeen';
+
+        $formaat = strtolower((string) $request->query('formaat', 'a4'));
+        $isA5 = $formaat === 'a5';
+
+        // Printbare posters: QR en leesbaar adres altijd naar productie,
+        // nooit naar staging/local APP_URL (anders scannen bezoekers de verkeerde site).
+        if ($path !== '/' && str_ends_with($path, '/')) {
+            $path = rtrim($path, '/');
+        }
+        $host = (string) config('site.canonical_host', 'gratisplanten.nl');
+        $prodUrl = 'https://'.$host.($path === '/' ? '' : $path);
+
+        $stappen = [
+            'Scan de code en kijk wat er bij jou in de buurt te halen is.',
+            'Iets over? Zet het er gratis op, het kost je een minuut.',
+            'Je haalt het zelf op. Een praatje is de enige prijs.',
+        ];
+        $bron = 'poster-'.$voor;
+
+        if ($isA5 && ($voor === 'struikroven' || $isInitiatief)) {
+            $p = array_merge($p, [
+                'kop' => 'Planten over na de actie?',
+                'sub' => 'Deel planten, stekjes en zaden gratis met iemand in de buurt.',
+            ]);
+            $stappen = [
+                'Planten over na een actie? Zet ze er gratis op.',
+                'Iets nodig voor je tuin? Zoek wat er in de buurt is.',
+                'Spreek af met de aanbieder en haal het op.',
+            ];
+            $bron = 'flyer-'.$voor;
+        }
 
         return view('pages.poster', [
-            'title' => 'Poster: '.$p['kop'],
-            'metaDescription' => 'Printbare poster met QR-code voor '.config('site.name').'.',
+            'title' => ($isA5 ? 'Flyer A5: ' : 'Poster: ').$p['kop'],
+            'metaDescription' => 'Printbare '.($isA5 ? 'A5-flyer' : 'poster').' met QR-code voor '.config('site.name').'.',
             'canonical' => route('help-mee'),
             'poster' => $p,
             'voor' => $voor,
-            'url' => route($p['doel']).'?bron=poster-'.$voor,
-            'kortUrl' => preg_replace('#^https?://#', '', route($p['doel'])),
+            'fotoKey' => $fotoKey,
+            'initiatiefTerug' => $isInitiatief ? $init : null,
+            'formaat' => $isA5 ? 'a5' : 'a4',
+            'stappen' => $stappen,
+            'url' => $prodUrl.'?bron='.$bron,
+            'kortUrl' => $host.($path === '/' ? '' : $path),
         ]);
     }
 

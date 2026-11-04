@@ -114,6 +114,18 @@
   <p class="section-intro">Initiatieven zonder vaste datum waar ik naar link: plantenasiels, plantenbiebs, ruilkasten, voedselbossen en meer. De teksten zijn kort en feitelijk, gebaseerd op hun eigen websites.</p>
 
   <div class="stack partners-stack">
+    @foreach($organisatieInitiatieven as $init)
+      @php
+        $kaartNaam = $init->korte_naam !== '' ? $init->korte_naam : $init->initiatief_slug;
+        $kaartTekst = \Illuminate\Support\Str::limit(preg_replace('/\s+/', ' ', trim((string) $init->intro_tekst)) ?? '', 220);
+      @endphp
+      <article class="soft-card">
+        <h3><a href="{{ route('initiatief.show', ['slug' => $init->initiatief_slug]) }}">{{ $kaartNaam }}</a></h3>
+        @if($kaartTekst !== '')
+          <p>{{ $kaartTekst }}</p>
+        @endif
+      </article>
+    @endforeach
     <article class="soft-card">
       <h3><a href="https://voedselbosbouw.org/" rel="noopener noreferrer">Voedselbosbouw.org</a></h3>
       <p>Stichting Voedselbosbouw Nederland begeleidt boeren en grondeigenaren bij agrarische voedselbossen, deelt kennis en lobbyt voor deze vorm van landbouw. Ik richt me op stekjes van mens tot mens; zij op het bredere voedselbos-verhaal.</p>

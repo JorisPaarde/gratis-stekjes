@@ -263,10 +263,18 @@ class PageController extends Controller
             ];
         }
 
-        $orgLastmod = $this->lastmodFromFiles([base_path('data/organisaties.json')]);
+        $orgLastmod = $this->lastmodFromFiles([
+            base_path('data/organisaties.json'),
+            resource_path('views/pages/initiatief.blade.php'),
+        ]);
+        $initiatieven = app(\App\Services\InitiatiefPaginas::class);
         foreach ($organisaties->all() as $org) {
+            $init = $initiatieven->findByOrganisatieSlug((string) $org['slug']);
+            $loc = ($init !== null && $init->heeftPagina())
+                ? route('initiatief.show', ['slug' => $init->initiatief_slug])
+                : route('organisaties.show', ['slug' => $org['slug']]);
             $entries[] = [
-                'loc' => route('organisaties.show', ['slug' => $org['slug']]),
+                'loc' => $loc,
                 'lastmod' => $orgLastmod,
             ];
         }

@@ -1,0 +1,109 @@
+/* Landingspagina /struikroven — wie / meedoen / stappen / acties / materiaal. */
+.struikroven-page .struikroven-links {
+  margin: 0 0 2rem;
+  font-size: 0.95rem;
+}
+
+.struikroven-ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0 0 0.5rem;
+  max-width: 28rem;
+}
+
+.struikroven-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 3.25rem;
+  padding: 0.85rem 1.15rem;
+  font-size: 1.08rem;
+  line-height: 1.25;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.struikroven-cta-hint {
+  margin: 0 0 2rem;
+  font-size: 0.95rem;
+}
+
+.struikroven-stappen {
+  margin: 0 0 1rem;
+  padding-left: 1.35rem;
+  max-width: 40rem;
+}
+
+.struikroven-stappen li {
+  margin: 0.45rem 0;
+}
+
+.struikroven-acties {
+  display: grid;
+  gap: 1rem;
+  margin: 0 0 2rem;
+  padding: 0;
+  max-width: 40rem;
+}
+
+.struikroven-actie {
+  margin: 0;
+  padding: 0;
+}
+
+.struikroven-actie-titel {
+  margin: 0 0 0.2rem;
+  font-weight: 600;
+  color: var(--forest-deep);
+}
+
+.struikroven-actie-meta {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.struikroven-materiaal {
+  margin: 0 0 1.25rem;
+  max-width: 40rem;
+}
+
+.struikroven-kopieer {
+  display: grid;
+  gap: 0.6rem;
+  max-width: 40rem;
+  margin: 0 0 1rem;
+}
+
+.struikroven-kopieer-label {
+  font-weight: 600;
+  color: var(--forest-deep);
+}
+
+.struikroven-deeltekst {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 6.5rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  background: var(--bg-mint, #eef6ea);
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.45;
+  resize: vertical;
+}
+
+@media (min-width: 720px) {
+  .struikroven-ctas {
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 42rem;
+  }
+
+  .struikroven-cta {
+    width: auto;
+    flex: 1 1 16rem;
+  }
+}

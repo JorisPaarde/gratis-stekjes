@@ -11,7 +11,7 @@
   <ul>
     @foreach($organisaties as $org)
       <li>
-        <a href="{{ route('organisaties.show', ['slug' => $org['slug']]) }}">{{ $org['naam'] }}</a>
+        <a href="{{ app(\App\Services\InitiatiefPaginas::class)->publiekeUrlVoorOrganisatie($org['slug']) }}">{{ $org['naam'] }}</a>
         <span class="muted"> · {{ $org['plaats'] }}</span>
       </li>
     @endforeach

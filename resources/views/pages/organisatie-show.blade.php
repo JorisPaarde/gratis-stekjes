@@ -23,7 +23,11 @@
     <a href="{{ $org['bron_url'] }}" rel="noopener noreferrer" target="_blank">Bron</a>
     @foreach($extraLinks as $link)
       ·
-      <a href="{{ $link['url'] }}" rel="noopener noreferrer" target="_blank">{{ $link['label'] }}</a>
+      @if(!empty($link['external']))
+        <a href="{{ $link['url'] }}" rel="noopener noreferrer" target="_blank">{{ $link['label'] }}</a>
+      @else
+        <a href="{{ $link['url'] }}">{{ $link['label'] }}</a>
+      @endif
     @endforeach
   </p>
 
@@ -51,7 +55,7 @@
     <ul>
       @foreach($gerelateerd as $related)
         <li>
-          <a href="{{ route('organisaties.show', ['slug' => $related['slug']]) }}">{{ $related['naam'] }}</a>
+          <a href="{{ app(\App\Services\InitiatiefPaginas::class)->publiekeUrlVoorOrganisatie($related['slug']) }}">{{ $related['naam'] }}</a>
         </li>
       @endforeach
     </ul>

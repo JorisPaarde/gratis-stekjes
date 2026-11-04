@@ -43,6 +43,12 @@
       <input type="checkbox" name="privacy" value="1" required @checked(old('privacy'))>
       <span>Ik ga akkoord met de <a href="{{ route('privacy') }}">privacyverklaring</a>.</span>
     </label>
+    @foreach(($aanmeldVinkjes ?? [['param' => 'struikrover', 'label' => 'Ik ben Struikrover']]) as $vink)
+      <label class="checkbox">
+        <input type="checkbox" name="{{ $vink['param'] }}" value="1" @checked(old($vink['param'], ($aanmeldChecked[$vink['param']] ?? false) || (($vink['param'] === 'struikrover') && ($struikroverChecked ?? false))))>
+        <span>{{ $vink['label'] }}</span>
+      </label>
+    @endforeach
 
     <button class="btn" type="submit">Account maken</button>
   </form>

@@ -9,6 +9,60 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.66.1] - 2026-11-04
+
+### Added
+
+- `/initiatieven`: organisaties met een gevulde `initiatief_slug` krijgen automatisch een soft-card (korte intro) die naar `/{slug}` linkt (bijv. Struikroven → `/struikroven`). Organisaties zonder pagina ongewijzigd.
+
+### Notes
+
+- Plaatsveld (0.65.0) zit nog niet in deze release.
+
+## [0.66.0] - 2026-11-04
+
+### Added
+
+- Initiatiefpagina’s per organisatie: in beheer (Inhoud → Organisaties) kun je per org een optionele `initiatief_slug` zetten met intro, aanmeldvinkje, site/agenda-link en kopieertekst. Publieke URL: `/{slug}` (catch-all, alleen bestaande slugs; anders 404).
+- Tabel `organisatie_initiatieven` (migratie + seed Struikroven uit de 0.64.1-teksten).
+- Poster/flyer generiek: `/poster?voor={slug}` en `&formaat=a5` met QR `bron=poster-{slug}` / `bron=flyer-{slug}`.
+
+### Changed
+
+- Organisatie mét initiatief-slug: `/organisaties/{org-slug}` doet 301 naar `/{slug}`; links op organisaties-index, voor-organisaties, gerelateerde orgs en sitemap gaan rechtstreeks naar `/{slug}`. Zonder slug blijft alles zoals voorheen.
+- Aanmeldvinkje op registreren is generiek per initiatief (`?struikrover=1` blijft werken).
+- `/struikroven` blijft inhoudelijk gelijk aan 0.64.1 (zelfde teksten, volgorde en links).
+
+## [0.64.1] - 2026-11-04
+
+### Changed
+
+- `/struikroven` is één samenhangende pagina: eerst wie Struikroven is, dan meedoen-knoppen, «Zo werkt het», komende acties, en materiaal voor Struikrovers (A4-poster, A5-flyer, kopieertekst).
+
+### Added
+
+- A5-flyer `/poster?voor=struikroven&formaat=a5` (zelfde foto-stijl, QR met `bron=flyer-struikroven`, printbaar op A5).
+- Organisatiepagina Struikroven: link «Planten delen na een actie» naar `/struikroven`.
+
+## [0.64.0] - 2026-11-04
+
+### Added
+
+- Samenwerking Struikroven: landingspagina `/struikroven` met knoppen zoeken/aanbieden, korte uitleg en komende acties uit `/beheer/agenda` (organisatie-koppeling).
+- Vinkje «Ik ben Struikrover» bij aanmelden (voorgevinkt via `/struikroven`); telling op beheer-overzicht en statistieken.
+- Poster `/poster?voor=struikroven` (A4, QR naar `https://gratisplanten.nl/struikroven?bron=poster-struikroven`).
+
+### Changed
+
+- Organisatiepagina Struikroven: websitelinks naar `https://struikroven.nu`.
+- Printbare posters (`/poster?voor=…`): QR en leesbaar adres altijd naar productie (`canonical_host`), niet naar lokale/staging `APP_URL`.
+
+## [0.63.1] - 2026-11-04
+
+### Changed
+
+- Teaser-blokken «Net aangeboden» (homepage) en «Actueel aanbod» (stadspagina’s) blijven verborgen tot er minstens 8 actieve aanbiedingen mét foto in de scope zijn (`GP_RECENT_AANBOD_MIN`, default 8). Reden: een bijna lege fotogrid (zoals 2 kaartjes) schrikt af; bij 8 ziet het er levendig uit. Op stadspagina’s blijven CTAs («Zelf iets aanbieden» / «Zoek verder») en de kaart staan, zonder lege kop.
+
 ## [0.63.0] - 2026-11-04
 
 ### Changed
