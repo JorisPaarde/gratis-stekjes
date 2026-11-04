@@ -1,0 +1,38 @@
+{
+  "source": "https://www.struikroven.nu/agenda",
+  "scraped_at": "2026-11-04",
+  "from_date": "2026-11-04",
+  "notes": "Eenmalige overname van aankomende Struikroven-acties vanaf 4 nov 2026. Alleen wat op de agenda- en actiepagina’s staat; 31 oktober Veldhoven valt vóór from_date en is weggelaten. Sint-Michielsgestel stond als «-vol-» maar blijft een aankomende actie.",
+  "acties": [
+    {
+      "datum": "2026-11-06",
+      "begin_tijd": "10:00",
+      "eind_tijd": "15:00",
+      "plaats": "Sint-Michielsgestel",
+      "adres": "Theerestraat 42, Sint-Michielsgestel",
+      "provincie": "Noord-Brabant",
+      "titel": "Struikroofactie Domein aan de Dommel",
+      "omschrijving": "Op een plek langs de Dommel ontwikkelt BPD Domein aan de Dommel: een groene woonomgeving in Sint-Michielsgestel. Samen met MeerBomenNu organiseren Struikroven en BPD daar een Struikroofdag, met vooral boomzaailingen om te oogsten.",
+      "url": "https://www.struikroven.nu/domeindommel",
+      "organisator": "Struikroven",
+      "organisatie_slug": "struikroven",
+      "type": "overig",
+      "vol": true
+    },
+    {
+      "datum": "2026-11-28",
+      "begin_tijd": "13:00",
+      "eind_tijd": "16:00",
+      "plaats": "Den Haag",
+      "adres": "Erasmusweg 1657, Den Haag",
+      "provincie": "Zuid-Holland",
+      "titel": "Struikroofactie Den Haag",
+      "omschrijving": "De woningen in de Gaarden aan de Erasmusweg in Den Haag zijn verouderd en worden vervangen door nieuwbouw. Heijmans en Staedion willen het waardevolle groen in de tuinen niet verloren laten gaan; iedereen mag gratis planten komen uitgraven voor eigen gebruik.",
+      "url": "https://www.struikroven.nu/denhaag",
+      "organisator": "Struikroven",
+      "organisatie_slug": "struikroven",
+      "type": "overig",
+      "vol": false
+    }
+  ]
+}
