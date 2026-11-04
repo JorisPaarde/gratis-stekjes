@@ -9,6 +9,20 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.66.0] - 2026-11-04
+
+### Added
+
+- Initiatiefpagina’s per organisatie: in beheer (Inhoud → Organisaties) kun je per org een optionele `initiatief_slug` zetten met intro, aanmeldvinkje, site/agenda-link en kopieertekst. Publieke URL: `/{slug}` (catch-all, alleen bestaande slugs; anders 404).
+- Tabel `organisatie_initiatieven` (migratie + seed Struikroven uit de 0.64.1-teksten).
+- Poster/flyer generiek: `/poster?voor={slug}` en `&formaat=a5` met QR `bron=poster-{slug}` / `bron=flyer-{slug}`.
+
+### Changed
+
+- Organisatie mét initiatief-slug: `/organisaties/{org-slug}` doet 301 naar `/{slug}`; links op organisaties-index, voor-organisaties, gerelateerde orgs en sitemap gaan rechtstreeks naar `/{slug}`. Zonder slug blijft alles zoals voorheen.
+- Aanmeldvinkje op registreren is generiek per initiatief (`?struikrover=1` blijft werken).
+- `/struikroven` blijft inhoudelijk gelijk aan 0.64.1 (zelfde teksten, volgorde en links).
+
 ## [0.64.1] - 2026-11-04
 
 ### Changed

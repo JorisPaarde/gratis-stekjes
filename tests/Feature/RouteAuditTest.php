@@ -206,6 +206,7 @@ test('organisaties/{slug} blijft < 500 met config:cache + route:cache en APP_DEB
         DB::reconnect('sqlite');
         $this->artisan('migrate', ['--force' => true])->assertSuccessful();
         $this->seed(DeelplekkenSeeder::class);
+        $this->withoutVite();
 
         $orgs = app(Organisaties::class)->all();
         expect($orgs)->not->toBeEmpty();
@@ -215,7 +216,8 @@ test('organisaties/{slug} blijft < 500 met config:cache + route:cache en APP_DEB
             $path = '/organisaties/'.$org['slug'];
             $status = $this->get($path)->getStatusCode();
             expect($status)->toBeLessThan(500, "Gecachte route {$path} gaf HTTP {$status} (APP_DEBUG=false)");
-            expect($status)->toBe(200);
+            // Initiatiefpagina’s redirecten (301); overige org-pagina’s blijven 200.
+            expect(in_array($status, [200, 301], true))->toBeTrue("Onverwachte status {$status} voor {$path}");
         }
 
         $this->get('/organisaties/onbestaande-org-xyz')->assertNotFound();
