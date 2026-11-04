@@ -11,7 +11,7 @@
     name="q"
     value="{{ $zoekValue }}"
     maxlength="120"
-    placeholder="Bijvoorbeeld vrouwentong, monstera of vijg"
+    placeholder="Bijv. vrouwentong of monstera"
     autocomplete="off"
   >
   <button class="btn" type="submit"><x-icon name="zoeken" :size="18" /> Zoek</button>
