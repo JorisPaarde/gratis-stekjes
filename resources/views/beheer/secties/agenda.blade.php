@@ -35,6 +35,10 @@
     <label>Organisator
       <input name="organisator" maxlength="160" value="{{ old('organisator', $editingEvenement->organisator ?? '') }}">
     </label>
+    <label class="check">
+      <input type="checkbox" name="struikroven_actie" value="1" @checked(old('struikroven_actie', ($editingEvenement->organisatie_slug ?? '') === 'struikroven'))>
+      Struikroven-actie (tonen op /struikroven)
+    </label>
     <label>Externe link (optioneel)
       <input name="url" maxlength="500" placeholder="https://" value="{{ old('url', $editingEvenement->url ?? '') }}">
     </label>

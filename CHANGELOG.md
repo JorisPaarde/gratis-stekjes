@@ -9,6 +9,18 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.64.0] - 2026-11-04
+
+### Added
+
+- Samenwerking Struikroven: landingspagina `/struikroven` met knoppen zoeken/aanbieden, korte uitleg en komende acties uit `/beheer/agenda` (organisatie-koppeling).
+- Vinkje «Ik ben Struikrover» bij aanmelden (voorgevinkt via `/struikroven`); telling op beheer-overzicht en statistieken.
+- Poster `/poster?voor=struikroven` (A4, QR naar `/struikroven?bron=poster-struikroven`).
+
+### Changed
+
+- Organisatiepagina Struikroven: websitelinks naar `https://struikroven.nu`.
+
 ## [0.63.0] - 2026-11-04
 
 ### Changed

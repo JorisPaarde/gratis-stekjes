@@ -38,6 +38,7 @@ function auditPublicGetRoutes(): array
         '/over',
         '/invasieve-soorten',
         '/volkstuinen',
+        '/struikroven',
         '/help-mee',
         '/natuur',
         '/verbinding',

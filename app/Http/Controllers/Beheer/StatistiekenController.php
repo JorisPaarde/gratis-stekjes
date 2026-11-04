@@ -23,6 +23,9 @@ class StatistiekenController extends Controller
         $leden = User::query()->members()->count();
         $confirmed = User::query()->members()->whereNotNull('email_verified_at')->count();
         $unconfirmed = User::query()->members()->whereNull('email_verified_at')->count();
+        $struikrovers = Schema::hasColumn('users', 'struikrover')
+            ? User::query()->members()->where('struikrover', true)->count()
+            : 0;
 
         // Distinct members who ever had ≥1 listing (any visibility / expiry status).
         $ledenMetAanbod = Schema::hasTable('aanbod')
@@ -122,6 +125,7 @@ class StatistiekenController extends Controller
             'leden' => $leden,
             'confirmed' => $confirmed,
             'unconfirmed' => $unconfirmed,
+            'struikrovers' => $struikrovers,
             'ledenMetAanbod' => $ledenMetAanbod,
             'ledenZonderAanbod' => $ledenZonderAanbod,
             'offersTotal' => $offersTotal,

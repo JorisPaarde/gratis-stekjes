@@ -75,6 +75,19 @@ class MeedoenController extends Controller
                 'positie' => 'center 55%',
             ],
         ],
+        'struikroven' => [
+            'titel' => 'Struikroven',
+            'kop' => 'Planten over of op zoek? Ruil ze gratis in je buurt',
+            'sub' => 'Alles is gratis. Je spreekt zelf af en haalt de planten op.',
+            'doel' => 'struikroven',
+            'foto' => [
+                'alt' => 'Planten in potten op de stoep bij een voordeur',
+                'maker' => 'Anatol Rurac',
+                'bron_url' => 'https://unsplash.com/photos/TBcNquxo1JM',
+                'licentie' => 'Unsplash License',
+                'positie' => 'center 60%',
+            ],
+        ],
     ];
 
     /** @var array<string, string> */
