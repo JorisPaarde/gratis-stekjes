@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.62.0] - 2026-11-04
+
+### Added
+
+- /help-mee, Deel een bericht: vierde kopieerblok 'Onder een snoeipost'.
+
 ## [0.61.1] - 2026-11-04
 
 ### Fixed
