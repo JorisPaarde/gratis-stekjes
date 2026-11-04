@@ -60,6 +60,20 @@
   .poster--foto .poster-credit a { text-decoration: none; }
 }
 
+/* A5-flyer (één pagina): zelfde foto-opmaak, kleinere bladspiegel.
+   @page size A5 komt uit een inline <style> op de flyer-pagina (body.poster-print-a5). */
+.poster--a5 {
+  max-width: 148mm;
+  aspect-ratio: 148 / 210;
+}
+@media print {
+  body.poster-print-a5 .poster--a5 {
+    width: 148mm;
+    height: 210mm;
+    max-width: none;
+  }
+}
+
 /* Stekjeslabels: 8 per A4 (2 × 4) */
 .labels-vel { display: grid; grid-template-columns: 1fr 1fr; gap: 0; max-width: 210mm; margin: 0 auto; background: #fff; border: 1px solid var(--line); }
 .label { display: flex; gap: .75rem; align-items: center; padding: 6mm; border: 1px dashed #b8c4b0; min-height: 60mm; box-sizing: border-box; }

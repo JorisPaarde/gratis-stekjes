@@ -5,29 +5,44 @@
 @section('canonical', $canonical)
 @section('robots', 'noindex, follow')
 
-@push('head')
-  @vite(['resources/css/poster.css'])
-@endpush
-
 @php
   $foto = $poster['foto'];
   $fotoPad = '/assets/images/posters/'.$voor;
+  $isA5 = ($formaat ?? 'a4') === 'a5';
+  $stappenLijst = $stappen ?? [
+    'Scan de code en kijk wat er bij jou in de buurt te halen is.',
+    'Iets over? Zet het er gratis op, het kost je een minuut.',
+    'Je haalt het zelf op. Een praatje is de enige prijs.',
+  ];
 @endphp
+
+@section('body_class', $isA5 ? 'poster-print-a5' : '')
+
+@push('head')
+  @vite(['resources/css/poster.css'])
+  @if($isA5)
+    <style>@media print { @page { size: A5; margin: 0; } }</style>
+  @endif
+@endpush
 
 @section('content')
 <section class="section wrap">
   <div class="poster-tools">
     <button type="button" class="btn" data-print>Print of bewaar als pdf</button>
-    <a href="{{ route('help-mee') }}#poster">Terug naar Help mee</a>
+    @if($voor === 'struikroven')
+      <a href="{{ route('struikroven') }}">Terug naar Struikroven</a>
+    @else
+      <a href="{{ route('help-mee') }}#poster">Terug naar Help mee</a>
+    @endif
     <span class="muted">Andere poster:
       @foreach(\App\Http\Controllers\MeedoenController::POSTERS as $key => $p)
         @if($key !== $voor)<a href="{{ route('poster', ['voor' => $key]) }}">{{ $p['titel'] }}</a>@if(! $loop->last) · @endif @endif
       @endforeach
     </span>
   </div>
-  <p class="poster-tip muted">Tip: kies in het printvenster A4 en staand. Bij marges kies je «Geen».</p>
+  <p class="poster-tip muted">Tip: kies in het printvenster {{ $isA5 ? 'A5' : 'A4' }} en staand. Bij marges kies je «Geen».</p>
 
-  <article class="poster poster--foto poster--{{ $voor }}">
+  <article class="poster poster--foto poster--{{ $voor }}{{ $isA5 ? ' poster--a5' : '' }}">
     <div class="poster-foto">
       <picture>
         <source type="image/webp" srcset="{{ $fotoPad }}-1600.webp">
@@ -46,9 +61,9 @@
           <p class="poster-scan">Scan mij</p>
         </div>
         <ol class="poster-stappen">
-          <li><b>1</b> <span>Scan de code en kijk wat er bij jou in de buurt te halen is.</span></li>
-          <li><b>2</b> <span>Iets over? Zet het er gratis op, het kost je een minuut.</span></li>
-          <li><b>3</b> <span>Je haalt het zelf op. Een praatje is de enige prijs.</span></li>
+          @foreach($stappenLijst as $i => $stap)
+            <li><b>{{ $i + 1 }}</b> <span>{{ $stap }}</span></li>
+          @endforeach
         </ol>
       </div>
     </div>
