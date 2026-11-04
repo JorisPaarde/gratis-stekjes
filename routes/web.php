@@ -44,6 +44,7 @@ use App\Http\Controllers\DeployController;
 use App\Http\Controllers\DeployImportStruikrovenAgendaController;
 use App\Http\Controllers\DeployNormaliseerLocatiesController;
 use App\Http\Controllers\DeployImportController;
+use App\Http\Controllers\DeployLedenupdateMailController;
 use App\Http\Controllers\DeployPostcodeHerinneringController;
 use App\Http\Controllers\DeployStatsLezerController;
 use App\Http\Controllers\ErvaringController;
@@ -154,6 +155,9 @@ Route::post('/deploy/normaliseer-locaties', DeployNormaliseerLocatiesController:
 Route::post('/deploy/postcode-herinnering-lijst', DeployPostcodeHerinneringController::class)
     ->middleware('throttle:10,1')
     ->name('deploy.postcode-herinnering-lijst');
+Route::post('/deploy/ledenupdate-mail', DeployLedenupdateMailController::class)
+    ->middleware('throttle:30,1')
+    ->name('deploy.ledenupdate-mail');
 Route::post('/deploy/import-struikroven-agenda', DeployImportStruikrovenAgendaController::class)
     ->middleware('throttle:10,1')
     ->name('deploy.import-struikroven-agenda');
