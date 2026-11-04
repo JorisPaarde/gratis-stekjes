@@ -9,6 +9,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.62.0] - 2026-11-04
+
+### Added
+
+- Homepage: seizoensblok **«Maak er zelf meer van»** (vervangt «Nu te stekken»), direct na «Hier kun je nu al terecht». In twee stappen: *eerst voor jezelf* (drie acties van deze maand met illustratie en link naar de pijler, plus «Wist je dat?») en *dan voor een ander* (1 plant → 5 stekjes → 4 weggegeven, knop «Bied het gratis aan», teller vanaf 5 keer gedeeld deze maand). Makkelijke planten van de maand met foto. Kleur per seizoen. `?maand=1–12` voor voorvertoning.
+- `data/seizoen.json` + `App\Services\Seizoen`: één bron, ook gebruikt in «Wat kun je nu vermeerderen?» op /vermeerderen.
+
 ## [0.61.1] - 2026-11-04
 
 ### Fixed

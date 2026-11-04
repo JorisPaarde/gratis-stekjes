@@ -53,10 +53,10 @@ test('API nu-te-stekken is ok met groepen', function () {
         ]);
 });
 
-test('homepage en aanbod tonen Nu te stekken-blok', function () {
+test('homepage toont seizoensblok en aanbod toont Nu te stekken-blok', function () {
     $this->get(route('home'))
         ->assertOk()
-        ->assertSee('Nu te stekken', false);
+        ->assertSee('id="zelf-meer-maken"', false);
 
     $this->get(route('aanbod'))
         ->assertOk()
@@ -80,7 +80,7 @@ test('blok nu te stekken toont plantkaarten met link naar stektip, foto eerst, m
 test('homepage toont plantkaarten met naamsvermelding en geen RHS-bronnen', function () {
     $html = $this->get('/')->assertOk()->getContent();
 
-    expect($html)->toContain('class="stek-kaarten"')
-        ->and($html)->toContain('stek-kaart-credit')
+    expect($html)->toContain('class="seizoen-planten"')
+        ->and($html)->toContain('seizoen-credits')
         ->and($html)->not->toContain('Hardwood cuttings');
 });

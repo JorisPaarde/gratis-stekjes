@@ -11,17 +11,19 @@ use App\Services\Kennisbank;
 use App\Services\NuTeStekken;
 use App\Services\Organisaties;
 use App\Services\Plantensoorten;
+use App\Services\Seizoen;
 use App\Services\Steden;
 use App\Services\Stektips;
 use App\Services\VerenigingService;
 use App\Support\CanonicalUrl;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class PageController extends Controller
 {
-    public function home(NuTeStekken $calendar, Plantensoorten $plantensoorten, HomeOverzicht $overzicht): View
+    public function home(Request $request, NuTeStekken $calendar, Plantensoorten $plantensoorten, HomeOverzicht $overzicht, Seizoen $seizoen): View
     {
         $site = config('site.name');
         $hero = (array) config('homepage.hero', []);
@@ -65,7 +67,8 @@ class PageController extends Controller
             'heading' => $heading,
             'metaDescription' => $metaDescription,
             'canonical' => $homeUrl,
-            'nuTeStekken' => $calendar->blockForViews(),
+            // ?maand=1–12: een andere maand bekijken (voorvertoning); standaard de huidige maand.
+            'seizoen' => $seizoen->blok($request->integer('maand') ?: null),
             'ervaringenBlok' => $ervaringenBlok,
             'overzicht' => $overzicht->data(),
             'hero' => $hero,

@@ -57,8 +57,22 @@
       $nuLabels = ['stek' => 'Stekken', 'scheut' => 'Stekken', 'deling' => 'Scheuren', 'zaad' => 'Zaaien', 'enten' => 'Enten', 'afleggen' => 'Afleggen'];
       $nuPijler = ['stek' => 'stekken', 'scheut' => 'stekken', 'deling' => 'scheuren', 'zaad' => 'zaaien', 'enten' => 'fruitbomen-enten', 'afleggen' => 'afleggen'];
     @endphp
+    @php $sz = app(\App\Services\Seizoen::class)->blok(); @endphp
+    @if($sz)
+      <p class="kb-nu-intro"><strong>{{ $sz['kop'] }}</strong> {{ $sz['tekst'] }}</p>
+      <ul class="kb-kaarten">
+        @foreach($sz['acties'] as $actie)
+          <li class="kb-kaart">
+            @include('partials.illustraties.stek', ['naam' => $actie['illustratie']])
+            <h3>{{ $actie['titel'] }}</h3>
+            <p>{{ $actie['tekst'] }}</p>
+            <a class="kb-kaart-link" href="{{ $actie['url'] }}">Zo doe je het <span aria-hidden="true">→</span></a>
+          </li>
+        @endforeach
+      </ul>
+    @endif
     @if($nu)
-      <p class="kb-nu-intro">In {{ $nu['maand_naam'] }} kun je dit doen:</p>
+      <p class="kb-nu-intro">Per plant in {{ $nu['maand_naam'] }}:</p>
       <ul class="kb-nu">
         @foreach($nu['groepen'] as $groep)
           <li class="kb-nu-groep">
