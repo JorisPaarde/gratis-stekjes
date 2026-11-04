@@ -9,6 +9,18 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.69.1] - 2026-11-04
+
+### Fixed
+
+- Catalogus-identiteit: zes bestaande `plantensoorten`-ids die in 0.69.0 een andere
+  Latijnse soort kregen, teruggezet naar de master-soort (o.a. Patagonisch ijzerhard /
+  *Verbena bonariensis*, Grote margriet / *Leucanthemum × superbum*, genus-entries
+  Klokjesbloem / Longkruid / Sleutelbloem, Artisjok / *Cynara cardunculus*).
+  Soortspecifieke tips en foto’s verhuisd naar nieuwe entries (Echt ijzerhard, Gewone
+  margriet, Ruig klokje, Gevlekt longkruid, Gulden sleutelbloem) met 301’s vanaf de
+  oude tip-slugs. Kattestaart houdt tip/foto; naam hersteld.
+
 ## [0.69.0] - 2026-11-04
 
 ### Added

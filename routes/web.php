@@ -117,6 +117,11 @@ Route::get('/stektips/artikel/{slug}', [StektipsController::class, 'artikel'])
     ->name('stektips.artikel');
 // Oude spelling (zonder tweede i); canonieke slug is sansevieria.
 Route::redirect('/stektips/sanseveria', '/stektips/sansevieria', 301);
+// 0.69.1: soortspecifieke tips losgekoppeld van genus-/cultivar-catalogus-ids.
+Route::redirect('/stektips/ijzerhard', '/stektips/echt-ijzerhard', 301);
+Route::redirect('/stektips/klokjesbloem', '/stektips/ruig-klokje', 301);
+Route::redirect('/stektips/longkruid', '/stektips/gevlekt-longkruid', 301);
+Route::redirect('/stektips/sleutelbloem', '/stektips/gulden-sleutelbloem', 301);
 Route::get('/stektips/{slug}', [StektipsController::class, 'show'])
     ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
     ->name('stektips.show');

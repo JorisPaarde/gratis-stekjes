@@ -128,7 +128,7 @@
       "klaar": "Bloei vaak vanaf jaar twee",
       "verwanten": [
         "vingerhoedskruid",
-        "longkruid",
+        "gevlekt-longkruid",
         "gewone-margriet"
       ],
       "waarschuwing": "Zaden en plant kunnen giftig zijn bij inname. Niet eten.",
@@ -704,7 +704,7 @@
       "verwanten": [
         "akelei",
         "robertskruid",
-        "klokjesbloem"
+        "ruig-klokje"
       ],
       "waarschuwing": "",
       "ervaringen": "",
@@ -1336,7 +1336,7 @@
     },
     {
       "slug": "grote-kattenstaart",
-      "naam": "Grote kattenstaart",
+      "naam": "Kattestaart",
       "latijn": "Lythrum salicaria",
       "categorie": "sier",
       "tags": [
@@ -1648,8 +1648,8 @@
       "kort": "Kindrozettten afnemen en poten"
     },
     {
-      "slug": "ijzerhard",
-      "naam": "IJzerhard",
+      "slug": "echt-ijzerhard",
+      "naam": "Echt ijzerhard",
       "latijn": "Verbena officinalis",
       "categorie": "kruid",
       "tags": [
@@ -1673,7 +1673,7 @@
       ],
       "waarschuwing": "Dit is Verbena officinalis (inheems), niet de Zuid-Amerikaanse Verbena bonariensis.",
       "ervaringen": "",
-      "bronnen": "Flora van Nederland — Verbena officinalis — https://www.floravanNederland.nl/plantensoorten/ijzerhard",
+      "bronnen": "Flora van Nederland — Verbena officinalis — https://www.floravanNederland.nl/plantensoorten/echt-ijzerhard",
       "kort": "Zaaien in het voorjaar",
       "seo_werkwoord": "zaaien"
     },
@@ -2125,8 +2125,8 @@
       "kort": "Kopstek of afleggen: heel makkelijk"
     },
     {
-      "slug": "klokjesbloem",
-      "naam": "Klokjesbloem",
+      "slug": "ruig-klokje",
+      "naam": "Ruig klokje",
       "latijn": "Campanula trachelium",
       "categorie": "sier",
       "tags": [
@@ -2145,7 +2145,7 @@
       "klaar": "Direct na scheuren",
       "verwanten": [
         "akelei",
-        "longkruid",
+        "gevlekt-longkruid",
         "vingerhoedskruid"
       ],
       "waarschuwing": "",
@@ -2488,8 +2488,8 @@
       "seo_werkwoord": "zaaien"
     },
     {
-      "slug": "longkruid",
-      "naam": "Longkruid",
+      "slug": "gevlekt-longkruid",
+      "naam": "Gevlekt longkruid",
       "latijn": "Pulmonaria officinalis",
       "categorie": "sier",
       "tags": [
@@ -3191,7 +3191,7 @@
       "verwanten": [
         "ooievaarsbek",
         "look-zonder-look",
-        "longkruid"
+        "gevlekt-longkruid"
       ],
       "waarschuwing": "",
       "ervaringen": "",
@@ -3511,8 +3511,8 @@
       "seo_werkwoord": "stekken"
     },
     {
-      "slug": "sleutelbloem",
-      "naam": "Sleutelbloem",
+      "slug": "gulden-sleutelbloem",
+      "naam": "Gulden sleutelbloem",
       "latijn": "Primula veris",
       "categorie": "sier",
       "tags": [
@@ -3530,7 +3530,7 @@
       "kans": "Gemiddeld",
       "klaar": "Na kiemen of direct na scheuren",
       "verwanten": [
-        "longkruid",
+        "gevlekt-longkruid",
         "dagkoekoeksbloem",
         "akelei"
       ],
@@ -3822,8 +3822,8 @@
       "klaar": "Roset jaar 1; bloei jaar 2",
       "verwanten": [
         "akelei",
-        "longkruid",
-        "klokjesbloem"
+        "gevlekt-longkruid",
+        "ruig-klokje"
       ],
       "waarschuwing": "Giftig: alle delen. Niet eten, handen wassen na contact, uit de buurt van kinderen en huisdieren houden die kauwen.",
       "ervaringen": "",
