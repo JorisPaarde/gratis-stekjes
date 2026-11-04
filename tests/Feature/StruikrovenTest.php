@@ -46,6 +46,28 @@ test('/struikroven geeft 200 met knoppen, uitleg en lege acties', function () {
         ->and($html)->toContain('application/ld+json');
 });
 
+test('/struikroven toont wie-zijn-sectie met externe links', function () {
+    $this->get(route('struikroven'))
+        ->assertOk()
+        ->assertSee('Wie zijn de Struikrovers?', false)
+        ->assertSee('Meer over Struikroven', false)
+        ->assertSee('Bekijk de agenda van Struikroven', false)
+        ->assertSee('href="https://struikroven.nu"', false)
+        ->assertSee('href="https://struikroven.nu/agenda"', false)
+        ->assertSee(route('partners'), false)
+        ->assertDontSee('buurtinitiatief in Eindhoven', false);
+});
+
+test('/initiatieven toont Struikroven-kaart met externe link', function () {
+    $this->get(route('partners'))
+        ->assertOk()
+        ->assertSee('Vaste ruilinitiatieven', false)
+        ->assertSee('Struikroven', false)
+        ->assertSee('https://struikroven.nu', false)
+        ->assertSee('Meedoen als Struikrover', false)
+        ->assertSee(route('struikroven'), false);
+});
+
 test('/struikroven toont gekoppelde komende acties en negeert andere', function () {
     Evenement::query()->create([
         'titel' => 'Struikroof Eindhoven',

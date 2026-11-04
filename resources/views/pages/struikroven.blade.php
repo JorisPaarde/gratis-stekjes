@@ -27,6 +27,21 @@
   </div>
   <p class="muted struikroven-cta-hint">Zoeken kan zonder account. Aanbieden vraagt een gratis account.</p>
 
+  <section class="struikroven-over" aria-labelledby="struikroven-over-titel">
+    <h2 id="struikroven-over-titel">Wie zijn de Struikrovers?</h2>
+    <p>
+      Struikroven redt planten van de sloop. Als huizen worden gesloopt of opgeknapt, verdwijnt vaak veel gezond groen uit voor- en achtertuinen. Zonde, want volwassen planten en struiken geven karakter aan een buurt.
+    </p>
+    <p>
+      Tijdens een struikroofactie halen buurtbewoners samen die planten uit de grond en geven ze een tweede leven in hun eigen tuin, op hun balkon, in de buurt of in een logeertuin. Meedoen is gratis en iedereen is welkom, jong en oud.
+    </p>
+    <p class="struikroven-over-links">
+      <a href="https://struikroven.nu" rel="noopener" target="_blank">Meer over Struikroven</a>
+      <a href="https://struikroven.nu/agenda" rel="noopener" target="_blank">Bekijk de agenda van Struikroven</a>
+      <a href="{{ route('partners') }}">Meer initiatieven</a>
+    </p>
+  </section>
+
   <h2>Wat is {{ config('site.name') }}?</h2>
   <p>
     Alles is gratis. Er wordt niets verkocht. Je spreekt zelf af met de aanbieder
@@ -34,12 +49,9 @@
     of plaats, zodat je ziet wat er in de buurt is.
   </p>
   <p>
-    Struikroven redt planten bij sloop en vernieuwing.
-    Wat je overhoudt of mist, kun je hier gratis delen met iemand in de buurt.
+    Wat je overhoudt of mist na een Struikroofactie, kun je hier gratis delen met iemand in de buurt.
     @if($org)
-      Meer over Struikroven op
-      <a href="{{ $org['website'] }}" rel="noopener noreferrer" target="_blank">struikroven.nu</a>
-      of op de
+      Meer op de
       <a href="{{ route('organisaties.show', ['slug' => 'struikroven']) }}">organisatiepagina</a>.
     @endif
   </p>

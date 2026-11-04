@@ -9,6 +9,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.64.1] - 2026-11-04
+
+### Added
+
+- `/struikroven`: korte sectie «Wie zijn de Struikrovers?» (tekst van struikroven.nu) met links naar de site, agenda en `/initiatieven`, direct onder de knoppen.
+- `/initiatieven`: Struikroven als vaste-ruilinitiatieven-kaart (zelfde stijl als MeerBomen Nu), met link naar meedoen op `/struikroven`.
+
 ## [0.64.0] - 2026-11-04
 
 ### Added

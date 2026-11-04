@@ -124,6 +124,12 @@
       <p>Landelijk initiatief dat kansarme zaailingen redt en gratis tweede-kansbomen en -struiken uitdeelt via bomenhubs en vrijwilligers. Het verschil met mij: zij doen bomen en acties, ik stekjes van mens tot mens.</p>
       <p class="muted">Niet te bezoeken via mijn kaart.</p>
     </article>
+    <article class="soft-card">
+      <h3><a href="https://struikroven.nu" rel="noopener noreferrer">Struikroven</a></h3>
+      <p>Landelijke stichting die planten redt van de sloop. Tijdens een struikroofactie halen buurtbewoners samen planten en struiken uit tuinen die verdwijnen, en geven ze een nieuwe plek in hun eigen tuin, op hun balkon of in de buurt. Het verschil met mij: zij redden groen bij sloop, ik deel stekjes van mens tot mens.</p>
+      <p class="muted"><a href="https://struikroven.nu/agenda" rel="noopener noreferrer">Bekijk hun acties in de agenda van Struikroven</a>.</p>
+      <p><a href="{{ route('struikroven') }}">Meedoen als Struikrover</a></p>
+    </article>
   </div>
 
   <h3>Andere links</h3>

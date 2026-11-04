@@ -43,6 +43,8 @@ test('initiatievenpagina toont SEO-title, H1, lege agenda en vaste initiatieven'
         ->assertSee('Meld het', false)
         ->assertSee('Vaste ruilinitiatieven', false)
         ->assertSee('Voedselbosbouw.org', false)
+        ->assertSee('Struikroven', false)
+        ->assertSee('https://struikroven.nu', false)
         ->assertDontSee('Stekjesroute', false);
 });
 

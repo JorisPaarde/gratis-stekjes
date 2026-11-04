@@ -29,6 +29,29 @@
   font-size: 0.95rem;
 }
 
+.struikroven-over {
+  margin: 0 0 2rem;
+  max-width: 40rem;
+}
+
+.struikroven-over > p {
+  margin: 0 0 0.85rem;
+  line-height: 1.55;
+}
+
+.struikroven-over-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 1rem 0 0;
+}
+
+.struikroven-over-links a {
+  display: inline-block;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
 .struikroven-acties {
   display: grid;
   gap: 1rem;
