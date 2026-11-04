@@ -92,7 +92,8 @@ test('gp:ledenupdate-mail dry-run toont gerenderde body zonder e-mail of straat'
         ->and($out)->toContain('#'.$u->id)
         ->and($out)->toContain('lidnummer 1 · tier 10 · naam ja · postcode-zin ja')
         ->and($out)->toContain('Onderwerp: '.LedenupdateMailContent::SUBJECT)
-        ->and($out)->toContain('Hoi Pia,')
+        ->and($out)->toContain('Hoi [naam],')
+        ->and($out)->not->toContain('Pia')
         ->and($out)->toContain('Lid-id\'s: '.$u->id)
         ->and($out)->not->toContain('pia-geheim@example.com')
         ->and($out)->not->toContain('Geheimstraat')
@@ -178,4 +179,25 @@ test('LedenupdateMail mailable subject en from via MAIL_*', function () {
     expect($mail->envelope()->subject)->toBe(LedenupdateMailContent::SUBJECT)
         ->and($mail->envelope()->from->address)->toBe('info@gratisplanten.nl')
         ->and($mail->envelope()->from->name)->toBe('Gratis planten');
+});
+
+test('ledenupdate: naam die op e-mailadres lijkt telt als ontbrekend', function () {
+    $u = ledenupdateUser(['name' => 'iemand@example.com', 'email' => 'iemand@example.com']);
+
+    $exit = Artisan::call('gp:ledenupdate-mail', ['--dry-run' => true]);
+    $out = Artisan::output();
+
+    expect($exit)->toBe(1)
+        ->and($out)->toContain('#'.$u->id.' mist: naam (lijkt op e-mailadres)')
+        ->and($out)->not->toContain('iemand@example.com');
+});
+
+test('ledenupdate tekstdeel bevat geen HTML-entities', function () {
+    $mail = new LedenupdateMail(['naam' => 'Sam', 'nr' => 3, 'tier' => 10, 'vraag_postcode' => false]);
+    $rendered = $mail->render();
+    $text = view('mail.ledenupdate', ['body' => LedenupdateMailContent::plainBody($mail->data)])->render();
+
+    expect($text)->toContain("Typ bijvoorbeeld 'vrouwentong'")
+        ->and($text)->not->toContain('&#039;')
+        ->and($rendered)->toContain('https://gratisplanten.nl/account/profiel');
 });

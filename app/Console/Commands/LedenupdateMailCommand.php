@@ -135,8 +135,8 @@ class LedenupdateMailCommand extends Command
             ));
             $this->line('  Onderwerp: '.LedenupdateMailContent::SUBJECT);
             $this->line('  --- body ---');
-            // Geen e-mailadres in output; body bevat alleen {naam}/URLs/tekst.
-            foreach (explode("\n", LedenupdateMailContent::plainBody($data)) as $line) {
+            // Publieke repo-log: geen e-mailadres en geen echte naam; naam als [naam].
+            foreach (explode("\n", LedenupdateMailContent::plainBody(array_merge($data, ['naam' => '[naam]']))) as $line) {
                 $this->line('  '.$line);
             }
             $this->line('  --- /body ---');
@@ -182,7 +182,7 @@ class LedenupdateMailCommand extends Command
         }
 
         try {
-            Mail::to($user->email)->send(new LedenupdateMail($data));
+            Mail::mailer('smtp')->to($user->email)->send(new LedenupdateMail($data));
         } catch (Throwable $e) {
             $summary = class_basename($e).': '.mb_substr(
                 (string) preg_replace('/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/', '[email]', $e->getMessage()),

@@ -26,7 +26,7 @@ final class LedenupdateMailContent
         $nr = $milestones->lidnummer($user);
         $tier = self::tierFor($nr);
 
-        if ($naam === '' || $nr === null || $tier === null) {
+        if ($naam === '' || Naam::lijktOpEmail($naam, (string) $user->email) || $nr === null || $tier === null) {
             return null;
         }
 
@@ -115,8 +115,11 @@ final class LedenupdateMailContent
     public static function missingFields(User $user, MilestoneService $milestones): array
     {
         $missing = [];
-        if (trim((string) $user->name) === '') {
+        $naam = trim((string) $user->name);
+        if ($naam === '') {
             $missing[] = 'naam';
+        } elseif (Naam::lijktOpEmail($naam, (string) $user->email)) {
+            $missing[] = 'naam (lijkt op e-mailadres)';
         }
         $nr = $milestones->lidnummer($user);
         if ($nr === null) {

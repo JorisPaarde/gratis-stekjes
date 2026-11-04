@@ -29,10 +29,7 @@ class LedenupdateMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address(
-                (string) config('mail.from.address', 'info@gratisplanten.nl'),
-                (string) config('mail.from.name', 'Gratis planten'),
-            ),
+            from: new Address('info@gratisplanten.nl', 'Gratis planten'),
             subject: LedenupdateMailContent::SUBJECT,
         );
     }
