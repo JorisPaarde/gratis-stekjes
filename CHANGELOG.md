@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.63.0] - 2026-11-04
+
+### Changed
+
+- Favicon en app-iconen vervangen door het nieuwe logo-icoon (kiemplantje in groene cirkel); SVG-favicon toegevoegd; icoonlinks krijgen ?v=versie tegen cache.
+
 ## [0.62.0] - 2026-11-04
 
 ### Added
