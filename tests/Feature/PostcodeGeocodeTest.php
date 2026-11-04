@@ -17,8 +17,8 @@ function fakePdok2037(): void
             return Http::response([], 200);
         }
         $doc = str_contains($url, 'fq=type')
-            ? ['type' => 'postcode', 'weergavenaam' => 'Adlerstraat, 2037KB Haarlem', 'centroide_ll' => 'POINT(4.6668685 52.35546039)']
-            : ['type' => 'woonplaats', 'weergavenaam' => 'Nederweert, Nederweert, Limburg', 'centroide_ll' => 'POINT(5.72250254 51.29561071)'];
+            ? ['type' => 'postcode', 'weergavenaam' => 'Adlerstraat, 2037KB Haarlem', 'woonplaatsnaam' => 'Haarlem', 'postcode' => '2037KB', 'centroide_ll' => 'POINT(4.6668685 52.35546039)']
+            : ['type' => 'woonplaats', 'weergavenaam' => 'Nederweert, Nederweert, Limburg', 'woonplaatsnaam' => 'Nederweert', 'centroide_ll' => 'POINT(5.72250254 51.29561071)'];
 
         return Http::response(['response' => ['docs' => [$doc]]], 200);
     });
@@ -39,7 +39,9 @@ test('NL-postcode 2037 geocodeert naar Haarlem, niet naar woonplaats Nederweert'
         ->assertSessionHasNoErrors();
 
     $user->refresh();
-    expect($user->locatie_label)->toBe('2037')
+    expect($user->locatie_label)->toBe('2037 Haarlem')
+        ->and($user->postcode_gebied)->toBe('2037')
+        ->and($user->woonplaats)->toBe('Haarlem')
         ->and($user->lat)->toBe(52.355)
         ->and($user->lon)->toBe(4.667);
 })->with(['2037', '2037 KB']);
