@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.66.1] - 2026-11-04
+
+### Added
+
+- `/initiatieven`: organisaties met een gevulde `initiatief_slug` krijgen automatisch een soft-card (korte intro) die naar `/{slug}` linkt (bijv. Struikroven → `/struikroven`). Organisaties zonder pagina ongewijzigd.
+
 ## [0.66.0] - 2026-11-04
 
 ### Added
