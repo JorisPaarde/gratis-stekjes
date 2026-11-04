@@ -1,6 +1,6 @@
 {
-    "slug": "sleutelbloem",
-    "naam": "Sleutelbloem",
+    "slug": "gulden-sleutelbloem",
+    "naam": "Gulden sleutelbloem",
     "latijn": "Primula veris",
     "categorie": "sier",
     "tags": [
@@ -18,7 +18,7 @@
     "kans": "Gemiddeld",
     "klaar": "Na kiemen of direct na scheuren",
     "verwanten": [
-        "longkruid",
+        "gevlekt-longkruid",
         "dagkoekoeksbloem",
         "akelei"
     ],

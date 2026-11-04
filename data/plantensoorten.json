@@ -1919,18 +1919,13 @@
     {
       "id": 166,
       "naam": "Sleutelbloem",
-      "latijn": "Primula veris",
+      "latijn": "Primula",
       "synoniemen": [
-        "Primula",
-        "Gulden sleutelbloem",
-        "Cowslip"
+        "Primula"
       ],
-      "slug": "sleutelbloem",
+      "slug": null,
       "categorie": "tuin",
-      "zichtbaar": true,
-      "tags": [
-        "inheems"
-      ]
+      "zichtbaar": true
     },
     {
       "id": 167,
@@ -1997,17 +1992,13 @@
     {
       "id": 173,
       "naam": "Klokjesbloem",
-      "latijn": "Campanula trachelium",
+      "latijn": "Campanula",
       "synoniemen": [
-        "Campanula",
-        "Ruig klokje"
+        "Campanula"
       ],
-      "slug": "klokjesbloem",
+      "slug": null,
       "categorie": "tuin",
-      "zichtbaar": true,
-      "tags": [
-        "inheems"
-      ]
+      "zichtbaar": true
     },
     {
       "id": 174,
@@ -2092,18 +2083,17 @@
     },
     {
       "id": 180,
-      "naam": "IJzerhard",
-      "latijn": "Verbena officinalis",
+      "naam": "Patagonisch ijzerhard",
+      "latijn": "Verbena bonariensis",
       "synoniemen": [
-        "Echt ijzerhard",
-        "Vervain"
+        "Verbena bonariensis",
+        "ijzerhard",
+        "IJzerhard",
+        "verbena"
       ],
-      "slug": "ijzerhard",
+      "slug": null,
       "categorie": "tuin",
-      "zichtbaar": true,
-      "tags": [
-        "inheems"
-      ]
+      "zichtbaar": true
     },
     {
       "id": 181,
@@ -2182,18 +2172,15 @@
     },
     {
       "id": 187,
-      "naam": "Gewone margriet",
-      "latijn": "Leucanthemum vulgare",
+      "naam": "Grote margriet",
+      "latijn": "Leucanthemum × superbum",
       "synoniemen": [
-        "Margriet",
-        "Oxeye daisy"
+        "Shasta daisy",
+        "margriet"
       ],
-      "slug": "gewone-margriet",
+      "slug": null,
       "categorie": "tuin",
-      "zichtbaar": true,
-      "tags": [
-        "inheems"
-      ]
+      "zichtbaar": true
     },
     {
       "id": 188,
@@ -2334,17 +2321,13 @@
     {
       "id": 201,
       "naam": "Longkruid",
-      "latijn": "Pulmonaria officinalis",
+      "latijn": "Pulmonaria",
       "synoniemen": [
-        "Pulmonaria",
-        "Gevlekt longkruid"
+        "Pulmonaria"
       ],
-      "slug": "longkruid",
+      "slug": null,
       "categorie": "tuin",
-      "zichtbaar": true,
-      "tags": [
-        "inheems"
-      ]
+      "zichtbaar": true
     },
     {
       "id": 202,
@@ -2417,11 +2400,12 @@
     },
     {
       "id": 208,
-      "naam": "Grote kattenstaart",
+      "naam": "Kattestaart",
       "latijn": "Lythrum salicaria",
       "synoniemen": [
         "Lythrum",
-        "Kattestaart",
+        "Grote kattenstaart",
+        "kattenstaart",
         "Purple loosestrife"
       ],
       "slug": "grote-kattenstaart",
@@ -3352,7 +3336,7 @@
     {
       "id": 292,
       "naam": "Artisjok",
-      "latijn": "Cynara cardunculus var. scolymus",
+      "latijn": "Cynara cardunculus",
       "synoniemen": [
         "Kroonartisjok",
         "Globe artichoke"
@@ -4527,6 +4511,86 @@
       "tags": [
         "inheems"
       ]
+    },
+    {
+      "id": 375,
+      "naam": "Echt ijzerhard",
+      "latijn": "Verbena officinalis",
+      "synoniemen": [
+        "Verbena officinalis",
+        "Vervain",
+        "ijzerhard",
+        "IJzerhard"
+      ],
+      "slug": "echt-ijzerhard",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
+    },
+    {
+      "id": 376,
+      "naam": "Gewone margriet",
+      "latijn": "Leucanthemum vulgare",
+      "synoniemen": [
+        "Margriet",
+        "Oxeye daisy"
+      ],
+      "slug": "gewone-margriet",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
+    },
+    {
+      "id": 377,
+      "naam": "Ruig klokje",
+      "latijn": "Campanula trachelium",
+      "synoniemen": [
+        "Campanula trachelium",
+        "klokjesbloem"
+      ],
+      "slug": "ruig-klokje",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
+    },
+    {
+      "id": 378,
+      "naam": "Gevlekt longkruid",
+      "latijn": "Pulmonaria officinalis",
+      "synoniemen": [
+        "Pulmonaria officinalis",
+        "longkruid"
+      ],
+      "slug": "gevlekt-longkruid",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
+    },
+    {
+      "id": 379,
+      "naam": "Gulden sleutelbloem",
+      "latijn": "Primula veris",
+      "synoniemen": [
+        "Primula veris",
+        "Cowslip",
+        "sleutelbloem",
+        "Gulden sleutelbloem"
+      ],
+      "slug": "gulden-sleutelbloem",
+      "categorie": "tuin",
+      "zichtbaar": true,
+      "tags": [
+        "inheems"
+      ]
     }
-  ]
+  ],
+  "count": 379
 }

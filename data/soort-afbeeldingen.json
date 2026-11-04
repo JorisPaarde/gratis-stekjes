@@ -850,7 +850,7 @@
     },
     "grote-kattenstaart": {
       "slug": "grote-kattenstaart",
-      "naam": "Grote kattenstaart",
+      "naam": "Kattestaart",
       "latijn": "Lythrum salicaria",
       "auteur": "H. Zell",
       "licentie": "CC BY-SA",
@@ -858,7 +858,7 @@
       "bron_url": "https://commons.wikimedia.org/wiki/File:Lythrum_salicaria_002.JPG",
       "bron_titel": "File:Lythrum salicaria 002.JPG",
       "originele_mime": "image/jpeg",
-      "alt": "Grote kattenstaart (Lythrum salicaria)",
+      "alt": "Kattestaart (Lythrum salicaria)",
       "bestand": "assets/images/soorten/grote-kattenstaart.jpg",
       "notitie": "Lythrum salicaria, Lyhraceae, Purple Loosestrife, inflorescence. The plant is used in homeopathy as remedy: Lythrum salicaria (Lythr-s.)",
       "status": "goedgekeurd",
@@ -1046,9 +1046,9 @@
       "status": "goedgekeurd",
       "sha256": "f4b79c3401eae0161cadcb7bc29a0cab6097f772d57a39964ca163c0882f1995"
     },
-    "ijzerhard": {
-      "slug": "ijzerhard",
-      "naam": "IJzerhard",
+    "echt-ijzerhard": {
+      "slug": "echt-ijzerhard",
+      "naam": "Echt ijzerhard",
       "latijn": "Verbena officinalis",
       "auteur": "Konrad Lackerbeck",
       "licentie": "CC BY-SA",
@@ -1056,8 +1056,8 @@
       "bron_url": "https://commons.wikimedia.org/wiki/File:Eisenkraut,_Passau.JPG",
       "bron_titel": "File:Eisenkraut, Passau.JPG",
       "originele_mime": "image/jpeg",
-      "alt": "IJzerhard (Verbena officinalis)",
-      "bestand": "assets/images/soorten/ijzerhard.jpg",
+      "alt": "Echt ijzerhard (Verbena officinalis)",
+      "bestand": "assets/images/soorten/echt-ijzerhard.jpg",
       "notitie": "Eisenkraut im Landschaftsschutzgebiet Kohlbruck in Passau",
       "status": "goedgekeurd",
       "sha256": "231fe0ea25dcdd0c24d39b88a8454ef8eec46f7db3a52f9cc099312c9daea959",
@@ -1370,9 +1370,9 @@
       "status": "goedgekeurd",
       "sha256": "6e8adde5983e7d00c710cdaed1e22b5b98b3c8537c62f6f13e40326c2be44e7e"
     },
-    "klokjesbloem": {
-      "slug": "klokjesbloem",
-      "naam": "Klokjesbloem",
+    "ruig-klokje": {
+      "slug": "ruig-klokje",
+      "naam": "Ruig klokje",
       "latijn": "Campanula trachelium",
       "auteur": "W. Bulach",
       "licentie": "CC BY-SA",
@@ -1380,8 +1380,8 @@
       "bron_url": "https://commons.wikimedia.org/wiki/File:.00_2908_Nesselbl%C3%A4ttrige_Glockenblume_(Campanula_trachelium).jpg",
       "bron_titel": "File:.00 2908 Nesselblättrige Glockenblume (Campanula trachelium).jpg",
       "originele_mime": "image/jpeg",
-      "alt": "Klokjesbloem (Campanula trachelium)",
-      "bestand": "assets/images/soorten/klokjesbloem.jpg",
+      "alt": "Ruig klokje (Campanula trachelium)",
+      "bestand": "assets/images/soorten/ruig-klokje.jpg",
       "notitie": "Close-up of the 'nettle-leaved bellflower' (Campanula trachelium). A perennial plant that grows up to 110 centimeters in height. Characteristics are the hairiness of the stems and the leaves, which ma",
       "status": "goedgekeurd",
       "sha256": "f9afca1da6b54baae29ac1441e456ff935e74035311d957e38c36777d553805a",
@@ -1586,9 +1586,9 @@
       "bytes": 248494,
       "width_max": 1024
     },
-    "longkruid": {
-      "slug": "longkruid",
-      "naam": "Longkruid",
+    "gevlekt-longkruid": {
+      "slug": "gevlekt-longkruid",
+      "naam": "Gevlekt longkruid",
       "latijn": "Pulmonaria officinalis",
       "auteur": "AnemoneProjectors (talk)",
       "licentie": "CC BY-SA",
@@ -1596,8 +1596,8 @@
       "bron_url": "https://commons.wikimedia.org/wiki/File:Lungwort_(Pulmonaria_officinalis)_(33628407390).jpg",
       "bron_titel": "File:Lungwort (Pulmonaria officinalis) (33628407390).jpg",
       "originele_mime": "image/jpeg",
-      "alt": "Longkruid (Pulmonaria officinalis)",
-      "bestand": "assets/images/soorten/longkruid.jpg",
+      "alt": "Gevlekt longkruid (Pulmonaria officinalis)",
+      "bestand": "assets/images/soorten/gevlekt-longkruid.jpg",
       "notitie": "Lungwort (Pulmonaria officinalis), Harrow Weald Common, London, 1 April 2017.",
       "status": "goedgekeurd",
       "sha256": "6aae8cfc188ff16f9542e5c8661190ce8f96b32caba9b472387abb379ca69d7e",
@@ -2252,9 +2252,9 @@
       "bytes": 178946,
       "width_max": 1200
     },
-    "sleutelbloem": {
-      "slug": "sleutelbloem",
-      "naam": "Sleutelbloem",
+    "gulden-sleutelbloem": {
+      "slug": "gulden-sleutelbloem",
+      "naam": "Gulden sleutelbloem",
       "latijn": "Primula veris",
       "auteur": "Flocci Nivis",
       "licentie": "CC BY",
@@ -2262,8 +2262,8 @@
       "bron_url": "https://commons.wikimedia.org/wiki/File:20230430_Primula_veris.jpg",
       "bron_titel": "File:20230430 Primula veris.jpg",
       "originele_mime": "image/jpeg",
-      "alt": "Sleutelbloem (Primula veris)",
-      "bestand": "assets/images/soorten/sleutelbloem.jpg",
+      "alt": "Gulden sleutelbloem (Primula veris)",
+      "bestand": "assets/images/soorten/gulden-sleutelbloem.jpg",
       "notitie": "Cowslip (Primula veris) in the nature reserve Garchinger Heide.",
       "status": "goedgekeurd",
       "sha256": "236ef419d3c02c41b8452770913dd180d7a400f833aa17c0a08b437c3f767652",
@@ -2631,6 +2631,6 @@
       "sha256": "cd2f1a960d81897e4acd6b4b3d28b64ce0811ac21b61b8577a573a50c8f75165"
     }
   },
-  "count": 106,
+  "count": 146,
   "missing": []
 }
