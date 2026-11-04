@@ -105,6 +105,8 @@ class MeedoenController extends Controller
     {
         $voor = array_key_exists((string) $request->query('voor'), self::POSTERS) ? (string) $request->query('voor') : 'algemeen';
         $p = self::POSTERS[$voor];
+        $formaat = strtolower((string) $request->query('formaat', 'a4'));
+        $isA5 = $formaat === 'a5';
 
         // Printbare posters: QR en leesbaar adres altijd naar productie,
         // nooit naar staging/local APP_URL (anders scannen bezoekers de verkeerde site).
@@ -115,13 +117,35 @@ class MeedoenController extends Controller
         $host = (string) config('site.canonical_host', 'gratisplanten.nl');
         $prodUrl = 'https://'.$host.($path === '/' ? '' : $path);
 
+        $stappen = [
+            'Scan de code en kijk wat er bij jou in de buurt te halen is.',
+            'Iets over? Zet het er gratis op, het kost je een minuut.',
+            'Je haalt het zelf op. Een praatje is de enige prijs.',
+        ];
+        $bron = 'poster-'.$voor;
+
+        if ($isA5 && $voor === 'struikroven') {
+            $p = array_merge($p, [
+                'kop' => 'Planten over na de actie?',
+                'sub' => 'Deel planten, stekjes en zaden gratis met iemand in de buurt.',
+            ]);
+            $stappen = [
+                'Planten over na een actie? Zet ze er gratis op.',
+                'Iets nodig voor je tuin? Zoek wat er in de buurt is.',
+                'Spreek af met de aanbieder en haal het op.',
+            ];
+            $bron = 'flyer-struikroven';
+        }
+
         return view('pages.poster', [
-            'title' => 'Poster: '.$p['kop'],
-            'metaDescription' => 'Printbare poster met QR-code voor '.config('site.name').'.',
+            'title' => ($isA5 ? 'Flyer A5: ' : 'Poster: ').$p['kop'],
+            'metaDescription' => 'Printbare '.($isA5 ? 'A5-flyer' : 'poster').' met QR-code voor '.config('site.name').'.',
             'canonical' => route('help-mee'),
             'poster' => $p,
             'voor' => $voor,
-            'url' => $prodUrl.'?bron=poster-'.$voor,
+            'formaat' => $isA5 ? 'a5' : 'a4',
+            'stappen' => $stappen,
+            'url' => $prodUrl.'?bron='.$bron,
             'kortUrl' => $host.($path === '/' ? '' : $path),
         ]);
     }

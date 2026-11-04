@@ -23,7 +23,11 @@
     <a href="{{ $org['bron_url'] }}" rel="noopener noreferrer" target="_blank">Bron</a>
     @foreach($extraLinks as $link)
       ·
-      <a href="{{ $link['url'] }}" rel="noopener noreferrer" target="_blank">{{ $link['label'] }}</a>
+      @if(!empty($link['external']))
+        <a href="{{ $link['url'] }}" rel="noopener noreferrer" target="_blank">{{ $link['label'] }}</a>
+      @else
+        <a href="{{ $link['url'] }}">{{ $link['label'] }}</a>
+      @endif
     @endforeach
   </p>
 

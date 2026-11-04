@@ -9,6 +9,17 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.64.1] - 2026-11-04
+
+### Changed
+
+- `/struikroven` is één samenhangende pagina: eerst wie Struikroven is, dan meedoen-knoppen, «Zo werkt het», komende acties, en materiaal voor Struikrovers (A4-poster, A5-flyer, kopieertekst).
+
+### Added
+
+- A5-flyer `/poster?voor=struikroven&formaat=a5` (zelfde foto-stijl, QR met `bron=flyer-struikroven`, printbaar op A5).
+- Organisatiepagina Struikroven: link «Planten delen na een actie» naar `/struikroven`.
+
 ## [0.64.0] - 2026-11-04
 
 ### Added

@@ -150,8 +150,8 @@ final class Organisaties
                         if ($label === '') {
                             $errors[] = "organisaties[$i] links[$j] mist label";
                         }
-                        if ($url === '' || ! preg_match('#^https?://#i', $url)) {
-                            $errors[] = "organisaties[$i] links[$j] url moet http(s) zijn";
+                        if ($url === '' || (! preg_match('#^https?://#i', $url) && ! preg_match('#^/[A-Za-z0-9._~/-]*$#', $url))) {
+                            $errors[] = "organisaties[$i] links[$j] url moet http(s) of een pad (/…) zijn";
                         }
                     }
                 }

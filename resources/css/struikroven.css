@@ -1,6 +1,7 @@
-/* Landingspagina /struikroven — grote CTA’s bovenaan, ook op mobiel boven de vouw. */
-.struikroven-page .struikroven-lead {
-  margin-bottom: 1.25rem;
+/* Landingspagina /struikroven — wie / meedoen / stappen / acties / materiaal. */
+.struikroven-page .struikroven-links {
+  margin: 0 0 2rem;
+  font-size: 0.95rem;
 }
 
 .struikroven-ctas {
@@ -29,10 +30,20 @@
   font-size: 0.95rem;
 }
 
+.struikroven-stappen {
+  margin: 0 0 1rem;
+  padding-left: 1.35rem;
+  max-width: 40rem;
+}
+
+.struikroven-stappen li {
+  margin: 0.45rem 0;
+}
+
 .struikroven-acties {
   display: grid;
   gap: 1rem;
-  margin: 0;
+  margin: 0 0 2rem;
   padding: 0;
   max-width: 40rem;
 }
@@ -51,6 +62,37 @@
 .struikroven-actie-meta {
   margin: 0;
   font-size: 0.95rem;
+}
+
+.struikroven-materiaal {
+  margin: 0 0 1.25rem;
+  max-width: 40rem;
+}
+
+.struikroven-kopieer {
+  display: grid;
+  gap: 0.6rem;
+  max-width: 40rem;
+  margin: 0 0 1rem;
+}
+
+.struikroven-kopieer-label {
+  font-weight: 600;
+  color: var(--forest-deep);
+}
+
+.struikroven-deeltekst {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 6.5rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  background: var(--bg-mint, #eef6ea);
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.45;
+  resize: vertical;
 }
 
 @media (min-width: 720px) {
