@@ -15,6 +15,10 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - `/initiatieven`: organisaties met een gevulde `initiatief_slug` krijgen automatisch een soft-card (korte intro) die naar `/{slug}` linkt (bijv. Struikroven → `/struikroven`). Organisaties zonder pagina ongewijzigd.
 
+### Notes
+
+- Plaatsveld (0.65.0) zit nog niet in deze release.
+
 ## [0.66.0] - 2026-11-04
 
 ### Added
