@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Services\StadAanbod;
 use App\Services\Steden;
+use App\Support\RecentAanbod;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
@@ -58,6 +59,8 @@ class GratisPlantenController extends Controller
         $canonical = route('gratis-planten.show', ['stad' => $city['slug']]);
         $faq = $steden->faqFor($city);
         $aanbod = $stadAanbod->aanbodWithin($city);
+        // Lijst/kop alleen bij genoeg actief aanbod mét foto in de straal; CTAs + kaart blijven.
+        $toonAanbod = RecentAanbod::shouldShow($stadAanbod->countWithFotoWithin($city));
         $deelplekken = $stadAanbod->deelplekkenWithin($city);
         // Alleen plantenasiels mét plaatsnaam die bij deze stad hoort (geen
         // buurgemeente binnen de straal — anders verzinnen we een asiel "in" de stad).
@@ -94,6 +97,7 @@ class GratisPlantenController extends Controller
             'canonical' => $canonical,
             'stad' => $city,
             'aanbod' => $aanbod,
+            'toonAanbod' => $toonAanbod,
             'deelplekken' => $deelplekken,
             'plantenasiels' => $plantenasiels,
             'nearby' => $nearby,
