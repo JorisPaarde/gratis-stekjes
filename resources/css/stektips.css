@@ -565,3 +565,7 @@
 .kb-nu-kop { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
 .kb-nu-kop .badge { text-decoration: none; }
 .kb-nu-planten { font-size: .88rem !important; color: var(--muted, #5b5550); }
+
+/* Organisatiepagina met secties (bv. Struikroven) */
+.org-acties { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0 1.5rem; }
+.org-secties { max-width: none; }

@@ -9,6 +9,16 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.63.1] - 2026-11-04
+
+### Changed
+
+- **Struikroven-pagina** (/organisaties/struikroven) uitgebreid: wat Struikroven doet, hoe je meedoet met een Struikroofactie, tussendoor planten halen of aanbieden via Gratis planten (Struikroven neemt geen planten van particulieren aan), contact voor gemeenten en corporaties, en tips om een geredde plant te laten aanslaan. Knoppen naar aanbod, aanbieden en hun agenda. Organisaties kunnen nu `secties` (kennisbankblokken) hebben.
+
+### Removed
+
+- **De Roverstuin Utrecht (Beton-T)** van de deelplekkenkaart: niet meer actief (bevestigd door Stichting Struikroven). Staat nu bij «niet opgenomen».
+
 ## [0.63.0] - 2026-11-04
 
 ### Changed

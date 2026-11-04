@@ -77,10 +77,6 @@
         "url": "https://hulshout.bibliotheek.be/plantenruilbib"
       },
       {
-        "naam": "De Roverstuin Utrecht (Vechtclub / Beton-T)",
-        "url": "https://www.vechtclub.nl/beton-t/de-roverstuin/"
-      },
-      {
         "naam": "Plantenbiebs Torhout",
         "url": "https://www.torhout.be/plantenbiebs"
       },
@@ -105,7 +101,8 @@
       "Plantenasiel Oosterhout: alleen aggregatorvermelding zonder primaire bron met adres.",
       "Zadenbibliotheek Hoeksche Waard: domein stond geparkeerd tijdens controle.",
       "Agenda-acties uit scan 31 okt 2026 (o.a. Nuenen/Oisterwijk/Sittard-Geleen × Het Bomenproject, Amsterdam De Gezonde Stad, Hilversum, Sint-Niklaas, Bornem, Velt Zandhoven, Apeldoorn, Menen, Waspik): agenda staat op pauze — geen agenda-item en geen deelplek.",
-      "Twijfel/bewust-niet uit scan 31 okt 2026 (o.a. tegelruil, verplichte ruil, smalle beurs, verlopen inschrijvingen): niet opgenomen."
+      "Twijfel/bewust-niet uit scan 31 okt 2026 (o.a. tegelruil, verplichte ruil, smalle beurs, verlopen inschrijvingen): niet opgenomen.",
+      "De Roverstuin Utrecht (Beton-T): niet meer actief, volgens Stichting Struikroven (november 2026)."
     ]
   },
   "plekken": [
@@ -571,18 +568,6 @@
       "lng": 5.827241,
       "bron_url": "https://zadenbibliotheeknederland.nl/zadenbibliotheek-nijmegen/",
       "geraadpleegd": "2026-10-29"
-    },
-    {
-      "id": "utrecht-roverstuin",
-      "naam": "De Roverstuin Utrecht (Beton-T)",
-      "type": "plantenasiel",
-      "plaats": "Utrecht",
-      "provincie": "Utrecht",
-      "adres": "Koningin Wilhelminalaan 4 (Beton-T / Vechtclub), Utrecht",
-      "lat": 52.076247,
-      "lng": 5.108286,
-      "bron_url": "https://www.vechtclub.nl/beton-t/de-roverstuin/",
-      "geraadpleegd": "2026-10-31"
     },
     {
       "id": "amsterdam-oba-spaarndammerbuurt-zadenbibliotheek",
