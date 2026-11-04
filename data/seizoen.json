@@ -1,0 +1,320 @@
+{
+  "meta": {
+    "uitleg": "Seizoensblok op de homepage en /vermeerderen: per maand wat je zelf kunt doen (eerst voor jezelf), daarna delen. Feiten volgen de pijlerpagina's.",
+    "timezone": "Europe/Amsterdam"
+  },
+  "maanden": {
+    "1": {
+      "seizoen": "winter",
+      "kop": "Winterstil? Niet voor stekkers",
+      "tekst": "Het is rustig in de tuin, maar je kunt nu al nieuwe planten maken. Kale takjes van bessen, wilg en vijg wortelen gewoon in de grond.",
+      "acties": [
+        {
+          "titel": "Winterhoutstek",
+          "tekst": "Potlooddikke takjes van zo'n 20 cm in de grond. Volgend jaar heb je een struik.",
+          "slug": "winterhoutstek",
+          "illustratie": "winterhout"
+        },
+        {
+          "titel": "Rabarber scheuren",
+          "tekst": "In de winterrust deel je de kroon. Elk stuk met een dikke knop groeit door.",
+          "slug": "scheuren",
+          "illustratie": "scheuren"
+        },
+        {
+          "titel": "Zaaiplan maken",
+          "tekst": "Kijk welk zaad je nog hebt. Wat dubbel is, kun je ruilen of weggeven.",
+          "slug": "zaaien",
+          "illustratie": "zaad"
+        }
+      ],
+      "wist_je_dat": "Een winterstek van zwarte bes steek je voor twee derde in de grond. Meer is het niet."
+    },
+    "2": {
+      "seizoen": "winter",
+      "kop": "Vensterbank vrij? Tijd om voor te zaaien",
+      "tekst": "De dagen worden langer. Op een lichte vensterbank kun je al beginnen, en buiten mag de snoeischaar weer tevoorschijn als het niet hard vriest.",
+      "acties": [
+        {
+          "titel": "Voorzaaien binnen",
+          "tekst": "Paprika, peper en tomaat hebben een lange aanloop. Een eierdoos is al genoeg.",
+          "slug": "zaaien",
+          "illustratie": "zaaien"
+        },
+        {
+          "titel": "Snoeien op nieuw hout",
+          "tekst": "Vlinderstruik en veel rozen mogen eind februari flink terug.",
+          "slug": "snoeien",
+          "illustratie": "nieuw-hout"
+        },
+        {
+          "titel": "Laatste winterstekken",
+          "tekst": "Nog voordat de knoppen uitlopen: bessen, wilg en vlier.",
+          "slug": "winterhoutstek",
+          "illustratie": "winterhout"
+        }
+      ],
+      "wist_je_dat": "Paprika en peper zaai je als eerste, al eind februari. Ze hebben een lange zomer nodig."
+    },
+    "3": {
+      "seizoen": "lente",
+      "kop": "Snoeischaar erbij, stekjes eruit",
+      "tekst": "Maart is de drukste maand van het jaar. Alles wordt wakker: snoeien, scheuren en zaaien kan nu allemaal.",
+      "acties": [
+        {
+          "titel": "Snoeien",
+          "tekst": "Vlinderstruik, rozen en pluimhortensia. Gezonde takjes zijn meteen stekmateriaal.",
+          "slug": "snoeien",
+          "illustratie": "snoeisnede"
+        },
+        {
+          "titel": "Vaste planten scheuren",
+          "tekst": "Zomerbloeiers die net uitlopen deel je nu het makkelijkst.",
+          "slug": "scheuren",
+          "illustratie": "scheuren"
+        },
+        {
+          "titel": "Voorzaaien",
+          "tekst": "Tomaat, basilicum en zomerbloemen op de vensterbank.",
+          "slug": "zaaien",
+          "illustratie": "zaaien"
+        }
+      ],
+      "wist_je_dat": "Uit één pol bieslook maak je in tien minuten vier nieuwe planten."
+    },
+    "4": {
+      "seizoen": "lente",
+      "kop": "Alles komt los: delen maar!",
+      "tekst": "De grond warmt op en planten groeien hard. Perfect om pollen te delen, buiten te zaaien en de eerste stekjes te nemen.",
+      "acties": [
+        {
+          "titel": "Scheuren",
+          "tekst": "Siergrassen, hosta en daglelie. Met een spade ben je zo klaar.",
+          "slug": "scheuren",
+          "illustratie": "scheuren"
+        },
+        {
+          "titel": "Buiten zaaien",
+          "tekst": "Goudsbloem, radijs, sla en Oost-Indische kers direct in de grond.",
+          "slug": "zaaien",
+          "illustratie": "zaaien"
+        },
+        {
+          "titel": "Eerste kopstekken",
+          "tekst": "Jonge topjes van munt, salie en kamerplanten wortelen nu snel.",
+          "slug": "kopstek-en-scheutstek",
+          "illustratie": "kopstek"
+        }
+      ],
+      "wist_je_dat": "Een topje munt in een glas water heeft na een week al wortels."
+    },
+    "5": {
+      "seizoen": "lente",
+      "kop": "Groeien, groeien, stekken!",
+      "tekst": "Alles staat vol jonge scheuten. Dat is precies wat je nodig hebt voor kopstekken, en na de IJsheiligen mag ook de moestuin vol.",
+      "acties": [
+        {
+          "titel": "Kopstek",
+          "tekst": "Zachte topjes van fuchsia, salvia, geranium en kamerplanten.",
+          "slug": "kopstek-en-scheutstek",
+          "illustratie": "kopstek"
+        },
+        {
+          "titel": "Moestuin zaaien",
+          "tekst": "Na half mei: bonen, courgette en pompoen naar buiten.",
+          "slug": "zaaien",
+          "illustratie": "zaaien"
+        },
+        {
+          "titel": "Kindjes oppotten",
+          "tekst": "Pannenkoekplant, aloë en graslelie zitten vol jonge plantjes.",
+          "slug": "uitlopers",
+          "illustratie": "grond"
+        }
+      ],
+      "wist_je_dat": "Na de IJsheiligen (half mei) is de kans op nachtvorst voorbij. Dan mogen tomaat en courgette naar buiten."
+    },
+    "6": {
+      "seizoen": "zomer",
+      "kop": "Aardbeien rennen: vang de uitlopers",
+      "tekst": "Aardbeien sturen lange uitlopers de tuin in. Zet ze vast in een potje en je hebt gratis nieuwe plantjes.",
+      "acties": [
+        {
+          "titel": "Aardbei-uitlopers",
+          "tekst": "Plantje in een potje vastzetten, na een paar weken losknippen.",
+          "slug": "uitlopers",
+          "illustratie": "uitloper"
+        },
+        {
+          "titel": "Kopstek",
+          "tekst": "Nog steeds volop jonge scheuten. Stek wat je mooi vindt.",
+          "slug": "stekken",
+          "illustratie": "kopstek"
+        },
+        {
+          "titel": "Tweejarigen zaaien",
+          "tekst": "Vingerhoedskruid, stokroos en akelei bloeien volgend jaar.",
+          "slug": "zaaien",
+          "illustratie": "zaaien"
+        }
+      ],
+      "wist_je_dat": "Eén aardbeiplant maakt in een zomer makkelijk vijf of meer nieuwe plantjes."
+    },
+    "7": {
+      "seizoen": "zomer",
+      "kop": "Zaad oogsten: de tuin geeft cadeautjes",
+      "tekst": "De eerste zaaddozen worden bruin. Oogst ze op een droge dag, en je hebt volgend jaar weer gratis planten, en nog wat om weg te geven.",
+      "acties": [
+        {
+          "titel": "Zaad oogsten",
+          "tekst": "Droge zaaddozen in een papieren zak. Label erop en klaar.",
+          "slug": "zaaien",
+          "illustratie": "zaad"
+        },
+        {
+          "titel": "Zomerstek",
+          "tekst": "Lavendel, rozemarijn en hortensia: onderaan stevig, bovenaan nog groen.",
+          "slug": "zomerstek-halfhoutstek",
+          "illustratie": "halfrijp"
+        },
+        {
+          "titel": "Braam afleggen",
+          "tekst": "Steek het topje van een lange scheut in de grond. Het wortelt vanzelf.",
+          "slug": "afleggen",
+          "illustratie": "afleggen"
+        }
+      ],
+      "wist_je_dat": "Zaad bewaar je in een papieren envelop, nooit in plastic. Dan schimmelt het niet."
+    },
+    "8": {
+      "seizoen": "zomer",
+      "kop": "Lavendel uitgebloeid? Knip, stek, deel",
+      "tekst": "Na de bloei knip je lavendel terug, en het snoeisel is perfect stekmateriaal. Ook het zaad blijft maar rijpen.",
+      "acties": [
+        {
+          "titel": "Lavendel snoeien",
+          "tekst": "Terug tot net boven het oude hout. Niet in het kale hout knippen.",
+          "slug": "lavendel-snoeien",
+          "illustratie": "snoeisnede"
+        },
+        {
+          "titel": "Zomerstek",
+          "tekst": "Van het snoeisel maak je meteen halfrijpe stekken.",
+          "slug": "zomerstek-halfhoutstek",
+          "illustratie": "halfrijp"
+        },
+        {
+          "titel": "Zaad oogsten",
+          "tekst": "Goudsbloem, stokroos en bonen zijn nu rijp.",
+          "slug": "zaaien",
+          "illustratie": "zaad"
+        }
+      ],
+      "wist_je_dat": "Van het snoeisel van één lavendel maak je tientallen stekjes."
+    },
+    "9": {
+      "seizoen": "herfst",
+      "kop": "Te volle pol? Maak er drie van",
+      "tekst": "De grond is nog warm en het regent weer vaker. Perfect om vaste planten te scheuren en de laatste zaden binnen te halen.",
+      "acties": [
+        {
+          "titel": "Scheuren",
+          "tekst": "Voorjaarsbloeiers en pollen die in het hart kaal worden.",
+          "slug": "scheuren",
+          "illustratie": "scheuren"
+        },
+        {
+          "titel": "Zaad oogsten",
+          "tekst": "De laatste zaaddozen voordat de herfststormen komen.",
+          "slug": "zaaien",
+          "illustratie": "zaad"
+        },
+        {
+          "titel": "Laatste zomerstek",
+          "tekst": "Buxus en rozemarijn wortelen nog prima.",
+          "slug": "zomerstek-halfhoutstek",
+          "illustratie": "halfrijp"
+        }
+      ],
+      "wist_je_dat": "Pioenroos scheur je in september, met drie tot vijf ogen per stuk."
+    },
+    "10": {
+      "seizoen": "herfst",
+      "kop": "Opruimen? Eerst oogsten!",
+      "tekst": "Voordat de tuin de winter in gaat: pollen delen, takken afleggen en bolletjes in de grond. Wat je over hebt, past mooi in een emmertje voor de buren.",
+      "acties": [
+        {
+          "titel": "Scheuren",
+          "tekst": "Laatste kans dit jaar voor vaste planten en kruiden.",
+          "slug": "scheuren",
+          "illustratie": "scheuren"
+        },
+        {
+          "titel": "Afleggen",
+          "tekst": "Een lage tak van hazelaar of klimop in de grond pinnen.",
+          "slug": "afleggen",
+          "illustratie": "afleggen"
+        },
+        {
+          "titel": "Broedbolletjes poten",
+          "tekst": "De kleine bolletjes van vorig jaar mogen weer de grond in.",
+          "slug": "uitlopers",
+          "illustratie": "zaad"
+        }
+      ],
+      "wist_je_dat": "Laat zaadhoofden staan: vogels eten ervan, en jij oogst wat er over is."
+    },
+    "11": {
+      "seizoen": "herfst",
+      "kop": "Kale takken? Gratis struiken!",
+      "tekst": "Het blad is gevallen, en dat is precies het moment voor winterstek. Van één bessenstruik maak je zo een hele haag.",
+      "acties": [
+        {
+          "titel": "Winterhoutstek",
+          "tekst": "Bessen, vlier, wilg en druif: takjes van een potlood dik in de grond.",
+          "slug": "winterhoutstek",
+          "illustratie": "winterhout"
+        },
+        {
+          "titel": "Rabarber scheuren",
+          "tekst": "In de rust de kroon delen, elk stuk met een knop.",
+          "slug": "scheuren",
+          "illustratie": "scheuren"
+        },
+        {
+          "titel": "Snoeisel bewaren",
+          "tekst": "Gooi gezonde takjes niet weg. Zet ze in de grond of geef ze weg.",
+          "slug": "snoeiafval-als-stek",
+          "illustratie": "snoeisnede"
+        }
+      ],
+      "wist_je_dat": "November is klassiek winterstekweer. Wat je nu in de grond steekt, heeft in het voorjaar wortels."
+    },
+    "12": {
+      "seizoen": "winter",
+      "kop": "Zaad sorteren, delen, dromen",
+      "tekst": "Buiten is het stil. Een mooi moment om je zaad te sorteren, te ruilen, en een stekje cadeau te doen.",
+      "acties": [
+        {
+          "titel": "Zaad sorteren en delen",
+          "tekst": "Envelopjes met naam en jaartal. Wat dubbel is, geef je weg.",
+          "slug": "zaaien",
+          "illustratie": "zaad"
+        },
+        {
+          "titel": "Winterhoutstek",
+          "tekst": "Bij zacht weer kun je nog gewoon stekken.",
+          "slug": "winterhoutstek",
+          "illustratie": "winterhout"
+        },
+        {
+          "titel": "Stekje als cadeau",
+          "tekst": "Een stekje in een mooi potje: een kerstcadeau dat blijft groeien.",
+          "slug": "stekken",
+          "illustratie": "delen"
+        }
+      ],
+      "wist_je_dat": "Een stekje in een mooi potje is een gratis cadeau dat elk jaar groter wordt."
+    }
+  }
+}

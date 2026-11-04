@@ -7,7 +7,7 @@
 @section('body_class', 'page-home')
 
 @push('head')
-  @vite(['resources/css/home.css', 'resources/css/nu-te-stekken.css'])
+  @vite(['resources/css/home.css', 'resources/css/nu-te-stekken.css', 'resources/css/seizoen.css'])
 @endpush
 
 @php
@@ -126,7 +126,12 @@
 </section>
 @endif
 
-{{-- 4. Waarom: het verhaal achter de site (tekst van /over) --}}
+{{-- 4. Seizoen: eerst zelf meer maken, dan delen --}}
+@if(!empty($seizoen))
+  @include('partials.seizoen', ['seizoen' => $seizoen])
+@endif
+
+{{-- 5. Waarom: het verhaal achter de site (tekst van /over) --}}
 <section class="section wrap home-section" id="waarom" aria-labelledby="waarom-titel">
   <div class="home-split home-split--rev">
     <div class="home-split-copy">
@@ -141,14 +146,9 @@
   </div>
 </section>
 
-{{-- 5. Seizoenstips --}}
-@if($nuTeStekken)
-  @include('partials.nu-te-stekken', ['nuTeStekken' => $nuTeStekken, 'headingId' => 'nu-te-stekken-titel'])
-@endif
-
 @include('partials.ervaringen-home')
 
-{{-- 6. Doe mee --}}
+{{-- 7. Doe mee --}}
 <section class="home-signup" id="doe-mee" aria-labelledby="doe-mee-titel">
   <div class="wrap home-signup-inner">
     <div class="home-signup-copy">
