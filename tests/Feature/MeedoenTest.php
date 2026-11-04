@@ -46,11 +46,13 @@ test('volg-mij toont alleen ingestelde socials', function () {
 });
 
 test('poster-varianten tonen QR naar de juiste pagina en zijn noindex', function () {
+    $host = (string) config('site.canonical_host', 'gratisplanten.nl');
     foreach (array_keys(MeedoenController::POSTERS) as $voor) {
         $html = $this->get(route('poster', ['voor' => $voor]))->assertOk()->getContent();
-        expect($html)->toContain('data-qr-url=')
+        expect($html)->toContain('data-qr-url="https://'.$host)
             ->and($html)->toContain('bron=poster-'.$voor)
-            ->and($html)->toContain('noindex');
+            ->and($html)->toContain('noindex')
+            ->and($html)->toMatch('/class="poster-url">'.preg_quote($host, '/').'/');
     }
     $this->get(route('poster', ['voor' => 'onzin']))->assertOk()->assertSee('bron=poster-algemeen', false);
 });

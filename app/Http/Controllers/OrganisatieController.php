@@ -78,10 +78,12 @@ class OrganisatieController extends Controller
             }
             $label = trim((string) ($link['label'] ?? ''));
             $url = trim((string) ($link['url'] ?? ''));
-            if ($label === '' || $url === '' || ! preg_match('#^https?://#i', $url)) {
+            $external = (bool) preg_match('#^https?://#i', $url);
+            $internal = (bool) preg_match('#^/[A-Za-z0-9._~/-]*$#', $url);
+            if ($label === '' || $url === '' || (! $external && ! $internal)) {
                 continue;
             }
-            $extraLinks[] = ['label' => $label, 'url' => $url];
+            $extraLinks[] = ['label' => $label, 'url' => $url, 'external' => $external];
         }
 
         $naam = (string) $org['naam'];

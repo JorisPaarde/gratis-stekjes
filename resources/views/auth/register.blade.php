@@ -43,6 +43,10 @@
       <input type="checkbox" name="privacy" value="1" required @checked(old('privacy'))>
       <span>Ik ga akkoord met de <a href="{{ route('privacy') }}">privacyverklaring</a>.</span>
     </label>
+    <label class="checkbox">
+      <input type="checkbox" name="struikrover" value="1" @checked(old('struikrover', $struikroverChecked ?? false))>
+      <span>Ik ben Struikrover</span>
+    </label>
 
     <button class="btn" type="submit">Account maken</button>
   </form>

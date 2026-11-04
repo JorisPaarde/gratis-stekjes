@@ -55,15 +55,19 @@
       "naam": "Stichting Struikroven",
       "type": "initiatief",
       "plaats": "Nederland",
-      "website": "https://www.struikroven.nu/",
-      "bron_url": "https://www.struikroven.nu/werkwijze",
+      "website": "https://struikroven.nu",
+      "bron_url": "https://struikroven.nu/werkwijze",
       "kort": "Stichting die planten redt uit wijken die gesloopt of vernieuwd worden. Tijdens Struikroofacties (seizoen september tot en met april) graven bewoners gratis planten uit voor hun eigen tuin of buurt. Het lokale team bestaat uit zo’n 50 Struikrovers. Er is geen vaste uitgifteplek; aanmelden is meestal nodig en sommige acties zijn alleen voor bewoners uit de buurt. Ze nemen geen planten van particulieren aan. Begonnen in 2017 als buurtinitiatief in Eindhoven, nu actief in heel Nederland; eerste Belgische actie in Houthalen-Helchteren (december 2025).",
       "deelplek_slugs": [],
       "meta_description": "Stichting die planten redt bij sloop en vernieuwing. Struikrovers organiseren Struikroofacties (september tot en met april); geen vaste uitgifteplek.",
       "links": [
         {
           "label": "Bekijk hun actieagenda",
-          "url": "https://www.struikroven.nu/agenda"
+          "url": "https://struikroven.nu/agenda"
+        },
+        {
+          "label": "Planten delen na een actie",
+          "url": "/struikroven"
         }
       ],
       "gerelateerde_slugs": [

@@ -27,6 +27,30 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - PDOK/Nominatim: woonplaats meenemen bij postcode-zoeken; reverse-geocode voor normalisatie.
 
+## [0.64.1] - 2026-11-04
+
+### Changed
+
+- `/struikroven` is één samenhangende pagina: eerst wie Struikroven is, dan meedoen-knoppen, «Zo werkt het», komende acties, en materiaal voor Struikrovers (A4-poster, A5-flyer, kopieertekst).
+
+### Added
+
+- A5-flyer `/poster?voor=struikroven&formaat=a5` (zelfde foto-stijl, QR met `bron=flyer-struikroven`, printbaar op A5).
+- Organisatiepagina Struikroven: link «Planten delen na een actie» naar `/struikroven`.
+
+## [0.64.0] - 2026-11-04
+
+### Added
+
+- Samenwerking Struikroven: landingspagina `/struikroven` met knoppen zoeken/aanbieden, korte uitleg en komende acties uit `/beheer/agenda` (organisatie-koppeling).
+- Vinkje «Ik ben Struikrover» bij aanmelden (voorgevinkt via `/struikroven`); telling op beheer-overzicht en statistieken.
+- Poster `/poster?voor=struikroven` (A4, QR naar `https://gratisplanten.nl/struikroven?bron=poster-struikroven`).
+
+### Changed
+
+- Organisatiepagina Struikroven: websitelinks naar `https://struikroven.nu`.
+- Printbare posters (`/poster?voor=…`): QR en leesbaar adres altijd naar productie (`canonical_host`), niet naar lokale/staging `APP_URL`.
+
 ## [0.63.0] - 2026-11-04
 
 ### Changed

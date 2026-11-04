@@ -38,7 +38,7 @@ class DashboardController extends Controller
 {
     public function index(): View
     {
-        $kort = ['leden' => 0, 'nieuw_week' => 0, 'actief_week' => 0, 'aanbod_actief' => 0, 'gesprekken_week' => 0];
+        $kort = ['leden' => 0, 'nieuw_week' => 0, 'actief_week' => 0, 'aanbod_actief' => 0, 'gesprekken_week' => 0, 'struikrovers' => 0];
         try {
             $kort['leden'] = User::query()->members()->count();
             $kort['nieuw_week'] = User::query()->members()->where('created_at', '>=', now()->subWeek())->count();
@@ -48,6 +48,9 @@ class DashboardController extends Controller
             $kort['aanbod_actief'] = Schema::hasTable('aanbod') ? Aanbod::query()->publiclyListed()->count() : 0;
             $kort['gesprekken_week'] = Schema::hasTable('conversations')
                 ? Conversation::query()->where('created_at', '>=', now()->subWeek())->count()
+                : 0;
+            $kort['struikrovers'] = Schema::hasColumn('users', 'struikrover')
+                ? User::query()->members()->where('struikrover', true)->count()
                 : 0;
         } catch (\Throwable) {
             // Overzicht blijft werken als een telling faalt.
@@ -330,6 +333,7 @@ class DashboardController extends Controller
             'plaats' => $request->input('plaats'),
             'provincie' => $request->input('provincie'),
             'organisator' => $request->input('organisator'),
+            'organisatie_slug' => $request->boolean('struikroven_actie') ? 'struikroven' : '',
             'url' => $request->input('url'),
             'bron' => $request->input('bron'),
             'gecontroleerd_op' => $request->input('gecontroleerd_op'),

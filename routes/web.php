@@ -51,6 +51,7 @@ use App\Http\Controllers\OrganisatieController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PartnersController;
 use App\Http\Controllers\StektipsController;
+use App\Http\Controllers\StruikrovenController;
 use App\Http\Controllers\VoorOrganisatiesController;
 use App\Http\Controllers\ZoekenController;
 use Illuminate\Support\Facades\Route;
@@ -94,6 +95,7 @@ Route::get('/over', [ContentPageController::class, 'over'])->name('over');
 Route::get('/doe-mee', [ContentPageController::class, 'doeMee'])->name('doe-mee');
 
 Route::get('/volkstuinen', [AudienceLandingController::class, 'volkstuinen'])->name('volkstuinen');
+Route::get('/struikroven', StruikrovenController::class)->name('struikroven');
 Route::get('/help-mee', [AudienceLandingController::class, 'helpMee'])->name('help-mee');
 Route::post('/help-mee/partner', [MeedoenController::class, 'partner'])
     ->middleware('throttle:10,1')
