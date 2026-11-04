@@ -1,0 +1,102 @@
+name: Import Struikroven-agenda
+
+# Eenmalig: draait gp:import-struikroven-agenda via POST /deploy/import-struikroven-agenda
+# (noshell HTTPS). Standaard dry-run; schrijven alleen met input apply=true.
+# Geen schedule. Secrets: DEPLOY_TOKEN + STAGING_BASE_URL of PROD_BASE_URL.
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Omgeving (production pas na master-deploy)"
+        type: choice
+        options:
+          - staging
+          - production
+        required: true
+        default: staging
+      apply:
+        description: "Schrijf evenementen (true) of alleen dry-run (false)"
+        type: boolean
+        required: true
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  import-struikroven-agenda:
+    name: import-struikroven-agenda (${{ inputs.target }}, apply=${{ inputs.apply }})
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.target }}
+    steps:
+      - name: Draai gp:import-struikroven-agenda op ${{ inputs.target }}
+        env:
+          TARGET: ${{ inputs.target }}
+          APPLY: ${{ inputs.apply }}
+          STAGING_BASE: ${{ secrets.STAGING_BASE_URL }}
+          PROD_BASE: ${{ secrets.PROD_BASE_URL }}
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${DEPLOY_TOKEN:-}" ]; then
+            echo "::error::DEPLOY_TOKEN ontbreekt in environment ${TARGET}."
+            exit 1
+          fi
+          echo "::add-mask::${DEPLOY_TOKEN}"
+
+          if [ "${TARGET}" = "production" ]; then
+            BASE_URL="${PROD_BASE:-}"
+            if [ -z "${BASE_URL}" ]; then
+              echo "::error::PROD_BASE_URL ontbreekt (production pas na merge naar master + deploy)."
+              exit 1
+            fi
+          else
+            BASE_URL="${STAGING_BASE:-}"
+            if [ -z "${BASE_URL}" ]; then
+              echo "::error::STAGING_BASE_URL ontbreekt."
+              exit 1
+            fi
+          fi
+
+          BASE_URL="${BASE_URL%/}"
+          if [ "${APPLY}" = "true" ]; then
+            BODY='{"apply":true}'
+            echo "::warning::APPLY=true — Struikroven-evenementen worden op ${TARGET} geschreven."
+          else
+            BODY='{"apply":false}'
+            echo "::notice::Dry-run op ${TARGET} (niets wordt geschreven)."
+          fi
+
+          code=$(curl -sS -o /tmp/import-struikroven-agenda.json -w '%{http_code}' \
+            -X POST \
+            -H "Authorization: Bearer ${DEPLOY_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d "${BODY}" \
+            "${BASE_URL}/deploy/import-struikroven-agenda" || true)
+
+          echo "${TARGET}: HTTP ${code}"
+          if command -v python3 >/dev/null 2>&1 && [ -f /tmp/import-struikroven-agenda.json ]; then
+            python3 - <<'PY'
+          import json
+          try:
+              data = json.load(open("/tmp/import-struikroven-agenda.json"))
+          except Exception:
+              print("response: (geen JSON)")
+              raise SystemExit(0)
+          for k in ("ok", "error", "apply", "at"):
+              if k in data:
+                  print(f"{k}: {data[k]}")
+          out = data.get("output") or ""
+          if out:
+              print("--- artisan output ---")
+              print(out)
+          PY
+          fi
+
+          if [ "${code}" != "200" ]; then
+            echo "::error::import-struikroven-agenda faalde (HTTP ${code})."
+            exit 1
+          fi
+          echo "::notice::import-struikroven-agenda OK op ${TARGET} (apply=${APPLY})."
