@@ -9,7 +9,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
-## [0.66.3] - 2026-11-04
+## [0.66.4] - 2026-11-04
 
 ### Fixed
 
