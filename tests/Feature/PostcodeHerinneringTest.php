@@ -192,3 +192,30 @@ test('deploy postcode-herinnering-lijst endpoint vereist token en heeft geen app
 
     $this->postJson('/deploy/postcode-herinnering-lijst')->assertForbidden();
 });
+
+test('gp:postcode-herinnering-lijst --alle: alle leden met postcode, lidnummer en tier, zonder stats-lezer', function () {
+    $a = herinneringUser(['email' => 'alle-a@example.com']);
+    $b = herinneringUser([
+        'email' => 'alle-b@example.com',
+        'postcode_gebied' => '2037',
+        'woonplaats' => 'Haarlem',
+        'locatie_label' => '2037 Haarlem',
+        'lat' => 52.38,
+        'lon' => 4.64,
+    ]);
+    $stats = User::factory()->statsViewer()->create(['email' => 'alle-stats@example.com']);
+
+    Artisan::call('gp:postcode-herinnering-lijst', ['--alle' => true]);
+    $out = Artisan::output();
+
+    expect($out)->toContain('Leden totaal: 2')
+        ->and($out)->toContain('Zonder geldige postcode: 1')
+        ->and($out)->toContain('Tier 10: 2')
+        ->and($out)->toContain('Lidnummer > 100: 0')
+        ->and($out)->toContain('#'.$a->id.' · postcode nee · lidnummer 1 · tier 10')
+        ->and($out)->toContain('#'.$b->id.' · postcode ja · lidnummer 2 · tier 10')
+        ->and($out)->not->toContain('#'.$stats->id.' ')
+        ->and($out)->not->toContain('alle-a@example.com')
+        ->and($out)->not->toContain('Haarlem')
+        ->and($out)->not->toContain('Pia');
+});

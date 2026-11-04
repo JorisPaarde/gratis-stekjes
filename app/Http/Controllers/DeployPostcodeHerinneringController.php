@@ -40,7 +40,7 @@ class DeployPostcodeHerinneringController extends Controller
         RateLimiter::hit($throttleKey, self::RATE_DECAY);
 
         try {
-            $exit = Artisan::call('gp:postcode-herinnering-lijst');
+            $exit = Artisan::call('gp:postcode-herinnering-lijst', ['--alle' => true]);
             $output = Artisan::output();
         } catch (Throwable $e) {
             report($e);

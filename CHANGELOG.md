@@ -9,7 +9,6 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
-<<<<<<< HEAD
 ## [0.68.0] - 2026-11-04
 
 ### Added
@@ -22,8 +21,21 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   plaatslabel/geocode) als centrale check voor later buurtzoeken.
 - Artisan `gp:postcode-herinnering-lijst` (lees-only, stuurt geen mail) +
   `POST /deploy/postcode-herinnering-lijst` + workflow
-  `postcode-herinnering-lijst.yml` (`target` staging|production, geen apply).
-=======
+  `postcode-herinnering-lijst.yml` (`target` staging|production, geen apply). Met `--alle` (standaard via
+  endpoint/workflow) ook overzicht van alle leden: postcode ja/nee, lidnummer,
+  oprichters-tier (10/50/100/geen), aantallen en id's met lidnummer > 100.
+
+## [0.66.4] - 2026-11-04
+
+### Added
+
+- Eenmalige Struikroven-agenda-import: vastgelegde JSON
+  `data/imports/struikroven-agenda-2026-11-04.json` (komende acties vanaf 4 nov 2026),
+  artisan `gp:import-struikroven-agenda` (dry-run zonder `--apply`; idempotent op bron-URL + datum;
+  Struikroven-vlag `organisatie_slug=struikroven`), `POST /deploy/import-struikroven-agenda` +
+  workflow `import-struikroven-agenda.yml` (`target` staging|production, `apply` default false).
+- Evenementen: optionele `lat`/`lon` (geocode van plaats/adres bij import) voor kaart/JSON-LD.
+
 ## [0.66.3] - 2026-11-04
 
 ### Fixed
@@ -36,7 +48,6 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   3370→Boutersem). NL-plaatsnaam zonder postcode krijgt PC4 via PDOK
   (Spierdijk→1641). `gp:normaliseer-locaties` gebruikt forward lookup voor plaatsnamen
   en pauzeert standaard 1 s (Nominatim ≤1 req/s). Twijfellijst blijft id · label · land · reden.
->>>>>>> origin/staging
 
 ## [0.66.2] - 2026-11-04
 
