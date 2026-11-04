@@ -12,7 +12,6 @@
 @section('content')
 <section class="section wrap stektips-page">
   <h1 class="stektips-titel">{{ $title }}</h1>
-  <p class="section-intro">Zelf nieuwe planten kweken: stekken, zaaien, scheuren en snoeien. Zoek je plant op en lees hoe en wanneer het lukt. Alle manieren op een rij staan bij <a href="{{ route('vermeerderen') }}">planten vermeerderen</a>.</p>
 
   @php
     $hasExtraFilters = collect($filters)->except('q')->filter(fn ($v) => $v !== '' && $v !== null)->isNotEmpty();
@@ -30,11 +29,7 @@
   @endphp
 
   <form class="stektips-zoek" method="get" action="{{ route('stektips.index') }}" role="search">
-    <label for="stektips-q">Welke plant wil je stekken?</label>
-    <div class="stektips-zoek-veld">
-      <input id="stektips-q" type="search" name="q" value="{{ $filters['q'] }}" maxlength="120" placeholder="Bijvoorbeeld monstera, vijg of wilgenwater" autocomplete="off">
-      <button class="btn" type="submit"><x-icon name="zoeken" :size="18" /> Zoek</button>
-    </div>
+    @include('partials.plant-zoeker', ['zoekId' => 'stektips-q', 'zoekValue' => $filters['q']])
     <details class="stektips-meer-filters" @if($hasExtraFilters) open @endif>
       <summary>Meer filters</summary>
       <div class="stektips-filter-grid">
@@ -88,6 +83,8 @@
     @endif
   </form>
 
+  <p class="section-intro">Zelf nieuwe planten kweken: stekken, zaaien, scheuren en snoeien. Zoek je plant op en lees hoe en wanneer het lukt. Alle manieren op een rij staan bij <a href="{{ route('vermeerderen') }}">planten vermeerderen</a>.</p>
+
   @if(!empty($pillars))
     <nav class="stektips-pillars" aria-label="Onderwerpen">
       <ul class="stektips-pillar-list">
@@ -133,7 +130,21 @@
   </p>
 
   @if($totalCount === 0)
-    <p class="empty-state">Niets gevonden met deze keuzes. <a href="{{ route('stektips.index') }}">Toon alles</a></p>
+    @if($filters['q'] !== '')
+      <p class="empty-state">Geen stektips gevonden voor «{{ $filters['q'] }}».</p>
+      @if(!empty($suggesties))
+        <p class="stektips-bedoel-je" role="status">
+          Bedoel je
+          @foreach($suggesties as $suggestie)
+            <a href="{{ route('stektips.show', ['slug' => $suggestie['slug']]) }}">{{ $suggestie['naam'] }}</a>@if($loop->remaining > 1), @elseif($loop->remaining === 1) of @endif
+          @endforeach
+          ?
+        </p>
+      @endif
+      <p class="muted"><a href="{{ route('stektips.index') }}">Toon alles</a></p>
+    @else
+      <p class="empty-state">Niets gevonden met deze keuzes. <a href="{{ route('stektips.index') }}">Toon alles</a></p>
+    @endif
   @else
     @php
       $zichtbaar = $hasActiveFilters ? $entries : array_slice($entries, 0, 24);

@@ -106,7 +106,7 @@ test('soortpagina linkt naar verwante soorten', function () {
 test('stektips-index: zoekveld eerst, meer filters ingeklapt, beginners en FAQ met FAQPage-schema', function () {
     $html = $this->get(route('stektips.index'))->assertOk()->getContent();
 
-    expect(strpos($html, 'Welke plant wil je stekken?'))->toBeLessThan(strpos($html, 'stektips-pillar-list'))
+    expect(strpos($html, 'Welke plant wil je vermeerderen?'))->toBeLessThan(strpos($html, 'stektips-pillar-list'))
         ->and($html)->toContain('<details class="stektips-meer-filters"')
         ->and($html)->toContain('Makkelijk om mee te beginnen')
         ->and($html)->toContain('id="veelgestelde-vragen"')

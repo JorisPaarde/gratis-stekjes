@@ -32,6 +32,11 @@
   ])>
     <div>
       <h1 class="page-title">{{ $heading ?? $artikel['titel'] }}</h1>
+      @if(!empty($toonPlantzoeker))
+        <form class="stektips-zoek" method="get" action="{{ route('stektips.index') }}" role="search">
+          @include('partials.plant-zoeker', ['zoekId' => 'vermeerderen-q', 'zoekValue' => ''])
+        </form>
+      @endif
       @if(!empty($artikel['samenvatting']))
         <p class="section-intro">{{ $artikel['samenvatting'] }}</p>
       @endif

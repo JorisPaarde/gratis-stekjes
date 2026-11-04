@@ -20,7 +20,7 @@ class StektipsController extends Controller
     /** Kennisbankartikel dat als hub op /vermeerderen staat. */
     public const HUB_SLUG = 'vermeerderen';
 
-    public function index(Request $request, Stektips $stektips, Kennisbank $kennisbank, Plantensoorten $plantensoorten, SoortAfbeeldingen $afbeeldingen): View
+    public function index(Request $request, Stektips $stektips, Kennisbank $kennisbank, Plantensoorten $plantensoorten, SoortAfbeeldingen $afbeeldingen): View|RedirectResponse
     {
         $filters = [
             'q' => trim((string) $request->query('q', '')),
@@ -44,7 +44,22 @@ class StektipsController extends Controller
             $stektips->all(),
             static fn (array $s): bool => $plantensoorten->isSlugListed((string) ($s['slug'] ?? ''))
         ));
-        $soorten = $this->filterSoorten($listedSoorten, $filters);
+        $catalogSlugs = $filters['q'] !== ''
+            ? $plantensoorten->stektipsSlugsForQuery($filters['q'])
+            : [];
+        $soorten = $this->filterSoorten($listedSoorten, $filters, $catalogSlugs);
+
+        // Exact één plant → meteen naar die pagina (naam/synoniem/tikfout).
+        // Geen redirect als de enige plant alleen via vrije tekst matcht terwijl er artikelen zijn
+        // (bijv. «wilgenwater» raakt Wilg in de tekst én het artikel).
+        if ($filters['q'] !== '' && count($soorten) === 1) {
+            $only = $soorten[0];
+            $slug = (string) ($only['slug'] ?? '');
+            $viaCatalogus = $slug !== '' && in_array($slug, $catalogSlugs, true);
+            if ($slug !== '' && ($viaCatalogus || count($artikelen) === 0)) {
+                return redirect()->route('stektips.show', ['slug' => $slug]);
+            }
+        }
 
         $queryForCanonical = array_filter($filters, static fn ($v) => $v !== '' && $v !== null);
 
@@ -121,6 +136,16 @@ class StektipsController extends Controller
 
         $faq = $hasActiveFilters ? [] : Faq::load('stektips-faq.json');
 
+        $suggesties = [];
+        if ($filters['q'] !== '' && count($entries) === 0) {
+            $suggesties = $plantensoorten->suggestClose(
+                $filters['q'],
+                limit: 3,
+                onlyWithSlug: true,
+                maxDistance: max(3, $plantensoorten->maxEditDistance($plantensoorten->normalize($filters['q']))),
+            );
+        }
+
         $title = 'Stektips: planten stekken en snoeien';
         $metaDescription = 'Leer planten stekken en snoeien, maak wilgenwater en deel gratis stekjes. Tips per soort, van monstera tot vijg.';
 
@@ -155,6 +180,7 @@ class StektipsController extends Controller
             'hasActiveFilters' => $hasActiveFilters,
             'beginners' => $beginners,
             'faq' => $faq,
+            'suggesties' => $suggesties,
             'schema' => $this->indexSchema($title, $metaDescription, $faq),
         ]);
     }
@@ -257,6 +283,7 @@ class StektipsController extends Controller
             'seoCtas' => $this->seoCtasForArtikel($artikel, $kennisbank),
             'schema' => $kennisbank->articleSchema($artikel, $url),
             'breadcrumbs' => $breadcrumbs,
+            'toonPlantzoeker' => $alsHub,
         ]);
     }
 
@@ -444,9 +471,10 @@ class StektipsController extends Controller
     /**
      * @param  list<array<string, mixed>>  $soorten
      * @param  array{q: string, categorie: string, seizoen: string, maand: string, locatie: string, soort: string}  $filters
+     * @param  list<string>  $catalogSlugs  Slugs uit Plantensoorten (naam/synoniem/Latijn/tikfout)
      * @return list<array<string, mixed>>
      */
-    private function filterSoorten(array $soorten, array $filters): array
+    private function filterSoorten(array $soorten, array $filters, array $catalogSlugs = []): array
     {
         // Categorie = manier van vermeerderen (stekken, scheuren, …): soorten waarvoor die manier werkt.
         // Andere categorieën (snoeien, permacultuur, …) gelden alleen voor artikelen.
@@ -457,6 +485,7 @@ class StektipsController extends Controller
         $stektips = app(Stektips::class);
 
         $q = mb_strtolower($filters['q'], 'UTF-8');
+        $catalogLookup = array_fill_keys($catalogSlugs, true);
         $seizoen = $filters['seizoen'];
         $maand = (int) $filters['maand'];
         $locatie = $filters['locatie'];
@@ -498,7 +527,8 @@ class StektipsController extends Controller
                     (string) ($soort['wanneer'] ?? ''),
                     $categorie,
                 ]), 'UTF-8');
-                if (! str_contains($hay, $q)) {
+                $viaCatalogus = $slug !== '' && isset($catalogLookup[$slug]);
+                if (! str_contains($hay, $q) && ! $viaCatalogus) {
                     continue;
                 }
             }
