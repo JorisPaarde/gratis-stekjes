@@ -12,19 +12,24 @@ use App\Notifications\VerifyEmailDutch;
 use App\Support\SafeMail;
 use App\Support\ThrottleMessage;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class RegisterController extends Controller
 {
-    public function create(): View
+    public function create(Request $request): View
     {
+        $struikrover = $request->boolean('struikrover') || (bool) old('struikrover');
+
         return view('auth.register', [
             'title' => 'Registreren',
             'metaDescription' => 'Account maken bij '.config('site.name').'. Bevestig je e-mail om verder te gaan.',
             'canonical' => route('account.registreren'),
             'formStarted' => time(),
+            'struikroverChecked' => $struikrover,
         ]);
     }
 
@@ -46,17 +51,22 @@ class RegisterController extends Controller
 
         $email = strtolower(trim((string) $request->validated('email')));
         $password = (string) $request->validated('password');
+        $struikrover = $request->boolean('struikrover');
         $mailOk = true;
 
         $existing = User::query()->where('email', $email)->first();
 
         if ($existing === null) {
-            $user = User::query()->create([
+            $payload = [
                 'name' => trim((string) $request->validated('voornaam')),
                 'email' => $email,
                 'password' => $password,
                 'active' => true,
-            ]);
+            ];
+            if (Schema::hasColumn('users', 'struikrover')) {
+                $payload['struikrover'] = $struikrover;
+            }
+            $user = User::query()->create($payload);
             $mailOk = SafeMail::notify($user, new VerifyEmailDutch);
         } elseif (
             $existing->isActive()

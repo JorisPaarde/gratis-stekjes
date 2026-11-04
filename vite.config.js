@@ -25,6 +25,7 @@ export default defineConfig({
                 'resources/js/poster.js',
                 'resources/css/poster.css',
                 'resources/css/meedoen.css',
+                'resources/css/struikroven.css',
                 'resources/css/plantsoort-autocomplete.css',
             ],
             refresh: true,

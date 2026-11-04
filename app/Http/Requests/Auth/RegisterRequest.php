@@ -35,6 +35,7 @@ class RegisterRequest extends FormRequest
             'password' => ['required', 'string', 'confirmed', 'min:10', 'max:200'],
             'gratis_akkoord' => ['accepted'],
             'privacy' => ['accepted'],
+            'struikrover' => ['nullable', 'boolean'],
             'website' => ['nullable', 'string', 'max:200'],
             'form_started' => ['required', 'integer'],
         ];

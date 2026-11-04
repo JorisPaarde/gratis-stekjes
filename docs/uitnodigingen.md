@@ -45,7 +45,7 @@ Joris
 | Netwerk Voedselbosbouw | voedselbos | Nederland | https://netwerkvoedselbosbouw.nl/ | voedselboskaart@gmail.com (kaart); privacycontact info@theplant.nl op hun privacyverklaring | https://netwerkvoedselbosbouw.nl/ · https://netwerkvoedselbosbouw.nl/privacyverklaring/ | `/organisaties/netwerk-voedselbosbouw` |
 | Vereniging Voedsel uit het Bos | voedselbos | Utrecht | https://voedseluithetbos.nl/ | info@voedseluithetbos.nl; contactformulier op contactpagina | https://voedseluithetbos.nl/contact/ | `/organisaties/voedsel-uit-het-bos` |
 | MeerBomen Nu | initiatief | Nederland | https://meerbomen.nu/ | info@meerbomen.nu (vermeld op homepage) | https://meerbomen.nu/ | `/organisaties/meerbomen-nu` |
-| Stichting Struikroven | initiatief | Nederland | https://www.struikroven.nu/ | info@struikroven.nl; bestuur@struikroven.nl (ANBI) | https://www.struikroven.nu/werkwijze · https://www.struikroven.nu/anbi | `/organisaties/struikroven` |
+| Stichting Struikroven | initiatief | Nederland | https://struikroven.nu | info@struikroven.nl; bestuur@struikroven.nl (ANBI) | https://struikroven.nu/werkwijze · https://struikroven.nu/anbi | `/organisaties/struikroven` |
 | Stekjesroute | initiatief | Nederland | https://stekjesroute.com/ | info@stekjesroute.eu; contactformulier | https://stekjesroute.com/pages/contact/ | verborgen (`visible: false`) — twijfel of gratis |
 | Het Bomenproject | initiatief | Nederland | https://hetbomenproject.nl/ | via hun site | https://hetbomenproject.nl/over-het-bomenproject/ | `/organisaties/het-bomenproject` |
 | Velt Nederland | tuinvereniging | Nederland | https://velt.nu/velt-nederland | info.nederland@velt.nu | https://velt.nu/velt-nederland | `/organisaties/velt` |
