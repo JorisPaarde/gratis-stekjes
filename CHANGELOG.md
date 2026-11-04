@@ -9,6 +9,17 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.66.4] - 2026-11-04
+
+### Added
+
+- Eenmalige Struikroven-agenda-import: vastgelegde JSON
+  `data/imports/struikroven-agenda-2026-11-04.json` (komende acties vanaf 4 nov 2026),
+  artisan `gp:import-struikroven-agenda` (dry-run zonder `--apply`; idempotent op bron-URL + datum;
+  Struikroven-vlag `organisatie_slug=struikroven`), `POST /deploy/import-struikroven-agenda` +
+  workflow `import-struikroven-agenda.yml` (`target` staging|production, `apply` default false).
+- Evenementen: optionele `lat`/`lon` (geocode van plaats/adres bij import) voor kaart/JSON-LD.
+
 ## [0.66.3] - 2026-11-04
 
 ### Fixed

@@ -175,6 +175,17 @@ final class Evenementen
             ],
         ];
 
+        if (Schema::hasColumn('evenementen', 'lat')
+            && Schema::hasColumn('evenementen', 'lon')
+            && $event->lat !== null
+            && $event->lon !== null) {
+            $schema['location']['geo'] = [
+                '@type' => 'GeoCoordinates',
+                'latitude' => (float) $event->lat,
+                'longitude' => (float) $event->lon,
+            ];
+        }
+
         if ($event->eind_datum !== null) {
             $schema['endDate'] = $event->eind_datum->format('Y-m-d');
         }
