@@ -4,21 +4,24 @@ declare(strict_types=1);
 
 use App\Services\Plantensoorten;
 
-test('vrouwentong, gatenplant en monstra leiden naar de juiste plantpagina', function (string $query, string $via) {
+test('andere namen en tikfouten landen op de canonieke plantpagina', function (string $query, string $expectedSlug) {
+    // Geen harde afhankelijkheid van parallelle content-renames in fixtures:
+    // de slug moet wel overeenkomen met de actuele catalogus/stektips-data.
     $planten = app(Plantensoorten::class);
-    $expected = $via === 'exact'
-        ? $planten->resolveExact($query)
-        : ($planten->suggestClose($query, 1, onlyWithSlug: true)[0] ?? null);
+    $resolved = $planten->resolveExact($query)
+        ?? ($planten->suggestClose($query, 1, onlyWithSlug: true)[0] ?? null);
 
-    expect($expected)->not->toBeNull()
-        ->and($expected['slug'] ?? null)->not->toBeNull();
+    expect($resolved)->not->toBeNull()
+        ->and($resolved['slug'] ?? null)->toBe($expectedSlug);
 
     $this->get(route('stektips.index', ['q' => $query]))
-        ->assertRedirect(route('stektips.show', ['slug' => $expected['slug']]));
+        ->assertRedirect(route('stektips.show', ['slug' => $expectedSlug]));
 })->with([
-    'vrouwentong' => ['vrouwentong', 'exact'],
-    'gatenplant' => ['gatenplant', 'exact'],
-    'monstra' => ['monstra', 'fuzzy'],
+    'vrouwentong' => ['vrouwentong', 'sansevieria'],
+    'sanseveria' => ['sanseveria', 'sansevieria'],
+    'sansevieria' => ['sansevieria', 'sansevieria'],
+    'gatenplant' => ['gatenplant', 'monstera'],
+    'monstra' => ['monstra', 'monstera'],
 ]);
 
 test('exact één plantmatch stuurt door naar die stektip', function () {
