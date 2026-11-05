@@ -3,6 +3,12 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.71.2] - 2026-11-05
+
+### Changed
+
+- Productiehotfix 0.69.2 samengevoegd; Plantenasiel Haarlem heeft nu ook op staging een echte tussenkop voor het aanbieden van planten.
+
 ## [0.71.1] - 2026-11-05
 
 ### Changed

@@ -208,6 +208,7 @@ test('Plantenasiel Haarlem heeft een rijke pagina zonder gratis ophalen bij het 
         ->assertSee('Jan Sluyterslaan 11, 2033 TM Haarlem', false)
         ->assertSee('Dinsdagavond van 19.00 tot 21.00 uur', false)
         ->assertSee('vrijwillige bijdrage', false)
+        ->assertSee('<h2>Een plant aanbieden</h2>', false)
         ->assertSee('https://www.facebook.com/plantenasielhaarlem/', false)
         ->assertSee('https://www.instagram.com/plantenasielhaarlem/', false)
         ->assertSee(route('aanbieden'), false)

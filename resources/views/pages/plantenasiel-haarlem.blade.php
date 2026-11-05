@@ -33,6 +33,9 @@
     <p>{{ $alinea }}</p>
   @endforeach
 
+  <h2>Een plant aanbieden</h2>
+  <p>Kamerplanten en stekjes zijn welkom, tuinplanten niet. Ook potten, mosstokken en potgrond kunnen ze gebruiken. Breng ze langs tijdens de openingstijden. Bij twijfel kun je het asiel een bericht met een foto sturen; vertel waarom de plant weg mag en of er beestjes op zitten.</p>
+
   <p>
     <a href="{{ $org['website'] }}" rel="noopener noreferrer" target="_blank">Website</a>
     @foreach($extraLinks as $link)
