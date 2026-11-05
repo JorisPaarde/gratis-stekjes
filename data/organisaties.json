@@ -72,7 +72,101 @@
       ],
       "gerelateerde_slugs": [
         "meerbomen-nu"
-      ]
+      ],
+      "initiatief": {
+        "slug": "struikroven",
+        "pagina_titel": "Struikroven redt planten van de sloop",
+        "intro_titel": "Wie zijn de Struikrovers?",
+        "intro_tekst": "Als huizen worden gesloopt of opgeknapt, verdwijnt vaak veel gezond groen uit voor- en achtertuinen. Zonde, want volwassen planten en struiken geven karakter aan een buurt.\n\nDaarom organiseert Stichting Struikroven struikroofacties. Buurtbewoners halen dan samen de planten uit de grond en geven ze een tweede leven in hun eigen tuin, op hun balkon, in de buurt of in een logeertuin. Meedoen is gratis en iedereen is welkom, jong en oud.",
+        "korte_naam": "Struikroven",
+        "aanmeld_param": "struikrover",
+        "aanmeld_label": "Ik ben Struikrover",
+        "site_url": "https://struikroven.nu",
+        "site_link_tekst": "Meer over Struikroven",
+        "agenda_url": "https://struikroven.nu/agenda",
+        "acties_leeg_tekst": "Er staan nu geen Struikroven-acties gepland op deze agenda. Zodra er iets bij komt, zie je het hier.",
+        "leden_titel": "Voor Struikrovers",
+        "leden_intro": "Wil je Gratis planten bij een actie of in je nieuwsbrief noemen? Gebruik dit gerust.",
+        "kopieertekst": "Planten over na een struikroofactie? Of zoek je juist groen voor je tuin? Op Gratis planten deel je planten, stekjes en zaden gratis met mensen in de buurt. Kijk op gratisplanten.nl/struikroven",
+        "meta_description": "Struikroven redt planten bij sloop en vernieuwing. Via Gratis planten deel je overgebleven planten, stekjes en zaden gratis met iemand in de buurt.",
+        "secties": [
+          {
+            "type": "tip",
+            "titel": "Struikroven en Gratis planten vullen elkaar aan",
+            "tekst": "Struikroofacties zijn er niet zo vaak, en dan staan de planten maar op één dag op één plek klaar. Daartussen vind je vraag en aanbod van particulieren hier, het hele jaar door. Daarom wijzen Struikroven en Gratis planten naar elkaar."
+          },
+          {
+            "type": "h2",
+            "tekst": "Wat is Struikroven?"
+          },
+          {
+            "type": "p",
+            "tekst": "Bij sloop, renovatie en nieuwbouw gaat vaak al het groen in tuinen en plantsoenen verloren, terwijl het vaak om volwassen planten gaat waar ook insecten in leven. Struikroven redt wat er te redden valt. Dat gebeurt in opdracht en met toestemming van gemeenten, woningcorporaties, projectontwikkelaars of sloopbedrijven."
+          },
+          {
+            "type": "p",
+            "tekst": "Het begon in 2017 als buurtinitiatief in Eindhoven en is uitgegroeid tot een landelijke stichting. In december 2025 was de eerste actie in België, in Houthalen-Helchteren. In Utrecht sloten de gemeente, woningcorporaties en Struikroven een Roverspact, zodat struikroven daar onderdeel wordt van sloop- en bouwprojecten."
+          },
+          {
+            "type": "h2",
+            "tekst": "Wat zoek je?"
+          },
+          {
+            "type": "kaarten",
+            "items": [
+              {
+                "titel": "Meedoen met een Struikroofactie",
+                "wanneer": "vooral september tot en met april",
+                "illustratie": "scheuren",
+                "tekst": "Kijk in de agenda van Struikroven of er een actie bij jou in de buurt is. Aanmelden is meestal nodig, en sommige acties zijn alleen voor bewoners uit die buurt."
+              },
+              {
+                "titel": "Tussendoor planten halen",
+                "wanneer": "het hele jaar",
+                "illustratie": "delen",
+                "tekst": "Geen actie in de buurt? Op Gratis planten geven mensen planten, stekjes en zaden weg. Zoek op je postcode."
+              },
+              {
+                "titel": "Zelf planten over",
+                "wanneer": "het hele jaar",
+                "illustratie": "grond",
+                "tekst": "Struikroven neemt geen planten van particulieren aan. Zet ze op Gratis planten, dan haalt iemand uit de buurt ze bij je op."
+              },
+              {
+                "titel": "Struikroven in jouw wijk",
+                "wanneer": "bij sloop of renovatie",
+                "illustratie": "afleggen",
+                "tekst": "Werk je bij een gemeente, woningcorporatie of aannemer en gaat er groen verdwijnen? Neem contact op met Stichting Struikroven."
+              }
+            ]
+          },
+          {
+            "type": "h2",
+            "tekst": "Geredde plant thuis? Zo slaat hij aan"
+          },
+          {
+            "type": "stappen",
+            "items": [
+              {
+                "titel": "Plant hem zo snel mogelijk",
+                "tekst": "Liefst dezelfde dag. Houd de kluit vochtig en uit de zon tot hij de grond in gaat."
+              },
+              {
+                "titel": "Maak een ruim plantgat",
+                "tekst": "Twee keer zo breed als de kluit, en zet de plant even diep als hij stond."
+              },
+              {
+                "titel": "Geef flink water",
+                "tekst": "Direct na het planten, en de eerste weken bij droog weer elke paar dagen."
+              },
+              {
+                "titel": "Te veel meegenomen?",
+                "tekst": "Struiken laten zich vaak goed scheuren of stekken. Wat je over hebt, deel je weer via Gratis planten."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "slug": "het-bomenproject",
@@ -182,7 +276,18 @@
           "label": "Instagram",
           "url": "https://www.instagram.com/plantenasielhaarlem/"
         }
-      ]
+      ],
+      "initiatief": {
+        "pagina_titel": "Plantenasiel Haarlem",
+        "intro_titel": "Een tweede thuis voor kamerplanten",
+        "intro_tekst": "Plantenasiel Haarlem vangt kamerplanten op die niet meer in hun huis kunnen blijven. Bijvoorbeeld omdat een plant te groot wordt, het niet goed doet of de eigenaar erop uitgekeken is. Gezonde planten krijgen een nieuw thuis via adoptie.\n\nHet asiel bestaat sinds begin 2018. Sinds 2020 draait een groepje vrijwilligers het asiel, niet uit op winst maar vanuit duurzaamheid en liefde voor planten.",
+        "praktisch_tekst": "Wijkcentrum Alleman\nJan Sluyterslaan 11, 2033 TM Haarlem\nDinsdagavond van 19.00 tot 21.00 uur\n\nBus 2 stopt bij halte Beatrixplein; vanaf daar is het ongeveer 250 meter lopen. In de omgeving kun je gratis parkeren.",
+        "ruilen_tekst": "Alle kamerplanten en stekjes zijn beschikbaar voor adoptie voor een vrijwillige bijdrage. Bij het asiel ruil je een plant voor een andere plant, of voor spullen die helpen bij de verzorging. Denk aan een zak aarde, buitenpotten, sierpotten, turfvrije potgrond of plantenvoeding. Materialen zijn daarom ook een manier om bij te dragen als geld doneren niet kan.\n\nReserveren kan niet. Hoe vaker je langskomt, hoe groter de kans dat er een plant voor je bij zit. Op hun site vind je het actuele aanbod en tips voor de verzorging.",
+        "korte_naam": "Plantenasiel Haarlem",
+        "site_url": "https://plantenasielhaarlem.nl/",
+        "site_link_tekst": "Meer over Plantenasiel Haarlem",
+        "meta_description": "Plantenasiel Haarlem vangt kamerplanten op en biedt ze aan voor adoptie. Dinsdagavond open in wijkcentrum Alleman; vrijwillige bijdrage in geld, planten of verzorgingsmaterialen."
+      }
     },
     {
       "slug": "plantenasiel-zeist",
@@ -283,7 +388,24 @@
       "website": "https://carpevitam.net/",
       "bron_url": "https://carpevitam.net/stekchallenge/",
       "kort": "Voedselbos en kennisplek in Elim. Initiatiefnemer van de STEKchallenge: in november stekken en delen, met aftrapworkshop op locatie. Klimaatburgemeester Dewy Mulder.",
-      "deelplek_slugs": []
+      "deelplek_slugs": [],
+      "initiatief": {
+        "slug": "stekchallenge",
+        "pagina_titel": "STEKchallenge: november is stekmaand",
+        "intro_titel": "Stekken en delen, overal in Nederland",
+        "intro_tekst": "November is stekmaand. Met de STEKchallenge van Carpe Vitam kun je overal in Nederland meedoen: thuis, op school, in de buurt of op het werk. Het is gratis.\n\nDe aftrap is zondag 8 november: een stekworkshop bij Carpe Vitam in Elim. Initiatiefnemer is klimaatburgemeester Dewy Mulder.\n\nStekken registreer je via de site van Carpe Vitam. Je krijgt dan per mail een persoonlijke link om later bij te werken. In maart volgt een terugblik. Deel je stekken met #STEKchallenge.",
+        "korte_naam": "STEKchallenge",
+        "aanmeld_param": "stekchallenge",
+        "aanmeld_label": "Ik doe mee aan de STEKchallenge",
+        "site_url": "https://carpevitam.net/stekchallenge/",
+        "site_link_tekst": "Registreer je stekken bij Carpe Vitam",
+        "agenda_url": "https://carpevitam.net/event/stek-challenge-workshop-stekken-8-november/",
+        "acties_leeg_tekst": "Er staan nu geen STEKchallenge-acties gepland op deze agenda. Zodra er iets bij komt, zie je het hier.",
+        "leden_titel": "Voor wie meedoet",
+        "leden_intro": "Wil je Gratis planten noemen bij een stekmiddag of in je nieuwsbrief? Gebruik dit gerust. Poster en flyer kun je hieronder downloaden.",
+        "kopieertekst": "November is stekmaand: doe mee met de STEKchallenge. Stek thuis, op school, in de buurt of op het werk en deel met #STEKchallenge. Meer op gratisplanten.nl/stekchallenge",
+        "meta_description": "November is stekmaand. Doe gratis mee met de STEKchallenge van Carpe Vitam: stekworkshop 8 november in Elim, of stek thuis, op school, in de buurt of op het werk."
+      }
     }
   ]
 }

@@ -3,6 +3,18 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.72.0] - 2026-11-05
+
+### Changed
+
+- Initiatiefpagina's (/struikroven, /stekchallenge, Plantenasiel Haarlem) komen nu uit `data/organisaties.json` (veld `initiatief`), niet meer uit de database. Bewerken gaat via de JSON.
+- /struikroven toont nu ook de uitlegblokken (wat is Struikroven, wat zoek je, geredde plant thuis).
+- Link «Over de stichting» / «Over Carpe Vitam» weg: die stuurde in een rondje terug naar dezelfde pagina.
+
+### Removed
+
+- Beheerscherm /beheer/organisaties en het model OrganisatieInitiatief. De tabel `organisatie_initiatieven` blijft voorlopig staan maar wordt niet meer gelezen.
+
 ## [0.71.2] - 2026-11-05
 
 ### Changed
