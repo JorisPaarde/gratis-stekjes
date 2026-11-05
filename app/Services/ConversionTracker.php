@@ -347,6 +347,112 @@ final class ConversionTracker
     }
 
     /**
+     * Privacyvriendelijke zoekmeting op het aanbod.
+     *
+     * Opslag (geen migratie):
+     * - field_name = canonieke NL-plantennaam bij Plantensoorten::resolveExact, anders null
+     *   (nooit ruwe plant-/locatietekst)
+     * - error_code = "{modus}.{type}.{bucket}.{geocode}"
+     *   modus: locatie|plant|beide
+     *   type: uitdelen|ophalen|alle
+     *   bucket: 0|1-5|6-20|21+
+     *   geocode: ok|miss|na
+     *
+     * @param  'uitdelen'|'ophalen'|null  $typeFilter
+     */
+    public function recordAanbodSearch(
+        Request $request,
+        string $q,
+        string $plant,
+        ?string $typeFilter,
+        int $resultCount,
+        bool $geocodeMiss = false,
+    ): void {
+        $q = trim($q);
+        $plant = trim($plant);
+        if ($q === '' && $plant === '') {
+            return;
+        }
+
+        $modus = match (true) {
+            $q !== '' && $plant !== '' => 'beide',
+            $plant !== '' => 'plant',
+            default => 'locatie',
+        };
+
+        $type = in_array($typeFilter, ['uitdelen', 'ophalen'], true) ? $typeFilter : 'alle';
+        $bucket = self::aanbodResultBucket($resultCount);
+        $geocode = $q === '' ? 'na' : ($geocodeMiss ? 'miss' : 'ok');
+
+        $catalogNaam = null;
+        if ($plant !== '') {
+            try {
+                $resolved = app(Plantensoorten::class)->resolveExact($plant);
+                if (is_array($resolved) && isset($resolved['naam']) && is_string($resolved['naam']) && $resolved['naam'] !== '') {
+                    $catalogNaam = $resolved['naam'];
+                }
+            } catch (\Throwable) {
+                $catalogNaam = null;
+            }
+        }
+
+        $this->record(ConversionEvent::TYPE_AANBOD_SEARCH, $request, [
+            'field_name' => $catalogNaam,
+            'error_code' => $modus.'.'.$type.'.'.$bucket.'.'.$geocode,
+        ]);
+    }
+
+    public static function aanbodResultBucket(int $resultCount): string
+    {
+        $n = max(0, $resultCount);
+        if ($n === 0) {
+            return '0';
+        }
+        if ($n <= 5) {
+            return '1-5';
+        }
+        if ($n <= 20) {
+            return '6-20';
+        }
+
+        return '21+';
+    }
+
+    /**
+     * @return array{modus: string, type: string, bucket: string, geocode: string}|null
+     */
+    public static function parseAanbodSearchCode(?string $errorCode): ?array
+    {
+        if ($errorCode === null || $errorCode === '') {
+            return null;
+        }
+        $parts = explode('.', $errorCode);
+        if (count($parts) !== 4) {
+            return null;
+        }
+        [$modus, $type, $bucket, $geocode] = $parts;
+        if (! in_array($modus, ['locatie', 'plant', 'beide'], true)) {
+            return null;
+        }
+        if (! in_array($type, ['uitdelen', 'ophalen', 'alle'], true)) {
+            return null;
+        }
+        if (! in_array($bucket, ['0', '1-5', '6-20', '21+'], true)) {
+            return null;
+        }
+        if (! in_array($geocode, ['ok', 'miss', 'na'], true)) {
+            return null;
+        }
+
+        return [
+            'modus' => $modus,
+            'type' => $type,
+            'bucket' => $bucket,
+            'geocode' => $geocode,
+        ];
+    }
+
+    /**
      * @param  array<string, mixed>  $extra
      */
     private function recordUnsafe(string $eventType, Request $request, array $extra = []): void
@@ -871,6 +977,141 @@ final class ConversionTracker
         }
 
         return 0;
+    }
+
+    /**
+     * Zoekmeting-samenvatting voor één kalenderweek (Amsterdam, ma–zo).
+     *
+     * @return array{
+     *   week_key: string,
+     *   label: string,
+     *   total: int,
+     *   empty_count: int,
+     *   empty_pct: float|null,
+     *   modus: array{locatie: int, plant: int, beide: int}
+     * }
+     */
+    public function aanbodSearchWeekSummary(int $weekOffset = 0): array
+    {
+        $tz = 'Europe/Amsterdam';
+        $weekStart = now($tz)->startOfWeek(Carbon::MONDAY)->subWeeks(max(0, $weekOffset));
+        $weekEnd = $weekStart->copy()->endOfWeek(Carbon::SUNDAY);
+        $rows = $this->aanbodSearchDimensionRows($weekStart, $weekEnd);
+
+        $total = 0;
+        $empty = 0;
+        $modus = ['locatie' => 0, 'plant' => 0, 'beide' => 0];
+        foreach ($rows as $row) {
+            $count = (int) $row['count'];
+            $total += $count;
+            $parsed = self::parseAanbodSearchCode($row['error_code']);
+            if ($parsed === null) {
+                continue;
+            }
+            if ($parsed['bucket'] === '0') {
+                $empty += $count;
+            }
+            if (isset($modus[$parsed['modus']])) {
+                $modus[$parsed['modus']] += $count;
+            }
+        }
+
+        return [
+            'week_key' => $this->weekKey($weekStart),
+            'label' => $weekStart->format('d-m').' – '.$weekEnd->format('d-m'),
+            'total' => $total,
+            'empty_count' => $empty,
+            'empty_pct' => $total > 0 ? round(($empty / $total) * 100, 1) : null,
+            'modus' => $modus,
+        ];
+    }
+
+    /**
+     * Top gezochte catalogusplanten in een kalenderweek (alleen resolveExact-matches).
+     *
+     * @return list<array{naam: string, count: int, empty_count: int, empty_pct: float|null}>
+     */
+    public function topAanbodSearchPlants(int $limit = 10, int $weekOffset = 0): array
+    {
+        $tz = 'Europe/Amsterdam';
+        $weekStart = now($tz)->startOfWeek(Carbon::MONDAY)->subWeeks(max(0, $weekOffset));
+        $weekEnd = $weekStart->copy()->endOfWeek(Carbon::SUNDAY);
+        $rows = $this->aanbodSearchDimensionRows($weekStart, $weekEnd);
+
+        /** @var array<string, array{count: int, empty_count: int}> $byPlant */
+        $byPlant = [];
+        foreach ($rows as $row) {
+            $naam = trim((string) ($row['field_name'] ?? ''));
+            if ($naam === '') {
+                continue;
+            }
+            $count = (int) $row['count'];
+            if (! isset($byPlant[$naam])) {
+                $byPlant[$naam] = ['count' => 0, 'empty_count' => 0];
+            }
+            $byPlant[$naam]['count'] += $count;
+            $parsed = self::parseAanbodSearchCode($row['error_code']);
+            if ($parsed !== null && $parsed['bucket'] === '0') {
+                $byPlant[$naam]['empty_count'] += $count;
+            }
+        }
+
+        uasort($byPlant, static fn (array $a, array $b): int => $b['count'] <=> $a['count']);
+        $out = [];
+        foreach (array_slice($byPlant, 0, max(1, $limit), true) as $naam => $stats) {
+            $count = $stats['count'];
+            $empty = $stats['empty_count'];
+            $out[] = [
+                'naam' => $naam,
+                'count' => $count,
+                'empty_count' => $empty,
+                'empty_pct' => $count > 0 ? round(($empty / $count) * 100, 1) : null,
+            ];
+        }
+
+        return $out;
+    }
+
+    /**
+     * Dimensierijen voor aanbod_search in een periode (daily als beschikbaar, anders raw).
+     *
+     * @return list<array{field_name: ?string, error_code: ?string, count: int}>
+     */
+    private function aanbodSearchDimensionRows(Carbon $from, Carbon $to): array
+    {
+        if (Schema::hasTable('conversion_daily')) {
+            $daily = ConversionDaily::query()
+                ->where('event_type', ConversionEvent::TYPE_AANBOD_SEARCH)
+                ->whereDate('date', '>=', $from->toDateString())
+                ->whereDate('date', '<=', $to->toDateString())
+                ->selectRaw('field_name, error_code, SUM(count) as aggregate')
+                ->groupBy('field_name', 'error_code')
+                ->get();
+            if ($daily->isNotEmpty()) {
+                return $daily->map(fn ($r) => [
+                    'field_name' => $r->field_name !== null ? (string) $r->field_name : null,
+                    'error_code' => $r->error_code !== null ? (string) $r->error_code : null,
+                    'count' => (int) $r->aggregate,
+                ])->all();
+            }
+        }
+
+        if (! Schema::hasTable('conversion_events')) {
+            return [];
+        }
+
+        return ConversionEvent::query()
+            ->where('event_type', ConversionEvent::TYPE_AANBOD_SEARCH)
+            ->whereBetween('occurred_at', [$from->copy()->utc(), $to->copy()->utc()])
+            ->selectRaw('field_name, error_code, COUNT(*) as aggregate')
+            ->groupBy('field_name', 'error_code')
+            ->get()
+            ->map(fn ($r) => [
+                'field_name' => $r->field_name !== null ? (string) $r->field_name : null,
+                'error_code' => $r->error_code !== null ? (string) $r->error_code : null,
+                'count' => (int) $r->aggregate,
+            ])
+            ->all();
     }
 
     /**

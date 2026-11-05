@@ -5,14 +5,19 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\AanbodSearch;
+use App\Services\ConversionTracker;
 use App\Services\NuTeStekken;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ZoekenController extends Controller
 {
-    public function __invoke(Request $request, NuTeStekken $calendar, AanbodSearch $search): View
-    {
+    public function __invoke(
+        Request $request,
+        NuTeStekken $calendar,
+        AanbodSearch $search,
+        ConversionTracker $conversions,
+    ): View {
         $plant = trim((string) $request->query('plant', ''));
         if (mb_strlen($plant) > 80) {
             $plant = mb_substr($plant, 0, 80);
@@ -32,6 +37,20 @@ class ZoekenController extends Controller
             $plantItems = $search->zoekOpPlant($plant, null, AanbodSearch::accountOrigin($user));
         } elseif ($plant !== '') {
             $plantItems = $search->search(null, null, false, $plant)['items'];
+        }
+
+        // SSR plant-URL’s (?plant=…): één zoekevent met server-resultaatcount.
+        // Alleen-q landt via JS op /api/zoeken (echte geocode + count); niet hier
+        // met bucket 0 voorregistreren.
+        if ($plant !== '') {
+            $conversions->recordAanbodSearch(
+                $request,
+                $q,
+                $plant,
+                null,
+                count($plantItems),
+                false,
+            );
         }
 
         $title = $plant !== ''

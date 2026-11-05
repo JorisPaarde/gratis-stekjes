@@ -30,13 +30,19 @@ class ConversionEvent extends Model
 
     public const TYPE_FIRST_OFFER = 'first_offer';
 
+    /**
+     * Zoekactie op /aanbod of /api/zoeken (geen PII: geen ruwe q/plant-tekst).
+     * Bewust niet in FUNNEL_TYPES — aparte zoekmeting naast de aanmeldtrechter.
+     */
+    public const TYPE_AANBOD_SEARCH = 'aanbod_search';
+
     /** Interne dagrij voor unieke-bezoekersschatting in conversion_daily. */
     public const TYPE_DAY_VISITORS = '_day_visitors';
 
     /**
      * Publieke trechterstappen op het dashboard.
-     * welcome_view / welcome_cta_click bewust niet hier: onboarding-hulpmetrics
-     * naast de trechter (email_verified → first_offer), zonder rates te breken.
+     * welcome_view / welcome_cta_click / aanbod_search bewust niet hier:
+     * hulpmetrics naast de trechter (email_verified → first_offer), zonder rates te breken.
      *
      * @var list<string>
      */
