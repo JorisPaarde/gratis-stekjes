@@ -1073,22 +1073,23 @@ final class ConversionTracker
     }
 
     /**
-     * Dimensierijen voor aanbod_search in een periode (daily als beschikbaar, anders raw).
+     * Dimensierijen voor aanbod_search in een periode.
+     * Raw events winnen zolang er rijen in het bereik zijn (zoeken sinds laatste
+     * aggregate-cron); pas bij lege raw valt terug op conversion_daily.
      *
      * @return list<array{field_name: ?string, error_code: ?string, count: int}>
      */
     private function aanbodSearchDimensionRows(Carbon $from, Carbon $to): array
     {
-        if (Schema::hasTable('conversion_daily')) {
-            $daily = ConversionDaily::query()
+        if (Schema::hasTable('conversion_events')) {
+            $raw = ConversionEvent::query()
                 ->where('event_type', ConversionEvent::TYPE_AANBOD_SEARCH)
-                ->whereDate('date', '>=', $from->toDateString())
-                ->whereDate('date', '<=', $to->toDateString())
-                ->selectRaw('field_name, error_code, SUM(count) as aggregate')
+                ->whereBetween('occurred_at', [$from->copy()->utc(), $to->copy()->utc()])
+                ->selectRaw('field_name, error_code, COUNT(*) as aggregate')
                 ->groupBy('field_name', 'error_code')
                 ->get();
-            if ($daily->isNotEmpty()) {
-                return $daily->map(fn ($r) => [
+            if ($raw->isNotEmpty()) {
+                return $raw->map(fn ($r) => [
                     'field_name' => $r->field_name !== null ? (string) $r->field_name : null,
                     'error_code' => $r->error_code !== null ? (string) $r->error_code : null,
                     'count' => (int) $r->aggregate,
@@ -1096,14 +1097,15 @@ final class ConversionTracker
             }
         }
 
-        if (! Schema::hasTable('conversion_events')) {
+        if (! Schema::hasTable('conversion_daily')) {
             return [];
         }
 
-        return ConversionEvent::query()
+        return ConversionDaily::query()
             ->where('event_type', ConversionEvent::TYPE_AANBOD_SEARCH)
-            ->whereBetween('occurred_at', [$from->copy()->utc(), $to->copy()->utc()])
-            ->selectRaw('field_name, error_code, COUNT(*) as aggregate')
+            ->whereDate('date', '>=', $from->toDateString())
+            ->whereDate('date', '<=', $to->toDateString())
+            ->selectRaw('field_name, error_code, SUM(count) as aggregate')
             ->groupBy('field_name', 'error_code')
             ->get()
             ->map(fn ($r) => [

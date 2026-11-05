@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Aanbod;
+use App\Models\ConversionDaily;
 use App\Models\ConversionEvent;
 use App\Models\GeocodeCache;
 use App\Models\User;
@@ -149,10 +150,98 @@ test('ssr plant-url logt aanbod_search eenmaal', function () {
         ->and($rows[0]->error_code)->toStartWith('plant.alle.');
 });
 
+test('ssr met plant én q logt niet (geocode-pad is api)', function () {
+    $lid = zoekmetingLid();
+    zoekmetingAanbod($lid, 'Munt stekje');
+
+    $this->get(route('aanbod', ['plant' => 'Munt', 'q' => 'Haarlem']))->assertOk();
+
+    expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_AANBOD_SEARCH)->count())->toBe(0);
+});
+
 test('ssr kale aanbodpagina zonder plant/q logt niets', function () {
     $this->get(route('aanbod'))->assertOk();
 
     expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_AANBOD_SEARCH)->count())->toBe(0);
+});
+
+test('weekstats prefereren raw events boven incomplete daily', function () {
+    $tracker = app(ConversionTracker::class);
+    $today = now('Europe/Amsterdam')->toDateString();
+
+    // Oude daily-totalen (alsof cron al heeft gedraaid) — zonder recente raw zou dit 2 tellen.
+    ConversionDaily::query()->create([
+        'date' => $today,
+        'week_key' => $tracker->weekKey(now()),
+        'event_type' => ConversionEvent::TYPE_AANBOD_SEARCH,
+        'device_type' => 'desktop',
+        'utm_source' => null,
+        'utm_medium' => null,
+        'utm_campaign' => null,
+        'utm_content' => null,
+        'field_name' => 'Lavendel',
+        'error_code' => 'plant.alle.1-5.na',
+        'count' => 2,
+        'unique_visitors' => 1,
+    ]);
+
+    // Nieuwe raw zoekacties sinds laatste aggregate — moeten winnen.
+    ConversionEvent::query()->create([
+        'occurred_at' => now(),
+        'event_type' => ConversionEvent::TYPE_AANBOD_SEARCH,
+        'path' => '/api/zoeken',
+        'field_name' => 'Monstera',
+        'error_code' => 'plant.alle.0.na',
+        'week_key' => $tracker->weekKey(now()),
+        'device_type' => 'desktop',
+    ]);
+    ConversionEvent::query()->create([
+        'occurred_at' => now(),
+        'event_type' => ConversionEvent::TYPE_AANBOD_SEARCH,
+        'path' => '/api/zoeken',
+        'field_name' => 'Monstera',
+        'error_code' => 'plant.alle.1-5.na',
+        'week_key' => $tracker->weekKey(now()),
+        'device_type' => 'desktop',
+    ]);
+
+    $summary = $tracker->aanbodSearchWeekSummary(0);
+    expect($summary['total'])->toBe(2)
+        ->and($summary['modus']['plant'])->toBe(2);
+
+    $top = $tracker->topAanbodSearchPlants(10, 0);
+    expect($top)->toHaveCount(1)
+        ->and($top[0]['naam'])->toBe('Monstera')
+        ->and($top[0]['count'])->toBe(2);
+});
+
+test('weekstats vallen terug op daily als raw leeg is', function () {
+    $tracker = app(ConversionTracker::class);
+    $today = now('Europe/Amsterdam')->toDateString();
+
+    ConversionDaily::query()->create([
+        'date' => $today,
+        'week_key' => $tracker->weekKey(now()),
+        'event_type' => ConversionEvent::TYPE_AANBOD_SEARCH,
+        'device_type' => 'desktop',
+        'utm_source' => null,
+        'utm_medium' => null,
+        'utm_campaign' => null,
+        'utm_content' => null,
+        'field_name' => 'Lavendel',
+        'error_code' => 'plant.alle.0.na',
+        'count' => 4,
+        'unique_visitors' => 2,
+    ]);
+
+    $summary = $tracker->aanbodSearchWeekSummary(0);
+    expect($summary['total'])->toBe(4)
+        ->and($summary['empty_count'])->toBe(4);
+
+    $top = $tracker->topAanbodSearchPlants(10, 0);
+    expect($top[0]['naam'])->toBe('Lavendel')
+        ->and($top[0]['count'])->toBe(4)
+        ->and($top[0]['empty_count'])->toBe(4);
 });
 
 test('statistieken toont top-10 met lege resultaten', function () {

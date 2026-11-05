@@ -39,13 +39,12 @@ class ZoekenController extends Controller
             $plantItems = $search->search(null, null, false, $plant)['items'];
         }
 
-        // SSR plant-URL’s (?plant=…): één zoekevent met server-resultaatcount.
-        // Alleen-q landt via JS op /api/zoeken (echte geocode + count); niet hier
-        // met bucket 0 voorregistreren.
-        if ($plant !== '') {
+        // SSR alleen-plant SEO-URL’s (?plant=… zonder q): één zoekevent.
+        // Plant+q of alleen-q: geocode/resultaat via /api/zoeken — niet hier loggen.
+        if ($plant !== '' && $q === '') {
             $conversions->recordAanbodSearch(
                 $request,
-                $q,
+                '',
                 $plant,
                 null,
                 count($plantItems),
