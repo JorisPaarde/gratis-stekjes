@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\AanbodExpiryService;
+use App\Services\ConversionTracker;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,7 +14,7 @@ use Throwable;
 
 class CronController extends Controller
 {
-    public function __invoke(Request $request, AanbodExpiryService $expiry): Response|JsonResponse
+    public function __invoke(Request $request, AanbodExpiryService $expiry, ConversionTracker $conversions): Response|JsonResponse
     {
         $expected = (string) config('stekjes.cron_token', '');
         $given = (string) $request->header('X-Cron-Token', '');
@@ -34,6 +35,7 @@ class CronController extends Controller
                 'expiry_reminders' => $expiry->sendExpiryReminders(),
                 'purge_geocode_cache' => ['deleted' => $expiry->purgeGeocodeCache()],
                 'purge_mail_log' => ['deleted' => $expiry->purgeMailLog()],
+                'conversion_aggregate' => $conversions->aggregateAndPurge(),
             ];
         } catch (Throwable $e) {
             return response()->json([

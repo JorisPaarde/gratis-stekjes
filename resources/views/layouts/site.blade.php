@@ -65,7 +65,8 @@
             @endunless
           @endunless
         @else
-          <a class="nav-cta header-cta" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="16" /> Doe mee</a>
+          @php($meetFrom = app(\App\Services\ConversionTracker::class)->normalizePath(request()->getPathInfo()) ?: '/')
+          <a class="nav-cta header-cta" href="{{ route('ga.word-lid', ['from' => $meetFrom, 'utm_content' => 'header']) }}"><x-icon name="plus" :size="16" /> Doe mee</a>
         @endauth
       @endunless
       <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="hoofdmenu" data-nav-toggle>
@@ -94,8 +95,9 @@
             @endunless
           @endunless
         @else
+          @php($meetFrom = $meetFrom ?? (app(\App\Services\ConversionTracker::class)->normalizePath(request()->getPathInfo()) ?: '/'))
           <a href="{{ route('account.inloggen') }}"><x-icon name="gebruiker" :size="16" /> Inloggen</a>
-          <a class="nav-cta" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="16" /> Doe mee</a>
+          <a class="nav-cta" href="{{ route('ga.word-lid', ['from' => $meetFrom, 'utm_content' => 'menu']) }}"><x-icon name="plus" :size="16" /> Doe mee</a>
         @endauth
       </nav>
     </div>
@@ -126,7 +128,8 @@
         @auth
           <p><a class="btn footer-cta" href="{{ route('account.index') }}"><x-icon name="gebruiker" :size="16" /> Mijn account</a></p>
         @else
-          <p><a class="btn footer-cta" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="16" /> Doe mee</a></p>
+          @php($meetFromFooter = app(\App\Services\ConversionTracker::class)->normalizePath(request()->getPathInfo()) ?: '/')
+          <p><a class="btn footer-cta" href="{{ route('ga.word-lid', ['from' => $meetFromFooter, 'utm_content' => 'footer']) }}"><x-icon name="plus" :size="16" /> Doe mee</a></p>
         @endauth
         <p class="footer-contact"><a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a></p>
       </div>

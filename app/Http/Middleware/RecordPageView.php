@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Support\BotUserAgent;
 use Closure;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
@@ -35,6 +36,8 @@ class RecordPageView
         '/api',
         '/up',
         '/cron',
+        '/ga',
+        '/meet',
     ];
 
     /** @var list<string> */
@@ -112,15 +115,7 @@ class RecordPageView
 
     private function isBot(Request $request): bool
     {
-        $ua = trim((string) $request->userAgent());
-        if ($ua === '') {
-            return false;
-        }
-
-        return (bool) preg_match(
-            '/bot|crawl|spider|slurp|bingpreview|facebookexternalhit|embedly|outbrain|pinterest|vkshare|whatsapp|telegram|discordbot|headless|wget|curl\/|python-requests|scrapy|httpclient|libwww/i',
-            $ua
-        );
+        return BotUserAgent::isBot($request);
     }
 
     private function normalizePath(string $pathInfo): ?string

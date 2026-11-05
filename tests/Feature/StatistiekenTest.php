@@ -87,7 +87,7 @@ test('statistieken toont aggregaten zonder e-mailadressen', function () {
     // 3 leden; 1 lid met ≥1 listing; 2/1 bevestigd/onbevestigd; 2/1 aanbod; 1 bericht; 7 pageviews vandaag.
     expect($html)
         ->toContain('bevestigd / onbevestigd')
-        ->and($html)->toContain('<span class="stats-kpi-label">bezoekers vandaag</span>')
+        ->and($html)->toContain('<span class="stats-kpi-label">pageviews vandaag</span>')
         ->and($html)->toContain('<span class="stats-kpi-value">7</span>')
         ->and($html)->toContain('1 van 3 leden heeft iets aangeboden')
         ->and($html)->toContain('<span class="stats-kpi-value">3</span>');
@@ -113,7 +113,7 @@ test('statistieken rendert SVG-charts voor admin', function () {
         ->and($html)->toContain('stats-sparkline')
         ->and($html)->toContain('stats-svg-chart')
         ->and($html)->toContain('role="img"')
-        ->and($html)->toContain('Lijndiagram aanmeldingen en bezoekers')
+        ->and($html)->toContain('Lijndiagram aanmeldingen en pageviews')
         ->and($html)->toContain('Donut bevestigd versus onbevestigd')
         ->and($html)->toContain('Horizontale staven top pagina')
         ->and($html)->toContain('<details class="stats-panel stats-panel--overview" open>')
@@ -140,7 +140,7 @@ test('statistieken werkt met lege data zonder fouten', function () {
         ->and($html)->not->toContain('@example.com');
 });
 
-test('statistieken toont bezoekers vandaag als KPI', function () {
+test('statistieken toont pageviews vandaag als KPI', function () {
     PageView::query()->create([
         'date' => now()->toDateString(),
         'path' => '/',
@@ -160,12 +160,12 @@ test('statistieken toont bezoekers vandaag als KPI', function () {
     $html = $this->withSession(['admin_ok' => true])
         ->get(route('beheer.statistieken'))
         ->assertOk()
-        ->assertSee('bezoekers vandaag', false)
+        ->assertSee('pageviews vandaag', false)
         ->getContent();
 
     expect($html)
         ->toContain('<span class="stats-kpi-value">7</span>')
-        ->and($html)->toContain('<span class="stats-kpi-label">bezoekers vandaag</span>')
+        ->and($html)->toContain('<span class="stats-kpi-label">pageviews vandaag</span>')
         ->and($html)->toContain('14 dagen (106 views)')
         ->and($html)->not->toContain('@example.com');
 });
@@ -243,6 +243,8 @@ test('pageview-teller zet geen Set-Cookie', function () {
     $allowed = [
         config('session.cookie'),
         'XSRF-TOKEN',
+        // Functionele flow-cookie uit conversiemeting (0.75.0); geen tracking van derden.
+        (string) config('conversion.flow_cookie', 'gp_flow'),
     ];
     $extra = collect($response->headers->getCookies())
         ->map(fn ($cookie) => $cookie->getName())

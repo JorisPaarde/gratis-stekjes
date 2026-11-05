@@ -189,7 +189,7 @@ test('uitloggen werkt', function () {
 test('homepage Doe mee linkt naar registreren zonder rolkeuze', function () {
     $html = $this->get('/')
         ->assertOk()
-        ->assertSee(route('account.registreren', absolute: false), false)
+        ->assertSee(route('ga.word-lid', absolute: false), false)
         ->getContent();
 
     expect($html)->not->toContain('rol=uitdelen')

@@ -3,6 +3,23 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.75.0] - 2026-11-05
+
+### Added
+
+- Privacyvriendelijke conversiemeting (release A): events `cta_click`, `register_view`, `form_start`, `validation_error`, `form_submit`, `account_created`, `email_verified`, `first_offer` in `conversion_events`, dagtotalen in `conversion_daily`.
+- CTA-route `/ga/word-lid` en beacon `/meet/event` (CSRF-vrij, rate-limit); functionele flow-cookie (7 dagen); dagelijkse visitor-hash zonder IP-opslag.
+- Bron bij account: first-touch UTM/referrer + optioneel «Hoe heb je ons gevonden?» op registreren.
+- Beheer postlogboek (`/beheer/posts`) met UTM-linkgenerator en conversie per post/groep.
+- Dashboardtrechter per week op `/beheer/statistieken` (ook voor stats-lezer), validatiefouten, apparaat/bron; onder 30 formulierstarts «te weinig data» i.p.v. percentages.
+- Cron-job `conversion_aggregate` (ook `gp:conversion-aggregate`): aggregeert en wist ruwe events na 30 dagen.
+
+### Changed
+
+- Label «bezoekers» bij pageview-tellingen heet nu «pageviews».
+- `/privacy` beschrijft conversiemeting, flow-cookie, retentie en dat er geen cookiebanner nodig is.
+- Header-/footer-/home-CTA’s lopen via `/ga/word-lid` (tekst blijft «Doe mee» / «Maak gratis een account» tot 0.76.0).
+
 ## [0.74.0] - 2026-11-05
 
 ### Changed

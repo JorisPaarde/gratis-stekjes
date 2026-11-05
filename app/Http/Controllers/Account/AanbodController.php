@@ -7,8 +7,10 @@ namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
 use App\Models\Aanbod;
 use App\Models\AanbodFoto;
+use App\Models\ConversionEvent;
 use App\Rules\GeenInvasieveSoort;
 use App\Services\AanbodFotoService;
+use App\Services\ConversionTracker;
 use App\Services\InvasieveSoorten;
 use App\Services\MilestoneService;
 use App\Services\Plantensoorten;
@@ -156,6 +158,23 @@ class AanbodController extends Controller
         }
 
         RateLimiter::hit($throttleKey, 3600);
+
+        try {
+            $isFirst = Aanbod::query()
+                ->where('user_id', $user->id)
+                ->where('id', '!=', $aanbod->id)
+                ->doesntExist();
+            if ($isFirst) {
+                app(ConversionTracker::class)->recordForUser(
+                    ConversionEvent::TYPE_FIRST_OFFER,
+                    $user,
+                    $request,
+                    ['path' => '/account/aanbod/nieuw']
+                );
+            }
+        } catch (\Throwable) {
+            // Meting mag aanbieden nooit blokkeren.
+        }
 
         $milestones->maybeSendEersteStekje($user, 'eerste_aanbod');
 

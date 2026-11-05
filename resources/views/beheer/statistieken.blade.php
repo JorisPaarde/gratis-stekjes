@@ -18,7 +18,7 @@
   <details class="stats-panel stats-panel--overview" open>
     <summary class="stats-panel-summary">
       <span class="stats-panel-title">Overzicht · 30 dagen</span>
-      <span class="stats-panel-hint muted">aanmeldingen + bezoekers</span>
+      <span class="stats-panel-hint muted">aanmeldingen + pageviews</span>
     </summary>
     <div class="stats-panel-body">
       {!! $svgOverview !!}
@@ -166,7 +166,7 @@
             <span class="stats-kpi-value">{{ $pageViewsToday }}</span>
             @if($svgViewsSpark !== ''){!! $svgViewsSpark !!}@endif
           </span>
-          <span class="stats-kpi-label">bezoekers vandaag</span>
+          <span class="stats-kpi-label">pageviews vandaag</span>
         </summary>
         <div class="stats-kpi-expand">
           {!! $svgViews !!}
@@ -176,6 +176,113 @@
       </details>
     </li>
   </ul>
+
+  <details class="stats-panel" open>
+    <summary class="stats-panel-summary">
+      <span class="stats-panel-title">Trechter · per week</span>
+      <span class="stats-panel-hint muted">van klik tot eerste aanbod</span>
+    </summary>
+    <div class="stats-panel-body">
+      <p class="muted">Unieke bezoekers zijn een schatting (daghash). Onder {{ $minFormStarts }} formulierstarts tonen we geen percentages («te weinig data»).</p>
+      <div class="beheer-table-wrap stats-funnel-wrap">
+        <table class="beheer-table stats-funnel-table">
+          <thead>
+            <tr>
+              <th>Week</th>
+              @foreach($funnelLabels as $key => $label)
+                <th>{{ $label }}</th>
+              @endforeach
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($funnelWeeks as $week)
+              <tr>
+                <td>
+                  <strong>{{ $week['label'] }}</strong>
+                  @if($week['too_few'])
+                    <br><span class="hint">te weinig data</span>
+                  @endif
+                </td>
+                <td>
+                  {{ $week['unique_visitors'] }}
+                </td>
+                @foreach($funnelLabels as $key => $label)
+                  @continue($key === 'unique_visitors')
+                  <td>
+                    {{ (int) ($week['steps'][$key] ?? 0) }}
+                    @if($week['too_few'])
+                      <br><span class="hint">te weinig data</span>
+                    @elseif(($week['rates'][$key] ?? null) !== null)
+                      <br><span class="hint">{{ $week['rates'][$key] }}%</span>
+                    @endif
+                  </td>
+                @endforeach
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <details class="stats-panel">
+    <summary class="stats-panel-summary">
+      <span class="stats-panel-title">Validatiefouten · 30 dagen</span>
+      <span class="stats-panel-hint muted">alleen veld + foutcode</span>
+    </summary>
+    <div class="stats-panel-body">
+      @if($validationErrors === [])
+        <p class="muted">Nog geen validatiefouten gemeten.</p>
+      @else
+        <table class="beheer-table">
+          <thead>
+            <tr><th>Veld</th><th>Foutcode</th><th>Aantal</th></tr>
+          </thead>
+          <tbody>
+            @foreach($validationErrors as $row)
+              <tr>
+                <td><code>{{ $row['field_name'] }}</code></td>
+                <td><code>{{ $row['error_code'] }}</code></td>
+                <td>{{ $row['count'] }}</td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
+      @endif
+    </div>
+  </details>
+
+  <details class="stats-panel">
+    <summary class="stats-panel-summary">
+      <span class="stats-panel-title">Apparaat en bron · 30 dagen</span>
+    </summary>
+    <div class="stats-panel-body stats-breakdown">
+      <div>
+        <h2 class="stats-subhead">Apparaat (registratiepagina)</h2>
+        @if($deviceBreakdown === [])
+          <p class="muted">Nog geen data.</p>
+        @else
+          <ul class="stats-path-list">
+            @foreach($deviceBreakdown as $device => $count)
+              <li><code>{{ $device }}</code> <span>{{ $count }}</span></li>
+            @endforeach
+          </ul>
+        @endif
+      </div>
+      <div>
+        <h2 class="stats-subhead">Bron (accounts, utm_source)</h2>
+        @if($sourceBreakdown === [])
+          <p class="muted">Nog geen data.</p>
+        @else
+          <ul class="stats-path-list">
+            @foreach($sourceBreakdown as $src => $count)
+              <li><code>{{ $src }}</code> <span>{{ $count }}</span></li>
+            @endforeach
+          </ul>
+        @endif
+      </div>
+    </div>
+  </details>
 
   <details class="stats-panel">
     <summary class="stats-panel-summary">

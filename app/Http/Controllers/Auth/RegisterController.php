@@ -6,9 +6,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Models\ConversionEvent;
 use App\Models\User;
 use App\Notifications\AccountBestaatAl;
 use App\Notifications\VerifyEmailDutch;
+use App\Services\ConversionTracker;
 use App\Services\InitiatiefPaginas;
 use App\Support\SafeMail;
 use App\Support\ThrottleMessage;
@@ -21,8 +23,12 @@ use Illuminate\View\View;
 
 class RegisterController extends Controller
 {
-    public function create(Request $request, InitiatiefPaginas $initiatieven): View
+    public function create(Request $request, InitiatiefPaginas $initiatieven, ConversionTracker $tracker): View
     {
+        $tracker->record(ConversionEvent::TYPE_REGISTER_VIEW, $request, [
+            'path' => '/account/registreren',
+        ]);
+
         $vinkjes = $this->aanmeldVinkjes($initiatieven);
         $checked = [];
         foreach ($vinkjes as $vink) {
@@ -39,10 +45,11 @@ class RegisterController extends Controller
             'aanmeldChecked' => $checked,
             // BC voor oudere tests/partials.
             'struikroverChecked' => $checked['struikrover'] ?? false,
+            'foundViaOptions' => (array) config('conversion.found_via_options', []),
         ]);
     }
 
-    public function store(RegisterRequest $request, InitiatiefPaginas $initiatieven): RedirectResponse
+    public function store(RegisterRequest $request, InitiatiefPaginas $initiatieven, ConversionTracker $tracker): RedirectResponse
     {
         if ($request->isBot()) {
             return redirect()
@@ -57,6 +64,10 @@ class RegisterController extends Controller
                 ->withErrors(['email' => ThrottleMessage::forKey($key)]);
         }
         RateLimiter::hit($key, 3600);
+
+        $tracker->record(ConversionEvent::TYPE_FORM_SUBMIT, $request, [
+            'path' => '/account/registreren',
+        ]);
 
         $email = strtolower(trim((string) $request->validated('email')));
         $password = (string) $request->validated('password');
@@ -82,7 +93,21 @@ class RegisterController extends Controller
             if (! array_key_exists('struikrover', $payload) && Schema::hasColumn('users', 'struikrover')) {
                 $payload['struikrover'] = $request->boolean('struikrover');
             }
+
+            if (Schema::hasColumn('users', 'acquisition_found_via')) {
+                $foundVia = trim((string) $request->validated('acquisition_found_via', ''));
+                $payload['acquisition_found_via'] = $foundVia !== '' ? $foundVia : null;
+                $other = trim((string) $request->validated('acquisition_found_via_other', ''));
+                $payload['acquisition_found_via_other'] = ($foundVia === 'anders' && $other !== '')
+                    ? mb_substr($other, 0, 120)
+                    : null;
+            }
+
             $user = User::query()->create($payload);
+            $tracker->attachFlowToUser($user->fresh(), $request);
+            $tracker->recordForUser(ConversionEvent::TYPE_ACCOUNT_CREATED, $user->fresh(), $request, [
+                'path' => '/account/registreren',
+            ]);
             $mailOk = SafeMail::notify($user, new VerifyEmailDutch);
         } elseif (
             $existing->isActive()

@@ -6,10 +6,12 @@ namespace App\Http\Controllers\Beheer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Aanbod;
+use App\Models\ConversionEvent;
 use App\Models\Feedback;
 use App\Models\Message;
 use App\Models\PageView;
 use App\Models\User;
+use App\Services\ConversionTracker;
 use App\Support\StatsSvg;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
@@ -18,7 +20,7 @@ use Illuminate\Support\Facades\Schema;
 
 class StatistiekenController extends Controller
 {
-    public function index(): Response
+    public function index(ConversionTracker $conversions): Response
     {
         $leden = User::query()->members()->count();
         $confirmed = User::query()->members()->whereNotNull('email_verified_at')->count();
@@ -94,9 +96,9 @@ class StatistiekenController extends Controller
                 'b' => (int) ($viewsByDate->get($row['date'])['total'] ?? 0),
             ];
         }
-        $overviewText = 'Aanmeldingen en bezoekers per dag (30 dagen). '
+        $overviewText = 'Aanmeldingen en pageviews per dag (30 dagen). '
             .'Aanmeldingen totaal in periode: '.$signupsPerDay->sum('count').'. '
-            .'Bezoekers (pageviews) totaal in periode: '.$pageViews['total'].'.';
+            .'Pageviews totaal in periode: '.$pageViews['total'].'.';
 
         $signupBars = $signupsPerDay->map(fn (array $r) => [
             'label' => $r['label'],
@@ -107,8 +109,13 @@ class StatistiekenController extends Controller
         $viewBars = $pageViewsPerDay14->map(fn (array $r) => [
             'label' => $r['label'],
             'value' => (int) $r['total'],
-            'title' => $r['label'].': '.$r['total'].' bezoekers',
+            'title' => $r['label'].': '.$r['total'].' pageviews',
         ])->all();
+
+        $funnelWeeks = $conversions->funnelByWeek(8);
+        $validationErrors = $conversions->topValidationErrors(30, 15);
+        $breakdown = $conversions->deviceAndSourceBreakdown(30);
+        $minFormStarts = (int) config('conversion.min_form_starts_for_rates', 30);
 
         $topBars = $pageViews14['top']->map(fn (array $r) => [
             'label' => $r['path'],
@@ -143,15 +150,30 @@ class StatistiekenController extends Controller
             'pageViewsTop' => $pageViews14['top'],
             'pageViewsTotal' => $pageViews14['total'],
             'pageViewsToday' => $pageViewsToday,
+            'funnelWeeks' => $funnelWeeks,
+            'validationErrors' => $validationErrors,
+            'deviceBreakdown' => $breakdown['devices'],
+            'sourceBreakdown' => $breakdown['sources'],
+            'minFormStarts' => $minFormStarts,
+            'funnelLabels' => [
+                'unique_visitors' => 'Unieke bezoekers (schatting)',
+                ConversionEvent::TYPE_CTA_CLICK => 'Klik Word lid',
+                ConversionEvent::TYPE_REGISTER_VIEW => 'Registratiepagina',
+                ConversionEvent::TYPE_FORM_START => 'Formulier gestart',
+                ConversionEvent::TYPE_FORM_SUBMIT => 'Formulier verstuurd',
+                ConversionEvent::TYPE_ACCOUNT_CREATED => 'Account gemaakt',
+                ConversionEvent::TYPE_EMAIL_VERIFIED => 'E-mail bevestigd',
+                ConversionEvent::TYPE_FIRST_OFFER => 'Eerste aanbod',
+            ],
             'svgOverview' => StatsSvg::dualLineChart(
                 $overviewRows,
-                'Lijndiagram aanmeldingen en bezoekers per dag, laatste 30 dagen',
+                'Lijndiagram aanmeldingen en pageviews per dag, laatste 30 dagen',
                 $overviewText,
                 'Aanmeldingen',
-                'Bezoekers',
+                'Pageviews',
             ),
             'svgSignupSpark' => StatsSvg::sparkline($signupSpark, 'Sparkline aanmeldingen, 30 dagen'),
-            'svgViewsSpark' => StatsSvg::sparkline($viewsSpark, 'Sparkline bezoekers, 14 dagen', stroke: StatsSvg::COLOR_ORANGE),
+            'svgViewsSpark' => StatsSvg::sparkline($viewsSpark, 'Sparkline pageviews, 14 dagen', stroke: StatsSvg::COLOR_ORANGE),
             'svgOfferSpark' => $offersPerDay->sum('count') > 0 || $offersTotal > 0
                 ? StatsSvg::sparkline($offerSpark, 'Sparkline nieuwe aanbiedingen, 14 dagen')
                 : '',
@@ -168,8 +190,8 @@ class StatistiekenController extends Controller
             ),
             'svgViews' => StatsSvg::barChart(
                 $viewBars,
-                'Staafdiagram bezoekers per dag, laatste 14 dagen',
-                'Bezoekers per dag (14 dagen): '.$pageViewsPerDay14->map(fn ($r) => $r['label'].'='.$r['total'])->implode(', ').'.',
+                'Staafdiagram pageviews per dag, laatste 14 dagen',
+                'Pageviews per dag (14 dagen): '.$pageViewsPerDay14->map(fn ($r) => $r['label'].'='.$r['total'])->implode(', ').'.',
                 fill: StatsSvg::COLOR_ORANGE,
             ),
             'svgConfirmed' => StatsSvg::donut(
