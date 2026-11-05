@@ -13,7 +13,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Removed
 
-- Beheerscherm /beheer/organisaties en het model OrganisatieInitiatief. De tabel `organisatie_initiatieven` blijft voorlopig staan maar wordt niet meer gelezen.
+- Beheerscherm /beheer/organisaties, het model OrganisatieInitiatief en de tabel `organisatie_initiatieven` (migratie verwijdert hem).
 
 ## [0.71.2] - 2026-11-05
 
