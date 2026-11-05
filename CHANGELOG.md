@@ -14,6 +14,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 ### Changed
 
 - Na eerste geldige bevestiging + auto-login: redirect naar `/account/welkom` in plaats van direct `/account`. Herhaalde bevestiging of opnieuw inloggen toont het scherm niet opnieuw. Daarna blijft `VolgendeStap` leidend op `/account`.
+- Recovery: zolang `welcome_shown_at` null is, sturen `GET /account` en geslaagde login door naar `/account/welkom` (geen loop op welkom zelf).
 - Privacytekst: welkomstscherm-events genoemd bij conversiemeting.
 
 ## [0.76.0] - 2026-11-05

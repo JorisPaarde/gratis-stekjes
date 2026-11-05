@@ -211,3 +211,46 @@ test('bot-UA zet welcome_shown_at niet; menselijke UA wel', function () {
     expect($user->fresh()->welcome_shown_at)->not->toBeNull();
     expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_WELCOME_VIEW)->count())->toBe(1);
 });
+
+test('recovery: GET /account met welcome_shown_at null stuurt door naar welkom', function () {
+    $user = User::factory()->create([
+        'email' => 'welkom-recovery-account@example.com',
+        'email_verified_at' => now(),
+        'welcome_shown_at' => null,
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('account.index'))
+        ->assertRedirect(route('account.welkom'));
+});
+
+test('recovery: login met welcome_shown_at null landt op welkom', function () {
+    $plain = authTestPassword();
+    $user = User::factory()->create([
+        'email' => 'welkom-recovery-login@example.com',
+        'password' => $plain,
+        'email_verified_at' => now(),
+        'welcome_shown_at' => null,
+    ]);
+
+    $this->post(route('account.inloggen'), authFormPayload([
+        'email' => 'welkom-recovery-login@example.com',
+        'password' => $plain,
+        'next' => '/aanbieden',
+    ]))->assertRedirect(route('account.welkom'));
+
+    $this->assertAuthenticatedAs($user);
+});
+
+test('recovery: user met welcome_shown_at blijft op /account', function () {
+    $user = User::factory()->create([
+        'email' => 'welkom-recovery-skip@example.com',
+        'email_verified_at' => now(),
+        'welcome_shown_at' => now()->subDay(),
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('account.index'))
+        ->assertOk()
+        ->assertSee('Mijn account', false);
+});

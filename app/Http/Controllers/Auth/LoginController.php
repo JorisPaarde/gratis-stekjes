@@ -71,6 +71,11 @@ class LoginController extends Controller
         $request->session()->regenerate();
         RateLimiter::clear($throttleKey);
 
+        // Recovery: eenmalig welkomstscherm vóór intended/safeNext.
+        if ($user->welcome_shown_at === null) {
+            return redirect()->route('account.welkom');
+        }
+
         return redirect()->intended($request->safeNext());
     }
 
