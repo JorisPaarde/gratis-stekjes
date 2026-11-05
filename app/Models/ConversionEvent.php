@@ -24,12 +24,22 @@ class ConversionEvent extends Model
 
     public const TYPE_EMAIL_VERIFIED = 'email_verified';
 
+    public const TYPE_WELCOME_VIEW = 'welcome_view';
+
+    public const TYPE_WELCOME_CTA_CLICK = 'welcome_cta_click';
+
     public const TYPE_FIRST_OFFER = 'first_offer';
 
     /** Interne dagrij voor unieke-bezoekersschatting in conversion_daily. */
     public const TYPE_DAY_VISITORS = '_day_visitors';
 
-    /** @var list<string> */
+    /**
+     * Publieke trechterstappen op het dashboard.
+     * welcome_view / welcome_cta_click bewust niet hier: onboarding-hulpmetrics
+     * naast de trechter (email_verified → first_offer), zonder rates te breken.
+     *
+     * @var list<string>
+     */
     public const FUNNEL_TYPES = [
         self::TYPE_CTA_CLICK,
         self::TYPE_REGISTER_VIEW,

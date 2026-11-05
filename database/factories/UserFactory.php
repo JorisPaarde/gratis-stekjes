@@ -20,6 +20,8 @@ class UserFactory extends Factory
             'name' => fake()->firstName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
+            // Geverifieerde fabrieksleden: welkomstscherm nooit tonen (zoals migratie-backfill).
+            'welcome_shown_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'active' => true,
@@ -35,6 +37,7 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+            'welcome_shown_at' => null,
         ]);
     }
 

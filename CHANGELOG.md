@@ -3,6 +3,19 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.77.0] - 2026-11-05
+
+### Added
+
+- Eenmalig welkomstscherm na de eerste e-mailbevestiging (`GET /account/welkom`): knop naar `/aanbieden`, link naar het openbare aanbod. Datumveld `users.welcome_shown_at` (bestaande geverifieerde leden krijgen backfill, zodat zij het scherm nooit zien).
+- Conversie-events `welcome_view` en `welcome_cta_click` (server-side bij auth). Bewust **niet** in de publieke trechter-`FUNNEL_TYPES` (dashboard blijft `email_verified` → `first_offer`); wel meetbaar naast de trechter. `first_offer` ongewijzigd.
+- AVG-export bevat `welcome_shown_at`; bij accountverwijdering verdwijnt het veld mee met de userrij.
+
+### Changed
+
+- Na eerste geldige bevestiging + auto-login: redirect naar `/account/welkom` in plaats van direct `/account`. Herhaalde bevestiging of opnieuw inloggen toont het scherm niet opnieuw. Daarna blijft `VolgendeStap` leidend op `/account`.
+- Privacytekst: welkomstscherm-events genoemd bij conversiemeting.
+
 ## [0.76.0] - 2026-11-05
 
 ### Added

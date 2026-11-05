@@ -17,7 +17,7 @@ test('bevestigen met geldige eenmalige token logt in vanuit verse sessie', funct
     ]);
 
     // Verse sessie: geen actingAs, geen cookies van eerdere login.
-    $this->get($url)->assertRedirect(route('account.index'));
+    $this->get($url)->assertRedirect(route('account.welkom'));
     $this->assertAuthenticatedAs($user);
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue()
         ->and($user->fresh()->email_verification_token)->toBeNull();
@@ -33,7 +33,7 @@ test('hergebruik van bevestigingslink logt niet opnieuw in', function () {
         'token' => $token,
     ]);
 
-    $this->get($url)->assertRedirect(route('account.index'));
+    $this->get($url)->assertRedirect(route('account.welkom'));
     $this->post(route('account.uitloggen'))->assertRedirect(route('home'));
     $this->assertGuest();
 
