@@ -115,8 +115,11 @@ async function main() {
       page.locator('form.form button[type="submit"]').click(),
     ]);
     const body = await page.content();
-    const is419 = body.includes('Sessie verlopen') || page.url().includes('registreren');
-    console.log(ua.name, 'post-result', { statusHint: is419 ? '419-or-validation' : page.url() });
+    const is419 = body.includes('Sessie verlopen');
+    console.log(ua.name, 'post-result', { statusHint: is419 ? '419' : page.url() });
+    if (!is419) {
+      throw new Error(`${ua.name}: verwachtte 419-pagina («Sessie verlopen»), kreeg ${page.url()}`);
+    }
     await shot(page, `b-registreren-post-${ua.name}.png`);
     await context.close();
   }

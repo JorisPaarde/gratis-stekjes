@@ -63,6 +63,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password',
         'remember_token',
+        'email_verification_token',
         'telefoon',
         'adres_straat',
         'adres_huisnummer',
