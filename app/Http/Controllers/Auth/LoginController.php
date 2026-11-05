@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Account\WelcomeController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
@@ -70,6 +71,14 @@ class LoginController extends Controller
         Auth::login($user, $remember);
         $request->session()->regenerate();
         RateLimiter::clear($throttleKey);
+
+        // Recovery max. 1× per sessie: welkomstscherm vóór intended/safeNext.
+        if ($user->welcome_shown_at === null
+            && ! $request->session()->get(WelcomeController::SESSION_RECOVERY_DONE)) {
+            $request->session()->put(WelcomeController::SESSION_RECOVERY_DONE, true);
+
+            return redirect()->route('account.welkom');
+        }
 
         return redirect()->intended($request->safeNext());
     }

@@ -144,7 +144,7 @@ test('bevestigingslink blijft geldig na 23 uur', function () {
     $this->travelTo($createdAt->copy()->addHours(23));
 
     $this->get($url)
-        ->assertRedirect(route('account.index'));
+        ->assertRedirect(route('account.welkom'));
 
     $this->assertAuthenticatedAs($user);
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();

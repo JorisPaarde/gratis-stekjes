@@ -107,6 +107,7 @@ final class AvgService
                 'lat' => $user->lat !== null ? Geo::roundCoord((float) $user->lat) : null,
                 'lon' => $user->lon !== null ? Geo::roundCoord((float) $user->lon) : null,
                 'email_verified_at' => optional($user->email_verified_at)?->toIso8601String(),
+                'welcome_shown_at' => optional($user->welcome_shown_at)?->toIso8601String(),
                 'created_at' => optional($user->created_at)?->toIso8601String(),
                 'active' => (bool) $user->active,
                 'berichtmail' => $user->berichtmail !== false,
