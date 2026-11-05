@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 
 test('bevestigen met geldige eenmalige token logt in vanuit verse sessie', function () {
@@ -58,4 +59,50 @@ test('verlopen handtekening geeft nette fout zonder login', function () {
         ->assertSessionHasErrors('email');
     $this->assertGuest();
     expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
+});
+
+test('parallelle bevestigingsclaims: precies één winnaar', function () {
+    $user = User::factory()->unverified()->create(['email' => 'parallel@example.com']);
+    $token = $user->rotateEmailVerificationToken();
+    $hash = sha1($user->email);
+
+    // Beide workers «zagen» hetzelfde token (race vóór clear), daarna lock + compare-and-clear.
+    $attempt = function () use ($user, $token, $hash): string {
+        return DB::transaction(function () use ($user, $token, $hash): string {
+            $locked = User::query()->whereKey($user->id)->lockForUpdate()->firstOrFail();
+            if (! hash_equals($hash, sha1($locked->getEmailForVerification()))) {
+                return 'invalid';
+            }
+            $stored = (string) ($locked->email_verification_token ?? '');
+            if ($token === '' || $stored === '' || ! hash_equals($stored, $token)) {
+                return $locked->hasVerifiedEmail() ? 'already' : 'used';
+            }
+            if (! $locked->claimEmailVerificationToken($token)) {
+                return 'lost';
+            }
+            if (! $locked->hasVerifiedEmail()) {
+                $locked->markEmailAsVerified();
+            }
+
+            return 'won';
+        });
+    };
+
+    $outcomes = [$attempt(), $attempt()];
+    expect($outcomes[0])->toBe('won')
+        ->and($outcomes[1])->toBe('already')
+        ->and(substr_count(implode(',', $outcomes), 'won'))->toBe(1)
+        ->and($user->fresh()->hasVerifiedEmail())->toBeTrue()
+        ->and($user->fresh()->email_verification_token)->toBeNull();
+
+    // HTTP: verbruikte link logt niet in (aparte sessie).
+    $url = URL::temporarySignedRoute('account.bevestigen', now()->addHour(), [
+        'id' => $user->id,
+        'hash' => $hash,
+        'token' => $token,
+    ]);
+    $this->withSession([])->get($url)
+        ->assertRedirect(route('account.inloggen'))
+        ->assertSessionHas('status');
+    $this->assertGuest();
 });

@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\AdresOpzoeken;
 use App\Services\InitiatiefPaginas;
 use App\Services\LocationGeocoder;
+use App\Services\UserLocatieService;
 use App\Support\Country;
 use App\Support\Geo;
 use App\Support\Naam;
@@ -46,7 +47,7 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function update(Request $request, LocationGeocoder $geocoder): RedirectResponse
+    public function update(Request $request, LocationGeocoder $geocoder, UserLocatieService $locatieService): RedirectResponse
     {
         $data = $request->validate([
             'voornaam' => ['required', 'string', 'max:80', 'not_regex:/@/', function (string $attr, mixed $value, \Closure $fail) use ($request): void {
@@ -91,24 +92,18 @@ class ProfileController extends Controller
             default => PostalCode::looksLikePostcode($locatie, $country) ? 'postcode' : 'plaats',
         };
 
-        $postcodeGebied = null;
-        $woonplaats = null;
+        $user = $request->user();
         $postcodeVol = null;
 
         if ($modus === 'postcode') {
-            if (! PostalCode::looksLikePostcode($locatie, $country)) {
-                return back()->withInput()->withErrors([
-                    'locatie' => $country === Country::BE
-                        ? 'Belgische postcode bestaat uit precies 4 cijfers (bijv. 9000). Weet je je postcode niet? Gebruik de link hieronder.'
-                        : 'Nederlandse postcode: 4 cijfers, optioneel gevolgd door 2 letters (bijv. 1234 AB). Weet je je postcode niet? Gebruik de link hieronder.',
-                ]);
-            }
-            $pcValid = PostalCode::validate($locatie, $country);
-            if ($pcValid !== true) {
-                return back()->withInput()->withErrors(['locatie' => $pcValid]);
+            // Zelfde NL/BE-postcodepad als registratie (geen parallelle duplicaatlogica).
+            $geo = $locatieService->applyPostcode($user, $locatie, $country, true);
+            if (! ($geo['ok'] ?? false)) {
+                return back()
+                    ->withInput()
+                    ->withErrors(['locatie' => $geo['error'] ?? 'Locatie niet gevonden.']);
             }
             $postcodeVol = PostalCode::normalize($locatie, $country);
-            $postcodeGebied = PostalCode::gebied($postcodeVol, $country);
         } else {
             // Plaatsnaam-fallback: geen kale postcode als «plaats».
             if (PostalCode::looksLikePostcode($locatie, $country)) {
@@ -116,31 +111,14 @@ class ProfileController extends Controller
                     'locatie' => 'Dat lijkt op een postcode. Kies «Ik weet mijn postcode» of vul een plaatsnaam in.',
                 ]);
             }
-        }
 
-        $resolved = $geocoder->resolve($locatie, $country, true);
-        if (! ($resolved['ok'] ?? false)) {
-            return back()
-                ->withInput()
-                ->withErrors(['locatie' => $resolved['error'] ?? 'Locatie niet gevonden.']);
-        }
+            $resolved = $geocoder->resolve($locatie, $country, true);
+            if (! ($resolved['ok'] ?? false)) {
+                return back()
+                    ->withInput()
+                    ->withErrors(['locatie' => $resolved['error'] ?? 'Locatie niet gevonden.']);
+            }
 
-        if ($modus === 'postcode') {
-            $woonplaats = trim((string) ($resolved['woonplaats'] ?? ''));
-            if ($woonplaats === '') {
-                $woonplaats = PostalCode::plaatsFromGeoLabel((string) ($resolved['label'] ?? ''), $locatie);
-            }
-            if ($woonplaats === '') {
-                return back()->withInput()->withErrors([
-                    'locatie' => 'Deze postcode ken ik, maar de plaatsnaam niet. Probeer het later opnieuw of gebruik «Weet je je postcode niet?».',
-                ]);
-            }
-            if ($postcodeGebied === null) {
-                $postcodeGebied = PostalCode::gebied((string) ($resolved['postcode'] ?? ''), $country)
-                    ?? PostalCode::gebied($locatie, $country);
-            }
-            $label = PostalCode::publicLabel($postcodeGebied, $woonplaats);
-        } else {
             $woonplaats = trim((string) ($resolved['woonplaats'] ?? ''));
             if ($woonplaats === '') {
                 $woonplaats = PostalCode::plaatsFromGeoLabel((string) ($resolved['label'] ?? ''), $locatie);
@@ -148,8 +126,14 @@ class ProfileController extends Controller
             if ($woonplaats === '') {
                 $woonplaats = mb_substr($locatie, 0, 80);
             }
-            $postcodeGebied = null; // bewust: openbaar alleen de plaatsnaam
-            $label = PostalCode::publicLabel(null, $woonplaats);
+            $user->fill([
+                'country' => $country,
+                'locatie_label' => PostalCode::publicLabel(null, $woonplaats),
+                'postcode_gebied' => null, // bewust: openbaar alleen de plaatsnaam
+                'woonplaats' => mb_substr($woonplaats, 0, 80),
+                'lat' => Geo::roundCoord((float) $resolved['lat']),
+                'lon' => Geo::roundCoord((float) $resolved['lon']),
+            ]);
         }
 
         // Volledig adres (optioneel, versleuteld, nooit openbaar).
@@ -175,15 +159,8 @@ class ProfileController extends Controller
             }
         }
 
-        $user = $request->user();
         $user->fill([
             'name' => trim($data['voornaam']),
-            'country' => $country,
-            'locatie_label' => $label,
-            'postcode_gebied' => $postcodeGebied,
-            'woonplaats' => $woonplaats !== '' ? mb_substr($woonplaats, 0, 80) : null,
-            'lat' => Geo::roundCoord((float) $resolved['lat']),
-            'lon' => Geo::roundCoord((float) $resolved['lon']),
         ]);
         // Oude formulieren zonder dit veld laten de instelling ongemoeid.
         if ($request->has('berichtmail')) {

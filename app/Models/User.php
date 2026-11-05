@@ -173,6 +173,29 @@ class User extends Authenticatable implements MustVerifyEmail
         }
     }
 
+    /**
+     * Atomisch token verbruiken (compare-and-clear). Precies één parallelle request wint.
+     */
+    public function claimEmailVerificationToken(string $token): bool
+    {
+        if ($token === '' || $this->id === null) {
+            return false;
+        }
+
+        $affected = static::query()
+            ->whereKey($this->id)
+            ->where('email_verification_token', $token)
+            ->update(['email_verification_token' => null]);
+
+        if ($affected === 1) {
+            $this->email_verification_token = null;
+
+            return true;
+        }
+
+        return false;
+    }
+
     /** Volledig adres op één regel, of null als het (nog) niet is ingevuld of niet leesbaar. */
     public function volledigAdres(): ?string
     {

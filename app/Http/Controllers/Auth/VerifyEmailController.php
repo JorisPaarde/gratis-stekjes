@@ -15,6 +15,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class VerifyEmailController extends Controller
@@ -30,6 +31,9 @@ class VerifyEmailController extends Controller
 
     public function verify(Request $request, int $id, string $hash): RedirectResponse
     {
+        $token = (string) $request->query('token', '');
+
+        // Vroege checks buiten de lock (goedkope rejects).
         $user = User::query()->find($id);
         if (! $user || ! hash_equals($hash, sha1($user->getEmailForVerification()))) {
             return redirect()
@@ -43,12 +47,51 @@ class VerifyEmailController extends Controller
                 ->withErrors(['email' => 'Deze bevestigingslink is verlopen of ongeldig. Vraag hieronder een nieuwe aan.']);
         }
 
-        $token = (string) $request->query('token', '');
-        $stored = (string) ($user->email_verification_token ?? '');
+        /** @var array{status: string, user?: User, wasUnverified?: bool} $outcome */
+        $outcome = DB::transaction(function () use ($id, $hash, $token): array {
+            $locked = User::query()->whereKey($id)->lockForUpdate()->first();
+            if (! $locked || ! hash_equals($hash, sha1($locked->getEmailForVerification()))) {
+                return ['status' => 'invalid'];
+            }
 
-        // Eenmalige login: token moet matchen. Heropenen na gebruik → nette uitleg, geen auto-login.
-        if ($token === '' || $stored === '' || ! hash_equals($stored, $token)) {
-            if ($user->hasVerifiedEmail()) {
+            $stored = (string) ($locked->email_verification_token ?? '');
+            if ($token === '' || $stored === '' || ! hash_equals($stored, $token)) {
+                return [
+                    'status' => $locked->hasVerifiedEmail() ? 'already' : 'used',
+                    'user' => $locked,
+                ];
+            }
+
+            // Compare-and-clear: parallelle requests → precies één winnaar.
+            if (! $locked->claimEmailVerificationToken($token)) {
+                $locked->refresh();
+
+                return [
+                    'status' => $locked->hasVerifiedEmail() ? 'already' : 'used',
+                    'user' => $locked,
+                ];
+            }
+
+            $wasUnverified = ! $locked->hasVerifiedEmail();
+            if ($wasUnverified) {
+                $locked->markEmailAsVerified();
+            }
+
+            return [
+                'status' => 'ok',
+                'user' => $locked->fresh() ?? $locked,
+                'wasUnverified' => $wasUnverified,
+            ];
+        });
+
+        if ($outcome['status'] === 'invalid') {
+            return redirect()
+                ->route('account.inloggen')
+                ->withErrors(['email' => 'Deze bevestigingslink werkt niet (meer).']);
+        }
+
+        if ($outcome['status'] !== 'ok') {
+            if (($outcome['status'] ?? '') === 'already') {
                 return redirect()
                     ->route('account.inloggen')
                     ->with('status', 'Je e-mailadres is al bevestigd. Log in om verder te gaan.');
@@ -59,14 +102,15 @@ class VerifyEmailController extends Controller
                 ->withErrors(['email' => 'Deze bevestigingslink werkt niet (meer). Vraag een nieuwe aan.']);
         }
 
-        $wasUnverified = ! $user->hasVerifiedEmail();
-        if ($wasUnverified) {
-            $user->markEmailAsVerified();
-            event(new Verified($user));
+        /** @var User $verifiedUser */
+        $verifiedUser = $outcome['user'];
+
+        if ($outcome['wasUnverified'] ?? false) {
+            event(new Verified($verifiedUser));
             try {
                 app(ConversionTracker::class)->recordForUser(
                     ConversionEvent::TYPE_EMAIL_VERIFIED,
-                    $user->fresh(),
+                    $verifiedUser,
                     $request,
                     ['path' => '/account/bevestigen']
                 );
@@ -75,10 +119,7 @@ class VerifyEmailController extends Controller
             }
         }
 
-        // Token verbruiken vóór login: dezelfde link logt daarna niet opnieuw in.
-        $user->clearEmailVerificationToken();
-
-        Auth::login($user, false);
+        Auth::login($verifiedUser, false);
         $request->session()->regenerate();
 
         return redirect()

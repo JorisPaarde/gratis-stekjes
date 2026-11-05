@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\User;
 use App\Notifications\VerifyEmailReminderDutch;
 use App\Services\VerificationReminderService;
+use App\Support\SafeMail;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 
@@ -83,6 +84,69 @@ test('herinnering allowlist beperkt ontvangers', function () {
     app(VerificationReminderService::class)->run();
     Notification::assertSentTo($wel, VerifyEmailReminderDutch::class);
     Notification::assertNotSentTo($niet, VerifyEmailReminderDutch::class);
+});
+
+test('staging met lege allowlist stuurt 0 mails (fail-closed)', function () {
+    Notification::fake();
+    $previousEnv = app()->environment();
+    app()['env'] = 'staging';
+
+    Config::set('stekjes.verification_reminder.enabled', true);
+    Config::set('stekjes.verification_reminder.enabled_at', now()->subDays(5)->toIso8601String());
+    Config::set('stekjes.verification_reminder.after_hours', 24);
+    Config::set('stekjes.verification_reminder.test_recipients', []);
+
+    User::factory()->unverified()->create([
+        'email' => 'staging-open@example.com',
+        'created_at' => now()->subHours(30),
+        'verification_reminder_sent_at' => null,
+    ]);
+
+    try {
+        $result = app(VerificationReminderService::class)->run();
+        expect($result['enabled'])->toBeTrue()
+            ->and($result['sent'])->toBe(0)
+            ->and($result['eligible'])->toBe(0);
+        Notification::assertNothingSent();
+    } finally {
+        app()['env'] = $previousEnv;
+    }
+});
+
+test('overlappende cronruns claimen atomair max één herinnering', function () {
+    Notification::fake();
+    Config::set('stekjes.verification_reminder.enabled', true);
+    Config::set('stekjes.verification_reminder.enabled_at', now()->subDays(5)->toIso8601String());
+    Config::set('stekjes.verification_reminder.after_hours', 24);
+    Config::set('stekjes.verification_reminder.test_recipients', []);
+
+    $user = User::factory()->unverified()->create([
+        'email' => 'race-reminder@example.com',
+        'created_at' => now()->subHours(30),
+        'verification_reminder_sent_at' => null,
+    ]);
+
+    $service = app(VerificationReminderService::class);
+
+    // Twee workers zagen dezelfde eligible rij; claim vóór versturen.
+    $claimA = $service->claimReminderSlot((int) $user->id);
+    $claimB = $service->claimReminderSlot((int) $user->id);
+    expect($claimA)->toBeTrue()->and($claimB)->toBeFalse();
+
+    if ($claimA) {
+        SafeMail::notify($user->fresh(), new VerifyEmailReminderDutch);
+    }
+    if ($claimB) {
+        SafeMail::notify($user->fresh(), new VerifyEmailReminderDutch);
+    }
+
+    Notification::assertSentToTimes($user, VerifyEmailReminderDutch::class, 1);
+    expect($user->fresh()->verification_reminder_sent_at)->not->toBeNull();
+
+    // Volledige run daarna: niets extra.
+    $result = $service->run();
+    expect($result['sent'])->toBe(0);
+    Notification::assertSentToTimes($user, VerifyEmailReminderDutch::class, 1);
 });
 
 test('herinneringsmailtekst is letterlijk goedgekeurd', function () {

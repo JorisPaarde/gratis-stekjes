@@ -163,7 +163,8 @@ return [
     /**
      * Herinneringsmail na 24 uur voor onbevestigde accounts.
      * Default UIT. Alleen accounts met created_at >= enabled_at.
-     * test_recipients (CSV): als gezet, alleen die adressen (staging-safeguard).
+     * test_recipients (CSV): staging fail-closed zonder geldige allowlist;
+     * elders beperkt de lijst ontvangers als die gezet is.
      */
     'verification_reminder' => [
         'enabled' => filter_var(env('VERIFICATION_REMINDER_ENABLED', false), FILTER_VALIDATE_BOOL),
