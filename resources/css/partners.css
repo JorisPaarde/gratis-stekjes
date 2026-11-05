@@ -109,3 +109,11 @@
 .partners-doe-mee { position: absolute; top: 1rem; right: 1rem; background: #e8833a; color: #fff; }
 .partners-uitgelicht-acties { margin: .75rem 0 0; padding-left: 1.1rem; }
 .partners-uitgelicht-acties li { margin: .25rem 0; }
+
+/* 0.70.1: foto's uitgelichte initiatieven */
+.init-foto { margin: 0; position: relative; }
+.init-foto img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; background: #e8f3e3; }
+.init-foto figcaption { position: absolute; right: .5rem; bottom: .4rem; font-size: .72rem; color: #fff; background: rgba(22,56,32,.7); padding: .1rem .45rem; border-radius: .4rem; }
+.partners-uitgelicht-kaart:has(.init-foto) { overflow: hidden; }
+.partners-uitgelicht-kaart .init-foto { margin: -1.25rem -1.25rem .75rem; }
+.partners-uitgelicht-kaart:has(.init-foto) .partners-doe-mee { position: absolute; top: .75rem; left: .75rem; z-index: 1; }

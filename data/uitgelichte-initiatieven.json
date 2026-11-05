@@ -1,6 +1,6 @@
 {
   "meta": {
-    "uitleg": "Initiatieven om aan mee te doen: homepageblok «Hier kun je ook aan meedoen» en bovenaan /initiatieven. Afbeeldingen pas na toestemming (Carpe Vitam via Dewy, Struikroven via Lisette).",
+    "uitleg": "Initiatieven om aan mee te doen: homepageblok «Hier kun je ook aan meedoen» en bovenaan /initiatieven. Afbeeldingen: toestemming gegeven 5 nov 2026 (Carpe Vitam via Dewy, Struikroven via Lisette). Geen logo's.",
     "bijgewerkt": "2026-11-05"
   },
   "items": [
@@ -25,7 +25,13 @@
           "label": "Contact met Carpe Vitam",
           "url": "https://carpevitam.net/contact/"
         }
-      ]
+      ],
+      "afbeelding": {
+        "bestand": "stekchallenge-plantpot",
+        "alt": "Getekend stekje met groene blaadjes in een gele bloempot",
+        "credit": "Tekening: Carpe Vitam",
+        "bron": "https://carpevitam.net/stekchallenge/"
+      }
     },
     {
       "anker": "struikroven",
@@ -46,7 +52,13 @@
             "slug": "struikroven"
           }
         }
-      ]
+      ],
+      "afbeelding": {
+        "bestand": "struikroven-utrecht-2024",
+        "alt": "Man met een kruiwagen vol uitgegraven struiken en een jongen met een beker, tijdens een Struikroofactie in Utrecht",
+        "credit": "Foto: Marjolein Vinkenoog",
+        "bron": "https://www.struikroven.nu"
+      }
     }
   ]
 }

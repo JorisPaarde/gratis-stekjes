@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.70.1] - 2026-11-05
+
+### Changed
+
+- «Hier kun je ook aan meedoen» (homepage) en «Doe mee» op /initiatieven: echte beelden op de kaartjes, met toestemming (5 nov 2026). Struikroven: foto Utrecht 2024 (Marjolein Vinkenoog); STEKchallenge: tekening plantje in pot (Carpe Vitam). Vaste verhouding 4:3, object-fit cover, webp 400/800 met srcset, width/height, loading=lazy, Nederlandse alt-teksten en naamsvermelding. Geen logo's.
+
 ## [0.70.0] - 2026-11-05
 
 ### Added

@@ -22,7 +22,11 @@
       @foreach($uitgelicht as $init)
         <article class="partners-uitgelicht-kaart" id="{{ $init['anker'] }}">
           <span class="badge partners-doe-mee">Doe mee</span>
-          @include('partials.illustraties.stek', ['naam' => $init['illustratie']])
+          @if($init['afbeelding'])
+            @include('partials.initiatief-foto', ['afbeelding' => $init['afbeelding']])
+          @else
+            @include('partials.illustraties.stek', ['naam' => $init['illustratie']])
+          @endif
           @php $intern = collect($init['acties'])->firstWhere('extern', false); @endphp
           <h3>@if($intern)<a href="{{ $intern['url'] }}">{{ $init['naam'] }}</a>@else{{ $init['naam'] }}@endif</h3>
           @if($init['organisatie'] !== '')<p class="muted">{{ $init['organisatie'] }}</p>@endif

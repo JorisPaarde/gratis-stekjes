@@ -224,3 +224,10 @@
 .home-meedoen-tekst { display: flex; flex-direction: column; gap: .25rem; }
 .home-meedoen-tekst strong { font-size: 1.15rem; color: var(--forest-deep, #163820); }
 .home-meedoen-link { font-weight: 700; color: #c8601f; }
+
+/* 0.70.1: foto's uitgelichte initiatieven */
+.init-foto { margin: 0; position: relative; }
+.init-foto img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; background: #e8f3e3; }
+.init-foto figcaption { position: absolute; right: .5rem; bottom: .4rem; font-size: .72rem; color: #fff; background: rgba(22,56,32,.7); padding: .1rem .45rem; border-radius: .4rem; }
+.home-meedoen-kaart:has(.init-foto) { flex-direction: column; align-items: stretch; gap: .75rem; padding: 0; overflow: hidden; }
+.home-meedoen-kaart:has(.init-foto) .home-meedoen-tekst { padding: 0 1.1rem 1rem; }
