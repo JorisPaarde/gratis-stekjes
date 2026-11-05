@@ -5,7 +5,7 @@
 @section('canonical', $canonical)
 
 @push('head')
-  @vite(['resources/css/struikroven.css'])
+  @vite(array_merge(['resources/css/struikroven.css'], $init->secties !== [] ? ['resources/css/stektips.css'] : []))
   <script type="application/ld+json">{!! json_encode($schema, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) !!}</script>
 @endpush
 
@@ -64,18 +64,18 @@
     </div>
   @endif
 
-  @if(trim((string) $init->site_url) !== '' || trim((string) $init->secundaire_link_label) !== '')
+  @if($init->site_url !== '')
     <p class="struikroven-links muted">
-      @if(trim((string) $init->site_url) !== '')
-        <a href="{{ $init->site_url }}" rel="noopener noreferrer" target="_blank">{{ $init->site_link_tekst !== '' ? $init->site_link_tekst : 'Meer info' }}</a>
-      @endif
-      @if(trim((string) $init->site_url) !== '' && trim((string) $init->secundaire_link_label) !== '')
-        ·
-      @endif
-      @if(trim((string) $init->secundaire_link_label) !== '')
-        <a href="{{ route('organisaties.show', ['slug' => $init->organisatie_slug]) }}">{{ $init->secundaire_link_label }}</a>
-      @endif
+      <a href="{{ $init->site_url }}" rel="noopener noreferrer" target="_blank">{{ $init->site_link_tekst !== '' ? $init->site_link_tekst : 'Meer info' }}</a>
     </p>
+  @endif
+
+  @if($init->secties !== [])
+    <div class="stektips-page stektips-artikel-body org-secties">
+      @foreach($init->secties as $block)
+        @include('partials.kennisbank-blok', ['block' => $block])
+      @endforeach
+    </div>
   @endif
 
   <h2>Doe je mee met {{ $korte }}?</h2>
@@ -105,7 +105,7 @@
   <h2>Komende {{ $korte }}-acties</h2>
   @if($acties->isEmpty())
     <div class="empty-state" role="status">
-      <p>{{ $init->acties_leeg_tekst !== '' && $init->acties_leeg_tekst !== null ? $init->acties_leeg_tekst : 'Er staan nu geen acties gepland op deze agenda. Zodra er iets bij komt, zie je het hier.' }}</p>
+      <p>{{ $init->acties_leeg_tekst !== '' ? $init->acties_leeg_tekst : 'Er staan nu geen acties gepland op deze agenda. Zodra er iets bij komt, zie je het hier.' }}</p>
       @if($agendaUrl !== '')
         <p class="muted">De actieagenda van {{ $korte }} zelf staat op <a href="{{ $agendaUrl }}" rel="noopener noreferrer" target="_blank">{{ $agendaHost }}</a>.</p>
       @endif
@@ -134,7 +134,7 @@
   @endif
 
   <h2>{{ $init->leden_titel !== '' ? $init->leden_titel : 'Voor leden' }}</h2>
-  <p>{{ $init->leden_intro !== '' && $init->leden_intro !== null ? $init->leden_intro : 'Wil je Gratis planten bij een actie of in je nieuwsbrief noemen? Gebruik dit gerust.' }}</p>
+  <p>{{ $init->leden_intro !== '' ? $init->leden_intro : 'Wil je Gratis planten bij een actie of in je nieuwsbrief noemen? Gebruik dit gerust.' }}</p>
   <ul class="struikroven-materiaal list-plain">
     <li><a href="{{ route('poster', ['voor' => $slug]) }}">A4-poster om te printen</a></li>
     <li><a href="{{ route('poster', ['voor' => $slug, 'formaat' => 'a5']) }}">A5-flyer om te printen</a></li>

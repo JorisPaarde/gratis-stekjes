@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\OrganisatieInitiatief;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Validation\ValidationException;
+use App\Support\Initiatief;
 
 final class InitiatiefPaginas
 {
@@ -66,57 +64,77 @@ final class InitiatiefPaginas
         ];
     }
 
+    /** Initiatieven komen uit data/organisaties.json; altijd beschikbaar. */
     public static function beschikbaar(): bool
     {
-        return Schema::hasTable('organisatie_initiatieven');
+        return true;
     }
 
-    public function findByInitiatiefSlug(string $slug): ?OrganisatieInitiatief
+    /** @var array<string, Initiatief>|null keyed by organisatie-slug */
+    private ?array $cache = null;
+
+    public function __construct(private readonly Organisaties $organisaties) {}
+
+    /** @return array<string, Initiatief> */
+    private function alle(): array
     {
-        if (! self::beschikbaar() || ! preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $slug)) {
-            return null;
+        if ($this->cache !== null) {
+            return $this->cache;
+        }
+        $this->cache = [];
+        foreach ($this->organisaties->all() as $org) {
+            $data = $org['initiatief'] ?? null;
+            if (is_array($data) && isset($org['slug'])) {
+                $this->cache[(string) $org['slug']] = Initiatief::fromArray((string) $org['slug'], $data);
+            }
         }
 
-        return OrganisatieInitiatief::query()
-            ->metPagina()
-            ->where('initiatief_slug', $slug)
-            ->first();
+        return $this->cache;
     }
 
-    public function findByOrganisatieSlug(string $slug): ?OrganisatieInitiatief
+    public function findByInitiatiefSlug(string $slug): ?Initiatief
     {
-        if (! self::beschikbaar() || $slug === '') {
+        if (! preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $slug)) {
             return null;
         }
-
-        return OrganisatieInitiatief::query()
-            ->where('organisatie_slug', $slug)
-            ->first();
-    }
-
-    public function findByAanmeldParam(string $param): ?OrganisatieInitiatief
-    {
-        if (! self::beschikbaar() || $param === '' || ! preg_match('/^[a-z][a-z0-9_]{0,39}$/', $param)) {
-            return null;
+        foreach ($this->alle() as $init) {
+            if ($init->initiatief_slug === $slug) {
+                return $init;
+            }
         }
 
-        return OrganisatieInitiatief::query()
-            ->metPagina()
-            ->where('aanmeld_param', $param)
-            ->first();
+        return null;
     }
 
-    /** @return list<OrganisatieInitiatief> */
+    public function findByOrganisatieSlug(string $slug): ?Initiatief
+    {
+        return $slug === '' ? null : ($this->alle()[$slug] ?? null);
+    }
+
+    public function findByAanmeldParam(string $param): ?Initiatief
+    {
+        if ($param === '' || ! preg_match('/^[a-z][a-z0-9_]{0,39}$/', $param)) {
+            return null;
+        }
+        foreach ($this->metPagina() as $init) {
+            if ($init->aanmeld_param === $param) {
+                return $init;
+            }
+        }
+
+        return null;
+    }
+
+    /** @return list<Initiatief> */
     public function metPagina(): array
     {
-        if (! self::beschikbaar()) {
-            return [];
-        }
+        $lijst = array_values(array_filter($this->alle(), static fn (Initiatief $i): bool => $i->heeftPagina()));
+        usort($lijst, static fn (Initiatief $a, Initiatief $b): int => strcmp($a->korte_naam, $b->korte_naam));
 
-        return OrganisatieInitiatief::query()->metPagina()->orderBy('korte_naam')->get()->all();
+        return $lijst;
     }
 
-    /** Publieke URL voor een organisatie-rij (initiatiefpagina of /organisaties/{slug}). */
+    /** Publieke URL voor een organisatie (initiatiefpagina of /organisaties/{slug}). */
     public function publiekeUrlVoorOrganisatie(string $organisatieSlug): string
     {
         $init = $this->findByOrganisatieSlug($organisatieSlug);
@@ -128,66 +146,38 @@ final class InitiatiefPaginas
     }
 
     /**
-     * Valideer initiatief_slug: leeg OK, anders lowercase a-z0-9-, niet reserved, uniek.
+     * Controleer de JSON: slugs geldig, niet gereserveerd en uniek; aanmeld-params uniek.
      *
-     * @throws ValidationException
+     * @return list<string>
      */
-    public function assertSlugAllowed(?string $slug, ?int $ignoreId = null): void
+    public function validate(): array
     {
-        $slug = $slug === null ? '' : trim($slug);
-        if ($slug === '') {
-            return;
+        $errors = [];
+        $slugs = [];
+        $params = [];
+        foreach ($this->alle() as $org => $init) {
+            $slug = $init->initiatief_slug;
+            if ($slug !== null) {
+                if (! preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $slug)) {
+                    $errors[] = "$org: initiatief.slug ongeldig";
+                } elseif (in_array($slug, self::reservedSlugs(), true)) {
+                    $errors[] = "$org: initiatief.slug $slug botst met een bestaande pagina";
+                } elseif (isset($slugs[$slug])) {
+                    $errors[] = "$org: initiatief.slug $slug dubbel";
+                }
+                $slugs[$slug] = true;
+            }
+            $param = $init->aanmeld_param;
+            if ($param !== '') {
+                if (! preg_match('/^[a-z][a-z0-9_]{0,39}$/', $param)) {
+                    $errors[] = "$org: initiatief.aanmeld_param ongeldig";
+                } elseif (isset($params[$param])) {
+                    $errors[] = "$org: initiatief.aanmeld_param $param dubbel";
+                }
+                $params[$param] = true;
+            }
         }
 
-        if (! preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $slug)) {
-            throw ValidationException::withMessages([
-                'initiatief_slug' => 'De slug mag alleen kleine letters, cijfers en streepjes bevatten (bijv. struikroven).',
-            ]);
-        }
-
-        if (in_array($slug, self::reservedSlugs(), true)) {
-            throw ValidationException::withMessages([
-                'initiatief_slug' => 'Deze slug botst met een bestaande pagina op de site.',
-            ]);
-        }
-
-        $query = OrganisatieInitiatief::query()->where('initiatief_slug', $slug);
-        if ($ignoreId !== null) {
-            $query->where('id', '!=', $ignoreId);
-        }
-        if ($query->exists()) {
-            throw ValidationException::withMessages([
-                'initiatief_slug' => 'Deze slug is al in gebruik bij een ander initiatief.',
-            ]);
-        }
-    }
-
-    /**
-     * Valideer aanmeld_param: leeg OK (geen vinkje), anders uniek per initiatief.
-     *
-     * @throws ValidationException
-     */
-    public function assertAanmeldParamAllowed(?string $param, ?int $ignoreId = null): void
-    {
-        $param = $param === null ? '' : trim($param);
-        if ($param === '') {
-            return;
-        }
-
-        if (! preg_match('/^[a-z][a-z0-9_]{0,39}$/', $param)) {
-            throw ValidationException::withMessages([
-                'aanmeld_param' => 'De aanmeld-parameter mag alleen kleine letters, cijfers en underscores bevatten, beginnend met een letter.',
-            ]);
-        }
-
-        $query = OrganisatieInitiatief::query()->where('aanmeld_param', $param);
-        if ($ignoreId !== null) {
-            $query->where('id', '!=', $ignoreId);
-        }
-        if ($query->exists()) {
-            throw ValidationException::withMessages([
-                'aanmeld_param' => 'Deze aanmeld-parameter is al in gebruik.',
-            ]);
-        }
+        return $errors;
     }
 }

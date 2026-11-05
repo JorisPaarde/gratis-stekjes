@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\OrganisatieInitiatief;
 use App\Services\Evenementen;
 use App\Services\InitiatiefPaginas;
 use App\Services\Organisaties;
+use App\Support\Initiatief;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\View\View;
@@ -57,7 +57,7 @@ class InitiatiefController extends Controller
     }
 
     private function render(
-        OrganisatieInitiatief $init,
+        Initiatief $init,
         Evenementen $evenementen,
         Organisaties $organisaties,
     ): View {

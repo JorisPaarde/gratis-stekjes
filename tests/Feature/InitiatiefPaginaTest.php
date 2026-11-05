@@ -2,104 +2,60 @@
 
 declare(strict_types=1);
 
-use App\Models\OrganisatieInitiatief;
 use App\Services\InitiatiefPaginas;
-use Illuminate\Validation\ValidationException;
-
-function initiatiefTestPassword(): string
-{
-    return implode('-', ['TestOnly', 'Initiatief', 'Passphrase', '9']);
-}
-
-function initiatiefAdminPassphrase(): string
-{
-    return implode('-', ['TestOnly', 'Initiatief', 'Beheer', '9']);
-}
-
-/** Tweede org alleen voor tests — niet in productie-seed. */
-function seedTestInitiatief(string $orgSlug = 'meerbomen-nu', string $initSlug = 'test-bomenhub'): OrganisatieInitiatief
-{
-    return OrganisatieInitiatief::query()->updateOrCreate(
-        ['organisatie_slug' => $orgSlug],
-        [
-            'initiatief_slug' => $initSlug,
-            'pagina_titel' => 'Test bomenhub deelt zaailingen',
-            'intro_titel' => 'Wie zijn ze?',
-            'intro_tekst' => "Eerste alinea over het testinitiatief.\n\nTweede alinea met meer uitleg.",
-            'korte_naam' => 'Test bomenhub',
-            'aanmeld_param' => 'testbomenhubber',
-            'aanmeld_label' => 'Ik ben een Testbomenhubber',
-            'site_url' => 'https://meerbomen.nu/',
-            'site_link_tekst' => 'Meer over MeerBomen Nu',
-            'agenda_url' => 'https://meerbomen.nu/',
-            'secundaire_link_label' => null,
-            'acties_leeg_tekst' => 'Er staan nu geen Test bomenhub-acties gepland op deze agenda.',
-            'leden_titel' => 'Voor Testbomenhubbers',
-            'leden_intro' => 'Gebruik dit gerust in je nieuwsbrief.',
-            'kopieertekst' => 'Test kopieertekst voor gratisplanten.nl/'.$initSlug,
-            'meta_description' => 'Testmeta voor initiatiefpagina.',
-        ]
-    );
-}
+use App\Services\Organisaties;
+use Illuminate\Support\Facades\Route;
 
 test('onbekende initiatief-slug geeft 404', function () {
     $this->get('/bestaat-dit-initiatief-niet')
         ->assertNotFound();
 });
 
-test('reserved slug mag niet als initiatief_slug', function () {
-    $svc = app(InitiatiefPaginas::class);
+test('initiatieven in organisaties.json zijn geldig (slug, reserved, uniek)', function () {
     expect(InitiatiefPaginas::reservedSlugs())->toContain('aanbod')
-        ->and(InitiatiefPaginas::reservedSlugs())->toContain('initiatieven')
-        ->and(InitiatiefPaginas::reservedSlugs())->toContain('account');
-
-    expect(fn () => $svc->assertSlugAllowed('aanbod'))
-        ->toThrow(ValidationException::class);
-
-    expect(fn () => $svc->assertSlugAllowed('INITIATIEF'))
-        ->toThrow(ValidationException::class);
-
-    // Geldige slug (nog niet in gebruik) mag.
-    $svc->assertSlugAllowed('nieuw-initiatief-xyz');
+        ->and(InitiatiefPaginas::reservedSlugs())->toContain('initiatieven');
+    expect(app(InitiatiefPaginas::class)->validate())->toBe([]);
 });
 
-test('initiatief_slug moet uniek zijn', function () {
-    $svc = app(InitiatiefPaginas::class);
-    expect(fn () => $svc->assertSlugAllowed('struikroven'))
-        ->toThrow(ValidationException::class);
+test('validate vangt reserved en dubbele slugs', function () {
+    $pad = tempnam(sys_get_temp_dir(), 'org');
+    file_put_contents($pad, json_encode(['meta' => [], 'organisaties' => [
+        ['slug' => 'a', 'naam' => 'A', 'type' => 'x', 'plaats' => 'p', 'website' => 'https://a.nl', 'bron_url' => 'https://a.nl', 'kort' => 'k', 'initiatief' => ['slug' => 'aanbod']],
+        ['slug' => 'b', 'naam' => 'B', 'type' => 'x', 'plaats' => 'p', 'website' => 'https://b.nl', 'bron_url' => 'https://b.nl', 'kort' => 'k', 'initiatief' => ['slug' => 'zelfde', 'aanmeld_param' => 'x']],
+        ['slug' => 'c', 'naam' => 'C', 'type' => 'x', 'plaats' => 'p', 'website' => 'https://c.nl', 'bron_url' => 'https://c.nl', 'kort' => 'k', 'initiatief' => ['slug' => 'zelfde', 'aanmeld_param' => 'x']],
+    ]]));
+    $errors = (new InitiatiefPaginas(new Organisaties($pad)))->validate();
+    unlink($pad);
+
+    expect($errors)->toHaveCount(3);
 });
 
 test('organisatie met initiatief-slug: 301 van /organisaties/{org} naar /{slug}', function () {
-    seedTestInitiatief();
+    $this->get(route('organisaties.show', ['slug' => 'carpe-vitam']))
+        ->assertRedirect(route('initiatief.show', ['slug' => 'stekchallenge']));
 
-    $this->get(route('organisaties.show', ['slug' => 'meerbomen-nu']))
-        ->assertRedirect(route('initiatief.show', ['slug' => 'test-bomenhub']));
-
-    $this->get(route('initiatief.show', ['slug' => 'test-bomenhub']))
+    $this->get(route('initiatief.show', ['slug' => 'stekchallenge']))
         ->assertOk()
-        ->assertSee('Test bomenhub deelt zaailingen', false)
-        ->assertSee('Wie zijn ze?', false)
-        ->assertSee('Doe je mee met Test bomenhub?', false)
-        ->assertSee('Voor Testbomenhubbers', false)
-        ->assertSee(route('account.registreren', ['testbomenhubber' => 1]), false)
+        ->assertSee('STEKchallenge: november is stekmaand', false)
+        ->assertSee('Stekken en delen, overal in Nederland', false)
+        ->assertSee('Doe je mee met STEKchallenge?', false)
+        ->assertSee('Voor wie meedoet', false)
         ->assertDontSee('Joris', false)
         ->assertDontSee('JP Web', false);
 });
 
 test('organisaties-index en voor-organisaties linken naar /{slug} i.p.v. org-pagina', function () {
-    seedTestInitiatief();
-
     $this->get(route('organisaties.index'))
         ->assertOk()
-        ->assertSee(route('initiatief.show', ['slug' => 'test-bomenhub']), false)
+        ->assertSee(route('initiatief.show', ['slug' => 'stekchallenge']), false)
         ->assertSee(route('initiatief.show', ['slug' => 'struikroven']), false)
         ->assertDontSee('/organisaties/struikroven', false)
-        ->assertDontSee('/organisaties/meerbomen-nu"', false);
+        ->assertDontSee('/organisaties/carpe-vitam"', false);
 
     $this->get(route('voor-organisaties'))
         ->assertOk()
         ->assertSee(route('initiatief.show', ['slug' => 'struikroven']), false)
-        ->assertSee(route('initiatief.show', ['slug' => 'test-bomenhub']), false);
+        ->assertSee(route('initiatief.show', ['slug' => 'stekchallenge']), false);
 
     // /initiatieven (agenda) verwijst naar organisaties; die lijst linkt Struikroven naar /struikroven.
     $this->get(route('partners'))
@@ -110,33 +66,27 @@ test('organisaties-index en voor-organisaties linken naar /{slug} i.p.v. org-pag
 });
 
 test('sitemap: initiatief-URL i.p.v. /organisaties/{org} voor orgs met slug', function () {
-    seedTestInitiatief();
-
     $xml = $this->get(route('sitemap'))->assertOk()->getContent();
     expect($xml)->toContain('/struikroven')
-        ->and($xml)->toContain('/test-bomenhub')
+        ->and($xml)->toContain('/stekchallenge')
         ->and($xml)->not->toContain('/organisaties/struikroven')
-        ->and($xml)->not->toContain('/organisaties/meerbomen-nu');
+        ->and($xml)->not->toContain('/organisaties/carpe-vitam');
 });
 
 test('poster en flyer QR bron gebruiken initiatief-slug', function () {
-    seedTestInitiatief();
+    $a4 = $this->get(route('poster', ['voor' => 'stekchallenge']))->assertOk()->getContent();
+    expect($a4)->toContain('data-qr-url="https://gratisplanten.nl/stekchallenge?bron=poster-stekchallenge"');
 
-    $a4 = $this->get(route('poster', ['voor' => 'test-bomenhub']))->assertOk()->getContent();
-    expect($a4)->toContain('data-qr-url="https://gratisplanten.nl/test-bomenhub?bron=poster-test-bomenhub"');
-
-    $a5 = $this->get(route('poster', ['voor' => 'test-bomenhub', 'formaat' => 'a5']))->assertOk()->getContent();
-    expect($a5)->toContain('data-qr-url="https://gratisplanten.nl/test-bomenhub?bron=flyer-test-bomenhub"')
+    $a5 = $this->get(route('poster', ['voor' => 'stekchallenge', 'formaat' => 'a5']))->assertOk()->getContent();
+    expect($a5)->toContain('data-qr-url="https://gratisplanten.nl/stekchallenge?bron=flyer-stekchallenge"')
         ->and($a5)->toContain('poster--a5');
 });
 
 test('generiek aanmeldvinkje via query-param', function () {
-    seedTestInitiatief();
-
-    $this->get(route('account.registreren', ['testbomenhubber' => 1]))
+    $this->get(route('account.registreren', ['stekchallenge' => 1]))
         ->assertOk()
-        ->assertSee('Ik ben een Testbomenhubber', false)
-        ->assertSee('name="testbomenhubber" value="1"', false)
+        ->assertSee('Ik doe mee aan de STEKchallenge', false)
+        ->assertSee('name="stekchallenge" value="1"', false)
         ->assertSee('checked', false);
 
     // Bestaande Struikrover-param blijft werken.
@@ -146,50 +96,17 @@ test('generiek aanmeldvinkje via query-param', function () {
         ->assertSee('name="struikrover" value="1"', false);
 });
 
-test('beheer kan initiatiefvelden Struikroven tonen en opslaan', function () {
-    config(['stekjes.admin_password' => initiatiefAdminPassphrase()]);
+test('struikroven toont de secties uit de JSON en geen beheerscherm meer', function () {
+    $this->get(route('organisaties.show', ['slug' => 'struikroven']))
+        ->assertRedirect(route('struikroven'));
 
-    $this->withSession(['admin_ok' => true])
-        ->get(route('beheer.organisaties.edit', ['organisatieSlug' => 'struikroven']))
+    $this->get(route('struikroven'))
         ->assertOk()
-        ->assertSee('initiatief_slug', false)
-        ->assertSee('struikroven', false)
-        ->assertSee('Ik ben Struikrover', false)
         ->assertSee('Wie zijn de Struikrovers?', false)
-        ->assertSee('gratisplanten.nl/struikroven', false);
+        ->assertSee('Struikroven en Gratis planten vullen elkaar aan', false)
+        ->assertSee('Geredde plant thuis? Zo slaat hij aan', false);
 
-    $this->withSession(['admin_ok' => true])
-        ->post(route('beheer.organisaties.update', ['organisatieSlug' => 'struikroven']), [
-            'initiatief_slug' => 'struikroven',
-            'pagina_titel' => 'Struikroven redt planten van de sloop',
-            'intro_titel' => 'Wie zijn de Struikrovers?',
-            'intro_tekst' => "Als huizen worden gesloopt of opgeknapt, verdwijnt vaak veel gezond groen uit voor- en achtertuinen. Zonde, want volwassen planten en struiken geven karakter aan een buurt.\n\nDaarom organiseert Stichting Struikroven struikroofacties. Buurtbewoners halen dan samen de planten uit de grond en geven ze een tweede leven in hun eigen tuin, op hun balkon, in de buurt of in een logeertuin. Meedoen is gratis en iedereen is welkom, jong en oud.",
-            'korte_naam' => 'Struikroven',
-            'aanmeld_param' => 'struikrover',
-            'aanmeld_label' => 'Ik ben Struikrover',
-            'site_url' => 'https://struikroven.nu',
-            'site_link_tekst' => 'Meer over Struikroven',
-            'agenda_url' => 'https://struikroven.nu/agenda',
-            'secundaire_link_label' => 'Over de stichting',
-            'acties_leeg_tekst' => 'Er staan nu geen Struikroven-acties gepland op deze agenda. Zodra er iets bij komt, zie je het hier.',
-            'leden_titel' => 'Voor Struikrovers',
-            'leden_intro' => 'Wil je Gratis planten bij een actie of in je nieuwsbrief noemen? Gebruik dit gerust.',
-            'kopieertekst' => 'Planten over na een struikroofactie? Of zoek je juist groen voor je tuin? Op Gratis planten deel je planten, stekjes en zaden gratis met mensen in de buurt. Kijk op gratisplanten.nl/struikroven',
-            'meta_description' => 'Struikroven redt planten bij sloop en vernieuwing. Via Gratis planten deel je overgebleven planten, stekjes en zaden gratis met iemand in de buurt.',
-        ])
-        ->assertRedirect(route('beheer.organisaties.edit', ['organisatieSlug' => 'struikroven']))
-        ->assertSessionHas('status');
-
-    // Reserved slug geweigerd.
-    $this->withSession(['admin_ok' => true])
-        ->from(route('beheer.organisaties.edit', ['organisatieSlug' => 'velt']))
-        ->post(route('beheer.organisaties.update', ['organisatieSlug' => 'velt']), [
-            'initiatief_slug' => 'account',
-            'pagina_titel' => 'Nee',
-            'korte_naam' => 'Nee',
-        ])
-        ->assertRedirect(route('beheer.organisaties.edit', ['organisatieSlug' => 'velt']))
-        ->assertSessionHasErrors('initiatief_slug');
+    expect(Route::has('beheer.organisaties'))->toBeFalse();
 });
 
 test('org zonder initiatief-slug blijft op /organisaties/{slug}', function () {
