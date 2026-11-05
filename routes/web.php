@@ -33,23 +33,22 @@ use App\Http\Controllers\Beheer\ErvaringController as BeheerErvaringController;
 use App\Http\Controllers\Beheer\FeedbackController as BeheerFeedbackController;
 use App\Http\Controllers\Beheer\GebruikersController as BeheerGebruikersController;
 use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
-use App\Http\Controllers\Beheer\OrganisatiesController as BeheerOrganisatiesController;
 use App\Http\Controllers\Beheer\StatistiekenController as BeheerStatistiekenController;
-use App\Http\Controllers\InitiatiefController;
 use App\Http\Controllers\BerichtmailController;
 use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\DeelplekkenController;
 use App\Http\Controllers\DeployController;
-use App\Http\Controllers\DeployImportStruikrovenAgendaController;
-use App\Http\Controllers\DeployNormaliseerLocatiesController;
 use App\Http\Controllers\DeployImportController;
+use App\Http\Controllers\DeployImportStruikrovenAgendaController;
 use App\Http\Controllers\DeployLedenupdateMailController;
+use App\Http\Controllers\DeployNormaliseerLocatiesController;
 use App\Http\Controllers\DeployPostcodeHerinneringController;
 use App\Http\Controllers\DeployStatsLezerController;
 use App\Http\Controllers\ErvaringController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\GratisPlantenController;
+use App\Http\Controllers\InitiatiefController;
 use App\Http\Controllers\InvasieveSoortenController;
 use App\Http\Controllers\Media\AanbodFotoController;
 use App\Http\Controllers\MeedoenController;
@@ -306,14 +305,6 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::get('/verenigingen', [BeheerDashboardController::class, 'verenigingen'])->name('beheer.verenigingen');
     Route::get('/aanmeldingen', [BeheerDashboardController::class, 'aanmeldingen'])->name('beheer.aanmeldingen');
     Route::get('/agenda', [BeheerDashboardController::class, 'agenda'])->name('beheer.agenda');
-    Route::get('/organisaties', [BeheerOrganisatiesController::class, 'index'])->name('beheer.organisaties');
-    Route::get('/organisaties/{organisatieSlug}', [BeheerOrganisatiesController::class, 'edit'])
-        ->where('organisatieSlug', '[a-z0-9]+(?:-[a-z0-9]+)*')
-        ->name('beheer.organisaties.edit');
-    Route::post('/organisaties/{organisatieSlug}', [BeheerOrganisatiesController::class, 'update'])
-        ->middleware('throttle:30,1')
-        ->where('organisatieSlug', '[a-z0-9]+(?:-[a-z0-9]+)*')
-        ->name('beheer.organisaties.update');
     Route::get('/kaartmarkers', [BeheerDashboardController::class, 'kaartmarkers'])->name('beheer.kaartmarkers');
     Route::get('/meldingen', [BeheerDashboardController::class, 'meldingen'])->name('beheer.meldingen');
     Route::post('/gebruikers/herinner-onbevestigd', [BeheerGebruikersController::class, 'herinnerOnbevestigd'])

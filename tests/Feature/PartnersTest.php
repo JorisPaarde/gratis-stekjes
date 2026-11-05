@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Models\OrganisatieInitiatief;
 use App\Models\PartnerMarker;
 use App\Support\Geo;
 
@@ -29,20 +28,9 @@ test('initiatieven toont kaart voor org met initiatief_slug en niet zonder', fun
         ->assertSee('>Struikroven</a>', false)
         ->assertDontSee('/organisaties/struikroven', false);
 
-    // Org zonder initiatief_slug (alleen organisatie_slug) → geen initiatiefkaart.
-    OrganisatieInitiatief::query()->updateOrCreate(
-        ['organisatie_slug' => 'velt'],
-        [
-            'initiatief_slug' => null,
-            'pagina_titel' => '',
-            'intro_tekst' => 'Deze tekst mag niet als initiatiefkaart verschijnen.',
-            'korte_naam' => 'Velt-zonder-pagina',
-        ]
-    );
-
+    // Plantenasiel Haarlem heeft initiatieftekst zonder slug → geen initiatiefkaart.
     $html = $this->get(route('partners'))->assertOk()->getContent();
-    expect($html)->not->toContain('Velt-zonder-pagina')
-        ->and($html)->not->toContain('Deze tekst mag niet als initiatiefkaart verschijnen.')
+    expect($html)->not->toContain('Plantenasiel Haarlem vangt kamerplanten op')
         ->and($html)->toContain('href="'.route('initiatief.show', ['slug' => 'struikroven']).'"');
 });
 
