@@ -78,6 +78,7 @@ class ZoekenController extends Controller
             return response()->json(['error' => 'Interne privacyfout'], 500);
         }
 
+        $bron = (string) $request->query('bron', '');
         $conversions->recordAanbodSearch(
             $request,
             $q,
@@ -85,6 +86,7 @@ class ZoekenController extends Controller
             $type,
             count($payload['items'] ?? []),
             $geocodeMiss,
+            $bron === 'auto' ? 'auto' : 'zelf',
         );
 
         return response()->json($payload);

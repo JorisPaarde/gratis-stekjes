@@ -57,7 +57,7 @@ test('api zoeken logt aanbod_search zonder ruwe q', function () {
     $row = ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_AANBOD_SEARCH)->first();
     expect($row)->not->toBeNull()
         ->and($row->field_name)->toBeNull()
-        ->and($row->error_code)->toBe('locatie.alle.1-5.ok');
+        ->and($row->error_code)->toBe('locatie.alle.1-5.ok.zelf');
 
     $payload = json_encode($row->toArray());
     expect($payload)->not->toContain('Haarlem')
@@ -75,7 +75,7 @@ test('api zoeken logt catalogusplant via resolveExact, nooit vrije tekst', funct
     expect($row)->not->toBeNull()
         ->and($row->field_name)->toBe('Monstera')
         ->and($row->error_code)->toStartWith('plant.alle.')
-        ->and($row->error_code)->toEndWith('.na');
+        ->and($row->error_code)->toEndWith('.na.zelf');
 
     $payload = json_encode($row->toArray());
     expect($payload)->not->toContain('Gatenplant');
@@ -88,7 +88,7 @@ test('onbekende planttekst wordt niet opgeslagen', function () {
     $row = ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_AANBOD_SEARCH)->first();
     expect($row)->not->toBeNull()
         ->and($row->field_name)->toBeNull()
-        ->and($row->error_code)->toBe('plant.alle.0.na');
+        ->and($row->error_code)->toBe('plant.alle.0.na.zelf');
 
     $payload = json_encode($row->toArray());
     expect($payload)->not->toContain('xyzzy')
@@ -108,7 +108,8 @@ test('beide modus en typefilter worden gelogd', function () {
     $row = ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_AANBOD_SEARCH)->first();
     expect($row)->not->toBeNull()
         ->and($row->field_name)->toBe('Monstera')
-        ->and($row->error_code)->toStartWith('beide.uitdelen.');
+        ->and($row->error_code)->toStartWith('beide.uitdelen.')
+        ->and($row->error_code)->toEndWith('.zelf');
 });
 
 test('geocode_miss wordt gemarkeerd zonder q-tekst', function () {
@@ -117,11 +118,27 @@ test('geocode_miss wordt gemarkeerd zonder q-tekst', function () {
 
     $row = ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_AANBOD_SEARCH)->first();
     expect($row)->not->toBeNull()
-        ->and($row->error_code)->toEndWith('.miss')
+        ->and($row->error_code)->toEndWith('.miss.zelf')
         ->and($row->error_code)->toStartWith('locatie.alle.');
 
     $payload = json_encode($row->toArray());
     expect($payload)->not->toContain('OnbestaandePlaatsXYZ999');
+});
+
+test('api bron=auto wordt opgeslagen; ontbrekende bron is zelf', function () {
+    $this->getJson(route('api.zoeken', ['plant' => 'Monstera', 'bron' => 'auto']))
+        ->assertOk();
+    $this->getJson(route('api.zoeken', ['plant' => 'Munt']))
+        ->assertOk();
+
+    $codes = ConversionEvent::query()
+        ->where('event_type', ConversionEvent::TYPE_AANBOD_SEARCH)
+        ->orderBy('id')
+        ->pluck('error_code')
+        ->all();
+
+    expect($codes[0])->toEndWith('.auto')
+        ->and($codes[1])->toEndWith('.zelf');
 });
 
 test('recent-only listing logt geen aanbod_search', function () {
@@ -138,28 +155,12 @@ test('bots worden niet gemeten op api zoeken', function () {
     expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_AANBOD_SEARCH)->count())->toBe(0);
 });
 
-test('ssr plant-url logt aanbod_search eenmaal', function () {
+test('ssr aanbodpagina logt geen aanbod_search (api-only)', function () {
     $lid = zoekmetingLid();
     zoekmetingAanbod($lid, 'Munt stekje');
 
     $this->get(route('aanbod', ['plant' => 'Munt']))->assertOk();
-
-    $rows = ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_AANBOD_SEARCH)->get();
-    expect($rows)->toHaveCount(1)
-        ->and($rows[0]->field_name)->toBe('Munt')
-        ->and($rows[0]->error_code)->toStartWith('plant.alle.');
-});
-
-test('ssr met plant én q logt niet (geocode-pad is api)', function () {
-    $lid = zoekmetingLid();
-    zoekmetingAanbod($lid, 'Munt stekje');
-
     $this->get(route('aanbod', ['plant' => 'Munt', 'q' => 'Haarlem']))->assertOk();
-
-    expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_AANBOD_SEARCH)->count())->toBe(0);
-});
-
-test('ssr kale aanbodpagina zonder plant/q logt niets', function () {
     $this->get(route('aanbod'))->assertOk();
 
     expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_AANBOD_SEARCH)->count())->toBe(0);
@@ -169,7 +170,6 @@ test('weekstats prefereren raw events boven incomplete daily', function () {
     $tracker = app(ConversionTracker::class);
     $today = now('Europe/Amsterdam')->toDateString();
 
-    // Oude daily-totalen (alsof cron al heeft gedraaid) — zonder recente raw zou dit 2 tellen.
     ConversionDaily::query()->create([
         'date' => $today,
         'week_key' => $tracker->weekKey(now()),
@@ -180,18 +180,17 @@ test('weekstats prefereren raw events boven incomplete daily', function () {
         'utm_campaign' => null,
         'utm_content' => null,
         'field_name' => 'Lavendel',
-        'error_code' => 'plant.alle.1-5.na',
+        'error_code' => 'plant.alle.1-5.na.zelf',
         'count' => 2,
         'unique_visitors' => 1,
     ]);
 
-    // Nieuwe raw zoekacties sinds laatste aggregate — moeten winnen.
     ConversionEvent::query()->create([
         'occurred_at' => now(),
         'event_type' => ConversionEvent::TYPE_AANBOD_SEARCH,
         'path' => '/api/zoeken',
         'field_name' => 'Monstera',
-        'error_code' => 'plant.alle.0.na',
+        'error_code' => 'plant.alle.0.na.zelf',
         'week_key' => $tracker->weekKey(now()),
         'device_type' => 'desktop',
     ]);
@@ -200,7 +199,7 @@ test('weekstats prefereren raw events boven incomplete daily', function () {
         'event_type' => ConversionEvent::TYPE_AANBOD_SEARCH,
         'path' => '/api/zoeken',
         'field_name' => 'Monstera',
-        'error_code' => 'plant.alle.1-5.na',
+        'error_code' => 'plant.alle.1-5.na.zelf',
         'week_key' => $tracker->weekKey(now()),
         'device_type' => 'desktop',
     ]);
@@ -229,7 +228,7 @@ test('weekstats vallen terug op daily als raw leeg is', function () {
         'utm_campaign' => null,
         'utm_content' => null,
         'field_name' => 'Lavendel',
-        'error_code' => 'plant.alle.0.na',
+        'error_code' => 'plant.alle.0.na.zelf',
         'count' => 4,
         'unique_visitors' => 2,
     ]);
@@ -244,18 +243,59 @@ test('weekstats vallen terug op daily als raw leeg is', function () {
         ->and($top[0]['empty_count'])->toBe(4);
 });
 
+test('weekstats hoofdtelling negeert bron=auto; toont auto apart', function () {
+    $tracker = app(ConversionTracker::class);
+
+    ConversionEvent::query()->create([
+        'occurred_at' => now(),
+        'event_type' => ConversionEvent::TYPE_AANBOD_SEARCH,
+        'path' => '/api/zoeken',
+        'field_name' => 'Monstera',
+        'error_code' => 'plant.alle.0.na.zelf',
+        'week_key' => $tracker->weekKey(now()),
+        'device_type' => 'desktop',
+    ]);
+    ConversionEvent::query()->create([
+        'occurred_at' => now(),
+        'event_type' => ConversionEvent::TYPE_AANBOD_SEARCH,
+        'path' => '/api/zoeken',
+        'field_name' => 'Monstera',
+        'error_code' => 'plant.alle.1-5.na.auto',
+        'week_key' => $tracker->weekKey(now()),
+        'device_type' => 'desktop',
+    ]);
+    ConversionEvent::query()->create([
+        'occurred_at' => now(),
+        'event_type' => ConversionEvent::TYPE_AANBOD_SEARCH,
+        'path' => '/api/zoeken',
+        'field_name' => 'Monstera',
+        'error_code' => 'plant.alle.0.na.auto',
+        'week_key' => $tracker->weekKey(now()),
+        'device_type' => 'desktop',
+    ]);
+
+    $summary = $tracker->aanbodSearchWeekSummary(0);
+    expect($summary['total'])->toBe(1)
+        ->and($summary['auto_count'])->toBe(2)
+        ->and($summary['empty_count'])->toBe(1);
+
+    $top = $tracker->topAanbodSearchPlants(10, 0);
+    expect($top)->toHaveCount(1)
+        ->and($top[0]['count'])->toBe(1)
+        ->and($top[0]['empty_count'])->toBe(1);
+});
+
 test('statistieken toont top-10 met lege resultaten', function () {
     config(['stekjes.admin_password' => implode('-', ['TestOnly', 'Stats', 'Beheer', '9'])]);
 
     $tracker = app(ConversionTracker::class);
 
-    // Drie Monstera-zoeken waarvan twee leeg; één Tomaat met treffer.
     ConversionEvent::query()->create([
         'occurred_at' => now(),
         'event_type' => ConversionEvent::TYPE_AANBOD_SEARCH,
         'path' => '/api/zoeken',
         'field_name' => 'Monstera',
-        'error_code' => 'plant.alle.0.na',
+        'error_code' => 'plant.alle.0.na.zelf',
         'week_key' => $tracker->weekKey(now()),
         'device_type' => 'desktop',
     ]);
@@ -264,7 +304,7 @@ test('statistieken toont top-10 met lege resultaten', function () {
         'event_type' => ConversionEvent::TYPE_AANBOD_SEARCH,
         'path' => '/api/zoeken',
         'field_name' => 'Monstera',
-        'error_code' => 'plant.alle.0.na',
+        'error_code' => 'plant.alle.0.na.zelf',
         'week_key' => $tracker->weekKey(now()),
         'device_type' => 'desktop',
     ]);
@@ -273,7 +313,7 @@ test('statistieken toont top-10 met lege resultaten', function () {
         'event_type' => ConversionEvent::TYPE_AANBOD_SEARCH,
         'path' => '/api/zoeken',
         'field_name' => 'Monstera',
-        'error_code' => 'plant.alle.1-5.na',
+        'error_code' => 'plant.alle.1-5.na.zelf',
         'week_key' => $tracker->weekKey(now()),
         'device_type' => 'desktop',
     ]);
@@ -282,7 +322,7 @@ test('statistieken toont top-10 met lege resultaten', function () {
         'event_type' => ConversionEvent::TYPE_AANBOD_SEARCH,
         'path' => '/api/zoeken',
         'field_name' => 'Tomaat',
-        'error_code' => 'plant.alle.1-5.na',
+        'error_code' => 'plant.alle.1-5.na.zelf',
         'week_key' => $tracker->weekKey(now()),
         'device_type' => 'desktop',
     ]);
@@ -291,13 +331,14 @@ test('statistieken toont top-10 met lege resultaten', function () {
         'event_type' => ConversionEvent::TYPE_AANBOD_SEARCH,
         'path' => '/api/zoeken',
         'field_name' => null,
-        'error_code' => 'locatie.alle.6-20.ok',
+        'error_code' => 'locatie.alle.6-20.ok.zelf',
         'week_key' => $tracker->weekKey(now()),
         'device_type' => 'desktop',
     ]);
 
     $summary = $tracker->aanbodSearchWeekSummary(0);
     expect($summary['total'])->toBe(5)
+        ->and($summary['auto_count'])->toBe(0)
         ->and($summary['empty_count'])->toBe(2)
         ->and($summary['modus']['plant'])->toBe(4)
         ->and($summary['modus']['locatie'])->toBe(1);
@@ -314,6 +355,8 @@ test('statistieken toont top-10 met lege resultaten', function () {
         ->get(route('beheer.statistieken'))
         ->assertOk()
         ->assertSee('Aanbodzoeken', false)
+        ->assertSee('Zoekacties (zelf)', false)
+        ->assertSee('Auto (SEO/paginalaad)', false)
         ->assertSee('Top 10 gezochte planten', false)
         ->assertSee('Monstera', false)
         ->getContent();
@@ -330,6 +373,16 @@ test('privacy noemt aanbodzoeken zonder plaats- of vrijetekst', function () {
         ->assertSee('nooit vrije planttekst', false);
 });
 
+test('zoeken.js stuurt bron=auto bij paginalaad en bron=zelf bij formulier', function () {
+    $js = file_get_contents(resource_path('js/zoeken.js'));
+    expect($js)->toContain('zoek(startQ.trim(), "auto")')
+        ->and($js)->toContain('zoekOpPlant(String(cfg.plant_filter).trim(), "auto")')
+        ->and($js)->toContain('zoekOpPlant(p, "zelf")')
+        ->and($js)->toContain('zoek(q, "zelf")')
+        ->and($js)->toContain('bron=auto')
+        ->and($js)->toContain('bron=zelf');
+});
+
 test('resultaatbuckets kloppen', function () {
     expect(ConversionTracker::aanbodResultBucket(0))->toBe('0')
         ->and(ConversionTracker::aanbodResultBucket(1))->toBe('1-5')
@@ -337,4 +390,12 @@ test('resultaatbuckets kloppen', function () {
         ->and(ConversionTracker::aanbodResultBucket(6))->toBe('6-20')
         ->and(ConversionTracker::aanbodResultBucket(20))->toBe('6-20')
         ->and(ConversionTracker::aanbodResultBucket(21))->toBe('21+');
+});
+
+test('parseAanbodSearchCode accepteert legacy 4-delig als zelf', function () {
+    $legacy = ConversionTracker::parseAanbodSearchCode('plant.alle.0.na');
+    $with = ConversionTracker::parseAanbodSearchCode('plant.alle.0.na.auto');
+
+    expect($legacy['bron'])->toBe('zelf')
+        ->and($with['bron'])->toBe('auto');
 });

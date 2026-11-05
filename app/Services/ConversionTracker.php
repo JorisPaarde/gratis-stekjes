@@ -347,18 +347,20 @@ final class ConversionTracker
     }
 
     /**
-     * Privacyvriendelijke zoekmeting op het aanbod.
+     * Privacyvriendelijke zoekmeting op het aanbod (alleen via /api/zoeken).
      *
      * Opslag (geen migratie):
      * - field_name = canonieke NL-plantennaam bij Plantensoorten::resolveExact, anders null
      *   (nooit ruwe plant-/locatietekst)
-     * - error_code = "{modus}.{type}.{bucket}.{geocode}"
+     * - error_code = "{modus}.{type}.{bucket}.{geocode}.{bron}"
      *   modus: locatie|plant|beide
      *   type: uitdelen|ophalen|alle
      *   bucket: 0|1-5|6-20|21+
      *   geocode: ok|miss|na
+     *   bron: zelf|auto (oude 4-delige codes = zelf)
      *
      * @param  'uitdelen'|'ophalen'|null  $typeFilter
+     * @param  'zelf'|'auto'|null  $bron  null/onbekend → zelf
      */
     public function recordAanbodSearch(
         Request $request,
@@ -367,6 +369,7 @@ final class ConversionTracker
         ?string $typeFilter,
         int $resultCount,
         bool $geocodeMiss = false,
+        ?string $bron = null,
     ): void {
         $q = trim($q);
         $plant = trim($plant);
@@ -383,6 +386,7 @@ final class ConversionTracker
         $type = in_array($typeFilter, ['uitdelen', 'ophalen'], true) ? $typeFilter : 'alle';
         $bucket = self::aanbodResultBucket($resultCount);
         $geocode = $q === '' ? 'na' : ($geocodeMiss ? 'miss' : 'ok');
+        $bronNorm = $bron === 'auto' ? 'auto' : 'zelf';
 
         $catalogNaam = null;
         if ($plant !== '') {
@@ -398,7 +402,7 @@ final class ConversionTracker
 
         $this->record(ConversionEvent::TYPE_AANBOD_SEARCH, $request, [
             'field_name' => $catalogNaam,
-            'error_code' => $modus.'.'.$type.'.'.$bucket.'.'.$geocode,
+            'error_code' => $modus.'.'.$type.'.'.$bucket.'.'.$geocode.'.'.$bronNorm,
         ]);
     }
 
@@ -419,7 +423,7 @@ final class ConversionTracker
     }
 
     /**
-     * @return array{modus: string, type: string, bucket: string, geocode: string}|null
+     * @return array{modus: string, type: string, bucket: string, geocode: string, bron: string}|null
      */
     public static function parseAanbodSearchCode(?string $errorCode): ?array
     {
@@ -427,10 +431,14 @@ final class ConversionTracker
             return null;
         }
         $parts = explode('.', $errorCode);
-        if (count($parts) !== 4) {
+        // 4 segmenten = legacy zonder bron → zelf; 5 = met bron.
+        if (count($parts) === 4) {
+            $parts[] = 'zelf';
+        }
+        if (count($parts) !== 5) {
             return null;
         }
-        [$modus, $type, $bucket, $geocode] = $parts;
+        [$modus, $type, $bucket, $geocode, $bron] = $parts;
         if (! in_array($modus, ['locatie', 'plant', 'beide'], true)) {
             return null;
         }
@@ -443,12 +451,16 @@ final class ConversionTracker
         if (! in_array($geocode, ['ok', 'miss', 'na'], true)) {
             return null;
         }
+        if (! in_array($bron, ['zelf', 'auto'], true)) {
+            return null;
+        }
 
         return [
             'modus' => $modus,
             'type' => $type,
             'bucket' => $bucket,
             'geocode' => $geocode,
+            'bron' => $bron,
         ];
     }
 
@@ -982,10 +994,13 @@ final class ConversionTracker
     /**
      * Zoekmeting-samenvatting voor één kalenderweek (Amsterdam, ma–zo).
      *
+     * Hoofdtelling = bron zelf (of legacy zonder bron). Auto apart.
+     *
      * @return array{
      *   week_key: string,
      *   label: string,
      *   total: int,
+     *   auto_count: int,
      *   empty_count: int,
      *   empty_pct: float|null,
      *   modus: array{locatie: int, plant: int, beide: int}
@@ -999,15 +1014,21 @@ final class ConversionTracker
         $rows = $this->aanbodSearchDimensionRows($weekStart, $weekEnd);
 
         $total = 0;
+        $autoCount = 0;
         $empty = 0;
         $modus = ['locatie' => 0, 'plant' => 0, 'beide' => 0];
         foreach ($rows as $row) {
             $count = (int) $row['count'];
-            $total += $count;
             $parsed = self::parseAanbodSearchCode($row['error_code']);
             if ($parsed === null) {
                 continue;
             }
+            if ($parsed['bron'] === 'auto') {
+                $autoCount += $count;
+
+                continue;
+            }
+            $total += $count;
             if ($parsed['bucket'] === '0') {
                 $empty += $count;
             }
@@ -1020,6 +1041,7 @@ final class ConversionTracker
             'week_key' => $this->weekKey($weekStart),
             'label' => $weekStart->format('d-m').' – '.$weekEnd->format('d-m'),
             'total' => $total,
+            'auto_count' => $autoCount,
             'empty_count' => $empty,
             'empty_pct' => $total > 0 ? round(($empty / $total) * 100, 1) : null,
             'modus' => $modus,
@@ -1027,7 +1049,7 @@ final class ConversionTracker
     }
 
     /**
-     * Top gezochte catalogusplanten in een kalenderweek (alleen resolveExact-matches).
+     * Top gezochte catalogusplanten (alleen bron=zelf / legacy; resolveExact-matches).
      *
      * @return list<array{naam: string, count: int, empty_count: int, empty_pct: float|null}>
      */
@@ -1041,6 +1063,10 @@ final class ConversionTracker
         /** @var array<string, array{count: int, empty_count: int}> $byPlant */
         $byPlant = [];
         foreach ($rows as $row) {
+            $parsed = self::parseAanbodSearchCode($row['error_code']);
+            if ($parsed === null || $parsed['bron'] === 'auto') {
+                continue;
+            }
             $naam = trim((string) ($row['field_name'] ?? ''));
             if ($naam === '') {
                 continue;
@@ -1050,8 +1076,7 @@ final class ConversionTracker
                 $byPlant[$naam] = ['count' => 0, 'empty_count' => 0];
             }
             $byPlant[$naam]['count'] += $count;
-            $parsed = self::parseAanbodSearchCode($row['error_code']);
-            if ($parsed !== null && $parsed['bucket'] === '0') {
+            if ($parsed['bucket'] === '0') {
                 $byPlant[$naam]['empty_count'] += $count;
             }
         }

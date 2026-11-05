@@ -729,7 +729,8 @@
 
   // Alleen het 2e veld: zoek alleen op plant; de server sorteert vanaf het eigen adres
   // van het ingelogde lid, of (gast / geen adres) nieuwste eerst.
-  function zoekOpPlant(plant) {
+  // bron: "zelf" (formulier) of "auto" (SEO/plant_filter bij paginalaad).
+  function zoekOpPlant(plant, bron) {
     heeftGezocht = true;
     center = null;
     tekenZoekpunt();
@@ -737,7 +738,8 @@
     if (serverLijst) serverLijst.hidden = true; // JS-lijst toont hetzelfde, met foto's en berichtknop
     status.textContent = "Zoeken…";
     status.dataset.empty = "";
-    fetch(api + "?plant=" + encodeURIComponent(plant), {
+    var bronQ = bron === "auto" ? "&bron=auto" : "&bron=zelf";
+    fetch(api + "?plant=" + encodeURIComponent(plant) + bronQ, {
       credentials: "same-origin",
       headers: { Accept: "application/json" },
     })
@@ -760,7 +762,7 @@
       });
   }
 
-  function zoek(q) {
+  function zoek(q, bron) {
     heeftGezocht = true;
     plantModus = null;
     var plantEl = document.getElementById("zoek-plant");
@@ -778,7 +780,8 @@
       encodeURIComponent(q) +
       "&type=" +
       encodeURIComponent(type) +
-      (plant ? "&plant=" + encodeURIComponent(plant) : "");
+      (plant ? "&plant=" + encodeURIComponent(plant) : "") +
+      (bron === "auto" ? "&bron=auto" : "&bron=zelf");
     fetch(url, { credentials: "same-origin", headers: { Accept: "application/json" } })
       .then(function (r) {
         return r.json().then(function (data) {
@@ -849,7 +852,7 @@
         pp.set("plant", p);
         window.history.replaceState(null, "", window.location.pathname + "?" + pp.toString());
       }
-      zoekOpPlant(p);
+      zoekOpPlant(p, "zelf");
       return;
     }
     ev.preventDefault();
@@ -858,7 +861,7 @@
       params.set("q", q);
       window.history.replaceState(null, "", window.location.pathname + "?" + params.toString());
     }
-    zoek(q);
+    zoek(q, "zelf");
   });
 
   function escapeHtml(s) {
@@ -873,13 +876,14 @@
   loadDeelplekken();
 
   // Binnenkomen met ?q= (zoekveld op de homepage): direct zoeken; anders nieuwste aanbod tonen.
+  // Paginalaad-zoeken = bron=auto (SEO/plant_filter of ?q=); formulier = bron=zelf.
   var startQ = new URLSearchParams(window.location.search).get("q");
   var startQEl = document.getElementById("zoek-q");
   if (startQ && startQ.trim()) {
     if (startQEl) startQEl.value = startQ.trim();
-    zoek(startQ.trim());
+    zoek(startQ.trim(), "auto");
   } else if (cfg.plant_filter && String(cfg.plant_filter).trim()) {
-    zoekOpPlant(String(cfg.plant_filter).trim());
+    zoekOpPlant(String(cfg.plant_filter).trim(), "auto");
   } else {
     loadRecentAanbod();
   }

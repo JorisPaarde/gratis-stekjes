@@ -231,13 +231,14 @@
       <span class="stats-panel-hint muted">geen plaats- of vrije planttekst</span>
     </summary>
     <div class="stats-panel-body">
-      <p class="muted">Week {{ $aanbodSearchWeek['label'] }}. Per zoekactie: modus, typefilter, resultaatgrootte en catalogusplant bij exacte match — nooit de getypte postcode/plaats of onbekende planttekst.</p>
-      @if(($aanbodSearchWeek['total'] ?? 0) === 0)
+      <p class="muted">Week {{ $aanbodSearchWeek['label'] }}. Hoofdtelling = zelf gezocht (formulier). Auto = SEO/plant_filter bij paginalaad. Per zoekactie: modus, typefilter, resultaatgrootte en catalogusplant bij exacte match — nooit de getypte postcode/plaats of onbekende planttekst.</p>
+      @if(($aanbodSearchWeek['total'] ?? 0) === 0 && ($aanbodSearchWeek['auto_count'] ?? 0) === 0)
         <p class="muted">Nog geen zoekacties gemeten deze week.</p>
       @else
         <ul class="stats-path-list">
-          <li>Zoekacties <span>{{ $aanbodSearchWeek['total'] }}</span></li>
-          <li>Lege resultaten
+          <li>Zoekacties (zelf) <span>{{ $aanbodSearchWeek['total'] }}</span></li>
+          <li>Auto (SEO/paginalaad) <span>{{ $aanbodSearchWeek['auto_count'] ?? 0 }}</span></li>
+          <li>Lege resultaten (zelf)
             <span>
               {{ $aanbodSearchWeek['empty_count'] }}
               @if($aanbodSearchWeek['empty_pct'] !== null)

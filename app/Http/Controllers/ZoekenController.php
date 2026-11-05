@@ -5,19 +5,14 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\AanbodSearch;
-use App\Services\ConversionTracker;
 use App\Services\NuTeStekken;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ZoekenController extends Controller
 {
-    public function __invoke(
-        Request $request,
-        NuTeStekken $calendar,
-        AanbodSearch $search,
-        ConversionTracker $conversions,
-    ): View {
+    public function __invoke(Request $request, NuTeStekken $calendar, AanbodSearch $search): View
+    {
         $plant = trim((string) $request->query('plant', ''));
         if (mb_strlen($plant) > 80) {
             $plant = mb_substr($plant, 0, 80);
@@ -39,18 +34,7 @@ class ZoekenController extends Controller
             $plantItems = $search->search(null, null, false, $plant)['items'];
         }
 
-        // SSR alleen-plant SEO-URL’s (?plant=… zonder q): één zoekevent.
-        // Plant+q of alleen-q: geocode/resultaat via /api/zoeken — niet hier loggen.
-        if ($plant !== '' && $q === '') {
-            $conversions->recordAanbodSearch(
-                $request,
-                '',
-                $plant,
-                null,
-                count($plantItems),
-                false,
-            );
-        }
+        // Zoekmeting alleen via /api/zoeken (productkeuze A: API-only).
 
         $title = $plant !== ''
             ? 'Gratis '.$plant.'-stekjes'
