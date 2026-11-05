@@ -117,3 +117,5 @@
 .partners-uitgelicht-kaart:has(.init-foto) { overflow: hidden; }
 .partners-uitgelicht-kaart .init-foto { margin: -1.25rem -1.25rem .75rem; }
 .partners-uitgelicht-kaart:has(.init-foto) .partners-doe-mee { position: absolute; top: .75rem; left: .75rem; z-index: 1; }
+.partners-uitgelicht-kaart:has(.init-foto) .partners-doe-mee { right: auto; width: auto; display: inline-block; }
+.partners-uitgelicht-kaart { scroll-margin-top: 6rem; }
