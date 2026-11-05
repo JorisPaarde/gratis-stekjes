@@ -225,6 +225,60 @@
     </div>
   </details>
 
+  <details class="stats-panel" open>
+    <summary class="stats-panel-summary">
+      <span class="stats-panel-title">Aanbodzoeken · deze week</span>
+      <span class="stats-panel-hint muted">geen plaats- of vrije planttekst</span>
+    </summary>
+    <div class="stats-panel-body">
+      <p class="muted">Week {{ $aanbodSearchWeek['label'] }}. Hoofdtelling = zelf gezocht (formulier). Auto = SEO/plant_filter bij paginalaad. Per zoekactie: modus, typefilter, resultaatgrootte en catalogusplant bij exacte match — nooit de getypte postcode/plaats of onbekende planttekst.</p>
+      @if(($aanbodSearchWeek['total'] ?? 0) === 0 && ($aanbodSearchWeek['auto_count'] ?? 0) === 0)
+        <p class="muted">Nog geen zoekacties gemeten deze week.</p>
+      @else
+        <ul class="stats-path-list">
+          <li>Zoekacties (zelf) <span>{{ $aanbodSearchWeek['total'] }}</span></li>
+          <li>Auto (SEO/paginalaad) <span>{{ $aanbodSearchWeek['auto_count'] ?? 0 }}</span></li>
+          <li>Lege resultaten (zelf)
+            <span>
+              {{ $aanbodSearchWeek['empty_count'] }}
+              @if($aanbodSearchWeek['empty_pct'] !== null)
+                ({{ $aanbodSearchWeek['empty_pct'] }}%)
+              @endif
+            </span>
+          </li>
+          <li>Modus locatie <span>{{ $aanbodSearchWeek['modus']['locatie'] }}</span></li>
+          <li>Modus plant <span>{{ $aanbodSearchWeek['modus']['plant'] }}</span></li>
+          <li>Modus beide <span>{{ $aanbodSearchWeek['modus']['beide'] }}</span></li>
+        </ul>
+      @endif
+
+      <h2 class="stats-subhead">Top 10 gezochte planten</h2>
+      @if($aanbodSearchPlants === [])
+        <p class="muted">Nog geen catalogusmatches deze week.</p>
+      @else
+        <table class="beheer-table">
+          <thead>
+            <tr><th>Plant</th><th>Zoekacties</th><th>Lege resultaten</th></tr>
+          </thead>
+          <tbody>
+            @foreach($aanbodSearchPlants as $row)
+              <tr>
+                <td>{{ $row['naam'] }}</td>
+                <td>{{ $row['count'] }}</td>
+                <td>
+                  {{ $row['empty_count'] }}
+                  @if($row['empty_pct'] !== null)
+                    <span class="hint">({{ $row['empty_pct'] }}%)</span>
+                  @endif
+                </td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
+      @endif
+    </div>
+  </details>
+
   <details class="stats-panel">
     <summary class="stats-panel-summary">
       <span class="stats-panel-title">Validatiefouten · 30 dagen</span>

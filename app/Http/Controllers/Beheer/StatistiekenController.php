@@ -116,6 +116,8 @@ class StatistiekenController extends Controller
         $validationErrors = $conversions->topValidationErrors(30, 15);
         $breakdown = $conversions->deviceAndSourceBreakdown(30);
         $minFormStarts = (int) config('conversion.min_form_starts_for_rates', 30);
+        $aanbodSearchWeek = $conversions->aanbodSearchWeekSummary(0);
+        $aanbodSearchPlants = $conversions->topAanbodSearchPlants(10, 0);
 
         $topBars = $pageViews14['top']->map(fn (array $r) => [
             'label' => $r['path'],
@@ -155,6 +157,8 @@ class StatistiekenController extends Controller
             'deviceBreakdown' => $breakdown['devices'],
             'sourceBreakdown' => $breakdown['sources'],
             'minFormStarts' => $minFormStarts,
+            'aanbodSearchWeek' => $aanbodSearchWeek,
+            'aanbodSearchPlants' => $aanbodSearchPlants,
             'funnelLabels' => [
                 'unique_visitors' => 'Unieke bezoekers (schatting)',
                 ConversionEvent::TYPE_CTA_CLICK => 'Klik Word lid',
