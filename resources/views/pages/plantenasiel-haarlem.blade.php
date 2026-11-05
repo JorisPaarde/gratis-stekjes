@@ -41,6 +41,7 @@
   </p>
 
   @if(count($deelplekken) > 0)
+    <h2>Op de deelplekkenkaart</h2>
     <p><a href="{{ route('deelplekken', ['plaats' => $org['plaats']]) }}">Bekijk de deelplek op de kaart</a></p>
   @endif
 
