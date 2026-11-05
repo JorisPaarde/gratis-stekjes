@@ -175,7 +175,7 @@
   <ul class="home-meedoen-kaarten">
     @foreach($meedoen as $init)
       <li>
-        <a class="home-meedoen-kaart" href="{{ route('partners') }}#{{ $init['anker'] }}" aria-labelledby="meedoen-{{ $init['anker'] }}">
+        <a class="home-meedoen-kaart" href="{{ $init['pagina_url'] ?? (route('partners').'#'.$init['anker']) }}" aria-labelledby="meedoen-{{ $init['anker'] }}">
           @if($init['afbeelding'])
             @include('partials.initiatief-foto', ['afbeelding' => $init['afbeelding']])
           @else

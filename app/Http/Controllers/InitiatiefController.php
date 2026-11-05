@@ -42,6 +42,20 @@ class InitiatiefController extends Controller
         return $this->render($init, $evenementen, $organisaties);
     }
 
+    /** Vaste route /stekchallenge (zelfde content als catch-all). */
+    public function stekchallenge(
+        InitiatiefPaginas $initiatieven,
+        Evenementen $evenementen,
+        Organisaties $organisaties,
+    ): View|Response {
+        $init = $initiatieven->findByInitiatiefSlug('stekchallenge');
+        if ($init === null) {
+            abort(404);
+        }
+
+        return $this->render($init, $evenementen, $organisaties);
+    }
+
     private function render(
         OrganisatieInitiatief $init,
         Evenementen $evenementen,
@@ -57,6 +71,9 @@ class InitiatiefController extends Controller
         // Behoud named route('struikroven') canonical voor Struikroven (0.64.1-pariteit).
         if ($init->initiatief_slug === 'struikroven') {
             $canonical = route('struikroven');
+        }
+        if ($init->initiatief_slug === 'stekchallenge') {
+            $canonical = route('stekchallenge');
         }
 
         return view('pages.initiatief', [

@@ -38,7 +38,7 @@ class DashboardController extends Controller
 {
     public function index(): View
     {
-        $kort = ['leden' => 0, 'nieuw_week' => 0, 'actief_week' => 0, 'aanbod_actief' => 0, 'gesprekken_week' => 0, 'struikrovers' => 0];
+        $kort = ['leden' => 0, 'nieuw_week' => 0, 'actief_week' => 0, 'aanbod_actief' => 0, 'gesprekken_week' => 0, 'struikrovers' => 0, 'stekchallenge' => 0];
         try {
             $kort['leden'] = User::query()->members()->count();
             $kort['nieuw_week'] = User::query()->members()->where('created_at', '>=', now()->subWeek())->count();
@@ -51,6 +51,9 @@ class DashboardController extends Controller
                 : 0;
             $kort['struikrovers'] = Schema::hasColumn('users', 'struikrover')
                 ? User::query()->members()->where('struikrover', true)->count()
+                : 0;
+            $kort['stekchallenge'] = Schema::hasColumn('users', 'stekchallenge')
+                ? User::query()->members()->where('stekchallenge', true)->count()
                 : 0;
         } catch (\Throwable) {
             // Overzicht blijft werken als een telling faalt.

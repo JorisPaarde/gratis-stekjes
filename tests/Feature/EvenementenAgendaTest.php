@@ -33,6 +33,9 @@ function makeEvenement(array $overrides = []): Evenement
 }
 
 test('initiatievenpagina toont SEO-title, H1, lege agenda en vaste initiatieven', function () {
+    // Seed-evenementen (bijv. STEKchallenge-workshop) wissen voor deze lege-agenda-assert.
+    Evenement::query()->delete();
+
     $this->get('/initiatieven')
         ->assertOk()
         ->assertSee('Stekjesmarkt, plantenruilbeurs en ruilinitiatieven', false)

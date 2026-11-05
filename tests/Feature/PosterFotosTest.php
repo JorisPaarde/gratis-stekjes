@@ -10,7 +10,11 @@ test('elke poster heeft een foto met maker, bron en licentie', function () {
         foreach (['alt', 'maker', 'bron_url', 'licentie', 'positie'] as $sleutel) {
             expect($poster['foto'][$sleutel] ?? '')->not->toBe('', "$voor mist foto.$sleutel");
         }
-        expect($poster['foto']['bron_url'])->toStartWith('https://unsplash.com/photos/');
+        if (($poster['foto']['licentie'] ?? '') === 'Unsplash License') {
+            expect($poster['foto']['bron_url'])->toStartWith('https://unsplash.com/photos/');
+        } else {
+            expect($poster['foto']['bron_url'])->toStartWith('https://');
+        }
         foreach (['480', '1600'] as $breedte) {
             foreach (['jpg', 'webp'] as $ext) {
                 expect(public_path("assets/images/posters/{$voor}-{$breedte}.{$ext}"))->toBeFile();
@@ -25,8 +29,12 @@ test('posterpagina toont de foto en de fotocredit', function () {
         expect($html)->toContain("/assets/images/posters/{$voor}-1600.webp")
             ->and($html)->toContain("/assets/images/posters/{$voor}-1600.jpg")
             ->and($html)->toContain('poster--foto')
-            ->and($html)->toContain($poster['foto']['bron_url'])
-            ->and($html)->toContain(e($poster['foto']['maker']).' / Unsplash');
+            ->and($html)->toContain($poster['foto']['bron_url']);
+        $credit = e($poster['foto']['maker']);
+        if (($poster['foto']['licentie'] ?? '') === 'Unsplash License') {
+            $credit .= ' / Unsplash';
+        }
+        expect($html)->toContain($credit);
     }
 });
 

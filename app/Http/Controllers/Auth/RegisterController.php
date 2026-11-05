@@ -60,7 +60,6 @@ class RegisterController extends Controller
 
         $email = strtolower(trim((string) $request->validated('email')));
         $password = (string) $request->validated('password');
-        $struikrover = $request->boolean('struikrover');
         $mailOk = true;
 
         $existing = User::query()->where('email', $email)->first();
@@ -72,14 +71,16 @@ class RegisterController extends Controller
                 'password' => $password,
                 'active' => true,
             ];
-            if (Schema::hasColumn('users', 'struikrover')) {
-                // Struikrover-param óf generiek vinkje met die param.
-                $payload['struikrover'] = $struikrover;
-                foreach ($this->aanmeldVinkjes($initiatieven) as $vink) {
-                    if ($vink['param'] === 'struikrover' && $request->boolean($vink['param'])) {
-                        $payload['struikrover'] = true;
-                    }
+            // Vinkjes van initiatieven: sla op als users.{param} bestaat (struikrover, stekchallenge, …).
+            foreach ($this->aanmeldVinkjes($initiatieven) as $vink) {
+                $param = $vink['param'];
+                if (Schema::hasColumn('users', $param)) {
+                    $payload[$param] = $request->boolean($param);
                 }
+            }
+            // BC: expliciete struikrover-param ook zonder initiatief-rij.
+            if (! array_key_exists('struikrover', $payload) && Schema::hasColumn('users', 'struikrover')) {
+                $payload['struikrover'] = $request->boolean('struikrover');
             }
             $user = User::query()->create($payload);
             $mailOk = SafeMail::notify($user, new VerifyEmailDutch);

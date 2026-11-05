@@ -1,6 +1,6 @@
 {
   "meta": {
-    "uitleg": "Initiatieven om aan mee te doen: homepageblok «Hier kun je ook aan meedoen» en bovenaan /initiatieven. Afbeeldingen: toestemming gegeven 5 nov 2026 (Carpe Vitam via Dewy, Struikroven via Lisette). Geen logo's.",
+    "uitleg": "Initiatieven om aan mee te doen: homepageblok «Hier kun je ook aan meedoen» en bovenaan /initiatieven. Afbeeldingen: toestemming gegeven 5 nov 2026 (Carpe Vitam via Dewy — groepsfoto i.p.v. tekening; Struikroven via Lisette). Geen logo's. pagina_route stuurt home-kaart en titel naar de eigen initiatiefpagina.",
     "bijgewerkt": "2026-11-05"
   },
   "items": [
@@ -8,8 +8,8 @@
       "anker": "stekchallenge",
       "naam": "STEKchallenge",
       "organisatie": "Carpe Vitam",
-      "kort": "Leer stekken in een workshop, of geef er zelf een. Een initiatief van Carpe Vitam.",
-      "tekst": "Met de STEKchallenge leer je samen met anderen stekken, of geef je er zelf een. Een initiatief van Carpe Vitam.",
+      "kort": "November is stekmaand. Stek thuis, op school, in de buurt of op het werk — gratis, overal in Nederland.",
+      "tekst": "November is stekmaand. Met de STEKchallenge van Carpe Vitam stek je thuis, op school, in de buurt of op het werk. Aftrap: stekworkshop 8 november in Elim. Initiatiefnemer: klimaatburgemeester Dewy Mulder.",
       "illustratie": "kopstek",
       "acties": [
         {
@@ -27,11 +27,12 @@
         }
       ],
       "afbeelding": {
-        "bestand": "stekchallenge-plantpot",
-        "alt": "Getekend stekje met groene blaadjes in een gele bloempot",
-        "credit": "Tekening: Carpe Vitam",
+        "bestand": "stekchallenge-groep",
+        "alt": "Groep mensen met stekken in potten tijdens een stekbijeenkomst",
+        "credit": "Foto: Carpe Vitam",
         "bron": "https://carpevitam.net/stekchallenge/"
-      }
+      },
+      "pagina_route": "stekchallenge"
     },
     {
       "anker": "struikroven",

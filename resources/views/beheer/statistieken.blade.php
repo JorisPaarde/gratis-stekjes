@@ -73,6 +73,20 @@
       <details class="stats-kpi-card">
         <summary>
           <span class="stats-kpi-top">
+            <span class="stats-kpi-value">{{ $stekchallenge }}</span>
+          </span>
+          <span class="stats-kpi-label">STEKchallenge</span>
+        </summary>
+        <div class="stats-kpi-expand">
+          <p class="stats-kpi-caption">{{ $stekchallenge }} van {{ $leden }} leden heeft «Ik doe mee aan de STEKchallenge» aangevinkt.</p>
+        </div>
+      </details>
+    </li>
+
+    <li>
+      <details class="stats-kpi-card">
+        <summary>
+          <span class="stats-kpi-top">
             <span class="stats-kpi-value">{{ $ledenMetAanbod }}</span>
           </span>
           <span class="stats-kpi-label">Leden die iets aangeboden hebben</span>
