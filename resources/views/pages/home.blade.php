@@ -175,14 +175,14 @@
   <ul class="home-meedoen-kaarten">
     @foreach($meedoen as $init)
       <li>
-        <a class="home-meedoen-kaart" href="{{ route('partners') }}#{{ $init['anker'] }}">
+        <a class="home-meedoen-kaart" href="{{ route('partners') }}#{{ $init['anker'] }}" aria-labelledby="meedoen-{{ $init['anker'] }}">
           @if($init['afbeelding'])
             @include('partials.initiatief-foto', ['afbeelding' => $init['afbeelding']])
           @else
             @include('partials.illustraties.stek', ['naam' => $init['illustratie']])
           @endif
           <span class="home-meedoen-tekst">
-            <strong>{{ $init['naam'] }}</strong>
+            <strong id="meedoen-{{ $init['anker'] }}">{{ $init['naam'] }}</strong>
             <span>{{ $init['kort'] }}</span>
             <span class="home-meedoen-link">Lees meer <span aria-hidden="true">→</span></span>
           </span>
