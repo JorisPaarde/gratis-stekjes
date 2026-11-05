@@ -48,6 +48,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'adres_delen',
         'struikrover',
         'stekchallenge',
+        'acquisition_landing_path',
+        'acquisition_referrer_host',
+        'acquisition_utm_source',
+        'acquisition_utm_medium',
+        'acquisition_utm_campaign',
+        'acquisition_utm_content',
+        'acquisition_found_via',
+        'acquisition_found_via_other',
+        'conversion_flow_id',
+        'conversion_flow_expires_at',
     ];
 
     protected $hidden = [
@@ -97,6 +107,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'struikrover' => 'boolean',
             'stekchallenge' => 'boolean',
             'last_seen_at' => 'datetime',
+            'conversion_flow_expires_at' => 'datetime',
             'lat' => 'float',
             'lon' => 'float',
         ];

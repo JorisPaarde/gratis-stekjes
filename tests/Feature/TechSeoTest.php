@@ -128,13 +128,21 @@ test('home schema heeft Organization en areaServed NL+BE', function () {
         ->and($html)->toContain('"logo":"https://gratisplanten.nl/assets/icons/icon-512.png"');
 });
 
-test('publieke pagina’s zetten geen Set-Cookie; account-inloggen wel', function () {
+test('publieke pagina’s zetten geen sessiecookie; account-inloggen wel', function () {
     config(['site.noindex' => false]);
+
+    $allowedPublic = [
+        (string) config('conversion.flow_cookie', 'gp_flow'), // functionele flow-cookie (0.75.0)
+    ];
 
     foreach (['/', '/aanbod', '/gratis-planten/amsterdam'] as $path) {
         $response = $this->get($path)->assertOk();
-        $cookies = collect($response->headers->getCookies())->map->getName()->all();
-        expect($cookies)->toBeEmpty("Verwacht geen cookies op {$path}, kreeg: ".implode(',', $cookies));
+        $cookies = collect($response->headers->getCookies())
+            ->map->getName()
+            ->reject(fn (string $name) => in_array($name, $allowedPublic, true))
+            ->values()
+            ->all();
+        expect($cookies)->toBeEmpty("Verwacht geen sessie-/trackingcookies op {$path}, kreeg: ".implode(',', $cookies));
     }
 
     $login = $this->get(route('account.inloggen'))->assertOk();

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\ConversionEvent;
 use App\Models\User;
 use App\Notifications\VerifyEmailDutch;
+use App\Services\ConversionTracker;
 use App\Support\MailThrottle;
 use App\Support\SafeMail;
 use Illuminate\Auth\Events\Verified;
@@ -41,9 +43,20 @@ class VerifyEmailController extends Controller
                 ->withErrors(['email' => 'Deze bevestigingslink werkt niet (meer).']);
         }
 
-        if (! $user->hasVerifiedEmail()) {
+        $wasUnverified = ! $user->hasVerifiedEmail();
+        if ($wasUnverified) {
             $user->markEmailAsVerified();
             event(new Verified($user));
+            try {
+                app(ConversionTracker::class)->recordForUser(
+                    ConversionEvent::TYPE_EMAIL_VERIFIED,
+                    $user->fresh(),
+                    $request,
+                    ['path' => '/account/bevestigen']
+                );
+            } catch (\Throwable) {
+                // Meting mag bevestigen nooit blokkeren.
+            }
         }
 
         Auth::login($user, false);

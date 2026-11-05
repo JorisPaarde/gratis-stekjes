@@ -57,7 +57,8 @@ test('/aanbieden zonder locatie: eerst profiel, daarna terug naar het formulier'
 
 test('niet ingelogd: /aanbieden vraagt eerst om in te loggen', function () {
     $this->get(route('aanbieden'))->assertRedirect();
-    $this->get('/')->assertSee('class="nav-cta header-cta" href="'.route('account.registreren').'"', false);
+    $this->get('/')->assertSee('/ga/word-lid', false)
+        ->assertSee('utm_content=header', false);
 });
 
 test('beheer toont geen «Bied iets aan» en geen volgende-stap-balk', function () {

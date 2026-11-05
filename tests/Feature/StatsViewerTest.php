@@ -46,6 +46,7 @@ test('stats_viewer wordt geweerd van overzicht, gebruikers, feedback en stijlgid
         route('beheer.index'),
         route('beheer.gebruikers'),
         route('beheer.feedback'),
+        route('beheer.posts.index'),
         route('stijlgids'),
     ] as $url) {
         $this->actingAs($viewer)

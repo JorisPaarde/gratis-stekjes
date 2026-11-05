@@ -17,7 +17,7 @@
     </ul>
   @endif
 
-  <form class="form" method="post" action="{{ route('account.registreren') }}" novalidate>
+  <form class="form" method="post" action="{{ route('account.registreren') }}" novalidate data-meet-form="register">
     @csrf
     @include('partials.honeypot')
 
@@ -50,9 +50,65 @@
       </label>
     @endforeach
 
+    {{-- Los blok voor 0.76.0: blijft staan als het formulier kaal wordt. --}}
+    <fieldset class="form-fieldset form-fieldset--meet" data-meet-found-via>
+      <legend>Hoe heb je ons gevonden? <span class="hint">(optioneel)</span></legend>
+      <label>
+        <select name="acquisition_found_via" data-found-via-select>
+          <option value="">— kies indien je wilt —</option>
+          @foreach(($foundViaOptions ?? []) as $value => $label)
+            <option value="{{ $value }}" @selected(old('acquisition_found_via') === $value)>{{ $label }}</option>
+          @endforeach
+        </select>
+      </label>
+      <label data-found-via-other @if(old('acquisition_found_via') !== 'anders') hidden @endif>
+        Anders, namelijk
+        <input type="text" name="acquisition_found_via_other" maxlength="120" value="{{ old('acquisition_found_via_other') }}" autocomplete="off">
+      </label>
+    </fieldset>
+
     <button class="btn" type="submit">Account maken</button>
   </form>
 
   <p class="muted">Al een account? <a href="{{ route('account.inloggen') }}">Inloggen</a></p>
 </section>
 @endsection
+
+@push('scripts')
+<script>
+(function () {
+  var form = document.querySelector('[data-meet-form="register"]');
+  if (!form || !navigator.sendBeacon) return;
+  var started = false;
+  var endpoint = @json(route('meet.event'));
+  var path = '/account/registreren';
+  function beacon(type, extra) {
+    try {
+      var body = new URLSearchParams();
+      body.set('type', type);
+      body.set('path', path);
+      if (extra) {
+        Object.keys(extra).forEach(function (k) { body.set(k, extra[k]); });
+      }
+      navigator.sendBeacon(endpoint, body);
+    } catch (e) {}
+  }
+  function onStart() {
+    if (started) return;
+    started = true;
+    beacon('form_start');
+  }
+  form.addEventListener('focusin', onStart, { once: true });
+  form.addEventListener('input', onStart, { once: true });
+
+  var select = form.querySelector('[data-found-via-select]');
+  var other = form.querySelector('[data-found-via-other]');
+  if (select && other) {
+    select.addEventListener('change', function () {
+      var show = select.value === 'anders';
+      other.hidden = !show;
+    });
+  }
+})();
+</script>
+@endpush

@@ -41,7 +41,7 @@
     <p class="hero-plantzoeker-link"><a href="{{ route('vermeerderen') }}">Zoek je hoe je een plant vermeerdert?</a></p>
     <p class="home-hero-account">
       Zelf iets weggeven?
-      <a class="btn btn-on-dark" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="18" /> Maak gratis een account</a>
+      <a class="btn btn-on-dark" href="{{ route('ga.word-lid', ['from' => '/', 'utm_content' => 'home-hero']) }}"><x-icon name="plus" :size="18" /> Maak gratis een account</a>
     </p>
   </div>
 </section>
@@ -155,7 +155,7 @@
       <h2 id="doe-mee-titel">Doe mee, het is gratis</h2>
       <p>Met één account kun je iets aanbieden én iets ophalen. Of help op een andere manier: een poster, een bericht of doorvertellen helpt al.</p>
       <p class="home-actions">
-        <a class="btn" href="{{ route('account.registreren') }}"><x-icon name="plus" :size="18" /> Maak gratis een account</a>
+        <a class="btn" href="{{ route('ga.word-lid', ['from' => '/', 'utm_content' => 'home-doe-mee']) }}"><x-icon name="plus" :size="18" /> Maak gratis een account</a>
         <a class="btn btn-on-dark" href="{{ route('help-mee') }}"><x-icon name="delen" :size="18" /> Help mee</a>
       </p>
     </div>

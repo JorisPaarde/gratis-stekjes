@@ -30,6 +30,8 @@
     <li><strong>Feedback:</strong> optionele tekst die je via de feedbackknop stuurt (versleuteld), plus welke pagina je bekeek. Je kunt de feedbackknop ook gebruiken om je aan te melden als verbinder, via de pagina Help mee.</li>
     <li><strong>Organisatie- of deelplek-aanmelding:</strong> naam, type, plaats, beschrijving, contact-e-mail (versleuteld, niet publiek) en tijdstip van privacy-akkoord. Pas na goedkeuring door de beheerder verschijnt de plek op de deelplekkenpagina en de stadspagina’s.</li>
     <li><strong>Technisch:</strong> sessie (login/“onthoud mij”), beveiliging van formulieren, korte limieten tegen misbruik (die tijdelijk een IP of e-mail kunnen bevatten), en tijdelijke opslag van zoeklocaties (zoekterm, label, afgeronde coördinaten, tijdstip). Serverlogs zonder herleidbare e-mail/IP. Geen trackingcookies, geen analytiek van derden, geen advertenties.</li>
+    <li><strong>Conversiemeting (eigen site):</strong> anonieme gebeurtenissen zoals een klik op «Word lid», openen van de registratiepagina, starten/versturen van het formulier, validatiefouten (alleen veldnaam + foutcode, nooit je invoer), account aangemaakt, e-mail bevestigd en eerste aanbod. Per gebeurtenis: tijdstip, genormaliseerd pad, referrer-domein (alleen de host), UTM-velden, grof apparaattype (mobiel/tablet/desktop) en een tijdelijk flow-id. Geen IP-adres en geen volledige user-agent in die meetgegevens. Unieke bezoekers schat ik met een dagelijks wisselende hash (alleen de hash wordt bewaard).</li>
+    <li><strong>Herkomst bij je account:</strong> bij registratie bewaar ik optioneel hoe je de site vond (keuze + eventueel korte vrije tekst) en de UTM/referrer van je eerste landing. Die gegevens horen bij je account, gaan mee in je gegevensdownload en verdwijnen bij accountverwijdering.</li>
   </ul>
 
   <h2>Wat staat er publiek</h2>
@@ -79,6 +81,8 @@
     <li><strong>Aanbod:</strong> standaard zichtbaar tot {{ (int) config('stekjes.aanbod_ttl_days', 60) }} dagen (verlengbaar via herinneringsmail); verlopen aanbod verdwijnt uit zoeken/kaart. Foto’s bewaar ik zolang het aanbod (of jouw account) bestaat; bij wissen verdwijnen de bestanden mee.</li>
     <li><strong>Zoeklocaties:</strong> max. {{ (int) config('stekjes.geocode_cache_retention_days', 90) }} dagen; oudere gegevens ruim ik automatisch op.</li>
     <li><strong>Misbruiklimieten:</strong> korte bewaartermijn (uren tot dagen), geen aparte “IP-database”.</li>
+    <li><strong>Conversie-events (ruw):</strong> {{ (int) config('conversion.raw_retention_days', 30) }} dagen; daarna alleen dagtotalen zonder persoonsgegevens.</li>
+    <li><strong>Flow-id:</strong> maximaal {{ (int) config('conversion.flow_ttl_days', 7) }} dagen (functionele cookie + tijdelijk veld bij een nieuw account).</li>
     <li><strong>Sessies:</strong> standaard {{ (int) config('session.lifetime', 120) }} minuten; “onthoud mij” houdt je langer ingelogd.</li>
     <li><strong>Inactieve accounts:</strong> na {{ (int) config('stekjes.inactive_account_months', 12) }} maanden zonder activiteit. Automatisch opschonen volgt later, als dat nodig is.</li>
     <li><strong>Backups:</strong> worden versleuteld gemaakt en bewaard met een beperkte bewaartermijn; de sleutel staat niet in de openbare broncode.</li>
@@ -88,8 +92,12 @@
   <ul class="list-plain">
     <li><strong>Sessiecookie:</strong> houdt je ingelogd tijdens je bezoek (en langer bij “onthoud mij”).</li>
     <li><strong>Beveiligingscookie:</strong> beschermt formulieren tegen vervalste verzoeken.</li>
-    <li>Geen trackingcookies. Geen externe formulierdienst. Geen reclame of advertentienetwerken.</li>
+    <li><strong>Flow-cookie ({{ config('conversion.flow_cookie', 'gp_flow') }}):</strong> koppelt anonieme stappen in de aanmeldtrechter maximaal {{ (int) config('conversion.flow_ttl_days', 7) }} dagen. Geen naam, e-mail of IP erin. Geen cookiebanner nodig: dit is functioneel, geen tracking door derden.</li>
+    <li>Geen trackingcookies. Geen externe analysetool. Geen reclame of advertentienetwerken.</li>
   </ul>
+
+  <h2>Doel van de conversiemeting</h2>
+  <p>Ik meet waar bezoekers stoppen tussen de site en een eerste aanbod, zodat ik het aanmelden kan verbeteren. Grondslag: gerechtvaardigd belang bij beperkte, privacyvriendelijke meting en misbruikpreventie. Dit is geen juridisch advies.</p>
 
   <h2>Mails en hosting</h2>
   <ul class="list-plain">
