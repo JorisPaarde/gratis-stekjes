@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.71.1] - 2026-11-05
+
+### Changed
+
+- Rijkere organisatiepagina voor Plantenasiel Haarlem op `/organisaties/plantenasiel-haarlem`: eigen verhaal, openingstijden, adres, bereikbaarheid, adoptie met vrijwillige bijdrage of verzorgingsmaterialen, links naar site en socials, en verwijzing naar Gratis planten voor planten weggeven.
+- Beheerbare intro-, praktijk- en ruiltekst voor deze organisatie; idempotente dataseed zonder initiatief-slug, zodat de bestaande URL behouden blijft. Geen foto vanwege ontbrekende gebruikstoestemming.
+
 ## [Unreleased]
 
 ### Added

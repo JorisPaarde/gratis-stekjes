@@ -200,3 +200,20 @@ test('org zonder initiatief-slug blijft op /organisaties/{slug}', function () {
     $xml = $this->get(route('sitemap'))->assertOk()->getContent();
     expect($xml)->toContain('/organisaties/velt');
 });
+
+test('Plantenasiel Haarlem heeft een rijke pagina zonder gratis ophalen bij het asiel', function () {
+    $this->get(route('organisaties.show', ['slug' => 'plantenasiel-haarlem']))
+        ->assertOk()
+        ->assertSee('Een tweede thuis voor kamerplanten', false)
+        ->assertSee('Jan Sluyterslaan 11, 2033 TM Haarlem', false)
+        ->assertSee('Dinsdagavond van 19.00 tot 21.00 uur', false)
+        ->assertSee('vrijwillige bijdrage', false)
+        ->assertSee('https://www.facebook.com/plantenasielhaarlem/', false)
+        ->assertSee('https://www.instagram.com/plantenasielhaarlem/', false)
+        ->assertSee(route('aanbieden'), false)
+        ->assertDontSee('planten brengen en ophalen', false)
+        ->assertDontSee('gratis ophalen', false)
+        ->assertDontSee('gratis planten ophalen', false)
+        ->assertDontSee('Joris', false)
+        ->assertDontSee('JP Web', false);
+});

@@ -168,9 +168,20 @@
       "plaats": "Haarlem",
       "website": "https://plantenasielhaarlem.nl/",
       "bron_url": "https://plantenasielhaarlem.nl/contact/",
-      "kort": "Plantenasiel in wijkcentrum Alleman (Jan Sluijterslaan 11). Open onder andere op dinsdagavond volgens hun contactsite; planten brengen en ophalen.",
+      "kort": "Plantenasiel voor kamerplanten in wijkcentrum Alleman. Open op dinsdagavond van 19.00 tot 21.00 uur. Adoptie voor een vrijwillige bijdrage; een plant of verzorgingsmaterialen zijn ook welkom als bijdrage.",
       "deelplek_slugs": [
         "haarlem-plantenasiel"
+      ],
+      "meta_description": "Plantenasiel Haarlem vangt kamerplanten op en biedt ze aan voor adoptie. Dinsdagavond open in wijkcentrum Alleman; vrijwillige bijdrage in geld, planten of verzorgingsmaterialen.",
+      "links": [
+        {
+          "label": "Facebook",
+          "url": "https://www.facebook.com/plantenasielhaarlem/"
+        },
+        {
+          "label": "Instagram",
+          "url": "https://www.instagram.com/plantenasielhaarlem/"
+        }
       ]
     },
     {
