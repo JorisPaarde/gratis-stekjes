@@ -17,6 +17,8 @@ class OrganisatieInitiatief extends Model
         'pagina_titel',
         'intro_titel',
         'intro_tekst',
+        'praktisch_tekst',
+        'ruilen_tekst',
         'korte_naam',
         'aanmeld_param',
         'aanmeld_label',
@@ -50,10 +52,28 @@ class OrganisatieInitiatief extends Model
         return $query->whereNotNull('initiatief_slug')->where('initiatief_slug', '!=', '');
     }
 
+    /** @return list<string> */
+    public function praktischAlineas(): array
+    {
+        return $this->tekstAlineas($this->praktisch_tekst);
+    }
+
+    /** @return list<string> */
+    public function ruilenAlineas(): array
+    {
+        return $this->tekstAlineas($this->ruilen_tekst);
+    }
+
     /** Intro als lijst van alinea’s (lege regels scheiden). */
     public function introAlineas(): array
     {
-        $tekst = trim((string) $this->intro_tekst);
+        return $this->tekstAlineas($this->intro_tekst);
+    }
+
+    /** @return list<string> */
+    private function tekstAlineas(?string $waarde): array
+    {
+        $tekst = trim((string) $waarde);
         if ($tekst === '') {
             return [];
         }

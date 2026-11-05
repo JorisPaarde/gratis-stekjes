@@ -58,6 +58,17 @@
     </fieldset>
 
     <fieldset>
+      <legend>Praktisch en ruilen (Plantenasiel)</legend>
+      <label>Praktische informatie
+        <textarea name="praktisch_tekst" rows="6" maxlength="10000">{{ old('praktisch_tekst', $init->praktisch_tekst) }}</textarea>
+      </label>
+      <label>Adopteren, ruilen en materialen
+        <textarea name="ruilen_tekst" rows="6" maxlength="10000">{{ old('ruilen_tekst', $init->ruilen_tekst) }}</textarea>
+      </label>
+      <p class="hint">Gewone tekst; een lege regel tussen alinea’s. Alleen zichtbaar op de pagina van Plantenasiel Haarlem.</p>
+    </fieldset>
+
+    <fieldset>
       <legend>Links</legend>
       <label>Eigen site / agenda — URL
         <input type="url" name="site_url" maxlength="500" value="{{ old('site_url', $init->site_url) }}" placeholder="https://…">
