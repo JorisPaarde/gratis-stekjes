@@ -18,6 +18,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 ### Fixed
 
 - «Doe mee»-badge op /initiatieven vult niet meer de hele breedte van het kaartje; scroll-margin-top op de ankers.
+- /struikroven: lijst «Komende Struikroven-acties» springt nu in zoals «Voor Struikrovers», zonder grote witruimte tussen de acties.
 
 ## [0.70.1] - 2026-11-05
 
