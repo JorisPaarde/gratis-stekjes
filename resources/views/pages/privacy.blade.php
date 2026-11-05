@@ -22,7 +22,7 @@
 
   <h2>Welke gegevens ik verwerk</h2>
   <ul class="list-plain">
-    <li><strong>Account:</strong> e-mailadres, wachtwoord (nooit leesbaar opgeslagen), voornaam of bijnaam, optioneel telefoonnummer (versleuteld), land (NL/BE), locatie bij benadering (zoals postcode of plaats, plus afgeronde coördinaten: een kaartpunt dat ik afrond, zodat het niet je precieze adres aanwijst). Bij een e-mailwijziging bewaar ik tijdelijk het nieuwe adres tot je het bevestigt.</li>
+    <li><strong>Account:</strong> e-mailadres, wachtwoord (nooit leesbaar opgeslagen), voornaam of bijnaam (die vul je na aanmelden in op je profiel; tot die tijd zien anderen je als «Lid»), optioneel telefoonnummer (versleuteld), land (NL/BE), postcode bij aanmelden om aanbod in de buurt te tonen (alleen een afgeronde plek, nooit je straatadres), optioneel het antwoord op «Hoe ken je deze site?». Bij een e-mailwijziging bewaar ik tijdelijk het nieuwe adres tot je het bevestigt.</li>
     <li><strong>Aanbod:</strong> type (uitdelen of ophalen), vrije tekst (plantensoort), zichtbaarheid, verloopdatum en een tijdelijke verlenglink in herinneringsmails. Optioneel tot drie foto’s die jij uploadt: ik controleer of het echt een afbeelding is (JPEG/PNG/WebP), verklein die opnieuw zonder locatiegegevens in het bestand, bewaar ze met willekeurige bestandsnamen, en toon ze bij je aanbod. Foto’s zijn openbaar zolang het aanbod zichtbaar is.</li>
     <li><strong>Ervaringen:</strong> korte tekst (maximaal ongeveer 500 tekens), optionele foto (zelfde veilige verwerking als aanbodfoto’s: JPEG/PNG/WebP, max. 8&nbsp;MB, opnieuw zonder locatiegegevens), optionele koppeling aan een soort of jouw aanbod, en een plaatsnaam op gemeenteniveau (nooit een straatadres). Nieuwe ervaringen wachten op mijn goedkeuring vóór ze publiek zichtbaar zijn.</li>
     <li><strong>Berichten:</strong> inhoud van gesprekken (versleuteld opgeslagen), of je verder contact wilt delen (ja/nee), of jullie een overdracht als afgerond markeren, leestijd, blokkeerregels, en meldingen met reden (versleuteld) voor de beheerder.</li>
@@ -30,6 +30,8 @@
     <li><strong>Feedback:</strong> optionele tekst die je via de feedbackknop stuurt (versleuteld), plus welke pagina je bekeek. Je kunt de feedbackknop ook gebruiken om je aan te melden als verbinder, via de pagina Help mee.</li>
     <li><strong>Organisatie- of deelplek-aanmelding:</strong> naam, type, plaats, beschrijving, contact-e-mail (versleuteld, niet publiek) en tijdstip van privacy-akkoord. Pas na goedkeuring door de beheerder verschijnt de plek op de deelplekkenpagina en de stadspagina’s.</li>
     <li><strong>Technisch:</strong> sessie (login/“onthoud mij”), beveiliging van formulieren, korte limieten tegen misbruik (die tijdelijk een IP of e-mail kunnen bevatten), en tijdelijke opslag van zoeklocaties (zoekterm, label, afgeronde coördinaten, tijdstip). Serverlogs zonder herleidbare e-mail/IP. Geen trackingcookies, geen analytiek van derden, geen advertenties.</li>
+    <li><strong>Conversiemeting (eigen site):</strong> anonieme gebeurtenissen zoals een klik op «Word lid», openen van de registratiepagina, starten/versturen van het formulier, validatiefouten (alleen veldnaam + foutcode, nooit je invoer), account aangemaakt, e-mail bevestigd en eerste aanbod. Per gebeurtenis: tijdstip, genormaliseerd pad, referrer-domein (alleen de host), UTM-velden, grof apparaattype (mobiel/tablet/desktop) en een tijdelijk flow-id. Geen IP-adres en geen volledige user-agent in die meetgegevens. Unieke bezoekers schat ik met een dagelijks wisselende hash (alleen de hash wordt bewaard).</li>
+    <li><strong>Herkomst bij je account:</strong> bij registratie bewaar ik optioneel hoe je de site vond (keuze + eventueel korte vrije tekst) en de UTM/referrer van je eerste landing. Die gegevens horen bij je account, gaan mee in je gegevensdownload en verdwijnen bij accountverwijdering.</li>
   </ul>
 
   <h2>Wat staat er publiek</h2>
@@ -79,6 +81,8 @@
     <li><strong>Aanbod:</strong> standaard zichtbaar tot {{ (int) config('stekjes.aanbod_ttl_days', 60) }} dagen (verlengbaar via herinneringsmail); verlopen aanbod verdwijnt uit zoeken/kaart. Foto’s bewaar ik zolang het aanbod (of jouw account) bestaat; bij wissen verdwijnen de bestanden mee.</li>
     <li><strong>Zoeklocaties:</strong> max. {{ (int) config('stekjes.geocode_cache_retention_days', 90) }} dagen; oudere gegevens ruim ik automatisch op.</li>
     <li><strong>Misbruiklimieten:</strong> korte bewaartermijn (uren tot dagen), geen aparte “IP-database”.</li>
+    <li><strong>Conversie-events (ruw):</strong> {{ (int) config('conversion.raw_retention_days', 30) }} dagen; daarna alleen dagtotalen zonder persoonsgegevens.</li>
+    <li><strong>Flow-id:</strong> maximaal {{ (int) config('conversion.flow_ttl_days', 7) }} dagen (functionele cookie + tijdelijk veld bij een nieuw account).</li>
     <li><strong>Sessies:</strong> standaard {{ (int) config('session.lifetime', 120) }} minuten; “onthoud mij” houdt je langer ingelogd.</li>
     <li><strong>Inactieve accounts:</strong> na {{ (int) config('stekjes.inactive_account_months', 12) }} maanden zonder activiteit. Automatisch opschonen volgt later, als dat nodig is.</li>
     <li><strong>Backups:</strong> worden versleuteld gemaakt en bewaard met een beperkte bewaartermijn; de sleutel staat niet in de openbare broncode.</li>
@@ -88,12 +92,16 @@
   <ul class="list-plain">
     <li><strong>Sessiecookie:</strong> houdt je ingelogd tijdens je bezoek (en langer bij “onthoud mij”).</li>
     <li><strong>Beveiligingscookie:</strong> beschermt formulieren tegen vervalste verzoeken.</li>
-    <li>Geen trackingcookies. Geen externe formulierdienst. Geen reclame of advertentienetwerken.</li>
+    <li><strong>Flow-cookie ({{ config('conversion.flow_cookie', 'gp_flow') }}):</strong> koppelt anonieme stappen in de aanmeldtrechter maximaal {{ (int) config('conversion.flow_ttl_days', 7) }} dagen. Geen naam, e-mail of IP erin. Geen cookiebanner nodig: dit is functioneel, geen tracking door derden.</li>
+    <li>Geen trackingcookies. Geen externe analysetool. Geen reclame of advertentienetwerken.</li>
   </ul>
+
+  <h2>Doel van de conversiemeting</h2>
+  <p>Ik meet waar bezoekers stoppen tussen de site en een eerste aanbod, zodat ik het aanmelden kan verbeteren. Grondslag: gerechtvaardigd belang bij beperkte, privacyvriendelijke meting en misbruikpreventie. Dit is geen juridisch advies.</p>
 
   <h2>Mails en hosting</h2>
   <ul class="list-plain">
-    <li>Bevestigingsmails, wachtwoordreset, e-mailwijziging, “je hebt een nieuw bericht” (met de voornaam van de afzender, zonder berichtinhoud of andermans adres; uit te zetten op je profiel of via de link in de mail), aanbod-herinneringen en, alleen als ik dat aanzet, een felicitatiemail bij je eerste stekje gaan via mijn eigen mailbox bij de hoster.</li>
+    <li>Bevestigingsmails (en, alleen als ik dat aanzet, één herinnering na een dag als je e-mailadres nog niet bevestigd is), wachtwoordreset, e-mailwijziging, “je hebt een nieuw bericht” (met de voornaam van de afzender, zonder berichtinhoud of andermans adres; uit te zetten op je profiel of via de link in de mail), aanbod-herinneringen en, alleen als ik dat aanzet, een felicitatiemail bij je eerste stekje gaan via mijn eigen mailbox bij de hoster.</li>
     <li>Organisatie-aanmelders krijgen een bevestiging; ik krijg een melding. Geen mail naar derden buiten de aanmelder.</li>
     <li>Verbinders die zich aanmelden via de pagina Help mee: dat gaat via contact (jij mailt zelf) of via feedback (alleen opgeslagen, zonder automatische bevestigingsmail).</li>
     <li>Gegevens staan op hosting in de EU die ik beheer. Mail gaat via diezelfde hoster.</li>

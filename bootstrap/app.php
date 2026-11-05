@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AdminAuth;
 use App\Http\Middleware\CanonicalHostRedirect;
+use App\Http\Middleware\CaptureConversionContext;
 use App\Http\Middleware\NoIndexHeader;
 use App\Http\Middleware\RecordPageView;
 use App\Http\Middleware\SecurityHeaders;
@@ -38,6 +39,7 @@ return Application::configure(basePath: dirname(__DIR__))
             ShareErrorsFromSession::class => ShareErrorsFromSessionWhenPresent::class,
             ValidateCsrfToken::class => VerifyCsrfTokenWhenSession::class,
         ]);
+        $middleware->appendToGroup('web', CaptureConversionContext::class);
         $middleware->appendToGroup('web', RecordPageView::class);
         $middleware->appendToGroup('web', UpdateLastSeen::class);
         $middleware->trustProxies(at: '*');
@@ -51,6 +53,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'deploy/import',
             'deploy/import/init',
             'deploy/import/chunk',
+            'meet/event',
         ]);
         $middleware->alias([
             'admin' => AdminAuth::class,

@@ -80,18 +80,19 @@ test('poster en flyer QR bron gebruiken initiatief-slug', function () {
         ->and($a5)->toContain('poster--a5');
 });
 
-test('generiek aanmeldvinkje via query-param', function () {
+test('initiatiefvinkjes staan op het profiel, niet op registreren', function () {
     $this->get(route('account.registreren', ['stekchallenge' => 1]))
         ->assertOk()
-        ->assertSee('Ik doe mee aan de STEKchallenge', false)
-        ->assertSee('name="stekchallenge" value="1"', false)
-        ->assertSee('checked', false);
+        ->assertDontSee('name="stekchallenge"', false);
 
-    // Bestaande Struikrover-param blijft werken.
     $this->get(route('account.registreren', ['struikrover' => 1]))
         ->assertOk()
-        ->assertSee('Ik ben Struikrover', false)
-        ->assertSee('name="struikrover" value="1"', false);
+        ->assertDontSee('name="struikrover"', false);
+
+    $user = \App\Models\User::factory()->create(['name' => 'Sam']);
+    $html = $this->actingAs($user)->get(route('account.profiel'))->assertOk()->getContent();
+    expect($html)->toContain('name="stekchallenge"')
+        ->and($html)->toContain('name="struikrover"');
 });
 
 test('struikroven toont de secties uit de JSON en geen beheerscherm meer', function () {

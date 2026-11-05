@@ -3,7 +3,39 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.76.0] - 2026-11-05
+
+### Added
+
+- Duidelijke knop «Word lid» bovenaan én na de uitleg op `/`, `/aanbod` en `/hoe-werkt-het` (ingelogd: «Bied iets aan»), via `/ga/word-lid` met `utm_content` per plek.
+- Korter aanmeldformulier: e-mail, wachtwoord (toon/verberg, geen herhaling), postcode (NL/BE) plus de twee verplichte vinkjes. Optioneel «Hoe heb je ons gevonden?» (uit 0.75.0). Voornaam/bijnaam volgt op het profiel; tijdelijke weergavenaam «Lid».
+- Bevestigingslink is eenmalig en tijdgebonden: na gebruik geen auto-login meer; verse browser/sessie logt wel direct in. Vriendelijkere 419-pagina voor verlopen formulieren (o.a. Facebook/Instagram in-app).
+- Optionele herinneringsmail na 24 uur voor onbevestigde accounts (config-vlag default uit; alleen accounts ná `VERIFICATION_REMINDER_ENABLED_AT`; allowlist `REMINDER_TEST_RECIPIENTS` voor staging). Via bestaande cron, SafeMail en mail_log — nooit Resend.
+- Initiatiefvinkjes (Struikrover, STEKchallenge) verplaatst naar het profiel.
+
+### Changed
+
+- Privacytekst: postcode bij aanmelden, tijdelijke naam «Lid» en de 24-uursherinnering (achter vlag) genoemd.
+
+## [0.75.0] - 2026-11-05
+
+### Added
+
+- Privacyvriendelijke conversiemeting (release A): events `cta_click`, `register_view`, `form_start`, `validation_error`, `form_submit`, `account_created`, `email_verified`, `first_offer` in `conversion_events`, dagtotalen in `conversion_daily`.
+- CTA-route `/ga/word-lid` en beacon `/meet/event` (CSRF-vrij, rate-limit); functionele flow-cookie (7 dagen); dagelijkse visitor-hash zonder IP-opslag.
+- Bron bij account: first-touch UTM/referrer + optioneel «Hoe heb je ons gevonden?» op registreren.
+- Beheer postlogboek (`/beheer/posts`) met UTM-linkgenerator en conversie per post/groep.
+- Dashboardtrechter per week op `/beheer/statistieken` (ook voor stats-lezer), validatiefouten, apparaat/bron; onder 30 formulierstarts «te weinig data» i.p.v. percentages.
+- Cron-job `conversion_aggregate` (ook `gp:conversion-aggregate`): aggregeert en wist ruwe events na 30 dagen.
+
+### Changed
+
+- Label «bezoekers» bij pageview-tellingen heet nu «pageviews».
+- `/privacy` beschrijft conversiemeting, flow-cookie, retentie en dat er geen cookiebanner nodig is.
+- Header-/footer-/home-CTA’s lopen via `/ga/word-lid` (tekst blijft «Doe mee» / «Maak gratis een account» tot 0.76.0).
+
 ## [0.74.0] - 2026-11-05
+
 
 ### Changed
 

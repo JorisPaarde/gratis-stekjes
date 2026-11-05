@@ -110,6 +110,16 @@ final class AvgService
                 'created_at' => optional($user->created_at)?->toIso8601String(),
                 'active' => (bool) $user->active,
                 'berichtmail' => $user->berichtmail !== false,
+                'acquisition' => [
+                    'landing_path' => $user->acquisition_landing_path ?? null,
+                    'referrer_host' => $user->acquisition_referrer_host ?? null,
+                    'utm_source' => $user->acquisition_utm_source ?? null,
+                    'utm_medium' => $user->acquisition_utm_medium ?? null,
+                    'utm_campaign' => $user->acquisition_utm_campaign ?? null,
+                    'utm_content' => $user->acquisition_utm_content ?? null,
+                    'found_via' => $user->acquisition_found_via ?? null,
+                    'found_via_other' => $user->acquisition_found_via_other ?? null,
+                ],
             ],
             'aanbod' => $aanbod,
             'verenigingen' => VerenigingService::beschikbaar()

@@ -3,9 +3,8 @@
 declare(strict_types=1);
 
 use App\Models\User;
-use App\Notifications\VerifyEmailDutch;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Http;
 
 /** Testwachtwoord opgebouwd (geen hardcoded “secret”-literal voor scanners). */
 function stekTestPassword(): string
@@ -63,33 +62,46 @@ test('/stekchallenge geeft 200 met hero, CTAs, stektips en workshop', function (
         ->and($html)->toContain('id="stekchallenge-deeltekst"');
 });
 
-test('aanmeldparameter zet vinkje Ik doe mee aan de STEKchallenge', function () {
+test('registreren toont geen STEKchallenge-vinkje meer; die staat op het profiel', function () {
     $this->get(route('account.registreren', ['stekchallenge' => 1]))
         ->assertOk()
+        ->assertDontSee('name="stekchallenge"', false);
+
+    $user = User::factory()->create(['stekchallenge' => false, 'name' => 'Sam']);
+    $this->actingAs($user)->get(route('account.profiel'))
+        ->assertOk()
         ->assertSee('Ik doe mee aan de STEKchallenge', false)
-        ->assertSee('name="stekchallenge" value="1"', false)
-        ->assertSee('checked', false);
+        ->assertSee('name="stekchallenge"', false);
 });
 
-test('registreren met stekchallenge-vinkje slaat true op', function () {
-    Notification::fake();
+test('profiel kan stekchallenge-vinkje aanzetten', function () {
+    Http::fake();
+    $user = User::factory()->create([
+        'stekchallenge' => false,
+        'name' => 'Sam',
+        'locatie_label' => '2011 Haarlem',
+        'lat' => 52.38,
+        'lon' => 4.64,
+        'postcode_gebied' => '2011',
+        'woonplaats' => 'Haarlem',
+        'country' => 'NL',
+    ]);
+    \App\Models\GeocodeCache::query()->updateOrCreate(
+        ['query_key' => \App\Support\Geo::normalizeQuery('nl:2011')],
+        ['lat' => 52.38, 'lon' => 4.64, 'label' => '2011 Haarlem', 'country' => 'NL', 'cached_at' => now()]
+    );
 
-    $this->post(route('account.registreren'), [
-        'website' => '',
-        'form_started' => time() - 10,
-        'voornaam' => 'Sam',
-        'email' => 'sam.stek@example.com',
-        'password' => stekTestPassword(),
-        'password_confirmation' => stekTestPassword(),
-        'gratis_akkoord' => '1',
-        'privacy' => '1',
-        'stekchallenge' => '1',
-    ])->assertRedirect(route('account.bevestiging-nodig'));
+    $this->actingAs($user)
+        ->post(route('account.profiel'), [
+            'voornaam' => 'Sam',
+            'country' => 'NL',
+            'locatie_modus' => 'postcode',
+            'locatie' => '2011',
+            'stekchallenge' => '1',
+        ])
+        ->assertRedirect(route('account.profiel'));
 
-    $user = User::query()->where('email', 'sam.stek@example.com')->first();
-    expect($user)->not->toBeNull()
-        ->and($user->stekchallenge)->toBeTrue();
-    Notification::assertSentTo($user, VerifyEmailDutch::class);
+    expect($user->fresh()->stekchallenge)->toBeTrue();
 });
 
 test('poster voor=stekchallenge geeft 200 met QR naar productie', function () {

@@ -34,8 +34,11 @@ use App\Http\Controllers\Beheer\ErvaringController as BeheerErvaringController;
 use App\Http\Controllers\Beheer\FeedbackController as BeheerFeedbackController;
 use App\Http\Controllers\Beheer\GebruikersController as BeheerGebruikersController;
 use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
+use App\Http\Controllers\Beheer\PostLogController as BeheerPostLogController;
 use App\Http\Controllers\Beheer\StatistiekenController as BeheerStatistiekenController;
 use App\Http\Controllers\BerichtmailController;
+use App\Http\Controllers\ConversionBeaconController;
+use App\Http\Controllers\GaWordLidController;
 use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\DeelplekkenController;
@@ -180,6 +183,13 @@ Route::post('/deploy/import', [DeployImportController::class, 'import'])
 Route::get('/account/aanbod-verlengen', AanbodVerlengenController::class)
     ->name('account.aanbod-verlengen');
 
+Route::get('/ga/word-lid', GaWordLidController::class)
+    ->middleware('throttle:60,1')
+    ->name('ga.word-lid');
+Route::post('/meet/event', ConversionBeaconController::class)
+    ->middleware('throttle:60,1')
+    ->name('meet.event');
+
 Route::middleware('guest')->group(function () {
     Route::get('/account/registreren', [RegisterController::class, 'create'])->name('account.registreren');
     Route::post('/account/registreren', [RegisterController::class, 'store']);
@@ -202,8 +212,10 @@ Route::get('/account/bevestiging-nodig', [VerifyEmailController::class, 'notice'
     ->name('account.bevestiging-nodig');
 Route::post('/account/bevestiging-opnieuw', [VerifyEmailController::class, 'resend'])
     ->name('account.bevestiging-opnieuw');
+// Geen 'signed'-middleware: die geeft kale 403. Controller checkt hasValidSignature()
+// en stuurt netjes door (belangrijk voor Facebook/Instagram in-app-browser).
 Route::get('/account/bevestigen/{id}/{hash}', [VerifyEmailController::class, 'verify'])
-    ->middleware(['signed', 'throttle:6,1'])
+    ->middleware(['throttle:6,1'])
     ->name('account.bevestigen');
 
 Route::get('/account/email-bevestigen/{id}/{hash}', [EmailChangeController::class, 'confirm'])
@@ -372,6 +384,23 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
         ->middleware('throttle:10,1')
         ->whereNumber('user')
         ->name('beheer.users.destroy');
+
+    Route::get('/posts', [BeheerPostLogController::class, 'index'])->name('beheer.posts.index');
+    Route::get('/posts/nieuw', [BeheerPostLogController::class, 'create'])->name('beheer.posts.create');
+    Route::post('/posts', [BeheerPostLogController::class, 'store'])
+        ->middleware('throttle:30,1')
+        ->name('beheer.posts.store');
+    Route::get('/posts/{post}/bewerken', [BeheerPostLogController::class, 'edit'])
+        ->whereNumber('post')
+        ->name('beheer.posts.edit');
+    Route::post('/posts/{post}', [BeheerPostLogController::class, 'update'])
+        ->middleware('throttle:30,1')
+        ->whereNumber('post')
+        ->name('beheer.posts.update');
+    Route::post('/posts/{post}/verwijderen', [BeheerPostLogController::class, 'destroy'])
+        ->middleware('throttle:30,1')
+        ->whereNumber('post')
+        ->name('beheer.posts.destroy');
 });
 
 // Mail bij nieuwe berichten uitzetten via ondertekende link (zonder inloggen).

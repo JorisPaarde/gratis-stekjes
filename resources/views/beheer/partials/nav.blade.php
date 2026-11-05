@@ -5,7 +5,9 @@
     'meldingen' => 0, 'feedback' => 0, 'ervaringen' => 0,
   ];
   $huidig = request()->route()?->getName() ?? '';
-  $isRoute = fn (string $r) => $huidig === $r || str_starts_with($huidig, $r.'.');
+  $isRoute = fn (string $r) => $huidig === $r
+    || str_starts_with($huidig, $r.'.')
+    || ($r === 'beheer.posts.index' && str_starts_with($huidig, 'beheer.posts.'));
 
   // Groepen: hoofdtab → onderdelen [route, label, teller]. Hoofdtab linkt naar het eerste onderdeel met werk.
   $groepen = [
@@ -21,6 +23,7 @@
     'inhoud' => ['Inhoud', [
       ['beheer.agenda', 'Agenda', 0],
       ['beheer.kaartmarkers', 'Kaartmarkers', 0],
+      ['beheer.posts.index', 'Postlogboek', 0],
     ]],
   ];
   $groepTab = function (string $key) use ($groepen, $isRoute): array {

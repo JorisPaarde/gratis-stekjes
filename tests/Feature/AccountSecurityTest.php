@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
+use App\Models\GeocodeCache;
 use App\Models\User;
 use App\Notifications\EmailChangeNoticeDutch;
 use App\Notifications\ResetPasswordDutch;
 use App\Notifications\VerifyEmailDutch;
 use App\Notifications\VerifyPendingEmailDutch;
+use App\Support\Geo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\RateLimiter;
@@ -45,7 +48,23 @@ function accountSecForm(array $extra = []): array
     return array_merge([
         'website' => '',
         'form_started' => time() - 10,
+        'country' => 'NL',
+        'postcode' => '2011 AB',
+        'gratis_akkoord' => '1',
+        'privacy' => '1',
     ], $extra);
+}
+
+function seedAccountSecRegGeo(): void
+{
+    GeocodeCache::query()->updateOrCreate(
+        ['query_key' => Geo::normalizeQuery('nl:2011')],
+        ['lat' => 52.38, 'lon' => 4.64, 'label' => '2011 Haarlem', 'country' => 'NL', 'cached_at' => now()]
+    );
+    GeocodeCache::query()->updateOrCreate(
+        ['query_key' => Geo::normalizeQuery('nl:2011 AB')],
+        ['lat' => 52.38, 'lon' => 4.64, 'label' => '2011 Haarlem', 'country' => 'NL', 'cached_at' => now()]
+    );
 }
 
 beforeEach(function () {
@@ -146,25 +165,19 @@ test('login is throttled per e-mail en IP met Nederlandse wachttijd', function (
 });
 
 test('registratie is throttled per IP', function () {
+    Http::fake();
+    seedAccountSecRegGeo();
     for ($i = 0; $i < 8; $i++) {
         $this->post(route('account.registreren'), accountSecForm([
-            'voornaam' => 'Reg'.$i,
             'email' => "reg{$i}@example.com",
             'password' => accountSecPassword(),
-            'password_confirmation' => accountSecPassword(),
-            'gratis_akkoord' => '1',
-            'privacy' => '1',
         ]));
     }
 
     $this->from(route('account.registreren'))
         ->post(route('account.registreren'), accountSecForm([
-            'voornaam' => 'Teveel',
             'email' => 'teveel@example.com',
             'password' => accountSecPassword(),
-            'password_confirmation' => accountSecPassword(),
-            'gratis_akkoord' => '1',
-            'privacy' => '1',
         ]))
         ->assertRedirect(route('account.registreren'))
         ->assertSessionHasErrors('email');
@@ -405,13 +418,14 @@ test('account verwijderen vereist wachtwoord', function () {
 test('validatiemeldingen zijn Nederlands', function () {
     $this->from(route('account.registreren'))
         ->post(route('account.registreren'), accountSecForm([
-            'voornaam' => '',
             'email' => 'geen-mail',
             'password' => accountSecShortPassword(),
-            'password_confirmation' => accountSecMismatchConfirmation(),
+            'postcode' => '',
+            'gratis_akkoord' => null,
+            'privacy' => null,
         ]))
         ->assertRedirect(route('account.registreren'))
-        ->assertSessionHasErrors(['voornaam', 'email', 'password', 'gratis_akkoord', 'privacy']);
+        ->assertSessionHasErrors(['email', 'password', 'postcode', 'gratis_akkoord', 'privacy']);
 
     $errors = session('errors');
     expect($errors->first('email'))->not->toContain('must be');

@@ -9,6 +9,10 @@
   <h1 class="page-title">Profiel</h1>
   <p class="section-intro">Anderen zien alleen je voornaam of bijnaam en je postcodegebied met plaats, zoals «1326 Almere». Je adres en telefoonnummer zien ze pas als jullie in een gesprek allebei “ja” zeggen.</p>
 
+  @if(! $user->heeftGekozenNaam())
+    <p class="flash flash-ok" role="status">Welkom! Kies hieronder een voornaam of bijnaam. Tot die tijd zien anderen je als «Lid». Daarna kun je iets aanbieden of een gesprek starten.</p>
+  @endif
+
   @if(session('status'))
     <p class="ok" role="status">{{ session('status') }}</p>
   @endif
@@ -103,6 +107,13 @@
       <input type="checkbox" name="berichtmail" value="1" @checked(old('berichtmail', $user->berichtmail !== false ? '1' : '0') === '1')>
       Stuur me een mail als iemand me een bericht stuurt
     </label>
+    @foreach($aanmeldVinkjes ?? [] as $vink)
+      <label class="checkbox">
+        <input type="hidden" name="{{ $vink['param'] }}" value="0">
+        <input type="checkbox" name="{{ $vink['param'] }}" value="1" @checked(old($vink['param'], $user->{$vink['param']} ? '1' : '0') === '1')>
+        <span>{{ $vink['label'] }}</span>
+      </label>
+    @endforeach
     <button class="btn" type="submit">Opslaan</button>
   </form>
 

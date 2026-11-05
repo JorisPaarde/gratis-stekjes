@@ -22,7 +22,7 @@ test('homepage is 200 en toont merk Gratis planten', function () {
     $response->assertSee('Zo werkt het', false);
     $response->assertSee('help-mee', false);
     $response->assertSee('Help mee', false);
-    $response->assertSee('Maak gratis een account', false);
+    $response->assertSee('Word lid', false);
     $response->assertSee(route('invasieve-soorten'), false);
     $response->assertDontSee('badge-soon', false);
     $response->assertSee('application/ld+json', false);
@@ -39,7 +39,8 @@ test('hero heeft een zoekveld dat naar /aanbod?q= gaat, met account als tweede a
         ->and($html)->toContain('name="q"')
         ->and($html)->toContain('Wat is er bij jou in de buurt?');
     preg_match('/<section class="home-hero".*?<\/section>/s', $html, $hero);
-    expect($hero[0])->toContain(route('account.registreren'));
+    expect($hero[0])->toContain('/ga/word-lid')
+        ->and($hero[0])->toContain('utm_content=home-hero');
 });
 
 test('homepage heeft foto’s met naamsvermelding voor CC BY-SA', function () {

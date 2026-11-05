@@ -7,8 +7,10 @@ namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
 use App\Models\Aanbod;
 use App\Models\AanbodFoto;
+use App\Models\ConversionEvent;
 use App\Rules\GeenInvasieveSoort;
 use App\Services\AanbodFotoService;
+use App\Services\ConversionTracker;
 use App\Services\InvasieveSoorten;
 use App\Services\MilestoneService;
 use App\Services\Plantensoorten;
@@ -30,6 +32,9 @@ class AanbodController extends Controller
         if ($user->isStatsViewer()) {
             return redirect()->route('account.index')
                 ->with('status', 'Dit account kan geen aanbod plaatsen.');
+        }
+        if (! $user->heeftGekozenNaam()) {
+            return $this->eerstNaam();
         }
         if (! $user->hasLocation()) {
             return $this->eerstLocatie();
@@ -53,6 +58,9 @@ class AanbodController extends Controller
             return redirect()->route('account.index')
                 ->with('status', 'Dit account kan geen aanbod plaatsen.');
         }
+        if (! $user->heeftGekozenNaam()) {
+            return $this->eerstNaam();
+        }
         if (! $user->hasLocation()) {
             return $this->eerstLocatie();
         }
@@ -66,6 +74,15 @@ class AanbodController extends Controller
             'terug' => 'aanbieden',
             ...$this->formData($invasieve),
         ]);
+    }
+
+    private function eerstNaam(): RedirectResponse
+    {
+        session()->put('url.intended', route('aanbieden'));
+
+        return redirect()
+            ->route('account.profiel')
+            ->with('status', 'Kies eerst een voornaam of bijnaam. Die zien anderen bij je aanbod.');
     }
 
     private function eerstLocatie(): RedirectResponse
@@ -102,6 +119,9 @@ class AanbodController extends Controller
         }
         // Pas na stats_viewer-check: foto-service vereist GD/Imagick.
         $fotos = app(AanbodFotoService::class);
+        if (! $user->heeftGekozenNaam()) {
+            return $this->eerstNaam();
+        }
         if (! $user->hasLocation()) {
             return redirect()->route('account.profiel');
         }
@@ -156,6 +176,23 @@ class AanbodController extends Controller
         }
 
         RateLimiter::hit($throttleKey, 3600);
+
+        try {
+            $isFirst = Aanbod::query()
+                ->where('user_id', $user->id)
+                ->where('id', '!=', $aanbod->id)
+                ->doesntExist();
+            if ($isFirst) {
+                app(ConversionTracker::class)->recordForUser(
+                    ConversionEvent::TYPE_FIRST_OFFER,
+                    $user,
+                    $request,
+                    ['path' => '/account/aanbod/nieuw']
+                );
+            }
+        } catch (\Throwable) {
+            // Meting mag aanbieden nooit blokkeren.
+        }
 
         $milestones->maybeSendEersteStekje($user, 'eerste_aanbod');
 

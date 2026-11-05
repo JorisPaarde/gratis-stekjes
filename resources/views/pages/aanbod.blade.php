@@ -34,6 +34,7 @@
       Zoek op postcode of plaats in Nederland of België, of alleen op plant. Je ziet aanbod van leden en vaste plekken zoals zadenbibliotheken en plantenasiels, het dichtstbij eerst. Straatadressen van leden staan niet op de site.
     @endif
   </p>
+  <p class="home-actions"><x-word-lid-cta content="aanbod-boven" /></p>
 
   <form class="zoekbalk" id="zoek-form" method="get" action="{{ route('aanbod') }}" role="search">
     <div class="zoekbalk-veld zoekbalk-veld--waar">
@@ -99,13 +100,8 @@
     </div>
   </div>
 
-  <p class="muted" style="margin-top:1rem">Kaart: © OpenStreetMap-bijdragers. Plaatsen zoek ik op via PDOK en OpenStreetMap; ze staan er bij benadering op.
-    @auth
-      · <a href="{{ route('account.aanbod') }}">Zelf iets aanbieden</a>
-    @else
-      · <a href="{{ route('account.registreren') }}">Maak een account</a> om iets aan te bieden
-    @endauth
-  </p>
+  <p class="muted" style="margin-top:1rem">Kaart: © OpenStreetMap-bijdragers. Plaatsen zoek ik op via PDOK en OpenStreetMap; ze staan er bij benadering op.</p>
+  <p class="home-actions" style="margin-top:1rem"><x-word-lid-cta content="aanbod-na-uitleg" /></p>
 </section>
 
 @if(!empty($nuTeStekken) && count($nuTeStekken['groepen']))
