@@ -187,3 +187,27 @@ test('welcome events staan niet in FUNNEL_TYPES', function () {
         ->and(ConversionEvent::FUNNEL_TYPES)->toContain(ConversionEvent::TYPE_FIRST_OFFER)
         ->and(ConversionEvent::FUNNEL_TYPES)->toContain(ConversionEvent::TYPE_EMAIL_VERIFIED);
 });
+
+test('bot-UA zet welcome_shown_at niet; menselijke UA wel', function () {
+    $user = User::factory()->unverified()->create(['email' => 'welkom-bot@example.com']);
+    $token = $user->rotateEmailVerificationToken();
+
+    $this->get(welkomVerifyUrl($user, $token))->assertRedirect(route('account.welkom'));
+    $this->assertAuthenticatedAs($user);
+    expect($user->fresh()->welcome_shown_at)->toBeNull();
+
+    $this->withHeaders(['User-Agent' => 'Googlebot/2.1 (+http://www.google.com/bot.html)'])
+        ->get(route('account.welkom'))
+        ->assertOk()
+        ->assertSee('Welkom bij Gratis planten', false);
+
+    expect($user->fresh()->welcome_shown_at)->toBeNull();
+    expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_WELCOME_VIEW)->count())->toBe(0);
+
+    $this->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; GratisPlantenTest/1.0)'])
+        ->get(route('account.welkom'))
+        ->assertOk();
+
+    expect($user->fresh()->welcome_shown_at)->not->toBeNull();
+    expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_WELCOME_VIEW)->count())->toBe(1);
+});

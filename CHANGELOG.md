@@ -7,7 +7,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- Eenmalig welkomstscherm na de eerste e-mailbevestiging (`GET /account/welkom`): knop naar `/aanbieden`, link naar het openbare aanbod. Datumveld `users.welcome_shown_at` (bestaande geverifieerde leden krijgen backfill, zodat zij het scherm nooit zien).
+- Eenmalig welkomstscherm na de eerste e-mailbevestiging (`GET /account/welkom`): knop naar `/aanbieden`, link naar het openbare aanbod. Datumveld `users.welcome_shown_at` (bestaande geverifieerde leden krijgen backfill, zodat zij het scherm nooit zien). Bot-UA’s markeren het scherm niet (zelfde gate als ConversionTracker), zodat een crawler-hit het niet verbruikt.
 - Conversie-events `welcome_view` en `welcome_cta_click` (server-side bij auth). Bewust **niet** in de publieke trechter-`FUNNEL_TYPES` (dashboard blijft `email_verified` → `first_offer`); wel meetbaar naast de trechter. `first_offer` ongewijzigd.
 - AVG-export bevat `welcome_shown_at`; bij accountverwijdering verdwijnt het veld mee met de userrij.
 

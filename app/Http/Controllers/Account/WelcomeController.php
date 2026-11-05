@@ -27,10 +27,12 @@ class WelcomeController extends Controller
             return redirect()->route('account.index');
         }
 
-        $this->markShown($user);
+        $tracker = app(ConversionTracker::class);
+        // Bots meten/markeren niet: anders verbruikt een crawler-hit het eenmalige scherm.
+        $this->markShown($user, $request, $tracker);
 
         try {
-            app(ConversionTracker::class)->recordForUser(
+            $tracker->recordForUser(
                 ConversionEvent::TYPE_WELCOME_VIEW,
                 $user,
                 $request,
@@ -56,10 +58,11 @@ class WelcomeController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        $this->markShown($user);
+        $tracker = app(ConversionTracker::class);
+        $this->markShown($user, $request, $tracker);
 
         try {
-            app(ConversionTracker::class)->recordForUser(
+            $tracker->recordForUser(
                 ConversionEvent::TYPE_WELCOME_CTA_CLICK,
                 $user,
                 $request,
@@ -72,8 +75,12 @@ class WelcomeController extends Controller
         return redirect()->route('aanbieden');
     }
 
-    private function markShown(User $user): void
+    private function markShown(User $user, Request $request, ConversionTracker $tracker): void
     {
+        if ($tracker->isBot($request)) {
+            return;
+        }
+
         if ($user->welcome_shown_at !== null) {
             return;
         }
