@@ -3,6 +3,12 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.71.2] - 2026-11-05
+
+### Changed
+
+- Productiehotfix 0.69.2 samengevoegd; Plantenasiel Haarlem heeft nu ook op staging een echte tussenkop voor het aanbieden van planten.
+
 ## [0.71.1] - 2026-11-05
 
 ### Changed
@@ -51,6 +57,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Homepage: blok **«Hier kun je ook aan meedoen»** onder «Doe mee», met kaartjes STEKchallenge (Carpe Vitam) en Struikroven naar /initiatieven.
 - /initiatieven: **«Doe mee»**-blok bovenaan met STEKchallenge (workshop volgen 8 nov in Elim, zelf een workshop geven, contact) en Struikroven (struikroven.nu en de eigen pagina). De workshop-link verdwijnt na 8 november vanzelf. Struikroven staat niet meer dubbel in de gewone lijst.
 - `data/uitgelichte-initiatieven.json` + `App\Services\UitgelichteInitiatieven`. Nog geen logo's of foto's (wacht op toestemming).
+
+## [0.69.2] - 2026-11-05
+
+### Changed
+
+- Plantenasiel Haarlem heeft een eigen, rijkere pagina met praktische informatie, adoptie- en ruilregels, aanbieden van planten en een verwijzing naar Gratis planten.
 
 ## [0.69.1] - 2026-11-04
 
