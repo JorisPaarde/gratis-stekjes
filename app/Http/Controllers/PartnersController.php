@@ -6,75 +6,45 @@ namespace App\Http\Controllers;
 
 use App\Services\Evenementen;
 use App\Services\InitiatiefPaginas;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class PartnersController extends Controller
 {
-    public function __invoke(Request $request, Evenementen $evenementen, InitiatiefPaginas $initiatiefPaginas): View
+    public function __invoke(Request $request, Evenementen $evenementen, InitiatiefPaginas $initiatiefPaginas): View|RedirectResponse
     {
+        // Agendafilters wonen sinds 0.73.0 op /agenda.
+        if ($request->query('type') !== null || $request->query('provincie') !== null) {
+            return redirect()->to(route('agenda', array_filter($request->only(['type', 'provincie']))), 301);
+        }
+
         $site = config('site.name');
-        $type = trim((string) $request->query('type', ''));
-        $provincie = trim((string) $request->query('provincie', ''));
+        $volgende = $evenementen->splitAndGroup($evenementen->queryVisible(['type' => '', 'provincie' => '']))['upcoming']
+            ->flatten(1)
+            ->take(3);
 
-        if ($type !== '' && ! $evenementen->typeValid($type)) {
-            $type = '';
-        }
-        if ($provincie !== '' && ! $evenementen->provincieValid($provincie)) {
-            $provincie = '';
-        }
+        $title = 'Initiatieven: meedoen met plantenacties en ruilinitiatieven';
+        $metaDescription = 'Initiatieven en acties rond gratis planten om aan mee te doen, vaste ruilinitiatieven en de eerstvolgende stekjesmarkten.';
+        $h1 = 'Initiatieven om aan mee te doen';
 
-        $filters = [
-            'type' => $type,
-            'provincie' => $provincie,
-        ];
-
-        $items = $evenementen->queryVisible($filters);
-        $split = $evenementen->splitAndGroup($items);
-        $upcomingFlat = $split['upcoming']->flatten(1);
-
-        $title = 'Stekjesmarkt, plantenruilbeurs en ruilinitiatieven';
-        $metaDescription = 'Agenda met stekjesmarkten, plantenruilbeurzen en ruildagen, plus vaste ruilinitiatieven waar '.$site.' naar linkt.';
-        $h1 = 'Plantenruilbeurzen, stekjesmarkten en initiatieven';
-
-        $graph = [
-            [
+        return view('pages.partners', [
+            'title' => $title,
+            'metaDescription' => $metaDescription,
+            'canonical' => route('partners'),
+            'h1' => $h1,
+            'typeLabels' => $evenementen->typeLabels(),
+            'volgende' => $volgende,
+            'evenementen' => $evenementen,
+            'organisatieInitiatieven' => $initiatiefPaginas->metPagina(),
+            'schema' => [
+                '@context' => 'https://schema.org',
                 '@type' => 'CollectionPage',
                 'name' => $h1,
                 'url' => route('partners'),
                 'description' => $metaDescription,
                 'inLanguage' => 'nl-NL',
-                'isPartOf' => [
-                    '@type' => 'WebSite',
-                    'name' => $site,
-                    'url' => url('/'),
-                ],
-            ],
-        ];
-        foreach ($evenementen->schemaEvents($upcomingFlat) as $eventSchema) {
-            $graph[] = $eventSchema;
-        }
-
-        return view('pages.partners', [
-            'title' => $title,
-            'metaDescription' => $metaDescription,
-            'canonical' => route('partners', array_filter([
-                'type' => $type !== '' ? $type : null,
-                'provincie' => $provincie !== '' ? $provincie : null,
-            ])),
-            'h1' => $h1,
-            'typeLabels' => $evenementen->typeLabels(),
-            'provincies' => $evenementen->provincies(),
-            'filters' => $filters,
-            'upcomingByMonth' => $split['upcoming'],
-            'pastEvents' => $split['past'],
-            'hasUpcoming' => $upcomingFlat->isNotEmpty(),
-            'hasPast' => $split['past']->isNotEmpty(),
-            'evenementen' => $evenementen,
-            'organisatieInitiatieven' => $initiatiefPaginas->metPagina(),
-            'schema' => [
-                '@context' => 'https://schema.org',
-                '@graph' => $graph,
+                'isPartOf' => ['@type' => 'WebSite', 'name' => $site, 'url' => url('/')],
             ],
         ]);
     }

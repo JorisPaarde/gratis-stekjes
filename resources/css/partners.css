@@ -22,7 +22,7 @@
   display: grid;
   gap: 0.75rem 1rem;
   align-items: end;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
   max-width: 40rem;
 }
 
@@ -119,3 +119,5 @@
 .partners-uitgelicht-kaart:has(.init-foto) .partners-doe-mee { position: absolute; top: .75rem; left: .75rem; z-index: 1; }
 .partners-uitgelicht-kaart:has(.init-foto) .partners-doe-mee { right: auto; width: auto; display: inline-block; }
 .partners-uitgelicht-kaart { scroll-margin-top: 6rem; }
+
+.partners-filter-grid label, .partners-filter-grid select { min-width: 0; width: 100%; box-sizing: border-box; }

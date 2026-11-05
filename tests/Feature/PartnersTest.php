@@ -8,8 +8,10 @@ use App\Support\Geo;
 test('initiatievenpagina laadt op /initiatieven', function () {
     $this->get('/initiatieven')
         ->assertOk()
-        ->assertSee('Plantenruilbeurzen, stekjesmarkten en initiatieven', false)
-        ->assertSee('Stekjesmarkt, plantenruilbeurs en ruilinitiatieven', false)
+        ->assertSee('Initiatieven om aan mee te doen', false)
+        ->assertSee('Initiatieven: meedoen met plantenacties en ruilinitiatieven', false)
+        ->assertSee('class="plekken-tabs"', false)
+        ->assertSee('Plekken &amp; initiatieven', false)
         ->assertDontSee('>Partners<', false)
         ->assertSee('Voedselbosbouw.org', false)
         ->assertSee('MeerBomen Nu', false)
@@ -17,7 +19,16 @@ test('initiatievenpagina laadt op /initiatieven', function () {
 
     $this->get(route('partners'))
         ->assertOk()
-        ->assertSee('Plantenruilbeurzen, stekjesmarkten en initiatieven', false);
+        ->assertSee('Initiatieven om aan mee te doen', false);
+});
+
+test('agenda heeft eigen pagina met tabs en menu-item Plekken & initiatieven', function () {
+    $html = $this->get(route('agenda'))->assertOk()->getContent();
+    expect($html)->toContain('class="plekken-tabs"')
+        ->and($html)->toContain('href="'.route('deelplekken').'"')
+        ->and($html)->toContain('Plekken &amp; initiatieven');
+
+    $this->get(route('deelplekken'))->assertOk()->assertSee('class="plekken-tabs"', false);
 });
 
 test('initiatieven toont kaart voor org met initiatief_slug en niet zonder', function () {
