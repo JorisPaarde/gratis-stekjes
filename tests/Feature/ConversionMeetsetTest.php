@@ -301,6 +301,34 @@ test('aggregatie vult conversion_daily en wist oude raw events na 30 dagen', fun
     expect(ConversionDaily::query()->where('event_type', ConversionEvent::TYPE_CTA_CLICK)->sum('count'))->toBe(1);
 });
 
+test('aggregatie gebruikt Amsterdam-dagen, niet UTC DATE(occurred_at)', function () {
+    // 23:30 UTC = 00:30 Europe/Amsterdam op de volgende kalenderdag (CET, UTC+1).
+    $occurred = Carbon::parse('2026-11-05 23:30:00', 'UTC');
+    ConversionEvent::query()->create([
+        'occurred_at' => $occurred,
+        'event_type' => ConversionEvent::TYPE_CTA_CLICK,
+        'path' => '/',
+        'flow_id' => 'late-utc',
+        'visitor_day_hash' => 'hash-late-utc',
+        'device_type' => 'desktop',
+        'week_key' => '2026-W45',
+    ]);
+
+    $result = app(ConversionTracker::class)->aggregateAndPurge(
+        Carbon::parse('2026-11-06 12:00:00', 'UTC')
+    );
+
+    expect($result['aggregated_days'])->toBe(1);
+    expect(ConversionDaily::query()
+        ->where('event_type', ConversionEvent::TYPE_CTA_CLICK)
+        ->whereDate('date', '2026-11-06')
+        ->sum('count'))->toBe(1);
+    expect(ConversionDaily::query()
+        ->where('event_type', ConversionEvent::TYPE_CTA_CLICK)
+        ->whereDate('date', '2026-11-05')
+        ->sum('count'))->toBe(0);
+});
+
 test('unieke bezoekers vallen terug op conversion_daily bij deels opgeschoonde week', function () {
     $tracker = app(ConversionTracker::class);
     $weekStart = now('Europe/Amsterdam')->startOfWeek(Carbon::MONDAY);
@@ -386,6 +414,68 @@ test('post bezoekers tellen unieke register_view, niet som van alle events', fun
         ->and($stats['by_post'][$post->id][ConversionEvent::TYPE_REGISTER_VIEW] ?? 0)->toBe(2)
         ->and($stats['by_post'][$post->id][ConversionEvent::TYPE_ACCOUNT_CREATED] ?? 0)->toBe(1)
         ->and($stats['by_groep']['testgroep']['visitors'] ?? 0)->toBe(2);
+});
+
+test('post conversies combineren daily historie met recente raw', function () {
+    $tracker = app(ConversionTracker::class);
+    $post = PostLog::query()->create([
+        'posted_on' => now()->subDays(40)->toDateString(),
+        'groep' => 'Oude groep',
+        'groep_slug' => 'oude-groep',
+        'soort' => 'aankondiging',
+        'utm_source' => 'facebook',
+    ]);
+
+    // Historie alleen in daily (raw al weg na 30d).
+    ConversionDaily::query()->create([
+        'date' => now()->subDays(40)->toDateString(),
+        'week_key' => '2026-W01',
+        'event_type' => ConversionEvent::TYPE_ACCOUNT_CREATED,
+        'utm_campaign' => 'oude-groep',
+        'utm_content' => (string) $post->id,
+        'count' => 3,
+        'unique_visitors' => 0,
+    ]);
+    ConversionDaily::query()->create([
+        'date' => now()->subDays(40)->toDateString(),
+        'week_key' => '2026-W01',
+        'event_type' => ConversionEvent::TYPE_REGISTER_VIEW,
+        'utm_campaign' => 'oude-groep',
+        'utm_content' => (string) $post->id,
+        'count' => 5,
+        'unique_visitors' => 4,
+    ]);
+
+    // Recente raw (zou voorheen daily volledig negeren).
+    ConversionEvent::query()->create([
+        'occurred_at' => now(),
+        'event_type' => ConversionEvent::TYPE_ACCOUNT_CREATED,
+        'path' => '/account/registreren',
+        'flow_id' => 'recent-acct',
+        'visitor_day_hash' => 'hash-recent-acct',
+        'device_type' => 'mobile',
+        'utm_campaign' => 'oude-groep',
+        'utm_content' => (string) $post->id,
+        'week_key' => $tracker->weekKey(),
+    ]);
+    ConversionEvent::query()->create([
+        'occurred_at' => now(),
+        'event_type' => ConversionEvent::TYPE_REGISTER_VIEW,
+        'path' => '/account/registreren',
+        'flow_id' => 'recent-view',
+        'visitor_day_hash' => 'hash-recent-view',
+        'device_type' => 'desktop',
+        'utm_campaign' => 'oude-groep',
+        'utm_content' => (string) $post->id,
+        'week_key' => $tracker->weekKey(),
+    ]);
+
+    $stats = $tracker->conversionsForPosts();
+    expect($stats['by_post'][$post->id][ConversionEvent::TYPE_ACCOUNT_CREATED] ?? 0)->toBe(4)
+        ->and($stats['by_post'][$post->id][ConversionEvent::TYPE_REGISTER_VIEW] ?? 0)->toBe(6)
+        ->and($stats['by_post'][$post->id]['visitors'] ?? 0)->toBe(5)
+        ->and($stats['by_groep']['oude-groep'][ConversionEvent::TYPE_ACCOUNT_CREATED] ?? 0)->toBe(4)
+        ->and($stats['by_groep']['oude-groep']['visitors'] ?? 0)->toBe(5);
 });
 
 test('header en footer CTA gebruiken huidig pad en placement', function () {

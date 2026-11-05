@@ -584,14 +584,8 @@ final class ConversionTracker
         $nulledEventFlows = 0;
 
         if (Schema::hasTable('conversion_events') && Schema::hasTable('conversion_daily')) {
-            $dates = ConversionEvent::query()
-                ->selectRaw('DATE(occurred_at) as day')
-                ->groupBy('day')
-                ->orderBy('day')
-                ->pluck('day');
-
-            foreach ($dates as $day) {
-                $dayStr = $day instanceof Carbon ? $day->toDateString() : (string) $day;
+            // Amsterdam-dagen (zelfde grenzen als aggregateDay), niet DATE(occurred_at) in UTC.
+            foreach ($this->amsterdamDaysWithRawEvents() as $dayStr) {
                 $this->aggregateDay($dayStr);
                 $aggregatedDays++;
             }
@@ -631,6 +625,39 @@ final class ConversionTracker
             'cleared_flows' => $clearedFlows,
             'nulled_event_flows' => $nulledEventFlows,
         ];
+    }
+
+    /**
+     * Unieke kalenderdagen (Europe/Amsterdam) waarvoor nog raw events bestaan.
+     * Gebruikt dezelfde daggrenzen als aggregateDay — niet DATE(occurred_at) in DB-UTC.
+     *
+     * @return list<string> Y-m-d
+     */
+    private function amsterdamDaysWithRawEvents(): array
+    {
+        $bounds = ConversionEvent::query()
+            ->selectRaw('MIN(occurred_at) as min_at, MAX(occurred_at) as max_at')
+            ->first();
+
+        if ($bounds === null || $bounds->min_at === null || $bounds->max_at === null) {
+            return [];
+        }
+
+        $cursor = Carbon::parse($bounds->min_at)->timezone('Europe/Amsterdam')->startOfDay();
+        $last = Carbon::parse($bounds->max_at)->timezone('Europe/Amsterdam')->startOfDay();
+        $days = [];
+
+        while ($cursor->lte($last)) {
+            $dayStr = $cursor->toDateString();
+            $startUtc = $cursor->copy()->startOfDay()->utc();
+            $endUtc = $cursor->copy()->endOfDay()->utc();
+            if (ConversionEvent::query()->whereBetween('occurred_at', [$startUtc, $endUtc])->exists()) {
+                $days[] = $dayStr;
+            }
+            $cursor->addDay();
+        }
+
+        return $days;
     }
 
     private function aggregateDay(string $day): void
@@ -977,38 +1004,74 @@ final class ConversionTracker
             return ['by_post' => [], 'by_groep' => []];
         }
 
+        // Combineer daily (historie) met raw (recente/nog niet geaggregeerde dagen).
+        // Dagen met raw tellen via raw; daily alleen voor dagen zonder raw (geen dubbeltelling).
+        $rawDays = $hasRaw ? $this->amsterdamDaysWithRawEvents() : [];
+
         // Bezoekers = unieke register_view per post/groep (niet som over alle eventtypen).
-        // Raw heeft voorrang zolang die er nog is; anders conversion_daily.
-        if (! $hasRaw && $hasDaily) {
-            $rows = ConversionDaily::query()
-                ->whereIn('event_type', $types)
-                ->selectRaw('utm_campaign, utm_content, event_type, SUM(count) as aggregate')
-                ->groupBy('utm_campaign', 'utm_content', 'event_type')
-                ->get();
-            $visitorRows = ConversionDaily::query()
+        if ($hasDaily) {
+            $dailyQuery = ConversionDaily::query()->whereIn('event_type', $types);
+            $dailyVisitorQuery = ConversionDaily::query()
                 ->where('event_type', ConversionEvent::TYPE_REGISTER_VIEW)
                 ->where(function ($q): void {
                     $q->whereNotNull('utm_content')->orWhereNotNull('utm_campaign');
-                })
-                ->selectRaw('utm_campaign, utm_content, SUM(unique_visitors) as aggregate')
-                ->groupBy('utm_campaign', 'utm_content')
-                ->get();
-        } else {
-            $rows = ConversionEvent::query()
-                ->whereIn('event_type', $types)
-                ->selectRaw('utm_campaign, utm_content, event_type, COUNT(*) as aggregate')
-                ->groupBy('utm_campaign', 'utm_content', 'event_type')
-                ->get();
-            $visitorRows = ConversionEvent::query()
-                ->where('event_type', ConversionEvent::TYPE_REGISTER_VIEW)
-                ->where(function ($q): void {
-                    $q->whereNotNull('utm_content')->orWhereNotNull('utm_campaign');
-                })
-                ->selectRaw('utm_campaign, utm_content, COUNT(DISTINCT visitor_day_hash) as aggregate')
-                ->groupBy('utm_campaign', 'utm_content')
-                ->get();
+                });
+            if ($rawDays !== []) {
+                $dailyQuery->whereNotIn('date', $rawDays);
+                $dailyVisitorQuery->whereNotIn('date', $rawDays);
+            }
+            $this->mergePostConversionRows(
+                $byPost,
+                $byGroep,
+                $dailyQuery
+                    ->selectRaw('utm_campaign, utm_content, event_type, SUM(count) as aggregate')
+                    ->groupBy('utm_campaign', 'utm_content', 'event_type')
+                    ->get()
+            );
+            $this->mergePostVisitorRows(
+                $byPost,
+                $byGroep,
+                $dailyVisitorQuery
+                    ->selectRaw('utm_campaign, utm_content, SUM(unique_visitors) as aggregate')
+                    ->groupBy('utm_campaign', 'utm_content')
+                    ->get()
+            );
         }
 
+        if ($hasRaw) {
+            $this->mergePostConversionRows(
+                $byPost,
+                $byGroep,
+                ConversionEvent::query()
+                    ->whereIn('event_type', $types)
+                    ->selectRaw('utm_campaign, utm_content, event_type, COUNT(*) as aggregate')
+                    ->groupBy('utm_campaign', 'utm_content', 'event_type')
+                    ->get()
+            );
+            $this->mergePostVisitorRows(
+                $byPost,
+                $byGroep,
+                ConversionEvent::query()
+                    ->where('event_type', ConversionEvent::TYPE_REGISTER_VIEW)
+                    ->where(function ($q): void {
+                        $q->whereNotNull('utm_content')->orWhereNotNull('utm_campaign');
+                    })
+                    ->selectRaw('utm_campaign, utm_content, COUNT(DISTINCT visitor_day_hash) as aggregate')
+                    ->groupBy('utm_campaign', 'utm_content')
+                    ->get()
+            );
+        }
+
+        return ['by_post' => $byPost, 'by_groep' => $byGroep];
+    }
+
+    /**
+     * @param  array<int, array<string, int>>  $byPost
+     * @param  array<string, array<string, int>>  $byGroep
+     * @param  \Illuminate\Support\Collection<int, object>  $rows
+     */
+    private function mergePostConversionRows(array &$byPost, array &$byGroep, $rows): void
+    {
         foreach ($rows as $row) {
             $content = (string) ($row->utm_content ?? '');
             $campaign = (string) ($row->utm_campaign ?? '');
@@ -1022,8 +1085,16 @@ final class ConversionTracker
                 $byGroep[$campaign][$type] = ($byGroep[$campaign][$type] ?? 0) + $count;
             }
         }
+    }
 
-        foreach ($visitorRows as $row) {
+    /**
+     * @param  array<int, array<string, int>>  $byPost
+     * @param  array<string, array<string, int>>  $byGroep
+     * @param  \Illuminate\Support\Collection<int, object>  $rows
+     */
+    private function mergePostVisitorRows(array &$byPost, array &$byGroep, $rows): void
+    {
+        foreach ($rows as $row) {
             $content = (string) ($row->utm_content ?? '');
             $campaign = (string) ($row->utm_campaign ?? '');
             $count = (int) $row->aggregate;
@@ -1035,7 +1106,5 @@ final class ConversionTracker
                 $byGroep[$campaign]['visitors'] = ($byGroep[$campaign]['visitors'] ?? 0) + $count;
             }
         }
-
-        return ['by_post' => $byPost, 'by_groep' => $byGroep];
     }
 }
