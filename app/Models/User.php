@@ -63,6 +63,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password',
         'remember_token',
+        'email_verification_token',
         'telefoon',
         'adres_straat',
         'adres_huisnummer',
@@ -108,6 +109,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'stekchallenge' => 'boolean',
             'last_seen_at' => 'datetime',
             'conversion_flow_expires_at' => 'datetime',
+            'verification_reminder_sent_at' => 'datetime',
             'lat' => 'float',
             'lon' => 'float',
         ];
@@ -136,6 +138,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Naam zoals anderen hem zien. Een e-mailadres als naam (oude accounts) wordt nooit getoond.
+     * Lege of ontbrekende naam → veilige tijdelijke weergave «Lid».
      */
     public function publiekeNaam(): string
     {
@@ -145,6 +148,53 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         return $naam;
+    }
+
+    /** Heeft het lid zelf een voornaam/bijnaam gekozen (geen lege naam, geen e-mail-als-naam). */
+    public function heeftGekozenNaam(): bool
+    {
+        $naam = trim((string) $this->name);
+
+        return $naam !== '' && ! Naam::lijktOpEmail($naam, (string) $this->email);
+    }
+
+    /** Nieuwe eenmalige token voor bevestigingslink (en herinnering). */
+    public function rotateEmailVerificationToken(): string
+    {
+        $token = bin2hex(random_bytes(16));
+        $this->forceFill(['email_verification_token' => $token])->save();
+
+        return $token;
+    }
+
+    public function clearEmailVerificationToken(): void
+    {
+        if ($this->email_verification_token !== null) {
+            $this->forceFill(['email_verification_token' => null])->save();
+        }
+    }
+
+    /**
+     * Atomisch token verbruiken (compare-and-clear). Precies één parallelle request wint.
+     */
+    public function claimEmailVerificationToken(string $token): bool
+    {
+        if ($token === '' || $this->id === null) {
+            return false;
+        }
+
+        $affected = static::query()
+            ->whereKey($this->id)
+            ->where('email_verification_token', $token)
+            ->update(['email_verification_token' => null]);
+
+        if ($affected === 1) {
+            $this->email_verification_token = null;
+
+            return true;
+        }
+
+        return false;
     }
 
     /** Volledig adres op één regel, of null als het (nog) niet is ingevuld of niet leesbaar. */

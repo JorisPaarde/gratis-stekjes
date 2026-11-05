@@ -149,18 +149,10 @@ test('naam die al bestaat: melding met vrije suggesties, bij registreren en prof
         ->assertJson(['vrij' => false, 'suggesties' => ['BERT3', 'BERT4']]);
     $this->getJson(route('naam-check', ['naam' => 'Annie']))->assertOk()->assertJson(['vrij' => true]);
 
-    $this->from(route('account.registreren'))->post(route('account.registreren'), authFormPayload([
-        'voornaam' => 'bert',
-        'email' => 'nieuwe-bert@example.com',
-        'password' => authTestPassword(),
-        'password_confirmation' => authTestPassword(),
-        'gratis_akkoord' => '1',
-        'privacy' => '1',
-    ]))->assertSessionHasErrors(['voornaam' => Naam::melding('bert')]);
-    expect(User::query()->where('email', 'nieuwe-bert@example.com')->exists())->toBeFalse();
-
+    // Naamcontrole zit op het profiel (niet meer op registreren).
     $u = adresUser(['name' => 'Ada', 'email' => 'ada-naam@example.com']);
     profielPost($this, $u, ['voornaam' => 'Bert'])->assertSessionHasErrors('voornaam');
+    expect(session('errors')->first('voornaam'))->toBe(Naam::melding('Bert'));
     profielPost($this, $u, ['voornaam' => 'Bert3'])->assertSessionHasNoErrors();
     expect($u->fresh()->name)->toBe('Bert3');
 });
@@ -185,14 +177,9 @@ test('naam die op een e-mailadres lijkt wordt geweigerd en nooit openbaar getoon
     $this->getJson(route('naam-check', ['naam' => 'piet@example.com']))
         ->assertOk()->assertJson(['vrij' => false, 'email' => true]);
 
-    $this->from(route('account.registreren'))->post(route('account.registreren'), authFormPayload([
-        'voornaam' => 'piet gmail.com',
-        'email' => 'piet.jansen@example.com',
-        'password' => authTestPassword(),
-        'password_confirmation' => authTestPassword(),
-        'gratis_akkoord' => '1',
-        'privacy' => '1',
-    ]))->assertSessionHasErrors(['voornaam' => Naam::MELDING_EMAIL]);
+    $nieuwe = adresUser(['name' => 'Piet', 'email' => 'piet.jansen@example.com']);
+    profielPost($this, $nieuwe, ['voornaam' => 'piet gmail.com'])->assertSessionHasErrors('voornaam');
+    expect(session('errors')->first('voornaam'))->toBe(Naam::MELDING_EMAIL);
 
     $oud = adresUser(['name' => 'kees@example.com', 'email' => 'kees.bos@example.com']);
     expect($oud->publiekeNaam())->toBe('Lid');

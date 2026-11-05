@@ -7,7 +7,7 @@
 @section('content')
 <section class="section wrap">
   <h1 class="page-title">Account maken</h1>
-  <p class="section-intro">Meedoen is gratis. Met één account kun je iets aanbieden én iets ophalen: planten, stekjes of zaden. Er wordt niets verkocht. Je krijgt een e-mail om je aanmelding te bevestigen.</p>
+  <p class="section-intro">Meedoen is gratis. Met één account kun je iets aanbieden én iets ophalen: planten, stekjes of zaden. Er wordt niets verkocht. Je krijgt een e-mail om je aanmelding te bevestigen. Je voornaam of bijnaam vul je daarna in op je profiel.</p>
 
   @if($errors->any())
     <ul class="error-list" role="alert">
@@ -21,19 +21,27 @@
     @csrf
     @include('partials.honeypot')
 
-    <label>Voornaam of bijnaam *
-      <input name="voornaam" required maxlength="80" autocomplete="nickname" value="{{ old('voornaam') }}">
-    </label>
-    @include('partials.naam-check')
     <label>E-mailadres *
       <input type="email" name="email" required maxlength="254" autocomplete="email" value="{{ old('email') }}">
     </label>
     <label>Wachtwoord * <span class="hint">Minstens 10 tekens</span>
-      <input type="password" name="password" required minlength="10" maxlength="200" autocomplete="new-password">
+      <span class="wachtwoord-veld">
+        <input type="password" name="password" id="reg-password" required minlength="10" maxlength="200" autocomplete="new-password">
+        <button type="button" class="btn btn-secondary btn-klein" data-wachtwoord-toggle aria-controls="reg-password" aria-pressed="false">Toon</button>
+      </span>
     </label>
-    <label>Wachtwoord opnieuw *
-      <input type="password" name="password_confirmation" required minlength="10" maxlength="200" autocomplete="new-password">
+
+    <label>Land *
+      <select name="country" required>
+        @foreach($countries as $code => $label)
+          <option value="{{ $code }}" @selected(old('country', 'NL') === $code)>{{ $label }}</option>
+        @endforeach
+      </select>
     </label>
+    <label>Postcode *
+      <input name="postcode" required maxlength="10" autocomplete="postal-code" value="{{ old('postcode') }}" placeholder="{{ old('country', 'NL') === 'BE' ? '9000' : '2011 AB' }}">
+    </label>
+    <p class="hint">Alleen een afgeronde plek wordt zichtbaar, nooit je straatadres. Zo kunnen buren aanbod bij jou in de buurt vinden.</p>
 
     <label class="checkbox">
       <input type="checkbox" name="gratis_akkoord" value="1" required @checked(old('gratis_akkoord'))>
@@ -43,14 +51,7 @@
       <input type="checkbox" name="privacy" value="1" required @checked(old('privacy'))>
       <span>Ik ga akkoord met de <a href="{{ route('privacy') }}">privacyverklaring</a>.</span>
     </label>
-    @foreach(($aanmeldVinkjes ?? [['param' => 'struikrover', 'label' => 'Ik ben Struikrover']]) as $vink)
-      <label class="checkbox">
-        <input type="checkbox" name="{{ $vink['param'] }}" value="1" @checked(old($vink['param'], ($aanmeldChecked[$vink['param']] ?? false) || (($vink['param'] === 'struikrover') && ($struikroverChecked ?? false))))>
-        <span>{{ $vink['label'] }}</span>
-      </label>
-    @endforeach
 
-    {{-- Los blok voor 0.76.0: blijft staan als het formulier kaal wordt. --}}
     <fieldset class="form-fieldset form-fieldset--meet" data-meet-found-via>
       <legend>Hoe heb je ons gevonden? <span class="hint">(optioneel)</span></legend>
       <label>
@@ -77,6 +78,19 @@
 @push('scripts')
 <script>
 (function () {
+  var btn = document.querySelector('[data-wachtwoord-toggle]');
+  if (btn) {
+    var input = document.getElementById(btn.getAttribute('aria-controls'));
+    if (input) {
+      btn.addEventListener('click', function () {
+        var show = input.type === 'password';
+        input.type = show ? 'text' : 'password';
+        btn.setAttribute('aria-pressed', show ? 'true' : 'false');
+        btn.textContent = show ? 'Verberg' : 'Toon';
+      });
+    }
+  }
+
   var form = document.querySelector('[data-meet-form="register"]');
   if (!form || !navigator.sendBeacon) return;
   var started = false;

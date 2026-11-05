@@ -32,6 +32,7 @@
       <span>Geen verplichting, wel de bedoeling: zo leer je je buren kennen.</span>
     </li>
   </ul>
+  <p class="home-actions"><x-word-lid-cta content="hwh-boven" /></p>
 </section>
 
 <section class="section section--mint" aria-label="Twee routes">
@@ -63,7 +64,7 @@
         <li><strong>Kies een moment.</strong> Je krijgt berichten via de site en spreekt af met wie het komt ophalen.</li>
       </ol>
       <p class="home-actions">
-        <a class="btn" href="{{ auth()->check() ? route('account.aanbod') : route('account.registreren') }}"><x-icon name="plus" :size="18" /> {{ auth()->check() ? 'Zet iets online' : 'Maak gratis een account' }}</a>
+        <x-word-lid-cta content="hwh-geef" />
       </p>
       <p class="hwh-extra">Je aanbod blijft 60 dagen staan. Daarna krijg je een mail om het met één klik te verlengen. Bied geen <a href="{{ route('invasieve-soorten') }}">invasieve soorten</a> aan.</p>
     </article>
@@ -79,5 +80,6 @@
     <li><x-icon name="waarschuwing" :size="20" /> <span>Klopt er iets niet? Je kunt iemand melden of blokkeren.</span></li>
   </ul>
   <p class="hwh-extra">Meer weten? Lees de <a href="{{ route('privacy') }}">privacyverklaring</a> of <a href="{{ route('contact') }}">neem contact op</a>.</p>
+  <p class="home-actions"><x-word-lid-cta content="hwh-na-uitleg" /></p>
 </section>
 @endsection

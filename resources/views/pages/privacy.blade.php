@@ -22,7 +22,7 @@
 
   <h2>Welke gegevens ik verwerk</h2>
   <ul class="list-plain">
-    <li><strong>Account:</strong> e-mailadres, wachtwoord (nooit leesbaar opgeslagen), voornaam of bijnaam, optioneel telefoonnummer (versleuteld), land (NL/BE), locatie bij benadering (zoals postcode of plaats, plus afgeronde coördinaten: een kaartpunt dat ik afrond, zodat het niet je precieze adres aanwijst). Bij een e-mailwijziging bewaar ik tijdelijk het nieuwe adres tot je het bevestigt.</li>
+    <li><strong>Account:</strong> e-mailadres, wachtwoord (nooit leesbaar opgeslagen), voornaam of bijnaam (die vul je na aanmelden in op je profiel; tot die tijd zien anderen je als «Lid»), optioneel telefoonnummer (versleuteld), land (NL/BE), postcode bij aanmelden om aanbod in de buurt te tonen (alleen een afgeronde plek, nooit je straatadres), optioneel het antwoord op «Hoe ken je deze site?». Bij een e-mailwijziging bewaar ik tijdelijk het nieuwe adres tot je het bevestigt.</li>
     <li><strong>Aanbod:</strong> type (uitdelen of ophalen), vrije tekst (plantensoort), zichtbaarheid, verloopdatum en een tijdelijke verlenglink in herinneringsmails. Optioneel tot drie foto’s die jij uploadt: ik controleer of het echt een afbeelding is (JPEG/PNG/WebP), verklein die opnieuw zonder locatiegegevens in het bestand, bewaar ze met willekeurige bestandsnamen, en toon ze bij je aanbod. Foto’s zijn openbaar zolang het aanbod zichtbaar is.</li>
     <li><strong>Ervaringen:</strong> korte tekst (maximaal ongeveer 500 tekens), optionele foto (zelfde veilige verwerking als aanbodfoto’s: JPEG/PNG/WebP, max. 8&nbsp;MB, opnieuw zonder locatiegegevens), optionele koppeling aan een soort of jouw aanbod, en een plaatsnaam op gemeenteniveau (nooit een straatadres). Nieuwe ervaringen wachten op mijn goedkeuring vóór ze publiek zichtbaar zijn.</li>
     <li><strong>Berichten:</strong> inhoud van gesprekken (versleuteld opgeslagen), of je verder contact wilt delen (ja/nee), of jullie een overdracht als afgerond markeren, leestijd, blokkeerregels, en meldingen met reden (versleuteld) voor de beheerder.</li>
@@ -101,7 +101,7 @@
 
   <h2>Mails en hosting</h2>
   <ul class="list-plain">
-    <li>Bevestigingsmails, wachtwoordreset, e-mailwijziging, “je hebt een nieuw bericht” (met de voornaam van de afzender, zonder berichtinhoud of andermans adres; uit te zetten op je profiel of via de link in de mail), aanbod-herinneringen en, alleen als ik dat aanzet, een felicitatiemail bij je eerste stekje gaan via mijn eigen mailbox bij de hoster.</li>
+    <li>Bevestigingsmails (en, alleen als ik dat aanzet, één herinnering na een dag als je e-mailadres nog niet bevestigd is), wachtwoordreset, e-mailwijziging, “je hebt een nieuw bericht” (met de voornaam van de afzender, zonder berichtinhoud of andermans adres; uit te zetten op je profiel of via de link in de mail), aanbod-herinneringen en, alleen als ik dat aanzet, een felicitatiemail bij je eerste stekje gaan via mijn eigen mailbox bij de hoster.</li>
     <li>Organisatie-aanmelders krijgen een bevestiging; ik krijg een melding. Geen mail naar derden buiten de aanmelder.</li>
     <li>Verbinders die zich aanmelden via de pagina Help mee: dat gaat via contact (jij mailt zelf) of via feedback (alleen opgeslagen, zonder automatische bevestigingsmail).</li>
     <li>Gegevens staan op hosting in de EU die ik beheer. Mail gaat via diezelfde hoster.</li>

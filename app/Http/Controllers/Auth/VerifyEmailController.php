@@ -15,6 +15,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class VerifyEmailController extends Controller
@@ -30,6 +31,9 @@ class VerifyEmailController extends Controller
 
     public function verify(Request $request, int $id, string $hash): RedirectResponse
     {
+        $token = (string) $request->query('token', '');
+
+        // Vroege checks buiten de lock (goedkope rejects).
         $user = User::query()->find($id);
         if (! $user || ! hash_equals($hash, sha1($user->getEmailForVerification()))) {
             return redirect()
@@ -40,17 +44,73 @@ class VerifyEmailController extends Controller
         if (! $request->hasValidSignature()) {
             return redirect()
                 ->route('account.inloggen')
+                ->withErrors(['email' => 'Deze bevestigingslink is verlopen of ongeldig. Vraag hieronder een nieuwe aan.']);
+        }
+
+        /** @var array{status: string, user?: User, wasUnverified?: bool} $outcome */
+        $outcome = DB::transaction(function () use ($id, $hash, $token): array {
+            $locked = User::query()->whereKey($id)->lockForUpdate()->first();
+            if (! $locked || ! hash_equals($hash, sha1($locked->getEmailForVerification()))) {
+                return ['status' => 'invalid'];
+            }
+
+            $stored = (string) ($locked->email_verification_token ?? '');
+            if ($token === '' || $stored === '' || ! hash_equals($stored, $token)) {
+                return [
+                    'status' => $locked->hasVerifiedEmail() ? 'already' : 'used',
+                    'user' => $locked,
+                ];
+            }
+
+            // Compare-and-clear: parallelle requests → precies één winnaar.
+            if (! $locked->claimEmailVerificationToken($token)) {
+                $locked->refresh();
+
+                return [
+                    'status' => $locked->hasVerifiedEmail() ? 'already' : 'used',
+                    'user' => $locked,
+                ];
+            }
+
+            $wasUnverified = ! $locked->hasVerifiedEmail();
+            if ($wasUnverified) {
+                $locked->markEmailAsVerified();
+            }
+
+            return [
+                'status' => 'ok',
+                'user' => $locked->fresh() ?? $locked,
+                'wasUnverified' => $wasUnverified,
+            ];
+        });
+
+        if ($outcome['status'] === 'invalid') {
+            return redirect()
+                ->route('account.inloggen')
                 ->withErrors(['email' => 'Deze bevestigingslink werkt niet (meer).']);
         }
 
-        $wasUnverified = ! $user->hasVerifiedEmail();
-        if ($wasUnverified) {
-            $user->markEmailAsVerified();
-            event(new Verified($user));
+        if ($outcome['status'] !== 'ok') {
+            if (($outcome['status'] ?? '') === 'already') {
+                return redirect()
+                    ->route('account.inloggen')
+                    ->with('status', 'Je e-mailadres is al bevestigd. Log in om verder te gaan.');
+            }
+
+            return redirect()
+                ->route('account.inloggen')
+                ->withErrors(['email' => 'Deze bevestigingslink werkt niet (meer). Vraag een nieuwe aan.']);
+        }
+
+        /** @var User $verifiedUser */
+        $verifiedUser = $outcome['user'];
+
+        if ($outcome['wasUnverified'] ?? false) {
+            event(new Verified($verifiedUser));
             try {
                 app(ConversionTracker::class)->recordForUser(
                     ConversionEvent::TYPE_EMAIL_VERIFIED,
-                    $user->fresh(),
+                    $verifiedUser,
                     $request,
                     ['path' => '/account/bevestigen']
                 );
@@ -59,12 +119,12 @@ class VerifyEmailController extends Controller
             }
         }
 
-        Auth::login($user, false);
+        Auth::login($verifiedUser, false);
         $request->session()->regenerate();
 
         return redirect()
             ->route('account.index')
-            ->with('status', 'E-mail bevestigd. Welkom — je account is actief.');
+            ->with('status', 'E-mail bevestigd. Welkom — je account is actief. Vul op je profiel nog een voornaam of bijnaam in.');
     }
 
     public function resend(Request $request): RedirectResponse
@@ -84,6 +144,7 @@ class VerifyEmailController extends Controller
         $mailOk = true;
         $user = User::query()->where('email', $email)->where('active', true)->first();
         if ($user && ! $user->hasVerifiedEmail()) {
+            $user->rotateEmailVerificationToken();
             $mailOk = SafeMail::notify($user, new VerifyEmailDutch);
         }
 

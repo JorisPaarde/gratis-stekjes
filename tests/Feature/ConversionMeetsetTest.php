@@ -5,10 +5,13 @@ declare(strict_types=1);
 use App\Models\Aanbod;
 use App\Models\ConversionDaily;
 use App\Models\ConversionEvent;
+use App\Models\GeocodeCache;
 use App\Models\PostLog;
 use App\Models\User;
 use App\Services\ConversionTracker;
+use App\Support\Geo;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 
@@ -27,6 +30,15 @@ beforeEach(function () {
         'conversion.raw_retention_days' => 30,
         'conversion.flow_ttl_days' => 7,
     ]);
+    Http::fake();
+    GeocodeCache::query()->updateOrCreate(
+        ['query_key' => Geo::normalizeQuery('nl:2011')],
+        ['lat' => 52.38, 'lon' => 4.64, 'label' => '2011 Haarlem', 'country' => 'NL', 'cached_at' => now()]
+    );
+    GeocodeCache::query()->updateOrCreate(
+        ['query_key' => Geo::normalizeQuery('nl:2011 AB')],
+        ['lat' => 52.38, 'lon' => 4.64, 'label' => '2011 Haarlem', 'country' => 'NL', 'cached_at' => now()]
+    );
 });
 
 function meetRegForm(array $overrides = []): array
@@ -34,10 +46,10 @@ function meetRegForm(array $overrides = []): array
     $pass = meetTestPassword();
 
     return array_merge([
-        'voornaam' => 'MeetLid',
         'email' => 'meet-'.uniqid('', false).'@example.com',
         'password' => $pass,
-        'password_confirmation' => $pass,
+        'country' => 'NL',
+        'postcode' => '2011 AB',
         'gratis_akkoord' => '1',
         'privacy' => '1',
         'website' => '',
@@ -109,7 +121,6 @@ test('validation_error bevat veld en code maar geen invoer', function () {
         ->post(route('account.registreren'), meetRegForm([
             'email' => $email,
             'password' => $password,
-            'password_confirmation' => $password,
         ]))
         ->assertRedirect(route('account.registreren'));
 
@@ -150,16 +161,18 @@ test('form_submit account_created email_verified en first_offer worden gelogd', 
     expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_FORM_SUBMIT)->count())->toBe(1);
     expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_ACCOUNT_CREATED)->count())->toBe(1);
 
+    $token = (string) $user->email_verification_token;
     $url = URL::temporarySignedRoute(
         'account.bevestigen',
         now()->addDay(),
-        ['id' => $user->id, 'hash' => sha1($user->email)]
+        ['id' => $user->id, 'hash' => sha1($user->email), 'token' => $token]
     );
     $this->get($url)->assertRedirect(route('account.index'));
 
     expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_EMAIL_VERIFIED)->count())->toBe(1);
 
     $user->forceFill([
+        'name' => 'MeetLid',
         'locatie_label' => '1011 Amsterdam',
         'postcode_gebied' => '1011',
         'lat' => 52.37,
