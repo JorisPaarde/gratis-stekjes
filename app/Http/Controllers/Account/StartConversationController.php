@@ -14,6 +14,13 @@ class StartConversationController extends Controller
 {
     public function __invoke(Request $request, MessagingService $messaging): RedirectResponse
     {
+        $user = $request->user();
+        if ($user && ! $user->heeftGekozenNaam()) {
+            return redirect()
+                ->route('account.profiel')
+                ->with('status', 'Kies eerst een voornaam of bijnaam. Die ziet de ander in het gesprek.');
+        }
+
         $other = (int) $request->query('user_id', 0);
         $aanbodId = $request->query('aanbod_id');
         $aanbodId = $aanbodId !== null && $aanbodId !== '' ? (int) $aanbodId : null;

@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\AdresOpzoeken;
+use App\Services\InitiatiefPaginas;
 use App\Services\LocationGeocoder;
 use App\Support\Country;
 use App\Support\Geo;
@@ -15,12 +16,13 @@ use App\Support\PostalCode;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    public function edit(Request $request): View
+    public function edit(Request $request, InitiatiefPaginas $initiatieven): View
     {
         $user = $request->user();
         $modus = old('locatie_modus');
@@ -40,6 +42,7 @@ class ProfileController extends Controller
             'user' => $user,
             'countries' => Country::labels(),
             'locatieModus' => $modus,
+            'aanmeldVinkjes' => $this->aanmeldVinkjes($initiatieven),
         ]);
     }
 
@@ -67,6 +70,8 @@ class ProfileController extends Controller
             'straat' => ['nullable', 'string', 'max:120'],
             'plaats' => ['nullable', 'string', 'max:120'],
             'adres_delen' => ['nullable', 'boolean'],
+            'struikrover' => ['nullable', 'boolean'],
+            'stekchallenge' => ['nullable', 'boolean'],
         ], [
             'huisnummer.regex' => 'Vul een huisnummer in, eventueel met toevoeging (bijvoorbeeld 12 of 12A).',
             'voornaam.required' => 'Vul een voornaam of bijnaam in.',
@@ -201,10 +206,15 @@ class ProfileController extends Controller
             }
             $user->adres_delen = $request->boolean('adres_delen');
         }
+        foreach (['struikrover', 'stekchallenge'] as $vlag) {
+            if ($request->has($vlag) && Schema::hasColumn('users', $vlag)) {
+                $user->{$vlag} = $request->boolean($vlag);
+            }
+        }
         $user->save();
 
-        // Kwam je via «Bied iets aan» zonder locatie? Dan na opslaan terug naar het formulier.
-        if ($user->hasLocation() && $request->session()->get('url.intended') === route('aanbieden')) {
+        // Kwam je via «Bied iets aan» zonder naam/locatie? Dan na opslaan terug naar het formulier.
+        if ($user->heeftGekozenNaam() && $user->hasLocation() && $request->session()->get('url.intended') === route('aanbieden')) {
             $request->session()->forget('url.intended');
 
             return redirect()->route('aanbieden')->with('status', 'Profiel opgeslagen. Nu kun je iets aanbieden.');
@@ -213,6 +223,26 @@ class ProfileController extends Controller
         return redirect()
             ->route('account.profiel')
             ->with('status', 'Profiel opgeslagen.');
+    }
+
+    /**
+     * @return list<array{param: string, label: string}>
+     */
+    private function aanmeldVinkjes(InitiatiefPaginas $initiatieven): array
+    {
+        $out = [];
+        $seen = [];
+        foreach ($initiatieven->metPagina() as $init) {
+            $param = trim((string) $init->aanmeld_param);
+            $label = trim((string) $init->aanmeld_label);
+            if ($param === '' || $label === '' || isset($seen[$param]) || ! Schema::hasColumn('users', $param)) {
+                continue;
+            }
+            $seen[$param] = true;
+            $out[] = ['param' => $param, 'label' => $label];
+        }
+
+        return $out;
     }
 
     /** Live controle of een naam vrij is (registratie en profiel). */

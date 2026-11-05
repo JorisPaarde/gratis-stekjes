@@ -130,12 +130,14 @@ test('bevestigingslink blijft geldig na 23 uur', function () {
     $createdAt = now();
     $this->travelTo($createdAt);
 
+    $token = $user->rotateEmailVerificationToken();
     $url = URL::temporarySignedRoute(
         'account.bevestigen',
         now()->addMinutes((int) config('auth.verification.expire')),
         [
             'id' => $user->id,
             'hash' => sha1($user->email),
+            'token' => $token,
         ]
     );
 

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Requests\Auth;
 
 use App\Services\ConversionTracker;
+use App\Support\Country;
 use App\Support\FormGuard;
-use App\Support\Naam;
+use App\Support\PostalCode;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -26,26 +27,15 @@ class RegisterRequest extends FormRequest
         $foundOptions = array_keys((array) config('conversion.found_via_options', []));
 
         return [
-            'voornaam' => ['required', 'string', 'max:80', 'not_regex:/@/', function (string $attr, mixed $value, \Closure $fail): void {
-                if (is_string($value) && Naam::lijktOpEmail($value, is_string($this->input('email')) ? $this->input('email') : null)) {
-                    $fail(Naam::MELDING_EMAIL);
-
-                    return;
-                }
-                if (is_string($value) && Naam::bezet($value)) {
-                    $fail(Naam::melding($value));
-                }
-            }],
             'email' => ['required', 'string', 'email:filter', 'max:254'],
-            // min:10 i.p.v. Password::min zodat password.min-bericht altijd meekomt naast confirmed.
-            'password' => ['required', 'string', 'confirmed', 'min:10', 'max:200'],
+            // Geen password confirmation; wel min 10. Toon/verberg in de view.
+            'password' => ['required', 'string', 'min:10', 'max:200'],
+            'country' => ['required', 'string', Rule::in(Country::codes())],
+            'postcode' => ['required', 'string', 'max:10'],
             'gratis_akkoord' => ['accepted'],
             'privacy' => ['accepted'],
-            'struikrover' => ['nullable', 'boolean'],
-            'stekchallenge' => ['nullable', 'boolean'],
             'website' => ['nullable', 'string', 'max:200'],
             'form_started' => ['required', 'integer'],
-            // Optioneel en los van de rest — blijft makkelijk meegenomen in 0.76.0.
             'acquisition_found_via' => ['nullable', 'string', Rule::in($foundOptions)],
             'acquisition_found_via_other' => ['nullable', 'string', 'max:120'],
         ];
@@ -55,13 +45,13 @@ class RegisterRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'voornaam.required' => 'Vul een voornaam of bijnaam in.',
-            'voornaam.not_regex' => 'Gebruik een voornaam of bijnaam, geen e-mailadres. Die zien anderen.',
             'email.required' => 'Vul een geldig e-mailadres in.',
             'email.email' => 'Vul een geldig e-mailadres in.',
             'password.required' => 'Kies een wachtwoord.',
-            'password.confirmed' => 'De wachtwoorden komen niet overeen.',
             'password.min' => 'Kies een wachtwoord van minstens 10 tekens.',
+            'country.required' => 'Kies een land.',
+            'country.in' => 'Kies Nederland of België.',
+            'postcode.required' => 'Vul je postcode in.',
             'gratis_akkoord.accepted' => 'Je moet akkoord gaan: alleen gratis, geen verkoop.',
             'privacy.accepted' => 'Je moet akkoord gaan met de privacyverklaring.',
         ];
@@ -80,10 +70,31 @@ class RegisterRequest extends FormRequest
             if ($email !== '' && FormGuard::isDisposableEmail($email)) {
                 $validator->errors()->add('email', 'Gebruik geen wegwerpmailadres.');
             }
+
             $found = (string) $this->input('acquisition_found_via', '');
             $other = trim((string) $this->input('acquisition_found_via_other', ''));
             if ($found === 'anders' && $other === '') {
                 $validator->errors()->add('acquisition_found_via_other', 'Vertel kort hoe je ons gevonden hebt.');
+            }
+
+            $country = Country::normalize((string) $this->input('country', Country::NL));
+            $postcode = trim((string) $this->input('postcode', ''));
+            if ($postcode === '') {
+                return;
+            }
+            if (! PostalCode::looksLikePostcode($postcode, $country)) {
+                $validator->errors()->add(
+                    'postcode',
+                    $country === Country::BE
+                        ? 'Belgische postcode bestaat uit precies 4 cijfers (bijv. 9000).'
+                        : 'Nederlandse postcode: 4 cijfers, optioneel gevolgd door 2 letters (bijv. 1234 AB).'
+                );
+
+                return;
+            }
+            $pcValid = PostalCode::validate($postcode, $country);
+            if ($pcValid !== true) {
+                $validator->errors()->add('postcode', is_string($pcValid) ? $pcValid : 'Deze postcode ken ik niet.');
             }
         });
     }

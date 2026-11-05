@@ -34,6 +34,15 @@ final class VolgendeStap
             );
         }
 
+        if (! $user->heeftGekozenNaam()) {
+            return $this->stap(
+                'Kies een voornaam of bijnaam',
+                'Die zien anderen bij je aanbod en in berichten. Tot die tijd heet je «Lid».',
+                'Naar je profiel',
+                route('account.profiel'),
+            );
+        }
+
         // Postcode-herinnering zit in de dismissible banner (hasValidPostcode), niet hier.
 
         $heeftAanbod = Schema::hasTable('aanbod') && Aanbod::query()->where('user_id', $user->id)->exists();

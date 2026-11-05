@@ -412,6 +412,13 @@ h1.page-title {
 }
 .form textarea { min-height: 7rem; resize: vertical; }
 .form .hint { font-weight: 400; font-size: .9rem; color: var(--ink-soft); }
+.wachtwoord-veld {
+  display: flex;
+  gap: .5rem;
+  align-items: stretch;
+}
+.wachtwoord-veld input { flex: 1 1 auto; min-width: 0; }
+.wachtwoord-veld .btn { flex: 0 0 auto; align-self: stretch; }
 .checkbox {
   display: flex !important; align-items: flex-start; gap: .55rem;
   font-weight: 400 !important;

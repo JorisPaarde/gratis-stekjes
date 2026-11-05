@@ -33,6 +33,9 @@ class AanbodController extends Controller
             return redirect()->route('account.index')
                 ->with('status', 'Dit account kan geen aanbod plaatsen.');
         }
+        if (! $user->heeftGekozenNaam()) {
+            return $this->eerstNaam();
+        }
         if (! $user->hasLocation()) {
             return $this->eerstLocatie();
         }
@@ -55,6 +58,9 @@ class AanbodController extends Controller
             return redirect()->route('account.index')
                 ->with('status', 'Dit account kan geen aanbod plaatsen.');
         }
+        if (! $user->heeftGekozenNaam()) {
+            return $this->eerstNaam();
+        }
         if (! $user->hasLocation()) {
             return $this->eerstLocatie();
         }
@@ -68,6 +74,15 @@ class AanbodController extends Controller
             'terug' => 'aanbieden',
             ...$this->formData($invasieve),
         ]);
+    }
+
+    private function eerstNaam(): RedirectResponse
+    {
+        session()->put('url.intended', route('aanbieden'));
+
+        return redirect()
+            ->route('account.profiel')
+            ->with('status', 'Kies eerst een voornaam of bijnaam. Die zien anderen bij je aanbod.');
     }
 
     private function eerstLocatie(): RedirectResponse
@@ -104,6 +119,9 @@ class AanbodController extends Controller
         }
         // Pas na stats_viewer-check: foto-service vereist GD/Imagick.
         $fotos = app(AanbodFotoService::class);
+        if (! $user->heeftGekozenNaam()) {
+            return $this->eerstNaam();
+        }
         if (! $user->hasLocation()) {
             return redirect()->route('account.profiel');
         }

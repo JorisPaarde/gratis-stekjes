@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Models\GeocodeCache;
 use App\Models\User;
 use App\Notifications\AccountBestaatAl;
 use App\Notifications\VerifyEmailDutch;
+use App\Support\Geo;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 
@@ -19,7 +22,23 @@ function authFormPayload(array $extra = []): array
     return array_merge([
         'website' => '',
         'form_started' => time() - 10,
+        'country' => 'NL',
+        'postcode' => '2011 AB',
+        'gratis_akkoord' => '1',
+        'privacy' => '1',
     ], $extra);
+}
+
+function seedAuthRegGeo(): void
+{
+    GeocodeCache::query()->updateOrCreate(
+        ['query_key' => Geo::normalizeQuery('nl:2011')],
+        ['lat' => 52.38, 'lon' => 4.64, 'label' => '2011 Haarlem', 'country' => 'NL', 'cached_at' => now()]
+    );
+    GeocodeCache::query()->updateOrCreate(
+        ['query_key' => Geo::normalizeQuery('nl:2011 AB')],
+        ['lat' => 52.38, 'lon' => 4.64, 'label' => '2011 Haarlem', 'country' => 'NL', 'cached_at' => now()]
+    );
 }
 
 test('registratiepagina laadt', function () {
@@ -31,14 +50,12 @@ test('registratiepagina laadt', function () {
 
 test('registreren stuurt verificatiemail en logt niet in', function () {
     Notification::fake();
+    Http::fake();
+    seedAuthRegGeo();
 
     $response = $this->post(route('account.registreren'), authFormPayload([
-        'voornaam' => 'Sam',
         'email' => 'sam@example.com',
         'password' => authTestPassword(),
-        'password_confirmation' => authTestPassword(),
-        'gratis_akkoord' => '1',
-        'privacy' => '1',
     ]));
 
     $response->assertRedirect(route('account.bevestiging-nodig'));
@@ -46,7 +63,8 @@ test('registreren stuurt verificatiemail en logt niet in', function () {
 
     $user = User::query()->where('email', 'sam@example.com')->first();
     expect($user)->not->toBeNull();
-    expect($user->name)->toBe('Sam');
+    expect($user->name)->toBe('');
+    expect($user->publiekeNaam())->toBe('Lid');
     expect($user->hasVerifiedEmail())->toBeFalse();
 
     Notification::assertSentTo($user, VerifyEmailDutch::class);
@@ -54,15 +72,13 @@ test('registreren stuurt verificatiemail en logt niet in', function () {
 
 test('registreren met bestaand e-mail geeft geen enumeratie en geen tweede user', function () {
     Notification::fake();
+    Http::fake();
+    seedAuthRegGeo();
     User::factory()->create(['email' => 'bestaat@example.com']);
 
     $this->post(route('account.registreren'), authFormPayload([
-        'voornaam' => 'Ander',
         'email' => 'bestaat@example.com',
         'password' => authTestPassword(),
-        'password_confirmation' => authTestPassword(),
-        'gratis_akkoord' => '1',
-        'privacy' => '1',
     ]))->assertRedirect(route('account.bevestiging-nodig'));
 
     expect(User::query()->where('email', 'bestaat@example.com')->count())->toBe(1);
@@ -76,12 +92,8 @@ test('registreren met bestaand e-mail geeft geen enumeratie en geen tweede user'
 test('wegwerpmail uit domains.txt wordt geweigerd', function () {
     $this->from(route('account.registreren'))
         ->post(route('account.registreren'), authFormPayload([
-            'voornaam' => 'Tijdelijk',
             'email' => 'iemand@mailinator.com',
             'password' => authTestPassword(),
-            'password_confirmation' => authTestPassword(),
-            'gratis_akkoord' => '1',
-            'privacy' => '1',
         ]))
         ->assertRedirect(route('account.registreren'))
         ->assertSessionHasErrors('email');
@@ -93,12 +105,8 @@ test('honeypot bij registratie is stil succes zonder user', function () {
     Notification::fake();
 
     $this->post(route('account.registreren'), authFormPayload([
-        'voornaam' => 'Bot',
         'email' => 'bot@example.com',
         'password' => authTestPassword(),
-        'password_confirmation' => authTestPassword(),
-        'gratis_akkoord' => '1',
-        'privacy' => '1',
         'website' => 'https://spam.test',
     ]))->assertRedirect(route('account.bevestiging-nodig'));
 
@@ -109,12 +117,8 @@ test('honeypot bij registratie is stil succes zonder user', function () {
 test('te snel formulier wordt geweigerd', function () {
     $this->from(route('account.registreren'))
         ->post(route('account.registreren'), authFormPayload([
-            'voornaam' => 'Snel',
             'email' => 'snel@example.com',
             'password' => authTestPassword(),
-            'password_confirmation' => authTestPassword(),
-            'gratis_akkoord' => '1',
-            'privacy' => '1',
             'form_started' => time(),
         ]))
         ->assertRedirect(route('account.registreren'))
@@ -156,10 +160,12 @@ test('inloggen lukt na verificatie', function () {
 
 test('signed bevestigingslink activeert account en logt in', function () {
     $user = User::factory()->unverified()->create(['email' => 'nieuw@example.com']);
+    $token = $user->rotateEmailVerificationToken();
 
     $url = URL::temporarySignedRoute('account.bevestigen', now()->addHour(), [
         'id' => $user->id,
         'hash' => sha1($user->email),
+        'token' => $token,
     ]);
 
     $this->get($url)

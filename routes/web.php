@@ -212,8 +212,10 @@ Route::get('/account/bevestiging-nodig', [VerifyEmailController::class, 'notice'
     ->name('account.bevestiging-nodig');
 Route::post('/account/bevestiging-opnieuw', [VerifyEmailController::class, 'resend'])
     ->name('account.bevestiging-opnieuw');
+// Geen 'signed'-middleware: die geeft kale 403. Controller checkt hasValidSignature()
+// en stuurt netjes door (belangrijk voor Facebook/Instagram in-app-browser).
 Route::get('/account/bevestigen/{id}/{hash}', [VerifyEmailController::class, 'verify'])
-    ->middleware(['signed', 'throttle:6,1'])
+    ->middleware(['throttle:6,1'])
     ->name('account.bevestigen');
 
 Route::get('/account/email-bevestigen/{id}/{hash}', [EmailChangeController::class, 'confirm'])

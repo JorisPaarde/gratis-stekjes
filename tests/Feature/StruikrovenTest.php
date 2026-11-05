@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 use App\Models\Evenement;
 use App\Models\User;
-use App\Notifications\VerifyEmailDutch;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Http;
 
 /** Testwachtwoord opgebouwd (geen hardcoded “secret”-literal voor scanners). */
 function struikTestPassword(): string
@@ -117,59 +116,50 @@ test('/struikroven toont gekoppelde komende acties en negeert andere', function 
         ->assertDontSee('Er staan nu geen Struikroven-acties gepland', false);
 });
 
-test('aanmeldparameter zet vinkje Ik ben Struikrover', function () {
+test('registreren toont geen Struikrover-vinkje meer; die staat op het profiel', function () {
     $this->get(route('account.registreren', ['struikrover' => 1]))
         ->assertOk()
-        ->assertSee('Ik ben Struikrover', false)
-        ->assertSee('name="struikrover" value="1"', false)
-        ->assertSee('checked', false);
+        ->assertDontSee('name="struikrover"', false);
 
-    $this->get(route('account.registreren'))
-        ->assertOk()
-        ->assertSee('Ik ben Struikrover', false);
-
-    $html = $this->get(route('account.registreren'))->assertOk()->getContent();
-    expect(preg_match('/name="struikrover"[^>]*checked/', $html))->toBe(0);
+    $user = User::factory()->create(['struikrover' => false, 'name' => 'Lisa']);
+    $html = $this->actingAs($user)->get(route('account.profiel'))->assertOk()->getContent();
+    expect($html)->toContain('Ik ben Struikrover')
+        ->and($html)->toContain('name="struikrover"');
 });
 
-test('registreren met struikrover-vinkje slaat true op', function () {
-    Notification::fake();
+test('profiel kan Struikrover-vinkje aanzetten', function () {
+    Http::fake();
+    $user = User::factory()->create([
+        'struikrover' => false,
+        'name' => 'Lisa',
+        'locatie_label' => '2011 Haarlem',
+        'lat' => 52.38,
+        'lon' => 4.64,
+        'postcode_gebied' => '2011',
+        'woonplaats' => 'Haarlem',
+        'country' => 'NL',
+    ]);
+    \App\Models\GeocodeCache::query()->updateOrCreate(
+        ['query_key' => \App\Support\Geo::normalizeQuery('nl:2011')],
+        ['lat' => 52.38, 'lon' => 4.64, 'label' => '2011 Haarlem', 'country' => 'NL', 'cached_at' => now()]
+    );
 
-    $this->post(route('account.registreren'), [
-        'website' => '',
-        'form_started' => time() - 10,
-        'voornaam' => 'Lisa',
-        'email' => 'lisa.struik@example.com',
-        'password' => struikTestPassword(),
-        'password_confirmation' => struikTestPassword(),
-        'gratis_akkoord' => '1',
-        'privacy' => '1',
-        'struikrover' => '1',
-    ])->assertRedirect(route('account.bevestiging-nodig'));
+    $this->actingAs($user)
+        ->post(route('account.profiel'), [
+            'voornaam' => 'Lisa',
+            'country' => 'NL',
+            'locatie_modus' => 'postcode',
+            'locatie' => '2011',
+            'struikrover' => '1',
+        ])
+        ->assertRedirect(route('account.profiel'));
 
-    $user = User::query()->where('email', 'lisa.struik@example.com')->first();
-    expect($user)->not->toBeNull()
-        ->and($user->struikrover)->toBeTrue();
-    Notification::assertSentTo($user, VerifyEmailDutch::class);
+    expect($user->fresh()->struikrover)->toBeTrue();
 });
 
-test('registreren zonder vinkje houdt struikrover uit', function () {
-    Notification::fake();
-
-    $this->post(route('account.registreren'), [
-        'website' => '',
-        'form_started' => time() - 10,
-        'voornaam' => 'Tom',
-        'email' => 'tom.gewoon@example.com',
-        'password' => struikTestPassword(),
-        'password_confirmation' => struikTestPassword(),
-        'gratis_akkoord' => '1',
-        'privacy' => '1',
-    ])->assertRedirect(route('account.bevestiging-nodig'));
-
-    $user = User::query()->where('email', 'tom.gewoon@example.com')->first();
-    expect($user)->not->toBeNull()
-        ->and((bool) $user->struikrover)->toBeFalse();
+test('nieuw account heeft struikrover uit', function () {
+    $user = User::factory()->create(['struikrover' => false]);
+    expect((bool) $user->struikrover)->toBeFalse();
 });
 
 test('beheer toont telling Struikrovers', function () {

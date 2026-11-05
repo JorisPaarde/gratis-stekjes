@@ -40,7 +40,23 @@ class VerifyEmailController extends Controller
         if (! $request->hasValidSignature()) {
             return redirect()
                 ->route('account.inloggen')
-                ->withErrors(['email' => 'Deze bevestigingslink werkt niet (meer).']);
+                ->withErrors(['email' => 'Deze bevestigingslink is verlopen of ongeldig. Vraag hieronder een nieuwe aan.']);
+        }
+
+        $token = (string) $request->query('token', '');
+        $stored = (string) ($user->email_verification_token ?? '');
+
+        // Eenmalige login: token moet matchen. Heropenen na gebruik → nette uitleg, geen auto-login.
+        if ($token === '' || $stored === '' || ! hash_equals($stored, $token)) {
+            if ($user->hasVerifiedEmail()) {
+                return redirect()
+                    ->route('account.inloggen')
+                    ->with('status', 'Je e-mailadres is al bevestigd. Log in om verder te gaan.');
+            }
+
+            return redirect()
+                ->route('account.inloggen')
+                ->withErrors(['email' => 'Deze bevestigingslink werkt niet (meer). Vraag een nieuwe aan.']);
         }
 
         $wasUnverified = ! $user->hasVerifiedEmail();
@@ -59,12 +75,15 @@ class VerifyEmailController extends Controller
             }
         }
 
+        // Token verbruiken vóór login: dezelfde link logt daarna niet opnieuw in.
+        $user->clearEmailVerificationToken();
+
         Auth::login($user, false);
         $request->session()->regenerate();
 
         return redirect()
             ->route('account.index')
-            ->with('status', 'E-mail bevestigd. Welkom — je account is actief.');
+            ->with('status', 'E-mail bevestigd. Welkom — je account is actief. Vul op je profiel nog een voornaam of bijnaam in.');
     }
 
     public function resend(Request $request): RedirectResponse
@@ -84,6 +103,7 @@ class VerifyEmailController extends Controller
         $mailOk = true;
         $user = User::query()->where('email', $email)->where('active', true)->first();
         if ($user && ! $user->hasVerifiedEmail()) {
+            $user->rotateEmailVerificationToken();
             $mailOk = SafeMail::notify($user, new VerifyEmailDutch);
         }
 

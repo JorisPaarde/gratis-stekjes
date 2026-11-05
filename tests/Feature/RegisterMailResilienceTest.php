@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
+use App\Models\GeocodeCache;
 use App\Models\User;
 use App\Notifications\VerifyEmailDutch;
+use App\Support\Geo;
 use App\Support\SafeMail;
 use Illuminate\Contracts\Notifications\Dispatcher;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 
@@ -14,14 +17,26 @@ function regMailPassword(): string
     return implode('-', ['TestOnly', 'RegMail', 'Passphrase', '9']);
 }
 
+function seedRegMailGeo(): void
+{
+    GeocodeCache::query()->updateOrCreate(
+        ['query_key' => Geo::normalizeQuery('nl:2011')],
+        ['lat' => 52.38, 'lon' => 4.64, 'label' => '2011 Haarlem', 'country' => 'NL', 'cached_at' => now()]
+    );
+    GeocodeCache::query()->updateOrCreate(
+        ['query_key' => Geo::normalizeQuery('nl:2011 AB')],
+        ['lat' => 52.38, 'lon' => 4.64, 'label' => '2011 Haarlem', 'country' => 'NL', 'cached_at' => now()]
+    );
+}
+
 function regMailForm(array $extra = []): array
 {
     return array_merge([
         'website' => '',
         'form_started' => time() - 10,
-        'voornaam' => 'Sam',
         'password' => regMailPassword(),
-        'password_confirmation' => regMailPassword(),
+        'country' => 'NL',
+        'postcode' => '2011 AB',
         'gratis_akkoord' => '1',
         'privacy' => '1',
     ], $extra);
@@ -36,6 +51,8 @@ test('SafeMail redigeert gevoelige data in exceptionsamenvatting', function () {
 });
 
 test('registratie maakt account aan zonder 500 als SMTP na response faalt', function () {
+    Http::fake();
+    seedRegMailGeo();
     $email = 'half-'.Str::lower(Str::random(8)).'@example.com';
 
     // Mail gaat via terminating/afterResponse: SMTP-fout mag geen 500 geven.
@@ -55,6 +72,8 @@ test('registratie maakt account aan zonder 500 als SMTP na response faalt', func
 
 test('opnieuw registreren met zelfde wachtwoord stuurt opnieuw voor unverified', function () {
     Notification::fake();
+    Http::fake();
+    seedRegMailGeo();
     $email = 'retry-'.Str::lower(Str::random(8)).'@example.com';
     $user = User::factory()->unverified()->create([
         'email' => $email,
@@ -85,19 +104,16 @@ test('bevestiging opnieuw vangt mailfout zonder 500', function () {
 test('registratie toont alle validatiefouten tegelijk', function () {
     $this->from(route('account.registreren'))
         ->post(route('account.registreren'), regMailForm([
-            'voornaam' => 'Test',
             'email' => 'ok-'.Str::lower(Str::random(6)).'@example.com',
             'password' => Str::random(4),
-            'password_confirmation' => Str::random(5),
+            'postcode' => '',
             'gratis_akkoord' => null,
             'privacy' => null,
         ]))
         ->assertRedirect(route('account.registreren'))
-        ->assertSessionHasErrors(['password', 'gratis_akkoord', 'privacy']);
+        ->assertSessionHasErrors(['password', 'postcode', 'gratis_akkoord', 'privacy']);
 
     $bag = session('errors');
-    expect($bag->get('password'))->toHaveCount(2);
-    expect(implode(' ', $bag->get('password')))->toContain('niet overeen');
     expect(implode(' ', $bag->get('password')))->toContain('10 tekens');
     expect($bag->first('gratis_akkoord'))->toContain('gratis');
     expect($bag->first('privacy'))->toContain('privacy');
@@ -107,10 +123,11 @@ test('registratie toont alle validatiefouten tegelijk', function () {
         'metaDescription' => 'x',
         'canonical' => route('account.registreren'),
         'formStarted' => time(),
+        'countries' => ['NL' => 'Nederland', 'BE' => 'België'],
+        'foundViaOptions' => [],
         'errors' => $bag,
     ])->render();
-    expect($html)->toContain('De wachtwoorden komen niet overeen')
-        ->toContain('Kies een wachtwoord van minstens 10 tekens')
+    expect($html)->toContain('Kies een wachtwoord van minstens 10 tekens')
         ->toContain('Je moet akkoord gaan: alleen gratis')
         ->toContain('privacyverklaring');
 });

@@ -159,4 +159,19 @@ return [
      * HARDE EIS: default uit. Bij uit: niets queue'en/versturen, alleen loggen.
      */
     'milestone_mail_enabled' => filter_var(env('MILESTONE_MAIL_ENABLED', false), FILTER_VALIDATE_BOOL),
+
+    /**
+     * Herinneringsmail na 24 uur voor onbevestigde accounts.
+     * Default UIT. Alleen accounts met created_at >= enabled_at.
+     * test_recipients (CSV): als gezet, alleen die adressen (staging-safeguard).
+     */
+    'verification_reminder' => [
+        'enabled' => filter_var(env('VERIFICATION_REMINDER_ENABLED', false), FILTER_VALIDATE_BOOL),
+        'enabled_at' => env('VERIFICATION_REMINDER_ENABLED_AT', ''),
+        'after_hours' => (int) env('VERIFICATION_REMINDER_AFTER_HOURS', 24),
+        'test_recipients' => array_values(array_filter(array_map(
+            static fn (string $email): string => strtolower(trim($email)),
+            explode(',', (string) env('REMINDER_TEST_RECIPIENTS', ''))
+        ))),
+    ],
 ];
