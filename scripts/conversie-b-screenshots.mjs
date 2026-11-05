@@ -28,9 +28,9 @@ const viewports = [
 const fbUas = [
   {
     name: 'fb-ios',
+    ...devices['iPhone 13'],
     userAgent:
       'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 [FBAN/FBIOS;FBAV/440.0.0.0.0;]',
-    ...devices['iPhone 13'],
   },
   {
     name: 'fb-android',
@@ -42,9 +42,9 @@ const fbUas = [
   },
   {
     name: 'ig-ios',
+    ...devices['iPhone 13'],
     userAgent:
       'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Instagram 302.0.0.0.0',
-    ...devices['iPhone 13'],
   },
 ];
 
