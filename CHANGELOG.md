@@ -9,6 +9,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.69.2] - 2026-11-05
+
+### Changed
+
+- Plantenasiel Haarlem heeft een eigen, rijkere pagina met praktische informatie, adoptie- en ruilregels, aanbieden van planten en een verwijzing naar Gratis planten.
+
 ## [0.69.1] - 2026-11-04
 
 ### Fixed
