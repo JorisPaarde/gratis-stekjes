@@ -214,3 +214,25 @@
   .home-stap p { font-size: 0.95rem; }
   .home-kaart-preview .home-pic img { aspect-ratio: 16 / 9; }
 }
+
+/* «Hier kun je ook aan meedoen» */
+.home-meedoen-kaarten { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: .9rem; }
+@media (min-width: 700px) { .home-meedoen-kaarten { grid-template-columns: 1fr 1fr; } }
+.home-meedoen-kaart { display: flex; gap: 1rem; align-items: center; height: 100%; padding: 1rem 1.1rem; border-radius: 1.1rem; border: 1px solid var(--line, rgba(26,18,16,.12)); background: #fff; text-decoration: none; color: inherit; transition: border-color .15s, transform .15s; }
+.home-meedoen-kaart:hover, .home-meedoen-kaart:focus-visible { border-color: #e8833a; transform: translateY(-2px); }
+.home-meedoen-kaart .illu { width: 80px; height: 80px; flex: 0 0 auto; }
+.home-meedoen-tekst { display: flex; flex-direction: column; gap: .25rem; }
+.home-meedoen-tekst strong { font-size: 1.15rem; color: var(--forest-deep, #163820); }
+.home-meedoen-link { font-weight: 700; color: #c8601f; }
+
+/* 0.70.1: foto's uitgelichte initiatieven */
+.init-foto { margin: 0; position: relative; }
+.init-foto img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; background: #e8f3e3; }
+.init-foto figcaption { position: absolute; right: .5rem; bottom: .4rem; font-size: .72rem; color: #fff; background: rgba(22,56,32,.7); padding: .1rem .45rem; border-radius: .4rem; }
+.home-meedoen-kaart:has(.init-foto) { flex-direction: column; align-items: stretch; gap: .75rem; padding: 0; overflow: hidden; }
+.home-meedoen-kaart:has(.init-foto) .home-meedoen-tekst { padding: 0 1.1rem 1rem; }
+/* 0.70.1: hele kaart klikbaar, hover + focus */
+.home-meedoen-kaart { min-height: 44px; cursor: pointer; }
+.home-meedoen-kaart:hover { border-color: #e8833a; box-shadow: 0 6px 18px rgba(22,56,32,.12); }
+.home-meedoen-kaart:hover .home-meedoen-link { text-decoration: underline; }
+.home-meedoen-kaart:focus-visible { outline: 3px solid #163820; outline-offset: 3px; border-color: #e8833a; }

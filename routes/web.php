@@ -101,6 +101,7 @@ Route::get('/doe-mee', [ContentPageController::class, 'doeMee'])->name('doe-mee'
 
 Route::get('/volkstuinen', [AudienceLandingController::class, 'volkstuinen'])->name('volkstuinen');
 Route::get('/struikroven', [InitiatiefController::class, 'struikroven'])->name('struikroven');
+Route::get('/stekchallenge', [InitiatiefController::class, 'stekchallenge'])->name('stekchallenge');
 Route::get('/help-mee', [AudienceLandingController::class, 'helpMee'])->name('help-mee');
 Route::post('/help-mee/partner', [MeedoenController::class, 'partner'])
     ->middleware('throttle:10,1')

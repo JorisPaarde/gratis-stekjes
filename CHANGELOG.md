@@ -3,11 +3,60 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.71.2] - 2026-11-05
+
+### Changed
+
+- Productiehotfix 0.69.2 samengevoegd; Plantenasiel Haarlem heeft nu ook op staging een echte tussenkop voor het aanbieden van planten.
+
+## [0.71.1] - 2026-11-05
+
+### Changed
+
+- Rijkere organisatiepagina voor Plantenasiel Haarlem op `/organisaties/plantenasiel-haarlem`: eigen verhaal, openingstijden, adres, bereikbaarheid, adoptie met vrijwillige bijdrage of verzorgingsmaterialen, links naar site en socials, en verwijzing naar Gratis planten voor planten weggeven.
+- Beheerbare intro-, praktijk- en ruiltekst voor deze organisatie; idempotente dataseed zonder initiatief-slug, zodat de bestaande URL behouden blijft. Geen foto vanwege ontbrekende gebruikstoestemming.
+
 ## [Unreleased]
 
 ### Added
 
 - (volgende PRs).
+
+## [0.71.0] - 2026-11-05
+
+### Added
+
+- Eigen pagina **/stekchallenge** (zelfde lijn als /struikroven): november is stekmaand, aftrap stekworkshop 8 nov in Elim, meedoen gratis in heel Nederland. Drie acties bovenaan (workshop volgen, workshop geven, contact). Beelden van Carpe Vitam (toestemming Dewy, 5 nov): groepsfoto als hero en op home-/initiatieven-kaartjes, Dewy met stekje bij het verhaal, campagnebanner klein in het materiaalblok. Credit «Foto: Carpe Vitam».
+- Agenda: workshop 8 november Elim als evenement gekoppeld aan Carpe Vitam, zichtbaar onder «Komende STEKchallenge-acties».
+- Aanmeldvinkje «Ik doe mee aan de STEKchallenge» (users.stekchallenge), met telling in beheer.
+- A4-poster en A5-flyer `/poster?voor=stekchallenge` met QR naar gratisplanten.nl/stekchallenge.
+- Organisatie Carpe Vitam in organisaties.json; sitemap en /organisaties/carpe-vitam leiden naar /stekchallenge.
+- Homepagekaartje en /initiatieven#stekchallenge linken naar /stekchallenge (groepsfoto i.p.v. plantpot-tekening).
+
+## [0.70.2] - 2026-11-05
+
+### Changed
+
+- Homepagekaartjes «Hier kun je ook aan meedoen»: hele kaart is één link naar /initiatieven#stekchallenge of #struikroven, toegankelijke naam = titel, duidelijke hover- en focus-visible-stijl.
+
+### Fixed
+
+- «Doe mee»-badge op /initiatieven vult niet meer de hele breedte van het kaartje; scroll-margin-top op de ankers.
+- /struikroven: lijst «Komende Struikroven-acties» springt nu in zoals «Voor Struikrovers», zonder grote witruimte tussen de acties.
+
+## [0.70.1] - 2026-11-05
+
+### Changed
+
+- «Hier kun je ook aan meedoen» (homepage) en «Doe mee» op /initiatieven: echte beelden op de kaartjes, met toestemming (5 nov 2026). Struikroven: foto Utrecht 2024 (Marjolein Vinkenoog); STEKchallenge: tekening plantje in pot (Carpe Vitam). Vaste verhouding 4:3, object-fit cover, webp 400/800 met srcset, width/height, loading=lazy, Nederlandse alt-teksten en naamsvermelding. Geen logo's.
+
+## [0.70.0] - 2026-11-05
+
+### Added
+
+- Homepage: blok **«Hier kun je ook aan meedoen»** onder «Doe mee», met kaartjes STEKchallenge (Carpe Vitam) en Struikroven naar /initiatieven.
+- /initiatieven: **«Doe mee»**-blok bovenaan met STEKchallenge (workshop volgen 8 nov in Elim, zelf een workshop geven, contact) en Struikroven (struikroven.nu en de eigen pagina). De workshop-link verdwijnt na 8 november vanzelf. Struikroven staat niet meer dubbel in de gewone lijst.
+- `data/uitgelichte-initiatieven.json` + `App\Services\UitgelichteInitiatieven`. Nog geen logo's of foto's (wacht op toestemming).
 
 ## [0.69.2] - 2026-11-05
 

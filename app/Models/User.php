@@ -47,6 +47,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'adres_plaats',
         'adres_delen',
         'struikrover',
+        'stekchallenge',
     ];
 
     protected $hidden = [
@@ -94,6 +95,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'adres_plaats' => SafeEncrypted::class,
             'adres_delen' => 'boolean',
             'struikrover' => 'boolean',
+            'stekchallenge' => 'boolean',
             'last_seen_at' => 'datetime',
             'lat' => 'float',
             'lon' => 'float',

@@ -165,6 +165,34 @@
   </div>
 </section>
 
+{{-- 8. Initiatieven om aan mee te doen --}}
+@php
+  $meedoen = app(\App\Services\UitgelichteInitiatieven::class)->all();
+@endphp
+@if(count($meedoen))
+<section class="section wrap home-section home-meedoen" id="ook-meedoen" aria-labelledby="ook-meedoen-titel">
+  <h2 id="ook-meedoen-titel">Hier kun je ook aan meedoen</h2>
+  <ul class="home-meedoen-kaarten">
+    @foreach($meedoen as $init)
+      <li>
+        <a class="home-meedoen-kaart" href="{{ $init['pagina_url'] ?? (route('partners').'#'.$init['anker']) }}" aria-labelledby="meedoen-{{ $init['anker'] }}">
+          @if($init['afbeelding'])
+            @include('partials.initiatief-foto', ['afbeelding' => $init['afbeelding']])
+          @else
+            @include('partials.illustraties.stek', ['naam' => $init['illustratie']])
+          @endif
+          <span class="home-meedoen-tekst">
+            <strong id="meedoen-{{ $init['anker'] }}">{{ $init['naam'] }}</strong>
+            <span>{{ $init['kort'] }}</span>
+            <span class="home-meedoen-link">Lees meer <span aria-hidden="true">→</span></span>
+          </span>
+        </a>
+      </li>
+    @endforeach
+  </ul>
+</section>
+@endif
+
 <section class="wrap home-credits" aria-label="Fotoverantwoording">
   @php
     $fotoCredits = collect(json_decode((string) file_get_contents(resource_path('data/foto-credits.json')), true)['fotos'] ?? [])

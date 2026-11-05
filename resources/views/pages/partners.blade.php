@@ -13,6 +13,37 @@
   <h1 class="page-title">{{ $h1 }}</h1>
   <p class="section-intro">Hier verzamel ik stekjesmarkten, plantenruilbeurzen en ruildagen voor 2026, plus vaste ruilinitiatieven zonder vaste datum. Het zijn geen officiële partnerschappen, alleen doorverwijzingen naar plekken rond gratis of gedeeld groen. Check altijd de externe link voor actuele informatie.</p>
 
+  @php
+  $uitgelicht = app(\App\Services\UitgelichteInitiatieven::class)->all();
+@endphp
+  @if(count($uitgelicht))
+    <h2 id="doe-mee">Doe mee</h2>
+    <div class="partners-uitgelicht">
+      @foreach($uitgelicht as $init)
+        <article class="partners-uitgelicht-kaart" id="{{ $init['anker'] }}">
+          <span class="badge partners-doe-mee">Doe mee</span>
+          @if($init['afbeelding'])
+            @include('partials.initiatief-foto', ['afbeelding' => $init['afbeelding']])
+          @else
+            @include('partials.illustraties.stek', ['naam' => $init['illustratie']])
+          @endif
+          @php
+            $intern = collect($init['acties'])->firstWhere('extern', false);
+            $titelUrl = $init['pagina_url'] ?? ($intern['url'] ?? null);
+          @endphp
+          <h3>@if($titelUrl)<a href="{{ $titelUrl }}">{{ $init['naam'] }}</a>@else{{ $init['naam'] }}@endif</h3>
+          @if($init['organisatie'] !== '')<p class="muted">{{ $init['organisatie'] }}</p>@endif
+          <p>{{ $init['tekst'] }}</p>
+          <ul class="partners-uitgelicht-acties">
+            @foreach($init['acties'] as $actie)
+              <li><a href="{{ $actie['url'] }}" @if($actie['extern']) rel="noopener noreferrer" target="_blank" @endif>{{ $actie['label'] }}</a></li>
+            @endforeach
+          </ul>
+        </article>
+      @endforeach
+    </div>
+  @endif
+
   <h2 id="agenda">Agenda 2026</h2>
   <p class="section-intro">Komende evenementen chronologisch, gegroepeerd per maand. Filter op provincie of type als je wilt.</p>
 
@@ -115,6 +146,7 @@
 
   <div class="stack partners-stack">
     @foreach($organisatieInitiatieven as $init)
+      @continue(in_array($init->initiatief_slug, app(\App\Services\UitgelichteInitiatieven::class)->ankers(), true))
       @php
         $kaartNaam = $init->korte_naam !== '' ? $init->korte_naam : $init->initiatief_slug;
         $kaartTekst = \Illuminate\Support\Str::limit(preg_replace('/\s+/', ' ', trim((string) $init->intro_tekst)) ?? '', 220);

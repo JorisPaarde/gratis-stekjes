@@ -36,6 +36,7 @@ class RegisterRequest extends FormRequest
             'gratis_akkoord' => ['accepted'],
             'privacy' => ['accepted'],
             'struikrover' => ['nullable', 'boolean'],
+            'stekchallenge' => ['nullable', 'boolean'],
             'website' => ['nullable', 'string', 'max:200'],
             'form_started' => ['required', 'integer'],
         ];

@@ -107,3 +107,26 @@
     flex: 1 1 16rem;
   }
 }
+
+/* 0.70.2: «Komende Struikroven-acties» lijnt uit met de andere lijsten */
+ul.struikroven-acties.list-plain { display: block; padding-left: 1.2rem; margin: 0 0 1.25rem; gap: 0; }
+ul.struikroven-acties.list-plain .struikroven-actie { margin: .4rem 0; }
+ul.struikroven-acties.list-plain .struikroven-actie p { margin: 0; }
+
+/* STEKchallenge hero + verhaal + banner */
+.struikroven-hero { margin: 0 0 1.5rem; max-width: 52rem; }
+.struikroven-hero img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: .6rem; background: #e8f3e3; }
+.struikroven-hero figcaption { margin: .35rem 0 0; font-size: .85rem; color: var(--muted, #5a6b5e); }
+
+.struikroven-verhaal { display: grid; gap: 1rem; margin: 0 0 1.5rem; max-width: 48rem; align-items: start; }
+.struikroven-verhaal-foto { margin: 0; max-width: 16rem; }
+.struikroven-verhaal-foto img { display: block; width: 100%; height: auto; border-radius: .5rem; background: #e8f3e3; }
+.struikroven-verhaal-foto figcaption { margin: .3rem 0 0; font-size: .8rem; color: var(--muted, #5a6b5e); }
+
+.struikroven-banner { margin: 0 0 1.25rem; max-width: 13.5rem; }
+.struikroven-banner img { display: block; width: 100%; height: auto; max-width: 215px; border-radius: .4rem; }
+.struikroven-banner figcaption { margin: .3rem 0 0; font-size: .8rem; color: var(--muted, #5a6b5e); }
+
+@media (min-width: 720px) {
+  .struikroven-verhaal { grid-template-columns: 16rem 1fr; }
+}

@@ -76,6 +76,19 @@ class MeedoenController extends Controller
                 'positie' => 'center 55%',
             ],
         ],
+        'stekchallenge' => [
+            'titel' => 'STEKchallenge',
+            'kop' => 'Planten over of op zoek? Ruil ze gratis in je buurt',
+            'sub' => 'Alles is gratis. Je spreekt zelf af en haalt de planten op.',
+            'doel' => 'stekchallenge',
+            'foto' => [
+                'alt' => 'Groep mensen met stekken in potten tijdens een stekbijeenkomst',
+                'maker' => 'Carpe Vitam',
+                'bron_url' => 'https://carpevitam.net/stekchallenge/',
+                'licentie' => 'Toestemming Carpe Vitam',
+                'positie' => 'center 45%',
+            ],
+        ],
         'struikroven' => [
             'titel' => 'Struikroven',
             'kop' => 'Planten over of op zoek? Ruil ze gratis in je buurt',
@@ -150,7 +163,7 @@ class MeedoenController extends Controller
         ];
         $bron = 'poster-'.$voor;
 
-        if ($isA5 && ($voor === 'struikroven' || $isInitiatief)) {
+        if ($isA5 && ($voor === 'struikroven' || $voor === 'stekchallenge' || $isInitiatief)) {
             $p = array_merge($p, [
                 'kop' => 'Planten over na de actie?',
                 'sub' => 'Deel planten, stekjes en zaden gratis met iemand in de buurt.',

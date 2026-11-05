@@ -17,15 +17,53 @@
   $aanmeldParam = trim((string) $init->aanmeld_param);
   $agendaUrl = trim((string) $init->agenda_url);
   $agendaHost = $agendaUrl !== '' ? (preg_replace('#^https?://#i', '', $agendaUrl) ?: $agendaUrl) : '';
+  $isStekchallenge = $slug === 'stekchallenge';
 @endphp
 <section class="section wrap struikroven-page">
   <h1 class="page-title">{{ $init->pagina_titel !== '' ? $init->pagina_titel : $korte }}</h1>
+
+  @if($isStekchallenge)
+    <figure class="struikroven-hero">
+      <picture>
+        <source type="image/webp" srcset="/assets/images/initiatieven/stekchallenge-groep-800.webp 800w, /assets/images/initiatieven/stekchallenge-groep-1280.webp 1280w" sizes="(min-width: 900px) 800px, 92vw">
+        <img src="/assets/images/initiatieven/stekchallenge-groep-800.jpg" srcset="/assets/images/initiatieven/stekchallenge-groep-800.jpg 800w, /assets/images/initiatieven/stekchallenge-groep-1280.jpg 1280w" sizes="(min-width: 900px) 800px, 92vw" width="800" height="600" alt="Groep mensen met stekken in potten tijdens een stekbijeenkomst" decoding="async">
+      </picture>
+      <figcaption>Foto: Carpe Vitam</figcaption>
+    </figure>
+
+    <h2>Doe mee</h2>
+    <p>Drie manieren om meteen te starten:</p>
+    <div class="struikroven-ctas" role="group" aria-label="STEKchallenge-acties">
+      <a class="btn struikroven-cta" href="https://carpevitam.net/event/stek-challenge-workshop-stekken-8-november/" rel="noopener noreferrer" target="_blank">Workshop volgen: 8 november in Elim</a>
+      <a class="btn btn-secondary struikroven-cta" href="https://carpevitam.net/stekchallenge/" rel="noopener noreferrer" target="_blank">Workshop geven</a>
+      <a class="btn btn-secondary struikroven-cta" href="https://carpevitam.net/contact/" rel="noopener noreferrer" target="_blank">Contact</a>
+    </div>
+  @endif
+
   @if($init->intro_titel !== '')
     <h2>{{ $init->intro_titel }}</h2>
   @endif
   @foreach($init->introAlineas() as $alinea)
     <p>{{ $alinea }}</p>
   @endforeach
+
+  @if($isStekchallenge)
+    <div class="struikroven-verhaal">
+      <figure class="struikroven-verhaal-foto">
+        <picture>
+          <source type="image/webp" srcset="/assets/images/initiatieven/stekchallenge-dewy-stekje-400.webp 400w, /assets/images/initiatieven/stekchallenge-dewy-stekje-800.webp 800w" sizes="(min-width: 720px) 280px, 70vw">
+          <img src="/assets/images/initiatieven/stekchallenge-dewy-stekje-400.jpg" srcset="/assets/images/initiatieven/stekchallenge-dewy-stekje-400.jpg 400w, /assets/images/initiatieven/stekchallenge-dewy-stekje-800.jpg 800w" sizes="(min-width: 720px) 280px, 70vw" width="400" height="533" alt="Dewy Mulder houdt een stekje in een pot vast" loading="lazy" decoding="async">
+        </picture>
+        <figcaption>Foto: Carpe Vitam</figcaption>
+      </figure>
+      <div>
+        <p>Geschikte soorten voor houtstekken in het najaar zijn onder meer <a href="{{ route('stektips.show', ['slug' => 'rode-bes']) }}">rode bes</a>, <a href="{{ route('stektips.show', ['slug' => 'zwarte-bes']) }}">zwarte bes</a>, <a href="{{ route('stektips.show', ['slug' => 'wilg']) }}">wilg</a> en <a href="{{ route('stektips.show', ['slug' => 'zwarte-vlier']) }}">vlier</a>.</p>
+        <p><a href="https://carpevitam.net/stekchallenge/" rel="noopener noreferrer" target="_blank">Registreer je stekken</a> — je krijgt een persoonlijke link per mail. <a href="https://carpevitam.net/geef-je-snoeihout-een-toekomst-doe-mee-met-de-stekchallenge/" rel="noopener noreferrer" target="_blank">Lees het persbericht</a>.</p>
+        <p class="muted">Kijk ook op onze <a href="{{ route('vermeerderen') }}">stektips</a> hoe je planten vermeerdert.</p>
+      </div>
+    </div>
+  @endif
+
   @if(trim((string) $init->site_url) !== '' || trim((string) $init->secundaire_link_label) !== '')
     <p class="struikroven-links muted">
       @if(trim((string) $init->site_url) !== '')
@@ -101,6 +139,15 @@
     <li><a href="{{ route('poster', ['voor' => $slug]) }}">A4-poster om te printen</a></li>
     <li><a href="{{ route('poster', ['voor' => $slug, 'formaat' => 'a5']) }}">A5-flyer om te printen</a></li>
   </ul>
+  @if($isStekchallenge)
+    <figure class="struikroven-banner">
+      <picture>
+        <source type="image/webp" srcset="/assets/images/initiatieven/stekchallenge-banner-215.webp 215w, /assets/images/initiatieven/stekchallenge-banner-430.webp 430w" sizes="215px">
+        <img src="/assets/images/initiatieven/stekchallenge-banner-215.jpg" srcset="/assets/images/initiatieven/stekchallenge-banner-215.jpg 215w, /assets/images/initiatieven/stekchallenge-banner-430.jpg 430w" sizes="215px" width="215" height="215" alt="STEKchallenge-campagnebanner" loading="lazy" decoding="async">
+      </picture>
+      <figcaption>Foto: Carpe Vitam · Deel met #STEKchallenge</figcaption>
+    </figure>
+  @endif
   <div class="struikroven-kopieer">
     <label class="struikroven-kopieer-label" for="{{ $deelId }}">Tekst voor nieuwsbrief of socials</label>
     <textarea id="{{ $deelId }}" class="struikroven-deeltekst" readonly rows="4">{{ $init->kopieertekst }}</textarea>
