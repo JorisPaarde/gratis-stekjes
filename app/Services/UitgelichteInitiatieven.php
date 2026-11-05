@@ -14,7 +14,7 @@ final class UitgelichteInitiatieven
     /**
      * Acties met een «tot»-datum verdwijnen na die dag (Europe/Amsterdam).
      *
-     * @return list<array{anker: string, naam: string, organisatie: string, kort: string, tekst: string, illustratie: string, acties: list<array{label: string, url: string, extern: bool}>}>
+     * @return list<array{anker: string, naam: string, organisatie: string, kort: string, tekst: string, illustratie: string, afbeelding: array{bestand: string, alt: string, credit: string}|null, acties: list<array{label: string, url: string, extern: bool}>}>
      */
     public function all(): array
     {
@@ -43,6 +43,11 @@ final class UitgelichteInitiatieven
                 'kort' => (string) ($item['kort'] ?? ''),
                 'tekst' => (string) ($item['tekst'] ?? ''),
                 'illustratie' => (string) ($item['illustratie'] ?? 'kopstek'),
+                'afbeelding' => ! empty($item['afbeelding']['bestand']) ? [
+                    'bestand' => (string) $item['afbeelding']['bestand'],
+                    'alt' => (string) ($item['afbeelding']['alt'] ?? ''),
+                    'credit' => (string) ($item['afbeelding']['credit'] ?? ''),
+                ] : null,
                 'acties' => $acties,
             ];
         }
