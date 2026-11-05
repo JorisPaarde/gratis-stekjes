@@ -15,5 +15,8 @@
   <p class="muted" style="margin-top:0">
     <a href="{{ route('aanbod') }}">Liever eerst kijken? Bekijk het aanbod</a>
   </p>
+  <p class="muted" style="margin-top:.75rem">
+    <a href="{{ route('account.welkom.verder') }}">Verder naar mijn account</a>
+  </p>
 </section>
 @endsection

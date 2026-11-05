@@ -14,9 +14,11 @@ use Illuminate\View\View;
 
 class WelcomeController extends Controller
 {
+    public const SESSION_RECOVERY_DONE = 'welcome_recovery_done';
+
     /**
      * Eenmalig welkomstscherm na eerste e-mailbevestiging.
-     * Zet welcome_shown_at bij weergave (idempotent).
+     * Zet welcome_shown_at bij weergave (idempotent; ook bij bot-UA).
      */
     public function show(Request $request): View|RedirectResponse
     {
@@ -27,12 +29,10 @@ class WelcomeController extends Controller
             return redirect()->route('account.index');
         }
 
-        $tracker = app(ConversionTracker::class);
-        // Bots meten/markeren niet: anders verbruikt een crawler-hit het eenmalige scherm.
-        $this->markShown($user, $request, $tracker);
+        $this->markShown($user);
 
         try {
-            $tracker->recordForUser(
+            app(ConversionTracker::class)->recordForUser(
                 ConversionEvent::TYPE_WELCOME_VIEW,
                 $user,
                 $request,
@@ -58,11 +58,10 @@ class WelcomeController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        $tracker = app(ConversionTracker::class);
-        $this->markShown($user, $request, $tracker);
+        $this->markShown($user);
 
         try {
-            $tracker->recordForUser(
+            app(ConversionTracker::class)->recordForUser(
                 ConversionEvent::TYPE_WELCOME_CTA_CLICK,
                 $user,
                 $request,
@@ -75,12 +74,21 @@ class WelcomeController extends Controller
         return redirect()->route('aanbieden');
     }
 
-    private function markShown(User $user, Request $request, ConversionTracker $tracker): void
+    /**
+     * Escape: markeer en ga naar account (geen vastloop als CTA niet past).
+     */
+    public function continue(Request $request): RedirectResponse
     {
-        if ($tracker->isBot($request)) {
-            return;
-        }
+        /** @var User $user */
+        $user = $request->user();
 
+        $this->markShown($user);
+
+        return redirect()->route('account.index');
+    }
+
+    private function markShown(User $user): void
+    {
         if ($user->welcome_shown_at !== null) {
             return;
         }

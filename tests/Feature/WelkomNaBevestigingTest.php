@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Account\WelcomeController;
 use App\Models\Aanbod;
 use App\Models\ConversionEvent;
 use App\Models\User;
@@ -32,6 +33,7 @@ test('eerste bevestiging stuurt door naar welkomstscherm en zet welcome_shown_at
         ->assertSee('Je e-mailadres is bevestigd. Heb je een plant, stekje of zakje zaden over? Zet je eerste aanbod online, dan kunnen buren het vinden.', false)
         ->assertSee('Zet je eerste stekje online', false)
         ->assertSee('Liever eerst kijken? Bekijk het aanbod', false)
+        ->assertSee('Verder naar mijn account', false)
         ->assertDontSee('Volgende stap', false);
 
     expect($user->fresh()->welcome_shown_at)->not->toBeNull();
@@ -114,7 +116,8 @@ test('welkom-link naar openbaar aanbod werkt', function () {
     $html = $this->get(route('account.welkom'))->assertOk()->getContent();
 
     expect($html)->toContain(route('aanbod'))
-        ->and($html)->toContain(route('account.welkom.cta'));
+        ->and($html)->toContain(route('account.welkom.cta'))
+        ->and($html)->toContain(route('account.welkom.verder'));
 });
 
 test('lid met al aanbod mag welkom bij eerste verify nog zien', function () {
@@ -188,31 +191,60 @@ test('welcome events staan niet in FUNNEL_TYPES', function () {
         ->and(ConversionEvent::FUNNEL_TYPES)->toContain(ConversionEvent::TYPE_EMAIL_VERIFIED);
 });
 
-test('bot-UA zet welcome_shown_at niet; menselijke UA wel', function () {
-    $user = User::factory()->unverified()->create(['email' => 'welkom-bot@example.com']);
-    $token = $user->rotateEmailVerificationToken();
+test('WhatsApp-UA markeert welkom; daarna geen recovery naar welkom', function () {
+    $user = User::factory()->create([
+        'email' => 'welkom-whatsapp@example.com',
+        'email_verified_at' => now(),
+        'welcome_shown_at' => null,
+    ]);
 
-    $this->get(welkomVerifyUrl($user, $token))->assertRedirect(route('account.welkom'));
-    $this->assertAuthenticatedAs($user);
-    expect($user->fresh()->welcome_shown_at)->toBeNull();
-
-    $this->withHeaders(['User-Agent' => 'Googlebot/2.1 (+http://www.google.com/bot.html)'])
+    $this->actingAs($user)
+        ->withHeaders(['User-Agent' => 'WhatsApp/2.24.0'])
         ->get(route('account.welkom'))
         ->assertOk()
         ->assertSee('Welkom bij Gratis planten', false);
 
-    expect($user->fresh()->welcome_shown_at)->toBeNull();
+    expect($user->fresh()->welcome_shown_at)->not->toBeNull();
+    // WhatsApp matcht BotUserAgent → geen welcome_view-meting.
     expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_WELCOME_VIEW)->count())->toBe(0);
 
-    $this->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; GratisPlantenTest/1.0)'])
+    $this->actingAs($user->fresh())
+        ->get(route('account.index'))
+        ->assertOk()
+        ->assertSee('Mijn account', false);
+});
+
+test('bot-UA markeert welkom maar meet welcome_view niet; menselijke UA meet wel', function () {
+    $botUser = User::factory()->create([
+        'email' => 'welkom-bot-meet@example.com',
+        'email_verified_at' => now(),
+        'welcome_shown_at' => null,
+    ]);
+
+    $this->actingAs($botUser)
+        ->withHeaders(['User-Agent' => 'Googlebot/2.1 (+http://www.google.com/bot.html)'])
         ->get(route('account.welkom'))
         ->assertOk();
 
-    expect($user->fresh()->welcome_shown_at)->not->toBeNull();
+    expect($botUser->fresh()->welcome_shown_at)->not->toBeNull();
+    expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_WELCOME_VIEW)->count())->toBe(0);
+
+    $human = User::factory()->create([
+        'email' => 'welkom-human-meet@example.com',
+        'email_verified_at' => now(),
+        'welcome_shown_at' => null,
+    ]);
+
+    $this->actingAs($human)
+        ->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; GratisPlantenTest/1.0)'])
+        ->get(route('account.welkom'))
+        ->assertOk();
+
+    expect($human->fresh()->welcome_shown_at)->not->toBeNull();
     expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_WELCOME_VIEW)->count())->toBe(1);
 });
 
-test('recovery: GET /account met welcome_shown_at null stuurt door naar welkom', function () {
+test('recovery: eerste GET /account met null stuurt door; tweede niet (anti-vastloop)', function () {
     $user = User::factory()->create([
         'email' => 'welkom-recovery-account@example.com',
         'email_verified_at' => now(),
@@ -221,7 +253,17 @@ test('recovery: GET /account met welcome_shown_at null stuurt door naar welkom',
 
     $this->actingAs($user)
         ->get(route('account.index'))
-        ->assertRedirect(route('account.welkom'));
+        ->assertRedirect(route('account.welkom'))
+        ->assertSessionHas(WelcomeController::SESSION_RECOVERY_DONE, true);
+
+    // Simuleer mislukte mark: null blijft, zelfde sessie.
+    expect($user->fresh()->welcome_shown_at)->toBeNull();
+
+    $this->actingAs($user)
+        ->get(route('account.index'))
+        ->assertOk()
+        ->assertSee('Mijn account', false)
+        ->assertSessionHas(WelcomeController::SESSION_RECOVERY_DONE, true);
 });
 
 test('recovery: login met welcome_shown_at null landt op welkom', function () {
@@ -237,7 +279,9 @@ test('recovery: login met welcome_shown_at null landt op welkom', function () {
         'email' => 'welkom-recovery-login@example.com',
         'password' => $plain,
         'next' => '/aanbieden',
-    ]))->assertRedirect(route('account.welkom'));
+    ]))
+        ->assertRedirect(route('account.welkom'))
+        ->assertSessionHas(WelcomeController::SESSION_RECOVERY_DONE, true);
 
     $this->assertAuthenticatedAs($user);
 });
@@ -250,6 +294,25 @@ test('recovery: user met welcome_shown_at blijft op /account', function () {
     ]);
 
     $this->actingAs($user)
+        ->get(route('account.index'))
+        ->assertOk()
+        ->assertSee('Mijn account', false);
+});
+
+test('Verder naar mijn account markeert en landt op account', function () {
+    $user = User::factory()->create([
+        'email' => 'welkom-verder@example.com',
+        'email_verified_at' => now(),
+        'welcome_shown_at' => null,
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('account.welkom.verder'))
+        ->assertRedirect(route('account.index'));
+
+    expect($user->fresh()->welcome_shown_at)->not->toBeNull();
+
+    $this->actingAs($user->fresh())
         ->get(route('account.index'))
         ->assertOk()
         ->assertSee('Mijn account', false);

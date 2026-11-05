@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Account\WelcomeController;
 use App\Services\MilestoneService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,8 +16,11 @@ class AccountController extends Controller
     {
         $user = $request->user();
 
-        // Recovery: gemiste eerste weergave (bijv. bot-hit of afgebroken redirect) alsnog tonen.
-        if ($user->welcome_shown_at === null) {
+        // Recovery max. 1× per sessie: voorkomt permanente loop als markeren faalt.
+        if ($user->welcome_shown_at === null
+            && ! $request->session()->get(WelcomeController::SESSION_RECOVERY_DONE)) {
+            $request->session()->put(WelcomeController::SESSION_RECOVERY_DONE, true);
+
             return redirect()->route('account.welkom');
         }
 

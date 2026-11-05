@@ -7,14 +7,14 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- Eenmalig welkomstscherm na de eerste e-mailbevestiging (`GET /account/welkom`): knop naar `/aanbieden`, link naar het openbare aanbod. Datumveld `users.welcome_shown_at` (bestaande geverifieerde leden krijgen backfill, zodat zij het scherm nooit zien). Bot-UA’s markeren het scherm niet (zelfde gate als ConversionTracker), zodat een crawler-hit het niet verbruikt.
+- Eenmalig welkomstscherm na de eerste e-mailbevestiging (`GET /account/welkom`): knop naar `/aanbieden`, link naar het openbare aanbod, escape «Verder naar mijn account» (`/account/welkom/verder`). Datumveld `users.welcome_shown_at` (bestaande geverifieerde leden krijgen backfill, zodat zij het scherm nooit zien). Markeren gebeurt altijd bij show/cta/verder (ook WhatsApp/bot-UA); alleen de conversiemeting blijft bot-gated.
 - Conversie-events `welcome_view` en `welcome_cta_click` (server-side bij auth). Bewust **niet** in de publieke trechter-`FUNNEL_TYPES` (dashboard blijft `email_verified` → `first_offer`); wel meetbaar naast de trechter. `first_offer` ongewijzigd.
 - AVG-export bevat `welcome_shown_at`; bij accountverwijdering verdwijnt het veld mee met de userrij.
 
 ### Changed
 
 - Na eerste geldige bevestiging + auto-login: redirect naar `/account/welkom` in plaats van direct `/account`. Herhaalde bevestiging of opnieuw inloggen toont het scherm niet opnieuw. Daarna blijft `VolgendeStap` leidend op `/account`.
-- Recovery: zolang `welcome_shown_at` null is, sturen `GET /account` en geslaagde login door naar `/account/welkom` (geen loop op welkom zelf).
+- Recovery: `GET /account` en geslaagde login sturen hooguit 1× per sessie door naar welkom (`welcome_recovery_done`), zodat een mislukte mark geen permanente loop geeft.
 - Privacytekst: welkomstscherm-events genoemd bij conversiemeting.
 
 ## [0.76.0] - 2026-11-05

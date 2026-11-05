@@ -235,6 +235,7 @@ Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(functio
 
     Route::get('/account/welkom', [WelcomeController::class, 'show'])->name('account.welkom');
     Route::get('/account/welkom/cta', [WelcomeController::class, 'cta'])->name('account.welkom.cta');
+    Route::get('/account/welkom/verder', [WelcomeController::class, 'continue'])->name('account.welkom.verder');
 
     Route::get('/account/profiel', [ProfileController::class, 'edit'])->name('account.profiel');
     Route::post('/account/profiel', [ProfileController::class, 'update']);
