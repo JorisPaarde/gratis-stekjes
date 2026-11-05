@@ -98,3 +98,14 @@
 .partners-past .partners-event-list {
   margin-top: 0.85rem;
 }
+
+/* Uitgelicht: initiatieven om aan mee te doen (bovenaan /initiatieven) */
+.partners-uitgelicht { display: grid; gap: 1rem; margin: 1rem 0 2.5rem; }
+@media (min-width: 760px) { .partners-uitgelicht { grid-template-columns: 1fr 1fr; } }
+.partners-uitgelicht-kaart { position: relative; background: #fff; border: 2px solid #e8833a; border-radius: 1.25rem; padding: 1.25rem; scroll-margin-top: 5rem; }
+.partners-uitgelicht-kaart .illu { width: 72px; height: 72px; }
+.partners-uitgelicht-kaart h3 { margin: .5rem 0 .1rem; }
+.partners-uitgelicht-kaart > p { margin: .3rem 0; }
+.partners-doe-mee { position: absolute; top: 1rem; right: 1rem; background: #e8833a; color: #fff; }
+.partners-uitgelicht-acties { margin: .75rem 0 0; padding-left: 1.1rem; }
+.partners-uitgelicht-acties li { margin: .25rem 0; }
