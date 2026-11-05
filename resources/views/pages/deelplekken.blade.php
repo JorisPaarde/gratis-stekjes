@@ -43,6 +43,7 @@
   ];
 @endphp
 <section class="section wrap deelplekken-page">
+  @include('partials.plekken-tabs')
   <h1 class="deelplekken-titel">Vind een deelplek in de buurt</h1>
   <p class="section-intro">Plantenasiels, plantenbiebs, ruilkastjes en zadenbibliotheken in Nederland en België: plekken waar je planten, stekjes of zaden kunt brengen, ruilen of ophalen. Kijk vóór je gaat even op de website van de plek voor de openingstijden.</p>
 

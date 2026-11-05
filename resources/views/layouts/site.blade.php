@@ -75,7 +75,7 @@
         <a href="{{ route('aanbod') }}"><x-icon name="kaart" :size="16" /> Aanbod</a>
         <a href="{{ route('hoe-werkt-het') }}"><x-icon name="info" :size="16" /> Hoe werkt het</a>
         <a href="{{ route('vermeerderen') }}" @if(request()->routeIs('vermeerderen', 'stektips.*')) aria-current="page" @endif><x-icon name="stekje" :size="16" /> Vermeerderen</a>
-        <a href="{{ route('deelplekken') }}"><x-icon name="locatie" :size="16" /> Deelplekken</a>
+        <a href="{{ route('deelplekken') }}" @if(request()->routeIs('deelplekken', 'agenda', 'partners', 'organisaties.*', 'initiatief.show', 'struikroven', 'stekchallenge')) aria-current="page" @endif><x-icon name="locatie" :size="16" /> Plekken &amp; initiatieven</a>
         <a href="{{ route('help-mee') }}" @if(request()->routeIs('help-mee')) aria-current="page" @endif><x-icon name="delen" :size="16" /> Help mee</a>
         @can('see-admin-dashboard')
           <a href="{{ route('beheer.index') }}"><x-icon name="kaart" :size="16" /> Dashboard</a>
@@ -137,6 +137,7 @@
             <li><a href="{{ route('aanbod') }}">Aanbod en kaart</a></li>
             <li><a href="{{ route('deelplekken') }}">Deelplekken</a></li>
             <li><a href="{{ route('gratis-planten.index') }}">Gratis planten in jouw stad</a></li>
+            <li><a href="{{ route('agenda') }}">Agenda</a></li>
             <li><a href="{{ route('partners') }}">Initiatieven</a></li>
           </ul>
         </div>

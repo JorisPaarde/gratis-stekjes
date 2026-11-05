@@ -36,16 +36,22 @@ test('initiatievenpagina toont SEO-title, H1, lege agenda en vaste initiatieven'
     // Seed-evenementen (bijv. STEKchallenge-workshop) wissen voor deze lege-agenda-assert.
     Evenement::query()->delete();
 
-    $this->get('/initiatieven')
+    $this->get('/agenda')
         ->assertOk()
-        ->assertSee('Stekjesmarkt, plantenruilbeurs en ruilinitiatieven', false)
-        ->assertSee('Plantenruilbeurzen, stekjesmarkten en initiatieven', false)
+        ->assertSee('Agenda stekjesmarkten, plantenruilbeurzen en ruildagen', false)
+        ->assertSee('Agenda: stekjesmarkten en plantenruilbeurzen', false)
         ->assertSee('Er staan nog geen evenementen gepland', false)
         ->assertDontSee('nog geen data', false)
         ->assertDontSee('Nog geen data', false)
-        ->assertSee('Meld het', false)
-        ->assertSee('Vaste ruilinitiatieven', false)
-        ->assertSee('Voedselbosbouw.org', false)
+        ->assertSee('Meld het', false);
+
+    $this->get('/initiatieven')
+        ->assertOk()
+        ->assertSee('Initiatieven om aan mee te doen', false)
+        ->assertSee('Er staan nu geen evenementen gepland', false)
+        ->assertSee(route('agenda'), false)
+        ->assertSee('Organisaties en initiatieven', false)
+        ->assertSee('Stichting Voedselbosbouw Nederland', false)
         ->assertDontSee('Stekjesroute', false);
 });
 
@@ -71,7 +77,7 @@ test('komende evenementen chronologisch per maand en verborgen blijven weg', fun
         'visible' => false,
     ]);
 
-    $html = $this->get('/initiatieven')
+    $html = $this->get('/agenda')
         ->assertOk()
         ->assertSee('Mei-markt', false)
         ->assertSee('Juni-beurs', false)
@@ -105,7 +111,7 @@ test('verlopen evenementen staan in inklapbaar Geweest', function () {
         'provincie' => 'Zuid-Holland',
     ]);
 
-    $this->get('/initiatieven')
+    $this->get('/agenda')
         ->assertOk()
         ->assertSee('Komende markt', false)
         ->assertSee('Geweest', false)
@@ -130,16 +136,20 @@ test('filter op provincie en type', function () {
     ]);
 
     $this->get('/initiatieven?provincie=Utrecht')
+        ->assertRedirect(route('agenda', ['provincie' => 'Utrecht']))
+        ->assertStatus(301);
+
+    $this->get('/agenda?provincie=Utrecht')
         ->assertOk()
         ->assertSee('Utrecht markt', false)
         ->assertDontSee('Gelderland beurs', false);
 
-    $this->get('/initiatieven?type=plantenruilbeurs')
+    $this->get('/agenda?type=plantenruilbeurs')
         ->assertOk()
         ->assertSee('Gelderland beurs', false)
         ->assertDontSee('Utrecht markt', false);
 
-    $this->get('/initiatieven?type=onzin')
+    $this->get('/agenda?type=onzin')
         ->assertOk()
         ->assertSee('Utrecht markt', false)
         ->assertSee('Gelderland beurs', false);

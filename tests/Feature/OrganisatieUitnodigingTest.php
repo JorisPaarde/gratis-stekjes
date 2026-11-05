@@ -138,9 +138,8 @@ test('struikroven heeft initiatiefpagina: org-URL 301, kruislink MeerBomen Nu na
         ->assertSee('Stichting Struikroven', false)
         ->assertDontSee(route('organisaties.show', ['slug' => 'struikroven']), false);
 
-    $this->get(route('organisaties.index'))
+    $this->get(route('partners'))
         ->assertOk()
-        ->assertSee('Stichting Struikroven', false)
         ->assertSee(route('initiatief.show', ['slug' => 'struikroven']), false)
         ->assertDontSee('/organisaties/struikroven', false);
 });
@@ -197,7 +196,8 @@ test('alle organisatiepaginas 200 met config/route-cache en APP_DEBUG=false', fu
             $response->assertOk()->assertDontSee('Er ging iets mis', false);
         }
 
-        $this->get('/organisaties')->assertOk();
+        $this->get('/organisaties')->assertRedirect('/initiatieven#organisaties');
+        $this->get('/initiatieven')->assertOk();
         $this->get('/voor-organisaties')->assertOk();
         $this->get('/struikroven')->assertOk();
     } finally {
@@ -359,13 +359,13 @@ test('sitemap bevat voor-organisaties en organisatiepaginas', function () {
 
 test('plant-voor-plant URL redirect naar organisaties-overzicht', function () {
     $this->get('/organisaties/plant-voor-plant')
-        ->assertRedirect('/organisaties')
+        ->assertRedirect('/initiatieven#organisaties')
         ->assertStatus(301);
 });
 
 test('verborgen stekjesroute is geen publieke organisatiepagina', function () {
     $this->get('/organisaties/stekjesroute')->assertNotFound();
-    $this->get('/organisaties')
+    $this->get('/initiatieven')
         ->assertOk()
         ->assertDontSee('Stekjesroute', false)
         ->assertSee('Het Bomenproject', false);
@@ -386,7 +386,7 @@ test('docs uitnodigingen bestaat en waarschuwt niet versturen', function () {
 
 test('aanmeldbevestiging is ik-vorm (afzender Gratis planten)', function () {
     $plek = new Deelplek(['naam' => 'Testplek']);
-    $mail = (new \App\Notifications\DeelplekAanmeldingBevestiging($plek))->toMail((object) []);
+    $mail = (new DeelplekAanmeldingBevestiging($plek))->toMail((object) []);
     $lines = collect($mail->introLines)->implode(' ');
     expect($lines)->toContain('Ik heb je aanmelding');
     expect($lines)->toContain('zet ik de plek');

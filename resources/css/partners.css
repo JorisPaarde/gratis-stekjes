@@ -22,7 +22,7 @@
   display: grid;
   gap: 0.75rem 1rem;
   align-items: end;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
   max-width: 40rem;
 }
 
@@ -119,3 +119,15 @@
 .partners-uitgelicht-kaart:has(.init-foto) .partners-doe-mee { position: absolute; top: .75rem; left: .75rem; z-index: 1; }
 .partners-uitgelicht-kaart:has(.init-foto) .partners-doe-mee { right: auto; width: auto; display: inline-block; }
 .partners-uitgelicht-kaart { scroll-margin-top: 6rem; }
+
+.partners-filter-grid label, .partners-filter-grid select { min-width: 0; width: 100%; box-sizing: border-box; }
+
+/* Gids: filter op soort (zelfde chips als deelplekken) */
+.partners-soorten { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0 0 1rem; }
+.partners-soorten .dp-chip { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.8rem; border-radius: 999px; border: 1px solid rgba(31, 77, 43, 0.3); background: #fff; color: var(--forest-deep); font-weight: 600; font-size: 0.9rem; text-decoration: none; }
+.partners-soorten .dp-chip span { font-weight: 400; color: var(--ink-soft); }
+.partners-soorten .dp-chip:hover { border-color: var(--forest); }
+.partners-soorten .dp-chip.is-actief { background: var(--forest); border-color: var(--forest); color: #fff; }
+.partners-soorten .dp-chip.is-actief span { color: #d9e8d4; }
+.partners-gids h3 { margin-bottom: .2rem; }
+.partners-gids .muted { margin-top: 0; font-size: .9rem; }

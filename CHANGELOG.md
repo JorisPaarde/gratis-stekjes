@@ -3,6 +3,26 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.74.0] - 2026-11-05
+
+### Changed
+
+- /initiatieven heeft nu een gids «Organisaties en initiatieven» uit `data/organisaties.json`, met filter op soort (initiatief, plantenasiel, zadenbibliotheek, voedselbos, tuinvereniging) en de verenigingen van leden. De handgeschreven kaarten (Voedselbosbouw, MeerBomen Nu, «Andere links») zijn weg.
+- /organisaties stuurt met 301 door naar /initiatieven#organisaties; de losse lijstpagina is weg en staat niet meer in de sitemap.
+
+## [0.73.0] - 2026-11-05
+
+### Added
+
+- Eigen pagina /agenda met stekjesmarkten, plantenruilbeurzen en ruildagen (filters op type en provincie).
+- Tabs Deelplekken · Agenda · Initiatieven bovenaan die drie pagina's.
+
+### Changed
+
+- Menu: «Deelplekken» heet nu «Plekken & initiatieven» en is actief op deelplekken, agenda, initiatieven en organisatie-/initiatiefpagina's. Footer heeft een link naar Agenda.
+- /initiatieven gaat over meedoen en vaste initiatieven, met de eerstvolgende 3 evenementen en een link naar /agenda. Oude filterlinks /initiatieven?type=… en ?provincie=… sturen met 301 door naar /agenda.
+- Agendafilter past op smalle schermen.
+
 ## [0.72.0] - 2026-11-05
 
 ### Changed
