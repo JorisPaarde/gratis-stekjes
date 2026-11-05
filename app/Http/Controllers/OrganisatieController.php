@@ -107,6 +107,19 @@ class OrganisatieController extends Controller
             $meta = $kort !== '' ? $kort : $naam.': organisatie rond gratis planten delen.';
         }
 
+        if ($slug === 'plantenasiel-haarlem') {
+            return view('pages.plantenasiel-haarlem', [
+                'title' => $naam,
+                'metaDescription' => $meta,
+                'canonical' => route('organisaties.show', ['slug' => $slug]),
+                'org' => $org,
+                'deelplekken' => $deelplekkenRows,
+                'extraLinks' => $extraLinks,
+                'typeLabels' => $deelplekken->typeLabels(),
+                'initiatief' => $init,
+            ]);
+        }
+
         return view('pages.organisatie-show', [
             'title' => $naam,
             'metaDescription' => $meta,
