@@ -25,6 +25,36 @@
       "waarschuwing": ""
     },
     {
+      "slug": "aardpeer",
+      "naam": "Aardpeer",
+      "latijn": "Helianthus tuberosus",
+      "categorie": "eetbaar",
+      "tags": [
+        "voedselbos"
+      ],
+      "waarom": "Knollen als wintergroente; elk knolstukje groeit uit",
+      "methode": "Knollen of knolstukken planten",
+      "wanneer": "Mrt-apr planten; oogst nov-feb",
+      "welk_hout": "Gezonde knol of stuk met groeipunt",
+      "lengte_snit": "Hele knol of stuk met oog, 10-15 cm diep",
+      "water_grond": "Gewone tuingrond; vaste plek want woekert",
+      "licht": "Zon",
+      "water": "Matig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Direct; oogst na één seizoen",
+      "verwanten": [
+        "artisjok",
+        "turkse-rabarber",
+        "smeerwortel"
+      ],
+      "waarschuwing": "Woekert sterk via knollen. Oogst alles wat je niet wilt laten staan.",
+      "ervaringen": "",
+      "bronnen": "RHS — Jerusalem artichoke — https://www.rhs.org.uk/vegetables/jerusalem-artichokes/grow-your-own",
+      "kort": "Knollen planten in maart-april",
+      "seo_werkwoord": "stekken"
+    },
+    {
       "slug": "abrikoos",
       "naam": "Abrikoos",
       "latijn": "Prunus armeniaca",
@@ -78,6 +108,36 @@
       "seo_werkwoord": "scheuren"
     },
     {
+      "slug": "akelei",
+      "naam": "Akelei",
+      "latijn": "Aquilegia vulgaris",
+      "categorie": "sier",
+      "tags": [
+        "inheems"
+      ],
+      "waarom": "Inheemse bosrandplant; zaait trouw",
+      "methode": "Zaad",
+      "wanneer": "Zaaien jun-aug (vers) of najaar/vroege lente",
+      "welk_hout": "Rijp zaad",
+      "lengte_snit": "Oppervlakkig zaaien; licht nodig om te kiemen",
+      "water_grond": "Vochtige, humusrijke grond",
+      "licht": "Halfschaduw tot zon",
+      "water": "Matig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Bloei vaak vanaf jaar twee",
+      "verwanten": [
+        "vingerhoedskruid",
+        "gevlekt-longkruid",
+        "gewone-margriet"
+      ],
+      "waarschuwing": "Zaden en plant kunnen giftig zijn bij inname. Niet eten.",
+      "ervaringen": "",
+      "bronnen": "RHS — Aquilegia — https://www.rhs.org.uk/plants/aquilegia",
+      "kort": "Vers zaad zaaien; zaait zichzelf uit",
+      "seo_werkwoord": "zaaien"
+    },
+    {
       "slug": "aloe-vera",
       "naam": "Aloe vera",
       "latijn": "Aloe vera",
@@ -128,6 +188,32 @@
       "kort": "Scheuren of stek met wortelstuk"
     },
     {
+      "slug": "appelbes",
+      "naam": "Appelbes",
+      "latijn": "Aronia",
+      "categorie": "eetbaar",
+      "waarom": "Uitlopers afsteken, winterhoutstek of zachthoutstek",
+      "methode": "Uitlopers afsteken, winterhoutstek of zachthoutstek",
+      "wanneer": "Afsteken nov–mrt; zachthout jun",
+      "welk_hout": "Bewortelde uitlopers of eenjarig hout",
+      "lengte_snit": "Uitlopers met wortel lossteken; of ±15–20 cm winterhout",
+      "water_grond": "Grond; vochtig houden na verplanten",
+      "licht": "Zon tot halfschaduw",
+      "water": "Matig tot vochtig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk tot gemiddeld",
+      "klaar": "Direct bij bewortelde uitloper",
+      "verwanten": [
+        "blauwe-bes",
+        "rode-bes",
+        "zwarte-bes"
+      ],
+      "waarschuwing": "",
+      "ervaringen": "",
+      "bronnen": "RHS — Hardwood cuttings — https://www.rhs.org.uk/propagation/hardwood-cuttings",
+      "kort": "Uitlopers of winterhoutstek"
+    },
+    {
       "slug": "appel",
       "naam": "Appelboom",
       "latijn": "Malus domestica",
@@ -173,30 +259,34 @@
       ]
     },
     {
-      "slug": "appelbes",
-      "naam": "Appelbes",
-      "latijn": "Aronia",
+      "slug": "artisjok",
+      "naam": "Artisjok",
+      "latijn": "Cynara cardunculus var. scolymus",
       "categorie": "eetbaar",
-      "waarom": "Uitlopers afsteken, winterhoutstek of zachthoutstek",
-      "methode": "Uitlopers afsteken, winterhoutstek of zachthoutstek",
-      "wanneer": "Afsteken nov–mrt; zachthout jun",
-      "welk_hout": "Bewortelde uitlopers of eenjarig hout",
-      "lengte_snit": "Uitlopers met wortel lossteken; of ±15–20 cm winterhout",
-      "water_grond": "Grond; vochtig houden na verplanten",
-      "licht": "Zon tot halfschaduw",
-      "water": "Matig tot vochtig",
-      "hulpmiddel": "Niet nodig",
-      "kans": "Makkelijk tot gemiddeld",
-      "klaar": "Direct bij bewortelde uitloper",
-      "verwanten": [
-        "blauwe-bes",
-        "rode-bes",
-        "zwarte-bes"
+      "tags": [
+        "voedselbos"
       ],
-      "waarschuwing": "",
+      "waarom": "Meerjarige knopgroente; zaaien of scheuren van zijscheuten",
+      "methode": "Zaad of scheuren van opslag",
+      "wanneer": "Zaaien feb-apr; scheuren mrt-apr",
+      "welk_hout": "Zaad, of zijscheut met eigen wortels",
+      "lengte_snit": "Zijscheuten lossteken; zaad voorzaaien warm",
+      "water_grond": "Voedzame, doorlatende grond; ruimte",
+      "licht": "Volle zon",
+      "water": "Gelijkmatig vochtig in de groei",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Gemiddeld",
+      "klaar": "Na aanslaan; oogst vaak vanaf jaar twee",
+      "verwanten": [
+        "kardoen",
+        "aardpeer",
+        "eeuwig-moes"
+      ],
+      "waarschuwing": "Vorstgevoelig: in koude winters afdekken of opkuilen.",
       "ervaringen": "",
-      "bronnen": "RHS — Hardwood cuttings — https://www.rhs.org.uk/propagation/hardwood-cuttings",
-      "kort": "Uitlopers of winterhoutstek"
+      "bronnen": "RHS — Artichoke — https://www.rhs.org.uk/vegetables/artichokes/grow-your-own",
+      "kort": "Zaaien of zijscheuten scheuren in het voorjaar",
+      "seo_werkwoord": "scheuren"
     },
     {
       "slug": "basilicum",
@@ -347,6 +437,67 @@
       "kort": "Afleggen van een bloeiende plant; zaailing bloeit laat"
     },
     {
+      "slug": "bosaardbei",
+      "naam": "Bosaardbei",
+      "latijn": "Fragaria vesca",
+      "categorie": "eetbaar",
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ],
+      "waarom": "Kleine zoete vruchten; maakt uitlopers net als tuinaardbei",
+      "methode": "Uitlopers vastzetten of afknippen",
+      "wanneer": "Jul-sep",
+      "welk_hout": "Uitloper met wortelend plantje",
+      "lengte_snit": "Plantje laten wortelen aan de moeder, daarna losknippen",
+      "water_grond": "Luchtige grond; uitloper in potje of naast de pol",
+      "licht": "Halfschaduw tot zon",
+      "water": "Gelijkmatig vochtig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Zodra het plantje zelf wortels heeft",
+      "verwanten": [
+        "aardbei",
+        "bosbes",
+        "framboos"
+      ],
+      "waarschuwing": "",
+      "ervaringen": "",
+      "bronnen": "RHS — Strawberries — https://www.rhs.org.uk/fruit/strawberries/grow-your-own",
+      "kort": "Uitlopers laten wortelen in zomer",
+      "seo_werkwoord": "stekken"
+    },
+    {
+      "slug": "bosbes",
+      "naam": "Bosbes",
+      "latijn": "Vaccinium myrtillus",
+      "categorie": "eetbaar",
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ],
+      "waarom": "Zure bosvrucht; stek of scheuren op zure grond",
+      "methode": "Halfrijpe stek of scheuren",
+      "wanneer": "Stek jul-aug; scheuren mrt-apr",
+      "welk_hout": "Halfrijpe scheut, of pol met wortel",
+      "lengte_snit": "Stek 8-12 cm; onderste blad weg",
+      "water_grond": "Zure, luchtige grond (geen kalk); stek vochtig houden",
+      "licht": "Halfschaduw tot zon",
+      "water": "Vochtig, nooit uitdrogen",
+      "hulpmiddel": "Eventueel stekpoeder of wilgenwater",
+      "kans": "Gemiddeld",
+      "klaar": "Als nieuwe groei zichtbaar is",
+      "verwanten": [
+        "blauwe-bes",
+        "bosaardbei"
+      ],
+      "waarschuwing": "Heeft zure grond nodig (pH laag). Op kalkrijke klei lukt het slecht.",
+      "ervaringen": "",
+      "bronnen": "RHS — Vaccinium — https://www.rhs.org.uk/plants/vaccinium",
+      "kort": "Halfrijpe stek of scheuren op zure grond",
+      "seo_werkwoord": "stekken"
+    },
+    {
       "slug": "braam",
       "naam": "Braam",
       "latijn": "Rubus fruticosus",
@@ -371,6 +522,37 @@
       "ervaringen": "",
       "bronnen": "RHS — Blackberries — https://www.rhs.org.uk/fruit/blackberries-and-hybrid-berries/grow-your-own; RHS — Layering — https://www.rhs.org.uk/propagation/layering",
       "kort": "Kopafleggen in juli–augustus"
+    },
+    {
+      "slug": "brandnetel",
+      "naam": "Brandnetel",
+      "latijn": "Urtica dioica",
+      "categorie": "kruid",
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ],
+      "waarom": "Eetbaar jong blad en gier voor de tuin; scheurt via wortelstok",
+      "methode": "Scheuren of zaad",
+      "wanneer": "Scheuren mrt-apr; zaaien mrt-mei",
+      "welk_hout": "Wortelstok met groeipunt, of zaad",
+      "lengte_snit": "Wortelstok in stukken; handschoenen",
+      "water_grond": "Stikstofrijke, vochtige grond",
+      "licht": "Halfschaduw tot zon",
+      "water": "Vochtig",
+      "hulpmiddel": "Handschoenen",
+      "kans": "Makkelijk",
+      "klaar": "Direct na scheuren",
+      "verwanten": [
+        "daslook",
+        "zevenblad",
+        "smeerwortel"
+      ],
+      "waarschuwing": "Brandharen: handschoenen. Alleen jonge toppen eten, kort koken of blancheren.",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Urtica dioica — https://www.floravanNederland.nl/plantensoorten/grote-brandnetel",
+      "kort": "Wortelstok scheuren; jong blad eetbaar",
+      "seo_werkwoord": "scheuren"
     },
     {
       "slug": "buxus",
@@ -501,6 +683,36 @@
       "kort": "Internodiale stek of afleggen"
     },
     {
+      "slug": "dagkoekoeksbloem",
+      "naam": "Dagkoekoeksbloem",
+      "latijn": "Silene dioica",
+      "categorie": "sier",
+      "tags": [
+        "inheems"
+      ],
+      "waarom": "Inheemse roze bloeier voor halfschaduw; zaad",
+      "methode": "Zaad",
+      "wanneer": "Mrt-mei of najaar",
+      "welk_hout": "Rijp zaad",
+      "lengte_snit": "Oppervlakkig zaaien",
+      "water_grond": "Vochtige, humusrijke grond",
+      "licht": "Halfschaduw tot zon",
+      "water": "Matig tot vochtig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Bloei vaak vanaf jaar twee",
+      "verwanten": [
+        "akelei",
+        "robertskruid",
+        "ruig-klokje"
+      ],
+      "waarschuwing": "",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Silene dioica — https://www.floravanNederland.nl/plantensoorten/dagkoekoeksbloem",
+      "kort": "Zaaien in voorjaar of najaar",
+      "seo_werkwoord": "zaaien"
+    },
+    {
       "slug": "daglelie",
       "naam": "Daglelie",
       "latijn": "Hemerocallis",
@@ -553,6 +765,37 @@
       "kort": "Knollen delen of scheutstek in het voorjaar"
     },
     {
+      "slug": "daslook",
+      "naam": "Daslook",
+      "latijn": "Allium ursinum",
+      "categorie": "eetbaar",
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ],
+      "waarom": "Boslook voor pesto en blad; zaait en deelt zichzelf in schaduw",
+      "methode": "Zaad of bollen/scheuren van pollen",
+      "wanneer": "Zaad jun-jul vers zaaien of najaar; delen jul-aug na afsterven blad",
+      "welk_hout": "Rijp zwart zaad, of een stukje pol met bollen",
+      "lengte_snit": "Pol voorzichtig lichten en splitsen; zaad oppervlakkig zaaien",
+      "water_grond": "Vochtige, humusrijke grond in schaduw; nooit laten uitdrogen bij kiemen",
+      "licht": "Halfschaduw tot schaduw",
+      "water": "Vochtig in het groeiseizoen",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Jonge pollen na 1-2 jaar; blad oogsten spaarzaam het eerste jaar",
+      "verwanten": [
+        "bieslook",
+        "look-zonder-look",
+        "brandnetel"
+      ],
+      "waarschuwing": "Verwar niet met giftig lelietje-van-dalen of herfsttijloos: daslook ruikt naar knoflook.",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Allium ursinum — https://www.floravanNederland.nl/plantensoorten/daslook",
+      "kort": "Zaad of bollen delen in schaduwrijke grond",
+      "seo_werkwoord": "zaaien"
+    },
+    {
       "slug": "dieffenbachia",
       "naam": "Dieffenbachia",
       "latijn": "Dieffenbachia",
@@ -576,6 +819,36 @@
       "ervaringen": "",
       "bronnen": "RHS — How to take cuttings from houseplants — https://www.rhs.org.uk/plants/types/houseplants/how-to-take-cuttings-from-houseplants",
       "kort": "Stengelstek met knoop; sap kan irriteren"
+    },
+    {
+      "slug": "dotterbloem",
+      "naam": "Dotterbloem",
+      "latijn": "Caltha palustris",
+      "categorie": "sier",
+      "tags": [
+        "inheems"
+      ],
+      "waarom": "Vroege inheemse oeverbloeier; scheuren of zaad",
+      "methode": "Scheuren of zaad",
+      "wanneer": "Scheuren mei-jun; zaaien vers na rijping",
+      "welk_hout": "Pol met wortel, of vers zaad",
+      "lengte_snit": "Pol delen; zaad op natte grond",
+      "water_grond": "Natte grond of oever",
+      "licht": "Zon tot halfschaduw",
+      "water": "Nat",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Direct na scheuren",
+      "verwanten": [
+        "gele-lis",
+        "moerasspirea",
+        "koninginnekruid"
+      ],
+      "waarschuwing": "Giftig bij inname. Sap kan huid irriteren.",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Caltha palustris — https://www.floravanNederland.nl/plantensoorten/gewone-dotterbloem",
+      "kort": "Pol scheuren op natte grond",
+      "seo_werkwoord": "scheuren"
     },
     {
       "slug": "dragon",
@@ -653,6 +926,37 @@
       "kort": "Uitlopers; mannelijk én vrouwelijk nodig"
     },
     {
+      "slug": "duizendblad",
+      "naam": "Duizendblad",
+      "latijn": "Achillea millefolium",
+      "categorie": "kruid",
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ],
+      "waarom": "Inheems kruid voor insecten en thee; zaad of scheuren",
+      "methode": "Scheuren of zaad",
+      "wanneer": "Scheuren mrt-apr of sep; zaaien mrt-mei",
+      "welk_hout": "Pol met wortel, of zaad",
+      "lengte_snit": "Pol in stukken met wortel; zaad oppervlakkig",
+      "water_grond": "Doorlatende grond; verdraagt droogte",
+      "licht": "Zon",
+      "water": "Matig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Direct na scheuren",
+      "verwanten": [
+        "knoopkruid",
+        "gewone-margriet",
+        "oregano"
+      ],
+      "waarschuwing": "Met mate als kruidenthee; bij twijfel arts of kruidkundige raadplegen.",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Achillea millefolium — https://www.floravanNederland.nl/plantensoorten/duizendblad",
+      "kort": "Pol scheuren of zaaien in het voorjaar",
+      "seo_werkwoord": "scheuren"
+    },
+    {
       "slug": "echeveria",
       "naam": "Echeveria",
       "latijn": "Echeveria",
@@ -678,6 +982,36 @@
       "ervaringen": "",
       "bronnen": "RHS — How to grow cacti and succulents — https://www.rhs.org.uk/plants/types/cacti-succulents/houseplants/growing-guide; RHS — How to take cuttings from houseplants — https://www.rhs.org.uk/plants/types/houseplants/how-to-take-cuttings-from-houseplants",
       "kort": "Bladstek of uitlopers; wond eerst laten drogen"
+    },
+    {
+      "slug": "eeuwig-moes",
+      "naam": "Eeuwig moes",
+      "latijn": "Brassica oleracea var. palmifolia",
+      "categorie": "eetbaar",
+      "tags": [
+        "voedselbos"
+      ],
+      "waarom": "Meerjarige bladkool; stek of zijscheuten wortelen goed",
+      "methode": "Stek of afgenomen zijscheuten",
+      "wanneer": "Stek apr-sep; scheuten hele groeiseizoen",
+      "welk_hout": "Zijscheut of stengelstek met knoop, zonder bloemsteel",
+      "lengte_snit": "10-15 cm, onderste bladeren weg, snede onder knoop",
+      "water_grond": "In luchtige potgrond of water tot wortels; daarna rijke grond",
+      "licht": "Zon tot lichte schaduw",
+      "water": "Gelijkmatig vochtig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Als wortels zichtbaar zijn of nieuwe bladeren groeien",
+      "verwanten": [
+        "eeuwig-moes",
+        "artisjok",
+        "kardoen"
+      ],
+      "waarschuwing": "Koolvlieg en rupsen: net of doek helpt. Niet verwarren met eenjarige boerenkoolrassen die niet terugkomen.",
+      "ervaringen": "",
+      "bronnen": "RHS — Brassicas — https://www.rhs.org.uk/vegetables/brassicas",
+      "kort": "Zijscheuten of stengelstek in voorjaar/zomer",
+      "seo_werkwoord": "stekken"
     },
     {
       "slug": "eucalyptus",
@@ -807,6 +1141,149 @@
       "kort": "Afleggen of halfhoutstek"
     },
     {
+      "slug": "gele-lis",
+      "naam": "Gele lis",
+      "latijn": "Iris pseudacorus",
+      "categorie": "sier",
+      "tags": [
+        "inheems"
+      ],
+      "waarom": "Inheemse oeveriris; scheuren van wortelstok",
+      "methode": "Scheuren",
+      "wanneer": "Jul-sep na bloei, of mrt",
+      "welk_hout": "Wortelstok met waaier blad",
+      "lengte_snit": "Wortelstok in stukken met minstens één groeipunt",
+      "water_grond": "Natte grond of ondiep water",
+      "licht": "Zon tot halfschaduw",
+      "water": "Nat",
+      "hulpmiddel": "Schone spade",
+      "kans": "Makkelijk",
+      "klaar": "Direct na planten",
+      "verwanten": [
+        "dotterbloem",
+        "grote-kattenstaart",
+        "iris"
+      ],
+      "waarschuwing": "Giftig bij inname (alle delen). Handschoenen: sap kan irriteren.",
+      "ervaringen": "",
+      "bronnen": "RHS — Iris pseudacorus — https://www.rhs.org.uk/plants/iris-pseudacorus",
+      "kort": "Wortelstok scheuren na de bloei",
+      "seo_werkwoord": "scheuren"
+    },
+    {
+      "slug": "pelargonium",
+      "naam": "Geranium",
+      "latijn": "Pelargonium",
+      "categorie": "sier",
+      "waarom": "Balkonfavoriet; stekt makkelijk uit halfverhoute toppen",
+      "methode": "Stek in aarde (topstek)",
+      "wanneer": "Lente–zomer",
+      "welk_hout": "Niet-bloeiende top van 8–12 cm",
+      "lengte_snit": "Onder een knoop; onderste bladeren weg",
+      "water_grond": "In stekgrond; licht vochtig, luchtig",
+      "licht": "Zon tot lichte schaduw",
+      "water": "Matig; verdraagt korte droogte",
+      "hulpmiddel": "Optioneel stekpoeder",
+      "kans": "Makkelijk",
+      "klaar": "Bij weerstand bij licht trekken (wortels)",
+      "verwanten": [
+        "fuchsia",
+        "begonia"
+      ],
+      "waarschuwing": "Dit gaat over Pelargonium (tuingeranium), niet over vaste Geranium-soorten.",
+      "ervaringen": "",
+      "bronnen": "RHS — Softwood cuttings — https://www.rhs.org.uk/propagation/softwood-cuttings",
+      "kort": "Topstek in stekgrond in lente–zomer"
+    },
+    {
+      "slug": "gewone-brunel",
+      "naam": "Gewone brunel",
+      "latijn": "Prunella vulgaris",
+      "categorie": "sier",
+      "tags": [
+        "inheems"
+      ],
+      "waarom": "Lage inheemse lipbloemige; scheuren of zaad",
+      "methode": "Scheuren of zaad",
+      "wanneer": "Scheuren mrt-apr; zaaien mrt-mei",
+      "welk_hout": "Pol of uitlopers, of zaad",
+      "lengte_snit": "Pol delen; zaad oppervlakkig",
+      "water_grond": "Vochtige tot droge grond",
+      "licht": "Zon tot halfschaduw",
+      "water": "Matig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Direct na scheuren",
+      "verwanten": [
+        "oregano",
+        "duizendblad",
+        "dagkoekoeksbloem"
+      ],
+      "waarschuwing": "",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Prunella vulgaris — https://www.floravanNederland.nl/plantensoorten/gewoon-brunel",
+      "kort": "Pol scheuren of zaaien",
+      "seo_werkwoord": "scheuren"
+    },
+    {
+      "slug": "gewone-margriet",
+      "naam": "Gewone margriet",
+      "latijn": "Leucanthemum vulgare",
+      "categorie": "sier",
+      "tags": [
+        "inheems"
+      ],
+      "waarom": "Inheemse weiplant; zaad of scheuren",
+      "methode": "Zaad of scheuren",
+      "wanneer": "Zaaien mrt-mei; scheuren mrt-apr of sep",
+      "welk_hout": "Zaad, of pol",
+      "lengte_snit": "Pol delen; zaad oppervlakkig",
+      "water_grond": "Doorlatende grond",
+      "licht": "Zon",
+      "water": "Matig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Direct na scheuren; uit zaad vaak bloei jaar 2",
+      "verwanten": [
+        "knoopkruid",
+        "duizendblad",
+        "akelei"
+      ],
+      "waarschuwing": "",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Leucanthemum vulgare — https://www.floravanNederland.nl/plantensoorten/gewone-margriet",
+      "kort": "Zaaien of pol scheuren",
+      "seo_werkwoord": "zaaien"
+    },
+    {
+      "slug": "goede-hendrik",
+      "naam": "Goede Hendrik",
+      "latijn": "Blitum bonus-henricus",
+      "categorie": "eetbaar",
+      "tags": [
+        "voedselbos"
+      ],
+      "waarom": "Oude bladgroente voor voedselbos; zaad of scheuren",
+      "methode": "Zaad of scheuren",
+      "wanneer": "Zaaien mrt-mei; scheuren mrt-apr",
+      "welk_hout": "Zaad, of pol met wortel",
+      "lengte_snit": "Pol delen; zaad oppervlakkig",
+      "water_grond": "Voedzame grond",
+      "licht": "Zon tot halfschaduw",
+      "water": "Matig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Blad na enkele weken; pol direct na scheuren",
+      "verwanten": [
+        "zuring"
+      ],
+      "waarschuwing": "Bevat oxaalzuur/saponinen: jong blad koken, met mate eten.",
+      "ervaringen": "",
+      "bronnen": "RHS — Chenopodium — https://www.rhs.org.uk/plants/chenopodium",
+      "kort": "Zaaien of pol scheuren in het voorjaar",
+      "seo_werkwoord": "zaaien"
+    },
+    {
       "slug": "gojibes",
       "naam": "Gojibes",
       "latijn": "Lycium barbarum",
@@ -858,6 +1335,36 @@
       "kort": "Kindplantjes van uitlopers poten"
     },
     {
+      "slug": "grote-kattenstaart",
+      "naam": "Kattestaart",
+      "latijn": "Lythrum salicaria",
+      "categorie": "sier",
+      "tags": [
+        "inheems"
+      ],
+      "waarom": "Inheemse oeverbloeier; zaad of scheuren",
+      "methode": "Scheuren of zaad",
+      "wanneer": "Scheuren mrt-apr; zaaien mrt-mei",
+      "welk_hout": "Pol met wortel, of zaad",
+      "lengte_snit": "Pol delen; zaad fijn en licht",
+      "water_grond": "Vochtige tot natte grond",
+      "licht": "Zon",
+      "water": "Vochtig tot nat",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Direct na scheuren",
+      "verwanten": [
+        "koninginnekruid",
+        "moerasspirea",
+        "gele-lis"
+      ],
+      "waarschuwing": "",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Lythrum salicaria — https://www.floravanNederland.nl/plantensoorten/grote-kattenstaart",
+      "kort": "Scheuren of zaaien op natte plekken",
+      "seo_werkwoord": "scheuren"
+    },
+    {
       "slug": "hazelaar",
       "naam": "Hazelaar",
       "latijn": "Corylus avellana",
@@ -882,6 +1389,36 @@
       "ervaringen": "",
       "bronnen": "RHS — Layering — https://www.rhs.org.uk/propagation/layering",
       "kort": "Afleggen of uitlopers; stekken lukt slecht"
+    },
+    {
+      "slug": "heemst",
+      "naam": "Heemst",
+      "latijn": "Althaea officinalis",
+      "categorie": "kruid",
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ],
+      "waarom": "Oever- en voedselbosplant; wortel en blad traditioneel gebruikt; zaad of stek",
+      "methode": "Zaad, wortelstek of scheuren",
+      "wanneer": "Zaaien mrt-mei; scheuren/wortelstek mrt-apr",
+      "welk_hout": "Zaad, of wortelstuk met groeipunt",
+      "lengte_snit": "Wortelstek 5-8 cm; zaad licht bedekken",
+      "water_grond": "Vochtige, liefst zavelige grond",
+      "licht": "Zon tot halfschaduw",
+      "water": "Vochtig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Gemiddeld",
+      "klaar": "Jonge planten na één seizoen",
+      "verwanten": [
+        "kaasjeskruid",
+        "smeerwortel"
+      ],
+      "waarschuwing": "",
+      "ervaringen": "",
+      "bronnen": "RHS — Althaea officinalis — https://www.rhs.org.uk/plants/althaea-officinalis",
+      "kort": "Zaaien of wortelstek in vochtige grond",
+      "seo_werkwoord": "zaaien"
     },
     {
       "slug": "herfstaster",
@@ -960,6 +1497,37 @@
       "bronnen": "RHS — Dividing perennials — https://www.rhs.org.uk/plants/types/perennials/dividing",
       "kort": "Scheuren in april of september",
       "seo_werkwoord": "scheuren"
+    },
+    {
+      "slug": "hondsroos",
+      "naam": "Hondsroos",
+      "latijn": "Rosa canina",
+      "categorie": "eetbaar",
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ],
+      "waarom": "Inheemse roos met bottels rijk aan vitamine C; stek of afleggen",
+      "methode": "Winterhoutstek of afleggen",
+      "wanneer": "Stek nov-feb; afleggen najaar/voorjaar",
+      "welk_hout": "Rijp hout zonder bloem, of soepele scheut voor afleggen",
+      "lengte_snit": "Stek 20 cm; of scheut inkerven en vastzetten in grond",
+      "water_grond": "Stekgrond vochtig; aflegpunt aanaarden",
+      "licht": "Zon",
+      "water": "Matig",
+      "hulpmiddel": "Haak of steen bij afleggen",
+      "kans": "Gemiddeld",
+      "klaar": "Na beworteling (vaak één seizoen)",
+      "verwanten": [
+        "meidoorn",
+        "sleedoorn",
+        "braam"
+      ],
+      "waarschuwing": "Doornen. Bottels ontdoen van zaadharen voor thee of jam.",
+      "ervaringen": "",
+      "bronnen": "RHS — Hardwood cuttings — https://www.rhs.org.uk/propagation/hardwood-cuttings",
+      "kort": "Winterhoutstek of afleggen; bottels voor thee",
+      "seo_werkwoord": "stekken"
     },
     {
       "slug": "honingbes",
@@ -1078,6 +1646,36 @@
       "ervaringen": "",
       "bronnen": "RHS — How to grow cacti and succulents — https://www.rhs.org.uk/plants/types/cacti-succulents/houseplants/growing-guide",
       "kort": "Kindrozettten afnemen en poten"
+    },
+    {
+      "slug": "echt-ijzerhard",
+      "naam": "Echt ijzerhard",
+      "latijn": "Verbena officinalis",
+      "categorie": "kruid",
+      "tags": [
+        "inheems"
+      ],
+      "waarom": "Inheems kruid; zaait makkelijk",
+      "methode": "Zaad",
+      "wanneer": "Mrt-mei",
+      "welk_hout": "Rijp zaad",
+      "lengte_snit": "Oppervlakkig zaaien",
+      "water_grond": "Doorlatende grond",
+      "licht": "Zon",
+      "water": "Matig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Bloei hetzelfde of volgende jaar",
+      "verwanten": [
+        "duizendblad",
+        "oregano",
+        "knoopkruid"
+      ],
+      "waarschuwing": "Dit is Verbena officinalis (inheems), niet de Zuid-Amerikaanse Verbena bonariensis.",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Verbena officinalis — https://www.floravanNederland.nl/plantensoorten/echt-ijzerhard",
+      "kort": "Zaaien in het voorjaar",
+      "seo_werkwoord": "zaaien"
     },
     {
       "slug": "iris",
@@ -1209,6 +1807,36 @@
       "kort": "Bladstek in luchtige stekgrond"
     },
     {
+      "slug": "kaasjeskruid",
+      "naam": "Kaasjeskruid",
+      "latijn": "Malva sylvestris",
+      "categorie": "kruid",
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ],
+      "waarom": "Eetbare bloemen en jong blad; zaait makkelijk",
+      "methode": "Zaad",
+      "wanneer": "Mrt-mei of najaar",
+      "welk_hout": "Rijp zaad",
+      "lengte_snit": "Zaad 0,5 cm diep",
+      "water_grond": "Doorlatende grond; niet te nat",
+      "licht": "Zon",
+      "water": "Matig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Bloei vaak hetzelfde of volgende jaar",
+      "verwanten": [
+        "heemst",
+        "akelei"
+      ],
+      "waarschuwing": "",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Malva sylvestris — https://www.floravanNederland.nl/plantensoorten/groot-kaasjeskruid",
+      "kort": "Zaaien in voorjaar of najaar",
+      "seo_werkwoord": "zaaien"
+    },
+    {
       "slug": "kalanchoe",
       "naam": "Kalanchoë",
       "latijn": "Kalanchoe",
@@ -1259,6 +1887,36 @@
       "ervaringen": "",
       "bronnen": "RHS — Hardwood cuttings — https://www.rhs.org.uk/propagation/hardwood-cuttings; RHS — Semi-ripe cuttings — https://www.rhs.org.uk/propagation/semi-ripe-cuttings",
       "kort": "Winterhout- of halfhoutstek, of afleggen"
+    },
+    {
+      "slug": "kardoen",
+      "naam": "Kardoen",
+      "latijn": "Cynara cardunculus",
+      "categorie": "eetbaar",
+      "tags": [
+        "voedselbos"
+      ],
+      "waarom": "Meerjarige distelachtige met eetbare bladstelen; zaaien of scheuren",
+      "methode": "Zaad of scheuren van de pol",
+      "wanneer": "Zaaien mrt-apr; scheuren mrt-apr",
+      "welk_hout": "Zaad, of zijscheuten/kroondelen met wortel",
+      "lengte_snit": "Zijscheuten met wortel lossteken; zaad 1 cm diep",
+      "water_grond": "Doorlatende, voedzame grond; ruimte geven (grote plant)",
+      "licht": "Volle zon",
+      "water": "Matig; verdraagt droogte eens aangeslagen",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Gemiddeld",
+      "klaar": "Jonge planten na één seizoen delen of uitplanten",
+      "verwanten": [
+        "artisjok",
+        "aardpeer",
+        "heemst"
+      ],
+      "waarschuwing": "Scherp blad: handschoenen. Vorstgevoelig in koude tuinen; afdekken of opkuilen.",
+      "ervaringen": "",
+      "bronnen": "RHS — Cardoon — https://www.rhs.org.uk/vegetables/cardoon/grow-your-own",
+      "kort": "Zaaien in april of pol scheuren",
+      "seo_werkwoord": "zaaien"
     },
     {
       "slug": "kattenkruid",
@@ -1465,6 +2123,96 @@
       "ervaringen": "",
       "bronnen": "RHS — Semi-ripe cuttings — https://www.rhs.org.uk/propagation/semi-ripe-cuttings; RHS — Layering — https://www.rhs.org.uk/propagation/layering",
       "kort": "Kopstek of afleggen: heel makkelijk"
+    },
+    {
+      "slug": "ruig-klokje",
+      "naam": "Ruig klokje",
+      "latijn": "Campanula trachelium",
+      "categorie": "sier",
+      "tags": [
+        "inheems"
+      ],
+      "waarom": "Inheems bosrandklokje; zaad of scheuren",
+      "methode": "Zaad of scheuren",
+      "wanneer": "Zaaien mrt-mei; scheuren mrt-apr",
+      "welk_hout": "Zaad, of pol",
+      "lengte_snit": "Zaad oppervlakkig; pol delen",
+      "water_grond": "Vochtige, humusrijke grond",
+      "licht": "Halfschaduw",
+      "water": "Matig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Direct na scheuren",
+      "verwanten": [
+        "akelei",
+        "gevlekt-longkruid",
+        "vingerhoedskruid"
+      ],
+      "waarschuwing": "",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Campanula trachelium — https://www.floravanNederland.nl/plantensoorten/ruig-klokje",
+      "kort": "Zaaien of pol scheuren",
+      "seo_werkwoord": "zaaien"
+    },
+    {
+      "slug": "knoopkruid",
+      "naam": "Knoopkruid",
+      "latijn": "Centaurea jacea",
+      "categorie": "sier",
+      "tags": [
+        "inheems"
+      ],
+      "waarom": "Inheemse weideplant voor bijen; zaad of scheuren",
+      "methode": "Zaad of scheuren",
+      "wanneer": "Zaaien mrt-mei of najaar; scheuren mrt-apr",
+      "welk_hout": "Zaad, of pol",
+      "lengte_snit": "Zaad oppervlakkig; pol delen",
+      "water_grond": "Doorlatende, niet te rijke grond",
+      "licht": "Zon",
+      "water": "Matig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Bloei vaak vanaf jaar twee",
+      "verwanten": [
+        "duizendblad",
+        "gewone-margriet",
+        "wilde-peen"
+      ],
+      "waarschuwing": "",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Centaurea jacea — https://www.floravanNederland.nl/plantensoorten/gewoon-knoopkruid",
+      "kort": "Zaaien of pol scheuren in het voorjaar",
+      "seo_werkwoord": "zaaien"
+    },
+    {
+      "slug": "koninginnekruid",
+      "naam": "Koninginnekruid",
+      "latijn": "Eupatorium cannabinum",
+      "categorie": "sier",
+      "tags": [
+        "inheems"
+      ],
+      "waarom": "Inheemse oeverplant voor vlinders; scheuren of zaad",
+      "methode": "Scheuren of zaad",
+      "wanneer": "Scheuren mrt-apr; zaaien mrt-mei",
+      "welk_hout": "Pol met wortel, of zaad",
+      "lengte_snit": "Pol delen; zaad oppervlakkig op vochtige grond",
+      "water_grond": "Vochtige tot natte grond",
+      "licht": "Zon tot halfschaduw",
+      "water": "Vochtig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Direct na scheuren",
+      "verwanten": [
+        "moerasspirea",
+        "grote-kattenstaart",
+        "dotterbloem"
+      ],
+      "waarschuwing": "",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Eupatorium cannabinum — https://www.floravanNederland.nl/plantensoorten/koninginnekruid",
+      "kort": "Pol scheuren op vochtige grond",
+      "seo_werkwoord": "scheuren"
     },
     {
       "slug": "kruisbes",
@@ -1709,6 +2457,159 @@
       "kort": "Winterhoutstek voor een gratis haag"
     },
     {
+      "slug": "lijsterbes",
+      "naam": "Lijsterbes",
+      "latijn": "Sorbus aucuparia",
+      "categorie": "eetbaar",
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ],
+      "waarom": "Inheemse boom met bessen voor gelei; zaad of enten voor rassen",
+      "methode": "Zaad na koudeperiode; rassen enten",
+      "wanneer": "Zaaien najaar; enten winter/zomer",
+      "welk_hout": "Schoongemaakt zaad, of enttwijg van bekend ras",
+      "lengte_snit": "Zaad stratificeren; enten op onderstam (gevorderd)",
+      "water_grond": "Zaaibak koel en vochtig; zaailingen verpotten na kiemen",
+      "licht": "Zon tot halfschaduw",
+      "water": "Matig",
+      "hulpmiddel": "Voor enten: scherp mes",
+      "kans": "Gemiddeld (zaad); enten lastig",
+      "klaar": "Zaailingen na kiemen; bessen vaak na enkele jaren",
+      "verwanten": [
+        "meidoorn",
+        "mispel",
+        "appel"
+      ],
+      "waarschuwing": "Rauwe bessen met mate; pitten niet eten. Zaailingen zijn geen vast ras.",
+      "ervaringen": "",
+      "bronnen": "RHS — Sorbus — https://www.rhs.org.uk/plants/sorbus",
+      "kort": "Zaad na koude; rassen liever enten",
+      "seo_werkwoord": "zaaien"
+    },
+    {
+      "slug": "gevlekt-longkruid",
+      "naam": "Gevlekt longkruid",
+      "latijn": "Pulmonaria officinalis",
+      "categorie": "sier",
+      "tags": [
+        "inheems"
+      ],
+      "waarom": "Vroege inheemse schaduwbloeier; scheuren",
+      "methode": "Scheuren",
+      "wanneer": "Mei-jun na bloei, of sep",
+      "welk_hout": "Pol met wortelstok",
+      "lengte_snit": "Pol in stukken met wortel en bladpunt",
+      "water_grond": "Vochtige, humusrijke grond",
+      "licht": "Halfschaduw tot schaduw",
+      "water": "Vochtig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Direct na planten",
+      "verwanten": [
+        "akelei",
+        "hosta",
+        "heuchera"
+      ],
+      "waarschuwing": "",
+      "ervaringen": "",
+      "bronnen": "RHS — Pulmonaria — https://www.rhs.org.uk/plants/pulmonaria",
+      "kort": "Pol scheuren na de bloei",
+      "seo_werkwoord": "scheuren"
+    },
+    {
+      "slug": "look-zonder-look",
+      "naam": "Look-zonder-look",
+      "latijn": "Alliaria petiolata",
+      "categorie": "kruid",
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ],
+      "waarom": "Tweejarige met knoflooksmaak in blad; zaait zichzelf ruim",
+      "methode": "Zaad",
+      "wanneer": "Zaaien jun-aug (vers) of najaar",
+      "welk_hout": "Rijp zaad uit peulen",
+      "lengte_snit": "Oppervlakkig zaaien op vochtige grond",
+      "water_grond": "Vochtige, halfschaduwrijke grond",
+      "licht": "Halfschaduw",
+      "water": "Vochtig in kiemtijd",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Bladrozetten jaar 1; bloei jaar 2",
+      "verwanten": [
+        "daslook",
+        "brandnetel",
+        "zevenblad"
+      ],
+      "waarschuwing": "Kan woekeren via zaad. Jong blad met mate eten.",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Alliaria petiolata — https://www.floravanNederland.nl/plantensoorten/look-zonder-look",
+      "kort": "Vers zaad zaaien; tweejarig",
+      "seo_werkwoord": "zaaien"
+    },
+    {
+      "slug": "meidoorn",
+      "naam": "Meidoorn",
+      "latijn": "Crataegus monogyna",
+      "categorie": "eetbaar",
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ],
+      "waarom": "Inheemse haag met eetbare bessen; stek of zaad (traag)",
+      "methode": "Winterhoutstek of zaad na koudeperiode",
+      "wanneer": "Stek nov-feb; zaaien najaar",
+      "welk_hout": "Rijp eenjarig hout, 20-25 cm",
+      "lengte_snit": "Schuine snede onder knoop; stek tot twee derde in de grond",
+      "water_grond": "Zandige stekgrond buiten of koude bak; vochtig houden",
+      "licht": "Zon tot halfschaduw",
+      "water": "Matig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Gemiddeld",
+      "klaar": "Na beworteling (vaak één seizoen); zaailingen traag",
+      "verwanten": [
+        "sleedoorn",
+        "hondsroos",
+        "lijsterbes"
+      ],
+      "waarschuwing": "Doornen. Zaden/pitten niet kauwen (blauwhoudende stoffen in steenvruchten).",
+      "ervaringen": "",
+      "bronnen": "RHS — Hardwood cuttings — https://www.rhs.org.uk/propagation/hardwood-cuttings",
+      "kort": "Winterhoutstek; zaad kiemt traag",
+      "seo_werkwoord": "stekken"
+    },
+    {
+      "slug": "mierikswortel",
+      "naam": "Mierikswortel",
+      "latijn": "Armoracia rusticana",
+      "categorie": "eetbaar",
+      "tags": [
+        "voedselbos"
+      ],
+      "waarom": "Pittige wortel; elk wortelstukje kan opnieuw uitlopen",
+      "methode": "Wortelstek",
+      "wanneer": "Nov-mrt",
+      "welk_hout": "Wortelstuk van 5-10 cm met groeipunt of knop",
+      "lengte_snit": "Dikke wortel in stukken; bovenkant merken zodat die omhoog blijft",
+      "water_grond": "Diepe, vochthoudende grond; meteen planten",
+      "licht": "Zon tot halfschaduw",
+      "water": "Matig tot vochtig",
+      "hulpmiddel": "Schone spade",
+      "kans": "Makkelijk",
+      "klaar": "Direct; oogstwortels na één tot twee seizoenen",
+      "verwanten": [
+        "mierikswortel",
+        "rabarber",
+        "aardpeer"
+      ],
+      "waarschuwing": "Woekert via wortelresten. Plant in een bak of diepe rand als je dat wilt beperken.",
+      "ervaringen": "",
+      "bronnen": "RHS — Horseradish — https://www.rhs.org.uk/vegetables/horseradish/grow-your-own",
+      "kort": "Wortelstek in de winterrust",
+      "seo_werkwoord": "stekken"
+    },
+    {
       "slug": "mispel",
       "naam": "Mispel",
       "latijn": "Mespilus germanica",
@@ -1733,6 +2634,36 @@
       "ervaringen": "",
       "bronnen": "RHS — Grafting fruit trees — https://www.rhs.org.uk/fruit/fruit-trees/grafting-ornamental",
       "kort": "Enten op meidoorn, kwee of peer"
+    },
+    {
+      "slug": "moerasspirea",
+      "naam": "Moerasspirea",
+      "latijn": "Filipendula ulmaria",
+      "categorie": "sier",
+      "tags": [
+        "inheems"
+      ],
+      "waarom": "Inheemse oeverplant met geurende pluimen; scheuren of zaad",
+      "methode": "Scheuren of zaad",
+      "wanneer": "Scheuren mrt-apr; zaaien mrt-mei",
+      "welk_hout": "Pol met wortelstok, of zaad",
+      "lengte_snit": "Pol delen; zaad licht bedekken",
+      "water_grond": "Vochtige tot natte grond",
+      "licht": "Zon tot halfschaduw",
+      "water": "Vochtig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Direct na scheuren",
+      "verwanten": [
+        "koninginnekruid",
+        "grote-kattenstaart",
+        "dotterbloem"
+      ],
+      "waarschuwing": "",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Filipendula ulmaria — https://www.floravanNederland.nl/plantensoorten/moerasspirea",
+      "kort": "Pol scheuren op vochtige grond",
+      "seo_werkwoord": "scheuren"
     },
     {
       "slug": "moerbei",
@@ -1908,6 +2839,32 @@
       "kort": "Scheuren of kopstek; ook marjolein"
     },
     {
+      "slug": "pilea",
+      "naam": "Pannenkoekplant",
+      "latijn": "Pilea peperomioides",
+      "categorie": "kamerplant",
+      "waarom": "Maakt zijscheuten; populair om gratis door te geven",
+      "methode": "Scheuren / zijscheuten afnemen",
+      "wanneer": "Lente–zomer",
+      "welk_hout": "Jonge zijscheut met eigen worteltjes",
+      "lengte_snit": "Voorzichtig losmaken of snijden bij de basis",
+      "water_grond": "Direct in potgrond; licht vochtig houden",
+      "licht": "Helder, indirect licht",
+      "water": "Matig; tussen gietbeurten iets laten opdrogen",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Als de scheut zelfstandig groeit",
+      "verwanten": [
+        "peperomia",
+        "graslelie",
+        "tradescantia"
+      ],
+      "waarschuwing": "",
+      "ervaringen": "",
+      "bronnen": "RHS — How to take cuttings from houseplants — https://www.rhs.org.uk/plants/types/houseplants/how-to-take-cuttings-from-houseplants",
+      "kort": "Zijscheuten met wortels afnemen en poten"
+    },
+    {
       "slug": "passiebloem",
       "naam": "Passiebloem",
       "latijn": "Passiflora caerulea",
@@ -1934,57 +2891,6 @@
       "kort": "Halfhoutstek of afleggen in de zomer"
     },
     {
-      "slug": "peer",
-      "naam": "Perenboom",
-      "latijn": "Pyrus communis",
-      "categorie": "eetbaar",
-      "waarom": "Enten op kwee of zaailing; stek/zaad niet zinvol voor rasbehoud",
-      "methode": "Enten (copuleren) of oculeren op kwee/zaailing",
-      "wanneer": "Copuleren mrt–apr; oculeren jul–aug",
-      "welk_hout": "Enthout van het ras; onderstam kwee of zaailing",
-      "lengte_snit": "Passende cambiumlagen; soms tussenstam nodig op kwee",
-      "water_grond": "Fruitgrond; na enten beschermen tegen uitdroging",
-      "licht": "Volle zon",
-      "water": "Matig",
-      "hulpmiddel": "Entmes, entwas/entband",
-      "kans": "Gemiddeld tot lastig",
-      "klaar": "Als de ent uitloopt",
-      "verwanten": [
-        "appel",
-        "kweepeer",
-        "pruim"
-      ],
-      "waarschuwing": "Sommige perenrassen hebben een tussenstam nodig op kwee. Stekken levert zelden een bruikbare boom.",
-      "ervaringen": "",
-      "bronnen": "RHS — Grafting fruit trees — https://www.rhs.org.uk/fruit/fruit-trees/grafting-ornamental",
-      "kort": "Enten op kwee of zaailing"
-    },
-    {
-      "slug": "pelargonium",
-      "naam": "Geranium",
-      "latijn": "Pelargonium",
-      "categorie": "sier",
-      "waarom": "Balkonfavoriet; stekt makkelijk uit halfverhoute toppen",
-      "methode": "Stek in aarde (topstek)",
-      "wanneer": "Lente–zomer",
-      "welk_hout": "Niet-bloeiende top van 8–12 cm",
-      "lengte_snit": "Onder een knoop; onderste bladeren weg",
-      "water_grond": "In stekgrond; licht vochtig, luchtig",
-      "licht": "Zon tot lichte schaduw",
-      "water": "Matig; verdraagt korte droogte",
-      "hulpmiddel": "Optioneel stekpoeder",
-      "kans": "Makkelijk",
-      "klaar": "Bij weerstand bij licht trekken (wortels)",
-      "verwanten": [
-        "fuchsia",
-        "begonia"
-      ],
-      "waarschuwing": "Dit gaat over Pelargonium (tuingeranium), niet over vaste Geranium-soorten.",
-      "ervaringen": "",
-      "bronnen": "RHS — Softwood cuttings — https://www.rhs.org.uk/propagation/softwood-cuttings",
-      "kort": "Topstek in stekgrond in lente–zomer"
-    },
-    {
       "slug": "peperomia",
       "naam": "Peperomia",
       "latijn": "Peperomia",
@@ -2009,6 +2915,32 @@
       "ervaringen": "",
       "bronnen": "RHS — How to take cuttings from houseplants — https://www.rhs.org.uk/plants/types/houseplants/how-to-take-cuttings-from-houseplants",
       "kort": "Blad- of stekstek in luchtige grond"
+    },
+    {
+      "slug": "peer",
+      "naam": "Perenboom",
+      "latijn": "Pyrus communis",
+      "categorie": "eetbaar",
+      "waarom": "Enten op kwee of zaailing; stek/zaad niet zinvol voor rasbehoud",
+      "methode": "Enten (copuleren) of oculeren op kwee/zaailing",
+      "wanneer": "Copuleren mrt–apr; oculeren jul–aug",
+      "welk_hout": "Enthout van het ras; onderstam kwee of zaailing",
+      "lengte_snit": "Passende cambiumlagen; soms tussenstam nodig op kwee",
+      "water_grond": "Fruitgrond; na enten beschermen tegen uitdroging",
+      "licht": "Volle zon",
+      "water": "Matig",
+      "hulpmiddel": "Entmes, entwas/entband",
+      "kans": "Gemiddeld tot lastig",
+      "klaar": "Als de ent uitloopt",
+      "verwanten": [
+        "appel",
+        "kweepeer",
+        "pruim"
+      ],
+      "waarschuwing": "Sommige perenrassen hebben een tussenstam nodig op kwee. Stekken levert zelden een bruikbare boom.",
+      "ervaringen": "",
+      "bronnen": "RHS — Grafting fruit trees — https://www.rhs.org.uk/fruit/fruit-trees/grafting-ornamental",
+      "kort": "Enten op kwee of zaailing"
     },
     {
       "slug": "perzik",
@@ -2087,32 +3019,6 @@
       "ervaringen": "",
       "bronnen": "RHS — Root cuttings — https://www.rhs.org.uk/propagation/root-cuttings; RHS — Dividing — https://www.rhs.org.uk/plants/types/perennials/dividing",
       "kort": "Wortelstek in de winter; of scheuren"
-    },
-    {
-      "slug": "pilea",
-      "naam": "Pannenkoekplant",
-      "latijn": "Pilea peperomioides",
-      "categorie": "kamerplant",
-      "waarom": "Maakt zijscheuten; populair om gratis door te geven",
-      "methode": "Scheuren / zijscheuten afnemen",
-      "wanneer": "Lente–zomer",
-      "welk_hout": "Jonge zijscheut met eigen worteltjes",
-      "lengte_snit": "Voorzichtig losmaken of snijden bij de basis",
-      "water_grond": "Direct in potgrond; licht vochtig houden",
-      "licht": "Helder, indirect licht",
-      "water": "Matig; tussen gietbeurten iets laten opdrogen",
-      "hulpmiddel": "Niet nodig",
-      "kans": "Makkelijk",
-      "klaar": "Als de scheut zelfstandig groeit",
-      "verwanten": [
-        "peperomia",
-        "graslelie",
-        "tradescantia"
-      ],
-      "waarschuwing": "",
-      "ervaringen": "",
-      "bronnen": "RHS — How to take cuttings from houseplants — https://www.rhs.org.uk/plants/types/houseplants/how-to-take-cuttings-from-houseplants",
-      "kort": "Zijscheuten met wortels afnemen en poten"
     },
     {
       "slug": "pioenroos",
@@ -2262,6 +3168,36 @@
       "ervaringen": "",
       "bronnen": "RHS — Layering — https://www.rhs.org.uk/propagation/layering; RHS — Air layering — https://www.rhs.org.uk/propagation/air-layering-plants",
       "kort": "Afleggen of marcotteren; stek is moeilijk"
+    },
+    {
+      "slug": "robertskruid",
+      "naam": "Robertskruid",
+      "latijn": "Geranium robertianum",
+      "categorie": "sier",
+      "tags": [
+        "inheems"
+      ],
+      "waarom": "Inheemse schaduwplant; zaait zichzelf",
+      "methode": "Zaad",
+      "wanneer": "Hele groeiseizoen; najaar of vroege lente",
+      "welk_hout": "Rijp zaad",
+      "lengte_snit": "Oppervlakkig zaaien of laten uitzaaien",
+      "water_grond": "Vochtige tot droge schaduwgrond",
+      "licht": "Halfschaduw tot schaduw",
+      "water": "Matig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Bloei hetzelfde seizoen of volgend jaar",
+      "verwanten": [
+        "ooievaarsbek",
+        "look-zonder-look",
+        "gevlekt-longkruid"
+      ],
+      "waarschuwing": "",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Geranium robertianum — https://www.floravanNederland.nl/plantensoorten/robertskruid",
+      "kort": "Zaaien of laten uitzaaien in schaduw",
+      "seo_werkwoord": "zaaien"
     },
     {
       "slug": "rode-bes",
@@ -2544,6 +3480,98 @@
       "seo_werkwoord": "scheuren"
     },
     {
+      "slug": "sleedoorn",
+      "naam": "Sleedoorn",
+      "latijn": "Prunus spinosa",
+      "categorie": "eetbaar",
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ],
+      "waarom": "Inheemse haagstruik met eetbare bessen na vorst; stek of afleggen werkt beter dan zaaien voor dezelfde plant",
+      "methode": "Winterhoutstek of afleggen; zaad na koudeperiode",
+      "wanneer": "Stek nov-feb; afleggen najaar/voorjaar; zaaien najaar",
+      "welk_hout": "Eenjarig rijp hout zonder bloemknoppen, of soepele twijg voor afleggen",
+      "lengte_snit": "Stek 15-20 cm, schuin snijden onder een knoop; of twijg vastzetten in de grond",
+      "water_grond": "Stek in zandige stekgrond koel en vochtig; aflegpunt vochtig houden",
+      "licht": "Zon tot halfschaduw",
+      "water": "Matig; verdraagt droge grond eens aangeslagen",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Gemiddeld",
+      "klaar": "Als er nieuwe bladeren of wortels zijn (stek vaak na één seizoen)",
+      "verwanten": [
+        "meidoorn",
+        "hondsroos",
+        "zwarte-vlier"
+      ],
+      "waarschuwing": "Pit niet eten. Doornen: handschoenen.",
+      "ervaringen": "",
+      "bronnen": "RHS — Hardwood cuttings — https://www.rhs.org.uk/propagation/hardwood-cuttings",
+      "kort": "Winterhoutstek of afleggen; bessen na vorst",
+      "seo_werkwoord": "stekken"
+    },
+    {
+      "slug": "gulden-sleutelbloem",
+      "naam": "Gulden sleutelbloem",
+      "latijn": "Primula veris",
+      "categorie": "sier",
+      "tags": [
+        "inheems"
+      ],
+      "waarom": "Inheemse voorjaarsbloeier; zaad of scheuren",
+      "methode": "Zaad of scheuren",
+      "wanneer": "Zaaien najaar (koudeprikkel); scheuren mei-jun",
+      "welk_hout": "Vers zaad, of pol",
+      "lengte_snit": "Zaad oppervlakkig koel houden; pol delen",
+      "water_grond": "Vochtige, niet te zure grond",
+      "licht": "Zon tot halfschaduw",
+      "water": "Vochtig in voorjaar",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Gemiddeld",
+      "klaar": "Na kiemen of direct na scheuren",
+      "verwanten": [
+        "gevlekt-longkruid",
+        "dagkoekoeksbloem",
+        "akelei"
+      ],
+      "waarschuwing": "",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Primula veris — https://www.floravanNederland.nl/plantensoorten/gulden-sleutelbloem",
+      "kort": "Zaad met koudeprikkel of pol scheuren",
+      "seo_werkwoord": "zaaien"
+    },
+    {
+      "slug": "smeerwortel",
+      "naam": "Smeerwortel",
+      "latijn": "Symphytum officinale",
+      "categorie": "kruid",
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ],
+      "waarom": "Blad voor compost-thee en mulch; wortelstek groeit makkelijk",
+      "methode": "Wortelstek of scheuren",
+      "wanneer": "Mrt-apr of sep-okt",
+      "welk_hout": "Wortelstuk 3-5 cm, of pol met kroon",
+      "lengte_snit": "Wortelstek horizontaal of schuin in de grond",
+      "water_grond": "Vochtige, voedzame grond",
+      "licht": "Zon tot halfschaduw",
+      "water": "Vochtig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Zodra blad uitloopt",
+      "verwanten": [
+        "brandnetel",
+        "heemst",
+        "duizendblad"
+      ],
+      "waarschuwing": "Bevat pyrrolizidine-alkaloïden: niet innemen als thee of groente. Alleen als mulch/compostplant gebruiken.",
+      "ervaringen": "",
+      "bronnen": "RHS — Comfrey — https://www.rhs.org.uk/plants/comfrey",
+      "kort": "Wortelstek; blad voor mulch, niet eten",
+      "seo_werkwoord": "stekken"
+    },
+    {
       "slug": "syngonium",
       "naam": "Syngonium",
       "latijn": "Syngonium podophyllum",
@@ -2701,6 +3729,36 @@
       "kort": "Halfhoutstek in juli–augustus"
     },
     {
+      "slug": "turkse-rabarber",
+      "naam": "Turkse rabarber",
+      "latijn": "Rheum palmatum",
+      "categorie": "eetbaar",
+      "tags": [
+        "voedselbos"
+      ],
+      "waarom": "Grote bladplant voor voedselbos-rand; kroon delen zoals gewone rabarber",
+      "methode": "Scheuren van de kroon",
+      "wanneer": "Nov-mrt in rust",
+      "welk_hout": "Kroonstuk met minstens één stevige knop",
+      "lengte_snit": "Kroon delen met schop; elk stuk knop plus wortel",
+      "water_grond": "Voedzame, vochthoudende grond; meteen terugplanten",
+      "licht": "Zon tot halfschaduw",
+      "water": "Vochtig, niet drassig",
+      "hulpmiddel": "Schone spade",
+      "kans": "Makkelijk",
+      "klaar": "Direct na planten; blad spaarzaam het eerste jaar",
+      "verwanten": [
+        "rabarber",
+        "aardpeer",
+        "smeerwortel"
+      ],
+      "waarschuwing": "Blad niet eten (oxaalzuur). Alleen jonge bladstelen van eetbare cultivars/soorten gebruiken; siervormen vooral als bladplant houden.",
+      "ervaringen": "",
+      "bronnen": "RHS — Rheum — https://www.rhs.org.uk/plants/rheum",
+      "kort": "Kroon scheuren in de winterrust",
+      "seo_werkwoord": "scheuren"
+    },
+    {
       "slug": "vijg",
       "naam": "Vijg",
       "latijn": "Ficus carica",
@@ -2744,6 +3802,36 @@
       ]
     },
     {
+      "slug": "vingerhoedskruid",
+      "naam": "Vingerhoedskruid",
+      "latijn": "Digitalis purpurea",
+      "categorie": "sier",
+      "tags": [
+        "inheems"
+      ],
+      "waarom": "Inheemse tweejarige voor bijen; alleen zaaien",
+      "methode": "Zaad",
+      "wanneer": "Zaaien jun-aug of najaar",
+      "welk_hout": "Fijn zaad",
+      "lengte_snit": "Oppervlakkig, niet bedekken; lichtkiemer",
+      "water_grond": "Vochtige, zure tot neutrale grond",
+      "licht": "Halfschaduw tot zon",
+      "water": "Matig tot vochtig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Roset jaar 1; bloei jaar 2",
+      "verwanten": [
+        "akelei",
+        "gevlekt-longkruid",
+        "ruig-klokje"
+      ],
+      "waarschuwing": "Giftig: alle delen. Niet eten, handen wassen na contact, uit de buurt van kinderen en huisdieren houden die kauwen.",
+      "ervaringen": "",
+      "bronnen": "RHS — Digitalis — https://www.rhs.org.uk/plants/digitalis",
+      "kort": "Zaaien; giftig, alleen als sierplant",
+      "seo_werkwoord": "zaaien"
+    },
+    {
       "slug": "walnoot",
       "naam": "Walnoot",
       "latijn": "Juglans regia",
@@ -2768,6 +3856,67 @@
       "ervaringen": "",
       "bronnen": "RHS — Grafting fruit trees — https://www.rhs.org.uk/fruit/fruit-trees/grafting-ornamental",
       "kort": "Noot zaaien; zaailing ≠ ras",
+      "seo_werkwoord": "zaaien"
+    },
+    {
+      "slug": "watermunt",
+      "naam": "Watermunt",
+      "latijn": "Mentha aquatica",
+      "categorie": "kruid",
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ],
+      "waarom": "Inheemse oevermunt; stek en uitlopers wortelen snel",
+      "methode": "Stek of scheuren/uitlopers",
+      "wanneer": "Stek mei-aug; scheuren mrt-apr of sep",
+      "welk_hout": "Topstek met knoop, of stuk wortelstok",
+      "lengte_snit": "Stek 8-12 cm in water of natte grond",
+      "water_grond": "Nat tot vochtig; bak of oever",
+      "licht": "Zon tot halfschaduw",
+      "water": "Altijd vochtig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Als wortels zichtbaar zijn (vaak binnen twee weken)",
+      "verwanten": [
+        "munt",
+        "citroenmelisse",
+        "oregano"
+      ],
+      "waarschuwing": "Woekert via wortelstok. In een bak houden als je dat wilt beperken.",
+      "ervaringen": "",
+      "bronnen": "RHS — Mentha — https://www.rhs.org.uk/plants/mentha",
+      "kort": "Stek in water of natte grond",
+      "seo_werkwoord": "stekken"
+    },
+    {
+      "slug": "wilde-peen",
+      "naam": "Wilde peen",
+      "latijn": "Daucus carota",
+      "categorie": "sier",
+      "tags": [
+        "inheems"
+      ],
+      "waarom": "Inheemse schermbloemige; tweejarig uit zaad",
+      "methode": "Zaad",
+      "wanneer": "Zaaien apr-jun of najaar",
+      "welk_hout": "Rijp zaad",
+      "lengte_snit": "Oppervlakkig zaaien op open grond",
+      "water_grond": "Doorlatende, magere grond",
+      "licht": "Zon",
+      "water": "Matig",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Bladrozet jaar 1; bloei jaar 2",
+      "verwanten": [
+        "knoopkruid",
+        "duizendblad",
+        "akelei"
+      ],
+      "waarschuwing": "Verwar niet met giftige schermbloemigen (bijv. gevlekte scheerling). Alleen zaaien van bekende herkomst.",
+      "ervaringen": "",
+      "bronnen": "Flora van Nederland — Daucus carota — https://www.floravanNederland.nl/plantensoorten/peen",
+      "kort": "Zaaien; tweejarig",
       "seo_werkwoord": "zaaien"
     },
     {
@@ -2820,6 +3969,37 @@
       "kort": "Scheuren of bladstek; weinig water, veel geduld"
     },
     {
+      "slug": "zevenblad",
+      "naam": "Zevenblad",
+      "latijn": "Aegopodium podagraria",
+      "categorie": "eetbaar",
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ],
+      "waarom": "Eetbaar blad in het voorjaar; woekert sterk via wortelstokken",
+      "methode": "Scheuren van wortelstokken",
+      "wanneer": "Mrt-apr of sep-okt",
+      "welk_hout": "Stuk wortelstok met groeipunt",
+      "lengte_snit": "Wortelstok in stukken van 5-10 cm met minstens één knop",
+      "water_grond": "Direct terugplanten in vochtige grond; bak of rand als je niet wilt dat het ontsnapt",
+      "licht": "Halfschaduw tot schaduw",
+      "water": "Matig tot vochtig",
+      "hulpmiddel": "Schone spade",
+      "kans": "Makkelijk (woekert)",
+      "klaar": "Direct na planten",
+      "verwanten": [
+        "daslook",
+        "brandnetel",
+        "zuring"
+      ],
+      "waarschuwing": "Woekert sterk. Alleen delen als je het onder controle houdt (bak of vaste plek).",
+      "ervaringen": "",
+      "bronnen": "RHS — Ground elder — https://www.rhs.org.uk/weeds/ground-elder",
+      "kort": "Wortelstok scheuren; houdt van schaduw en woekert",
+      "seo_werkwoord": "scheuren"
+    },
+    {
       "slug": "zonnehoed",
       "naam": "Zonnehoed",
       "latijn": "Echinacea / Rudbeckia",
@@ -2844,6 +4024,37 @@
       "ervaringen": "",
       "bronnen": "RHS — Dividing perennials — https://www.rhs.org.uk/plants/types/perennials/dividing",
       "kort": "Scheuren of zaaien; cultivars niet zaadvast"
+    },
+    {
+      "slug": "zuring",
+      "naam": "Zuring",
+      "latijn": "Rumex acetosa",
+      "categorie": "kruid",
+      "tags": [
+        "voedselbos",
+        "inheems"
+      ],
+      "waarom": "Zuur blad voor soep en salade; zaait en laat zich scheuren",
+      "methode": "Zaad of scheuren",
+      "wanneer": "Zaaien mrt-mei; scheuren mrt-apr of sep",
+      "welk_hout": "Zaad, of pol met wortels",
+      "lengte_snit": "Pol in stukken met wortel; zaad oppervlakkig",
+      "water_grond": "Vochtige grond; niet te rijk anders veel blad weinig smaak",
+      "licht": "Zon tot halfschaduw",
+      "water": "Vochtig houden in de zomer",
+      "hulpmiddel": "Niet nodig",
+      "kans": "Makkelijk",
+      "klaar": "Direct na scheuren; uit zaad na 6-8 weken blad",
+      "verwanten": [
+        "daslook",
+        "brandnetel",
+        "zevenblad"
+      ],
+      "waarschuwing": "Bevat oxaalzuur: met mate eten, vooral bij nierstenen.",
+      "ervaringen": "",
+      "bronnen": "RHS — Sorrel — https://www.rhs.org.uk/herbs/sorrel/grow-your-own",
+      "kort": "Zaaien of pol scheuren; zuur blad",
+      "seo_werkwoord": "scheuren"
     },
     {
       "slug": "zwarte-bes",

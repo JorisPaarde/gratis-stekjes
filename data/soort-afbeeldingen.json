@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-31T22:14:10+00:00",
+  "generated_at": "2026-11-04T19:11:57+00:00",
   "source": "Wikimedia Commons (per-file licence verified, foto met het oog gecontroleerd)",
   "soorten": {
     "aardbei": {
@@ -17,7 +17,26 @@
       "notitie": "Flower of a  strawberry; (Fragaria × ananassa) Focus stack of 13 photos.",
       "bytes": 163753,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "2ff63b2e2418f5e845c97ec83898f2db2683ae2536b2c405a5a7e464fea9272f"
+    },
+    "aardpeer": {
+      "slug": "aardpeer",
+      "naam": "Aardpeer",
+      "latijn": "Helianthus tuberosus",
+      "auteur": "JackyM59",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Des_fleurs_de_Topinambur_(Helianthus_tuberosus).jpg",
+      "bron_titel": "File:Des fleurs de Topinambur (Helianthus tuberosus).jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Aardpeer (Helianthus tuberosus)",
+      "bestand": "assets/images/soorten/aardpeer.jpg",
+      "notitie": "Fleurs de Topinambour (Helianthus tuberosus)",
+      "status": "goedgekeurd",
+      "sha256": "8f2792f61ed143e075efd55fdd3725fd634f577da99ef7989e39c62c6e4d4eaf",
+      "bytes": 245273,
+      "width_max": 1200
     },
     "abrikoos": {
       "slug": "abrikoos",
@@ -34,7 +53,8 @@
       "notitie": "Apricots 2013-07-16-1204",
       "bytes": 180293,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "099b9d87edba9a3f1aea0c77244f36916d7dbbc0cea6ac7e1eb08ac5539fa285"
     },
     "agapanthus": {
       "slug": "agapanthus",
@@ -51,7 +71,26 @@
       "notitie": "This media file is uploaded with Malayalam loves Wikimedia event - 2.",
       "bytes": 107742,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "d56d778de6f20b39f68431ac31b584380e8593967328b753f97255bac55bfa1d"
+    },
+    "akelei": {
+      "slug": "akelei",
+      "naam": "Akelei",
+      "latijn": "Aquilegia vulgaris",
+      "auteur": "W. Bulach",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:00_3982_Gew%C3%B6hnliche_Akelei_(Aquilegia_vulgaris).jpg",
+      "bron_titel": "File:00 3982 Gewöhnliche Akelei (Aquilegia vulgaris).jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Akelei (Aquilegia vulgaris)",
+      "bestand": "assets/images/soorten/akelei.jpg",
+      "notitie": "Common Columbine or Common Columbine (Aquilegia vulgaris). A perennial plant whose components are poisonous. The natural occurrence of the common columbine is endangered (picking and digging forbidden",
+      "status": "goedgekeurd",
+      "sha256": "6004eee70e8396b6a3b1512215154f58a67df5d876afd210f976937467d94287",
+      "bytes": 105300,
+      "width_max": 1200
     },
     "aloe-vera": {
       "slug": "aloe-vera",
@@ -68,7 +107,8 @@
       "notitie": "Aloe vera",
       "bytes": 173584,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "4e993196669b5ef7f8ae2bf4872dfec64a80a04946bf4c8709d591fc9eb38196"
     },
     "anthurium": {
       "slug": "anthurium",
@@ -85,7 +125,8 @@
       "notitie": "Anthurium (Flamingo plant). A popular houseplant in the Netherlands.",
       "bytes": 84107,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "7de5f2d48e54b76d2f49eef10cdaf5e56c17f8185ac6ff9661665d90508c1365"
     },
     "appel": {
       "slug": "appel",
@@ -102,7 +143,8 @@
       "notitie": "Tree with red apples 'Särsö' in Barkedal, Lysekil Municipality, Sweden. The apples ripened early and were unusually red on the side facing south and the camera, caused by the uncharacteristically many",
       "bytes": 540930,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "4ab09e950fa2bacd8b9b325ee2e5074a5bee65859ec9e076a45ad35e1da34224"
     },
     "appelbes": {
       "slug": "appelbes",
@@ -119,7 +161,26 @@
       "notitie": "Nom français : aronie à fruits noirs. Nom anglais : black chokeberry. Feuilles et infrutescence (fruits, piridions) d'aronie à fruits noirs, en milieu naturel.",
       "bytes": 158092,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "e2dd971d619baff800bb326f487d22273a575c91d7ca77d27b5840d034aef8e3"
+    },
+    "artisjok": {
+      "slug": "artisjok",
+      "naam": "Artisjok",
+      "latijn": "Cynara cardunculus var. scolymus",
+      "auteur": "Agnes Monkelbaan",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Artisjok_Cynara_scolymus._Locatie,_De_Kruidhof_Buitenpost_01.jpg",
+      "bron_titel": "File:Artisjok Cynara scolymus. Locatie, De Kruidhof Buitenpost 01.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Artisjok (Cynara cardunculus var. scolymus)",
+      "bestand": "assets/images/soorten/artisjok.jpg",
+      "notitie": "Cynara scolymus. Location, The Kruidhof Buitenpost in the Netherlands.",
+      "status": "goedgekeurd",
+      "sha256": "c029a6533ce25f91f0802b3bb635866b1eaac6ecb5c8ea9b5f02b0d36c264345",
+      "bytes": 120805,
+      "width_max": 1200
     },
     "basilicum": {
       "slug": "basilicum",
@@ -136,7 +197,8 @@
       "notitie": "Ocimum basilicuma (Basil) at the Colonial Garden at Norfolk Botanical Garden, Norfolk, Virginia.",
       "bytes": 168123,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "d7440450c00d143999462d1af52cd901f974c3396bb65245c59ce14155d1fda9"
     },
     "begonia": {
       "slug": "begonia",
@@ -153,7 +215,8 @@
       "notitie": null,
       "bytes": 106336,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "7f33d606de7102a786397b6d10d5096217f488eba70b906b660035582aeb6aeb"
     },
     "bieslook": {
       "slug": "bieslook",
@@ -170,7 +233,8 @@
       "notitie": "Wild chives Allium schoenoprasum flowering plants, cultivated in Wrocław University Botanical Garden, Wrocław, Poland.",
       "bytes": 141417,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "17d9888f774eb37c01ae9442033d9d1afe5dde799d94034a012fb0bc221b34fd"
     },
     "blauwe-bes": {
       "slug": "blauwe-bes",
@@ -187,7 +251,8 @@
       "notitie": "Vaccinium corymbosum (pl. borówka wysoka, borówka amerykańska)",
       "bytes": 131187,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "933dec0b92c27106b4f024eb5e9c9888e15a60b282eddbd8285f7042a359444e"
     },
     "blauwe-regen": {
       "slug": "blauwe-regen",
@@ -204,7 +269,44 @@
       "notitie": "Wisteria sinensis in the Botanischer Garten, Berlin-Dahlem",
       "bytes": 298703,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "2cd94b93963d3ca65cd42ad605f42a380ce24de26f80c3e4390ff8fd773bd7da"
+    },
+    "bosaardbei": {
+      "slug": "bosaardbei",
+      "naam": "Bosaardbei",
+      "latijn": "Fragaria vesca",
+      "auteur": "H. Zell",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Fragaria_vesca_002.JPG",
+      "bron_titel": "File:Fragaria vesca 002.JPG",
+      "originele_mime": "image/jpeg",
+      "alt": "Bosaardbei (Fragaria vesca)",
+      "bestand": "assets/images/soorten/bosaardbei.jpg",
+      "notitie": "Fragaria vesca, Rosaceae, Woodland Strawberry, Fraises des Bois, Wild Strawberry, European Strawberry, flowers; Botanical Garden KIT, Karlsruhe, Germany. The fresh, ripe fruits are used in homeopathy ",
+      "status": "goedgekeurd",
+      "sha256": "881427c7a1dbe28db237a1b429a4fff8324c783b66f79ad0fb3853efeb833891",
+      "bytes": 169239,
+      "width_max": 1200
+    },
+    "bosbes": {
+      "slug": "bosbes",
+      "naam": "Bosbes",
+      "latijn": "Vaccinium myrtillus",
+      "auteur": "H. Zell",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Vaccinium_myrtillus_002.JPG",
+      "bron_titel": "File:Vaccinium myrtillus 002.JPG",
+      "originele_mime": "image/jpeg",
+      "alt": "Bosbes (Vaccinium myrtillus)",
+      "bestand": "assets/images/soorten/bosbes.jpg",
+      "notitie": "Vaccinium myrtillus, Ericaceae, Bilberry, fruit. Botanical Garden KIT, Karlsruhe, Germany.",
+      "status": "goedgekeurd",
+      "sha256": "e1e8ed5aa20997ddf2a875c474aac4cb2c3fb849b816959b3b9c91aad882e25a",
+      "bytes": 162602,
+      "width_max": 1200
     },
     "braam": {
       "slug": "braam",
@@ -221,7 +323,26 @@
       "notitie": "Rubus fruticosus in commune of Druelle-Balsac, Aveyron, France",
       "bytes": 165223,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "df71d838b70f92714074846bf2f377b50fcd59c95abd8b4996dfc30390b3977a"
+    },
+    "brandnetel": {
+      "slug": "brandnetel",
+      "naam": "Brandnetel",
+      "latijn": "Urtica dioica",
+      "auteur": "H. Zell",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Urtica_dioica_001.JPG",
+      "bron_titel": "File:Urtica dioica 001.JPG",
+      "originele_mime": "image/jpeg",
+      "alt": "Brandnetel (Urtica dioica)",
+      "bestand": "assets/images/soorten/brandnetel.jpg",
+      "notitie": "Urtica dioica, Urticaceae, Stinging Nettle, Common Nettle, habitus.",
+      "status": "goedgekeurd",
+      "sha256": "82b7ef2731639e5dd950ffaa7dd99d94c23f15a97d6c2da76f436abed222b321",
+      "bytes": 324853,
+      "width_max": 1200
     },
     "buxus": {
       "slug": "buxus",
@@ -238,7 +359,8 @@
       "notitie": "Buxus sempervirens (aka: common box; European box; boxwood), cultivated topiary in the Royal Horticultural Society Hilltop Garden at RHS Hyde Hall, in Rettendon, Essex, England.Camera: Canon EOS 6D wi",
       "bytes": 357581,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "89a5531316d0842ca11c718cbd5077a2e1681391c63214b2a062401ba21bda86"
     },
     "calathea": {
       "slug": "calathea",
@@ -255,7 +377,8 @@
       "notitie": "Calathea orbifolia plant on wooden floor",
       "bytes": 176185,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "b0a9b60774d02ddcceca1f18844409f4dd1c3b17944bc35a3048d0b55fad0398"
     },
     "citroenmelisse": {
       "slug": "citroenmelisse",
@@ -272,7 +395,8 @@
       "notitie": "lemon balm (Melissa officinalis)",
       "bytes": 205110,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "eebfe87ffc762a646a5516188d3b09613e0e0c2efafd3289d4b48a17e7857843"
     },
     "citroenverbena": {
       "slug": "citroenverbena",
@@ -289,7 +413,8 @@
       "notitie": "Aloysia citriodora, Verbenaceae, Lemon Verbena, Lemon Beebrush, inflorescence; Botanical Garden Karlsruhe, Germany.",
       "bytes": 200032,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "2de89431b64b1bedcd3770a0f3d7a412322139435ca73ebce3db300005d681c4"
     },
     "clematis": {
       "slug": "clematis",
@@ -306,7 +431,26 @@
       "notitie": "Clematis 'Viola', a cultivar of the Clematis viticella group, and the Ranunculaceae family, in the Walled Garden of Parham House, in West Sussex, England. Also know as Late Large-flowered clematis 'Vi",
       "bytes": 273215,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "33459a043ac933d920789ab5863b7f71d07061692d1392880ae6c49b197ed22c"
+    },
+    "dagkoekoeksbloem": {
+      "slug": "dagkoekoeksbloem",
+      "naam": "Dagkoekoeksbloem",
+      "latijn": "Silene dioica",
+      "auteur": "Robert Flogaus-Faust",
+      "licentie": "CC BY",
+      "licentie_url": "https://creativecommons.org/licenses/by/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Silene_dioica_RF.jpg",
+      "bron_titel": "File:Silene dioica RF.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Dagkoekoeksbloem (Silene dioica)",
+      "bestand": "assets/images/soorten/dagkoekoeksbloem.jpg",
+      "notitie": "Red catchfly (Silene dioica) , between Boeckstein and Zitterauer Alm, Austria",
+      "status": "goedgekeurd",
+      "sha256": "1f5ef96466ce7239e4a52b5dbcbbd7146bf9f4ee0d2e87a52324616fee96ba53",
+      "bytes": 145778,
+      "width_max": 1200
     },
     "daglelie": {
       "slug": "daglelie",
@@ -323,7 +467,8 @@
       "notitie": "Orange Daylily, possibly a garden hybrid cultivar, Ukraine, Vinnytsia",
       "bytes": 117530,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "17bdd5c619814d729f9652c2473d6e94e6fed663d326f0ba436d0c80aabcbc7e"
     },
     "dahlia": {
       "slug": "dahlia",
@@ -340,7 +485,26 @@
       "notitie": "Bourdon des champs sur un dahlia à fleur simple en septembre (Bombus pascuorum)",
       "bytes": 182668,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "5c7cd460900b7601ad0dfb62fb20002905346090713cd5127dbf482193e2f1ca"
+    },
+    "daslook": {
+      "slug": "daslook",
+      "naam": "Daslook",
+      "latijn": "Allium ursinum",
+      "auteur": "Flocci Nivis",
+      "licentie": "CC BY",
+      "licentie_url": "https://creativecommons.org/licenses/by/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:20210508_Allium_ursinum_02.jpg",
+      "bron_titel": "File:20210508 Allium ursinum 02.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Daslook (Allium ursinum)",
+      "bestand": "assets/images/soorten/daslook.jpg",
+      "notitie": "A mason bee (Osmia spec) on a wild garlic (Allium ursinum) flower in the nature reserve Bliesaue zwischen Blieskastel und Bliesdalheim.",
+      "status": "goedgekeurd",
+      "sha256": "f71305614ff6c71ca1cbb27c6f7b0a6868b907760f8673f77f6a43a7bf47c1a9",
+      "bytes": 73029,
+      "width_max": 1200
     },
     "dieffenbachia": {
       "slug": "dieffenbachia",
@@ -357,7 +521,26 @@
       "notitie": "Blüte einer Dieffenbachia in Nahaufnahme",
       "bytes": 145989,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "c2c318dd74d6cc2256ad4e5936360e201c593c296eb0d6eaf55df7b1e28468bb"
+    },
+    "dotterbloem": {
+      "slug": "dotterbloem",
+      "naam": "Dotterbloem",
+      "latijn": "Caltha palustris",
+      "auteur": "GT1976",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:2018-04-09_(119)_Caltha_palustris_(marsh-marigold)_at_Bichlh%C3%A4usl_at_Haltgraben_in_Frankenfels.jpg",
+      "bron_titel": "File:2018-04-09 (119) Caltha palustris (marsh-marigold) at Bichlhäusl at Haltgraben in Frankenfels.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Dotterbloem (Caltha palustris)",
+      "bestand": "assets/images/soorten/dotterbloem.jpg",
+      "notitie": "Caltha palustris (marsh-marigold) at Bichlhäusl at Haltgraben in Frankenfels",
+      "status": "goedgekeurd",
+      "sha256": "ca36278fe737ae8e48be38bf695a6c3a02bd0231fa0cd9219a065958ec383237",
+      "bytes": 387760,
+      "width_max": 1200
     },
     "dragon": {
       "slug": "dragon",
@@ -374,7 +557,8 @@
       "notitie": "A tárkony (Artemisia dracunculus) a őszirózsafélék (Asteraceae) családjába, az Üröm nemzetségbe tartozó, évelő gyógy-, és fűszernövény. Magyar népies nevei: esztragon, tárkonyüröm, tárkony.",
       "bytes": 300353,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "07e96a99e4ff118f2100177f2da4a1a2424324c5822eb4df1a6fae71c4167d35"
     },
     "druif": {
       "slug": "druif",
@@ -391,7 +575,8 @@
       "notitie": "A cultivated Common Grape Vine, Vitis vinifera subsp. vinifera",
       "bytes": 115281,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "7ea68d9466dedda13236024e44a0244723c223d3bdb2bf9f7a4ceb0b8d84ecc4"
     },
     "duindoorn": {
       "slug": "duindoorn",
@@ -408,7 +593,26 @@
       "notitie": "Fruit of sea-buckthorn (Hippophae rhamnoides) at the Kiikeli island of Oulu.",
       "bytes": 144215,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "42c884b8b735cc120ef23015212f7d7b169c61de36f8032928da16268a6e9f1c"
+    },
+    "duizendblad": {
+      "slug": "duizendblad",
+      "naam": "Duizendblad",
+      "latijn": "Achillea millefolium",
+      "auteur": "Alpsdake",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Achillea_millefolium_(flower).jpg",
+      "bron_titel": "File:Achillea millefolium (flower).jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Duizendblad (Achillea millefolium)",
+      "bestand": "assets/images/soorten/duizendblad.jpg",
+      "notitie": "Achillea millefolium, in Mount Ibuki, Maibara, Shiga prefecure, Japan.",
+      "status": "goedgekeurd",
+      "sha256": "bf993f8496010a06ddce2fea99ffaafe381700fcdf3506c837f4220ae8091681",
+      "bytes": 160782,
+      "width_max": 1200
     },
     "echeveria": {
       "slug": "echeveria",
@@ -425,7 +629,26 @@
       "notitie": "Echeveria secunda - Leaves",
       "bytes": 289965,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "9479007849676e71bf7ca17b353c4afc69e40e181ba9f91153c067eed800ff64"
+    },
+    "eeuwig-moes": {
+      "slug": "eeuwig-moes",
+      "naam": "Eeuwig moes",
+      "latijn": "Brassica oleracea var. palmifolia",
+      "auteur": "Frank Vincentz",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Kluse_-_Brassica_oleracea_var._palmifolia_-_Ostfriesische_Palme_01_ies.jpg",
+      "bron_titel": "File:Kluse - Brassica oleracea var. palmifolia - Ostfriesische Palme 01 ies.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Eeuwig moes (Brassica oleracea var. palmifolia)",
+      "bestand": "assets/images/soorten/eeuwig-moes.jpg",
+      "notitie": "Kale \"Ostfriesische Palme\" Brassica oleracea var. palmifolia in a garden in Kluse (Emsland)",
+      "status": "goedgekeurd",
+      "sha256": "ae15a01226a1fd3940139d092dd391f6dd8596ea6436c38159bfda1c07339594",
+      "bytes": 353771,
+      "width_max": 1200
     },
     "eucalyptus": {
       "slug": "eucalyptus",
@@ -442,7 +665,8 @@
       "notitie": "Eucalyptus gunnii in Kew Gardens, England.",
       "bytes": 62734,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "d282084e780d39c7cce40c130f12461ed76de6715cfb673cb03207ace9505693"
     },
     "forsythia": {
       "slug": "forsythia",
@@ -459,7 +683,8 @@
       "notitie": "Location taken: Behnke Nurseries, Potomac MD USA. Names: Forsythia x intermedia Zabel, Border Forsythia, Common Forsythia, Showy Forsythi Classification: Plantae > Tracheophyta > Spermatopsida > Lamia",
       "bytes": 183280,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "e4f92cce5d6e79cbadec3b31df46bc65c686f0dc2f7a2efed582d24694cd7ce8"
     },
     "framboos": {
       "slug": "framboos",
@@ -476,7 +701,8 @@
       "notitie": "A close-up shot of two raspberries still hanging from a bush with some blurred leaves in the background.",
       "bytes": 124392,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "39062c81d6bd3c8a219cbc8a1fc621412e1b190ca279e2d52865db70642ae936"
     },
     "fuchsia": {
       "slug": "fuchsia",
@@ -493,7 +719,8 @@
       "notitie": "Fuchsia 'Albertina'.",
       "bytes": 68986,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "11917bb61262b5c5bfa092d9371fe720f2b6a36345beb7d1e862de098d953fca"
     },
     "gele-kornoelje": {
       "slug": "gele-kornoelje",
@@ -510,7 +737,80 @@
       "notitie": "Flower of Cornus mas",
       "bytes": 68671,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "17e839f0ac7d58e01cff91e1bffa1f1262ab4fec23511cc6cf9bd2bf06d04340"
+    },
+    "gele-lis": {
+      "slug": "gele-lis",
+      "naam": "Gele lis",
+      "latijn": "Iris pseudacorus",
+      "auteur": "Didier Descouens",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:(MHNT)_Iris_pseudacorus_flower.jpg",
+      "bron_titel": "File:(MHNT) Iris pseudacorus flower.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Gele lis (Iris pseudacorus)",
+      "bestand": "assets/images/soorten/gele-lis.jpg",
+      "notitie": "Iris pseudocorus - immature flower",
+      "status": "goedgekeurd",
+      "sha256": "1da2f9fe13dcd1604402cf7efbce810e5dd712884ce0a01f60100bc00e65205c",
+      "bytes": 182260,
+      "width_max": 1200
+    },
+    "gewone-brunel": {
+      "slug": "gewone-brunel",
+      "naam": "Gewone brunel",
+      "latijn": "Prunella vulgaris",
+      "auteur": "JackyM59",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Brunelle_commune_(Prunella_vulgaris).jpg",
+      "bron_titel": "File:Brunelle commune (Prunella vulgaris).jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Gewone brunel (Prunella vulgaris)",
+      "bestand": "assets/images/soorten/gewone-brunel.jpg",
+      "notitie": "Brunelle commune (Prunella vulgaris) au Terril Saint Marie d'Auberchicourt",
+      "status": "goedgekeurd",
+      "sha256": "189ef3aa7333a5f40fab4f5645bd02226fd4c5f5121ebb82d78162dd44fca5f1",
+      "bytes": 177816,
+      "width_max": 1200
+    },
+    "gewone-margriet": {
+      "slug": "gewone-margriet",
+      "naam": "Gewone margriet",
+      "latijn": "Leucanthemum vulgare",
+      "auteur": "GT1976",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:2019-06-07_(100)_Leucanthemum_vulgare_(ox-eye_daisy)_with_Triungulinus_(three_claws)_at_Bichlh%C3%A4usl,_Tiefgrabenrotte,_Frankenfels,_Austria.jpg",
+      "bron_titel": "File:2019-06-07 (100) Leucanthemum vulgare (ox-eye daisy) with Triungulinus (three claws) at Bichlhäusl, Tiefgrabenrotte, Frankenfels, Austria.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Gewone margriet (Leucanthemum vulgare)",
+      "bestand": "assets/images/soorten/gewone-margriet.jpg",
+      "notitie": "Leucanthemum vulgare (ox-eye daisy) with Triungulinus (three claws) at Bichlhäusl, Tiefgrabenrotte, Frankenfels, Austria",
+      "status": "goedgekeurd",
+      "sha256": "1fc9ecc4398751c0f574145190430426a646f2d1e0549655536103f68f67e175",
+      "bytes": 112034,
+      "width_max": 1200
+    },
+    "goede-hendrik": {
+      "slug": "goede-hendrik",
+      "naam": "Goede Hendrik",
+      "latijn": "Blitum bonus-henricus",
+      "auteur": "Robert Flogaus-Faust",
+      "licentie": "CC BY",
+      "licentie_url": "https://creativecommons.org/licenses/by/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Blitum_bonus-henricus_RF.jpg",
+      "bron_titel": "File:Blitum bonus-henricus RF.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Goede Hendrik (Blitum bonus-henricus)",
+      "bestand": "assets/images/soorten/goede-hendrik.jpg",
+      "notitie": "Good-King-Henry (Blitum bonus-henricus), Emerfeld, Germany",
+      "status": "goedgekeurd",
+      "sha256": "5ddfa44d55c263effa21756ad5564cc8259f38afd62ff69c8b1c399ca31348ce",
+      "bytes": 313568,
+      "width_max": 1200
     },
     "gojibes": {
       "slug": "gojibes",
@@ -527,7 +827,8 @@
       "notitie": "Lycium barbarum, the east coast of Jutland, Denmark. These are the fruits of Lycium barbarum",
       "bytes": 201297,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "a91fe0d32874ad8aaa1360a85ab928760d6386eccefd4d94e1765fde2bc03aeb"
     },
     "graslelie": {
       "slug": "graslelie",
@@ -544,7 +845,26 @@
       "notitie": "Chlorophytum comosum (Familia: Agavaceae). Nombres comunes: cinta, malamadre, papito corazón, araña, lazo de amor.",
       "bytes": 158234,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "e7340cded5c468af06219e624efb455dac4c9cd0bc1789b6d6e22f532b5909fa"
+    },
+    "grote-kattenstaart": {
+      "slug": "grote-kattenstaart",
+      "naam": "Kattestaart",
+      "latijn": "Lythrum salicaria",
+      "auteur": "H. Zell",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Lythrum_salicaria_002.JPG",
+      "bron_titel": "File:Lythrum salicaria 002.JPG",
+      "originele_mime": "image/jpeg",
+      "alt": "Kattestaart (Lythrum salicaria)",
+      "bestand": "assets/images/soorten/grote-kattenstaart.jpg",
+      "notitie": "Lythrum salicaria, Lyhraceae, Purple Loosestrife, inflorescence. The plant is used in homeopathy as remedy: Lythrum salicaria (Lythr-s.)",
+      "status": "goedgekeurd",
+      "sha256": "43fc6d1f24828a211f2ad3a83c09e513d3647a8f0870b4704a326a3f0016afd8",
+      "bytes": 184222,
+      "width_max": 1200
     },
     "hazelaar": {
       "slug": "hazelaar",
@@ -561,7 +881,26 @@
       "notitie": "Hazel (Corylaceae) birch family (Betulaceae) family of deciduous trees and large shrubs with hazelnut fruit, with simple rounded leaves with double serrated edges. The flowers come out in early spring",
       "bytes": 141874,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "d2b6066bfb1474dfb31a5b62eafc3d052c5ce916b5f4e8b430c1c81c18143229"
+    },
+    "heemst": {
+      "slug": "heemst",
+      "naam": "Heemst",
+      "latijn": "Althaea officinalis",
+      "auteur": "Cbaile19",
+      "licentie": "CC0 / Public Domain",
+      "licentie_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Althaea_officinalis,_2020-10-04,_Carnegie,_01.jpg",
+      "bron_titel": "File:Althaea officinalis, 2020-10-04, Carnegie, 01.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Heemst (Althaea officinalis)",
+      "bestand": "assets/images/soorten/heemst.jpg",
+      "notitie": "Marsh Mallow (Althaea officinalis) blooming by a railroad track in Carnegie, near Pittsburgh",
+      "status": "goedgekeurd",
+      "sha256": "403b9cce797bf9c08f1601add6f075b73449c3574c94e2f4136f129334b4d98d",
+      "bytes": 131967,
+      "width_max": 1200
     },
     "herfstaster": {
       "slug": "herfstaster",
@@ -578,7 +917,8 @@
       "notitie": "New York aster (Symphyotrichum novi-belgii)",
       "bytes": 126405,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "ce74e6d3531e856a7a4eb0b01389b8344407b932360ac2506fbf6ab7458f007b"
     },
     "herfstolijfwilg": {
       "slug": "herfstolijfwilg",
@@ -595,7 +935,8 @@
       "notitie": "Elaeagnus umbellata",
       "bytes": 243027,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "3f47ff2aeca99f4c031fcb0d26c9196de4879c9ef140db04a2304041b15a3a8f"
     },
     "heuchera": {
       "slug": "heuchera",
@@ -612,7 +953,26 @@
       "notitie": "Heuchera 'Caramel. Nice selection for not too dry partial shade.",
       "bytes": 411344,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "10fb2f6de0937d6ec1ccb36c09205699ff99d79e4dce02aee1cf0a868bec79bd"
+    },
+    "hondsroos": {
+      "slug": "hondsroos",
+      "naam": "Hondsroos",
+      "latijn": "Rosa canina",
+      "auteur": "H. Zell",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Rosa_canina_003.JPG",
+      "bron_titel": "File:Rosa canina 003.JPG",
+      "originele_mime": "image/jpeg",
+      "alt": "Hondsroos (Rosa canina)",
+      "bestand": "assets/images/soorten/hondsroos.jpg",
+      "notitie": "Rosa canina, Rosaceae, Dog Rose, flower. Karlsruhe, Germany.",
+      "status": "goedgekeurd",
+      "sha256": "a9dde4aa859572e4f20f0ffca40ef1674af100ecf190ffb4911739b0b9bad1df",
+      "bytes": 168340,
+      "width_max": 1200
     },
     "honingbes": {
       "slug": "honingbes",
@@ -629,7 +989,8 @@
       "notitie": "Ветка жимолости с плодами",
       "bytes": 130746,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "5aa248a01ba427ab2e5b89016a253005e2d96bcee7cd91a5a7f4d1d86f03f8c7"
     },
     "hortensia": {
       "slug": "hortensia",
@@ -646,7 +1007,8 @@
       "notitie": "Blue Hydrangea (common names hydrangea or hortensia)",
       "bytes": 154828,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "58b6609524152742d0e7a7ce3fa27b4978639f299c5a49236dcaf71fe59f8f81"
     },
     "hosta": {
       "slug": "hosta",
@@ -663,7 +1025,8 @@
       "notitie": "Hosta Plant In Garden Hampshire UK",
       "bytes": 164902,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "7dd72d9822b969789a2789088dcd3b6cc7d2fbc50ee88f4cd2e73d0aaa62cd30"
     },
     "huislook": {
       "slug": "huislook",
@@ -680,7 +1043,26 @@
       "notitie": "Sempervivum montanum in Saas-Balen, Switzerland.",
       "bytes": 285229,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "f4b79c3401eae0161cadcb7bc29a0cab6097f772d57a39964ca163c0882f1995"
+    },
+    "echt-ijzerhard": {
+      "slug": "echt-ijzerhard",
+      "naam": "Echt ijzerhard",
+      "latijn": "Verbena officinalis",
+      "auteur": "Konrad Lackerbeck",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/2.5",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Eisenkraut,_Passau.JPG",
+      "bron_titel": "File:Eisenkraut, Passau.JPG",
+      "originele_mime": "image/jpeg",
+      "alt": "Echt ijzerhard (Verbena officinalis)",
+      "bestand": "assets/images/soorten/echt-ijzerhard.jpg",
+      "notitie": "Eisenkraut im Landschaftsschutzgebiet Kohlbruck in Passau",
+      "status": "goedgekeurd",
+      "sha256": "231fe0ea25dcdd0c24d39b88a8454ef8eec46f7db3a52f9cc099312c9daea959",
+      "bytes": 319720,
+      "width_max": 1200
     },
     "iris": {
       "slug": "iris",
@@ -697,7 +1079,8 @@
       "notitie": "Name Iris Germanica Hybr. Family Iridaceae Photographer Isabelle Grosjean ZA Date 2004-04-29 License GNU FDL Camera Sony PSC-P92",
       "bytes": 130763,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "70da55301bc20bc3c82eab3e415e89cd5f067c2ac2a3b2390dcac63941da9597"
     },
     "jadeplant": {
       "slug": "jadeplant",
@@ -714,7 +1097,8 @@
       "notitie": "Crassula ovata - young shoots",
       "bytes": 286258,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "700bb9ef8ee36a9513e1070e1269b13b6596061875eb0c3d296f60f03c6754fc"
     },
     "japanse-wijnbes": {
       "slug": "japanse-wijnbes",
@@ -731,7 +1115,8 @@
       "notitie": "Rubus phoenicolasius",
       "bytes": 160756,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "209d162d9a15699647a9a2e9cc01e5a4ed8edf24070e1b2063bc00e14288230d"
     },
     "jostabes": {
       "slug": "jostabes",
@@ -748,7 +1133,8 @@
       "notitie": "Jostaberry (Ribes nidigrolaria), fruits",
       "bytes": 89262,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "8eb6a22f03323231bcf81c4d0a8c2a0dd0963d1ae96128cf109eb52748a3b839"
     },
     "kaaps-viooltje": {
       "slug": "kaaps-viooltje",
@@ -765,7 +1151,26 @@
       "notitie": "Saintpaulia ionantha (unknown cultivar)",
       "bytes": 159643,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "28caaa83f5595ac057dc8ac82556c5f2bb6bb49e65065d285411df6e03167314"
+    },
+    "kaasjeskruid": {
+      "slug": "kaasjeskruid",
+      "naam": "Kaasjeskruid",
+      "latijn": "Malva sylvestris",
+      "auteur": "Krzysztof Golik",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Close-up_photographs_of_Malva_sylvestris_flowers.jpg",
+      "bron_titel": "File:Close-up photographs of Malva sylvestris flowers.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Kaasjeskruid (Malva sylvestris)",
+      "bestand": "assets/images/soorten/kaasjeskruid.jpg",
+      "notitie": "Close-up photographs of Malva sylvestris flowers, photography taken near Beaulieu-en-Rouergue Abbey in commune of Ginals, Tarn-et-Garonne, France",
+      "status": "goedgekeurd",
+      "sha256": "f7ba8ea54448d68c7f74d0cc842866f64bac28b9666ff45fc85af54208e0d236",
+      "bytes": 139040,
+      "width_max": 1200
     },
     "kalanchoe": {
       "slug": "kalanchoe",
@@ -782,7 +1187,8 @@
       "notitie": "Kalanchoe blossfeldiana (Florist Kalanchoe)",
       "bytes": 167571,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "cfa5f5d5ea2e34c26376a229ce88bb14fb58278a52d6ff7031cdc69fa7094f24"
     },
     "kamperfoelie": {
       "slug": "kamperfoelie",
@@ -799,7 +1205,26 @@
       "notitie": "Lonicera periclymenum in Belgium (Hamois).",
       "bytes": 174630,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "1525a91aef8db20b8ba717df3c977a89ac4ca0da29f1d392259176a9a98592a5"
+    },
+    "kardoen": {
+      "slug": "kardoen",
+      "naam": "Kardoen",
+      "latijn": "Cynara cardunculus",
+      "auteur": "Magnus Manske",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Cynara_cardunculus_%27Cardoon%27_(Compositae)_plant.jpg",
+      "bron_titel": "File:Cynara cardunculus 'Cardoon' (Compositae) plant.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Kardoen (Cynara cardunculus)",
+      "bestand": "assets/images/soorten/kardoen.jpg",
+      "notitie": "Taken in the Cambridge University Botanic Garden.",
+      "status": "goedgekeurd",
+      "sha256": "f68288747ad82c0bcdb67aa51fe96c62d54bbac2556bcfbca4e155b464e6aed1",
+      "bytes": 395166,
+      "width_max": 1200
     },
     "kattenkruid": {
       "slug": "kattenkruid",
@@ -816,7 +1241,8 @@
       "notitie": "Nepeta × faassenii in arboretum in Wojsławice",
       "bytes": 374096,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "f3e121d7559e7c800ed0cf891c0a89bca315d07ed6923e5f448e4d2c7d24c363"
     },
     "kers": {
       "slug": "kers",
@@ -833,7 +1259,8 @@
       "notitie": "Branch with ripe cherries in a cherry orchard near Bieberbach in Franconian Switzerland",
       "bytes": 200237,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "edfbf84156bdb817be0f9a9428f02e93b51a2b75d5af6102a2fc15e759fc502c"
     },
     "kerstcactus": {
       "slug": "kerstcactus",
@@ -850,7 +1277,8 @@
       "notitie": "Flower of a  Schlumbergera Houseplant.",
       "bytes": 93145,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "5f1e76f5e027c210d7a33afd202e167e355b78a36bc6cc393382a08a168845ad"
     },
     "kerstroos": {
       "slug": "kerstroos",
@@ -867,7 +1295,8 @@
       "notitie": "",
       "bytes": 183498,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "658d499b07eb70bf7cbb7b782ff228e9ef04ac8a7a39ad0d3e16852d10d73f5d"
     },
     "kettinghart": {
       "slug": "kettinghart",
@@ -884,7 +1313,8 @@
       "notitie": "Ceropegia woodii cultivated in a greenhouse at the Wrocław University Botanical Garden, Wroclaw, Poland.",
       "bytes": 78726,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "fe94b2857df215c49550380dcbe9777f21a8d2d754da533674608ff39bb7371f"
     },
     "kiwi": {
       "slug": "kiwi",
@@ -901,7 +1331,8 @@
       "notitie": "kiwifruit growing",
       "bytes": 247268,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "7540a327457422a7126c659c42edaa50a1043e39209c79592317094577d52615"
     },
     "kiwibes": {
       "slug": "kiwibes",
@@ -918,7 +1349,8 @@
       "notitie": "Actinidia arguta (the hardy kiwi)",
       "bytes": 121849,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "0ba0cea1955b243f1f13350f6bf8c7c9835e12a466f472806fd1bac769fa1bf5"
     },
     "klimop": {
       "slug": "klimop",
@@ -935,7 +1367,62 @@
       "notitie": "Hedera helix",
       "bytes": 360979,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "6e8adde5983e7d00c710cdaed1e22b5b98b3c8537c62f6f13e40326c2be44e7e"
+    },
+    "ruig-klokje": {
+      "slug": "ruig-klokje",
+      "naam": "Ruig klokje",
+      "latijn": "Campanula trachelium",
+      "auteur": "W. Bulach",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:.00_2908_Nesselbl%C3%A4ttrige_Glockenblume_(Campanula_trachelium).jpg",
+      "bron_titel": "File:.00 2908 Nesselblättrige Glockenblume (Campanula trachelium).jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Ruig klokje (Campanula trachelium)",
+      "bestand": "assets/images/soorten/ruig-klokje.jpg",
+      "notitie": "Close-up of the 'nettle-leaved bellflower' (Campanula trachelium). A perennial plant that grows up to 110 centimeters in height. Characteristics are the hairiness of the stems and the leaves, which ma",
+      "status": "goedgekeurd",
+      "sha256": "f9afca1da6b54baae29ac1441e456ff935e74035311d957e38c36777d553805a",
+      "bytes": 160327,
+      "width_max": 1200
+    },
+    "knoopkruid": {
+      "slug": "knoopkruid",
+      "naam": "Knoopkruid",
+      "latijn": "Centaurea jacea",
+      "auteur": "Flocci Nivis",
+      "licentie": "CC BY",
+      "licentie_url": "https://creativecommons.org/licenses/by/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:20240704_Centaurea_jacea.jpg",
+      "bron_titel": "File:20240704 Centaurea jacea.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Knoopkruid (Centaurea jacea)",
+      "bestand": "assets/images/soorten/knoopkruid.jpg",
+      "notitie": "A honey bee (Apis mellifera) on a Brown Knapweed (Centaurea jacea) close to the Reitwiese in the Englischer Garten in Munich.",
+      "status": "goedgekeurd",
+      "sha256": "0f963f7f674b481306ffeac4c6ba82c5cde9347950c25b5e76c33b0bf97e46be",
+      "bytes": 186513,
+      "width_max": 1200
+    },
+    "koninginnekruid": {
+      "slug": "koninginnekruid",
+      "naam": "Koninginnekruid",
+      "latijn": "Eupatorium cannabinum",
+      "auteur": "Renée Kools",
+      "licentie": "CC BY",
+      "licentie_url": "https://creativecommons.org/licenses/by/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Eupatorium_cannabinum_2025-07-23-12.jpg",
+      "bron_titel": "File:Eupatorium cannabinum 2025-07-23-12.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Koninginnekruid (Eupatorium cannabinum)",
+      "bestand": "assets/images/soorten/koninginnekruid.jpg",
+      "notitie": "Close-up of a flowering hemp-agrimony (Eupatorium cannabinum)",
+      "status": "goedgekeurd",
+      "sha256": "029e9f6b4ea79af25f12f90766e97fdeaad43004bb6108b53b99e0ddc0c673db",
+      "bytes": 177886,
+      "width_max": 1200
     },
     "kruisbes": {
       "slug": "kruisbes",
@@ -952,7 +1439,8 @@
       "notitie": "Gooseberry (Ribes uva-crispa), Munich, Germany",
       "bytes": 202444,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "3dce18091a5a638f74e85fddaad89702d5183e96ba10b1f0977f0c0e6bb1ee37"
     },
     "kweepeer": {
       "slug": "kweepeer",
@@ -969,7 +1457,8 @@
       "notitie": "Cydonia oblonga 'Portugal', fruit; in garden near Wolmaransstad, North West, South Africa",
       "bytes": 186309,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "35a16003cf4051fa2b27b91cd9553d8b4bec759add6f6297ce618d35d53b3b6b"
     },
     "laurier": {
       "slug": "laurier",
@@ -986,7 +1475,8 @@
       "notitie": "Laurus nobilis in Penacova near Coimbra in Portugal",
       "bytes": 243364,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "0df3fa33969ce125b9bbf6ca8a967d97b01995551e2b3d07815d1af97fbf03bb"
     },
     "laurierkers": {
       "slug": "laurierkers",
@@ -1003,7 +1493,8 @@
       "notitie": "Ruhland, Goethestraße bei Lange Straße 8a, Lorbeerkirsche-(Prunus laurocerasus)-Hecke, Vorwinter; davor das Ruhlander Schwarzwasser",
       "bytes": 272488,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "b61f24d303d658a59d62a987cc7489eb9823dc8226b952007877f07ee696b8da"
     },
     "lavas": {
       "slug": "lavas",
@@ -1020,7 +1511,8 @@
       "notitie": "Liebstöckl, auch genannt Maggikraut (Levisticum officinale), fotografiert in Heidelberg (Baden-Württemberg, Deutschland)",
       "bytes": 225936,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "2a8b481c2719de3c6af5fc52e22042f2212e537417030e879fc5840cc62cd64c"
     },
     "lavendel": {
       "slug": "lavendel",
@@ -1037,7 +1529,8 @@
       "notitie": "Campo sembrado de aromática Lavandula (Ares del Maestrat, España).",
       "bytes": 422400,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "28447249a1830b02d4105b1b1bc0162894dcfa7d6657373337f9e34b24a9216a"
     },
     "lepelplant": {
       "slug": "lepelplant",
@@ -1054,7 +1547,8 @@
       "notitie": "Spathiphyllum cuspidatum. Berggarten Hannover.",
       "bytes": 243147,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "b72f70eef90a8bb35236d7d3f8fb0093070b5ecacfa16297c19ec3918cd4af5d"
     },
     "liguster": {
       "slug": "liguster",
@@ -1071,7 +1565,98 @@
       "notitie": "Ligustrum vulgare leaf",
       "bytes": 205863,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "8dde57e9a2588bd7393b846bf2c777e4f7c78f596d955b9a0d251e52a414aa1d"
+    },
+    "lijsterbes": {
+      "slug": "lijsterbes",
+      "naam": "Lijsterbes",
+      "latijn": "Sorbus aucuparia",
+      "auteur": "Anne Burgess ",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/2.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Rowan_Berries_(Sorbus_aucuparia)_-_geograph.org.uk_-_7261951.jpg",
+      "bron_titel": "File:Rowan Berries (Sorbus aucuparia) - geograph.org.uk - 7261951.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Lijsterbes (Sorbus aucuparia)",
+      "bestand": "assets/images/soorten/lijsterbes.jpg",
+      "notitie": "Rowan Berries (Sorbus aucuparia) ",
+      "status": "goedgekeurd",
+      "sha256": "99ba955bc47f6b666238c423d5d438e6af0b739d31c3ac03b3b4468c22d0b07a",
+      "bytes": 248494,
+      "width_max": 1024
+    },
+    "gevlekt-longkruid": {
+      "slug": "gevlekt-longkruid",
+      "naam": "Gevlekt longkruid",
+      "latijn": "Pulmonaria officinalis",
+      "auteur": "AnemoneProjectors (talk)",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/2.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Lungwort_(Pulmonaria_officinalis)_(33628407390).jpg",
+      "bron_titel": "File:Lungwort (Pulmonaria officinalis) (33628407390).jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Gevlekt longkruid (Pulmonaria officinalis)",
+      "bestand": "assets/images/soorten/gevlekt-longkruid.jpg",
+      "notitie": "Lungwort (Pulmonaria officinalis), Harrow Weald Common, London, 1 April 2017.",
+      "status": "goedgekeurd",
+      "sha256": "6aae8cfc188ff16f9542e5c8661190ce8f96b32caba9b472387abb379ca69d7e",
+      "bytes": 172107,
+      "width_max": 1200
+    },
+    "look-zonder-look": {
+      "slug": "look-zonder-look",
+      "naam": "Look-zonder-look",
+      "latijn": "Alliaria petiolata",
+      "auteur": "Didier Descouens",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:(MHNT)_Alliaria_petiolata_-_flowers.jpg",
+      "bron_titel": "File:(MHNT) Alliaria petiolata - flowers.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Look-zonder-look (Alliaria petiolata)",
+      "bestand": "assets/images/soorten/look-zonder-look.jpg",
+      "notitie": "Alliaria petiolata - Flowers",
+      "status": "goedgekeurd",
+      "sha256": "af60bbc890bebcb818958ee3eb64c9b64eff970d41616e90ecaa1139f2c7d8a3",
+      "bytes": 64079,
+      "width_max": 1200
+    },
+    "meidoorn": {
+      "slug": "meidoorn",
+      "naam": "Meidoorn",
+      "latijn": "Crataegus monogyna",
+      "auteur": "Didier Descouens",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:(MHNT)_Crataegus_monogyna_-_Fruits.jpg",
+      "bron_titel": "File:(MHNT) Crataegus monogyna - Fruits.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Meidoorn (Crataegus monogyna)",
+      "bestand": "assets/images/soorten/meidoorn.jpg",
+      "notitie": "Common hawthorn - Mature fruits",
+      "status": "goedgekeurd",
+      "sha256": "e19bfb39f77f646dadcd0630b31f747c5001cf0486a98ffc2f7ce93ed546330a",
+      "bytes": 200048,
+      "width_max": 1200
+    },
+    "mierikswortel": {
+      "slug": "mierikswortel",
+      "naam": "Mierikswortel",
+      "latijn": "Armoracia rusticana",
+      "auteur": "W. Bulach",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:,00_3773_Meerrettich_(Armoracia_rusticana).jpg",
+      "bron_titel": "File:,00 3773 Meerrettich (Armoracia rusticana).jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Mierikswortel (Armoracia rusticana)",
+      "bestand": "assets/images/soorten/mierikswortel.jpg",
+      "notitie": "Leaves of horseradish (Armoracia rusticana), also known as horseradish. Horseradish is a perennial plant that can grow up to 2 meters tall. It is one of the oldest cultivated plants and its fleshy roo",
+      "status": "goedgekeurd",
+      "sha256": "17add20bece6cff97b4262bd3ea32d3c3117913f7afb6e9937d691119db144f8",
+      "bytes": 132922,
+      "width_max": 1200
     },
     "mispel": {
       "slug": "mispel",
@@ -1088,7 +1673,26 @@
       "notitie": "Mespilus germanica (Common medlar) with fruit",
       "bytes": 230458,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "c865647d830e2d254643b58e2218ab4247a22e1eec4006af187b7a35d4f133e0"
+    },
+    "moerasspirea": {
+      "slug": "moerasspirea",
+      "naam": "Moerasspirea",
+      "latijn": "Filipendula ulmaria",
+      "auteur": "Hans Hillewaert",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Filipendula_ulmaria_(flower_spike).jpg",
+      "bron_titel": "File:Filipendula ulmaria (flower spike).jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Moerasspirea (Filipendula ulmaria)",
+      "bestand": "assets/images/soorten/moerasspirea.jpg",
+      "notitie": "Meadowsweet at Kampenhout, Belgium",
+      "status": "goedgekeurd",
+      "sha256": "82dfed4048d7a32226bf4d68b6357799f9967fe05be785b714fc870ddead3fd2",
+      "bytes": 135354,
+      "width_max": 1200
     },
     "moerbei": {
       "slug": "moerbei",
@@ -1105,7 +1709,8 @@
       "notitie": "Спелое (чёрное) и неспелое (красное) соплодие черной шелковицы рядом. Июнь 2022, во дворах Самарканда.",
       "bytes": 174122,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "266e7dcecbfd90124759ca77e2dfdbdd9007a1e29e12c4f919b290589c71d9b3"
     },
     "monstera": {
       "slug": "monstera",
@@ -1122,7 +1727,8 @@
       "notitie": null,
       "bytes": 338631,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "699bcb804b28351e83b7a4c6fce4c5e5f928b3ae98de92391bd57c33cdcbdad8"
     },
     "munt": {
       "slug": "munt",
@@ -1139,7 +1745,8 @@
       "notitie": "Mint leaves (Mentha spicata)",
       "bytes": 171393,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "cb3b0d4fa18d0d214be4b63a26a050bc5b96491959cfba78787cbd8e6562ef20"
     },
     "oleander": {
       "slug": "oleander",
@@ -1156,7 +1763,8 @@
       "notitie": "Flowers and leaves of Nerium oleander",
       "bytes": 158030,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "bebff224519b055156477d07e1443f16bed43440a5b427b9cd5bd4c12028d44e"
     },
     "ooievaarsbek": {
       "slug": "ooievaarsbek",
@@ -1173,7 +1781,8 @@
       "notitie": "Geranium 'Rozanne'. long flowering garden geranium.",
       "bytes": 150639,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "08ed96e071ad8e08f7a371afa7e98b37db36c426a98fa8dc5de05539a256aef7"
     },
     "oregano": {
       "slug": "oregano",
@@ -1190,7 +1799,8 @@
       "notitie": "Fleurs d'Origan (Origanum vulgare) à Monchecourt",
       "bytes": 226787,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "0fb8d13aa84f05cbc519e59473eedabb4cc66519df6b837f952168caffb0b1ef"
     },
     "passiebloem": {
       "slug": "passiebloem",
@@ -1207,7 +1817,8 @@
       "notitie": "Bluish variety of Passiflora caerulea, Passion Vine, at the Butterfly Garden at Norfolk Botanical Garden, Norfolk, Virginia.",
       "bytes": 205626,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "f756a59338c9a8f735d450c299693469f1ffde6c6c9921a6201ba81f2fb01428"
     },
     "peer": {
       "slug": "peer",
@@ -1224,7 +1835,8 @@
       "notitie": "Birnbaum (Pyrus), fotografiert in Heidelberg (Baden-Württemberg, Deutschland)",
       "bytes": 149469,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "3f941d912e3d1930378e72581fcdb45f5df82a268a401f96a540b8dd26ce6c50"
     },
     "pelargonium": {
       "slug": "pelargonium",
@@ -1241,7 +1853,8 @@
       "notitie": "Pelargonium zonale. Sitia, Crete, Greece.",
       "bytes": 98893,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "0a77c961b3a0f81b39f10f6e234f3b77efc95a5af6e1cc332e6df73ed69a7ec3"
     },
     "peperomia": {
       "slug": "peperomia",
@@ -1258,7 +1871,8 @@
       "notitie": "Peperomia obtusifolia at the Botanical garden of the Institute of Biology, Faculty of Natural Sciences and Mathematics, Skopje, Macedonia.",
       "bytes": 122247,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "0f8d51ba07e83e322ad2cef68d54e8333c9c43f054c4398effe001d52702043c"
     },
     "perzik": {
       "slug": "perzik",
@@ -1275,7 +1889,8 @@
       "notitie": "Prunus persica var. persica (Peach) 'Flordaprince' fruit, younger tree fruiting later at Hawea Pl, Olinda, Maui, Hawaii. June 14, 2014 #140614-4525 Image Use Policy",
       "bytes": 164378,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "cc0eb4664a11de7755eaf7459f2c5188f5b13448b33ba46014ef3dfb4d48ebe9"
     },
     "philodendron": {
       "slug": "philodendron",
@@ -1292,7 +1907,8 @@
       "notitie": "Folhas em verde forte, com pecíolo grossos armazenando água e nutrientes.",
       "bytes": 226079,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "2bf67066098ab5dbf73cfd27b779e85d0bf86e4cc7de4df3e74384d77cfd8132"
     },
     "phlox": {
       "slug": "phlox",
@@ -1309,7 +1925,8 @@
       "notitie": "Phlox paniculata 'famous light purple'",
       "bytes": 181162,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "badab869cc7344b5082f218142971075ee002340c62a6f5549b42e9dc3c56965"
     },
     "pilea": {
       "slug": "pilea",
@@ -1326,7 +1943,8 @@
       "notitie": "Pilea peperomioides - Foliage",
       "bytes": 181791,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "6c689743004b25ed10bb22693694054f3efe9addc2b13dbbb82fe6d1cf185856"
     },
     "pioenroos": {
       "slug": "pioenroos",
@@ -1343,7 +1961,8 @@
       "notitie": "Chinese peony (Paeonia lactiflora) in Winklern, municipality Pörtschach am Wörther See, district Klagenfurt Land, Carinthia, Austria, EU",
       "bytes": 130048,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "0fa5b41b09c7cd6e41a262c061a0dcaafd41753eaa5926b4b5c5f476e9b51070"
     },
     "pothos": {
       "slug": "pothos",
@@ -1360,7 +1979,8 @@
       "notitie": "Epipremnum aureum",
       "bytes": 201652,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "06fd3183468d036a09ae474f63568daa6402e7b531a80d44abc05ef77cc47d5f"
     },
     "pruim": {
       "slug": "pruim",
@@ -1377,7 +1997,8 @@
       "notitie": "Plums on branch, Ehrenbach",
       "bytes": 310737,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "fb6cc6d80897beef543f3f161009eebb80834a641fc1194761d85a596bc2a978"
     },
     "rabarber": {
       "slug": "rabarber",
@@ -1394,7 +2015,8 @@
       "notitie": "Rheum rhabarbarum leaves and shafts",
       "bytes": 386853,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "a2ed9372137b11a9ffe81e8ddd5aa25690e34df6f7c4135a0fdeb579406dfd81"
     },
     "rhododendron": {
       "slug": "rhododendron",
@@ -1411,7 +2033,26 @@
       "notitie": "Catawba Rhododendron",
       "bytes": 159357,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "8af1f8d2cd8b569f52e11bc856188a5ec6480a7599f790e083aaf799cae6439f"
+    },
+    "robertskruid": {
+      "slug": "robertskruid",
+      "naam": "Robertskruid",
+      "latijn": "Geranium robertianum",
+      "auteur": "Rudolphous",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Geranium_robertianum_(Robertskruid)_-_Klein_Leeuwenhorst,_Noordwijkerhout.jpg",
+      "bron_titel": "File:Geranium robertianum (Robertskruid) - Klein Leeuwenhorst, Noordwijkerhout.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Robertskruid (Geranium robertianum)",
+      "bestand": "assets/images/soorten/robertskruid.jpg",
+      "notitie": "Klein Leeuwenhorst - Robertskruid (Geranium robertianum)",
+      "status": "goedgekeurd",
+      "sha256": "d075336bf2d0d11d5a4e49facdf1696478046909e8bf5f6f621c6d6e42a282bb",
+      "bytes": 67310,
+      "width_max": 1200
     },
     "rode-bes": {
       "slug": "rode-bes",
@@ -1428,7 +2069,8 @@
       "notitie": "Ribes rubrum",
       "bytes": 199559,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "921531f303f0f29ef1d5517207cd36668a5dbc37a84dd993299350fb707f7085"
     },
     "rode-kornoelje": {
       "slug": "rode-kornoelje",
@@ -1445,7 +2087,8 @@
       "notitie": "Cornus sanguinea (common dogwood, bloody dogwood, blood twig dogwood), J.A. Witt Winter Garden, Washington Park Arboretum, Seattle, Washington.",
       "bytes": 355826,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "87cbec7cb3791030b92f6f90d893b7e1b58e7ec7237bb98b471bb5db17aeaa03"
     },
     "rozemarijn": {
       "slug": "rozemarijn",
@@ -1462,7 +2105,8 @@
       "notitie": "Romeero (Rosmarinus officinalis). ¡Huele de maravilla!",
       "bytes": 225137,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "8a99115f8803a1e743181b1f05cbe3560095ed810e83b82785566620a2c16407"
     },
     "rubberplant": {
       "slug": "rubberplant",
@@ -1479,7 +2123,8 @@
       "notitie": "A potted Ficus elastica Robusta Quellenangabe / Credit: Maja Dumat - Creative Commons Licence BY 2.0",
       "bytes": 176889,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "4e1013272ca2efb393cd5ef9285a0acc81525f20644fc76f864a487ef5da5a33"
     },
     "salie": {
       "slug": "salie",
@@ -1496,296 +2141,8 @@
       "notitie": "Garden Sage (Salvia officinalis) in the dry stream bed of the Vorflutgraben Nord in Marzling, district of Freising, Germany. On one flower is a common carder bumble bee (Bombus pascuorum).",
       "bytes": 183323,
       "width_max": 1200,
-      "status": "goedgekeurd"
-    },
-    "scindapsus": {
-      "slug": "scindapsus",
-      "naam": "Scindapsus",
-      "latijn": "Scindapsus pictus",
-      "auteur": "Umfassender",
-      "licentie": "CC BY-SA",
-      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:Scindapsus_pictus_2.jpg",
-      "bron_titel": "File:Scindapsus pictus 2.jpg",
-      "originele_mime": "image/jpeg",
-      "alt": "Scindapsus (Scindapsus pictus)",
-      "bestand": "assets/images/soorten/scindapsus.jpg",
-      "notitie": "The spots of the Scindapsus pictus glitter silver. The picture shows the textured surface. The glitter comes across much better in real life.",
-      "bytes": 205191,
-      "width_max": 1200,
-      "status": "goedgekeurd"
-    },
-    "sedum": {
-      "slug": "sedum",
-      "naam": "Sedum",
-      "latijn": "Sedum",
-      "auteur": "Sannse",
-      "licentie": "CC BY-SA",
-      "licentie_url": "http://creativecommons.org/licenses/by-sa/3.0/",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:Biting_stonecrop_close_800.jpg",
-      "bron_titel": "File:Biting stonecrop close 800.jpg",
-      "originele_mime": "image/jpeg",
-      "alt": "Sedum (Sedum)",
-      "bestand": "assets/images/soorten/sedum.jpg",
-      "notitie": "Biting stonecrop (Sedum acre).  Photo by sannse, Great Holland Pits, Essex, 11 June 2004.",
-      "bytes": 71634,
-      "width_max": 1200,
-      "status": "goedgekeurd"
-    },
-    "sering": {
-      "slug": "sering",
-      "naam": "Sering",
-      "latijn": "Syringa vulgaris",
-      "auteur": "Екатерина Борисова",
-      "licentie": "CC BY-SA",
-      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:%D0%A1%D0%B8%D1%80%D0%B5%D0%BD%D1%8C_%D0%B2_%D0%AE%D0%B6%D0%BD%D0%BE-%D0%9F%D1%80%D0%B8%D0%BC%D0%BE%D1%80%D1%81%D0%BA%D0%BE%D0%BC_%D0%BF%D0%B0%D1%80%D0%BA%D0%B5_13.jpg",
-      "bron_titel": "File:Сирень в Южно-Приморском парке 13.jpg",
-      "originele_mime": "image/jpeg",
-      "alt": "Sering (Syringa vulgaris)",
-      "bestand": "assets/images/soorten/sering.jpg",
-      "notitie": "Syringa vulgaris in Yuzhno-Primorsky Park, Saint Petersburg, Russia",
-      "bytes": 186316,
-      "width_max": 1200,
-      "status": "goedgekeurd"
-    },
-    "siergras": {
-      "slug": "siergras",
-      "naam": "Siergras",
-      "latijn": "diverse (bijv. Calamagrostis, Miscanthus, Pennisetum alopecuroides)",
-      "auteur": "Krzysztof Ziarnek, Kenraiz",
-      "licentie": "CC BY-SA",
-      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:Miscanthus_sinensis_%27Variegatus%27_kz2.jpg",
-      "bron_titel": "File:Miscanthus sinensis 'Variegatus' kz2.jpg",
-      "originele_mime": "image/jpeg",
-      "alt": "Siergras (diverse (bijv. Calamagrostis, Miscanthus, Pennisetum alopecuroides))",
-      "bestand": "assets/images/soorten/siergras.jpg",
-      "notitie": "Miscanthus sinensis 'Variegatus' in the Brooklyn Botanic Garden",
-      "bytes": 344855,
-      "width_max": 1200,
-      "status": "goedgekeurd"
-    },
-    "syngonium": {
-      "slug": "syngonium",
-      "naam": "Syngonium",
-      "latijn": "Syngonium podophyllum",
-      "auteur": "Jeremyida002",
-      "licentie": "CC BY-SA",
-      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:Syngonium_podophyllum_(_Arrowhead_plant)_001.jpg",
-      "bron_titel": "File:Syngonium podophyllum ( Arrowhead plant) 001.jpg",
-      "originele_mime": "image/jpeg",
-      "alt": "Syngonium (Syngonium podophyllum)",
-      "bestand": "assets/images/soorten/syngonium.jpg",
-      "notitie": "Syngonium podophyllum, commonly known as the Arrowhead plant or Arrowhead vine, is a popular and versatile houseplant appreciated for its attractive foliage. Here's a short summary of key features: 1",
-      "bytes": 301917,
-      "width_max": 1200,
-      "status": "goedgekeurd"
-    },
-    "tamme-kastanje": {
-      "slug": "tamme-kastanje",
-      "naam": "Tamme kastanje",
-      "latijn": "Castanea sativa",
-      "auteur": "böhringer friedrich",
-      "licentie": "CC BY-SA",
-      "licentie_url": "https://creativecommons.org/licenses/by-sa/2.5",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:Cupula_Edelkastanie,_Castanea_sativa_8.JPG",
-      "bron_titel": "File:Cupula Edelkastanie, Castanea sativa 8.JPG",
-      "originele_mime": "image/jpeg",
-      "alt": "Tamme kastanje (Castanea sativa)",
-      "bestand": "assets/images/soorten/tamme-kastanje.jpg",
-      "notitie": "Edelkastanie (Castanea sativa) auch Esskastanie. Die Früchte sind glänzende, dunkelbraune Nüsse. Die Früchte eines Teilblütenstandes sind von einem stacheligen Fruchtbecher (Cupula) umgeben, der sich",
-      "bytes": 146741,
-      "width_max": 1200,
-      "status": "goedgekeurd"
-    },
-    "tijm": {
-      "slug": "tijm",
-      "naam": "Tijm",
-      "latijn": "Thymus vulgaris",
-      "auteur": "Naturpuur",
-      "licentie": "CC BY",
-      "licentie_url": "https://creativecommons.org/licenses/by/4.0",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:Thymian_(Thymus_vulgaris),_Nationalpark_Hohe_Tauern.jpg",
-      "bron_titel": "File:Thymian (Thymus vulgaris), Nationalpark Hohe Tauern.jpg",
-      "originele_mime": "image/jpeg",
-      "alt": "Tijm (Thymus vulgaris)",
-      "bestand": "assets/images/soorten/tijm.jpg",
-      "notitie": "Thyme (Thymus vulgaris), Maltaberg (1600 m above sea level), Hohe Tauern National Park, Carinthia, Austria, European Union",
-      "bytes": 285208,
-      "width_max": 1200,
-      "status": "goedgekeurd"
-    },
-    "toscaanse-jasmijn": {
-      "slug": "toscaanse-jasmijn",
-      "naam": "Toscaanse jasmijn",
-      "latijn": "Trachelospermum jasminoides",
-      "auteur": "Parchaco",
-      "licentie": "CC0 / Public Domain",
-      "licentie_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:Trachelospermum_jasminoides_Reunion.jpg",
-      "bron_titel": "File:Trachelospermum jasminoides Reunion.jpg",
-      "originele_mime": "image/jpeg",
-      "alt": "Toscaanse jasmijn (Trachelospermum jasminoides)",
-      "bestand": "assets/images/soorten/toscaanse-jasmijn.jpg",
-      "notitie": "Trachelospermum jasminoides on reunion island",
-      "bytes": 76284,
-      "width_max": 1200,
-      "status": "goedgekeurd"
-    },
-    "tradescantia": {
-      "slug": "tradescantia",
-      "naam": "Tradescantia",
-      "latijn": "Tradescantia",
-      "auteur": "Mokkie",
-      "licentie": "CC BY-SA",
-      "licentie_url": "https://creativecommons.org/licenses/by-sa/3.0",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:Spiderwort_(Tradescantia_%27Cool_Leaf%27).jpg",
-      "bron_titel": "File:Spiderwort (Tradescantia 'Cool Leaf').jpg",
-      "originele_mime": "image/jpeg",
-      "alt": "Tradescantia (Tradescantia)",
-      "bestand": "assets/images/soorten/tradescantia.jpg",
-      "notitie": "Tradescantia 'Cool Leaf'",
-      "bytes": 186549,
-      "width_max": 1200,
-      "status": "goedgekeurd"
-    },
-    "tuinhibiscus": {
-      "slug": "tuinhibiscus",
-      "naam": "Tuinhibiscus",
-      "latijn": "Hibiscus syriacus",
-      "auteur": "Chrumps",
-      "licentie": "CC BY-SA",
-      "licentie_url": "http://creativecommons.org/licenses/by-sa/3.0/",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:Hibiscus-syriacus.jpg",
-      "bron_titel": "File:Hibiscus-syriacus.jpg",
-      "originele_mime": "image/jpeg",
-      "alt": "Tuinhibiscus (Hibiscus syriacus)",
-      "bestand": "assets/images/soorten/tuinhibiscus.jpg",
-      "notitie": "Ketmia syryjska",
-      "bytes": 133867,
-      "width_max": 1200,
-      "status": "goedgekeurd"
-    },
-    "vijg": {
-      "slug": "vijg",
-      "naam": "Vijg",
-      "latijn": "Ficus carica",
-      "auteur": "Luis Fernández García",
-      "licentie": "CC BY-SA",
-      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:Ficus-carica_-_bancal_20110416a.jpg",
-      "bron_titel": "File:Ficus-carica - bancal 20110416a.jpg",
-      "originele_mime": "image/jpeg",
-      "alt": "Vijg (Ficus carica)",
-      "bestand": "assets/images/soorten/vijg.jpg",
-      "notitie": "Higuera (Ficus carica) en bancales. Losar de la Vera (Extremadura, España). Losar de la Vera (Cáceres, España).",
-      "bytes": 413875,
-      "width_max": 1200,
-      "status": "goedgekeurd"
-    },
-    "walnoot": {
-      "slug": "walnoot",
-      "naam": "Walnoot",
-      "latijn": "Juglans regia",
-      "auteur": "George Chernilevsky",
-      "licentie": "CC0 / Public Domain",
-      "licentie_url": "https://commons.wikimedia.org/wiki/Commons:Licensing",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:Juglans_regia_2009_G2.jpg",
-      "bron_titel": "File:Juglans regia 2009 G2.jpg",
-      "originele_mime": "image/jpeg",
-      "alt": "Walnoot (Juglans regia)",
-      "bestand": "assets/images/soorten/walnoot.jpg",
-      "notitie": "The Common walnut, Persian walnut, or English walnut (Juglans regia). Unripe nuts. July. Ukraine.",
-      "bytes": 166060,
-      "width_max": 1200,
-      "status": "goedgekeurd"
-    },
-    "wilg": {
-      "slug": "wilg",
-      "naam": "Wilg",
-      "latijn": "Salix",
-      "auteur": "Димитър Найденов / Dimìtar Nàydenov",
-      "licentie": "CC BY-SA",
-      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:%D0%92%D1%8A%D1%80%D0%B1%D0%B0_(%D0%B2%D0%B8%D0%B4_1)_%E2%80%93_%D0%BB%D0%B8%D1%81%D1%82%D0%B0_2.jpg",
-      "bron_titel": "File:Върба (вид 1) – листа 2.jpg",
-      "originele_mime": "image/jpeg",
-      "alt": "Wilg (Salix)",
-      "bestand": "assets/images/soorten/wilg.jpg",
-      "notitie": "Tree, that displays the distinctive characteristics of a \"pure\" brittle willow (Salix euxina): twigs are lustrous, yellowish, cleanly breakable at their base, winter buds – blackish, the bark is longi",
-      "bytes": 129260,
-      "width_max": 1200,
-      "status": "goedgekeurd"
-    },
-    "zamioculcas": {
-      "slug": "zamioculcas",
-      "naam": "Zamioculcas",
-      "latijn": "Zamioculcas zamiifolia",
-      "auteur": "O fungo azul",
-      "licentie": "CC0 / Public Domain",
-      "licentie_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:%22Zamio_Mater%22_Zamioculcas_zamiifolia_communis_plant.jpg",
-      "bron_titel": "File:\"Zamio Mater\" Zamioculcas zamiifolia communis plant.jpg",
-      "originele_mime": "image/jpeg",
-      "alt": "Zamioculcas (Zamioculcas zamiifolia)",
-      "bestand": "assets/images/soorten/zamioculcas.jpg",
-      "notitie": "This is an holotype of the subspecie Zamioculcas zamiifolia communis",
-      "bytes": 165392,
-      "width_max": 1200,
-      "status": "goedgekeurd"
-    },
-    "zonnehoed": {
-      "slug": "zonnehoed",
-      "naam": "Zonnehoed",
-      "latijn": "Echinacea / Rudbeckia",
-      "auteur": "Gzen92",
-      "licentie": "CC BY-SA",
-      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:%C3%89chinac%C3%A9e_pourpre_(Echinacea_purpurea)_(1).jpg",
-      "bron_titel": "File:Échinacée pourpre (Echinacea purpurea) (1).jpg",
-      "originele_mime": "image/jpeg",
-      "alt": "Zonnehoed (Echinacea / Rudbeckia)",
-      "bestand": "assets/images/soorten/zonnehoed.jpg",
-      "notitie": "Purple echinacea ( Echinacea purpurea ) in Bouvaincourt-sur-Bresle (Somme, France).",
-      "bytes": 127442,
-      "width_max": 1200,
-      "status": "goedgekeurd"
-    },
-    "zwarte-bes": {
-      "slug": "zwarte-bes",
-      "naam": "Zwarte bes",
-      "latijn": "Ribes nigrum",
-      "auteur": "Jerzy Opioła",
-      "licentie": "CC BY-SA",
-      "licentie_url": "http://creativecommons.org/licenses/by-sa/3.0/",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:Ribes_nigrum_a1.JPG",
-      "bron_titel": "File:Ribes nigrum a1.JPG",
-      "originele_mime": "image/jpeg",
-      "alt": "Zwarte bes (Ribes nigrum)",
-      "bestand": "assets/images/soorten/zwarte-bes.jpg",
-      "notitie": "Ribes nigrum (pl. porzeczka czarna)",
-      "bytes": 243609,
-      "width_max": 1200,
-      "status": "goedgekeurd"
-    },
-    "zwarte-vlier": {
-      "slug": "zwarte-vlier",
-      "naam": "Zwarte vlier",
-      "latijn": "Sambucus nigra",
-      "auteur": "W. Bulach",
-      "licentie": "CC BY-SA",
-      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
-      "bron_url": "https://commons.wikimedia.org/wiki/File:00_3769_Schwarzen_Holunder_(Sambucus_nigra).jpg",
-      "bron_titel": "File:00 3769 Schwarzen Holunder (Sambucus nigra).jpg",
-      "originele_mime": "image/jpeg",
-      "alt": "Zwarte vlier (Sambucus nigra)",
-      "bestand": "assets/images/soorten/zwarte-vlier.jpg",
-      "notitie": "Umbels of immature fruits of the \"Black elderberry\" (Sambucus nigra), also known as Holder. The black elderberry is a native shrub that can grow up to 10 meters in height. The black berries of the umb",
-      "bytes": 144825,
-      "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "c3941099865662a6c42734fc9552802440460211f7f75ff57f1538255d7cf282"
     },
     "sansevieria": {
       "slug": "sansevieria",
@@ -1802,9 +2159,478 @@
       "notitie": "Dracaena Trifasciata Plant",
       "bytes": 204490,
       "width_max": 1200,
-      "status": "goedgekeurd"
+      "status": "goedgekeurd",
+      "sha256": "44f512f7e0dd92695762d6d19351bfcc54519ec0f55ee2d97a63d38b64a7f688"
+    },
+    "scindapsus": {
+      "slug": "scindapsus",
+      "naam": "Scindapsus",
+      "latijn": "Scindapsus pictus",
+      "auteur": "Umfassender",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Scindapsus_pictus_2.jpg",
+      "bron_titel": "File:Scindapsus pictus 2.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Scindapsus (Scindapsus pictus)",
+      "bestand": "assets/images/soorten/scindapsus.jpg",
+      "notitie": "The spots of the Scindapsus pictus glitter silver. The picture shows the textured surface. The glitter comes across much better in real life.",
+      "bytes": 205191,
+      "width_max": 1200,
+      "status": "goedgekeurd",
+      "sha256": "c9fea6edaf571645bc649e398e0cfdbdcb88fbf0560a4014ac1661e261845930"
+    },
+    "sedum": {
+      "slug": "sedum",
+      "naam": "Sedum",
+      "latijn": "Sedum",
+      "auteur": "Sannse",
+      "licentie": "CC BY-SA",
+      "licentie_url": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Biting_stonecrop_close_800.jpg",
+      "bron_titel": "File:Biting stonecrop close 800.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Sedum (Sedum)",
+      "bestand": "assets/images/soorten/sedum.jpg",
+      "notitie": "Biting stonecrop (Sedum acre).  Photo by sannse, Great Holland Pits, Essex, 11 June 2004.",
+      "bytes": 71634,
+      "width_max": 1200,
+      "status": "goedgekeurd",
+      "sha256": "6519849e7e1a7abacd813e88f71fe8a4ae878516aa90912d0e48cf39a80ae355"
+    },
+    "sering": {
+      "slug": "sering",
+      "naam": "Sering",
+      "latijn": "Syringa vulgaris",
+      "auteur": "Екатерина Борисова",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:%D0%A1%D0%B8%D1%80%D0%B5%D0%BD%D1%8C_%D0%B2_%D0%AE%D0%B6%D0%BD%D0%BE-%D0%9F%D1%80%D0%B8%D0%BC%D0%BE%D1%80%D1%81%D0%BA%D0%BE%D0%BC_%D0%BF%D0%B0%D1%80%D0%BA%D0%B5_13.jpg",
+      "bron_titel": "File:Сирень в Южно-Приморском парке 13.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Sering (Syringa vulgaris)",
+      "bestand": "assets/images/soorten/sering.jpg",
+      "notitie": "Syringa vulgaris in Yuzhno-Primorsky Park, Saint Petersburg, Russia",
+      "bytes": 186316,
+      "width_max": 1200,
+      "status": "goedgekeurd",
+      "sha256": "c303557cf806eda7ae4cfec2b9fa6dce98ec1134dcfaad03ba503266a302ea35"
+    },
+    "siergras": {
+      "slug": "siergras",
+      "naam": "Siergras",
+      "latijn": "diverse (bijv. Calamagrostis, Miscanthus, Pennisetum alopecuroides)",
+      "auteur": "Krzysztof Ziarnek, Kenraiz",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Miscanthus_sinensis_%27Variegatus%27_kz2.jpg",
+      "bron_titel": "File:Miscanthus sinensis 'Variegatus' kz2.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Siergras (diverse (bijv. Calamagrostis, Miscanthus, Pennisetum alopecuroides))",
+      "bestand": "assets/images/soorten/siergras.jpg",
+      "notitie": "Miscanthus sinensis 'Variegatus' in the Brooklyn Botanic Garden",
+      "bytes": 344855,
+      "width_max": 1200,
+      "status": "goedgekeurd",
+      "sha256": "05dcd7a1b20856714b4bf90d69702338b6fcee4c5ee5d411cb564a2caf3f4d7c"
+    },
+    "sleedoorn": {
+      "slug": "sleedoorn",
+      "naam": "Sleedoorn",
+      "latijn": "Prunus spinosa",
+      "auteur": "Fabrizio Tampieri",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Prunus_spinosa_006.jpg",
+      "bron_titel": "File:Prunus spinosa 006.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Sleedoorn (Prunus spinosa)",
+      "bestand": "assets/images/soorten/sleedoorn.jpg",
+      "notitie": "Foto di",
+      "status": "goedgekeurd",
+      "sha256": "99112454882122394abcf0da3b783feadf6c4a5c69153479c78eae27c00ba4f8",
+      "bytes": 178946,
+      "width_max": 1200
+    },
+    "gulden-sleutelbloem": {
+      "slug": "gulden-sleutelbloem",
+      "naam": "Gulden sleutelbloem",
+      "latijn": "Primula veris",
+      "auteur": "Flocci Nivis",
+      "licentie": "CC BY",
+      "licentie_url": "https://creativecommons.org/licenses/by/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:20230430_Primula_veris.jpg",
+      "bron_titel": "File:20230430 Primula veris.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Gulden sleutelbloem (Primula veris)",
+      "bestand": "assets/images/soorten/gulden-sleutelbloem.jpg",
+      "notitie": "Cowslip (Primula veris) in the nature reserve Garchinger Heide.",
+      "status": "goedgekeurd",
+      "sha256": "236ef419d3c02c41b8452770913dd180d7a400f833aa17c0a08b437c3f767652",
+      "bytes": 266046,
+      "width_max": 1200
+    },
+    "smeerwortel": {
+      "slug": "smeerwortel",
+      "naam": "Smeerwortel",
+      "latijn": "Symphytum officinale",
+      "auteur": "Andreas Eichler",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:2014.09.19.-04-Kirschgartshaeuser_Schlaege_Mannheim--Gemeiner_Beinwell.jpg",
+      "bron_titel": "File:2014.09.19.-04-Kirschgartshaeuser Schlaege Mannheim--Gemeiner Beinwell.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Smeerwortel (Symphytum officinale)",
+      "bestand": "assets/images/soorten/smeerwortel.jpg",
+      "notitie": "Gemeiner Beinwell - Symphytum officinale. Aufgenommen in Mannheim, Kirschgartshäuser Schläge am Bruchgraben, Baden-Württemberg, Deutschland.",
+      "status": "goedgekeurd",
+      "sha256": "f68fb0dbe29ea62dc5363013e594039bc954aad7f86bf346bafb6a3366e38f97",
+      "bytes": 120459,
+      "width_max": 1200
+    },
+    "syngonium": {
+      "slug": "syngonium",
+      "naam": "Syngonium",
+      "latijn": "Syngonium podophyllum",
+      "auteur": "Jeremyida002",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Syngonium_podophyllum_(_Arrowhead_plant)_001.jpg",
+      "bron_titel": "File:Syngonium podophyllum ( Arrowhead plant) 001.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Syngonium (Syngonium podophyllum)",
+      "bestand": "assets/images/soorten/syngonium.jpg",
+      "notitie": "Syngonium podophyllum, commonly known as the Arrowhead plant or Arrowhead vine, is a popular and versatile houseplant appreciated for its attractive foliage. Here's a short summary of key features: 1",
+      "bytes": 301917,
+      "width_max": 1200,
+      "status": "goedgekeurd",
+      "sha256": "84acc587d1b4628b8739b9a73a90eb61044b6299bc3c44f49ac7f582126c047d"
+    },
+    "tamme-kastanje": {
+      "slug": "tamme-kastanje",
+      "naam": "Tamme kastanje",
+      "latijn": "Castanea sativa",
+      "auteur": "böhringer friedrich",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/2.5",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Cupula_Edelkastanie,_Castanea_sativa_8.JPG",
+      "bron_titel": "File:Cupula Edelkastanie, Castanea sativa 8.JPG",
+      "originele_mime": "image/jpeg",
+      "alt": "Tamme kastanje (Castanea sativa)",
+      "bestand": "assets/images/soorten/tamme-kastanje.jpg",
+      "notitie": "Edelkastanie (Castanea sativa) auch Esskastanie. Die Früchte sind glänzende, dunkelbraune Nüsse. Die Früchte eines Teilblütenstandes sind von einem stacheligen Fruchtbecher (Cupula) umgeben, der sich",
+      "bytes": 146741,
+      "width_max": 1200,
+      "status": "goedgekeurd",
+      "sha256": "cbf01dc431726ffdc0b38b5ffa1e042ff0885a22a09cfafd7e71bc0cb20556ad"
+    },
+    "tijm": {
+      "slug": "tijm",
+      "naam": "Tijm",
+      "latijn": "Thymus vulgaris",
+      "auteur": "Naturpuur",
+      "licentie": "CC BY",
+      "licentie_url": "https://creativecommons.org/licenses/by/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Thymian_(Thymus_vulgaris),_Nationalpark_Hohe_Tauern.jpg",
+      "bron_titel": "File:Thymian (Thymus vulgaris), Nationalpark Hohe Tauern.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Tijm (Thymus vulgaris)",
+      "bestand": "assets/images/soorten/tijm.jpg",
+      "notitie": "Thyme (Thymus vulgaris), Maltaberg (1600 m above sea level), Hohe Tauern National Park, Carinthia, Austria, European Union",
+      "bytes": 285208,
+      "width_max": 1200,
+      "status": "goedgekeurd",
+      "sha256": "2beed9d73a7cb62ec5853dc35bda624668f728e193b88670d57acdd259b4645f"
+    },
+    "toscaanse-jasmijn": {
+      "slug": "toscaanse-jasmijn",
+      "naam": "Toscaanse jasmijn",
+      "latijn": "Trachelospermum jasminoides",
+      "auteur": "Parchaco",
+      "licentie": "CC0 / Public Domain",
+      "licentie_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Trachelospermum_jasminoides_Reunion.jpg",
+      "bron_titel": "File:Trachelospermum jasminoides Reunion.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Toscaanse jasmijn (Trachelospermum jasminoides)",
+      "bestand": "assets/images/soorten/toscaanse-jasmijn.jpg",
+      "notitie": "Trachelospermum jasminoides on reunion island",
+      "bytes": 76284,
+      "width_max": 1200,
+      "status": "goedgekeurd",
+      "sha256": "95a04b60b47829e49cccc251bd0f94e938d3cb9ee2d0b85937f9f9e2f89d5bcb"
+    },
+    "tradescantia": {
+      "slug": "tradescantia",
+      "naam": "Tradescantia",
+      "latijn": "Tradescantia",
+      "auteur": "Mokkie",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Spiderwort_(Tradescantia_%27Cool_Leaf%27).jpg",
+      "bron_titel": "File:Spiderwort (Tradescantia 'Cool Leaf').jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Tradescantia (Tradescantia)",
+      "bestand": "assets/images/soorten/tradescantia.jpg",
+      "notitie": "Tradescantia 'Cool Leaf'",
+      "bytes": 186549,
+      "width_max": 1200,
+      "status": "goedgekeurd",
+      "sha256": "f2456290751eec76f0a4c27691b3a8c00ce1c1a4a3aa3dac14365782a96a08bb"
+    },
+    "tuinhibiscus": {
+      "slug": "tuinhibiscus",
+      "naam": "Tuinhibiscus",
+      "latijn": "Hibiscus syriacus",
+      "auteur": "Chrumps",
+      "licentie": "CC BY-SA",
+      "licentie_url": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Hibiscus-syriacus.jpg",
+      "bron_titel": "File:Hibiscus-syriacus.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Tuinhibiscus (Hibiscus syriacus)",
+      "bestand": "assets/images/soorten/tuinhibiscus.jpg",
+      "notitie": "Ketmia syryjska",
+      "bytes": 133867,
+      "width_max": 1200,
+      "status": "goedgekeurd",
+      "sha256": "e19e164c80e35d6fcb2ea03b9d05f621f94d215b4e01ce55e1fbc58d68a293cd"
+    },
+    "turkse-rabarber": {
+      "slug": "turkse-rabarber",
+      "naam": "Turkse rabarber",
+      "latijn": "Rheum palmatum",
+      "auteur": "Shuvaev",
+      "licentie": "CC BY",
+      "licentie_url": "https://creativecommons.org/licenses/by/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Rheum_palmatum,_Tallinn_Botanic_Garden_02.jpg",
+      "bron_titel": "File:Rheum palmatum, Tallinn Botanic Garden 02.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Turkse rabarber (Rheum palmatum)",
+      "bestand": "assets/images/soorten/turkse-rabarber.jpg",
+      "notitie": "Chinese rhubarb (Rheum palmatum) in Tallinn Botanic Garden, Tallinn, Estonia. August 2024. Rock garden. Foliage.",
+      "status": "goedgekeurd",
+      "sha256": "b8a06296718178caf0eafe9191ba2ba2d2731d49a5ec2017a61e79b49a058e04",
+      "bytes": 266244,
+      "width_max": 1200
+    },
+    "vijg": {
+      "slug": "vijg",
+      "naam": "Vijg",
+      "latijn": "Ficus carica",
+      "auteur": "Luis Fernández García",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Ficus-carica_-_bancal_20110416a.jpg",
+      "bron_titel": "File:Ficus-carica - bancal 20110416a.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Vijg (Ficus carica)",
+      "bestand": "assets/images/soorten/vijg.jpg",
+      "notitie": "Higuera (Ficus carica) en bancales. Losar de la Vera (Extremadura, España). Losar de la Vera (Cáceres, España).",
+      "bytes": 413875,
+      "width_max": 1200,
+      "status": "goedgekeurd",
+      "sha256": "36b95df8a5f6144ed6e374443c1c204b3c22a0a00a17be460a77be72aa3ea2a9"
+    },
+    "vingerhoedskruid": {
+      "slug": "vingerhoedskruid",
+      "naam": "Vingerhoedskruid",
+      "latijn": "Digitalis purpurea",
+      "auteur": "H. Zell",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Digitalis_purpurea_002.JPG",
+      "bron_titel": "File:Digitalis purpurea 002.JPG",
+      "originele_mime": "image/jpeg",
+      "alt": "Vingerhoedskruid (Digitalis purpurea)",
+      "bestand": "assets/images/soorten/vingerhoedskruid.jpg",
+      "notitie": "Digitalis purpurea, Plantaginaceae, Common Foxglove, Purple Foxglove, Lady's Glove, flowers; Botanical Garden KIT, Karlsruhe, Germany. The fresh leaves are used in homeopathy as remedy: Digitalis (Dig",
+      "status": "goedgekeurd",
+      "sha256": "67ec8c511e880a4934419c0ad6f09be3d0eb50974de839422050fd85c06d75ca",
+      "bytes": 174242,
+      "width_max": 1200
+    },
+    "walnoot": {
+      "slug": "walnoot",
+      "naam": "Walnoot",
+      "latijn": "Juglans regia",
+      "auteur": "George Chernilevsky",
+      "licentie": "CC0 / Public Domain",
+      "licentie_url": "https://commons.wikimedia.org/wiki/Commons:Licensing",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Juglans_regia_2009_G2.jpg",
+      "bron_titel": "File:Juglans regia 2009 G2.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Walnoot (Juglans regia)",
+      "bestand": "assets/images/soorten/walnoot.jpg",
+      "notitie": "The Common walnut, Persian walnut, or English walnut (Juglans regia). Unripe nuts. July. Ukraine.",
+      "bytes": 166060,
+      "width_max": 1200,
+      "status": "goedgekeurd",
+      "sha256": "4b636f033835c20cb82c18a1b84098c1463d36e2e041656ca625315e8675450b"
+    },
+    "watermunt": {
+      "slug": "watermunt",
+      "naam": "Watermunt",
+      "latijn": "Mentha aquatica",
+      "auteur": "Burschik (talk) (Uploads)",
+      "licentie": "CC BY-SA",
+      "licentie_url": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Mentha_aquatica_01.jpg",
+      "bron_titel": "File:Mentha aquatica 01.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Watermunt (Mentha aquatica)",
+      "bestand": "assets/images/soorten/watermunt.jpg",
+      "notitie": "w:mentha aquatica in bloom",
+      "status": "goedgekeurd",
+      "sha256": "5e770c28acdbe67d11888eef5b4ddbe2079269acfe29bc583f05684f542bd3ba",
+      "bytes": 101631,
+      "width_max": 1200
+    },
+    "wilde-peen": {
+      "slug": "wilde-peen",
+      "naam": "Wilde peen",
+      "latijn": "Daucus carota",
+      "auteur": "Quartl",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Daucus_carota_qtl3.jpg",
+      "bron_titel": "File:Daucus carota qtl3.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Wilde peen (Daucus carota)",
+      "bestand": "assets/images/soorten/wilde-peen.jpg",
+      "notitie": "Wild carrot flower (Daucus carota subsp. carota) showing a compound umbel in the Kätcheslachpark, Frankfurt, Germany",
+      "status": "goedgekeurd",
+      "sha256": "374940d735d7dbb01576e6b2870c0bb23c91612097906f23d41f7037227d4a7b",
+      "bytes": 132458,
+      "width_max": 1200
+    },
+    "wilg": {
+      "slug": "wilg",
+      "naam": "Wilg",
+      "latijn": "Salix",
+      "auteur": "Димитър Найденов / Dimìtar Nàydenov",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:%D0%92%D1%8A%D1%80%D0%B1%D0%B0_(%D0%B2%D0%B8%D0%B4_1)_%E2%80%93_%D0%BB%D0%B8%D1%81%D1%82%D0%B0_2.jpg",
+      "bron_titel": "File:Върба (вид 1) – листа 2.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Wilg (Salix)",
+      "bestand": "assets/images/soorten/wilg.jpg",
+      "notitie": "Tree, that displays the distinctive characteristics of a \"pure\" brittle willow (Salix euxina): twigs are lustrous, yellowish, cleanly breakable at their base, winter buds – blackish, the bark is longi",
+      "bytes": 129260,
+      "width_max": 1200,
+      "status": "goedgekeurd",
+      "sha256": "da86dd8a80054495a00a56099a5f5e3e8ee0480744d0d1e896dfbcd98f15d0a8"
+    },
+    "zamioculcas": {
+      "slug": "zamioculcas",
+      "naam": "Zamioculcas",
+      "latijn": "Zamioculcas zamiifolia",
+      "auteur": "O fungo azul",
+      "licentie": "CC0 / Public Domain",
+      "licentie_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:%22Zamio_Mater%22_Zamioculcas_zamiifolia_communis_plant.jpg",
+      "bron_titel": "File:\"Zamio Mater\" Zamioculcas zamiifolia communis plant.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Zamioculcas (Zamioculcas zamiifolia)",
+      "bestand": "assets/images/soorten/zamioculcas.jpg",
+      "notitie": "This is an holotype of the subspecie Zamioculcas zamiifolia communis",
+      "bytes": 165392,
+      "width_max": 1200,
+      "status": "goedgekeurd",
+      "sha256": "cdaea3c9dde1f0b2ef480df63b170d9e781869ca1418b2bd467c57e4bad542a7"
+    },
+    "zevenblad": {
+      "slug": "zevenblad",
+      "naam": "Zevenblad",
+      "latijn": "Aegopodium podagraria",
+      "auteur": "H. Zell",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Aegopodium_podagraria_001.JPG",
+      "bron_titel": "File:Aegopodium podagraria 001.JPG",
+      "originele_mime": "image/jpeg",
+      "alt": "Zevenblad (Aegopodium podagraria)",
+      "bestand": "assets/images/soorten/zevenblad.jpg",
+      "notitie": "Aegopodium podagraria, Apiaceae, Ground-Elder, Herb Gerard, Bishop's Weed, Goutweed, habitus; Karlsruhe, Germany. The blooming plants are used in homeopathy as remedy: Aegopodium podagraria (Aego-p.)",
+      "status": "goedgekeurd",
+      "sha256": "c28bc7b02b5c470b5897bd0799bcd3f9c0ad9b3533a7e580600a589d52040b01",
+      "bytes": 366526,
+      "width_max": 1200
+    },
+    "zonnehoed": {
+      "slug": "zonnehoed",
+      "naam": "Zonnehoed",
+      "latijn": "Echinacea / Rudbeckia",
+      "auteur": "Gzen92",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:%C3%89chinac%C3%A9e_pourpre_(Echinacea_purpurea)_(1).jpg",
+      "bron_titel": "File:Échinacée pourpre (Echinacea purpurea) (1).jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Zonnehoed (Echinacea / Rudbeckia)",
+      "bestand": "assets/images/soorten/zonnehoed.jpg",
+      "notitie": "Purple echinacea ( Echinacea purpurea ) in Bouvaincourt-sur-Bresle (Somme, France).",
+      "bytes": 127442,
+      "width_max": 1200,
+      "status": "goedgekeurd",
+      "sha256": "8d97c4634ca70676dc2bdd86bc803b6b09c476683c89773de824912dcc3aca1f"
+    },
+    "zuring": {
+      "slug": "zuring",
+      "naam": "Zuring",
+      "latijn": "Rumex acetosa",
+      "auteur": "Didier Descouens",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:(MHNT)_Rumex_acetosa_-_Habit.jpg",
+      "bron_titel": "File:(MHNT) Rumex acetosa - Habit.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Zuring (Rumex acetosa)",
+      "bestand": "assets/images/soorten/zuring.jpg",
+      "notitie": "Common sorrel - habit",
+      "status": "goedgekeurd",
+      "sha256": "cabcfa5fc4dbf332a06db5e45ab2931e419002035e219ced813ea7c12a687854",
+      "bytes": 282486,
+      "width_max": 1200
+    },
+    "zwarte-bes": {
+      "slug": "zwarte-bes",
+      "naam": "Zwarte bes",
+      "latijn": "Ribes nigrum",
+      "auteur": "Jerzy Opioła",
+      "licentie": "CC BY-SA",
+      "licentie_url": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Ribes_nigrum_a1.JPG",
+      "bron_titel": "File:Ribes nigrum a1.JPG",
+      "originele_mime": "image/jpeg",
+      "alt": "Zwarte bes (Ribes nigrum)",
+      "bestand": "assets/images/soorten/zwarte-bes.jpg",
+      "notitie": "Ribes nigrum (pl. porzeczka czarna)",
+      "bytes": 243609,
+      "width_max": 1200,
+      "status": "goedgekeurd",
+      "sha256": "7e3dfe151039b1c6b07db8d6b89414f4b183689eea976d4c2967deaa438828d2"
+    },
+    "zwarte-vlier": {
+      "slug": "zwarte-vlier",
+      "naam": "Zwarte vlier",
+      "latijn": "Sambucus nigra",
+      "auteur": "W. Bulach",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:00_3769_Schwarzen_Holunder_(Sambucus_nigra).jpg",
+      "bron_titel": "File:00 3769 Schwarzen Holunder (Sambucus nigra).jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Zwarte vlier (Sambucus nigra)",
+      "bestand": "assets/images/soorten/zwarte-vlier.jpg",
+      "notitie": "Umbels of immature fruits of the \"Black elderberry\" (Sambucus nigra), also known as Holder. The black elderberry is a native shrub that can grow up to 10 meters in height. The black berries of the umb",
+      "bytes": 144825,
+      "width_max": 1200,
+      "status": "goedgekeurd",
+      "sha256": "cd2f1a960d81897e4acd6b4b3d28b64ce0811ac21b61b8577a573a50c8f75165"
     }
   },
-  "count": 106,
+  "count": 146,
   "missing": []
 }

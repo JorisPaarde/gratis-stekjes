@@ -132,6 +132,30 @@ function cacheFirstAsset(request) {
   });
 }
 
+/** Soort-/OG-foto's kunnen op hetzelfde pad wisselen (geen content-hash in filename). */
+function networkFirstAsset(request) {
+  return fetch(request)
+    .then(function (response) {
+      if (response && response.ok) {
+        var copy = response.clone();
+        caches.open(ASSET_CACHE).then(function (cache) {
+          cache.put(request, copy);
+        });
+      }
+      return response;
+    })
+    .catch(function () {
+      return caches.match(request);
+    });
+}
+
+function isReplaceableImagePath(pathname) {
+  return (
+    pathname.indexOf("/assets/images/soorten/") === 0 ||
+    pathname.indexOf("/assets/og/") === 0
+  );
+}
+
 self.addEventListener("fetch", (event) => {
   var request = event.request;
 
@@ -161,6 +185,11 @@ self.addEventListener("fetch", (event) => {
 
   if (isHashedViteAsset(url.pathname) || url.pathname.indexOf("/fonts/") === 0) {
     event.respondWith(cacheFirstAsset(request));
+    return;
+  }
+
+  if (isReplaceableImagePath(url.pathname)) {
+    event.respondWith(networkFirstAsset(request));
     return;
   }
 

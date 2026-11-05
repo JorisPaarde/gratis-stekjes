@@ -29,6 +29,8 @@ test('views, content-JSON en config bevatten geen Bernadottelaan of privételefo
         if ($contents === false) {
             return;
         }
+        // sha256-allowlists (64 hex) kunnen toevallig «0621» bevatten — geen telefoon.
+        $contents = preg_replace('/\b[a-f0-9]{64}\b/i', '', $contents) ?? $contents;
         if (preg_match($phoneOrAddress, $contents) === 1) {
             $hits[] = str_replace(base_path().DIRECTORY_SEPARATOR, '', $path);
         }

@@ -207,7 +207,7 @@ final class AanbodSearch
             'id' => $aanbod->id,
             'type' => (string) $aanbod->type,
             'tekst' => (string) $aanbod->tekst,
-            'aantal' => $aanbod->aantal !== null ? (int) $aanbod->aantal : null,
+            'aantal' => (int) ($aanbod->aantal ?? 1),
             'voornaam' => $user?->publiekeNaam() ?? '',
             'locatie_label' => (string) ($user?->locatie_label ?? ''),
             'country' => Country::normalize((string) ($user?->country ?? Country::NL)),

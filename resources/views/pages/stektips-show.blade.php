@@ -79,6 +79,15 @@
     <p class="muted">{{ $soort['kort'] }}@if($categorie !== '') · {{ $categorie }}@endif</p>
   @endif
 
+  @php $tags = array_values(array_filter($soortTags ?? $soort['tags'] ?? [], fn ($t) => in_array($t, ['voedselbos', 'inheems'], true))); @endphp
+  @if($tags !== [])
+    <p class="stektips-tags">
+      @foreach($tags as $tag)
+        <a class="badge badge--{{ $tag }}" href="{{ route('stektips.index', ['tag' => $tag]) }}">{{ $tag === 'voedselbos' ? 'Voedselbos' : 'Inheems' }}</a>
+      @endforeach
+    </p>
+  @endif
+
   @isset($afbeelding)
     @include('partials.soort-afbeelding', ['afbeelding' => $afbeelding])
   @endisset

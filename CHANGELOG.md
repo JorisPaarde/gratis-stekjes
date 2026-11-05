@@ -9,6 +9,28 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.69.1] - 2026-11-04
+
+### Fixed
+
+- Catalogus-identiteit: zes bestaande `plantensoorten`-ids die in 0.69.0 een andere
+  Latijnse soort kregen, teruggezet naar de master-soort (o.a. Patagonisch ijzerhard /
+  *Verbena bonariensis*, Grote margriet / *Leucanthemum × superbum*, genus-entries
+  Klokjesbloem / Longkruid / Sleutelbloem, Artisjok / *Cynara cardunculus*).
+  Soortspecifieke tips en foto’s verhuisd naar nieuwe entries (Echt ijzerhard, Gewone
+  margriet, Ruig klokje, Gevlekt longkruid, Gulden sleutelbloem) met 301’s vanaf de
+  oude tip-slugs. Kattestaart houdt tip/foto; naam hersteld.
+
+## [0.69.0] - 2026-11-04
+
+### Added
+
+- Veertig nieuwe stektip-pagina’s voor voedselbos- en inheemse planten (o.a. sleedoorn,
+  daslook, meidoorn, aardpeer, knoopkruid, gewone margriet, vingerhoedskruid met giftig-
+  waarschuwing). Tags `voedselbos` en `inheems` in plantzoeker/catalogus; filter op
+  `/stektips` en secties op `/vermeerderen`. Elke nieuwe soortfoto met Wikimedia-
+  licentie, sha256-allowlist en `?h=`-cachebuster (voortbordurend op 0.66.5).
+
 ## [0.68.2] - 2026-11-04
 
 ### Changed
@@ -48,6 +70,31 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   `postcode-herinnering-lijst.yml` (`target` staging|production, geen apply). Met `--alle` (standaard via
   endpoint/workflow) ook overzicht van alle leden: postcode ja/nee, lidnummer,
   oprichters-tier (10/50/100/geen), aantallen en id's met lidnummer > 100.
+
+## [0.67.0] - 2026-11-04
+
+### Changed
+
+- Aantal bij aanbod is verplicht: geheel getal, standaard 1, minimaal 1, maximaal 99 (niet meer optioneel/leeg).
+- Bestaande NULL-waarden worden via migratie op 1 gezet; kolom daarna `NOT NULL DEFAULT 1` (MySQL/MariaDB-safe).
+- Aantal alleen tonen als het hoger is dan 1 (`3 stuks`): zoeklijst/kaartpopup (zoals eerder), aanbodkaart op home, en detail/plantlijst. Bij 1 niets.
+- Mijn aanbod −/+: bij 0 blijft het aanbod offline; er wordt geen 0 (en geen NULL) meer opgeslagen — aantal blijft 1.
+
+## [0.66.5] - 2026-11-04
+
+### Fixed
+
+- Soortfoto’s: regressiebescherming tegen verkeerde Wikimedia-treffers (zoals de
+  Cassis-schelp bij Zwarte bes in 0.25.0). Elke goedgekeurde soortfoto heeft nu een
+  `sha256`-allowlist; CI faalt bij ontbrekend/dubbel bestand, mismatch key/slug/pad,
+  of stille bytevervanging. Soort-URL’s krijgen `?h=`-cachebuster; de service worker
+  haalt `/assets/images/soorten/` en `/assets/og/` network-first. Het fetch-script
+  weigert schelp-/shell-treffers.
+
+### Notes
+
+- Op prod toont `/stektips/zwarte-bes` al Ribes nigrum (Jerzy Opioła); de schelp was
+  niet meer reproduceerbaar op site/OG/staging. Deze release voorkomt terugkeer.
 
 ## [0.66.4] - 2026-11-04
 
