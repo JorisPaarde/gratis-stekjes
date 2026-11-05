@@ -27,8 +27,11 @@
           @else
             @include('partials.illustraties.stek', ['naam' => $init['illustratie']])
           @endif
-          @php $intern = collect($init['acties'])->firstWhere('extern', false); @endphp
-          <h3>@if($intern)<a href="{{ $intern['url'] }}">{{ $init['naam'] }}</a>@else{{ $init['naam'] }}@endif</h3>
+          @php
+            $intern = collect($init['acties'])->firstWhere('extern', false);
+            $titelUrl = $init['pagina_url'] ?? ($intern['url'] ?? null);
+          @endphp
+          <h3>@if($titelUrl)<a href="{{ $titelUrl }}">{{ $init['naam'] }}</a>@else{{ $init['naam'] }}@endif</h3>
           @if($init['organisatie'] !== '')<p class="muted">{{ $init['organisatie'] }}</p>@endif
           <p>{{ $init['tekst'] }}</p>
           <ul class="partners-uitgelicht-acties">

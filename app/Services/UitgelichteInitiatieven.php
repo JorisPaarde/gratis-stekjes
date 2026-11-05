@@ -36,6 +36,13 @@ final class UitgelichteInitiatieven
                     'extern' => ! $intern,
                 ];
             }
+            $paginaUrl = null;
+            if (! empty($item['pagina_route'])) {
+                $paginaUrl = route((string) $item['pagina_route'], $item['pagina_params'] ?? []);
+            } elseif (! empty($item['pagina_url'])) {
+                $paginaUrl = (string) $item['pagina_url'];
+            }
+
             $uit[] = [
                 'anker' => (string) $item['anker'],
                 'naam' => (string) $item['naam'],
@@ -43,6 +50,7 @@ final class UitgelichteInitiatieven
                 'kort' => (string) ($item['kort'] ?? ''),
                 'tekst' => (string) ($item['tekst'] ?? ''),
                 'illustratie' => (string) ($item['illustratie'] ?? 'kopstek'),
+                'pagina_url' => $paginaUrl,
                 'afbeelding' => ! empty($item['afbeelding']['bestand']) ? [
                     'bestand' => (string) $item['afbeelding']['bestand'],
                     'alt' => (string) ($item['afbeelding']['alt'] ?? ''),

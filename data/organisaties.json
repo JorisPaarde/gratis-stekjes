@@ -263,6 +263,16 @@
         "leeuwarden-zadenbieb-fonteinland",
         "leeuwarden-zadenbieb-dbieb"
       ]
+    },
+    {
+      "slug": "carpe-vitam",
+      "naam": "Carpe Vitam",
+      "type": "initiatief",
+      "plaats": "Elim",
+      "website": "https://carpevitam.net/",
+      "bron_url": "https://carpevitam.net/stekchallenge/",
+      "kort": "Voedselbos en kennisplek in Elim. Initiatiefnemer van de STEKchallenge: in november stekken en delen, met aftrapworkshop op locatie. Klimaatburgemeester Dewy Mulder.",
+      "deelplek_slugs": []
     }
   ]
 }

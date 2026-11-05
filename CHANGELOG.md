@@ -9,6 +9,17 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.71.0] - 2026-11-05
+
+### Added
+
+- Eigen pagina **/stekchallenge** (zelfde lijn als /struikroven): november is stekmaand, aftrap stekworkshop 8 nov in Elim, meedoen gratis in heel Nederland. Drie acties bovenaan (workshop volgen, workshop geven, contact). Beelden van Carpe Vitam (toestemming Dewy, 5 nov): groepsfoto als hero en op home-/initiatieven-kaartjes, Dewy met stekje bij het verhaal, campagnebanner klein in het materiaalblok. Credit «Foto: Carpe Vitam».
+- Agenda: workshop 8 november Elim als evenement gekoppeld aan Carpe Vitam, zichtbaar onder «Komende STEKchallenge-acties».
+- Aanmeldvinkje «Ik doe mee aan de STEKchallenge» (users.stekchallenge), met telling in beheer.
+- A4-poster en A5-flyer `/poster?voor=stekchallenge` met QR naar gratisplanten.nl/stekchallenge.
+- Organisatie Carpe Vitam in organisaties.json; sitemap en /organisaties/carpe-vitam leiden naar /stekchallenge.
+- Homepagekaartje en /initiatieven#stekchallenge linken naar /stekchallenge (groepsfoto i.p.v. plantpot-tekening).
+
 ## [0.70.2] - 2026-11-05
 
 ### Changed

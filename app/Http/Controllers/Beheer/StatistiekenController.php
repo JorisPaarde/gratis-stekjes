@@ -26,6 +26,9 @@ class StatistiekenController extends Controller
         $struikrovers = Schema::hasColumn('users', 'struikrover')
             ? User::query()->members()->where('struikrover', true)->count()
             : 0;
+        $stekchallenge = Schema::hasColumn('users', 'stekchallenge')
+            ? User::query()->members()->where('stekchallenge', true)->count()
+            : 0;
 
         // Distinct members who ever had ≥1 listing (any visibility / expiry status).
         $ledenMetAanbod = Schema::hasTable('aanbod')
@@ -126,6 +129,7 @@ class StatistiekenController extends Controller
             'confirmed' => $confirmed,
             'unconfirmed' => $unconfirmed,
             'struikrovers' => $struikrovers,
+            'stekchallenge' => $stekchallenge,
             'ledenMetAanbod' => $ledenMetAanbod,
             'ledenZonderAanbod' => $ledenZonderAanbod,
             'offersTotal' => $offersTotal,
