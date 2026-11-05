@@ -373,14 +373,15 @@ test('privacy noemt aanbodzoeken zonder plaats- of vrijetekst', function () {
         ->assertSee('nooit vrije planttekst', false);
 });
 
-test('zoeken.js stuurt bron=auto bij paginalaad en bron=zelf bij formulier', function () {
+test('zoeken.js: auto alleen voor plant_filter; ?q= en formulier zijn zelf', function () {
     $js = file_get_contents(resource_path('js/zoeken.js'));
-    expect($js)->toContain('zoek(startQ.trim(), "auto")')
+    expect($js)->toContain('zoek(startQ.trim(), "zelf")')
         ->and($js)->toContain('zoekOpPlant(String(cfg.plant_filter).trim(), "auto")')
         ->and($js)->toContain('zoekOpPlant(p, "zelf")')
         ->and($js)->toContain('zoek(q, "zelf")')
         ->and($js)->toContain('bron=auto')
-        ->and($js)->toContain('bron=zelf');
+        ->and($js)->toContain('bron=zelf')
+        ->and($js)->not->toContain('zoek(startQ.trim(), "auto")');
 });
 
 test('resultaatbuckets kloppen', function () {
@@ -392,10 +393,8 @@ test('resultaatbuckets kloppen', function () {
         ->and(ConversionTracker::aanbodResultBucket(21))->toBe('21+');
 });
 
-test('parseAanbodSearchCode accepteert legacy 4-delig als zelf', function () {
-    $legacy = ConversionTracker::parseAanbodSearchCode('plant.alle.0.na');
-    $with = ConversionTracker::parseAanbodSearchCode('plant.alle.0.na.auto');
-
-    expect($legacy['bron'])->toBe('zelf')
-        ->and($with['bron'])->toBe('auto');
+test('parseAanbodSearchCode eist vijf segmenten met bron', function () {
+    expect(ConversionTracker::parseAanbodSearchCode('plant.alle.0.na'))->toBeNull()
+        ->and(ConversionTracker::parseAanbodSearchCode('plant.alle.0.na.auto')['bron'])->toBe('auto')
+        ->and(ConversionTracker::parseAanbodSearchCode('locatie.alle.1-5.ok.zelf')['bron'])->toBe('zelf');
 });

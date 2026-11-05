@@ -166,7 +166,7 @@ test('zoeken.js: alleen 2e veld zoekt op plant via de API, 1e veld blijft zoek(q
     expect($js)->toContain('function zoekOpPlant(')
         ->and($js)->toContain('api + "?plant=" + encodeURIComponent(plant)')
         ->and($js)->toContain('plantModus')
-        ->and($js)->toContain('zoek(startQ.trim(), "auto")')
+        ->and($js)->toContain('zoek(startQ.trim(), "zelf")')
         ->and($js)->toContain('zoekOpPlant(String(cfg.plant_filter).trim(), "auto")')
         ->and($js)->not->toContain('zoek_lat: meta.lat');
 });

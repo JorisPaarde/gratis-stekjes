@@ -875,13 +875,13 @@
   loadPartners();
   loadDeelplekken();
 
-  // Binnenkomen met ?q= (zoekveld op de homepage): direct zoeken; anders nieuwste aanbod tonen.
-  // Paginalaad-zoeken = bron=auto (SEO/plant_filter of ?q=); formulier = bron=zelf.
+  // Binnenkomen met ?q= (homepage-held): echte locatiezoekactie → bron=zelf.
+  // Alleen SEO/plant_filter-paginalaad → bron=auto; formulier altijd bron=zelf.
   var startQ = new URLSearchParams(window.location.search).get("q");
   var startQEl = document.getElementById("zoek-q");
   if (startQ && startQ.trim()) {
     if (startQEl) startQEl.value = startQ.trim();
-    zoek(startQ.trim(), "auto");
+    zoek(startQ.trim(), "zelf");
   } else if (cfg.plant_filter && String(cfg.plant_filter).trim()) {
     zoekOpPlant(String(cfg.plant_filter).trim(), "auto");
   } else {

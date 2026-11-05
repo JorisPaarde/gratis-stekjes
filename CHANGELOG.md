@@ -7,7 +7,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- Zoekmeting op het aanbod (`aanbod_search`): **alleen** via `/api/zoeken` (met `q` en/of `plant`; niet `?recent=1`). Opslag zonder PII: modus (`locatie`/`plant`/`beide`), typefilter, resultaatbucket (`0`/`1-5`/`6-20`/`21+`), geocode-vlag, bron (`zelf`/`auto`), en alleen canonieke NL-plantennaam bij `Plantensoorten::resolveExact` — nooit ruwe plaats/postcode of vrije planttekst. Niet in `FUNNEL_TYPES`; zelfde bot-skip en 30-dagen-retentie als de meetset. Frontend stuurt `bron=auto` bij SEO/plant_filter-paginalaad en `bron=zelf` bij formulierzoeken.
+- Zoekmeting op het aanbod (`aanbod_search`): **alleen** via `/api/zoeken` (met `q` en/of `plant`; niet `?recent=1`). Opslag zonder PII: modus (`locatie`/`plant`/`beide`), typefilter, resultaatbucket (`0`/`1-5`/`6-20`/`21+`), geocode-vlag, bron (`zelf`/`auto`), en alleen canonieke NL-plantennaam bij `Plantensoorten::resolveExact` — nooit ruwe plaats/postcode of vrije planttekst. Niet in `FUNNEL_TYPES`; zelfde bot-skip en 30-dagen-retentie als de meetset. Frontend: `bron=auto` alleen bij SEO/`plant_filter`-paginalaad; `?q=` (homepage) en formulierzoeken = `bron=zelf`.
 - Beheerpanel op `/beheer/statistieken`: zoekacties deze week (hoofdtelling = zelf; auto apart), % lege resultaten, modus-split, top 10 catalogusplanten met leeg-aandeel.
 
 ### Changed

@@ -357,7 +357,7 @@ final class ConversionTracker
      *   type: uitdelen|ophalen|alle
      *   bucket: 0|1-5|6-20|21+
      *   geocode: ok|miss|na
-     *   bron: zelf|auto (oude 4-delige codes = zelf)
+     *   bron: zelf|auto
      *
      * @param  'uitdelen'|'ophalen'|null  $typeFilter
      * @param  'zelf'|'auto'|null  $bron  null/onbekend → zelf
@@ -431,10 +431,6 @@ final class ConversionTracker
             return null;
         }
         $parts = explode('.', $errorCode);
-        // 4 segmenten = legacy zonder bron → zelf; 5 = met bron.
-        if (count($parts) === 4) {
-            $parts[] = 'zelf';
-        }
         if (count($parts) !== 5) {
             return null;
         }

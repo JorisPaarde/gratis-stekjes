@@ -31,7 +31,7 @@ class ConversionEvent extends Model
     public const TYPE_FIRST_OFFER = 'first_offer';
 
     /**
-     * Zoekactie op /aanbod of /api/zoeken (geen PII: geen ruwe q/plant-tekst).
+     * Zoekactie via /api/zoeken alleen (geen PII: geen ruwe q/plant-tekst).
      * Bewust niet in FUNNEL_TYPES — aparte zoekmeting naast de aanmeldtrechter.
      */
     public const TYPE_AANBOD_SEARCH = 'aanbod_search';
