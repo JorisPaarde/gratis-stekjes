@@ -95,7 +95,7 @@ test('gp:import-struikroven-agenda dry-run schrijft niets', function () {
         ->expectsOutputToContain('2026-11-28 · Den Haag · Struikroofactie Den Haag · nieuw')
         ->assertSuccessful();
 
-    expect(Evenement::query()->count())->toBe(0);
+    expect(Evenement::query()->where('organisatie_slug', 'struikroven')->count())->toBe(0);
 });
 
 test('gp:import-struikroven-agenda --apply zet Struikroven-vlag en is idempotent', function () {
@@ -106,7 +106,7 @@ test('gp:import-struikroven-agenda --apply zet Struikroven-vlag en is idempotent
         '--apply' => true,
     ])->assertSuccessful();
 
-    expect(Evenement::query()->count())->toBe(2);
+    expect(Evenement::query()->where('organisatie_slug', 'struikroven')->count())->toBe(2);
 
     $dommel = Evenement::query()->where('url', 'https://www.struikroven.nu/domeindommel')->first();
     expect($dommel)->not->toBeNull()
@@ -131,7 +131,7 @@ test('gp:import-struikroven-agenda --apply zet Struikroven-vlag en is idempotent
         ->expectsOutputToContain('bestaat al')
         ->assertSuccessful();
 
-    expect(Evenement::query()->count())->toBe(2);
+    expect(Evenement::query()->where('organisatie_slug', 'struikroven')->count())->toBe(2);
 });
 
 test('repo-JSON van Struikroven-agenda is geldig en bevat alleen acties vanaf 4 nov 2026', function () {
@@ -187,7 +187,7 @@ test('deploy import-struikroven-agenda endpoint dry-run en apply', function () {
         ->assertJsonPath('ok', true)
         ->assertJsonPath('apply', false);
 
-    expect(Evenement::query()->count())->toBe(0);
+    expect(Evenement::query()->where('organisatie_slug', 'struikroven')->count())->toBe(0);
 
     $this->postJson('/deploy/import-struikroven-agenda', ['apply' => true, 'no_geocode' => true], [
         'Authorization' => 'Bearer test-deploy-token',

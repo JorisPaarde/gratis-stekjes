@@ -71,7 +71,7 @@
     <footer class="poster-voet">
       <p class="poster-url">{{ $kortUrl }}</p>
       <p class="poster-voet-tekst">Gratis, zonder reclame. Voor iedereen in Nederland en België.</p>
-      <p class="poster-credit">Foto: <a href="{{ $foto['bron_url'] }}" rel="noopener" target="_blank">{{ $foto['maker'] }} / Unsplash</a></p>
+      <p class="poster-credit">Foto: <a href="{{ $foto['bron_url'] }}" rel="noopener" target="_blank">{{ $foto['maker'] }}@if(($foto['licentie'] ?? '') === 'Unsplash License') / Unsplash@endif</a></p>
     </footer>
   </article>
 </section>
