@@ -222,7 +222,6 @@ class PageController extends Controller
             ['loc' => route('deelplekken'), 'lastmod' => $this->lastmodFromFiles([base_path('data/deelplekken.json')])],
             ['loc' => route('voor-organisaties'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/voor-organisaties.blade.php')])],
             ['loc' => route('voor-organisaties.aanmelden'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/voor-organisaties-aanmelden.blade.php')])],
-            ['loc' => route('organisaties.index'), 'lastmod' => $this->lastmodFromFiles([base_path('data/organisaties.json')])],
             ['loc' => route('invasieve-soorten'), 'lastmod' => $this->lastmodFromFiles([base_path('data/niet-aanbieden.json')])],
             ['loc' => route('gratis-planten.index'), 'lastmod' => $this->lastmodFromFiles([base_path('data/steden.json')])],
             ['loc' => route('volkstuinen'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/audience/volkstuinen.blade.php')])],

@@ -50,8 +50,8 @@ test('initiatievenpagina toont SEO-title, H1, lege agenda en vaste initiatieven'
         ->assertSee('Initiatieven om aan mee te doen', false)
         ->assertSee('Er staan nu geen evenementen gepland', false)
         ->assertSee(route('agenda'), false)
-        ->assertSee('Vaste ruilinitiatieven', false)
-        ->assertSee('Voedselbosbouw.org', false)
+        ->assertSee('Organisaties en initiatieven', false)
+        ->assertSee('Stichting Voedselbosbouw Nederland', false)
         ->assertDontSee('Stekjesroute', false);
 });
 

@@ -112,7 +112,7 @@ test('lidmaatschap alleen openbaar bij vinkje én goedgekeurd; pagina toont aant
         ->and($html)->not->toContain('Stille Sjaak')
         ->and($html)->toContain(route('organisaties.poster', ['slug' => $v->slug]));
 
-    $this->get(route('organisaties.index'))->assertOk()->assertSee('VTV Groenrijk', false);
+    $this->get(route('partners'))->assertOk()->assertSee('VTV Groenrijk', false);
     expect($this->get('/sitemap.xml')->getContent())->toContain($v->url());
 });
 

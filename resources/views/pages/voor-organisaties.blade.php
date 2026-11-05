@@ -31,6 +31,6 @@
       </li>
     @endforeach
   </ul>
-  <p class="muted"><a href="{{ route('organisaties.index') }}">Alle organisaties</a> · <a href="{{ route('deelplekken') }}">Deelplekken</a></p>
+  <p class="muted"><a href="{{ route('partners') }}#organisaties">Alle organisaties</a> · <a href="{{ route('deelplekken') }}">Deelplekken</a></p>
 </section>
 @endsection

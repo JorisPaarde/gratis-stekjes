@@ -17,23 +17,6 @@ use Illuminate\View\View;
 
 class OrganisatieController extends Controller
 {
-    public function index(Organisaties $organisaties): View
-    {
-        $verenigingen = VerenigingService::beschikbaar()
-            ? Vereniging::query()->approved()->whereNull('json_slug')
-                ->withCount(['leden' => fn ($q) => $q->members()])
-                ->orderBy('plaats')->orderBy('naam')->get()
-            : collect();
-
-        return view('pages.organisaties-index', [
-            'verenigingen' => $verenigingen,
-            'title' => 'Organisaties',
-            'metaDescription' => 'Organisaties en initiatieven rond het delen van gratis planten, met een link naar hun eigen site. Geen officiële partnerschappen.',
-            'canonical' => route('organisaties.index'),
-            'organisaties' => $organisaties->all(),
-        ]);
-    }
-
     public function show(
         string $slug,
         Organisaties $organisaties,

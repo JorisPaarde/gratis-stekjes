@@ -46,9 +46,13 @@ test('organisatie met initiatief-slug: 301 van /organisaties/{org} naar /{slug}'
 
 test('organisaties-index en voor-organisaties linken naar /{slug} i.p.v. org-pagina', function () {
     $this->get(route('organisaties.index'))
+        ->assertRedirect(route('partners').'#organisaties');
+
+    $this->get(route('partners'))
         ->assertOk()
         ->assertSee(route('initiatief.show', ['slug' => 'stekchallenge']), false)
         ->assertSee(route('initiatief.show', ['slug' => 'struikroven']), false)
+        ->assertSee(route('organisaties.show', ['slug' => 'velt']), false)
         ->assertDontSee('/organisaties/struikroven', false)
         ->assertDontSee('/organisaties/carpe-vitam"', false);
 
@@ -57,12 +61,6 @@ test('organisaties-index en voor-organisaties linken naar /{slug} i.p.v. org-pag
         ->assertSee(route('initiatief.show', ['slug' => 'struikroven']), false)
         ->assertSee(route('initiatief.show', ['slug' => 'stekchallenge']), false);
 
-    // /initiatieven (agenda) verwijst naar organisaties; die lijst linkt Struikroven naar /struikroven.
-    $this->get(route('partners'))
-        ->assertOk()
-        ->assertSee(route('organisaties.index'), false);
-    $this->get(route('organisaties.index'))
-        ->assertSee('href="'.route('initiatief.show', ['slug' => 'struikroven']).'"', false);
 });
 
 test('sitemap: initiatief-URL i.p.v. /organisaties/{org} voor orgs met slug', function () {

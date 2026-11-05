@@ -13,13 +13,22 @@ test('initiatievenpagina laadt op /initiatieven', function () {
         ->assertSee('class="plekken-tabs"', false)
         ->assertSee('Plekken &amp; initiatieven', false)
         ->assertDontSee('>Partners<', false)
-        ->assertSee('Voedselbosbouw.org', false)
+        ->assertSee('Stichting Voedselbosbouw Nederland', false)
         ->assertSee('MeerBomen Nu', false)
+        ->assertSee('id="organisaties"', false)
         ->assertDontSee('Stekjesroute', false);
 
     $this->get(route('partners'))
         ->assertOk()
         ->assertSee('Initiatieven om aan mee te doen', false);
+});
+
+test('gids filtert op soort en /organisaties stuurt door', function () {
+    $html = $this->get(route('partners', ['soort' => 'plantenasiel']))->assertOk()->getContent();
+    expect($html)->toContain('Plantenasiel Zeist')
+        ->and($html)->not->toContain('Stichting Voedselbosbouw Nederland');
+
+    $this->get('/organisaties')->assertRedirect('/initiatieven#organisaties')->assertStatus(301);
 });
 
 test('agenda heeft eigen pagina met tabs en menu-item Plekken & initiatieven', function () {

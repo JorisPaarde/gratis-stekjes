@@ -77,8 +77,8 @@ Route::get('/voor-organisaties/aanmelden', [VoorOrganisatiesController::class, '
 Route::post('/voor-organisaties/aanmelden', [VoorOrganisatiesController::class, 'store'])
     ->middleware('throttle:10,1')
     ->name('voor-organisaties.aanmelden.store');
-Route::get('/organisaties', [OrganisatieController::class, 'index'])->name('organisaties.index');
-Route::redirect('/organisaties/plant-voor-plant', '/organisaties', 301);
+Route::permanentRedirect('/organisaties', '/initiatieven#organisaties')->name('organisaties.index');
+Route::redirect('/organisaties/plant-voor-plant', '/initiatieven#organisaties', 301);
 Route::get('/organisaties/{slug}/poster', [OrganisatieController::class, 'poster'])
     ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
     ->name('organisaties.poster');

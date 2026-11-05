@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.74.0] - 2026-11-05
+
+### Changed
+
+- /initiatieven heeft nu een gids «Organisaties en initiatieven» uit `data/organisaties.json`, met filter op soort (initiatief, plantenasiel, zadenbibliotheek, voedselbos, tuinvereniging) en de verenigingen van leden. De handgeschreven kaarten (Voedselbosbouw, MeerBomen Nu, «Andere links») zijn weg.
+- /organisaties stuurt met 301 door naar /initiatieven#organisaties; de losse lijstpagina is weg en staat niet meer in de sitemap.
+
 ## [0.73.0] - 2026-11-05
 
 ### Added
