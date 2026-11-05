@@ -62,7 +62,7 @@
   @endif
 
   <p class="muted">
-    <a href="{{ route('organisaties.index') }}">Alle organisaties</a> ·
+    <a href="{{ route('partners') }}#organisaties">Alle organisaties</a> ·
     <a href="{{ route('voor-organisaties.aanmelden') }}">Zelf een plek aanmelden</a>
   </p>
 </section>

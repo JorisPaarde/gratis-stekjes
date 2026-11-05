@@ -222,7 +222,8 @@ test('organisaties/{slug} blijft < 500 met config:cache + route:cache en APP_DEB
 
         $this->get('/organisaties/onbestaande-org-xyz')->assertNotFound();
         $this->get('/voor-organisaties')->assertOk();
-        $this->get('/organisaties')->assertOk();
+        $this->get('/organisaties')->assertStatus(301);
+        $this->get('/initiatieven')->assertOk();
     } finally {
         $this->artisan('config:clear');
         $this->artisan('route:clear');

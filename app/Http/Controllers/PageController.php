@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Models\Ervaring;
 use App\Models\Vereniging;
 use App\Services\HomeOverzicht;
+use App\Services\InitiatiefPaginas;
 use App\Services\Kennisbank;
 use App\Services\NuTeStekken;
 use App\Services\Organisaties;
@@ -217,10 +218,10 @@ class PageController extends Controller
             ['loc' => route('privacy'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/privacy.blade.php')])],
             ['loc' => route('contact'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/contact.blade.php')])],
             ['loc' => route('partners'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/partners.blade.php')])],
+            ['loc' => route('agenda'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/agenda.blade.php')])],
             ['loc' => route('deelplekken'), 'lastmod' => $this->lastmodFromFiles([base_path('data/deelplekken.json')])],
             ['loc' => route('voor-organisaties'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/voor-organisaties.blade.php')])],
             ['loc' => route('voor-organisaties.aanmelden'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/voor-organisaties-aanmelden.blade.php')])],
-            ['loc' => route('organisaties.index'), 'lastmod' => $this->lastmodFromFiles([base_path('data/organisaties.json')])],
             ['loc' => route('invasieve-soorten'), 'lastmod' => $this->lastmodFromFiles([base_path('data/niet-aanbieden.json')])],
             ['loc' => route('gratis-planten.index'), 'lastmod' => $this->lastmodFromFiles([base_path('data/steden.json')])],
             ['loc' => route('volkstuinen'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/audience/volkstuinen.blade.php')])],
@@ -267,7 +268,7 @@ class PageController extends Controller
             base_path('data/organisaties.json'),
             resource_path('views/pages/initiatief.blade.php'),
         ]);
-        $initiatieven = app(\App\Services\InitiatiefPaginas::class);
+        $initiatieven = app(InitiatiefPaginas::class);
         foreach ($organisaties->all() as $org) {
             $init = $initiatieven->findByOrganisatieSlug((string) $org['slug']);
             $loc = ($init !== null && $init->heeftPagina())

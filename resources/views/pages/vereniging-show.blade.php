@@ -18,7 +18,7 @@
 
   <p class="muted">
     Deze vereniging is door een lid toegevoegd. Klopt er iets niet? <a href="{{ route('contact') }}">Laat het me weten</a>.
-    · <a href="{{ route('organisaties.index') }}">Alle organisaties en verenigingen</a>
+    · <a href="{{ route('partners') }}#organisaties">Alle organisaties en verenigingen</a>
   </p>
 </section>
 @endsection

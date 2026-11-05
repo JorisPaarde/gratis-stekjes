@@ -94,8 +94,13 @@ test('kernroutes hebben unieke title-tags volgens keyword-onderzoek', function (
         ],
         [
             'get' => route('partners'),
-            'expect' => 'Stekjesmarkt, plantenruilbeurs en ruilinitiatieven',
-            'h1' => 'Plantenruilbeurzen, stekjesmarkten en initiatieven',
+            'expect' => 'Initiatieven: meedoen met plantenacties en ruilinitiatieven',
+            'h1' => 'Initiatieven om aan mee te doen',
+        ],
+        [
+            'get' => route('agenda'),
+            'expect' => 'Agenda stekjesmarkten, plantenruilbeurzen en ruildagen',
+            'h1' => 'Agenda: stekjesmarkten en plantenruilbeurzen',
         ],
         [
             'get' => route('stektips.artikel', ['slug' => 'stekken']),

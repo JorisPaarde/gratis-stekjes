@@ -16,6 +16,7 @@ use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\StartConversationController;
 use App\Http\Controllers\Account\VerenigingController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\Api\DeelplekkenController as ApiDeelplekkenController;
 use App\Http\Controllers\Api\NuTeStekkenController as ApiNuTeStekkenController;
 use App\Http\Controllers\Api\PartnersController as ApiPartnersController;
@@ -68,6 +69,7 @@ Route::get('/ervaringen/{ervaring}/foto', [ErvaringController::class, 'photo'])
     ->whereNumber('ervaring')
     ->name('ervaringen.foto');
 Route::get('/initiatieven', PartnersController::class)->name('partners');
+Route::get('/agenda', AgendaController::class)->name('agenda');
 Route::get('/deelplekken', DeelplekkenController::class)->name('deelplekken');
 Route::get('/voor-organisaties', [VoorOrganisatiesController::class, 'index'])->name('voor-organisaties');
 Route::get('/voor-organisaties/aanmelden', [VoorOrganisatiesController::class, 'create'])
@@ -75,8 +77,8 @@ Route::get('/voor-organisaties/aanmelden', [VoorOrganisatiesController::class, '
 Route::post('/voor-organisaties/aanmelden', [VoorOrganisatiesController::class, 'store'])
     ->middleware('throttle:10,1')
     ->name('voor-organisaties.aanmelden.store');
-Route::get('/organisaties', [OrganisatieController::class, 'index'])->name('organisaties.index');
-Route::redirect('/organisaties/plant-voor-plant', '/organisaties', 301);
+Route::permanentRedirect('/organisaties', '/initiatieven#organisaties')->name('organisaties.index');
+Route::redirect('/organisaties/plant-voor-plant', '/initiatieven#organisaties', 301);
 Route::get('/organisaties/{slug}/poster', [OrganisatieController::class, 'poster'])
     ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
     ->name('organisaties.poster');

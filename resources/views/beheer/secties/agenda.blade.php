@@ -1,5 +1,5 @@
   <h1 class="page-title" id="agenda">Agenda-evenementen</h1>
-  <p class="muted">Stekjesmarkten, plantenruilbeurzen en ruildagen op <a href="{{ route('partners') }}">/initiatieven</a>. Verborgen items verdwijnen van de publieke agenda (niet definitief verwijderd).</p>
+  <p class="muted">Stekjesmarkten, plantenruilbeurzen en ruildagen op <a href="{{ route('agenda') }}">/agenda</a>. Verborgen items verdwijnen van de publieke agenda (niet definitief verwijderd).</p>
 
   <form class="form beheer-evenement-form" method="post" action="{{ route('beheer.evenementen.save') }}">
     @csrf
