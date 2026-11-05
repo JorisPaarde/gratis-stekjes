@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "uitleg": "Initiatieven om aan mee te doen: homepageblok «Hier kun je ook aan meedoen» en bovenaan /initiatieven. Afbeeldingen pas na toestemming (Carpe Vitam via Dewy, Struikroven via Lisette).",
+    "bijgewerkt": "2026-11-05"
+  },
+  "items": [
+    {
+      "anker": "stekchallenge",
+      "naam": "STEKchallenge",
+      "organisatie": "Carpe Vitam",
+      "kort": "Leer stekken in een workshop, of geef er zelf een. Een initiatief van Carpe Vitam.",
+      "tekst": "Met de STEKchallenge leer je samen met anderen stekken, of geef je er zelf een. Een initiatief van Carpe Vitam.",
+      "illustratie": "kopstek",
+      "acties": [
+        {
+          "label": "Workshop volgen: 8 november in Elim",
+          "url": "https://carpevitam.net/event/stek-challenge-workshop-stekken-8-november/",
+          "tot": "2026-11-08"
+        },
+        {
+          "label": "Zelf een workshop geven",
+          "url": "https://carpevitam.net/stekchallenge/"
+        },
+        {
+          "label": "Contact met Carpe Vitam",
+          "url": "https://carpevitam.net/contact/"
+        }
+      ]
+    },
+    {
+      "anker": "struikroven",
+      "naam": "Struikroven",
+      "organisatie": "Stichting Struikroven",
+      "kort": "Haal gratis struiken op die anders weggegooid worden, en geef ze een nieuwe plek.",
+      "tekst": "Bij sloop en renovatie graven bewoners tijdens een Struikroofactie gratis planten en struiken uit die anders weggegooid worden, en geven ze een nieuwe plek in hun tuin of buurt.",
+      "illustratie": "scheuren",
+      "acties": [
+        {
+          "label": "Naar struikroven.nu",
+          "url": "https://www.struikroven.nu"
+        },
+        {
+          "label": "Meer over Struikroven",
+          "route": "initiatief.show",
+          "params": {
+            "slug": "struikroven"
+          }
+        }
+      ]
+    }
+  ]
+}

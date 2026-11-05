@@ -9,6 +9,14 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 - (volgende PRs).
 
+## [0.70.0] - 2026-11-05
+
+### Added
+
+- Homepage: blok **«Hier kun je ook aan meedoen»** onder «Doe mee», met kaartjes STEKchallenge (Carpe Vitam) en Struikroven naar /initiatieven.
+- /initiatieven: **«Doe mee»**-blok bovenaan met STEKchallenge (workshop volgen 8 nov in Elim, zelf een workshop geven, contact) en Struikroven (struikroven.nu en de eigen pagina). De workshop-link verdwijnt na 8 november vanzelf. Struikroven staat niet meer dubbel in de gewone lijst.
+- `data/uitgelichte-initiatieven.json` + `App\Services\UitgelichteInitiatieven`. Nog geen logo's of foto's (wacht op toestemming).
+
 ## [0.69.1] - 2026-11-04
 
 ### Fixed
