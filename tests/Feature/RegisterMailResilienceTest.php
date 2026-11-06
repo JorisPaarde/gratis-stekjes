@@ -137,6 +137,9 @@ test('foutpagina 404 is Nederlands gestyled', function () {
         ->assertNotFound()
         ->assertSee('Oeps, dit gaat niet goed', false)
         ->assertSee('Doe mee', false)
+        ->assertSee('Stektips', false)
+        ->assertSee('Aanbod', false)
+        ->assertSee('Naar home', false)
         ->assertSee(config('site.name'), false);
 });
 
