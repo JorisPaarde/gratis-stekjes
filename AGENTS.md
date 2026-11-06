@@ -66,6 +66,8 @@ Zie **`deploy/hook/INSTALL.md`**. Kort:
 
 `SITE_NAME`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`, `CRON_TOKEN`, `ADMIN_PASSWORD`.
 
+Optioneel: `POST_LOG_MINT_TOKEN` — header `X-Post-Log-Token` voor `POST /api/internal/post-logs` (plantjes + Grok Bot minten tracking-URL’s). Leeg = mint weigert. Zie `docs/post-log-mint.md`. Nooit committen; ops zet het op de server na merge.
+
 Optioneel: `ADMIN_DASHBOARD_EMAILS` — CSV met unieke account-e-mails voor Dashboard-menulink + `/beheer` zonder apart wachtwoord; bij lege upload behoudt de hook de bestaande server-waarde.
 
 Optioneel: `APP_KEY` — alleen voor first-install. Bestaande server-`APP_KEY` en

@@ -54,6 +54,7 @@ class PostLogController extends Controller
             'canonical' => route('beheer.posts.create'),
             'post' => new PostLog([
                 'posted_on' => now()->toDateString(),
+                'titel' => '',
                 'utm_source' => 'facebook',
                 'soort' => 'aankondiging',
             ]),
@@ -117,16 +118,19 @@ class PostLogController extends Controller
     {
         $data = $request->validate([
             'posted_on' => ['required', 'date'],
+            'titel' => ['required', 'string', 'max:200'],
             'groep' => ['required', 'string', 'max:120'],
             'soort' => ['required', 'string', Rule::in(self::SOORTEN)],
             'link' => ['nullable', 'string', 'max:500'],
             'utm_source' => ['required', 'string', 'max:80'],
             'notitie' => ['nullable', 'string', 'max:500'],
         ], [
+            'titel.required' => 'Vul een titel in.',
             'groep.required' => 'Vul de groepsnaam in.',
             'posted_on.required' => 'Kies een datum.',
         ]);
 
+        $data['titel'] = trim((string) $data['titel']);
         $data['groep'] = trim((string) $data['groep']);
         $data['groep_slug'] = PostLog::slugForGroep($data['groep']);
         $data['utm_source'] = trim((string) $data['utm_source']) ?: 'facebook';

@@ -44,7 +44,21 @@ test('deploy-workflows schrijven optioneel ADMIN_DASHBOARD_EMAILS (gemaskeerd)',
     }
 
     $hook = file_get_contents($root.'/deploy/hook/lib.php');
-    expect($hook)->toContain("deploy_hook_preserve_env_key(\$finalEnv, \$existingEnv, 'ADMIN_DASHBOARD_EMAILS')");
+    expect($hook)->toContain("deploy_hook_preserve_env_key(\$finalEnv, \$existingEnv, 'ADMIN_DASHBOARD_EMAILS')")
+        ->and($hook)->toContain("deploy_hook_preserve_env_key(\$finalEnv, \$existingEnv, 'POST_LOG_MINT_TOKEN')");
+});
+
+test('deploy schrijft optioneel POST_LOG_MINT_TOKEN (gemaskeerd, behouden bij leeg)', function () {
+    $root = dirname(__DIR__, 2);
+    $script = file_get_contents($root.'/scripts/deploy-hook-upload.sh');
+    expect($script)->toContain('POST_LOG_MINT_TOKEN')
+        ->and($script)->toContain('dotenv_line POST_LOG_MINT_TOKEN');
+
+    foreach (['deploy-staging-cpanel.yml', 'deploy-prod-hook.yml'] as $file) {
+        $yml = file_get_contents($root.'/.github/workflows/'.$file);
+        expect($yml)->toContain('POST_LOG_MINT_TOKEN: ${{ secrets.POST_LOG_MINT_TOKEN }}')
+            ->and($yml)->toContain('::add-mask::${POST_LOG_MINT_TOKEN}');
+    }
 });
 
 test('migrate-workflow gebruikt repo-secrets zonder production-environment', function () {

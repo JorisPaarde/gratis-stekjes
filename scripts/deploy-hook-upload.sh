@@ -13,6 +13,7 @@
 #            BACKUP_ENCRYPTION_KEY (apart van APP_KEY; leeg → hook behoudt bestaande .env-waarde)
 #            BACKUP_RETAIN_DAYS (default 30)
 #            ADMIN_DASHBOARD_EMAILS (CSV; alleen schrijven als gezet; leeg → hook behoudt bestaande)
+#            POST_LOG_MINT_TOKEN (mint API; leeg → hook behoudt bestaande .env-waarde)
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -76,6 +77,7 @@ mask "${ADMIN_DASHBOARD_EMAILS:-}"
 mask "${CRON_TOKEN:-}"
 mask "${APP_KEY:-}"
 mask "${BACKUP_ENCRYPTION_KEY:-}"
+mask "${POST_LOG_MINT_TOKEN:-}"
 
 require_var DEPLOY_HOOK_TOKEN
 require_var DEPLOY_TOKEN
@@ -245,6 +247,12 @@ umask 077
   dotenv_line MAIL_FROM_ADDRESS "$MAIL_FROM"
   dotenv_line MAIL_FROM_NAME "$NAME"
   dotenv_line CRON_TOKEN "$CRON_TOKEN"
+  # Post-log mint: alleen schrijven als secret gezet; anders behoudt de hook de bestaande waarde.
+  if [ -n "${POST_LOG_MINT_TOKEN:-}" ]; then
+    dotenv_line POST_LOG_MINT_TOKEN "$POST_LOG_MINT_TOKEN"
+  else
+    printf '%s\n' 'POST_LOG_MINT_TOKEN='
+  fi
   dotenv_line ADMIN_PASSWORD "$ADMIN_PASSWORD"
   # Dashboard-accounts: alleen schrijven als secret gezet; anders behoudt de hook de bestaande waarde.
   if [ -n "${ADMIN_DASHBOARD_EMAILS:-}" ]; then
