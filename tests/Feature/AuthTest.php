@@ -48,6 +48,12 @@ test('registratiepagina laadt', function () {
         ->assertSee('Je krijgt een e-mail om je aanmelding te bevestigen', false);
 });
 
+test('oude /registreren URL geeft 301 naar /account/registreren', function () {
+    $this->get('/registreren')
+        ->assertRedirect('/account/registreren')
+        ->assertStatus(301);
+});
+
 test('registreren stuurt verificatiemail en logt niet in', function () {
     Notification::fake();
     Http::fake();
