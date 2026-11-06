@@ -798,12 +798,16 @@
               "slug": "zwarte-vlier"
             },
             {
-              "naam": "Wilg",
-              "slug": "wilg"
+              "naam": "Kiwibes",
+              "slug": "kiwibes"
             },
             {
               "naam": "Druif",
               "slug": "druif"
+            },
+            {
+              "naam": "Wilg",
+              "slug": "wilg"
             },
             {
               "naam": "Vijg",
@@ -812,10 +816,6 @@
             {
               "naam": "Moerbei",
               "slug": "moerbei"
-            },
-            {
-              "naam": "Kiwibes",
-              "slug": "kiwibes"
             },
             {
               "naam": "Herfstolijfwilg",
