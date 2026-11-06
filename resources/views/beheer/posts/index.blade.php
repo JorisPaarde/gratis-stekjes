@@ -70,6 +70,7 @@
             <th>Datum</th>
             <th>Groep</th>
             <th>Links</th>
+            <th>Bezoekers</th>
             <th>CTA</th>
             <th>Register</th>
             <th>Accounts</th>
@@ -102,11 +103,11 @@
                     <button type="button" class="btn btn-secondary btn-klein" data-utm-copy data-target="utm-{{ $post->id }}">Kopieer</button>
                   </div>
                 </label>
-                <p class="beheer-klein"><a href="{{ $tracking }}" rel="noopener noreferrer">Open tracking</a></p>
                 @if($post->link)
                   <p class="beheer-klein"><a href="{{ $post->link }}" rel="noopener noreferrer">Sociale post</a></p>
                 @endif
               </td>
+              <td data-label="Bezoekers">{{ (int) ($stats['visitors'] ?? 0) }}</td>
               <td data-label="CTA">{{ (int) ($stats['cta_click'] ?? 0) }}</td>
               <td data-label="Register">{{ (int) ($stats['register_view'] ?? 0) }}</td>
               <td data-label="Accounts">{{ (int) ($stats['account_created'] ?? 0) }}</td>

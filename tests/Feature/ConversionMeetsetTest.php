@@ -604,6 +604,8 @@ test('postlogboek crud voor admin; stats-lezer en beheerder-mutaties afgeschermd
         ->assertOk()
         ->assertSee('Tracking', false)
         ->assertSee('Kopieer', false)
+        ->assertSee('Bezoekers', false)
+        ->assertDontSee('Open tracking', false)
         ->assertSee('Aankondiging ruilbeurs', false)
         ->assertSee('mint', false);
 
