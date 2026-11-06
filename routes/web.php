@@ -190,6 +190,9 @@ Route::post('/meet/event', ConversionBeaconController::class)
     ->middleware('throttle:60,1')
     ->name('meet.event');
 
+// Oude /registreren (404 op prod; FB-tests / typefouten) → canonieke account-route.
+Route::permanentRedirect('/registreren', '/account/registreren');
+
 Route::middleware('guest')->group(function () {
     Route::get('/account/registreren', [RegisterController::class, 'create'])->name('account.registreren');
     Route::post('/account/registreren', [RegisterController::class, 'store']);
