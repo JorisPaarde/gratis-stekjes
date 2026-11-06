@@ -1,16 +1,18 @@
 @extends('layouts.site')
 
-@section('title', 'Pagina niet gevonden')
-@section('meta_description', 'Deze pagina bestaat niet (meer).')
+@section('title', 'Oeps, dit gaat niet goed')
+@section('meta_description', 'Deze pagina bestaat niet (meer). Ga verder via Doe mee, stektips of het aanbod.')
 @section('robots', 'noindex, follow')
 
 @section('content')
 <section class="section wrap prose">
-  <h1 class="page-title">Pagina niet gevonden</h1>
-  <p>Deze pagina bestaat niet (meer). Controleer de link of ga terug naar de homepage.</p>
+  <h1 class="page-title">Oeps, dit gaat niet goed</h1>
+  <p>Deze pagina bestaat niet (meer). Misschien is de link verouderd of verkeerd geplakt. Geen zorgen — kies hieronder waar je heen wilt.</p>
   <p>
-    <a class="btn" href="{{ route('home') }}">Naar home</a>
-    <a class="btn btn-secondary" href="{{ route('aanbod') }}">Aanbod bekijken</a>
+    <a class="btn" href="{{ route('ga.word-lid', ['utm_content' => '404']) }}">Doe mee</a>
+    <a class="btn" href="{{ route('stektips.index') }}">Stektips</a>
+    <a class="btn btn-secondary" href="{{ route('aanbod') }}">Aanbod</a>
+    <a class="btn btn-secondary" href="{{ route('home') }}">Naar home</a>
   </p>
 </section>
 @endsection
