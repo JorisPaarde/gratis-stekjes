@@ -11,6 +11,7 @@ class PostLog extends Model
 {
     protected $fillable = [
         'posted_on',
+        'titel',
         'groep',
         'groep_slug',
         'soort',
@@ -43,6 +44,6 @@ class PostLog extends Model
             'utm_content' => (string) $this->id,
         ]);
 
-        return $baseUrl.'/?'.$query;
+        return $baseUrl.'/ga/word-lid?'.$query;
     }
 }

@@ -385,6 +385,7 @@ test('post bezoekers tellen unieke register_view, niet som van alle events', fun
     $tracker = app(ConversionTracker::class);
     $post = PostLog::query()->create([
         'posted_on' => now()->toDateString(),
+        'titel' => 'Testpost tellen',
         'groep' => 'Testgroep',
         'groep_slug' => 'testgroep',
         'soort' => 'aankondiging',
@@ -436,6 +437,7 @@ test('post conversies combineren daily historie met recente raw', function () {
     $tracker = app(ConversionTracker::class);
     $post = PostLog::query()->create([
         'posted_on' => now()->subDays(40)->toDateString(),
+        'titel' => 'Oude post',
         'groep' => 'Oude groep',
         'groep_slug' => 'oude-groep',
         'soort' => 'aankondiging',
@@ -578,6 +580,7 @@ test('postlogboek crud voor admin; stats-lezer en beheerder-mutaties afgeschermd
     $this->withSession(['admin_ok' => true])
         ->post(route('beheer.posts.store'), [
             'posted_on' => now()->toDateString(),
+            'titel' => 'Aankondiging ruilbeurs',
             'groep' => 'Plantenruil Amsterdam',
             'soort' => 'aankondiging',
             'link' => 'https://facebook.com/groups/example/posts/1',
@@ -588,7 +591,9 @@ test('postlogboek crud voor admin; stats-lezer en beheerder-mutaties afgeschermd
 
     $post = PostLog::query()->first();
     expect($post)->not->toBeNull()
+        ->and($post->titel)->toBe('Aankondiging ruilbeurs')
         ->and($post->groep_slug)->toBe('plantenruil-amsterdam')
+        ->and($post->trackingUrl())->toContain('/ga/word-lid?')
         ->and($post->trackingUrl())->toContain('utm_source=facebook')
         ->and($post->trackingUrl())->toContain('utm_medium=social')
         ->and($post->trackingUrl())->toContain('utm_campaign=plantenruil-amsterdam')
@@ -597,8 +602,12 @@ test('postlogboek crud voor admin; stats-lezer en beheerder-mutaties afgeschermd
     $this->withSession(['admin_ok' => true])
         ->get(route('beheer.posts.index'))
         ->assertOk()
-        ->assertSee('UTM-link', false)
-        ->assertSee('Kopieer', false);
+        ->assertSee('Tracking', false)
+        ->assertSee('Kopieer', false)
+        ->assertSee('Bezoekers', false)
+        ->assertDontSee('Open tracking', false)
+        ->assertSee('Aankondiging ruilbeurs', false)
+        ->assertSee('mint', false);
 
     $viewer = User::factory()->statsViewer()->create();
     $this->flushSession();
@@ -609,6 +618,7 @@ test('postlogboek crud voor admin; stats-lezer en beheerder-mutaties afgeschermd
     $this->actingAs($viewer)
         ->post(route('beheer.posts.store'), [
             'posted_on' => now()->toDateString(),
+            'titel' => 'Mag niet',
             'groep' => 'Mag niet',
             'soort' => 'aankondiging',
             'utm_source' => 'facebook',
@@ -616,6 +626,22 @@ test('postlogboek crud voor admin; stats-lezer en beheerder-mutaties afgeschermd
         ->assertRedirect(route('beheer.login'));
 
     expect(PostLog::query()->where('groep', 'Mag niet')->count())->toBe(0);
+});
+
+test('postlogboek weigert whitespace-only titel en groep', function () {
+    $this->withSession(['admin_ok' => true])
+        ->from(route('beheer.posts.create'))
+        ->post(route('beheer.posts.store'), [
+            'posted_on' => now()->toDateString(),
+            'titel' => "  \t  ",
+            'groep' => '   ',
+            'soort' => 'aankondiging',
+            'utm_source' => 'facebook',
+        ])
+        ->assertRedirect(route('beheer.posts.create'))
+        ->assertSessionHasErrors(['titel', 'groep']);
+
+    expect(PostLog::query()->count())->toBe(0);
 });
 
 test('bots en beheerders worden niet gemeten', function () {

@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\DeelplekkenController as ApiDeelplekkenController;
 use App\Http\Controllers\Api\NuTeStekkenController as ApiNuTeStekkenController;
 use App\Http\Controllers\Api\PartnersController as ApiPartnersController;
 use App\Http\Controllers\Api\PlantensoortenController as ApiPlantensoortenController;
+use App\Http\Controllers\Api\PostLogMintController as ApiPostLogMintController;
 use App\Http\Controllers\Api\ZoekenController as ApiZoekenController;
 use App\Http\Controllers\AudienceLandingController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -149,6 +150,9 @@ Route::get('/api/nu-te-stekken', ApiNuTeStekkenController::class)->name('api.nu-
 Route::get('/api/plantensoorten', ApiPlantensoortenController::class)
     ->middleware('throttle:plantensoorten-zoek')
     ->name('api.plantensoorten');
+Route::post('/api/internal/post-logs', ApiPostLogMintController::class)
+    ->middleware('throttle:60,1')
+    ->name('api.internal.post-logs');
 
 Route::get('/cron', CronController::class)->name('cron');
 Route::get('/cron/backup', BackupCronController::class)

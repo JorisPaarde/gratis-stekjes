@@ -3,6 +3,18 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.2] - 2026-11-06
+
+### Added
+
+- Interne mint-API `POST /api/internal/post-logs` (header `X-Post-Log-Token` / env `POST_LOG_MINT_TOKEN`) zodat plantjes en Grok Bot per FB/IG-post een `post_logs`-rij + tracking-URL minten zonder handmatig `/beheer/posts`. Zie `docs/post-log-mint.md`.
+- Veld `titel` op `post_logs` (verplicht bij mint en beheer-form); beheer-index toont titel, tracking-/social-links en conversiekolommen per post.
+
+### Changed
+
+- `PostLog::trackingUrl()` wijst naar `/ga/word-lid?utm_…` (was `/?utm_…`), zodat CTA’s via bestaande `cta_click`-meting lopen.
+- Beheer postlogboek: copy read-first (mint via API; handmatig toevoegen blijft fallback).
+
 ## [0.78.1] - 2026-11-06
 
 ### Fixed

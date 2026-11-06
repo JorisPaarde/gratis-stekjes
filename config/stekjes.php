@@ -53,6 +53,13 @@ return [
     'cron_token' => env('CRON_TOKEN', ''),
 
     /**
+     * Gedeeld secret voor POST /api/internal/post-logs (header X-Post-Log-Token).
+     * Plantjes + Grok Bot minten tracking-URL’s. Leeg = mint weigert altijd.
+     * Nooit committen.
+     */
+    'post_log_mint_token' => env('POST_LOG_MINT_TOKEN', ''),
+
+    /**
      * Bearer-token voor POST /deploy/run (migratie + caches zonder SSH).
      * Leeg = endpoint weigert altijd. Nooit committen.
      */
