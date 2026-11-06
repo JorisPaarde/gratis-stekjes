@@ -84,6 +84,8 @@ bewaart die regel altijd. Nooit `key:generate` op prod zonder backup. Vóór elk
 
 Optioneel (backups): `BACKUP_ENCRYPTION_KEY` — zie `docs/backups.md`. Lege upload → bestaande server-waarde behouden.
 
+Optioneel: `POST_LOG_MINT_TOKEN` — mint-API (`docs/post-log-mint.md`). Lege upload → bestaande server-waarde behouden.
+
 `CPANEL_HOST` / `CPANEL_USER` / `CPANEL_API_TOKEN` zijn voor deze flow **niet** meer nodig.
 
 ### E. Eerste deploy

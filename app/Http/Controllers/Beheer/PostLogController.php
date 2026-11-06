@@ -54,6 +54,7 @@ class PostLogController extends Controller
             'canonical' => route('beheer.posts.create'),
             'post' => new PostLog([
                 'posted_on' => now()->toDateString(),
+                'titel' => '',
                 'utm_source' => 'facebook',
                 'soort' => 'aankondiging',
             ]),
@@ -115,20 +116,26 @@ class PostLogController extends Controller
     /** @return array<string, mixed> */
     private function validated(Request $request): array
     {
+        $request->merge([
+            'titel' => trim((string) $request->input('titel', '')),
+            'groep' => trim((string) $request->input('groep', '')),
+        ]);
+
         $data = $request->validate([
             'posted_on' => ['required', 'date'],
+            'titel' => ['required', 'string', 'max:200'],
             'groep' => ['required', 'string', 'max:120'],
             'soort' => ['required', 'string', Rule::in(self::SOORTEN)],
             'link' => ['nullable', 'string', 'max:500'],
             'utm_source' => ['required', 'string', 'max:80'],
             'notitie' => ['nullable', 'string', 'max:500'],
         ], [
+            'titel.required' => 'Vul een titel in.',
             'groep.required' => 'Vul de groepsnaam in.',
             'posted_on.required' => 'Kies een datum.',
         ]);
 
-        $data['groep'] = trim((string) $data['groep']);
-        $data['groep_slug'] = PostLog::slugForGroep($data['groep']);
+        $data['groep_slug'] = PostLog::slugForGroep((string) $data['groep']);
         $data['utm_source'] = trim((string) $data['utm_source']) ?: 'facebook';
         $data['link'] = isset($data['link']) ? trim((string) $data['link']) ?: null : null;
         $data['notitie'] = isset($data['notitie']) ? trim((string) $data['notitie']) ?: null : null;

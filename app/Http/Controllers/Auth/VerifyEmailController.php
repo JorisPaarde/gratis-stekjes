@@ -122,6 +122,11 @@ class VerifyEmailController extends Controller
         Auth::login($verifiedUser, false);
         $request->session()->regenerate();
 
+        // Eerste bevestiging → eenmalig welkomstscherm (tenzij al gemarkeerd).
+        if (($outcome['wasUnverified'] ?? false) && $verifiedUser->welcome_shown_at === null) {
+            return redirect()->route('account.welkom');
+        }
+
         return redirect()
             ->route('account.index')
             ->with('status', 'E-mail bevestigd. Welkom — je account is actief. Vul op je profiel nog een voornaam of bijnaam in.');

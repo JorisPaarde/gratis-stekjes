@@ -132,6 +132,7 @@ jobs:
           APP_KEY: ${{ secrets.APP_KEY }}
           BACKUP_ENCRYPTION_KEY: ${{ secrets.BACKUP_ENCRYPTION_KEY }}
           BACKUP_RETAIN_DAYS: ${{ vars.BACKUP_RETAIN_DAYS }}
+          POST_LOG_MINT_TOKEN: ${{ secrets.POST_LOG_MINT_TOKEN }}
           BASE_URL: ${{ secrets.PROD_BASE_URL }}
           APP_ENV_NAME: production
           # Tag-pushes: altijd false. workflow_dispatch: input import_enabled.
@@ -158,6 +159,11 @@ jobs:
             echo "::add-mask::${BACKUP_ENCRYPTION_KEY}"
           else
             echo "::notice::BACKUP_ENCRYPTION_KEY ontbreekt — hook behoudt bestaande server-.env-waarde (zie docs/backups.md)."
+          fi
+          if [ -n "${POST_LOG_MINT_TOKEN:-}" ]; then
+            echo "::add-mask::${POST_LOG_MINT_TOKEN}"
+          else
+            echo "::notice::POST_LOG_MINT_TOKEN ontbreekt — hook behoudt bestaande server-.env-waarde (zie docs/post-log-mint.md)."
           fi
           # Normaliseer boolean → true|false voor .env
           case "$(printf '%s' "${IMPORT_ENABLED:-false}" | tr '[:upper:]' '[:lower:]')" in

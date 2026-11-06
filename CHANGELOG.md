@@ -3,11 +3,48 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
-## [0.76.1] - 2026-11-06
+## [0.78.2] - 2026-11-06
+
+### Added
+
+- Interne mint-API `POST /api/internal/post-logs` (header `X-Post-Log-Token` / env `POST_LOG_MINT_TOKEN`) zodat plantjes en Grok Bot per FB/IG-post een `post_logs`-rij + tracking-URL minten zonder handmatig `/beheer/posts`. Zie `docs/post-log-mint.md`.
+- Veld `titel` op `post_logs` (verplicht bij mint en beheer-form); beheer-index toont titel, tracking-/social-links en conversiekolommen per post.
+
+### Changed
+
+- `PostLog::trackingUrl()` wijst naar `/ga/word-lid?utm_…` (was `/?utm_…`), zodat CTA’s via bestaande `cta_click`-meting lopen.
+- Beheer postlogboek: copy read-first (mint via API; handmatig toevoegen blijft fallback).
+
+## [0.78.1] - 2026-11-06
 
 ### Fixed
 
 - Permanente redirect `/registreren` → `/account/registreren` (301), zodat oude/FB-links niet meer 404 geven.
+
+## [0.78.0] - 2026-11-05
+
+### Added
+
+- Zoekmeting op het aanbod (`aanbod_search`): **alleen** via `/api/zoeken` (met `q` en/of `plant`; niet `?recent=1`). Opslag zonder PII: modus (`locatie`/`plant`/`beide`), typefilter, resultaatbucket (`0`/`1-5`/`6-20`/`21+`), geocode-vlag, bron (`zelf`/`auto`), en alleen canonieke NL-plantennaam bij `Plantensoorten::resolveExact` — nooit ruwe plaats/postcode of vrije planttekst. Niet in `FUNNEL_TYPES`; zelfde bot-skip en 30-dagen-retentie als de meetset. Frontend: `bron=auto` alleen bij SEO/`plant_filter`-paginalaad; `?q=` (homepage) en formulierzoeken = `bron=zelf`.
+- Beheerpanel op `/beheer/statistieken`: zoekacties deze week (hoofdtelling = zelf; auto apart), % lege resultaten, modus-split, top 10 catalogusplanten met leeg-aandeel.
+
+### Changed
+
+- Privacytekst: aanbodzoeken genoemd bij conversiemeting (geen plaats-/vrijetekst-opslag).
+
+## [0.77.0] - 2026-11-05
+
+### Added
+
+- Eenmalig welkomstscherm na de eerste e-mailbevestiging (`GET /account/welkom`): knop naar `/aanbieden`, link naar het openbare aanbod, escape «Verder naar mijn account» (`/account/welkom/verder`). Datumveld `users.welcome_shown_at` (bestaande geverifieerde leden krijgen backfill, zodat zij het scherm nooit zien). Markeren gebeurt altijd bij show/cta/verder (ook WhatsApp/bot-UA); alleen de conversiemeting blijft bot-gated.
+- Conversie-events `welcome_view` en `welcome_cta_click` (server-side bij auth). Bewust **niet** in de publieke trechter-`FUNNEL_TYPES` (dashboard blijft `email_verified` → `first_offer`); wel meetbaar naast de trechter. `first_offer` ongewijzigd.
+- AVG-export bevat `welcome_shown_at`; bij accountverwijdering verdwijnt het veld mee met de userrij.
+
+### Changed
+
+- Na eerste geldige bevestiging + auto-login: redirect naar `/account/welkom` in plaats van direct `/account`. Herhaalde bevestiging of opnieuw inloggen toont het scherm niet opnieuw. Daarna blijft `VolgendeStap` leidend op `/account`.
+- Recovery: `GET /account` en geslaagde login sturen hooguit 1× per sessie door naar welkom (`welcome_recovery_done`), zodat een mislukte mark geen permanente loop geeft.
+- Privacytekst: welkomstscherm-events genoemd bij conversiemeting.
 
 ## [0.76.0] - 2026-11-05
 

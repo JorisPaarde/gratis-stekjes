@@ -28,6 +28,9 @@
     <label>Datum *
       <input type="date" name="posted_on" required value="{{ old('posted_on', optional($post->posted_on)->format('Y-m-d') ?? now()->toDateString()) }}">
     </label>
+    <label>Titel * <span class="hint">korte omschrijving van de post</span>
+      <input type="text" name="titel" required maxlength="200" value="{{ old('titel', $post->titel) }}">
+    </label>
     <label>Groep * <span class="hint">bijv. naam van de Facebookgroep</span>
       <input type="text" name="groep" required maxlength="120" value="{{ old('groep', $post->groep) }}">
     </label>

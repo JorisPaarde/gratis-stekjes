@@ -175,7 +175,7 @@ test('signed bevestigingslink activeert account en logt in', function () {
     ]);
 
     $this->get($url)
-        ->assertRedirect(route('account.index'));
+        ->assertRedirect(route('account.welkom'));
 
     $this->assertAuthenticatedAs($user);
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();

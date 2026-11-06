@@ -15,12 +15,14 @@ use App\Http\Controllers\Account\PostcodeHerinneringController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\StartConversationController;
 use App\Http\Controllers\Account\VerenigingController;
+use App\Http\Controllers\Account\WelcomeController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\Api\DeelplekkenController as ApiDeelplekkenController;
 use App\Http\Controllers\Api\NuTeStekkenController as ApiNuTeStekkenController;
 use App\Http\Controllers\Api\PartnersController as ApiPartnersController;
 use App\Http\Controllers\Api\PlantensoortenController as ApiPlantensoortenController;
+use App\Http\Controllers\Api\PostLogMintController as ApiPostLogMintController;
 use App\Http\Controllers\Api\ZoekenController as ApiZoekenController;
 use App\Http\Controllers\AudienceLandingController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -37,9 +39,8 @@ use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
 use App\Http\Controllers\Beheer\PostLogController as BeheerPostLogController;
 use App\Http\Controllers\Beheer\StatistiekenController as BeheerStatistiekenController;
 use App\Http\Controllers\BerichtmailController;
-use App\Http\Controllers\ConversionBeaconController;
-use App\Http\Controllers\GaWordLidController;
 use App\Http\Controllers\ContentPageController;
+use App\Http\Controllers\ConversionBeaconController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\DeelplekkenController;
 use App\Http\Controllers\DeployController;
@@ -51,6 +52,7 @@ use App\Http\Controllers\DeployPostcodeHerinneringController;
 use App\Http\Controllers\DeployStatsLezerController;
 use App\Http\Controllers\ErvaringController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\GaWordLidController;
 use App\Http\Controllers\GratisPlantenController;
 use App\Http\Controllers\InitiatiefController;
 use App\Http\Controllers\InvasieveSoortenController;
@@ -148,6 +150,9 @@ Route::get('/api/nu-te-stekken', ApiNuTeStekkenController::class)->name('api.nu-
 Route::get('/api/plantensoorten', ApiPlantensoortenController::class)
     ->middleware('throttle:plantensoorten-zoek')
     ->name('api.plantensoorten');
+Route::post('/api/internal/post-logs', ApiPostLogMintController::class)
+    ->middleware('throttle:60,1')
+    ->name('api.internal.post-logs');
 
 Route::get('/cron', CronController::class)->name('cron');
 Route::get('/cron/backup', BackupCronController::class)
@@ -234,6 +239,10 @@ Route::middleware(['auth', 'verified:account.bevestiging-nodig'])->group(functio
     Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
     Route::get('/account', [AccountController::class, 'index'])->name('account.index');
+
+    Route::get('/account/welkom', [WelcomeController::class, 'show'])->name('account.welkom');
+    Route::get('/account/welkom/cta', [WelcomeController::class, 'cta'])->name('account.welkom.cta');
+    Route::get('/account/welkom/verder', [WelcomeController::class, 'continue'])->name('account.welkom.verder');
 
     Route::get('/account/profiel', [ProfileController::class, 'edit'])->name('account.profiel');
     Route::post('/account/profiel', [ProfileController::class, 'update']);

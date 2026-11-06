@@ -6,10 +6,13 @@ use App\Models\Aanbod;
 use App\Models\ConversionDaily;
 use App\Models\ConversionEvent;
 use App\Models\GeocodeCache;
+use App\Models\PageView;
 use App\Models\PostLog;
 use App\Models\User;
 use App\Services\ConversionTracker;
 use App\Support\Geo;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
@@ -73,7 +76,7 @@ test('register_view wordt gelogd zonder page_view op /account/registreren', func
     $this->get(route('account.registreren'))->assertOk();
 
     expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_REGISTER_VIEW)->count())->toBe(1);
-    expect(\App\Models\PageView::query()->where('path', '/account/registreren')->count())->toBe(0);
+    expect(PageView::query()->where('path', '/account/registreren')->count())->toBe(0);
 });
 
 test('form_start beacon wordt gelogd zonder csrf', function () {
@@ -167,7 +170,7 @@ test('form_submit account_created email_verified en first_offer worden gelogd', 
         now()->addDay(),
         ['id' => $user->id, 'hash' => sha1($user->email), 'token' => $token]
     );
-    $this->get($url)->assertRedirect(route('account.index'));
+    $this->get($url)->assertRedirect(route('account.welkom'));
 
     expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_EMAIL_VERIFIED)->count())->toBe(1);
 
@@ -204,7 +207,7 @@ test('flow-vervaldatum wordt niet verlengd bij registratie', function () {
     $flowId = 'fixedflow1234567890123456789012';
 
     // Unit: acquisitionFromRequest mag expires_at niet opschuiven.
-    $request = \Illuminate\Http\Request::create('/account/registreren', 'POST');
+    $request = Request::create('/account/registreren', 'POST');
     $request->setLaravelSession(app('session.store'));
     $request->attributes->set('conversion_context', [
         'flow_id' => $flowId,
@@ -223,7 +226,7 @@ test('flow-vervaldatum wordt niet verlengd bij registratie', function () {
 
     // Feature: cookie van dag 0, registratie op dag 3 houdt dezelfde expiry.
     // Zonder EncryptCookies is de response-cookie plaintext JSON (betrouwbare roundtrip in tests).
-    $this->withoutMiddleware(\Illuminate\Cookie\Middleware\EncryptCookies::class);
+    $this->withoutMiddleware(EncryptCookies::class);
     $this->travelTo(Carbon::create(2026, 11, 1, 12, 0, 0));
     $landing = $this->get('/?utm_source=facebook')->assertOk();
     $cookieName = (string) config('conversion.flow_cookie', 'gp_flow');
@@ -382,6 +385,7 @@ test('post bezoekers tellen unieke register_view, niet som van alle events', fun
     $tracker = app(ConversionTracker::class);
     $post = PostLog::query()->create([
         'posted_on' => now()->toDateString(),
+        'titel' => 'Testpost tellen',
         'groep' => 'Testgroep',
         'groep_slug' => 'testgroep',
         'soort' => 'aankondiging',
@@ -433,6 +437,7 @@ test('post conversies combineren daily historie met recente raw', function () {
     $tracker = app(ConversionTracker::class);
     $post = PostLog::query()->create([
         'posted_on' => now()->subDays(40)->toDateString(),
+        'titel' => 'Oude post',
         'groep' => 'Oude groep',
         'groep_slug' => 'oude-groep',
         'soort' => 'aankondiging',
@@ -575,6 +580,7 @@ test('postlogboek crud voor admin; stats-lezer en beheerder-mutaties afgeschermd
     $this->withSession(['admin_ok' => true])
         ->post(route('beheer.posts.store'), [
             'posted_on' => now()->toDateString(),
+            'titel' => 'Aankondiging ruilbeurs',
             'groep' => 'Plantenruil Amsterdam',
             'soort' => 'aankondiging',
             'link' => 'https://facebook.com/groups/example/posts/1',
@@ -585,7 +591,9 @@ test('postlogboek crud voor admin; stats-lezer en beheerder-mutaties afgeschermd
 
     $post = PostLog::query()->first();
     expect($post)->not->toBeNull()
+        ->and($post->titel)->toBe('Aankondiging ruilbeurs')
         ->and($post->groep_slug)->toBe('plantenruil-amsterdam')
+        ->and($post->trackingUrl())->toContain('/ga/word-lid?')
         ->and($post->trackingUrl())->toContain('utm_source=facebook')
         ->and($post->trackingUrl())->toContain('utm_medium=social')
         ->and($post->trackingUrl())->toContain('utm_campaign=plantenruil-amsterdam')
@@ -594,8 +602,12 @@ test('postlogboek crud voor admin; stats-lezer en beheerder-mutaties afgeschermd
     $this->withSession(['admin_ok' => true])
         ->get(route('beheer.posts.index'))
         ->assertOk()
-        ->assertSee('UTM-link', false)
-        ->assertSee('Kopieer', false);
+        ->assertSee('Tracking', false)
+        ->assertSee('Kopieer', false)
+        ->assertSee('Bezoekers', false)
+        ->assertDontSee('Open tracking', false)
+        ->assertSee('Aankondiging ruilbeurs', false)
+        ->assertSee('mint', false);
 
     $viewer = User::factory()->statsViewer()->create();
     $this->flushSession();
@@ -606,6 +618,7 @@ test('postlogboek crud voor admin; stats-lezer en beheerder-mutaties afgeschermd
     $this->actingAs($viewer)
         ->post(route('beheer.posts.store'), [
             'posted_on' => now()->toDateString(),
+            'titel' => 'Mag niet',
             'groep' => 'Mag niet',
             'soort' => 'aankondiging',
             'utm_source' => 'facebook',
@@ -613,6 +626,22 @@ test('postlogboek crud voor admin; stats-lezer en beheerder-mutaties afgeschermd
         ->assertRedirect(route('beheer.login'));
 
     expect(PostLog::query()->where('groep', 'Mag niet')->count())->toBe(0);
+});
+
+test('postlogboek weigert whitespace-only titel en groep', function () {
+    $this->withSession(['admin_ok' => true])
+        ->from(route('beheer.posts.create'))
+        ->post(route('beheer.posts.store'), [
+            'posted_on' => now()->toDateString(),
+            'titel' => "  \t  ",
+            'groep' => '   ',
+            'soort' => 'aankondiging',
+            'utm_source' => 'facebook',
+        ])
+        ->assertRedirect(route('beheer.posts.create'))
+        ->assertSessionHasErrors(['titel', 'groep']);
+
+    expect(PostLog::query()->count())->toBe(0);
 });
 
 test('bots en beheerders worden niet gemeten', function () {
@@ -645,5 +674,6 @@ test('privacy noemt conversiemeting zonder cookiebanner', function () {
         ->assertSee('Conversiemeting', false)
         ->assertSee('Geen IP-adres', false)
         ->assertSee('Flow-cookie', false)
-        ->assertSee('Geen cookiebanner', false);
+        ->assertSee('Geen cookiebanner', false)
+        ->assertSee('welkomstscherm', false);
 });

@@ -34,6 +34,8 @@ class ZoekenController extends Controller
             $plantItems = $search->search(null, null, false, $plant)['items'];
         }
 
+        // Zoekmeting alleen via /api/zoeken (productkeuze A: API-only).
+
         $title = $plant !== ''
             ? 'Gratis '.$plant.'-stekjes'
             : 'Aanbod: gratis planten en stekjes ophalen';

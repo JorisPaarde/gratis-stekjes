@@ -53,6 +53,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'deploy/import',
             'deploy/import/init',
             'deploy/import/chunk',
+            'api/internal/post-logs',
             'meet/event',
         ]);
         $middleware->alias([

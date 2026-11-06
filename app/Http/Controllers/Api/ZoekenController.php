@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Services\AanbodSearch;
+use App\Services\ConversionTracker;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -14,7 +15,7 @@ class ZoekenController extends Controller
 {
     private const RECENT_LIMIT = 24;
 
-    public function __invoke(Request $request, AanbodSearch $search): JsonResponse
+    public function __invoke(Request $request, AanbodSearch $search, ConversionTracker $conversions): JsonResponse
     {
         $q = trim((string) $request->query('q', ''));
         if ($q === '' && $request->boolean('recent')) {
@@ -52,6 +53,7 @@ class ZoekenController extends Controller
         }
         RateLimiter::hit($key, 3600);
 
+        $geocodeMiss = false;
         if ($q === '') {
             // Alleen het 2e veld (plant): sorteren vanaf het eigen adres van het ingelogde lid,
             // anders nieuwste eerst. Geen coördinaten van het lid in de payload, alleen afstand_km.
@@ -66,6 +68,8 @@ class ZoekenController extends Controller
                 'meta' => $result['meta'],
                 'items' => $result['items'],
             ];
+            // meta=null na locatiezoeken = geocoder vond niets (lijst blijft ongesorteerd).
+            $geocodeMiss = $result['meta'] === null;
         }
 
         // Privacy: geen e-mail/telefoon in API-payload
@@ -73,6 +77,17 @@ class ZoekenController extends Controller
         if (is_string($json) && preg_match('/"(email|telefoon|password|phone)"\s*:/i', $json)) {
             return response()->json(['error' => 'Interne privacyfout'], 500);
         }
+
+        $bron = (string) $request->query('bron', '');
+        $conversions->recordAanbodSearch(
+            $request,
+            $q,
+            $plant,
+            $type,
+            count($payload['items'] ?? []),
+            $geocodeMiss,
+            $bron === 'auto' ? 'auto' : 'zelf',
+        );
 
         return response()->json($payload);
     }
