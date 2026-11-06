@@ -135,7 +135,8 @@ test('registratie toont alle validatiefouten tegelijk', function () {
 test('foutpagina 404 is Nederlands gestyled', function () {
     $this->get('/bestaat-niet-'.Str::random(8))
         ->assertNotFound()
-        ->assertSee('Pagina niet gevonden', false)
+        ->assertSee('Oeps, dit gaat niet goed', false)
+        ->assertSee('Doe mee', false)
         ->assertSee(config('site.name'), false);
 });
 
