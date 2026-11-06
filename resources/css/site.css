@@ -362,6 +362,26 @@ h1.page-title {
 .prose { max-width: 42rem; }
 .prose h2, .prose h3 { font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.02em; color: var(--forest); }
 .muted { color: var(--ink-soft); }
+/* 404 ontvangst: herstel eerst, tekstlinks daaronder */
+.\34 04-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem 1rem;
+  margin-top: 1.25rem;
+}
+.\34 04-meer {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1rem;
+  align-items: center;
+}
+.\34 04-meer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: .25rem 0;
+}
 .list-plain { padding-left: 1.2rem; color: var(--ink); }
 .list-plain li { margin: .4rem 0; }
 
