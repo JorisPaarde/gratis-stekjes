@@ -3,6 +3,12 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.1] - 2026-11-06
+
+### Fixed
+
+- Permanente redirect `/registreren` → `/account/registreren` (301), zodat oude/FB-links niet meer 404 geven.
+
 ## [0.78.0] - 2026-11-05
 
 ### Added
