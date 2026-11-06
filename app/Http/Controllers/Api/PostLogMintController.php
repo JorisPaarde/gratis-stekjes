@@ -10,6 +10,7 @@ use App\Models\PostLog;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 /**
@@ -31,7 +32,11 @@ class PostLogMintController extends Controller
             return response()->json(['ok' => false, 'error' => 'unavailable'], 503);
         }
 
-        $data = $request->validate([
+        $input = $request->all();
+        $input['titel'] = trim((string) ($input['titel'] ?? ''));
+        $input['groep'] = trim((string) ($input['groep'] ?? ''));
+
+        $validator = Validator::make($input, [
             'titel' => ['required', 'string', 'max:200'],
             'groep' => ['required', 'string', 'max:120'],
             'soort' => ['required', 'string', Rule::in(PostLogController::SOORTEN)],
@@ -41,8 +46,16 @@ class PostLogMintController extends Controller
             'link' => ['sometimes', 'nullable', 'string', 'max:500', 'url'],
         ]);
 
-        $titel = trim((string) $data['titel']);
-        $groep = trim((string) $data['groep']);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'The given data was invalid.',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $data = $validator->validated();
+        $titel = (string) $data['titel'];
+        $groep = (string) $data['groep'];
         $utmSource = isset($data['utm_source']) ? trim((string) $data['utm_source']) : '';
         if ($utmSource === '') {
             $utmSource = 'facebook';

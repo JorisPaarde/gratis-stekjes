@@ -90,6 +90,35 @@ test('mint validatiefouten geven 422', function () {
     expect(PostLog::query()->count())->toBe(0);
 });
 
+test('mint zonder Accept-json geeft bij validatiefout alsnog 422 JSON', function () {
+    $response = $this->post('/api/internal/post-logs', [
+        'groep' => 'Alleen groep',
+        'soort' => 'niet-bestaand',
+    ], [
+        'X-Post-Log-Token' => 'test-mint-token',
+    ]);
+
+    $response->assertStatus(422)
+        ->assertJsonStructure(['message', 'errors' => ['titel', 'soort']])
+        ->assertHeader('Content-Type', 'application/json');
+
+    expect(PostLog::query()->count())->toBe(0);
+});
+
+test('mint weigert whitespace-only titel en groep met 422', function () {
+    $this->postJson('/api/internal/post-logs', [
+        'titel' => "  \t  ",
+        'groep' => '   ',
+        'soort' => 'aankondiging',
+    ], [
+        'X-Post-Log-Token' => 'test-mint-token',
+    ])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors(['titel', 'groep']);
+
+    expect(PostLog::query()->count())->toBe(0);
+});
+
 test('mint default utm_source facebook en posted_on vandaag', function () {
     $response = $this->postJson('/api/internal/post-logs', [
         'titel' => 'Korte post',

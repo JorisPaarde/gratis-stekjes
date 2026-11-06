@@ -626,6 +626,22 @@ test('postlogboek crud voor admin; stats-lezer en beheerder-mutaties afgeschermd
     expect(PostLog::query()->where('groep', 'Mag niet')->count())->toBe(0);
 });
 
+test('postlogboek weigert whitespace-only titel en groep', function () {
+    $this->withSession(['admin_ok' => true])
+        ->from(route('beheer.posts.create'))
+        ->post(route('beheer.posts.store'), [
+            'posted_on' => now()->toDateString(),
+            'titel' => "  \t  ",
+            'groep' => '   ',
+            'soort' => 'aankondiging',
+            'utm_source' => 'facebook',
+        ])
+        ->assertRedirect(route('beheer.posts.create'))
+        ->assertSessionHasErrors(['titel', 'groep']);
+
+    expect(PostLog::query()->count())->toBe(0);
+});
+
 test('bots en beheerders worden niet gemeten', function () {
     $this->withHeaders(['User-Agent' => 'Googlebot/2.1'])
         ->get(route('ga.word-lid'))

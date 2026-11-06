@@ -116,6 +116,11 @@ class PostLogController extends Controller
     /** @return array<string, mixed> */
     private function validated(Request $request): array
     {
+        $request->merge([
+            'titel' => trim((string) $request->input('titel', '')),
+            'groep' => trim((string) $request->input('groep', '')),
+        ]);
+
         $data = $request->validate([
             'posted_on' => ['required', 'date'],
             'titel' => ['required', 'string', 'max:200'],
@@ -130,9 +135,7 @@ class PostLogController extends Controller
             'posted_on.required' => 'Kies een datum.',
         ]);
 
-        $data['titel'] = trim((string) $data['titel']);
-        $data['groep'] = trim((string) $data['groep']);
-        $data['groep_slug'] = PostLog::slugForGroep($data['groep']);
+        $data['groep_slug'] = PostLog::slugForGroep((string) $data['groep']);
         $data['utm_source'] = trim((string) $data['utm_source']) ?: 'facebook';
         $data['link'] = isset($data['link']) ? trim((string) $data['link']) ?: null : null;
         $data['notitie'] = isset($data['notitie']) ? trim((string) $data['notitie']) ?: null : null;
