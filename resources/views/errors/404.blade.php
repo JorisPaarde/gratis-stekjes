@@ -8,11 +8,14 @@
 <section class="section wrap prose">
   <h1 class="page-title">Oeps, dit gaat niet goed</h1>
   <p>Deze pagina bestaat niet (meer). Misschien is de link verouderd of verkeerd geplakt. Geen zorgen — kies hieronder waar je heen wilt.</p>
-  <p>
-    <a class="btn" href="{{ route('ga.word-lid', ['utm_content' => '404']) }}">Doe mee</a>
-    <a class="btn" href="{{ route('stektips.index') }}">Stektips</a>
-    <a class="btn btn-secondary" href="{{ route('aanbod') }}">Aanbod</a>
-    <a class="btn btn-secondary" href="{{ route('home') }}">Naar home</a>
+  <p class="404-actions">
+    <a class="btn" href="{{ route('home') }}">Naar home</a>
+    <a class="btn btn-secondary" href="{{ route('aanbod') }}">Bekijk het aanbod</a>
+  </p>
+  <p class="404-meer muted">
+    <a href="{{ route('stektips.index') }}">Stektips</a>
+    <span aria-hidden="true">·</span>
+    <a href="{{ route('ga.word-lid', ['utm_content' => '404']) }}">Doe mee</a>
   </p>
 </section>
 @endsection
