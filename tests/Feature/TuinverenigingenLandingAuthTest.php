@@ -199,7 +199,7 @@ test('signed vereniging-flag zonder handtekening of met vervalsing wordt geweige
         ->assertSessionHasErrors('email');
 });
 
-test('register met intended /aanbieden behoudt welkom (geen algemene bypass)', function () {
+test('register met intended /aanbieden behoudt welkom; Continue → /account (geen algemene intended)', function () {
     Notification::fake();
     Http::fake();
     seedTuinRegGeo();
@@ -225,9 +225,105 @@ test('register met intended /aanbieden behoudt welkom (geen algemene bypass)', f
     $this->get(route('account.welkom'))->assertOk();
     expect($user->fresh()->welcome_shown_at)->not->toBeNull();
 
+    // Oude onboarding: Continue negeert willekeurige intended (ook /aanbieden).
     $this->withSession([SafeIntended::SESSION_KEY => '/aanbieden'])
         ->get(route('account.welkom.verder'))
-        ->assertRedirect('/aanbieden');
+        ->assertRedirect(route('account.index'));
+});
+
+test('welkom Continue met exact association-intended → Mijn verenigingen', function () {
+    $user = User::factory()->create([
+        'email' => 'tuin-welkom-vereniging@example.com',
+        'email_verified_at' => now(),
+        'welcome_shown_at' => null,
+    ]);
+
+    $this->actingAs($user)
+        ->withSession([SafeIntended::SESSION_KEY => SafeIntended::ASSOCIATION])
+        ->get(route('account.welkom.verder'))
+        ->assertRedirect(SafeIntended::ASSOCIATION);
+
+    expect($user->fresh()->welcome_shown_at)->not->toBeNull();
+});
+
+test('gedeelde audience-serienav bevat geen tuinverenigingen; landing toont bestaande serie', function () {
+    $volkstuinen = $this->get(route('volkstuinen'))->assertOk()->getContent();
+    expect(preg_match('/<nav class="audience-series"[^>]*>(.*?)<\/nav>/s', $volkstuinen, $nav))->toBe(1);
+    // Huidige pagina is <span>, geen self-href; wel label + overige links.
+    expect($nav[1])->not->toContain('/tuinverenigingen')
+        ->and($nav[1])->toContain('Volkstuinverenigingen')
+        ->and($nav[1])->toContain('/help-mee')
+        ->and($nav[1])->toContain('/natuur');
+
+    $landing = $this->get(route('tuinverenigingen'))->assertOk()->getContent();
+    expect(preg_match('/<nav class="audience-series"[^>]*>(.*?)<\/nav>/s', $landing, $nav2))->toBe(1);
+    expect($nav2[1])->not->toContain('/tuinverenigingen')
+        ->and($nav2[1])->toContain('/volkstuinen')
+        ->and($nav2[1])->toContain('/help-mee')
+        ->and($nav2[1])->toContain('/natuur')
+        ->and($nav2[1])->toContain('/verbinding');
+});
+
+test('oude bevestigingsmail zonder vereniging-flag in verse browser → welkom (niet association)', function () {
+    $user = User::factory()->unverified()->create(['email' => 'tuin-old-mail@example.com']);
+    $token = $user->rotateEmailVerificationToken();
+    $oldUrl = URL::temporarySignedRoute('account.bevestigen', now()->addHour(), [
+        'id' => $user->id,
+        'hash' => sha1($user->email),
+        'token' => $token,
+    ]);
+    expect($oldUrl)->not->toContain(SafeIntended::ASSOCIATION_FLAG.'=1');
+
+    $this->flushSession();
+    $this->get($oldUrl)->assertRedirect(route('account.welkom'));
+    expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
+});
+
+test('bestaand onbevestigd: login association → uitleg → bewuste resend → verse browser → Mijn verenigingen', function () {
+    Notification::fake();
+    $plain = tuinAuthPassword();
+    $user = User::factory()->unverified()->create([
+        'email' => 'tuin-unverified-resend@example.com',
+        'password' => $plain,
+    ]);
+    $user->rotateEmailVerificationToken();
+
+    $this->get(route('account.inloggen', ['next' => SafeIntended::ASSOCIATION]))->assertOk();
+    $this->post(route('account.inloggen'), tuinAuthForm([
+        'email' => $user->email,
+        'password' => $plain,
+        'next' => SafeIntended::ASSOCIATION,
+    ]))->assertRedirect(route('account.bevestiging-nodig'));
+
+    expect(session(SafeIntended::SESSION_KEY))->toBe(SafeIntended::ASSOCIATION);
+    $this->assertGuest();
+
+    $this->get(route('account.bevestiging-nodig'))
+        ->assertOk()
+        ->assertSee('Mijn verenigingen', false)
+        ->assertSee('nieuwe', false)
+        ->assertSee('Stuur opnieuw', false)
+        ->assertSee('niet automatisch', false);
+
+    // Zelfde browser (intended nog in session): gebruiker kiest «Stuur opnieuw».
+    $this->post(route('account.bevestiging-opnieuw'), [
+        'email' => $user->email,
+    ])->assertRedirect();
+
+    $user->refresh();
+    /** @var VerifyEmailDutch $notification */
+    $notification = Notification::sent($user, VerifyEmailDutch::class)->first();
+    expect($notification)->not->toBeNull();
+    $newUrl = $notification->toMail($user)->actionUrl;
+    expect($newUrl)->toContain(SafeIntended::ASSOCIATION_FLAG.'=1')
+        ->and($newUrl)->toContain('signature=');
+
+    // Verse browser: signed flag, geen originating session.
+    $this->flushSession();
+    $this->assertGuest();
+    $this->get($newUrl)->assertRedirect(SafeIntended::ASSOCIATION);
+    $this->assertAuthenticatedAs($user);
+    expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
 });
 
 test('al geverifieerde user met next landt op intended na login', function () {

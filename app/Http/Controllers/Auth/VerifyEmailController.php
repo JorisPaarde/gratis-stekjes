@@ -21,12 +21,16 @@ use Illuminate\View\View;
 
 class VerifyEmailController extends Controller
 {
-    public function notice(): View
+    public function notice(Request $request): View
     {
+        SafeIntended::normalizeSession($request);
+
         return view('auth.verify-notice', [
             'title' => 'Bevestig je e-mail',
             'metaDescription' => 'Bevestig je e-mailadres om verder te gaan bij '.config('site.name').'.',
             'canonical' => route('account.bevestiging-nodig'),
+            // Alleen als session exact association bevat (bijv. na login vanaf /tuinverenigingen).
+            'associationReturn' => SafeIntended::isAssociation(SafeIntended::peek($request)),
         ]);
     }
 

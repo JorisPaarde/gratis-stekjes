@@ -3,6 +3,17 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.9] - 2026-11-07
+
+### Fixed
+
+- Welkom «Verder»: geen algemene `intended()` meer — alleen exact `/account/verenigingen`, anders weer `/account` (aanbieden-onboarding ongewijzigd).
+- `/tuinverenigingen` uit gedeelde audience-`series()` gehaald zodat serienav op `/volkstuinen` e.d. niet wijzigt; eigen route + sitemap blijven.
+
+### Changed
+
+- Bevestigingspagina: bij association-intended korte uitleg om via bestaande «Stuur opnieuw» een nieuwe signed link te vragen (oude inbox-link brengt je niet automatisch bij Mijn verenigingen). Geen nieuwe state, geen autosend.
+
 ## [0.78.8] - 2026-11-07
 
 ### Changed

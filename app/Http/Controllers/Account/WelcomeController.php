@@ -76,7 +76,8 @@ class WelcomeController extends Controller
     }
 
     /**
-     * Escape: markeer en ga naar account (of veilige intended return).
+     * Escape: markeer en ga naar account.
+     * Enige uitzondering: exact /account/verenigingen (tuinverenigingen-CTA).
      */
     public function continue(Request $request): RedirectResponse
     {
@@ -85,7 +86,12 @@ class WelcomeController extends Controller
 
         $this->markShown($user);
 
-        return redirect()->intended(SafeIntended::DEFAULT);
+        SafeIntended::normalizeSession($request);
+        if (SafeIntended::isAssociation(SafeIntended::peek($request))) {
+            return redirect(SafeIntended::ASSOCIATION);
+        }
+
+        return redirect()->route('account.index');
     }
 
     private function markShown(User $user): void

@@ -12,9 +12,10 @@ class AudienceLandingController extends Controller
     /** @return list<array{slug: string, route: string, label: string}> */
     public static function series(): array
     {
+        // Geen tuinverenigingen hier: die landing is mail-instap, niet deel van de
+        // gedeelde doelgroep-serienav (volkstuinen e.d. blijven ongewijzigd).
         return [
             ['slug' => 'volkstuinen', 'route' => 'volkstuinen', 'label' => 'Volkstuinverenigingen'],
-            ['slug' => 'tuinverenigingen', 'route' => 'tuinverenigingen', 'label' => 'Tuinverenigingen'],
             ['slug' => 'help-mee', 'route' => 'help-mee', 'label' => 'Help mee'],
             ['slug' => 'natuur', 'route' => 'natuur', 'label' => 'Natuurliefhebbers'],
             ['slug' => 'verbinding', 'route' => 'verbinding', 'label' => 'Verbinding'],
