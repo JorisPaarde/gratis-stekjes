@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Support\SafeIntended;
 use Illuminate\View\View;
 
 class AudienceLandingController extends Controller
@@ -48,7 +49,7 @@ class AudienceLandingController extends Controller
             'canonical' => $canonical,
             'series' => self::series(),
             'currentSeries' => 'tuinverenigingen',
-            'intended' => '/account/verenigingen',
+            'intended' => SafeIntended::ASSOCIATION,
             'schema' => $this->webPageSchema($title, $meta, $canonical),
         ]);
     }

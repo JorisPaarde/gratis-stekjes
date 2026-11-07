@@ -15,10 +15,24 @@
 <x-audience-page
   eyebrow="Voor tuinverenigingen"
   heading="Geef plantmateriaal door met jullie tuinvereniging"
-  intro="Op de tuin geven jullie al plantjes aan elkaar door. Via {{ config('site.name') }} kunnen leden ook zien wat er over is als ze er zelf even niet zijn: planten, stekjes en zaden die bij een ander verder kunnen groeien."
+  intro="Een openbare pagina met het aanbod van jullie leden. Leden plaatsen zelf; het bestuur deelt de link."
   :current="$currentSeries"
   :series="$series"
 >
+  <p>Laat een bestuurslid of ander lid de vereniging toevoegen met een gratis persoonlijk account. Je koppelt hiermee ook jezelf als lid. Heb je al een account? Log dan in.</p>
+  <p>Bij een nieuw account bevestig je eerst je e-mailadres.</p>
+
+  <div class="audience-cta audience-cta--inline">
+    <div class="audience-cta-actions">
+      <a class="btn" href="{{ route('account.verenigingen') }}">Voeg jullie vereniging toe</a>
+    </div>
+    <p class="muted audience-cta-links">
+      <a href="{{ route('account.registreren', ['next' => $intended]) }}">Maak een eigen account</a>
+      ·
+      <a href="{{ route('account.inloggen', ['next' => $intended]) }}">Inloggen</a>
+    </p>
+  </div>
+
   <figure class="audience-hero">
     <picture>
       <source
@@ -43,21 +57,8 @@
     </figcaption>
   </figure>
 
-  <p>Jullie vereniging kan een eigen openbare pagina krijgen met het aanbod van leden. Het bestuur deelt de pagina; leden zetten zelf hun aanbod erop en spreken het ophalen met elkaar af.</p>
-  <p>Laat een bestuurslid of ander lid de vereniging toevoegen via een eigen account. Die persoon koppelt zichzelf als lid. Een apart bestuursaccount is niet nodig.</p>
-
-  <div class="audience-cta audience-cta--inline">
-    <p class="audience-cta-note">Eerst maak je <strong>gratis</strong> een persoonlijk account (of log je in). Daarna kom je automatisch bij Mijn verenigingen.</p>
-    <div class="audience-cta-actions">
-      <a class="btn" href="{{ route('account.verenigingen') }}">Voeg jullie vereniging toe</a>
-    </div>
-    <p class="muted audience-cta-links">
-      Nog geen account?
-      <a href="{{ route('account.registreren', ['next' => $intended]) }}">Maak een eigen account</a>
-      ·
-      <a href="{{ route('account.inloggen', ['next' => $intended]) }}">Inloggen</a>
-    </p>
-  </div>
+  <p>Op de tuin geven jullie al plantjes aan elkaar door. Via {{ config('site.name') }} kunnen leden ook zien wat er over is als ze er zelf even niet zijn: planten, stekjes en zaden die bij een ander verder kunnen groeien.</p>
+  <p>Jullie vereniging kan een eigen openbare pagina krijgen met het aanbod van leden. Het bestuur deelt de pagina; leden zetten zelf hun aanbod erop en spreken het ophalen met elkaar af. Een apart bestuursaccount is niet nodig.</p>
 
   <h2>Zo doen jullie mee</h2>
   <ol class="list-plain audience-steps">

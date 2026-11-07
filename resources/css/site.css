@@ -897,15 +897,14 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
   margin: 0 0 2rem;
 }
 .audience-cta--inline {
-  margin: 1.35rem 0 1.75rem;
-  padding: 1.1rem 0 0.15rem;
-}
-.audience-cta-note {
-  margin: 0 0 0.85rem;
-  max-width: 36rem;
+  margin: 1rem 0 1.5rem;
+  padding: 0.15rem 0 0.15rem;
 }
 .audience-cta-links {
   margin: 0.85rem 0 0;
+}
+.audience-landing .audience-cta--inline + .audience-hero {
+  margin-top: 0.35rem;
 }
 .audience-cta-actions {
   display: flex;

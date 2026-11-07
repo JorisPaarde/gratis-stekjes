@@ -17,8 +17,28 @@ final class SafeIntended
 
     public const DEFAULT = '/account';
 
+    /** Enige gebonden post-verify return buiten welkom (tuinverenigingen-CTA). */
+    public const ASSOCIATION = '/account/verenigingen';
+
+    /** Signed query-flag op account.bevestigen (geen vrije next in de mail-URL). */
+    public const ASSOCIATION_FLAG = 'vereniging';
+
     /** Max length mirrors LoginRequest next rule (path only after normalize). */
     private const MAX_LENGTH = 200;
+
+    public static function isAssociation(?string $path): bool
+    {
+        return self::sanitize((string) $path, '') === self::ASSOCIATION;
+    }
+
+    /**
+     * Signed bevestigingslink draagt vereniging=1 (handtekening dekt de flag).
+     * Alleen true nadat hasValidSignature() al geslaagd is.
+     */
+    public static function associationFlagInSignedRequest(Request $request): bool
+    {
+        return (string) $request->query(self::ASSOCIATION_FLAG, '') === '1';
+    }
 
     /**
      * Allow only same-site destinations: relative "/…" or absolute same-origin URLs.

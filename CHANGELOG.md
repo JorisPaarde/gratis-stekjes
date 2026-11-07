@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.8] - 2026-11-07
+
+### Changed
+
+- `/tuinverenigingen` eerste viewport: compacte belofte + accountuitleg + e-mailbevestiging-note + primaire CTA vóór hero; langere intro en stappen erna. Geen «automatisch»-belofte in zichtbare copy (return blijft testgedekt).
+- E-mailbevestiging: gebonden return naar `/account/verenigingen` via signed query-flag `vereniging=1` (werkt in verse browser/mail-app); welkom-bypass alleen voor die exacte bestemming — overige onboarding (o.a. `/aanbieden`) ongewijzigd.
+
 ## [0.78.7] - 2026-11-07
 
 ### Added

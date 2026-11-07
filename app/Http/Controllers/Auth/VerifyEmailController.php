@@ -123,25 +123,24 @@ class VerifyEmailController extends Controller
         Auth::login($verifiedUser, false);
         $request->session()->regenerate();
 
-        // Eerste bevestiging → eenmalig welkomstscherm (tenzij al gemarkeerd).
-        // Met veilige intended (bijv. /account/verenigingen): markeer welkom en ga daarheen
-        // zodat de CTA-return automatisch werkt zonder GP-welcome-loop te openen.
+        // Alleen exact /account/verenigingen: signed flag (andere browser) of session.
+        // Geen algemene intended-bypass — /aanbieden e.d. behouden welkom-onboarding.
+        $toAssociation = SafeIntended::associationFlagInSignedRequest($request)
+            || SafeIntended::isAssociation(SafeIntended::peek($request));
+
         if (($outcome['wasUnverified'] ?? false) && $verifiedUser->welcome_shown_at === null) {
-            $intended = SafeIntended::peek($request);
-            if ($intended !== null && $intended !== SafeIntended::DEFAULT) {
+            if ($toAssociation) {
                 $verifiedUser->forceFill(['welcome_shown_at' => now()])->save();
 
-                return redirect()
-                    ->intended(SafeIntended::DEFAULT)
+                return redirect(SafeIntended::ASSOCIATION)
                     ->with('status', 'E-mail bevestigd. Welkom — je account is actief.');
             }
 
             return redirect()->route('account.welkom');
         }
 
-        if (SafeIntended::peek($request) !== null) {
-            return redirect()
-                ->intended(SafeIntended::DEFAULT)
+        if ($toAssociation) {
+            return redirect(SafeIntended::ASSOCIATION)
                 ->with('status', 'E-mail bevestigd. Welkom — je account is actief. Vul op je profiel nog een voornaam of bijnaam in.');
         }
 

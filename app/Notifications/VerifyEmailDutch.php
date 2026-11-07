@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Models\User;
+use App\Support\SafeIntended;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Carbon;
@@ -40,14 +41,22 @@ class VerifyEmailDutch extends VerifyEmail
             }
         }
 
+        $params = [
+            'id' => $notifiable->getKey(),
+            'hash' => sha1($notifiable->getEmailForVerification()),
+            'token' => $token,
+        ];
+
+        // Kleinste gebonden return: alleen Mijn verenigingen, in de handtekening.
+        // Zo blijft de CTA-return werken als de bevestigingslink in een andere browser opent.
+        if (app()->bound('request') && SafeIntended::isAssociation(SafeIntended::peek(request()))) {
+            $params[SafeIntended::ASSOCIATION_FLAG] = '1';
+        }
+
         return URL::temporarySignedRoute(
             'account.bevestigen',
             Carbon::now()->addMinutes((int) Config::get('auth.verification.expire', 1440)),
-            [
-                'id' => $notifiable->getKey(),
-                'hash' => sha1($notifiable->getEmailForVerification()),
-                'token' => $token,
-            ]
+            $params
         );
     }
 }
