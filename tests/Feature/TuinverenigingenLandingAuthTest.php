@@ -264,6 +264,19 @@ test('gedeelde audience-serienav bevat geen tuinverenigingen; landing toont best
         ->and($nav2[1])->toContain('/verbinding');
 });
 
+test('VerifyEmailDutch toMail zonder session store (AccountSecurity/MailLog-pad)', function () {
+    $user = User::factory()->unverified()->create([
+        'email' => 'safe-intended-nosession@example.com',
+    ]);
+    $user->rotateEmailVerificationToken();
+
+    // Geen withSession: request heeft geen session store (zoals in mail-render tests).
+    $mail = (new VerifyEmailDutch)->toMail($user);
+    expect($mail->actionUrl)->toContain('/account/bevestigen/')
+        ->and($mail->actionUrl)->not->toContain(SafeIntended::ASSOCIATION_FLAG.'=1')
+        ->and($mail->actionUrl)->toContain('signature=');
+});
+
 test('oude bevestigingsmail zonder vereniging-flag in verse browser → welkom (niet association)', function () {
     $user = User::factory()->unverified()->create(['email' => 'tuin-old-mail@example.com']);
     $token = $user->rotateEmailVerificationToken();

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Support\SafeIntended;
+use Illuminate\Http\Request;
 
 test('SafeIntended accepteert relatieve same-site paden en weigert protocol-relatief', function () {
     expect(SafeIntended::sanitize('/account/verenigingen'))->toBe('/account/verenigingen')
@@ -10,4 +11,14 @@ test('SafeIntended accepteert relatieve same-site paden en weigert protocol-rela
         ->and(SafeIntended::sanitize('//evil.example'))->toBe('/account')
         ->and(SafeIntended::isAllowed('//evil.example'))->toBeFalse()
         ->and(SafeIntended::sanitize('/\\evil'))->toBe('/account');
+});
+
+test('SafeIntended::peek zonder session store gooit niet (mail/CLI)', function () {
+    $request = Request::create('/account/bevestiging-nodig', 'GET');
+    expect($request->hasSession())->toBeFalse()
+        ->and(SafeIntended::peek($request))->toBeNull();
+
+    SafeIntended::normalizeSession($request);
+    SafeIntended::remember($request, SafeIntended::ASSOCIATION);
+    expect(SafeIntended::peek($request))->toBeNull();
 });

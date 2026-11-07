@@ -97,7 +97,7 @@ final class SafeIntended
      */
     public static function remember(Request $request, ?string $candidate): void
     {
-        if (! self::isAllowed($candidate)) {
+        if (! $request->hasSession() || ! self::isAllowed($candidate)) {
             return;
         }
 
@@ -109,6 +109,10 @@ final class SafeIntended
      */
     public static function normalizeSession(Request $request): void
     {
+        if (! $request->hasSession()) {
+            return;
+        }
+
         $stored = $request->session()->get(self::SESSION_KEY);
         if (! is_string($stored) || $stored === '') {
             return;
@@ -157,6 +161,11 @@ final class SafeIntended
 
     public static function peek(Request $request): ?string
     {
+        // Mail/CLI/tests mogen VerifyEmailDutch bouwen zonder session store.
+        if (! $request->hasSession()) {
+            return null;
+        }
+
         $stored = $request->session()->get(self::SESSION_KEY);
         if (! is_string($stored) || ! self::isAllowed($stored)) {
             return null;
