@@ -10,7 +10,7 @@
   <p>Ik heb je een bevestigingslink gestuurd. Klik die link om verder te gaan. Geen mail? Kijk in je spamfolder of stuur hieronder opnieuw.</p>
 
   @if(!empty($associationReturn))
-    <p>Wil je daarna naar <strong>Mijn verenigingen</strong>? Vraag hieronder een <strong>nieuwe</strong> bevestigingslink aan met «Stuur opnieuw». Een oudere link in je inbox brengt je daar niet automatisch heen.</p>
+    <p>Wil je daarna naar <strong>Mijn verenigingen</strong>? Vraag hieronder een <strong>nieuwe</strong> bevestigingslink aan met «Stuur opnieuw». Gebruik alleen de meest recente link; oudere links in je inbox werken daarna niet meer en brengen je daar niet automatisch heen.</p>
   @endif
 
   @if($errors->any())

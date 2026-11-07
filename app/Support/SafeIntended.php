@@ -23,6 +23,12 @@ final class SafeIntended
     /** Signed query-flag op account.bevestigen (geen vrije next in de mail-URL). */
     public const ASSOCIATION_FLAG = 'vereniging';
 
+    /**
+     * Session-only: toon resend-hint na login van bestaand onbevestigd account
+     * met association-intended. Geen flash (overleeft GET/reload); geen DB-state.
+     */
+    public const ASSOCIATION_RESEND_HINT = 'association_resend_hint';
+
     /** Max length mirrors LoginRequest next rule (path only after normalize). */
     private const MAX_LENGTH = 200;
 
@@ -56,16 +62,16 @@ final class SafeIntended
         }
 
         if (str_starts_with($next, 'http://') || str_starts_with($next, 'https://')) {
-            $root = rtrim((string) config('app.url'), '/');
-            if ($root === '' || ! str_starts_with($next, $root.'/')) {
-                // Also accept the current request root when available (tests / APP_URL mismatch).
-                $requestRoot = app()->bound('request') ? rtrim((string) request()->root(), '/') : '';
-                if ($requestRoot === '' || ! str_starts_with($next, $requestRoot.'/')) {
-                    return $fallback;
-                }
-                $root = $requestRoot;
+            // Alleen huidige request-root (Laravel middleware intended is same-origin).
+            // Geen config('app.url')-tweede herkomst; CLI/sessionless → fallback.
+            $requestRoot = '';
+            if (app()->bound('request')) {
+                $requestRoot = rtrim((string) request()->root(), '/');
             }
-            $path = substr($next, strlen($root));
+            if ($requestRoot === '' || ! str_starts_with($next, $requestRoot.'/')) {
+                return $fallback;
+            }
+            $path = substr($next, strlen($requestRoot));
             $next = $path === '' ? '/' : $path;
         }
 
@@ -172,5 +178,30 @@ final class SafeIntended
         }
 
         return self::sanitize($stored);
+    }
+
+    public static function markAssociationResendHint(Request $request): void
+    {
+        if (! $request->hasSession()) {
+            return;
+        }
+        $request->session()->put(self::ASSOCIATION_RESEND_HINT, true);
+    }
+
+    public static function wantsAssociationResendHint(Request $request): bool
+    {
+        if (! $request->hasSession()) {
+            return false;
+        }
+
+        return (bool) $request->session()->get(self::ASSOCIATION_RESEND_HINT, false);
+    }
+
+    public static function clearAssociationResendHint(Request $request): void
+    {
+        if (! $request->hasSession()) {
+            return;
+        }
+        $request->session()->forget(self::ASSOCIATION_RESEND_HINT);
     }
 }

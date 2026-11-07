@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.11] - 2026-11-07
+
+### Fixed
+
+- Resend-hint op bevestigingspagina alleen na login van bestaand onbevestigd account met association-intended (session-flag); niet na nieuw registreren (eerste signed mail blijft geldig).
+- `SafeIntended::sanitize`: absolute URL alleen t.o.v. huidige request-root (geen tweede `app.url`-herkomst).
+
 ## [0.78.10] - 2026-11-07
 
 ### Fixed

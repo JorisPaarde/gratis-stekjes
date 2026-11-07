@@ -29,8 +29,8 @@ class VerifyEmailController extends Controller
             'title' => 'Bevestig je e-mail',
             'metaDescription' => 'Bevestig je e-mailadres om verder te gaan bij '.config('site.name').'.',
             'canonical' => route('account.bevestiging-nodig'),
-            // Alleen als session exact association bevat (bijv. na login vanaf /tuinverenigingen).
-            'associationReturn' => SafeIntended::isAssociation(SafeIntended::peek($request)),
+            // Alleen na login van bestaand onbevestigd account (session-flag), niet na registreren.
+            'associationReturn' => SafeIntended::wantsAssociationResendHint($request),
         ]);
     }
 
@@ -124,6 +124,7 @@ class VerifyEmailController extends Controller
             }
         }
 
+        SafeIntended::clearAssociationResendHint($request);
         Auth::login($verifiedUser, false);
         $request->session()->regenerate();
 

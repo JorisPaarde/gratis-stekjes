@@ -75,12 +75,20 @@ class LoginController extends Controller
         }
 
         if (! $user->hasVerifiedEmail()) {
+            // Alleen bestaand onbevestigd + association-CTA: toon resend-hint (session-only).
+            if (SafeIntended::isAssociation(SafeIntended::peek($request))) {
+                SafeIntended::markAssociationResendHint($request);
+            } else {
+                SafeIntended::clearAssociationResendHint($request);
+            }
+
             return redirect()
                 ->route('account.bevestiging-nodig')
                 ->withInput(['email' => $email])
                 ->with('status', 'Bevestig eerst je e-mail via de link in je inbox. Geen mail ontvangen? Stuur hieronder opnieuw een bevestigingsmail.');
         }
 
+        SafeIntended::clearAssociationResendHint($request);
         $remember = $request->boolean('remember');
         Auth::login($user, $remember);
         $request->session()->regenerate();

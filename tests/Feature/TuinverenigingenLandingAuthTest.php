@@ -151,7 +151,14 @@ test('nieuw register met next → signed mail-URL → verse sessie landt op Mijn
         'next' => SafeIntended::ASSOCIATION,
     ]))->assertRedirect(route('account.bevestiging-nodig'));
 
-    expect(session(SafeIntended::SESSION_KEY))->toBe(SafeIntended::ASSOCIATION);
+    expect(session(SafeIntended::SESSION_KEY))->toBe(SafeIntended::ASSOCIATION)
+        ->and(session(SafeIntended::ASSOCIATION_RESEND_HINT))->toBeNull();
+
+    // Nieuw register: werkende first-mail; géén resend-hint (zou token ongeldig maken).
+    $this->get(route('account.bevestiging-nodig'))
+        ->assertOk()
+        ->assertDontSee('Gebruik alleen de meest recente link', false)
+        ->assertDontSee('Wil je daarna naar', false);
 
     $user = User::query()->where('email', 'tuin-nieuw@example.com')->firstOrFail();
     Notification::assertSentTo($user, VerifyEmailDutch::class);
@@ -308,15 +315,20 @@ test('bestaand onbevestigd: login association → uitleg → bewuste resend → 
         'next' => SafeIntended::ASSOCIATION,
     ]))->assertRedirect(route('account.bevestiging-nodig'));
 
-    expect(session(SafeIntended::SESSION_KEY))->toBe(SafeIntended::ASSOCIATION);
+    expect(session(SafeIntended::SESSION_KEY))->toBe(SafeIntended::ASSOCIATION)
+        ->and(session(SafeIntended::ASSOCIATION_RESEND_HINT))->toBeTrue();
     $this->assertGuest();
 
     $this->get(route('account.bevestiging-nodig'))
         ->assertOk()
         ->assertSee('Mijn verenigingen', false)
-        ->assertSee('nieuwe', false)
+        ->assertSee('Gebruik alleen de meest recente link', false)
         ->assertSee('Stuur opnieuw', false)
         ->assertSee('niet automatisch', false);
+    // Hint overleeft reload.
+    $this->get(route('account.bevestiging-nodig'))
+        ->assertOk()
+        ->assertSee('Gebruik alleen de meest recente link', false);
 
     // Zelfde browser (intended nog in session): gebruiker kiest «Stuur opnieuw».
     $this->post(route('account.bevestiging-opnieuw'), [
@@ -337,6 +349,26 @@ test('bestaand onbevestigd: login association → uitleg → bewuste resend → 
     $this->get($newUrl)->assertRedirect(SafeIntended::ASSOCIATION);
     $this->assertAuthenticatedAs($user);
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
+});
+
+test('gewoon onbevestigd inloggen zonder association: géén resend-hint', function () {
+    $plain = tuinAuthPassword();
+    $user = User::factory()->unverified()->create([
+        'email' => 'tuin-ordinary-unverified@example.com',
+        'password' => $plain,
+    ]);
+
+    $this->post(route('account.inloggen'), tuinAuthForm([
+        'email' => $user->email,
+        'password' => $plain,
+        'next' => '/account',
+    ]))->assertRedirect(route('account.bevestiging-nodig'));
+
+    expect(session(SafeIntended::ASSOCIATION_RESEND_HINT))->toBeNull();
+    $this->get(route('account.bevestiging-nodig'))
+        ->assertOk()
+        ->assertDontSee('Gebruik alleen de meest recente link', false)
+        ->assertDontSee('Wil je daarna naar', false);
 });
 
 test('al geverifieerde user met next landt op intended na login', function () {

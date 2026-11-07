@@ -22,3 +22,9 @@ test('SafeIntended::peek zonder session store gooit niet (mail/CLI)', function (
     SafeIntended::remember($request, SafeIntended::ASSOCIATION);
     expect(SafeIntended::peek($request))->toBeNull();
 });
+
+test('SafeIntended absolute URL zonder request-root valt terug op default', function () {
+    // Unit: geen HTTP-request-root → geen false-positive herkomst via app.url.
+    expect(SafeIntended::sanitize('https://example.test/account/verenigingen'))->toBe('/account')
+        ->and(SafeIntended::isAllowed('https://example.test/account/verenigingen'))->toBeFalse();
+});
