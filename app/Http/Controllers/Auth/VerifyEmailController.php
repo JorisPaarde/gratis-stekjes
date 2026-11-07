@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Notifications\VerifyEmailDutch;
 use App\Services\ConversionTracker;
 use App\Support\MailThrottle;
+use App\Support\SafeIntended;
 use App\Support\SafeMail;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\RedirectResponse;
@@ -20,12 +21,16 @@ use Illuminate\View\View;
 
 class VerifyEmailController extends Controller
 {
-    public function notice(): View
+    public function notice(Request $request): View
     {
+        SafeIntended::normalizeSession($request);
+
         return view('auth.verify-notice', [
             'title' => 'Bevestig je e-mail',
             'metaDescription' => 'Bevestig je e-mailadres om verder te gaan bij '.config('site.name').'.',
             'canonical' => route('account.bevestiging-nodig'),
+            // Alleen na login van bestaand onbevestigd account (session-flag), niet na registreren.
+            'associationReturn' => SafeIntended::wantsAssociationResendHint($request),
         ]);
     }
 
@@ -119,12 +124,29 @@ class VerifyEmailController extends Controller
             }
         }
 
+        SafeIntended::clearAssociationResendHint($request);
         Auth::login($verifiedUser, false);
         $request->session()->regenerate();
 
-        // Eerste bevestiging → eenmalig welkomstscherm (tenzij al gemarkeerd).
+        // Alleen exact /account/verenigingen: signed flag (andere browser) of session.
+        // Geen algemene intended-bypass — /aanbieden e.d. behouden welkom-onboarding.
+        $toAssociation = SafeIntended::associationFlagInSignedRequest($request)
+            || SafeIntended::isAssociation(SafeIntended::peek($request));
+
         if (($outcome['wasUnverified'] ?? false) && $verifiedUser->welcome_shown_at === null) {
+            if ($toAssociation) {
+                $verifiedUser->forceFill(['welcome_shown_at' => now()])->save();
+
+                return redirect(SafeIntended::ASSOCIATION)
+                    ->with('status', 'E-mail bevestigd. Welkom — je account is actief.');
+            }
+
             return redirect()->route('account.welkom');
+        }
+
+        if ($toAssociation) {
+            return redirect(SafeIntended::ASSOCIATION)
+                ->with('status', 'E-mail bevestigd. Welkom — je account is actief. Vul op je profiel nog een voornaam of bijnaam in.');
         }
 
         return redirect()

@@ -106,6 +106,7 @@ Route::get('/over', [ContentPageController::class, 'over'])->name('over');
 Route::get('/doe-mee', [ContentPageController::class, 'doeMee'])->name('doe-mee');
 
 Route::get('/volkstuinen', [AudienceLandingController::class, 'volkstuinen'])->name('volkstuinen');
+Route::get('/tuinverenigingen', [AudienceLandingController::class, 'tuinverenigingen'])->name('tuinverenigingen');
 Route::get('/struikroven', [InitiatiefController::class, 'struikroven'])->name('struikroven');
 Route::get('/stekchallenge', [InitiatiefController::class, 'stekchallenge'])->name('stekchallenge');
 Route::get('/help-mee', [AudienceLandingController::class, 'helpMee'])->name('help-mee');

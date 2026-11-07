@@ -5,7 +5,7 @@ declare(strict_types=1);
 /** @return list<string> */
 function audienceLandingPaths(): array
 {
-    return ['/volkstuinen', '/help-mee', '/natuur', '/verbinding'];
+    return ['/volkstuinen', '/tuinverenigingen', '/help-mee', '/natuur', '/verbinding'];
 }
 
 test('doelgroep-landingspagina’s geven 200 met SEO-title, H1, CTA en schema', function () {
@@ -87,7 +87,7 @@ test('doelgroeppagina’s staan in sitemap; Help mee ook in menu, footer en home
     expect($footer[1])->toContain('href="'.route('help-mee').'"')
         ->and($footer[1])->toContain('Help mee');
 
-    foreach (['volkstuinen', 'natuur', 'verbinding'] as $slug) {
+    foreach (['volkstuinen', 'tuinverenigingen', 'natuur', 'verbinding'] as $slug) {
         expect($nav[1])->not->toContain($slug);
         expect($footer[1])->not->toContain($slug);
     }
@@ -99,6 +99,7 @@ test('doelgroeppagina’s staan in sitemap; Help mee ook in menu, footer en home
         ->and($cta[1])->not->toContain('badge-soon')
         ->and($cta[1])->not->toContain('binnenkort');
     expect($home)->not->toMatch('/href="[^"]*\/volkstuinen"/')
+        ->and($home)->not->toMatch('/href="[^"]*\/tuinverenigingen"/')
         ->and($home)->not->toMatch('/href="[^"]*\/natuur"/')
         ->and($home)->not->toMatch('/href="[^"]*\/verbinding"/');
 });

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Support\SafeIntended;
 use Illuminate\View\View;
 
 class AudienceLandingController extends Controller
@@ -11,6 +12,8 @@ class AudienceLandingController extends Controller
     /** @return list<array{slug: string, route: string, label: string}> */
     public static function series(): array
     {
+        // Geen tuinverenigingen hier: die landing is mail-instap, niet deel van de
+        // gedeelde doelgroep-serienav (volkstuinen e.d. blijven ongewijzigd).
         return [
             ['slug' => 'volkstuinen', 'route' => 'volkstuinen', 'label' => 'Volkstuinverenigingen'],
             ['slug' => 'help-mee', 'route' => 'help-mee', 'label' => 'Help mee'],
@@ -31,6 +34,23 @@ class AudienceLandingController extends Controller
             'canonical' => $canonical,
             'series' => self::series(),
             'currentSeries' => 'volkstuinen',
+            'schema' => $this->webPageSchema($title, $meta, $canonical),
+        ]);
+    }
+
+    public function tuinverenigingen(): View
+    {
+        $title = 'Tuinvereniging: plantmateriaal doorgeven met jullie leden';
+        $meta = 'Bestuur van een tuinvereniging: voeg jullie vereniging toe via een persoonlijk account. Eigen pagina met aanbod van leden via '.config('site.name').'.';
+        $canonical = route('tuinverenigingen');
+
+        return view('pages.audience.tuinverenigingen', [
+            'title' => $title,
+            'metaDescription' => $meta,
+            'canonical' => $canonical,
+            'series' => self::series(),
+            'currentSeries' => 'tuinverenigingen',
+            'intended' => SafeIntended::ASSOCIATION,
             'schema' => $this->webPageSchema($title, $meta, $canonical),
         ]);
     }

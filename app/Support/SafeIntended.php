@@ -1,0 +1,207 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Support;
+
+use Illuminate\Http\Request;
+
+/**
+ * Same-site return paths for auth (login/register/verify).
+ * Blocks open redirects (//evil, foreign hosts) and normalizes Laravel’s absolute
+ * url.intended values to a relative path.
+ */
+final class SafeIntended
+{
+    public const SESSION_KEY = 'url.intended';
+
+    public const DEFAULT = '/account';
+
+    /** Enige gebonden post-verify return buiten welkom (tuinverenigingen-CTA). */
+    public const ASSOCIATION = '/account/verenigingen';
+
+    /** Signed query-flag op account.bevestigen (geen vrije next in de mail-URL). */
+    public const ASSOCIATION_FLAG = 'vereniging';
+
+    /**
+     * Session-only: toon resend-hint na login van bestaand onbevestigd account
+     * met association-intended. Geen flash (overleeft GET/reload); geen DB-state.
+     */
+    public const ASSOCIATION_RESEND_HINT = 'association_resend_hint';
+
+    /** Max length mirrors LoginRequest next rule (path only after normalize). */
+    private const MAX_LENGTH = 200;
+
+    public static function isAssociation(?string $path): bool
+    {
+        return self::sanitize((string) $path, '') === self::ASSOCIATION;
+    }
+
+    /**
+     * Signed bevestigingslink draagt vereniging=1 (handtekening dekt de flag).
+     * Alleen true nadat hasValidSignature() al geslaagd is.
+     */
+    public static function associationFlagInSignedRequest(Request $request): bool
+    {
+        return (string) $request->query(self::ASSOCIATION_FLAG, '') === '1';
+    }
+
+    /**
+     * Allow only same-site destinations: relative "/…" or absolute same-origin URLs.
+     * Returns a relative path (path + optional query), never a foreign URL.
+     */
+    public static function sanitize(?string $candidate, string $fallback = self::DEFAULT): string
+    {
+        $next = trim((string) $candidate);
+        if ($next === '') {
+            return $fallback;
+        }
+
+        if (str_starts_with($next, '//') || str_contains($next, '\\')) {
+            return $fallback;
+        }
+
+        if (str_starts_with($next, 'http://') || str_starts_with($next, 'https://')) {
+            // Alleen huidige request-root (Laravel middleware intended is same-origin).
+            // Geen config('app.url')-tweede herkomst; CLI/sessionless → fallback.
+            $requestRoot = '';
+            if (app()->bound('request')) {
+                $requestRoot = rtrim((string) request()->root(), '/');
+            }
+            if ($requestRoot === '' || ! str_starts_with($next, $requestRoot.'/')) {
+                return $fallback;
+            }
+            $path = substr($next, strlen($requestRoot));
+            $next = $path === '' ? '/' : $path;
+        }
+
+        if (! str_starts_with($next, '/') || str_starts_with($next, '//')) {
+            return $fallback;
+        }
+        if (str_contains($next, '://') || strlen($next) > self::MAX_LENGTH) {
+            return $fallback;
+        }
+
+        return $next;
+    }
+
+    public static function isAllowed(?string $candidate): bool
+    {
+        $raw = trim((string) $candidate);
+        if ($raw === '') {
+            return false;
+        }
+
+        $sanitized = self::sanitize($raw, '');
+
+        return $sanitized !== '' && ($sanitized === $raw || str_starts_with($raw, 'http'));
+    }
+
+    /**
+     * Remember a safe destination in the session (Laravel redirect()->intended()).
+     * Stores a relative path. Invalid/external values are ignored.
+     */
+    public static function remember(Request $request, ?string $candidate): void
+    {
+        if (! $request->hasSession() || ! self::isAllowed($candidate)) {
+            return;
+        }
+
+        $request->session()->put(self::SESSION_KEY, self::sanitize($candidate));
+    }
+
+    /**
+     * Normalize an existing session intended (absolute → relative) when safe.
+     */
+    public static function normalizeSession(Request $request): void
+    {
+        if (! $request->hasSession()) {
+            return;
+        }
+
+        $stored = $request->session()->get(self::SESSION_KEY);
+        if (! is_string($stored) || $stored === '') {
+            return;
+        }
+        if (! self::isAllowed($stored)) {
+            $request->session()->forget(self::SESSION_KEY);
+
+            return;
+        }
+        $path = self::sanitize($stored);
+        if ($path !== $stored) {
+            $request->session()->put(self::SESSION_KEY, $path);
+        }
+    }
+
+    /**
+     * Read query/body `next` when present and safe; otherwise null (do not invent a default).
+     */
+    public static function fromRequestInput(Request $request): ?string
+    {
+        if (! $request->has('next')) {
+            return null;
+        }
+
+        $raw = (string) $request->input('next', '');
+        if (! self::isAllowed($raw)) {
+            return null;
+        }
+
+        return self::sanitize($raw);
+    }
+
+    public static function fromQuery(Request $request): ?string
+    {
+        if (! $request->query->has('next')) {
+            return null;
+        }
+
+        $raw = (string) $request->query('next', '');
+        if (! self::isAllowed($raw)) {
+            return null;
+        }
+
+        return self::sanitize($raw);
+    }
+
+    public static function peek(Request $request): ?string
+    {
+        // Mail/CLI/tests mogen VerifyEmailDutch bouwen zonder session store.
+        if (! $request->hasSession()) {
+            return null;
+        }
+
+        $stored = $request->session()->get(self::SESSION_KEY);
+        if (! is_string($stored) || ! self::isAllowed($stored)) {
+            return null;
+        }
+
+        return self::sanitize($stored);
+    }
+
+    public static function markAssociationResendHint(Request $request): void
+    {
+        if (! $request->hasSession()) {
+            return;
+        }
+        $request->session()->put(self::ASSOCIATION_RESEND_HINT, true);
+    }
+
+    public static function wantsAssociationResendHint(Request $request): bool
+    {
+        if (! $request->hasSession()) {
+            return false;
+        }
+
+        return (bool) $request->session()->get(self::ASSOCIATION_RESEND_HINT, false);
+    }
+
+    public static function clearAssociationResendHint(Request $request): void
+    {
+        if (! $request->hasSession()) {
+            return;
+        }
+        $request->session()->forget(self::ASSOCIATION_RESEND_HINT);
+    }
+}
