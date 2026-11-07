@@ -20,6 +20,7 @@
   <form class="form" method="post" action="{{ route('account.registreren') }}" novalidate data-meet-form="register">
     @csrf
     @include('partials.honeypot')
+    <input type="hidden" name="next" value="{{ $next ?? '/account' }}">
 
     <label>E-mailadres *
       <input type="email" name="email" required maxlength="254" autocomplete="email" value="{{ old('email') }}">
@@ -71,7 +72,7 @@
     <button class="btn" type="submit">Account maken</button>
   </form>
 
-  <p class="muted">Al een account? <a href="{{ route('account.inloggen') }}">Inloggen</a></p>
+  <p class="muted">Al een account? <a href="{{ route('account.inloggen', ['next' => $next ?? '/account']) }}">Inloggen</a></p>
 </section>
 @endsection
 

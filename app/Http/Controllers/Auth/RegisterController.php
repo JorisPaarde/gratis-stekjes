@@ -13,6 +13,7 @@ use App\Notifications\VerifyEmailDutch;
 use App\Services\ConversionTracker;
 use App\Services\UserLocatieService;
 use App\Support\Country;
+use App\Support\SafeIntended;
 use App\Support\SafeMail;
 use App\Support\ThrottleMessage;
 use Illuminate\Http\RedirectResponse;
@@ -30,6 +31,16 @@ class RegisterController extends Controller
             'path' => '/account/registreren',
         ]);
 
+        $fromQuery = SafeIntended::fromQuery($request);
+        if ($fromQuery !== null) {
+            SafeIntended::remember($request, $fromQuery);
+        }
+
+        $next = $fromQuery
+            ?? SafeIntended::peek($request)
+            ?? SafeIntended::DEFAULT;
+        $next = SafeIntended::sanitize($next);
+
         return view('auth.register', [
             'title' => 'Registreren',
             'metaDescription' => 'Account maken bij '.config('site.name').'. Bevestig je e-mail om verder te gaan.',
@@ -37,6 +48,7 @@ class RegisterController extends Controller
             'formStarted' => time(),
             'countries' => Country::labels(),
             'foundViaOptions' => (array) config('conversion.found_via_options', []),
+            'next' => $next,
         ]);
     }
 
@@ -45,6 +57,11 @@ class RegisterController extends Controller
         UserLocatieService $locatie,
         ConversionTracker $tracker,
     ): RedirectResponse {
+        $next = SafeIntended::fromRequestInput($request);
+        if ($next !== null) {
+            SafeIntended::remember($request, $next);
+        }
+
         if ($request->isBot()) {
             return redirect()
                 ->route('account.bevestiging-nodig')

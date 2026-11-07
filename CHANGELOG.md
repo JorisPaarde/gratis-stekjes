@@ -3,6 +3,18 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.7] - 2026-11-07
+
+### Added
+
+- Bestuur-landingspagina `/tuinverenigingen` (expliciete route vóór initiatief-catch-all; reserved slug): copy voor toevoegen via persoonlijk account → Mijn verenigingen; primaire CTA «Voeg jullie vereniging toe»; `/volkstuinen` blijft ledenuitleg.
+- Hero-foto Volkstuinen bij de Dreef (Enkhuizen, Gouwenaar / Wikimedia Commons, CC BY-SA 4.0): self-hosted WebP 640/960/1280/1920 + JPG-fallback, zichtbare attributie met bron- en licentielinks onder de foto.
+- Veilige return-URL (`next` / `url.intended`) door registreren, e-mailbevestiging en inloggen (`App\Support\SafeIntended`): alleen same-site relatieve paden; open redirects geweigerd. Gast-CTA naar `/account/verenigingen` landt na geverifieerde auth automatisch daar (welkom-anti-loop blijft voor het standaardpad).
+
+### Changed
+
+- Welkom «Verder naar mijn account» eert een veilige intended return i.p.v. altijd `/account`.
+
 ## [0.78.2] - 2026-11-06
 
 ### Added

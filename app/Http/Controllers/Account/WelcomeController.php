@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ConversionEvent;
 use App\Models\User;
 use App\Services\ConversionTracker;
+use App\Support\SafeIntended;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -75,7 +76,7 @@ class WelcomeController extends Controller
     }
 
     /**
-     * Escape: markeer en ga naar account (geen vastloop als CTA niet past).
+     * Escape: markeer en ga naar account (of veilige intended return).
      */
     public function continue(Request $request): RedirectResponse
     {
@@ -84,7 +85,7 @@ class WelcomeController extends Controller
 
         $this->markShown($user);
 
-        return redirect()->route('account.index');
+        return redirect()->intended(SafeIntended::DEFAULT);
     }
 
     private function markShown(User $user): void

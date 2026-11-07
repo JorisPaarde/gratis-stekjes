@@ -13,6 +13,7 @@ class AudienceLandingController extends Controller
     {
         return [
             ['slug' => 'volkstuinen', 'route' => 'volkstuinen', 'label' => 'Volkstuinverenigingen'],
+            ['slug' => 'tuinverenigingen', 'route' => 'tuinverenigingen', 'label' => 'Tuinverenigingen'],
             ['slug' => 'help-mee', 'route' => 'help-mee', 'label' => 'Help mee'],
             ['slug' => 'natuur', 'route' => 'natuur', 'label' => 'Natuurliefhebbers'],
             ['slug' => 'verbinding', 'route' => 'verbinding', 'label' => 'Verbinding'],
@@ -31,6 +32,23 @@ class AudienceLandingController extends Controller
             'canonical' => $canonical,
             'series' => self::series(),
             'currentSeries' => 'volkstuinen',
+            'schema' => $this->webPageSchema($title, $meta, $canonical),
+        ]);
+    }
+
+    public function tuinverenigingen(): View
+    {
+        $title = 'Tuinvereniging: plantmateriaal doorgeven met jullie leden';
+        $meta = 'Bestuur van een tuinvereniging: voeg jullie vereniging toe via een persoonlijk account. Eigen pagina met aanbod van leden via '.config('site.name').'.';
+        $canonical = route('tuinverenigingen');
+
+        return view('pages.audience.tuinverenigingen', [
+            'title' => $title,
+            'metaDescription' => $meta,
+            'canonical' => $canonical,
+            'series' => self::series(),
+            'currentSeries' => 'tuinverenigingen',
+            'intended' => '/account/verenigingen',
             'schema' => $this->webPageSchema($title, $meta, $canonical),
         ]);
     }

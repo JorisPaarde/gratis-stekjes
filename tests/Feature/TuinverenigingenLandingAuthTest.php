@@ -1,0 +1,300 @@
+<?php
+
+declare(strict_types=1);
+
+use App\Models\GeocodeCache;
+use App\Models\User;
+use App\Models\Vereniging;
+use App\Notifications\VerifyEmailDutch;
+use App\Support\Geo;
+use App\Support\SafeIntended;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\URL;
+
+function tuinAuthPassword(): string
+{
+    return implode('-', ['TestOnly', 'Auth', 'Passphrase', '9']);
+}
+
+function tuinAuthForm(array $extra = []): array
+{
+    return array_merge([
+        'website' => '',
+        'form_started' => time() - 10,
+        'country' => 'NL',
+        'postcode' => '2011 AB',
+        'gratis_akkoord' => '1',
+        'privacy' => '1',
+    ], $extra);
+}
+
+function seedTuinRegGeo(): void
+{
+    GeocodeCache::query()->updateOrCreate(
+        ['query_key' => Geo::normalizeQuery('nl:2011')],
+        ['lat' => 52.38, 'lon' => 4.64, 'label' => '2011 Haarlem', 'country' => 'NL', 'cached_at' => now()]
+    );
+    GeocodeCache::query()->updateOrCreate(
+        ['query_key' => Geo::normalizeQuery('nl:2011 AB')],
+        ['lat' => 52.38, 'lon' => 4.64, 'label' => '2011 Haarlem', 'country' => 'NL', 'cached_at' => now()]
+    );
+}
+
+test('tuinverenigingen landing: SEO, stappen 1-2-3, primaire CTA, hero+attributie en geen we/wij', function () {
+    $html = $this->get(route('tuinverenigingen'))
+        ->assertOk()
+        ->assertSee('<h1 class="page-title">Geef plantmateriaal door met jullie tuinvereniging</h1>', false)
+        ->assertSee('Voeg jullie vereniging toe', false)
+        ->assertSee('Maak gratis een persoonlijk account of log in', false)
+        ->assertSee('Deel de link met de leden', false)
+        ->assertSee('gratis', false)
+        ->assertSee('Toon bij mijn aanbod dat ik hier lid van ben', false)
+        ->assertSee(route('account.verenigingen', absolute: false), false)
+        ->assertSee('next='.urlencode('/account/verenigingen'), false)
+        ->assertSee(route('volkstuinen', absolute: false), false)
+        ->assertSee('dreef-1280.webp', false)
+        ->assertSee('dreef-640.webp', false)
+        ->assertSee('dreef-1920.webp', false)
+        ->assertSee('Gouwenaar / Wikimedia Commons', false)
+        ->assertSee('https://commons.wikimedia.org/wiki/File:20180907_Volkstuin_bij_de_Dreef_Enkhuizen.jpg', false)
+        ->assertSee('https://creativecommons.org/licenses/by-sa/4.0/', false)
+        ->assertSee('CC BY-SA 4.0', false)
+        ->assertDontSee('uitsnede', false)
+        ->assertDontSee('stijlgids', false)
+        ->assertDontSee('OpenRouter', false)
+        ->assertDontSee('deelplek-bridge', false)
+        ->assertDontSee('carousel', false)
+        ->getContent();
+
+    expect(is_file(public_path('assets/images/tuinverenigingen/dreef-640.webp')))->toBeTrue()
+        ->and(is_file(public_path('assets/images/tuinverenigingen/dreef-960.webp')))->toBeTrue()
+        ->and(is_file(public_path('assets/images/tuinverenigingen/dreef-1280.webp')))->toBeTrue()
+        ->and(is_file(public_path('assets/images/tuinverenigingen/dreef-1920.webp')))->toBeTrue()
+        ->and(is_file(public_path('assets/images/tuinverenigingen/dreef-1280.jpg')))->toBeTrue();
+
+    $text = html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    expect(preg_match('/\b(we|wij|ons|onze)\b/iu', $text))->toBe(0);
+});
+
+test('tuinverenigingen staat in sitemap en reservedSlugs; niet in menu/footer', function () {
+    expect(\App\Services\InitiatiefPaginas::reservedSlugs())->toContain('tuinverenigingen');
+
+    $xml = $this->get(route('sitemap'))->assertOk()->getContent();
+    expect($xml)->toContain('/tuinverenigingen');
+
+    $home = $this->get('/')->assertOk()->getContent();
+    expect(preg_match('/<nav id="hoofdmenu"[^>]*>(.*?)<\/nav>/s', $home, $nav))->toBe(1);
+    expect(preg_match('/<nav class="footer-links"[^>]*>(.*?)<\/nav>/s', $home, $footer))->toBe(1);
+    expect($nav[1])->not->toContain('tuinverenigingen');
+    expect($footer[1])->not->toContain('tuinverenigingen');
+});
+
+test('gast CTA /account/verenigingen → bestaande login → Mijn verenigingen', function () {
+    $plain = tuinAuthPassword();
+    $user = User::factory()->create([
+        'email' => 'tuin-login@example.com',
+        'password' => $plain,
+        'email_verified_at' => now(),
+        'welcome_shown_at' => now()->subDay(),
+    ]);
+
+    $this->get(route('account.verenigingen'))
+        ->assertRedirect(route('account.inloggen'));
+
+    // Laravel auth middleware stores the full intended URL; path must be Mijn verenigingen.
+    $intended = (string) session(SafeIntended::SESSION_KEY);
+    expect($intended)->toContain('/account/verenigingen');
+
+    $this->post(route('account.inloggen'), tuinAuthForm([
+        'email' => $user->email,
+        'password' => $plain,
+        'next' => '/account',
+    ]))->assertRedirect('/account/verenigingen');
+
+    $this->assertAuthenticatedAs($user);
+    $this->get(route('account.verenigingen'))->assertOk();
+});
+
+test('nieuw register met next → bevestiging → landt op Mijn verenigingen', function () {
+    Notification::fake();
+    Http::fake();
+    seedTuinRegGeo();
+
+    $this->get(route('account.registreren', ['next' => '/account/verenigingen']))
+        ->assertOk()
+        ->assertSee('name="next"', false)
+        ->assertSee('value="/account/verenigingen"', false);
+
+    $this->post(route('account.registreren'), tuinAuthForm([
+        'email' => 'tuin-nieuw@example.com',
+        'password' => tuinAuthPassword(),
+        'next' => '/account/verenigingen',
+    ]))->assertRedirect(route('account.bevestiging-nodig'));
+
+    expect(session(SafeIntended::SESSION_KEY))->toBe('/account/verenigingen');
+
+    $user = User::query()->where('email', 'tuin-nieuw@example.com')->firstOrFail();
+    Notification::assertSentTo($user, VerifyEmailDutch::class);
+    $token = (string) $user->email_verification_token;
+
+    $url = URL::temporarySignedRoute('account.bevestigen', now()->addHour(), [
+        'id' => $user->id,
+        'hash' => sha1($user->email),
+        'token' => $token,
+    ]);
+
+    $this->get($url)->assertRedirect('/account/verenigingen');
+    $this->assertAuthenticatedAs($user);
+    expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
+    expect($user->fresh()->welcome_shown_at)->not->toBeNull();
+});
+
+test('al geverifieerde user met next landt op intended na login', function () {
+    $plain = tuinAuthPassword();
+    $user = User::factory()->create([
+        'email' => 'tuin-verified@example.com',
+        'password' => $plain,
+        'welcome_shown_at' => now()->subDay(),
+    ]);
+
+    $this->get(route('account.inloggen', ['next' => '/account/verenigingen']))
+        ->assertOk();
+
+    $this->post(route('account.inloggen'), tuinAuthForm([
+        'email' => $user->email,
+        'password' => $plain,
+        'next' => '/account/verenigingen',
+    ]))->assertRedirect('/account/verenigingen');
+});
+
+test('ongeldige en externe intended next worden geweigerd', function () {
+    expect(SafeIntended::isAllowed('https://evil.example/phish'))->toBeFalse();
+    expect(SafeIntended::isAllowed('//evil.example'))->toBeFalse();
+    expect(SafeIntended::isAllowed('/\\evil'))->toBeFalse();
+    expect(SafeIntended::sanitize('https://evil.example'))->toBe('/account');
+    expect(SafeIntended::sanitize('//evil.example/x'))->toBe('/account');
+    expect(SafeIntended::sanitize('/account/verenigingen'))->toBe('/account/verenigingen');
+
+    $local = rtrim((string) config('app.url'), '/').'/account/verenigingen';
+    expect(SafeIntended::isAllowed($local))->toBeTrue()
+        ->and(SafeIntended::sanitize($local))->toBe('/account/verenigingen');
+
+    $plain = tuinAuthPassword();
+    $user = User::factory()->create([
+        'email' => 'tuin-safe@example.com',
+        'password' => $plain,
+        'welcome_shown_at' => now()->subDay(),
+    ]);
+
+    $this->get(route('account.inloggen', ['next' => 'https://evil.example']))
+        ->assertOk();
+
+    $this->post(route('account.inloggen'), tuinAuthForm([
+        'email' => $user->email,
+        'password' => $plain,
+        'next' => 'https://evil.example',
+    ]))->assertRedirect('/account');
+
+    $this->post(route('account.uitloggen'));
+
+    Notification::fake();
+    Http::fake();
+    seedTuinRegGeo();
+
+    $this->post(route('account.registreren'), tuinAuthForm([
+        'email' => 'tuin-evil-next@example.com',
+        'password' => tuinAuthPassword(),
+        'next' => '//evil.example',
+    ]))->assertRedirect(route('account.bevestiging-nodig'));
+
+    expect(session(SafeIntended::SESSION_KEY))->not->toBe('//evil.example');
+});
+
+test('standaard bevestiging zonder intended blijft naar welkom (anti-loop)', function () {
+    $user = User::factory()->unverified()->create(['email' => 'tuin-welkom-default@example.com']);
+    $token = $user->rotateEmailVerificationToken();
+    $url = URL::temporarySignedRoute('account.bevestigen', now()->addHour(), [
+        'id' => $user->id,
+        'hash' => sha1($user->email),
+        'token' => $token,
+    ]);
+
+    $this->get($url)->assertRedirect(route('account.welkom'));
+});
+
+test('vereniging: bestaande kiezen, nieuwe pending, goedgekeurd deelt link; opt-in aanbod', function () {
+    Notification::fake();
+    config(['stekjes.admin_email' => 'beheer@example.com']);
+
+    $bestuur = User::factory()->create([
+        'email' => 'tuin-bestuur@example.com',
+        'name' => 'Bestuur',
+        'locatie_label' => '2011',
+        'lat' => 52.381,
+        'lon' => 4.637,
+    ]);
+    $lid = User::factory()->create([
+        'email' => 'tuin-lid@example.com',
+        'name' => 'Lid',
+        'locatie_label' => '2011',
+        'lat' => 52.381,
+        'lon' => 4.637,
+    ]);
+
+    $this->actingAs($bestuur)
+        ->post(route('account.verenigingen.store'), [
+            'vereniging' => 'Tuinvereniging De Landing',
+            'plaats' => 'Haarlem',
+            'type' => 'tuinvereniging',
+        ])
+        ->assertRedirect(route('account.verenigingen'));
+
+    $v = Vereniging::query()->firstOrFail();
+    expect($v->status)->toBe('pending')
+        ->and((bool) $bestuur->verenigingen()->first()->pivot->zichtbaar)->toBeFalse();
+
+    $this->actingAs($bestuur)->get(route('account.verenigingen'))
+        ->assertOk()
+        ->assertSee('Wacht op controle', false);
+
+    $this->get(route('organisaties.show', ['slug' => $v->slug]))->assertNotFound();
+
+    $v->update(['status' => 'approved']);
+
+    $html = $this->actingAs($bestuur)->get(route('account.verenigingen'))
+        ->assertOk()
+        ->assertSee(route('organisaties.show', ['slug' => $v->slug], absolute: false), false)
+        ->getContent();
+    expect($html)->toContain('/organisaties/'.$v->slug);
+
+    $this->actingAs($lid)
+        ->post(route('account.verenigingen.store'), [
+            'vereniging' => 'Tuinvereniging De Landing — Haarlem',
+        ])
+        ->assertRedirect(route('account.verenigingen'));
+
+    expect(Vereniging::query()->count())->toBe(1)
+        ->and($v->fresh()->leden()->count())->toBe(2);
+
+    $aanbod = \App\Models\Aanbod::query()->create([
+        'user_id' => $lid->id,
+        'type' => 'uitdelen',
+        'tekst' => 'Tuinlanding munt',
+        'visible' => true,
+        'expires_at' => now()->addDays(30),
+    ]);
+
+    // Zonder opt-in: niet op verenigingspagina.
+    $page = $this->get(route('organisaties.show', ['slug' => $v->slug]))->assertOk()->getContent();
+    expect($page)->not->toContain('Tuinlanding munt');
+
+    $this->actingAs($lid)
+        ->post(route('account.verenigingen.update', $v), ['zichtbaar' => '1'])
+        ->assertRedirect();
+
+    $page = $this->get(route('organisaties.show', ['slug' => $v->slug]))->assertOk()->getContent();
+    expect($page)->toContain('Tuinlanding munt');
+
+    expect($aanbod->fresh()->id)->toBeInt();
+});

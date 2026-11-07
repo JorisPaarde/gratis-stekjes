@@ -8,6 +8,7 @@ use App\Http\Controllers\Account\WelcomeController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
+use App\Support\SafeIntended;
 use App\Support\ThrottleMessage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,10 +21,15 @@ class LoginController extends Controller
 {
     public function create(Request $request): View
     {
-        $next = (string) $request->query('next', '/account');
-        if ($next === '' || ! str_starts_with($next, '/') || str_starts_with($next, '//')) {
-            $next = '/account';
+        $fromQuery = SafeIntended::fromQuery($request);
+        if ($fromQuery !== null) {
+            SafeIntended::remember($request, $fromQuery);
         }
+
+        $next = $fromQuery
+            ?? SafeIntended::peek($request)
+            ?? SafeIntended::DEFAULT;
+        $next = SafeIntended::sanitize($next);
 
         return view('auth.login', [
             'title' => 'Inloggen',
@@ -58,6 +64,14 @@ class LoginController extends Controller
             return back()
                 ->withInput($request->only('email', 'next', 'remember'))
                 ->withErrors(['email' => __('auth.failed')]);
+        }
+
+        // Normaliseer Laravel-absolute intended → pad; overschrijf die niet met form-default /account.
+        SafeIntended::normalizeSession($request);
+        $submittedNext = SafeIntended::fromRequestInput($request);
+        if ($submittedNext !== null
+            && ($submittedNext !== SafeIntended::DEFAULT || SafeIntended::peek($request) === null)) {
+            SafeIntended::remember($request, $submittedNext);
         }
 
         if (! $user->hasVerifiedEmail()) {

@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Notifications\VerifyEmailDutch;
 use App\Services\ConversionTracker;
 use App\Support\MailThrottle;
+use App\Support\SafeIntended;
 use App\Support\SafeMail;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\RedirectResponse;
@@ -123,8 +124,25 @@ class VerifyEmailController extends Controller
         $request->session()->regenerate();
 
         // Eerste bevestiging → eenmalig welkomstscherm (tenzij al gemarkeerd).
+        // Met veilige intended (bijv. /account/verenigingen): markeer welkom en ga daarheen
+        // zodat de CTA-return automatisch werkt zonder GP-welcome-loop te openen.
         if (($outcome['wasUnverified'] ?? false) && $verifiedUser->welcome_shown_at === null) {
+            $intended = SafeIntended::peek($request);
+            if ($intended !== null && $intended !== SafeIntended::DEFAULT) {
+                $verifiedUser->forceFill(['welcome_shown_at' => now()])->save();
+
+                return redirect()
+                    ->intended(SafeIntended::DEFAULT)
+                    ->with('status', 'E-mail bevestigd. Welkom — je account is actief.');
+            }
+
             return redirect()->route('account.welkom');
+        }
+
+        if (SafeIntended::peek($request) !== null) {
+            return redirect()
+                ->intended(SafeIntended::DEFAULT)
+                ->with('status', 'E-mail bevestigd. Welkom — je account is actief. Vul op je profiel nog een voornaam of bijnaam in.');
         }
 
         return redirect()
