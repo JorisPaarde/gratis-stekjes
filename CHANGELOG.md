@@ -3,6 +3,55 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.12] - 2026-11-07
+
+### Fixed
+
+- Registratie wist session-flag `association_resend_hint` (hint van eerdere onbevestigde association-login mag geen nieuwe first-mail ondermijnen).
+
+## [0.78.11] - 2026-11-07
+
+### Fixed
+
+- Resend-hint op bevestigingspagina alleen na login van bestaand onbevestigd account met association-intended (session-flag); niet na nieuw registreren (eerste signed mail blijft geldig).
+- `SafeIntended::sanitize`: absolute URL alleen t.o.v. huidige request-root (geen tweede `app.url`-herkomst).
+
+## [0.78.10] - 2026-11-07
+
+### Fixed
+
+- `SafeIntended::peek`/`remember`/`normalizeSession` tolereren requests zonder session store (VerifyEmailDutch in mail/CLI/tests); geen RuntimeException meer.
+
+## [0.78.9] - 2026-11-07
+
+### Fixed
+
+- Welkom «Verder»: geen algemene `intended()` meer — alleen exact `/account/verenigingen`, anders weer `/account` (aanbieden-onboarding ongewijzigd).
+- `/tuinverenigingen` uit gedeelde audience-`series()` gehaald zodat serienav op `/volkstuinen` e.d. niet wijzigt; eigen route + sitemap blijven.
+
+### Changed
+
+- Bevestigingspagina: bij association-intended korte uitleg om via bestaande «Stuur opnieuw» een nieuwe signed link te vragen (oude inbox-link brengt je niet automatisch bij Mijn verenigingen). Geen nieuwe state, geen autosend.
+
+## [0.78.8] - 2026-11-07
+
+### Changed
+
+- `/tuinverenigingen` eerste viewport: compacte belofte + accountuitleg + e-mailbevestiging-note + primaire CTA vóór hero; langere intro en stappen erna. Geen «automatisch»-belofte in zichtbare copy (return blijft testgedekt).
+- E-mailbevestiging: gebonden return naar `/account/verenigingen` via signed query-flag `vereniging=1` (werkt in verse browser/mail-app); welkom-bypass alleen voor die exacte bestemming — overige onboarding (o.a. `/aanbieden`) ongewijzigd.
+
+## [0.78.7] - 2026-11-07
+
+### Added
+
+- Bestuur-landingspagina `/tuinverenigingen` (expliciete route vóór initiatief-catch-all; reserved slug): copy voor toevoegen via persoonlijk account → Mijn verenigingen; primaire CTA «Voeg jullie vereniging toe»; `/volkstuinen` blijft ledenuitleg.
+- Hero-foto Volkstuinen bij de Dreef (Enkhuizen, Gouwenaar / Wikimedia Commons, CC BY-SA 4.0): self-hosted WebP 640/960/1280/1920 + JPG-fallback, zichtbare attributie met bron- en licentielinks onder de foto.
+- Veilige return-URL (`next` / `url.intended`) door registreren, e-mailbevestiging en inloggen (`App\Support\SafeIntended`): alleen same-site relatieve paden; open redirects geweigerd. Gast-CTA naar `/account/verenigingen` landt na geverifieerde auth automatisch daar (welkom-anti-loop blijft voor het standaardpad).
+
+### Changed
+
+- Welkom «Verder naar mijn account» eert een veilige intended return i.p.v. altijd `/account`.
+
 ## [0.78.2] - 2026-11-06
 
 ### Added

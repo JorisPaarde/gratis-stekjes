@@ -36,6 +36,7 @@ class RegisterRequest extends FormRequest
             'privacy' => ['accepted'],
             'website' => ['nullable', 'string', 'max:200'],
             'form_started' => ['required', 'integer'],
+            'next' => ['nullable', 'string', 'max:200'],
             'acquisition_found_via' => ['nullable', 'string', Rule::in($foundOptions)],
             'acquisition_found_via_other' => ['nullable', 'string', 'max:120'],
         ];

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ConversionEvent;
 use App\Models\User;
 use App\Services\ConversionTracker;
+use App\Support\SafeIntended;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -75,7 +76,8 @@ class WelcomeController extends Controller
     }
 
     /**
-     * Escape: markeer en ga naar account (geen vastloop als CTA niet past).
+     * Escape: markeer en ga naar account.
+     * Enige uitzondering: exact /account/verenigingen (tuinverenigingen-CTA).
      */
     public function continue(Request $request): RedirectResponse
     {
@@ -83,6 +85,11 @@ class WelcomeController extends Controller
         $user = $request->user();
 
         $this->markShown($user);
+
+        SafeIntended::normalizeSession($request);
+        if (SafeIntended::isAssociation(SafeIntended::peek($request))) {
+            return redirect(SafeIntended::ASSOCIATION);
+        }
 
         return redirect()->route('account.index');
     }

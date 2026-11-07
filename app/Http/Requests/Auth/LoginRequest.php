@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Auth;
 
 use App\Support\FormGuard;
+use App\Support\SafeIntended;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
@@ -47,11 +48,6 @@ class LoginRequest extends FormRequest
 
     public function safeNext(): string
     {
-        $next = (string) $this->input('next', '/account');
-        if ($next === '' || ! str_starts_with($next, '/') || str_starts_with($next, '//')) {
-            return '/account';
-        }
-
-        return $next;
+        return SafeIntended::sanitize((string) $this->input('next', SafeIntended::DEFAULT));
     }
 }

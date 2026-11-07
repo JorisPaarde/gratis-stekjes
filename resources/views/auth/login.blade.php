@@ -32,7 +32,7 @@
 
   <p class="muted">
     <a href="{{ route('account.wachtwoord.vergeten') }}">Wachtwoord vergeten?</a>
-    · <a href="{{ route('account.registreren') }}">Account maken</a>
+    · <a href="{{ route('account.registreren', ['next' => $next]) }}">Account maken</a>
     · <a href="{{ route('account.bevestiging-nodig') }}">Bevestigingsmail opnieuw sturen</a>
   </p>
 </section>

@@ -33,6 +33,7 @@ final class InitiatiefPaginas
             'over',
             'doe-mee',
             'volkstuinen',
+            'tuinverenigingen',
             'help-mee',
             'poster',
             'stekjeslabels',
