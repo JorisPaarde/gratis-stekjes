@@ -61,6 +61,8 @@ class RegisterController extends Controller
         if ($next !== null) {
             SafeIntended::remember($request, $next);
         }
+        // Nieuw register: first-mail is geldig — wis eventuele hint van eerdere onbevestigde login.
+        SafeIntended::clearAssociationResendHint($request);
 
         if ($request->isBot()) {
             return redirect()

@@ -351,6 +351,51 @@ test('bestaand onbevestigd: login association → uitleg → bewuste resend → 
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
 });
 
+test('zelfde browser: onbevestigde association-login → nieuw register → géén resend-hint; first-mail blijft geldig', function () {
+    Notification::fake();
+    Http::fake();
+    seedTuinRegGeo();
+
+    $plain = tuinAuthPassword();
+    $oud = User::factory()->unverified()->create([
+        'email' => 'tuin-oud-login@example.com',
+        'password' => $plain,
+    ]);
+
+    $this->post(route('account.inloggen'), tuinAuthForm([
+        'email' => $oud->email,
+        'password' => $plain,
+        'next' => SafeIntended::ASSOCIATION,
+    ]))->assertRedirect(route('account.bevestiging-nodig'));
+    expect(session(SafeIntended::ASSOCIATION_RESEND_HINT))->toBeTrue();
+
+    // Inloggen → Account maken → nieuw adres (zelfde sessie behoudt anders de hint).
+    $this->post(route('account.registreren'), tuinAuthForm([
+        'email' => 'tuin-nieuw-na-login@example.com',
+        'password' => $plain,
+        'next' => SafeIntended::ASSOCIATION,
+    ]))->assertRedirect(route('account.bevestiging-nodig'));
+
+    expect(session(SafeIntended::ASSOCIATION_RESEND_HINT))->toBeNull()
+        ->and(session(SafeIntended::SESSION_KEY))->toBe(SafeIntended::ASSOCIATION);
+
+    $this->get(route('account.bevestiging-nodig'))
+        ->assertOk()
+        ->assertDontSee('Gebruik alleen de meest recente link', false)
+        ->assertDontSee('Wil je daarna naar', false);
+
+    $nieuw = User::query()->where('email', 'tuin-nieuw-na-login@example.com')->firstOrFail();
+    Notification::assertSentTo($nieuw, VerifyEmailDutch::class);
+    /** @var VerifyEmailDutch $notification */
+    $notification = Notification::sent($nieuw, VerifyEmailDutch::class)->first();
+    $url = $notification->toMail($nieuw)->actionUrl;
+    expect($url)->toContain(SafeIntended::ASSOCIATION_FLAG.'=1');
+
+    $this->flushSession();
+    $this->get($url)->assertRedirect(SafeIntended::ASSOCIATION);
+    expect($nieuw->fresh()->hasVerifiedEmail())->toBeTrue();
+});
+
 test('gewoon onbevestigd inloggen zonder association: géén resend-hint', function () {
     $plain = tuinAuthPassword();
     $user = User::factory()->unverified()->create([

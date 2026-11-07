@@ -3,6 +3,12 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.12] - 2026-11-07
+
+### Fixed
+
+- Registratie wist session-flag `association_resend_hint` (hint van eerdere onbevestigde association-login mag geen nieuwe first-mail ondermijnen).
+
 ## [0.78.11] - 2026-11-07
 
 ### Fixed
