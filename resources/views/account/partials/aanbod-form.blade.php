@@ -10,8 +10,8 @@
     </select>
   </label>
   @php
-    // Create-form: toon serverfout alleen als we niet in een edit-context zitten.
-    $showTekstFout = $errors->has('tekst') && blank(old('edit_id')) && ! request()->filled('edit');
+    // Error-ownership: submitted old('edit_id') — níet GET ?edit= (create kan open edit-URL hebben).
+    $showTekstFout = $errors->has('tekst') && blank(old('edit_id'));
   @endphp
   <div
     class="plantsoort-autocomplete"
@@ -25,7 +25,6 @@
         name="tekst"
         id="aanbod-tekst"
         maxlength="2000"
-        required
         placeholder="Bijvoorbeeld monstera of munt"
         value="{{ old('tekst') }}"
         data-invasieve-input

@@ -31,7 +31,10 @@
       @foreach($mine as $row)
         @php
           $expired = $row->isExpired();
+          // Welke edit-UI openstaat (GET ?edit= óf old edit_id na failed update).
           $editing = (int) old('edit_id', request('edit')) === (int) $row->id;
+          // Foutmarkering alleen bij submitted ownership (old edit_id), niet via GET edit.
+          $showTekstFout = $errors->has('tekst') && (string) old('edit_id') !== '' && (int) old('edit_id') === (int) $row->id;
         @endphp
         <li class="mijn-aanbod" id="aanbod-{{ $row->id }}">
           @if($editing)
@@ -49,17 +52,12 @@
                 data-plantsoort-autocomplete
                 data-plantsoort-url="{{ $plantensoortenZoekUrl }}"
               >
-                @php
-                  // Alleen de geopende edit-rij: geen aria-fout op andere rijen ondanks shared old('tekst').
-                  $showTekstFout = $editing && $errors->has('tekst');
-                @endphp
                 <label for="aanbod-tekst-{{ $row->id }}">Plantensoort *
                   <input
                     type="text"
                     name="tekst"
                     id="aanbod-tekst-{{ $row->id }}"
                     maxlength="2000"
-                    required
                     value="{{ old('tekst', $row->tekst) }}"
                     data-invasieve-input
                     data-plantsoort-input

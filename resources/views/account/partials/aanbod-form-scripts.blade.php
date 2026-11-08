@@ -5,9 +5,12 @@
   var terms = @json($invasieveTerms);
   var uitleg = @json($invasieveUitlegUrl);
   var naamFout = @json(\App\Support\AanbodTekst::FOUT_VERPLICHT);
+  // Zelfde FORM-whitespace als AanbodTekst::FORM_WS_* (niet JS \s — mist U+0085 NEL).
+  var formWsClass = @json(\App\Support\AanbodTekst::FORM_WS_JS);
+  var formWsTrimRe = new RegExp('^[' + formWsClass + ']+|[' + formWsClass + ']+$', 'gu');
 
   function unicodeTrim(text) {
-    return String(text || '').replace(/^\s+|\s+$/gu, '');
+    return String(text || '').replace(formWsTrimRe, '');
   }
 
   function normalize(text) {
@@ -57,7 +60,9 @@
     var hint = form.querySelector('[data-invasieve-hint]');
 
     if (input) {
-      // Native required + customValidity (whitespace) → invalid-event met exacte copy/focus/aria.
+      // Progressive enhancement: required + customValidity alleen met JS.
+      // NoJS lege submit → servervalidatie + exacte NL-inlinefout (geen browserlocale).
+      input.required = true;
       syncNaamValidity(input);
 
       function focusNaam() {

@@ -10,6 +10,9 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - zoeken.js: broken foto via capture-fase error-listener op de lijst (geen HTML/quotes in onerror-attribuut).
 - Verenigings-ledenblok: zelfde usable-stream als home/API (tot 30 of uitputting; geen lege «(N stuks)»-regels).
 - Account aanbod/aanbieden: server `@error('tekst')` inline + aria-invalid/autofocus alleen op het getargete formulier.
+- FORM-whitespace: gedeelde Unicode-set server+client (incl. U+0085 NEL / NBSP / FEFF); geen JS-`\s`-mismatch.
+- Fout-ownership op `old('edit_id')` (niet GET `?edit=`); create-fout blijft op create ook als edit-UI openstaat.
+- Progressive enhancement: plantnaam zonder HTML `required`; JS zet `required` + customValidity; NoJS lege submit → exacte NL-serverfout.
 
 ## [0.78.15] - 2026-11-08
 
