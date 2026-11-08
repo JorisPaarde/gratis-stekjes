@@ -2,7 +2,7 @@
   "meta": {
     "titel": "Gratis planten — stadspagina’s",
     "omschrijving": "Nederlandse en Belgische steden voor de pagina’s ‘Gratis planten in [stad]’. Coördinaten bij benadering (stadscentrum); straal_km voor aanbodfilter. Alleen steden met echte deelplekken of aanbod in de data; country NL (default) of BE.",
-    "bron": "NL: selectie ~40 grootste gemeenten. BE batch 1: Antwerpen, Brussel, Namen, Lommel/Pelt — alleen met ≥2 zichtbare deelplekken in data/deelplekken.json.",
+    "bron": "NL: selectie ~40 grootste gemeenten, plus Den Helder (2026-11-08, vanwege aanbod in de stad). BE batch 1: Antwerpen, Brussel, Namen, Lommel/Pelt — alleen met ≥2 zichtbare deelplekken in data/deelplekken.json.",
     "geraadpleegd": "2026-10-31"
   },
   "steden": [
@@ -302,6 +302,15 @@
       "lng": 5.1669,
       "straal_km": 12,
       "intro": "Hier vind je gratis planten in Hilversum. Zoek wat bij je past of bied aan wat je over hebt. Je privacy staat voorop, dus er staan geen straatadressen op de site."
+    },
+    {
+      "naam": "Den Helder",
+      "slug": "den-helder",
+      "provincie": "Noord-Holland",
+      "lat": 52.9563,
+      "lng": 4.7601,
+      "straal_km": 12,
+      "intro": "In Den Helder geven buren planten, stekjes en zaden gratis door. Je ziet het aanbod in de stad en tot ongeveer 12 km daarbuiten, met op de kaart alleen een globale plek. Heb je zelf iets over? Bied het aan."
     },
     {
       "naam": "Hengelo",

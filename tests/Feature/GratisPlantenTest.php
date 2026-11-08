@@ -21,7 +21,7 @@ test('overzicht gratis planten laadt met landen en provincies', function () {
 test('elke stad-slug geeft 200 met H1 en canonical', function () {
     $stedenService = app(Steden::class);
     $steden = $stedenService->all();
-    expect($steden)->toHaveCount(46);
+    expect($steden)->toHaveCount(47);
 
     foreach ($steden as $stad) {
         $url = route('gratis-planten.show', ['stad' => $stad['slug']]);

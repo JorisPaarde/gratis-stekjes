@@ -89,7 +89,8 @@ test('NL-stedenrijen blijven ongewijzigd (snapshot)', function () {
 
     $nl = array_values(array_filter(
         $data['steden'],
-        static fn (array $row): bool => ($row['country'] ?? 'NL') !== 'BE'
+        // Later toegevoegd (niet in snapshot): Den Helder (aanbod in de stad).
+        static fn (array $row): bool => ($row['country'] ?? 'NL') !== 'BE' && $row['slug'] !== 'den-helder'
     ));
     expect($nl)->toHaveCount(42);
     expect($nl)->toBe($expected);
