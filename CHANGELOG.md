@@ -3,6 +3,18 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.15] - 2026-11-08
+
+### Fixed
+
+- Plantnaam verplicht bij plaatsen/bewerken van aanbod (ook whitespace/Unicode-leeg); foto blijft optioneel. Fouttekst: «Vul de naam van je plant in.»
+- Openbare lijsten/Net aangeboden sluiten items zonder bruikbare plantnaam uit en vullen aan met volgende geldige (geen bronmutatie).
+- Aanbodkaarten: vaste beeldruimte + nette fallback bij ontbrekende of kapotte foto (geen herhaallus).
+
+### Added
+
+- Artisan `gp:audit-lege-aanbod-tekst` (read-only; ids/redenen/aantallen, geen PII, geen writes).
+
 ## [0.78.14] - 2026-11-08
 
 ### Added

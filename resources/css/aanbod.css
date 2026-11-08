@@ -300,12 +300,19 @@
   border-top: 1px solid var(--line, rgba(26, 18, 16, 0.12));
 }
 .zoek-regel:first-child { border-top: 0; padding-top: 0; }
-.zoek-regel img {
+.zoek-regel img,
+.zoek-regel-foto {
   width: 3rem;
   height: 3rem;
   flex: 0 0 3rem;
   object-fit: cover;
   border-radius: 0.35rem;
+  background: var(--bg-mint, #e8f3e3);
+}
+.zoek-regel-foto.is-leeg,
+.zoek-regel-foto.is-foto-fout {
+  display: inline-block;
+  background: var(--bg-mint, #e8f3e3);
 }
 .zoek-regel-tekst {
   flex: 1 1 auto;

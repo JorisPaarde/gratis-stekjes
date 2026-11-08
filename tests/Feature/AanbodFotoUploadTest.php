@@ -41,7 +41,7 @@ beforeEach(function () {
     // Storage::fake vervangt de disk-root; zorg dat ImageProcessor wel echte fixtures leest.
 });
 
-test('aanbod met alleen foto (zonder soortnaam) wordt geaccepteerd', function () {
+test('aanbod met alleen foto (zonder soortnaam) wordt afgewezen', function () {
     $user = fotoUser();
 
     $this->actingAs($user)
@@ -53,17 +53,9 @@ test('aanbod met alleen foto (zonder soortnaam) wordt geaccepteerd', function ()
             'form_started' => time() - 10,
             'fotos' => [fixtureUpload('plain.jpg')],
         ])
-        ->assertRedirect(route('account.aanbod'))
-        ->assertSessionHasNoErrors();
+        ->assertSessionHasErrors(['tekst' => \App\Support\AanbodTekst::FOUT_VERPLICHT]);
 
-    $aanbod = Aanbod::query()->where('user_id', $user->id)->first();
-    expect($aanbod)->not->toBeNull()
-        ->and($aanbod->tekst)->toBe('')
-        ->and($aanbod->fotos)->toHaveCount(1);
-
-    $foto = $aanbod->fotos->first();
-    expect(Storage::disk('aanbod_fotos')->exists($foto->path))->toBeTrue()
-        ->and(Storage::disk('aanbod_fotos')->exists($foto->thumb_path))->toBeTrue();
+    expect(Aanbod::query()->where('user_id', $user->id)->count())->toBe(0);
 });
 
 test('aanbod zonder soort en zonder foto wordt afgewezen', function () {
@@ -77,7 +69,44 @@ test('aanbod zonder soort en zonder foto wordt afgewezen', function () {
             'website' => '',
             'form_started' => time() - 10,
         ])
-        ->assertSessionHasErrors('tekst');
+        ->assertSessionHasErrors(['tekst' => \App\Support\AanbodTekst::FOUT_VERPLICHT]);
+
+    expect(Aanbod::query()->where('user_id', $user->id)->count())->toBe(0);
+});
+
+test('aanbod met vrije plantnaam zonder foto wordt geaccepteerd', function () {
+    $user = fotoUser();
+
+    $this->actingAs($user)
+        ->post(route('account.aanbod.store'), [
+            'type' => 'uitdelen',
+            'tekst' => 'Muntstekje',
+            'gratis_akkoord' => '1',
+            'website' => '',
+            'form_started' => time() - 10,
+        ])
+        ->assertRedirect(route('account.aanbod'))
+        ->assertSessionHasNoErrors();
+
+    $aanbod = Aanbod::query()->where('user_id', $user->id)->first();
+    expect($aanbod)->not->toBeNull()
+        ->and($aanbod->tekst)->toBe('Muntstekje')
+        ->and($aanbod->fotos)->toHaveCount(0);
+});
+
+test('aanbod met alleen whitespace-naam wordt afgewezen', function () {
+    $user = fotoUser();
+
+    $this->actingAs($user)
+        ->post(route('account.aanbod.store'), [
+            'type' => 'uitdelen',
+            'tekst' => " \u{00A0}\t ",
+            'gratis_akkoord' => '1',
+            'website' => '',
+            'form_started' => time() - 10,
+            'fotos' => [fixtureUpload('plain.jpg')],
+        ])
+        ->assertSessionHasErrors(['tekst' => \App\Support\AanbodTekst::FOUT_VERPLICHT]);
 
     expect(Aanbod::query()->where('user_id', $user->id)->count())->toBe(0);
 });

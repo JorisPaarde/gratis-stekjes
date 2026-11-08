@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
 use App\Models\Aanbod;
 use App\Models\AanbodFoto;
+use App\Support\AanbodTekst;
 use App\Models\ConversionEvent;
 use App\Rules\GeenInvasieveSoort;
 use App\Services\AanbodFotoService;
@@ -151,7 +152,7 @@ class AanbodController extends Controller
             }
         }
 
-        $data = $this->validatedAanbod($request, $plantensoorten, $incomingFotos, hasExistingFotos: false);
+        $data = $this->validatedAanbod($request, $plantensoorten);
 
         $ttl = (int) config('stekjes.aanbod_ttl_days', 60);
         $aanbod = Aanbod::query()->create([
@@ -249,12 +250,7 @@ class AanbodController extends Controller
         }
 
         $aanbod->load('fotos');
-        $data = $this->validatedAanbod(
-            $request,
-            $plantensoorten,
-            $incomingFotos,
-            hasExistingFotos: $aanbod->fotos->isNotEmpty()
-        );
+        $data = $this->validatedAanbod($request, $plantensoorten);
 
         $aanbod->update([
             'type' => $data['type'],
@@ -329,14 +325,11 @@ class AanbodController extends Controller
     }
 
     /**
-     * @param  list<UploadedFile>  $incomingFotos
-     * @return array{type: string, tekst: string, plantensoort_id: int|null, gratis_akkoord: mixed}
+     * @return array{type: string, tekst: string, aantal: int, plantensoort_id: int|null, gratis_akkoord: mixed}
      */
     private function validatedAanbod(
         Request $request,
         Plantensoorten $plantensoorten,
-        array $incomingFotos,
-        bool $hasExistingFotos,
     ): array {
         $maxCount = (int) config('stekjes.aanbod_fotos.max_count', 3);
         $maxBytes = (int) config('stekjes.aanbod_fotos.max_bytes', 8 * 1024 * 1024);
@@ -371,24 +364,17 @@ class AanbodController extends Controller
             ]
         );
 
-        $validator->after(function (Validator $validator) use ($request, $plantensoorten, $incomingFotos, $hasExistingFotos): void {
+        // Foto blijft optioneel; plantnaam is altijd verplicht (ook bij bestaande foto’s).
+        $validator->after(function (Validator $validator) use ($request, $plantensoorten): void {
             if ($validator->errors()->isNotEmpty()) {
                 return;
             }
 
-            $tekst = trim((string) $request->input('tekst', ''));
-            $hasSpecies = $tekst !== '';
-            $hasPhoto = $hasExistingFotos || $incomingFotos !== [];
+            $tekst = AanbodTekst::normalize((string) $request->input('tekst', ''));
+            if (! AanbodTekst::isUsable($tekst)) {
+                $validator->errors()->add('tekst', AanbodTekst::FOUT_VERPLICHT);
 
-            if (! $hasSpecies && ! $hasPhoto) {
-                $validator->errors()->add(
-                    'tekst',
-                    'Vul een plantensoort in of upload minstens één foto.'
-                );
-            }
-
-            if ($hasSpecies && mb_strlen($tekst) < 2) {
-                $validator->errors()->add('tekst', 'Vul een plantensoort in (minstens 2 tekens).');
+                return;
             }
 
             $rawId = $request->input('plantensoort_id');
@@ -401,8 +387,8 @@ class AanbodController extends Controller
         });
 
         $data = $validator->validate();
-        $tekst = trim((string) ($data['tekst'] ?? ''));
-        $plantensoortId = $tekst !== ''
+        $tekst = AanbodTekst::normalize((string) ($data['tekst'] ?? ''));
+        $plantensoortId = AanbodTekst::isUsable($tekst)
             ? $this->resolvePlantensoortId($plantensoorten, $tekst, $data['plantensoort_id'] ?? null)
             : null;
 

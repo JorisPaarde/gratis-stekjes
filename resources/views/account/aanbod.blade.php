@@ -11,7 +11,7 @@
 @section('content')
 <section class="section wrap">
   <h1 class="page-title">Mijn aanbod</h1>
-  <p class="section-intro">Kies een plantensoort of typ vrij wat je hebt of zoekt. Met een foto mag de soortnaam optioneel blijven. Aanbod staat {{ (int) config('stekjes.aanbod_ttl_days', 60) }} dagen in zoeken en op de kaart; daarna blijft het hier zichtbaar zodat je kunt verlengen.</p>
+  <p class="section-intro">Kies een plantensoort of typ vrij wat je hebt of zoekt. De naam van je plant is verplicht; een foto is optioneel. Aanbod staat {{ (int) config('stekjes.aanbod_ttl_days', 60) }} dagen in zoeken en op de kaart; daarna blijft het hier zichtbaar zodat je kunt verlengen.</p>
   <p class="muted"><x-icon name="waarschuwing" :size="16" /> Geen invasieve soorten (EU-Unielijst). <a href="{{ $invasieveUitlegUrl }}">Meer uitleg</a>.</p>
 
   @if($errors->any())
@@ -49,22 +49,26 @@
                 data-plantsoort-autocomplete
                 data-plantsoort-url="{{ $plantensoortenZoekUrl }}"
               >
-                <label for="aanbod-tekst-{{ $row->id }}">Plantensoort
+                <label for="aanbod-tekst-{{ $row->id }}">Plantensoort *
                   <input
                     type="text"
                     name="tekst"
                     id="aanbod-tekst-{{ $row->id }}"
                     maxlength="2000"
+                    required
                     value="{{ old('tekst', $row->tekst) }}"
                     data-invasieve-input
                     data-plantsoort-input
                     data-aanbod-tekst
+                    aria-required="true"
+                    aria-describedby="aanbod-tekst-fout-{{ $row->id }}"
                     aria-autocomplete="list"
                     aria-controls="aanbod-plantsoort-listbox-{{ $row->id }}"
                     aria-expanded="false"
                     autocomplete="off"
                   >
                 </label>
+                <p class="error" id="aanbod-tekst-fout-{{ $row->id }}" hidden data-aanbod-tekst-fout role="alert"></p>
                 <input type="hidden" name="plantensoort_id" value="{{ old('plantensoort_id', $row->plantensoort_id) }}" data-plantsoort-id>
                 <ul
                   id="aanbod-plantsoort-listbox-{{ $row->id }}"

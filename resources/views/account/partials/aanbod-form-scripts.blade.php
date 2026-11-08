@@ -4,7 +4,11 @@
 (function () {
   var terms = @json($invasieveTerms);
   var uitleg = @json($invasieveUitlegUrl);
-  if (!terms || !terms.length) return;
+  var naamFout = @json(\App\Support\AanbodTekst::FOUT_VERPLICHT);
+
+  function unicodeTrim(text) {
+    return String(text || '').replace(/^\s+|\s+$/gu, '');
+  }
 
   function normalize(text) {
     return String(text || '')
@@ -25,10 +29,40 @@
     return null;
   }
 
-  document.querySelectorAll('[data-invasieve-form]').forEach(function (form) {
-    var input = form.querySelector('[data-invasieve-input]');
+  function setNaamFout(input, foutEl, show) {
+    if (!foutEl) return;
+    if (show) {
+      foutEl.hidden = false;
+      foutEl.textContent = naamFout;
+      input.setAttribute('aria-invalid', 'true');
+    } else {
+      foutEl.hidden = true;
+      foutEl.textContent = '';
+      input.removeAttribute('aria-invalid');
+    }
+  }
+
+  document.querySelectorAll('form[data-invasieve-form], form[data-aanbod-foto-form]').forEach(function (form) {
+    var input = form.querySelector('[data-aanbod-tekst], [data-invasieve-input]');
+    var foutEl = form.querySelector('[data-aanbod-tekst-fout]');
     var hint = form.querySelector('[data-invasieve-hint]');
-    if (!input || !hint) return;
+
+    if (input) {
+      form.addEventListener('submit', function (ev) {
+        if (unicodeTrim(input.value) === '') {
+          ev.preventDefault();
+          setNaamFout(input, foutEl, true);
+          try { input.focus(); } catch (e) {}
+          return;
+        }
+        setNaamFout(input, foutEl, false);
+      });
+      input.addEventListener('input', function () {
+        if (unicodeTrim(input.value) !== '') setNaamFout(input, foutEl, false);
+      });
+    }
+
+    if (!terms || !terms.length || !input || !hint) return;
     function check() {
       var hit = findMatch(input.value);
       if (hit) {

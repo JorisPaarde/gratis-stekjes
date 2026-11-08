@@ -14,24 +14,28 @@
     data-plantsoort-autocomplete
     data-plantsoort-url="{{ $plantensoortenZoekUrl }}"
   >
-    <label for="aanbod-tekst">Plantensoort
-      <span class="hint">Typ een naam; ik toon suggesties. Of upload een foto, dan mag dit leeg blijven. Staat jouw soort er niet bij? Typ dan vrij verder.</span>
+    <label for="aanbod-tekst">Plantensoort *
+      <span class="hint">Typ de naam van je plant (een gebruikelijke naam volstaat). Ik toon suggesties; staat jouw soort er niet bij, typ dan vrij verder. Foto is optioneel.</span>
       <input
         type="text"
         name="tekst"
         id="aanbod-tekst"
         maxlength="2000"
+        required
         placeholder="Bijvoorbeeld monstera of munt"
         value="{{ old('tekst') }}"
         data-invasieve-input
         data-plantsoort-input
         data-aanbod-tekst
+        aria-required="true"
+        aria-describedby="aanbod-tekst-fout"
         aria-autocomplete="list"
         aria-controls="aanbod-plantsoort-listbox"
         aria-expanded="false"
         autocomplete="off"
       >
     </label>
+    <p class="error" id="aanbod-tekst-fout" hidden data-aanbod-tekst-fout role="alert"></p>
     <input type="hidden" name="plantensoort_id" value="{{ old('plantensoort_id') }}" data-plantsoort-id>
     <ul
       id="aanbod-plantsoort-listbox"
@@ -49,7 +53,7 @@
 </label>
 
   <label for="aanbod-fotos">Foto’s (max. {{ $fotoMaxCount }}, JPEG/PNG/WebP, max. {{ $fotoMaxMb }} MB)
-    <span class="hint">Voor je privacy haal ik de locatie uit je foto’s. Minimaal één foto óf een plantensoort is verplicht.</span>
+    <span class="hint">Optioneel. Voor je privacy haal ik de locatie uit je foto’s.</span>
     <input
       type="file"
       name="fotos[]"
