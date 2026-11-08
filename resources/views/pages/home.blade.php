@@ -189,6 +189,25 @@
           </span>
         </a>
       </li>
+      {{-- Tuinverenigingen naast STEKchallenge: zelfde fotokaartstijl; geen nieuw item op /initiatieven. --}}
+      @if($init['anker'] === 'stekchallenge')
+        <li>
+          <a class="home-meedoen-kaart" href="{{ route('tuinverenigingen') }}" aria-labelledby="meedoen-tuinverenigingen">
+            <figure class="init-foto">
+              <picture>
+                <source type="image/webp" srcset="/assets/images/tuinverenigingen/dreef-640.webp 640w, /assets/images/tuinverenigingen/dreef-960.webp 960w, /assets/images/tuinverenigingen/dreef-1280.webp 1280w" sizes="(min-width: 760px) 45vw, 92vw">
+                <img src="/assets/images/tuinverenigingen/dreef-1280.jpg" srcset="/assets/images/tuinverenigingen/dreef-1280.jpg 1280w" sizes="(min-width: 760px) 45vw, 92vw" width="800" height="600" loading="lazy" decoding="async" alt="Volkstuinen bij de Dreef in Enkhuizen: tuintjes langs het water met kassen en bomen">
+              </picture>
+              <figcaption>Foto: Gouwenaar</figcaption>
+            </figure>
+            <span class="home-meedoen-tekst">
+              <strong id="meedoen-tuinverenigingen">Voor tuinverenigingen</strong>
+              <span>Laat leden planten en stekjes met elkaar delen.</span>
+              <span class="home-meedoen-link">Bekijk hoe het werkt <span aria-hidden="true">→</span></span>
+            </span>
+          </a>
+        </li>
+      @endif
     @endforeach
   </ul>
 </section>
