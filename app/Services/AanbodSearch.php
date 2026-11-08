@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Models\Aanbod;
 use App\Models\User;
 use App\Models\Vereniging;
+use App\Support\AanbodTekst;
 use App\Support\Country;
 use App\Support\Geo;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,9 +27,13 @@ final class AanbodSearch
     {
         $rows = $this->baseQuery($typeFilter)->get();
 
-        $items = $rows->map(fn (Aanbod $a) => $this->toPublicItem($a))->all();
+        $items = $rows
+            ->map(fn (Aanbod $a) => $this->toPublicItem($a))
+            ->filter(static fn (array $item): bool => AanbodTekst::isUsable((string) ($item['tekst'] ?? '')))
+            ->values()
+            ->all();
 
-        $plantNeedle = mb_strtolower(trim((string) $plant), 'UTF-8');
+        $plantNeedle = mb_strtolower(AanbodTekst::normalize((string) $plant), 'UTF-8');
         if ($plantNeedle !== '') {
             $items = array_values(array_filter(
                 $items,
@@ -122,11 +127,10 @@ final class AanbodSearch
     {
         $limit = max(1, min($limit, 50));
 
-        return $this->baseQuery($typeFilter)
-            ->limit($limit)
-            ->get()
-            ->map(fn (Aanbod $a) => $this->toPublicItem($a))
-            ->all();
+        return $this->takeUsable(
+            $this->baseQuery($typeFilter),
+            $limit
+        );
     }
 
     /**
@@ -138,21 +142,87 @@ final class AanbodSearch
     {
         $limit = max(1, min($limit, 50));
 
-        return $this->baseQuery($typeFilter)
-            ->whereHas('fotos')
-            ->limit($limit)
-            ->get()
-            ->map(fn (Aanbod $a) => $this->toPublicItem($a))
-            ->all();
+        return $this->takeUsable(
+            $this->baseQuery($typeFilter)->whereHas('fotos'),
+            $limit
+        );
     }
 
     /**
      * Aantal actieve publieke aanbiedingen mét minstens één foto
-     * (zelfde filters als {@see recent()}, plus foto). Voor teaser-drempel.
+     * (zelfde filters als {@see recent()}, plus foto + bruikbare naam). Voor teaser-drempel.
      */
     public function countPublicWithFoto(?string $typeFilter = null): int
     {
-        return $this->eligibleQuery($typeFilter)->whereHas('fotos')->count();
+        return $this->eligibleQuery($typeFilter)
+            ->whereHas('fotos')
+            ->get(['id', 'tekst'])
+            ->filter(static fn (Aanbod $a): bool => AanbodTekst::isUsable((string) $a->tekst))
+            ->count();
+    }
+
+    /**
+     * Publieke wrapper: stream bruikbare items uit een reeds gefilterde/gesorteerde query.
+     * Gebruikt o.a. door home/API én verenigings-ledenblok (zelfde naampredicate).
+     *
+     * @param  Builder<Aanbod>  $query
+     * @return list<array<string, mixed>>
+     */
+    public function takeUsable(Builder $query, int $limit): array
+    {
+        return $this->collectUsable($query, $limit);
+    }
+
+    /**
+     * Stream in deterministische volgorde (created_at DESC, id DESC) tot $limit
+     * bruikbare items of uitputting. Gebufferd per chunk — geen vaste scantop.
+     *
+     * @param  Builder<Aanbod>  $query  reeds gesorteerd zoals {@see baseQuery()}
+     * @return list<array<string, mixed>>
+     */
+    private function collectUsable(Builder $query, int $limit): array
+    {
+        $items = [];
+        $chunkSize = 50;
+        $afterCreated = null;
+        $afterId = null;
+
+        while (count($items) < $limit) {
+            $page = (clone $query)->limit($chunkSize);
+            if ($afterCreated !== null && $afterId !== null) {
+                $page->where(function (Builder $w) use ($afterCreated, $afterId): void {
+                    $w->where('created_at', '<', $afterCreated)
+                        ->orWhere(function (Builder $w2) use ($afterCreated, $afterId): void {
+                            $w2->where('created_at', '=', $afterCreated)
+                                ->where('id', '<', $afterId);
+                        });
+                });
+            }
+
+            $rows = $page->get();
+            if ($rows->isEmpty()) {
+                break;
+            }
+
+            foreach ($rows as $aanbod) {
+                $afterCreated = $aanbod->created_at;
+                $afterId = (int) $aanbod->id;
+                $item = $this->toPublicItem($aanbod);
+                if (! AanbodTekst::isUsable((string) ($item['tekst'] ?? ''))) {
+                    continue;
+                }
+                $items[] = $item;
+                if (count($items) >= $limit) {
+                    break 2;
+                }
+            }
+
+            if ($rows->count() < $chunkSize) {
+                break;
+            }
+        }
+
+        return $items;
     }
 
     /** @return Builder<Aanbod> */
@@ -181,6 +251,8 @@ final class AanbodSearch
     {
         return Aanbod::query()
             ->publiclyListed()
+            // Snelle SQL-voorfilter (ASCII-trim); Unicode-lege namen vallen af in PHP.
+            ->whereRaw("TRIM(COALESCE(tekst, '')) <> ''")
             ->whereHas('user', function ($q) {
                 $q->members()
                     ->where('active', true)
@@ -206,7 +278,7 @@ final class AanbodSearch
         return [
             'id' => $aanbod->id,
             'type' => (string) $aanbod->type,
-            'tekst' => (string) $aanbod->tekst,
+            'tekst' => AanbodTekst::normalize((string) $aanbod->tekst),
             'aantal' => (int) ($aanbod->aantal ?? 1),
             'voornaam' => $user?->publiekeNaam() ?? '',
             'locatie_label' => (string) ($user?->locatie_label ?? ''),

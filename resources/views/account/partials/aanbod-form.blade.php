@@ -9,13 +9,17 @@
       <option value="ophalen" @selected(old('type') === 'ophalen')>Ik zoek / wil ophalen</option>
     </select>
   </label>
+  @php
+    // Error-ownership: submitted old('edit_id') — níet GET ?edit= (create kan open edit-URL hebben).
+    $showTekstFout = $errors->has('tekst') && blank(old('edit_id'));
+  @endphp
   <div
     class="plantsoort-autocomplete"
     data-plantsoort-autocomplete
     data-plantsoort-url="{{ $plantensoortenZoekUrl }}"
   >
-    <label for="aanbod-tekst">Plantensoort
-      <span class="hint">Typ een naam; ik toon suggesties. Of upload een foto, dan mag dit leeg blijven. Staat jouw soort er niet bij? Typ dan vrij verder.</span>
+    <label for="aanbod-tekst">Plantensoort *
+      <span class="hint">Typ de naam van je plant (een gebruikelijke naam volstaat). Ik toon suggesties; staat jouw soort er niet bij, typ dan vrij verder. Foto is optioneel.</span>
       <input
         type="text"
         name="tekst"
@@ -26,12 +30,16 @@
         data-invasieve-input
         data-plantsoort-input
         data-aanbod-tekst
+        aria-required="true"
+        aria-describedby="aanbod-tekst-fout"
+        @if($showTekstFout) aria-invalid="true" autofocus @endif
         aria-autocomplete="list"
         aria-controls="aanbod-plantsoort-listbox"
         aria-expanded="false"
         autocomplete="off"
       >
     </label>
+    <p class="error" id="aanbod-tekst-fout" @if(! $showTekstFout) hidden @endif data-aanbod-tekst-fout role="alert">@if($showTekstFout){{ $errors->first('tekst') }}@endif</p>
     <input type="hidden" name="plantensoort_id" value="{{ old('plantensoort_id') }}" data-plantsoort-id>
     <ul
       id="aanbod-plantsoort-listbox"
@@ -49,7 +57,7 @@
 </label>
 
   <label for="aanbod-fotos">Foto’s (max. {{ $fotoMaxCount }}, JPEG/PNG/WebP, max. {{ $fotoMaxMb }} MB)
-    <span class="hint">Voor je privacy haal ik de locatie uit je foto’s. Minimaal één foto óf een plantensoort is verplicht.</span>
+    <span class="hint">Optioneel. Voor je privacy haal ik de locatie uit je foto’s.</span>
     <input
       type="file"
       name="fotos[]"

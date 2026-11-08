@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Aanbod;
+use App\Support\AanbodTekst;
 use App\Support\Geo;
 use Illuminate\Support\Facades\Schema;
 
@@ -47,6 +48,9 @@ final class StadAanbod
         $items = [];
         foreach ($rows as $aanbod) {
             $item = $this->search->toPublicItem($aanbod);
+            if (! AanbodTekst::isUsable((string) ($item['tekst'] ?? ''))) {
+                continue;
+            }
             $ilat = isset($item['lat']) ? (float) $item['lat'] : null;
             $ilon = isset($item['lon']) ? (float) $item['lon'] : null;
             if ($ilat === null || $ilon === null) {

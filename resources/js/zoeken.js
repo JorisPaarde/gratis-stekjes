@@ -249,6 +249,17 @@
 
   var aanbodTypeLabels = { uitdelen: "Te geef", ophalen: "Gezocht" };
 
+  /** Unicode-trim; hoeveelheid is geen naam. Lege/onbruikbare titel hoort niet in de lijst. */
+  function usableTekst(tekst) {
+    return String(tekst || "").replace(/^\s+|\s+$/gu, "") !== "";
+  }
+
+  function filterUsableAanbod(items) {
+    return (items || []).filter(function (item) {
+      return usableTekst(item && item.tekst);
+    });
+  }
+
   /**
    * Aanbod per persoon samenvoegen (zelfde lid = zelfde plek): één kaart met regels,
    * i.p.v. drie kaarten met steeds «Sabina · Spierdijk · 38 km».
@@ -256,7 +267,7 @@
   function groupAanbod(items) {
     var groups = [];
     var byUser = {};
-    items.forEach(function (item) {
+    filterUsableAanbod(items).forEach(function (item) {
       var key = String(item.user_id);
       if (!byUser[key]) {
         byUser[key] = {
@@ -323,9 +334,63 @@
     return li;
   }
 
-  function aanbodRegel(item) {
+  /** Zelfde planticon als x-icon plant (24 grid); broken → dit; neutraal alleen als die swap faalt. */
+  function aanbodFotoLeegHtml(extraClass) {
+    var cls = "zoek-regel-foto is-leeg" + (extraClass ? " " + extraClass : "");
+    return (
+      '<span class="' +
+      cls +
+      '" aria-hidden="true">' +
+      '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+      '<path d="M12 22v-7"/><path d="M9 22h6"/><path d="M12 15c-3.5-1-6-3.5-6-7 4 0 6 2.5 6 7Z"/><path d="M12 15c3.5-1 6-3.5 6-7-4 0-6 2.5-6 7Z"/><path d="M12 10c-1.5-3-.5-5.5 2-7"/>' +
+      "</svg></span>"
+    );
+  }
+
+  function replaceBrokenAanbodFoto(img) {
+    if (!img || img.getAttribute("data-aanbod-foto-fallback") === "1") return;
+    img.setAttribute("data-aanbod-foto-fallback", "1");
+    try {
+      var wrap = document.createElement("div");
+      wrap.innerHTML = aanbodFotoLeegHtml();
+      var node = wrap.firstElementChild;
+      if (node) {
+        img.replaceWith(node);
+        return;
+      }
+    } catch (e) {}
+    var s = document.createElement("span");
+    s.className = "zoek-regel-foto is-leeg is-foto-fout";
+    s.setAttribute("aria-hidden", "true");
+    img.replaceWith(s);
+  }
+
+  // Capture op de lijst: geen markup/quotes in onerror-attributen.
+  list.addEventListener(
+    "error",
+    function (ev) {
+      var t = ev.target;
+      if (!t || t.tagName !== "IMG" || !t.hasAttribute("data-aanbod-foto")) return;
+      replaceBrokenAanbodFoto(t);
+    },
+    true
+  );
+
+  function aanbodFotoHtml(item) {
     var fotos = Array.isArray(item.fotos) ? item.fotos : [];
     var foto = fotos[0] && (fotos[0].thumb_url || fotos[0].url);
+    if (!foto) return aanbodFotoLeegHtml();
+    return (
+      '<img class="zoek-regel-foto" src="' +
+      escapeHtml(foto) +
+      '" alt="' +
+      escapeHtml(fotos[0].alt || "Foto bij aanbod") +
+      '" width="48" height="48" loading="lazy" data-aanbod-foto>'
+    );
+  }
+
+  function aanbodRegel(item) {
+    var naam = String(item.tekst || "").replace(/^\s+|\s+$/gu, "");
     var bericht = cfg.bericht_binnenkort
       ? ""
       : '<a class="zoek-regel-bericht" href="' +
@@ -337,17 +402,13 @@
         '">Stuur bericht</a>';
     return (
       '<li class="zoek-regel">' +
-      (foto
-        ? '<img src="' +
-          escapeHtml(foto) +
-          '" alt="' +
-          escapeHtml(fotos[0].alt || "Foto bij aanbod") +
-          '" width="48" height="48" loading="lazy">'
-        : "") +
+      aanbodFotoHtml(item) +
       '<span class="zoek-regel-tekst"><span class="badge">' +
       escapeHtml(aanbodTypeLabels[item.type] || item.type) +
       "</span> " +
-      escapeHtml(item.tekst || "") +
+      '<span class="aanbod-kaart-naam">' +
+      escapeHtml(naam) +
+      "</span>" +
       (item.aantal > 1 ? ' <span class="aanbod-aantal">(' + item.aantal + " stuks)</span>" : "") +
       "</span>" +
       bericht +
@@ -709,7 +770,7 @@
       })
       .then(function (data) {
         if (center || plantModus) return; // intussen gezocht: zoekresultaat wint
-        aanbodItems = (data && data.items) || [];
+        aanbodItems = filterUsableAanbod((data && data.items) || []);
         resetLimits();
         refreshMarkers(false);
       })
@@ -751,7 +812,7 @@
       })
       .then(function (data) {
         var meta = (data && data.meta) || {};
-        aanbodItems = (data && data.items) || [];
+        aanbodItems = filterUsableAanbod((data && data.items) || []);
         plantModus = { plant: plant, sortering: meta.sortering || "recent", reden: meta.reden || null };
         resetLimits();
         refreshMarkers(false);
@@ -790,7 +851,7 @@
         });
       })
       .then(function (data) {
-        aanbodItems = (data && data.items) || [];
+        aanbodItems = filterUsableAanbod((data && data.items) || []);
         var meta = data && data.meta;
         center =
           meta && meta.zoek_lat != null

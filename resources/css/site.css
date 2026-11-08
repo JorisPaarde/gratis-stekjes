@@ -1048,11 +1048,15 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
   width: 100%; aspect-ratio: 16 / 11; object-fit: cover;
   background: var(--bg-mint);
 }
-.aanbod-kaart-foto.is-leeg {
+.aanbod-kaart-foto.is-leeg,
+.aanbod-kaart-foto.is-foto-fout {
   display: flex; align-items: center; justify-content: center;
-  aspect-ratio: auto; height: 3.75rem;
+  aspect-ratio: 16 / 11; height: auto; min-height: 3.75rem;
   color: var(--forest);
+  background: var(--bg-mint);
 }
+.aanbod-kaart-naam { font-weight: 600; }
+.aanbod-aantal { font-weight: 500; color: var(--ink-soft); }
 .aanbod-kaart-body { display: flex; flex-direction: column; gap: .35rem; padding: .85rem 1rem 1rem; }
 .aanbod-kaart-body .badge { align-self: flex-start; }
 .aanbod-kaart-tekst { font-weight: 600; line-height: 1.35; }
@@ -1100,8 +1104,10 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
   .aanbod-kaarten > li:nth-child(n + 5) { display: none; }
   .aanbod-kaart { flex-direction: row; align-items: stretch; }
   .aanbod-kaart-foto,
-  .aanbod-kaart-foto.is-leeg {
-    width: 5.5rem; flex: 0 0 5.5rem; height: auto; aspect-ratio: auto;
+  .aanbod-kaart-foto.is-leeg,
+  .aanbod-kaart-foto.is-foto-fout {
+    width: 5.5rem; flex: 0 0 5.5rem; height: auto; aspect-ratio: 1 / 1;
+    min-height: 5.5rem;
   }
   .aanbod-kaart-body { padding: .7rem .85rem; gap: .25rem; }
   .aanbod-kaart-tekst { font-size: .95rem; }

@@ -3,6 +3,33 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.16] - 2026-11-08
+
+### Fixed
+
+- zoeken.js: broken foto via capture-fase error-listener op de lijst (geen HTML/quotes in onerror-attribuut).
+- Verenigings-ledenblok: zelfde usable-stream als home/API (tot 30 of uitputting; geen lege «(N stuks)»-regels).
+- Account aanbod/aanbieden: server `@error('tekst')` inline + aria-invalid/autofocus alleen op het getargete formulier.
+- FORM-whitespace: gedeelde Unicode-set server+client (incl. U+0085 NEL / NBSP / FEFF); geen JS-`\s`-mismatch.
+- Fout-ownership op `old('edit_id')` (niet GET `?edit=`); create-fout blijft op create ook als edit-UI openstaat.
+- Progressive enhancement: plantnaam zonder HTML `required`; JS zet `required` + customValidity; NoJS lege submit → exacte NL-serverfout.
+
+## [0.78.15] - 2026-11-08
+
+### Fixed
+
+- Plantnaam verplicht bij plaatsen/bewerken van aanbod (ook whitespace/Unicode-leeg); foto blijft optioneel. Fouttekst: «Vul de naam van je plant in.»
+- Openbare lijsten/Net aangeboden sluiten items zonder bruikbare plantnaam uit en vullen aan met volgende geldige (geen bronmutatie).
+- Aanbodkaarten: vaste beeldruimte + nette fallback bij ontbrekende of kapotte foto (geen herhaallus).
+- Update-aanbod: validatie vóór `remove_fotos`/uploads (geen stille foto-verwijdering bij afgewezen naam).
+- `collectUsable` streamt in created_at/id-volgorde tot limiet of uitputting (geen vaste scantop).
+- Clientvalidatie: native `invalid` + `setCustomValidity` met exacte foutcopy, aria en focus (ook lege/whitespace).
+- Broken foto → bestaande planticon-placeholder; neutraal vlak alleen als die swap faalt.
+
+### Added
+
+- Artisan `gp:audit-lege-aanbod-tekst` (read-only; ids/redenen/aantallen, geen PII, geen writes).
+
 ## [0.78.14] - 2026-11-08
 
 ### Added
