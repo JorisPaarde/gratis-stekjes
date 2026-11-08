@@ -3,6 +3,14 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.16] - 2026-11-08
+
+### Fixed
+
+- zoeken.js: broken foto via capture-fase error-listener op de lijst (geen HTML/quotes in onerror-attribuut).
+- Verenigings-ledenblok: zelfde usable-stream als home/API (tot 30 of uitputting; geen lege «(N stuks)»-regels).
+- Account aanbod/aanbieden: server `@error('tekst')` inline + aria-invalid/autofocus alleen op het getargete formulier.
+
 ## [0.78.15] - 2026-11-08
 
 ### Fixed

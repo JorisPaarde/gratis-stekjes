@@ -127,7 +127,7 @@ final class AanbodSearch
     {
         $limit = max(1, min($limit, 50));
 
-        return $this->collectUsable(
+        return $this->takeUsable(
             $this->baseQuery($typeFilter),
             $limit
         );
@@ -142,7 +142,7 @@ final class AanbodSearch
     {
         $limit = max(1, min($limit, 50));
 
-        return $this->collectUsable(
+        return $this->takeUsable(
             $this->baseQuery($typeFilter)->whereHas('fotos'),
             $limit
         );
@@ -159,6 +159,18 @@ final class AanbodSearch
             ->get(['id', 'tekst'])
             ->filter(static fn (Aanbod $a): bool => AanbodTekst::isUsable((string) $a->tekst))
             ->count();
+    }
+
+    /**
+     * Publieke wrapper: stream bruikbare items uit een reeds gefilterde/gesorteerde query.
+     * Gebruikt o.a. door home/API én verenigings-ledenblok (zelfde naampredicate).
+     *
+     * @param  Builder<Aanbod>  $query
+     * @return list<array<string, mixed>>
+     */
+    public function takeUsable(Builder $query, int $limit): array
+    {
+        return $this->collectUsable($query, $limit);
     }
 
     /**

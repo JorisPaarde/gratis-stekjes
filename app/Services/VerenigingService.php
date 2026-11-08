@@ -218,7 +218,8 @@ final class VerenigingService
     {
         try {
             $leden = $vereniging->leden()->members()->count();
-            $aanbod = Aanbod::query()
+            // Zelfde bruikbare-naampredicate + stream als home/API (geen lege «(N stuks)»-regels).
+            $query = Aanbod::query()
                 ->publiclyListed()
                 ->with(['user', 'fotos'])
                 ->whereHas('user', function ($q) use ($vereniging): void {
@@ -230,10 +231,8 @@ final class VerenigingService
                             ->where('vereniging_user.zichtbaar', true));
                 })
                 ->latest('created_at')
-                ->limit(30)
-                ->get()
-                ->map(fn (Aanbod $a) => $search->toPublicItem($a))
-                ->all();
+                ->orderByDesc('id');
+            $aanbod = $search->takeUsable($query, 30);
         } catch (Throwable) {
             return ['leden' => 0, 'aanbod' => []];
         }

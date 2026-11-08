@@ -49,6 +49,10 @@
                 data-plantsoort-autocomplete
                 data-plantsoort-url="{{ $plantensoortenZoekUrl }}"
               >
+                @php
+                  // Alleen de geopende edit-rij: geen aria-fout op andere rijen ondanks shared old('tekst').
+                  $showTekstFout = $editing && $errors->has('tekst');
+                @endphp
                 <label for="aanbod-tekst-{{ $row->id }}">Plantensoort *
                   <input
                     type="text"
@@ -62,13 +66,14 @@
                     data-aanbod-tekst
                     aria-required="true"
                     aria-describedby="aanbod-tekst-fout-{{ $row->id }}"
+                    @if($showTekstFout) aria-invalid="true" autofocus @endif
                     aria-autocomplete="list"
                     aria-controls="aanbod-plantsoort-listbox-{{ $row->id }}"
                     aria-expanded="false"
                     autocomplete="off"
                   >
                 </label>
-                <p class="error" id="aanbod-tekst-fout-{{ $row->id }}" hidden data-aanbod-tekst-fout role="alert"></p>
+                <p class="error" id="aanbod-tekst-fout-{{ $row->id }}" @if(! $showTekstFout) hidden @endif data-aanbod-tekst-fout role="alert">@if($showTekstFout){{ $errors->first('tekst') }}@endif</p>
                 <input type="hidden" name="plantensoort_id" value="{{ old('plantensoort_id', $row->plantensoort_id) }}" data-plantsoort-id>
                 <ul
                   id="aanbod-plantsoort-listbox-{{ $row->id }}"

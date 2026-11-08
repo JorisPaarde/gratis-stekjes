@@ -347,6 +347,35 @@
     );
   }
 
+  function replaceBrokenAanbodFoto(img) {
+    if (!img || img.getAttribute("data-aanbod-foto-fallback") === "1") return;
+    img.setAttribute("data-aanbod-foto-fallback", "1");
+    try {
+      var wrap = document.createElement("div");
+      wrap.innerHTML = aanbodFotoLeegHtml();
+      var node = wrap.firstElementChild;
+      if (node) {
+        img.replaceWith(node);
+        return;
+      }
+    } catch (e) {}
+    var s = document.createElement("span");
+    s.className = "zoek-regel-foto is-leeg is-foto-fout";
+    s.setAttribute("aria-hidden", "true");
+    img.replaceWith(s);
+  }
+
+  // Capture op de lijst: geen markup/quotes in onerror-attributen.
+  list.addEventListener(
+    "error",
+    function (ev) {
+      var t = ev.target;
+      if (!t || t.tagName !== "IMG" || !t.hasAttribute("data-aanbod-foto")) return;
+      replaceBrokenAanbodFoto(t);
+    },
+    true
+  );
+
   function aanbodFotoHtml(item) {
     var fotos = Array.isArray(item.fotos) ? item.fotos : [];
     var foto = fotos[0] && (fotos[0].thumb_url || fotos[0].url);
@@ -356,11 +385,7 @@
       escapeHtml(foto) +
       '" alt="' +
       escapeHtml(fotos[0].alt || "Foto bij aanbod") +
-      '" width="48" height="48" loading="lazy" data-aanbod-foto ' +
-      'onerror="this.onerror=null;try{var w=document.createElement(\'div\');w.innerHTML=' +
-      JSON.stringify(aanbodFotoLeegHtml()) +
-      ';var n=w.firstElementChild;if(n){this.replaceWith(n);return;}}catch(e){}' +
-      'var s=document.createElement(\'span\');s.className=\'zoek-regel-foto is-leeg is-foto-fout\';s.setAttribute(\'aria-hidden\',\'true\');this.replaceWith(s);">'
+      '" width="48" height="48" loading="lazy" data-aanbod-foto>'
     );
   }
 

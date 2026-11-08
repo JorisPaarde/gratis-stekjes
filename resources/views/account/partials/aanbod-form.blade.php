@@ -9,6 +9,10 @@
       <option value="ophalen" @selected(old('type') === 'ophalen')>Ik zoek / wil ophalen</option>
     </select>
   </label>
+  @php
+    // Create-form: toon serverfout alleen als we niet in een edit-context zitten.
+    $showTekstFout = $errors->has('tekst') && blank(old('edit_id')) && ! request()->filled('edit');
+  @endphp
   <div
     class="plantsoort-autocomplete"
     data-plantsoort-autocomplete
@@ -29,13 +33,14 @@
         data-aanbod-tekst
         aria-required="true"
         aria-describedby="aanbod-tekst-fout"
+        @if($showTekstFout) aria-invalid="true" autofocus @endif
         aria-autocomplete="list"
         aria-controls="aanbod-plantsoort-listbox"
         aria-expanded="false"
         autocomplete="off"
       >
     </label>
-    <p class="error" id="aanbod-tekst-fout" hidden data-aanbod-tekst-fout role="alert"></p>
+    <p class="error" id="aanbod-tekst-fout" @if(! $showTekstFout) hidden @endif data-aanbod-tekst-fout role="alert">@if($showTekstFout){{ $errors->first('tekst') }}@endif</p>
     <input type="hidden" name="plantensoort_id" value="{{ old('plantensoort_id') }}" data-plantsoort-id>
     <ul
       id="aanbod-plantsoort-listbox"
