@@ -3,6 +3,12 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.14] - 2026-11-08
+
+### Added
+
+- Stadspagina /gratis-planten/den-helder (+ social image). Den Helder is de enige plaats met live aanbod die nog geen stadspagina had.
+
 ## [0.78.12] - 2026-11-07
 
 ### Fixed
