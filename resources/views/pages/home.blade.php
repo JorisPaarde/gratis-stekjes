@@ -98,6 +98,7 @@
     </div>
 
     @if(count($overzicht['aanbod']))
+      <template id="aanbod-kaart-foto-leeg-tpl">@include('partials.aanbod-kaart-foto-leeg')</template>
       <h3 class="home-subkop">Net aangeboden</h3>
       <ul class="aanbod-kaarten">
         @foreach($overzicht['aanbod'] as $item)
@@ -117,10 +118,10 @@
                   loading="lazy"
                   decoding="async"
                   data-aanbod-foto
-                  onerror="this.onerror=null;var s=document.createElement('span');s.className='aanbod-kaart-foto is-leeg is-foto-fout';s.setAttribute('aria-hidden','true');this.replaceWith(s);"
+                  onerror="this.onerror=null;var t=document.getElementById('aanbod-kaart-foto-leeg-tpl');if(t&&t.content&&t.content.firstElementChild){var n=t.content.firstElementChild.cloneNode(true);this.replaceWith(n);}else{var s=document.createElement('span');s.className='aanbod-kaart-foto is-leeg is-foto-fout';s.setAttribute('aria-hidden','true');this.replaceWith(s);}"
                 >
               @else
-                <span class="aanbod-kaart-foto is-leeg" aria-hidden="true"><x-icon name="plant" :size="32" /></span>
+                @include('partials.aanbod-kaart-foto-leeg')
               @endif
               <span class="aanbod-kaart-body">
                 <span class="badge">{{ $aanbodTypeLabels[$item['type'] ?? ''] ?? ($item['type'] ?? '') }}</span>

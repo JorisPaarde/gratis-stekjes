@@ -162,22 +162,50 @@ final class AanbodSearch
     }
 
     /**
-     * Haal meer rijen dan $limit en vul aan met volgende bruikbare namen (geen DB-mutatie).
+     * Stream in deterministische volgorde (created_at DESC, id DESC) tot $limit
+     * bruikbare items of uitputting. Gebufferd per chunk — geen vaste scantop.
      *
-     * @param  Builder<Aanbod>  $query
+     * @param  Builder<Aanbod>  $query  reeds gesorteerd zoals {@see baseQuery()}
      * @return list<array<string, mixed>>
      */
     private function collectUsable(Builder $query, int $limit): array
     {
-        $batch = min(100, max($limit * 4, $limit + 12));
         $items = [];
-        foreach ($query->limit($batch)->get() as $aanbod) {
-            $item = $this->toPublicItem($aanbod);
-            if (! AanbodTekst::isUsable((string) ($item['tekst'] ?? ''))) {
-                continue;
+        $chunkSize = 50;
+        $afterCreated = null;
+        $afterId = null;
+
+        while (count($items) < $limit) {
+            $page = (clone $query)->limit($chunkSize);
+            if ($afterCreated !== null && $afterId !== null) {
+                $page->where(function (Builder $w) use ($afterCreated, $afterId): void {
+                    $w->where('created_at', '<', $afterCreated)
+                        ->orWhere(function (Builder $w2) use ($afterCreated, $afterId): void {
+                            $w2->where('created_at', '=', $afterCreated)
+                                ->where('id', '<', $afterId);
+                        });
+                });
             }
-            $items[] = $item;
-            if (count($items) >= $limit) {
+
+            $rows = $page->get();
+            if ($rows->isEmpty()) {
+                break;
+            }
+
+            foreach ($rows as $aanbod) {
+                $afterCreated = $aanbod->created_at;
+                $afterId = (int) $aanbod->id;
+                $item = $this->toPublicItem($aanbod);
+                if (! AanbodTekst::isUsable((string) ($item['tekst'] ?? ''))) {
+                    continue;
+                }
+                $items[] = $item;
+                if (count($items) >= $limit) {
+                    break 2;
+                }
+            }
+
+            if ($rows->count() < $chunkSize) {
                 break;
             }
         }

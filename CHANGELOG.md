@@ -10,6 +10,10 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Plantnaam verplicht bij plaatsen/bewerken van aanbod (ook whitespace/Unicode-leeg); foto blijft optioneel. Fouttekst: «Vul de naam van je plant in.»
 - Openbare lijsten/Net aangeboden sluiten items zonder bruikbare plantnaam uit en vullen aan met volgende geldige (geen bronmutatie).
 - Aanbodkaarten: vaste beeldruimte + nette fallback bij ontbrekende of kapotte foto (geen herhaallus).
+- Update-aanbod: validatie vóór `remove_fotos`/uploads (geen stille foto-verwijdering bij afgewezen naam).
+- `collectUsable` streamt in created_at/id-volgorde tot limiet of uitputting (geen vaste scantop).
+- Clientvalidatie: native `invalid` + `setCustomValidity` met exacte foutcopy, aria en focus (ook lege/whitespace).
+- Broken foto → bestaande planticon-placeholder; neutraal vlak alleen als die swap faalt.
 
 ### Added
 

@@ -223,20 +223,11 @@ class AanbodController extends Controller
             return back()->withInput()->withErrors(['tekst' => 'Even geduld, het formulier ging te snel.']);
         }
 
+        // Alleen IDs/files verzamelen — nog geen deletes/uploads vóór validatie.
         $removeIds = array_values(array_filter(array_map(
             static fn ($v) => (int) $v,
             (array) $request->input('remove_fotos', [])
         ), static fn (int $id) => $id > 0));
-
-        foreach ($removeIds as $fotoId) {
-            $foto = AanbodFoto::query()
-                ->where('aanbod_id', $aanbod->id)
-                ->whereKey($fotoId)
-                ->first();
-            if ($foto) {
-                $fotos->deleteFoto($foto);
-            }
-        }
 
         $incomingFotos = $this->incomingFotoFiles($request);
         if ($incomingFotos !== []) {
@@ -251,6 +242,16 @@ class AanbodController extends Controller
 
         $aanbod->load('fotos');
         $data = $this->validatedAanbod($request, $plantensoorten);
+
+        foreach ($removeIds as $fotoId) {
+            $foto = AanbodFoto::query()
+                ->where('aanbod_id', $aanbod->id)
+                ->whereKey($fotoId)
+                ->first();
+            if ($foto) {
+                $fotos->deleteFoto($foto);
+            }
+        }
 
         $aanbod->update([
             'type' => $data['type'],

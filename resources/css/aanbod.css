@@ -311,7 +311,10 @@
 }
 .zoek-regel-foto.is-leeg,
 .zoek-regel-foto.is-foto-fout {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--forest, #1f4d2b);
   background: var(--bg-mint, #e8f3e3);
 }
 .zoek-regel-tekst {

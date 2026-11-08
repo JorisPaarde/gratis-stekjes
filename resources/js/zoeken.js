@@ -334,19 +334,33 @@
     return li;
   }
 
+  /** Zelfde planticon als x-icon plant (24 grid); broken → dit; neutraal alleen als die swap faalt. */
+  function aanbodFotoLeegHtml(extraClass) {
+    var cls = "zoek-regel-foto is-leeg" + (extraClass ? " " + extraClass : "");
+    return (
+      '<span class="' +
+      cls +
+      '" aria-hidden="true">' +
+      '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+      '<path d="M12 22v-7"/><path d="M9 22h6"/><path d="M12 15c-3.5-1-6-3.5-6-7 4 0 6 2.5 6 7Z"/><path d="M12 15c3.5-1 6-3.5 6-7-4 0-6 2.5-6 7Z"/><path d="M12 10c-1.5-3-.5-5.5 2-7"/>' +
+      "</svg></span>"
+    );
+  }
+
   function aanbodFotoHtml(item) {
     var fotos = Array.isArray(item.fotos) ? item.fotos : [];
     var foto = fotos[0] && (fotos[0].thumb_url || fotos[0].url);
-    var leeg =
-      '<span class="zoek-regel-foto is-leeg" aria-hidden="true"></span>';
-    if (!foto) return leeg;
+    if (!foto) return aanbodFotoLeegHtml();
     return (
       '<img class="zoek-regel-foto" src="' +
       escapeHtml(foto) +
       '" alt="' +
       escapeHtml(fotos[0].alt || "Foto bij aanbod") +
       '" width="48" height="48" loading="lazy" data-aanbod-foto ' +
-      'onerror="this.onerror=null;var s=document.createElement(\'span\');s.className=\'zoek-regel-foto is-leeg is-foto-fout\';s.setAttribute(\'aria-hidden\',\'true\');this.replaceWith(s);">'
+      'onerror="this.onerror=null;try{var w=document.createElement(\'div\');w.innerHTML=' +
+      JSON.stringify(aanbodFotoLeegHtml()) +
+      ';var n=w.firstElementChild;if(n){this.replaceWith(n);return;}}catch(e){}' +
+      'var s=document.createElement(\'span\');s.className=\'zoek-regel-foto is-leeg is-foto-fout\';s.setAttribute(\'aria-hidden\',\'true\');this.replaceWith(s);">'
     );
   }
 
