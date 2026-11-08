@@ -81,7 +81,7 @@ test('doelgroeppagina’s staan in sitemap; Help mee ook in menu, footer en home
     expect(preg_match('/<nav id="hoofdmenu"[^>]*>(.*?)<\/nav>/s', $home, $nav))->toBe(1);
     expect(preg_match('/<nav class="footer-links"[^>]*>(.*?)<\/nav>/s', $home, $footer))->toBe(1);
 
-    // Help mee is bewust vindbaar; overige doelgroeppagina’s blijven buiten menu/footer.
+    // Help mee is bewust vindbaar in menu/footer; overige doelgroeppagina’s blijven daar buiten.
     expect($nav[1])->toContain('href="'.route('help-mee').'"')
         ->and($nav[1])->toContain('Help mee');
     expect($footer[1])->toContain('href="'.route('help-mee').'"')
@@ -98,8 +98,9 @@ test('doelgroeppagina’s staan in sitemap; Help mee ook in menu, footer en home
         ->and($cta[1])->toMatch('/Help mee\s*<\/a>/')
         ->and($cta[1])->not->toContain('badge-soon')
         ->and($cta[1])->not->toContain('binnenkort');
+    // /tuinverenigingen is vindbaar via #ook-meedoen (apart getest); niet via Doe-mee-CTA.
+    expect($cta[1])->not->toMatch('/href="[^"]*\/tuinverenigingen"/');
     expect($home)->not->toMatch('/href="[^"]*\/volkstuinen"/')
-        ->and($home)->not->toMatch('/href="[^"]*\/tuinverenigingen"/')
         ->and($home)->not->toMatch('/href="[^"]*\/natuur"/')
         ->and($home)->not->toMatch('/href="[^"]*\/verbinding"/');
 });

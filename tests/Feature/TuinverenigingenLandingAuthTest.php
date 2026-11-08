@@ -96,7 +96,7 @@ test('tuinverenigingen landing: hiërarchie belofte→account→CTA vóór foto;
     expect(preg_match('/\b(we|wij|ons|onze)\b/iu', $text))->toBe(0);
 });
 
-test('tuinverenigingen staat in sitemap en reservedSlugs; niet in menu/footer', function () {
+test('tuinverenigingen staat in sitemap en reservedSlugs; niet in menu/footer; wel op home #ook-meedoen', function () {
     expect(\App\Services\InitiatiefPaginas::reservedSlugs())->toContain('tuinverenigingen');
 
     $xml = $this->get(route('sitemap'))->assertOk()->getContent();
@@ -105,8 +105,12 @@ test('tuinverenigingen staat in sitemap en reservedSlugs; niet in menu/footer', 
     $home = $this->get('/')->assertOk()->getContent();
     expect(preg_match('/<nav id="hoofdmenu"[^>]*>(.*?)<\/nav>/s', $home, $nav))->toBe(1);
     expect(preg_match('/<nav class="footer-links"[^>]*>(.*?)<\/nav>/s', $home, $footer))->toBe(1);
+    // Geen Meedoen-navgroep → geen nieuwe header/footer-groep; vindbaarheid via #ook-meedoen.
     expect($nav[1])->not->toContain('tuinverenigingen');
     expect($footer[1])->not->toContain('tuinverenigingen');
+    expect(preg_match('/<section[^>]*id="ook-meedoen"[^>]*>(.*?)<\/section>/s', $home, $sectie))->toBe(1);
+    expect($sectie[1])->toContain('href="'.route('tuinverenigingen').'"')
+        ->and($sectie[1])->toContain('Voor tuinverenigingen');
 });
 
 test('gast CTA /account/verenigingen → bestaande login → Mijn verenigingen', function () {
