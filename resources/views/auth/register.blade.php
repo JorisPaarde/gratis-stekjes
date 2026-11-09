@@ -17,30 +17,62 @@
     </ul>
   @endif
 
-  <form class="form" method="post" action="{{ route('account.registreren') }}" novalidate data-meet-form="register">
+  <form class="form" method="post" action="{{ route('account.registreren') }}" novalidate data-meet-form="register" autocomplete="on">
     @csrf
     @include('partials.honeypot')
     <input type="hidden" name="next" value="{{ $next ?? '/account' }}">
 
-    <label>E-mailadres *
-      <input type="email" name="email" required maxlength="254" autocomplete="email" value="{{ old('email') }}">
+    <label for="reg-email">E-mailadres *
+      <input
+        type="email"
+        id="reg-email"
+        name="email"
+        required
+        maxlength="254"
+        autocomplete="email"
+        inputmode="email"
+        autocapitalize="off"
+        spellcheck="false"
+        value="{{ old('email') }}"
+      >
     </label>
-    <label>Wachtwoord * <span class="hint">Minstens 10 tekens</span>
+    <label for="reg-password">Wachtwoord * <span class="hint">Minstens 10 tekens</span>
       <span class="wachtwoord-veld">
-        <input type="password" name="password" id="reg-password" required minlength="10" maxlength="200" autocomplete="new-password">
+        <input
+          type="password"
+          name="password"
+          id="reg-password"
+          required
+          minlength="10"
+          maxlength="200"
+          autocomplete="new-password"
+          passwordrules="minlength: 10;"
+        >
         <button type="button" class="btn btn-secondary btn-klein" data-wachtwoord-toggle aria-controls="reg-password" aria-pressed="false">Toon</button>
       </span>
     </label>
 
-    <label>Land *
-      <select name="country" required>
+    <label for="reg-country">Land *
+      <select id="reg-country" name="country" required autocomplete="country">
         @foreach($countries as $code => $label)
           <option value="{{ $code }}" @selected(old('country', 'NL') === $code)>{{ $label }}</option>
         @endforeach
       </select>
     </label>
-    <label>Postcode *
-      <input name="postcode" required maxlength="10" autocomplete="postal-code" value="{{ old('postcode') }}" placeholder="{{ old('country', 'NL') === 'BE' ? '9000' : '2011 AB' }}">
+    <label for="reg-postcode">Postcode *
+      <input
+        type="text"
+        id="reg-postcode"
+        name="postcode"
+        required
+        maxlength="10"
+        autocomplete="postal-code"
+        inputmode="text"
+        autocapitalize="characters"
+        spellcheck="false"
+        value="{{ old('postcode') }}"
+        placeholder="{{ old('country', 'NL') === 'BE' ? '9000' : '2011 AB' }}"
+      >
     </label>
     <p class="hint">Alleen een afgeronde plek wordt zichtbaar, nooit je straatadres. Zo kunnen buren aanbod bij jou in de buurt vinden.</p>
 
@@ -55,17 +87,24 @@
 
     <fieldset class="form-fieldset form-fieldset--meet" data-meet-found-via>
       <legend>Hoe heb je ons gevonden? <span class="hint">(optioneel)</span></legend>
-      <label>
-        <select name="acquisition_found_via" data-found-via-select>
+      <label for="reg-found-via">
+        <select id="reg-found-via" name="acquisition_found_via" data-found-via-select autocomplete="off">
           <option value="">— kies indien je wilt —</option>
           @foreach(($foundViaOptions ?? []) as $value => $label)
             <option value="{{ $value }}" @selected(old('acquisition_found_via') === $value)>{{ $label }}</option>
           @endforeach
         </select>
       </label>
-      <label data-found-via-other @if(old('acquisition_found_via') !== 'anders') hidden @endif>
+      <label for="reg-found-via-other" data-found-via-other @if(old('acquisition_found_via') !== 'anders') hidden @endif>
         Anders, namelijk
-        <input type="text" name="acquisition_found_via_other" maxlength="120" value="{{ old('acquisition_found_via_other') }}" autocomplete="off">
+        <input
+          type="text"
+          id="reg-found-via-other"
+          name="acquisition_found_via_other"
+          maxlength="120"
+          value="{{ old('acquisition_found_via_other') }}"
+          autocomplete="off"
+        >
       </label>
     </fieldset>
 

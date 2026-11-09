@@ -412,6 +412,8 @@ h1.page-title {
   box-shadow: var(--shadow);
 }
 .form label { display: grid; gap: .3rem; font-weight: 600; }
+/* Author CSS mag HTML hidden niet overrulen (anders blijft bv. «Anders, namelijk» zichtbaar). */
+.form [hidden] { display: none !important; }
 .form input, .form select, .form textarea {
   font: inherit; padding: .7rem .75rem;
   border: 1px solid var(--line); border-radius: .55rem;
