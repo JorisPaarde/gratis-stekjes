@@ -542,6 +542,48 @@ test('dashboard trechter toont te weinig data onder 30 form_starts', function ()
     expect($html)->not->toContain('bezoekers vandaag');
 });
 
+test('dashboard trechter toont staplabels en drempeluitleg in HTML', function () {
+    $minFormStarts = (int) config('conversion.min_form_starts_for_rates', 30);
+
+    for ($i = 0; $i < 3; $i++) {
+        ConversionEvent::query()->create([
+            'occurred_at' => now(),
+            'event_type' => ConversionEvent::TYPE_FORM_START,
+            'path' => '/account/registreren',
+            'flow_id' => 'label-f'.$i,
+            'visitor_day_hash' => 'label-v'.$i,
+            'device_type' => 'mobile',
+            'week_key' => app(ConversionTracker::class)->weekKey(),
+        ]);
+    }
+
+    $html = $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken'))
+        ->assertOk()
+        ->assertSee('Trechter · per week', false)
+        ->assertSee('Klik Word lid', false)
+        ->assertSee('Registratiepagina', false)
+        ->assertSee('Formulier gestart', false)
+        ->assertSee('Formulier verstuurd', false)
+        ->assertSee('Account gemaakt', false)
+        ->assertSee('E-mail bevestigd', false)
+        ->assertSee('Eerste aanbod', false)
+        ->assertSee('Unieke bezoekers (schatting)', false)
+        ->assertSee('data-label="Formulier gestart"', false)
+        ->assertSee('stats-funnel-step-label', false)
+        ->assertSee(
+            "Te weinig data: minder dan {$minFormStarts} formulierstarts deze week, percentages nog niet betrouwbaar.",
+            false
+        )
+        ->assertSee(
+            "Percentages tonen we pas vanaf {$minFormStarts} formulierstarts in die week",
+            false
+        )
+        ->getContent();
+
+    expect($html)->toContain('class="stats-funnel-sparse hint"');
+});
+
 test('dashboard trechter toont percentages vanaf 30 form_starts', function () {
     config(['conversion.min_form_starts_for_rates' => 30]);
 

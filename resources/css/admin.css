@@ -599,8 +599,69 @@
 .beheer-inhoud { margin-top: 1.5rem; }
 
 /* Conversietrechter + postlogboek (0.75.0) */
-.stats-funnel-wrap { margin-top: .5rem; }
-.stats-funnel-table th, .stats-funnel-table td { font-size: .85rem; white-space: nowrap; }
+.stats-funnel-wrap { margin-top: .75rem; }
+.stats-funnel-intro { margin: 0 0 .35rem; line-height: 1.45; }
+.stats-funnel-table th,
+.stats-funnel-table td { font-size: .85rem; white-space: nowrap; vertical-align: top; }
+.stats-funnel-week { font-weight: 400; text-align: left; }
+.stats-funnel-step-label {
+  /* Desktop: thead labels the columns; hide duplicate cell labels from view + a11y tree. */
+  display: none;
+}
+.stats-funnel-step-value { display: inline; }
+.stats-funnel-step-rate { display: block; margin-top: .15rem; }
+.stats-funnel-sparse {
+  display: block;
+  margin: .35rem 0 0;
+  white-space: normal;
+  max-width: 16rem;
+  line-height: 1.35;
+  font-weight: 400;
+}
+@media (max-width: 760px) {
+  .stats-funnel-table th,
+  .stats-funnel-table td { white-space: normal; }
+  .beheer-page .stats-funnel-table tr {
+    display: grid;
+    gap: .55rem .85rem;
+    padding: .85rem 1rem;
+  }
+  .beheer-page .stats-funnel-table th.stats-funnel-week,
+  .beheer-page .stats-funnel-table td.stats-funnel-step {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: .75rem;
+    align-items: baseline;
+    padding: .15rem 0;
+  }
+  .beheer-page .stats-funnel-table th.stats-funnel-week { grid-column: 1 / -1; }
+  .beheer-page .stats-funnel-table .stats-funnel-step-label {
+    display: block;
+    font-weight: 700;
+    color: var(--forest-deep, #163820);
+    font-size: .82rem;
+    line-height: 1.3;
+  }
+  /* Prefer real text labels over generic data-label ::before. */
+  .beheer-page .stats-funnel-table td[data-label]::before,
+  .beheer-page .stats-funnel-table th[data-label]::before { content: none; }
+  .beheer-page .stats-funnel-table .stats-funnel-step-value {
+    font-variant-numeric: tabular-nums;
+    justify-self: end;
+    text-align: right;
+  }
+  .beheer-page .stats-funnel-table .stats-funnel-step-rate {
+    grid-column: 2;
+    justify-self: end;
+    text-align: right;
+    margin-top: 0;
+  }
+  .beheer-page .stats-funnel-table .stats-funnel-sparse {
+    grid-column: 1 / -1;
+    max-width: none;
+    margin-top: .5rem;
+  }
+}
 .stats-breakdown { display: grid; gap: 1.25rem; }
 @media (min-width: 720px) { .stats-breakdown { grid-template-columns: 1fr 1fr; } }
 .stats-subhead { font-size: 1rem; margin: 0 0 .5rem; }
