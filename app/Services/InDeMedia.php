@@ -10,11 +10,17 @@ use RuntimeException;
 /**
  * Mediavermeldingen uit data/in-de-media.json (geen database).
  *
+ * Kaarttekst = vaste vorm: wie het medium is (`over_medium`) + dat zij op
+ * `datum` een artikel over Gratis planten plaatsten met de `kop`.
+ * Zie CONTEXT.md en docs/in-de-media.md.
+ *
  * @phpstan-type Vermelding array{
  *     medium: string,
  *     datum: string,
  *     kop: string,
- *     samenvatting: string,
+ *     over_medium: string,
+ *     over_medium_bron: string,
+ *     kaart_tekst: string,
  *     url: string,
  *     datum_label: string,
  *     image: string|null,
@@ -57,6 +63,23 @@ final class InDeMedia
     }
 
     /**
+     * Vaste kaarttekst: medium-intro + publicatiezin met datum en kop.
+     */
+    public function kaartTekst(string $medium, string $overMedium, string $datumLabel, string $kop): string
+    {
+        $site = (string) config('site.name', 'Gratis planten');
+        $kopZin = rtrim(trim($kop), ". \t\n\r\0\x0B");
+        $publicatie = "Op {$datumLabel} plaatste {$medium} een artikel over {$site} met de kop «{$kopZin}».";
+
+        $over = trim($overMedium);
+        if ($over === '') {
+            return $publicatie;
+        }
+
+        return rtrim($over, ". \t\n\r\0\x0B").'. '.$publicatie;
+    }
+
+    /**
      * @param  array<string, mixed>  $row
      * @return Vermelding|null
      */
@@ -65,16 +88,20 @@ final class InDeMedia
         $medium = trim((string) ($row['medium'] ?? ''));
         $datum = trim((string) ($row['datum'] ?? ''));
         $kop = trim((string) ($row['kop'] ?? ''));
-        $samenvatting = trim((string) ($row['samenvatting'] ?? ''));
+        $overMedium = trim((string) ($row['over_medium'] ?? ''));
+        $overMediumBron = trim((string) ($row['over_medium_bron'] ?? ''));
         $url = trim((string) ($row['url'] ?? ''));
 
-        if ($medium === '' || $kop === '' || $url === '') {
+        if ($medium === '' || $kop === '' || $url === '' || $overMedium === '') {
             return null;
         }
         if (! preg_match('/^\d{4}-\d{2}-\d{2}$/', $datum)) {
             return null;
         }
         if (! filter_var($url, FILTER_VALIDATE_URL) || ! preg_match('#^https?://#i', $url)) {
+            return null;
+        }
+        if ($overMediumBron !== '' && (! filter_var($overMediumBron, FILTER_VALIDATE_URL) || ! preg_match('#^https?://#i', $overMediumBron))) {
             return null;
         }
 
@@ -117,7 +144,9 @@ final class InDeMedia
             'medium' => $medium,
             'datum' => $datum,
             'kop' => $kop,
-            'samenvatting' => $samenvatting,
+            'over_medium' => $overMedium,
+            'over_medium_bron' => $overMediumBron,
+            'kaart_tekst' => $this->kaartTekst($medium, $overMedium, $label, $kop),
             'url' => $url,
             'datum_label' => $label,
             'image' => $image,

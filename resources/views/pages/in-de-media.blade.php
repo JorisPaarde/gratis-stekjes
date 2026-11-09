@@ -52,9 +52,7 @@
                 <time datetime="{{ $item['datum'] }}">{{ $item['datum_label'] }}</time>
               </p>
               <h2 class="media-kaart-kop">{{ $item['kop'] }}</h2>
-              @if($item['samenvatting'] !== '')
-                <p class="media-kaart-tekst">{{ $item['samenvatting'] }}</p>
-              @endif
+              <p class="media-kaart-tekst">{{ $item['kaart_tekst'] }}</p>
               <span class="media-kaart-cta">Lees het artikel</span>
             </div>
           </a>
@@ -78,11 +76,7 @@
       <li><strong>Bereik</strong> — {{ $redactieBereik }}</li>
       <li>
         <strong>Deelplekken en verenigingen</strong> —
-        @if(($deelplekkenAantal ?? 0) > 0)
-          er staan {{ number_format($deelplekkenAantal, 0, ',', '.') }} vaste deelplekken op de kaart
-        @else
-          er staan vaste deelplekken op de kaart
-        @endif
+        er staan steeds meer vaste deelplekken op de kaart
         (zadenbibliotheken, plantenasiels, plantenbiebs en meer),
         en tuinverenigingen kunnen meedoen via
         <a href="{{ route('tuinverenigingen') }}">tuinverenigingen</a>.

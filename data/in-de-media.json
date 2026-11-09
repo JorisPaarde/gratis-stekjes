@@ -1,13 +1,14 @@
 {
   "meta": {
-    "beschrijving": "Mediavermeldingen over Gratis planten. Nieuwste eerst; zie docs/in-de-media.md."
+    "beschrijving": "Mediavermeldingen over Gratis planten. Nieuwste eerst; zie docs/in-de-media.md en CONTEXT.md (kaartvorm)."
   },
   "vermeldingen": [
     {
       "medium": "Positief nieuws",
       "datum": "2026-11-09",
       "kop": "Een plant over? Maak er een buur blij mee.",
-      "samenvatting": "Positief nieuws vertelt hoe je via Gratisplanten.nl planten, stekjes of zaden bij buren kunt weggeven of ophalen: je zoekt op plaats of postcode, maakt contact en haalt het groen zelf op. Er wordt niets verkocht of verstuurd — het ophalen is juist een kans om iemand in de buurt te ontmoeten. De site wijst ook naar vaste deelplekken en deelt uitleg over stekken, scheuren en zaaien.",
+      "over_medium": "Positief nieuws is een selectie- en samenvattingsdienst die oplossingen, vooruitgang en hoopvolle ontwikkelingen zichtbaar maakt, om het nieuwslandschap meer in balans te brengen.",
+      "over_medium_bron": "https://positief-nieuws.nl/over/",
       "url": "https://positief-nieuws.nl/artikelen/2026-11-09/gratis-planten-verbindt-buren/",
       "image": "/assets/images/in-de-media/positief-nieuws-2026-11-09.jpg",
       "image_webp": "/assets/images/in-de-media/positief-nieuws-2026-11-09.webp",

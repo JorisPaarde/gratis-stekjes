@@ -68,10 +68,10 @@
   </form>
 
   <nav class="deelplekken-types" aria-label="Soort plek">
-    <a class="dp-chip {{ $filters['type'] === '' ? 'is-actief' : '' }}" href="{{ route('deelplekken') }}">Alles <span>{{ array_sum($typeAantallen) }}</span></a>
+    <a class="dp-chip {{ $filters['type'] === '' ? 'is-actief' : '' }}" href="{{ route('deelplekken') }}">Alles</a>
     @foreach($typeLabels as $key => $label)
       @if(($typeAantallen[$key] ?? 0) > 0)
-        <a class="dp-chip {{ $filters['type'] === $key ? 'is-actief' : '' }}" href="{{ route('deelplekken', ['type' => $key]) }}">{{ $meervoud[$key] ?? $label }} <span>{{ $typeAantallen[$key] }}</span></a>
+        <a class="dp-chip {{ $filters['type'] === $key ? 'is-actief' : '' }}" href="{{ route('deelplekken', ['type' => $key]) }}">{{ $meervoud[$key] ?? $label }}</a>
       @endif
     @endforeach
   </nav>
@@ -79,7 +79,11 @@
   <div id="deelplekken-kaart" role="img" aria-label="Kaart met deelplekken voor planten"></div>
 
   <p class="zoek-status" id="deelplekken-status-tekst">
-    {{ $items->count() }} {{ $items->count() === 1 ? 'plek' : 'plekken' }}@if($isFilter) gevonden · <a href="{{ route('deelplekken') }}">Toon alles</a>@endif
+    @if($isFilter)
+      Gevonden deelplekken · <a href="{{ route('deelplekken') }}">Toon alles</a>
+    @else
+      Steeds meer deelplekken in Nederland en België
+    @endif
   </p>
   <span class="visually-hidden" id="deelplekken-status" aria-live="polite"></span>
 

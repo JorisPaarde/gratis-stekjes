@@ -398,14 +398,14 @@
     var li = document.createElement("li");
     li.className = "zoek-meer";
     var tekst = soort === "aanbod" ? "Toon meer aanbod" : soort === "dichtbij" ? "Toon meer" : "Toon meer plekken";
+    // Bij plekken geen rest-telling: catalogusaantallen van deelplekken tonen we niet.
+    var label = rest == null || soort === "plekken" ? tekst : tekst + " (nog " + rest + ")";
     li.innerHTML =
       '<button type="button" class="btn btn-secondary" data-meer="' +
       soort +
       '">' +
-      tekst +
-      " (nog " +
-      rest +
-      ")</button>";
+      label +
+      "</button>";
     return li;
   }
 
@@ -468,12 +468,13 @@
     }
 
     if (plekken.length) {
-      list.appendChild(groepKop("Deelplekken en initiatieven", plekken.length));
+      // Geen (78) of soortgelijke catalogustelling: dat aantal verandert steeds.
+      list.appendChild(groepKop("Deelplekken en initiatieven", null));
       plekken.slice(0, limits.plekken).forEach(function (item) {
         list.appendChild(plekListItem(item));
       });
       if (plekken.length > limits.plekken) {
-        list.appendChild(meerKnop("plekken", plekken.length - limits.plekken));
+        list.appendChild(meerKnop("plekken", null));
       }
     }
   }
@@ -531,7 +532,8 @@
     }
     var parts = [];
     if (aanbodCount) parts.push(center ? aanbodCount + " aanbod" : "nieuw aanbod");
-    if (plekCount) parts.push(plekCount + (plekCount === 1 ? " plek" : " plekken"));
+    // Geen exact deelplekken-aantal: dat verandert steeds.
+    if (plekCount) parts.push("vaste deelplekken");
     if (center) {
       status.textContent = "Rond " + center.label + ": " + parts.join(" · ") + ".";
     } else {

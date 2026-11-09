@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\Deelplek;
 use App\Services\InDeMedia;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
-use Throwable;
 
 class ContentPageController extends Controller
 {
@@ -61,25 +57,10 @@ class ContentPageController extends Controller
             'redactieUitnodiging' => 'Schrijf jij over Gratis planten? Dan delen wij je artikel op Facebook en schrijven we hier een kort stukje met een link terug naar jouw artikel.',
             // Bereik in woorden, zonder exact cijfer (verandert steeds).
             'redactieBereik' => 'We bereiken veel plantenliefhebbers in heel Nederland en België.',
-            'deelplekkenAantal' => $this->zichtbareDeelplekkenAantal(),
             'logoUrl' => $this->publicAssetUrlIfExists($logoPad),
             'ogImageUrl' => $this->publicAssetUrlIfExists($ogPad),
             'schema' => $this->mediaSchema($title, $meta, $canonical, $vermeldingen),
         ]);
-    }
-
-    private function zichtbareDeelplekkenAantal(): int
-    {
-        if (! Schema::hasTable('deelplekken')) {
-            return 0;
-        }
-        try {
-            return (int) Deelplek::query()->visible()->count();
-        } catch (Throwable $e) {
-            Log::warning('In-de-media: deelplekken tellen mislukt', ['error' => $e->getMessage()]);
-
-            return 0;
-        }
     }
 
     private function publicAssetUrlIfExists(string $pad): ?string
@@ -101,7 +82,7 @@ class ContentPageController extends Controller
     }
 
     /**
-     * @param  list<array{medium: string, datum: string, kop: string, samenvatting: string, url: string, datum_label: string, image: ?string, image_webp: ?string, image_alt: string, image_credit: string}>  $vermeldingen
+     * @param  list<array{medium: string, datum: string, kop: string, kaart_tekst: string, url: string, datum_label: string, image: ?string, image_webp: ?string, image_alt: string, image_credit: string}>  $vermeldingen
      * @return array<string, mixed>
      */
     private function mediaSchema(string $title, string $description, string $url, array $vermeldingen): array
@@ -114,6 +95,7 @@ class ContentPageController extends Controller
                 'headline' => $row['kop'],
                 'datePublished' => $row['datum'],
                 'url' => $row['url'],
+                'description' => $row['kaart_tekst'],
                 'isPartOf' => [
                     '@type' => 'Periodical',
                     'name' => $row['medium'],
@@ -124,9 +106,6 @@ class ContentPageController extends Controller
                     'url' => url('/'),
                 ],
             ];
-            if ($row['samenvatting'] !== '') {
-                $article['description'] = $row['samenvatting'];
-            }
             if ($row['image'] !== null) {
                 $article['image'] = url($row['image_webp'] ?: $row['image']);
             }

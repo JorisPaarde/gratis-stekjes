@@ -21,7 +21,7 @@ final class HomeOverzicht
 {
     public const AANBOD_LIMIT = 6;
 
-    /** Meervoudsvormen voor de tellingen («55 zadenbibliotheken»). */
+    /** Meervoudsvormen voor de typelinks («zadenbibliotheken»). */
     private const MEERVOUD = [
         'plantenasiel' => 'plantenasiels',
         'plantenbieb' => 'plantenbiebs',
@@ -42,8 +42,7 @@ final class HomeOverzicht
     /**
      * @return array{
      *   aanbod: list<array<string, mixed>>,
-     *   plekken: list<array{type: string, label: string, aantal: int, url: string}>,
-     *   plekken_totaal: int
+     *   plekken: list<array{type: string, label: string, url: string}>
      * }
      */
     public function data(): array
@@ -62,7 +61,7 @@ final class HomeOverzicht
             $plekken[] = [
                 'type' => $type,
                 'label' => $this->label($type, $labels[$type], $aantal),
-                'aantal' => $aantal,
+                'aantal' => $aantal, // alleen voor sortering; niet tonen op de site
                 'url' => $this->deelplekken->typeValid($type)
                     ? route('deelplekken', ['type' => $type])
                     : route('partners'),
@@ -70,10 +69,16 @@ final class HomeOverzicht
         }
         usort($plekken, static fn (array $a, array $b) => $b['aantal'] <=> $a['aantal']);
 
+        // Aantallen niet publiek meesturen: geen deelplekken-cijfers op de site.
+        $plekken = array_map(static function (array $plek): array {
+            unset($plek['aantal']);
+
+            return $plek;
+        }, $plekken);
+
         return [
             'aanbod' => $this->recentAanbod(),
             'plekken' => $plekken,
-            'plekken_totaal' => array_sum(array_column($plekken, 'aantal')),
         ];
     }
 

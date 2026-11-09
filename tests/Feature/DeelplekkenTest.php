@@ -90,16 +90,21 @@ test('provinciefilter toont alle 12 NL-provincies plus Belgische uit de data', f
         ->and($provincies)->toContain('Antwerpen');
 });
 
-test('deelplekken: type-chips met aantallen; bronlink «Website» bij eigen site, anders «Meer informatie»', function () {
+test('deelplekken: type-chips zonder aantallen; bronlink «Website» bij eigen site, anders «Meer informatie»', function () {
     $html = $this->get('/deelplekken')->assertOk()->getContent();
 
-    expect($html)->toMatch('/class="dp-chip[^"]*" href="[^"]*type=zaadbibliotheek">Zadenbibliotheken <span>\d+<\/span>/');
+    expect($html)->toMatch('/class="dp-chip[^"]*" href="[^"]*type=zaadbibliotheek">Zadenbibliotheken<\/a>/')
+        ->and($html)->toContain('Steeds meer deelplekken in Nederland en België')
+        ->and($html)->not->toMatch('/Zadenbibliotheken <span>\d+<\/span>/')
+        ->and($html)->not->toMatch('/>\s*\d+\s+plekken\b/');
     // plantenasielzeist.nl hoort bij Plantenasiel Zeist → eigen website.
     expect($html)->toMatch('/plantenasielzeist\.nl[^"]*" rel="noopener noreferrer" target="_blank">Website<\/a>/');
 
     $gefilterd = $this->get('/deelplekken?type=plantenasiel')->assertOk()->getContent();
     expect($gefilterd)->not->toContain('id="veelgestelde-vragen"')
-        ->and($gefilterd)->toContain('Toon alles');
+        ->and($gefilterd)->toContain('Toon alles')
+        ->and($gefilterd)->toContain('Gevonden deelplekken')
+        ->and($gefilterd)->not->toMatch('/\d+\s+plekken gevonden/');
 });
 
 test('deelplekken filtert op type en provincie', function () {

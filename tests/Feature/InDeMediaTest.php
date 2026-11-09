@@ -2,9 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Models\Deelplek;
-use Illuminate\Support\Facades\Schema;
-
 test('in-de-media pagina laadt met intro, kaart, redactie en doe-mee', function () {
     config(['site.name' => 'Gratis planten', 'site.noindex' => false]);
 
@@ -16,6 +13,9 @@ test('in-de-media pagina laadt met intro, kaart, redactie en doe-mee', function 
         ->assertSee('Positief nieuws', false)
         ->assertSee('Een plant over? Maak er een buur blij mee.', false)
         ->assertSee('9 november 2026', false)
+        ->assertSee('selectie- en samenvattingsdienst', false)
+        ->assertSee('Op 9 november 2026 plaatste Positief nieuws een artikel over Gratis planten met de kop «Een plant over? Maak er een buur blij mee».', false)
+        ->assertDontSee('via Gratisplanten.nl planten, stekjes of zaden bij buren', false)
         ->assertSee('https://positief-nieuws.nl/artikelen/2026-11-09/gratis-planten-verbindt-buren/', false)
         ->assertSee('class="media-kaart', false)
         ->assertSee('/assets/images/in-de-media/positief-nieuws-2026-11-09.jpg', false)
@@ -28,7 +28,7 @@ test('in-de-media pagina laadt met intro, kaart, redactie en doe-mee', function 
         ->assertSee('Zonder reclame', false)
         ->assertSee('Nederland en België', false)
         ->assertSee('We bereiken veel plantenliefhebbers in heel Nederland en België.', false)
-        ->assertSee('niets verkocht of verstuurd', false)
+        ->assertSee('er wordt niets verkocht', false)
         ->assertSee('Doe je mee?', false)
         ->assertSee('target="_blank"', false)
         ->assertSee('rel="noopener noreferrer"', false)
@@ -49,35 +49,11 @@ test('in-de-media pagina laadt met intro, kaart, redactie en doe-mee', function 
     }
 });
 
-test('in-de-media toont deelplekken-aantal alleen als er zichtbare plekken zijn', function () {
-    if (! Schema::hasTable('deelplekken')) {
-        $this->markTestSkipped('deelplekken-tabel ontbreekt');
-    }
-
-    Deelplek::query()->delete();
-    $this->get(route('in-de-media'))
-        ->assertOk()
-        ->assertSee('er staan vaste deelplekken op de kaart', false)
-        ->assertDontSee('er staan 0 vaste deelplekken', false);
-
-    Deelplek::query()->create([
-        'slug' => 'test-zadenbieb-haarlem',
-        'naam' => 'Test zadenbieb',
-        'type' => 'zadenbibliotheek',
-        'plaats' => 'Haarlem',
-        'provincie' => 'Noord-Holland',
-        'adres' => '2011 Haarlem',
-        'lat' => 52.38,
-        'lng' => 4.64,
-        'bron_url' => '',
-        'geraadpleegd' => now()->toDateString(),
-        'visible' => true,
-        'source' => Deelplek::SOURCE_SEED,
-        'status' => Deelplek::STATUS_APPROVED,
-    ]);
-
+test('in-de-media noemt deelplekken zonder exact aantal', function () {
     $html = $this->get(route('in-de-media'))->assertOk()->getContent();
-    expect($html)->toContain('er staan 1 vaste deelplekken op de kaart');
+
+    expect($html)->toContain('er staan steeds meer vaste deelplekken op de kaart')
+        ->and($html)->not->toMatch('/er staan \d[\d\.]* vaste deelplekken/');
 });
 
 test('in-de-media staat in menu, footer (onder Over) en sitemap', function () {
