@@ -69,7 +69,7 @@ final class HomeOverzicht
         }
         usort($plekken, static fn (array $a, array $b) => $b['aantal'] <=> $a['aantal']);
 
-        // Aantallen niet publiek meesturen: Joris wil geen deelplekken-cijfers op de site.
+        // Aantallen niet publiek meesturen: geen deelplekken-cijfers op de site.
         $plekken = array_map(static function (array $plek): array {
             unset($plek['aantal']);
 
