@@ -289,6 +289,24 @@ test('activatieherinneringmailtekst is warm en zonder deelplek-aantallen', funct
         ->and($html)->not->toContain('Resend');
 });
 
+test('GP mail-layout: normale tekst zonder break-all, knop forest-groen', function () {
+    $mail = new \App\Mail\ActivatieHerinneringMail(
+        voornaam: 'Sam',
+        aanbiedenUrl: route('aanbieden'),
+        uitzettenUrl: 'https://example.test/activatieherinnering/uit/1?signature=abc&expires=1',
+    );
+    $html = $mail->render();
+
+    expect($html)->toContain('word-break: normal')
+        ->and($html)->toContain('#1f4d2b')
+        ->and($html)->not->toMatch('/\.content-cell[^}]*word-break:\s*break-all/')
+        ->and($html)->toContain('min-height: 44px');
+
+    // Zichtbare body bevat hele woorden (geen CSS-middenbreaks in de HTML-tekst zelf).
+    expect(strip_tags($html))->toContain('zaadje')
+        ->and(strip_tags($html))->toContain('verkopen');
+});
+
 test('activatieherinnering HTML heeft knoptekst, geen signature-URL als zichtbare tekst, Hoi! zonder naam', function () {
     $metNaam = User::factory()->create(['name' => 'Sam', 'email' => 'html-sam@example.com']);
     $zonderNaam = User::factory()->create([
