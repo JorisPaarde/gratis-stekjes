@@ -80,11 +80,20 @@ test('in-de-media toont deelplekken-aantal alleen als er zichtbare plekken zijn'
     expect($html)->toContain('er staan 1 vaste deelplekken op de kaart');
 });
 
-test('in-de-media staat in footer en sitemap', function () {
+test('in-de-media staat in menu, footer (onder Over) en sitemap', function () {
     $home = $this->get('/')->assertOk()->getContent();
+
+    expect(preg_match('/<nav id="hoofdmenu"[^>]*>(.*?)<\/nav>/s', $home, $nav))->toBe(1);
+    expect($nav[1])->toContain('href="'.route('in-de-media').'"')
+        ->and($nav[1])->toContain('In de media');
+
     expect(preg_match('/<nav class="footer-links"[^>]*>(.*?)<\/nav>/s', $home, $footer))->toBe(1);
     expect($footer[1])->toContain('href="'.route('in-de-media').'"')
         ->and($footer[1])->toContain('In de media');
+    expect(preg_match(
+        '/href="'.preg_quote(route('over'), '/').'"[^>]*>Over<\/a>\s*<\/li>\s*<li>\s*<a href="'.preg_quote(route('in-de-media'), '/').'"[^>]*>In de media<\/a>/s',
+        $footer[1]
+    ))->toBe(1);
 
     $xml = $this->get(route('sitemap'))->assertOk()->getContent();
     expect($xml)->toContain(route('in-de-media'));

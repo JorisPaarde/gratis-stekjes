@@ -78,6 +78,7 @@
         <a href="{{ route('vermeerderen') }}" @if(request()->routeIs('vermeerderen', 'stektips.*')) aria-current="page" @endif><x-icon name="stekje" :size="16" /> Vermeerderen</a>
         <a href="{{ route('deelplekken') }}" @if(request()->routeIs('deelplekken', 'agenda', 'partners', 'organisaties.*', 'initiatief.show', 'struikroven', 'stekchallenge')) aria-current="page" @endif><x-icon name="locatie" :size="16" /> Plekken &amp; initiatieven</a>
         <a href="{{ route('help-mee') }}" @if(request()->routeIs('help-mee')) aria-current="page" @endif><x-icon name="delen" :size="16" /> Help mee</a>
+        <a href="{{ route('in-de-media') }}" @if(request()->routeIs('in-de-media')) aria-current="page" @endif><x-icon name="pagina" :size="16" /> In de media</a>
         @can('see-admin-dashboard')
           <a href="{{ route('beheer.index') }}"><x-icon name="kaart" :size="16" /> Dashboard</a>
         @elsecan('see-stats')
