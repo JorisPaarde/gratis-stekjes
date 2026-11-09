@@ -1430,6 +1430,10 @@ function deploy_hook_action_finish(
     $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'BACKUP_ENCRYPTION_KEY');
     $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'ADMIN_DASHBOARD_EMAILS');
     $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'POST_LOG_MINT_TOKEN');
+    $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'ACTIVATION_REMINDER_ENABLED');
+    $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'ACTIVATION_REMINDER_ENABLED_AT');
+    $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'ACTIVATION_REMINDER_AFTER_HOURS');
+    $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'REMINDER_TEST_RECIPIENTS');
     // APP_PREVIOUS_KEYS: bestaande server-waarde altijd behouden (Laravel previous_keys).
     $finalEnv = deploy_hook_preserve_existing_always($finalEnv, $existingEnv, 'APP_PREVIOUS_KEYS');
     // Timestamped backup buiten docroot (appDir/.env.backup-…, max 10) vóór herschrijven.

@@ -43,6 +43,7 @@ use App\Http\Controllers\BerichtmailController;
 use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\DeelplekkenController;
+use App\Http\Controllers\DeployActivatieHerinneringController;
 use App\Http\Controllers\DeployController;
 use App\Http\Controllers\DeployImportController;
 use App\Http\Controllers\DeployImportStruikrovenAgendaController;
@@ -177,6 +178,9 @@ Route::post('/deploy/steden-aanbod', DeployStedenAanbodController::class)
 Route::post('/deploy/postcode-herinnering-lijst', DeployPostcodeHerinneringController::class)
     ->middleware('throttle:10,1')
     ->name('deploy.postcode-herinnering-lijst');
+Route::post('/deploy/activatie-herinnering', DeployActivatieHerinneringController::class)
+    ->middleware('throttle:10,1')
+    ->name('deploy.activatie-herinnering');
 Route::post('/deploy/ledenupdate-mail', DeployLedenupdateMailController::class)
     ->middleware('throttle:30,1')
     ->name('deploy.ledenupdate-mail');
@@ -438,12 +442,13 @@ Route::post('/berichtmail/uit/{user}', [BerichtmailController::class, 'update'])
     ->whereNumber('user');
 
 // Tipmail «eerste stekje» uitzetten via ondertekende link (zonder inloggen).
+// Geen 'signed'-middleware: die geeft kale 403. Controller checkt hasValidSignature().
 Route::get('/activatieherinnering/uit/{user}', [ActivatieHerinneringController::class, 'show'])
-    ->middleware(['signed', 'throttle:20,1'])
+    ->middleware(['throttle:20,1'])
     ->whereNumber('user')
     ->name('activatieherinnering.uit');
 Route::post('/activatieherinnering/uit/{user}', [ActivatieHerinneringController::class, 'update'])
-    ->middleware(['signed', 'throttle:20,1'])
+    ->middleware(['throttle:20,1'])
     ->whereNumber('user');
 
 // Live controle of een voornaam/bijnaam al bestaat (registratie en profiel).

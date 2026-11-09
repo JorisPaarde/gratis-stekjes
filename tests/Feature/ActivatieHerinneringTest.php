@@ -231,7 +231,47 @@ test('afmelden via tipmail-link zet activatieherinnering uit', function () {
     expect($result['sent'])->toBe(0);
     Mail::assertNothingSent();
 
-    $this->get(route('activatieherinnering.uit', ['user' => $user->id]))->assertForbidden();
+    $this->get(route('activatieherinnering.uit', ['user' => $user->id]))
+        ->assertForbidden()
+        ->assertSee('Link werkt niet meer', false)
+        ->assertSee(route('account.profiel'), false)
+        ->assertDontSee('Zet de tipmail uit', false);
+});
+
+test('ongeldige of verlopen tipmail-link toont nette 403-pagina', function () {
+    $user = User::factory()->create([
+        'email' => 'ongeldig-act@example.com',
+        'activatieherinnering' => true,
+    ]);
+
+    $this->get('/activatieherinnering/uit/'.$user->id.'?signature=ongeldig&expires=1')
+        ->assertForbidden()
+        ->assertSee('tipmail-link is verlopen of ongeldig', false)
+        ->assertSee('profiel', false)
+        ->assertDontSee('Zet de tipmail uit', false);
+
+    expect($user->fresh()->activatieherinnering)->toBeTrue();
+
+    $this->post('/activatieherinnering/uit/'.$user->id.'?signature=ongeldig&expires=1')
+        ->assertForbidden()
+        ->assertSee('Link werkt niet meer', false);
+
+    expect($user->fresh()->activatieherinnering)->toBeTrue();
+});
+
+test('deploy activatie-herinnering endpoint draait alleen dry-run en vereist token', function () {
+    Config::set('stekjes.deploy_token', 'test-deploy-token');
+    Config::set('stekjes.deploy_endpoint_enabled', true);
+    Config::set('stekjes.activation_reminder.enabled', false);
+    Config::set('stekjes.activation_reminder.enabled_at', now()->subDay()->toIso8601String());
+
+    $this->postJson('/deploy/activatie-herinnering', [], [
+        'Authorization' => 'Bearer test-deploy-token',
+    ])->assertOk()
+        ->assertJsonPath('ok', true)
+        ->assertJsonStructure(['ok', 'at', 'output']);
+
+    $this->postJson('/deploy/activatie-herinnering')->assertForbidden();
 });
 
 test('activatieherinneringmailtekst is warm en zonder deelplek-aantallen', function () {

@@ -133,6 +133,10 @@ jobs:
           BACKUP_ENCRYPTION_KEY: ${{ secrets.BACKUP_ENCRYPTION_KEY }}
           BACKUP_RETAIN_DAYS: ${{ vars.BACKUP_RETAIN_DAYS }}
           POST_LOG_MINT_TOKEN: ${{ secrets.POST_LOG_MINT_TOKEN }}
+          ACTIVATION_REMINDER_ENABLED: ${{ vars.ACTIVATION_REMINDER_ENABLED }}
+          ACTIVATION_REMINDER_ENABLED_AT: ${{ vars.ACTIVATION_REMINDER_ENABLED_AT }}
+          ACTIVATION_REMINDER_AFTER_HOURS: ${{ vars.ACTIVATION_REMINDER_AFTER_HOURS }}
+          REMINDER_TEST_RECIPIENTS: ${{ secrets.REMINDER_TEST_RECIPIENTS }}
           BASE_URL: ${{ secrets.PROD_BASE_URL }}
           APP_ENV_NAME: production
           # Tag-pushes: altijd false. workflow_dispatch: input import_enabled.
@@ -164,6 +168,14 @@ jobs:
             echo "::add-mask::${POST_LOG_MINT_TOKEN}"
           else
             echo "::notice::POST_LOG_MINT_TOKEN ontbreekt — hook behoudt bestaande server-.env-waarde (zie docs/post-log-mint.md)."
+          fi
+          if [ -n "${REMINDER_TEST_RECIPIENTS:-}" ]; then
+            echo "::add-mask::${REMINDER_TEST_RECIPIENTS}"
+          else
+            echo "::notice::REMINDER_TEST_RECIPIENTS ontbreekt — hook behoudt bestaande of app-default."
+          fi
+          if [ -z "${ACTIVATION_REMINDER_ENABLED:-}" ] && [ -z "${ACTIVATION_REMINDER_ENABLED_AT:-}" ]; then
+            echo "::notice::ACTIVATION_REMINDER_* ontbreekt — hook behoudt bestaande of app-default (uit)."
           fi
           # Normaliseer boolean → true|false voor .env
           case "$(printf '%s' "${IMPORT_ENABLED:-false}" | tr '[:upper:]' '[:lower:]')" in
