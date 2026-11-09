@@ -13,6 +13,8 @@ use App\Http\Middleware\StripIndexPhpRedirect;
 use App\Http\Middleware\UpdateLastSeen;
 use App\Http\Middleware\VerifyCsrfTokenWhenSession;
 use App\Support\ThrottleMessage;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -20,6 +22,7 @@ use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
@@ -28,6 +31,11 @@ return Application::configure(basePath: dirname(__DIR__))
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
+        then: function (): void {
+            // Sessieloze telemetry (sendBeacon); zie routes/beacon.php.
+            Route::middleware('beacon')
+                ->group(base_path('routes/beacon.php'));
+        },
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->append(StripIndexPhpRedirect::class);
@@ -38,6 +46,12 @@ return Application::configure(basePath: dirname(__DIR__))
             StartSession::class => StartSessionWhenNeeded::class,
             ShareErrorsFromSession::class => ShareErrorsFromSessionWhenPresent::class,
             ValidateCsrfToken::class => VerifyCsrfTokenWhenSession::class,
+        ]);
+        // Beacon: cookies (gp_flow) wél, StartSession/CSRF/ShareErrors níet.
+        $middleware->group('beacon', [
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            SubstituteBindings::class,
         ]);
         $middleware->appendToGroup('web', CaptureConversionContext::class);
         $middleware->appendToGroup('web', RecordPageView::class);

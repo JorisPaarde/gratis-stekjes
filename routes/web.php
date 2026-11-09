@@ -40,7 +40,6 @@ use App\Http\Controllers\Beheer\PostLogController as BeheerPostLogController;
 use App\Http\Controllers\Beheer\StatistiekenController as BeheerStatistiekenController;
 use App\Http\Controllers\BerichtmailController;
 use App\Http\Controllers\ContentPageController;
-use App\Http\Controllers\ConversionBeaconController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\DeelplekkenController;
 use App\Http\Controllers\DeployController;
@@ -202,9 +201,7 @@ Route::get('/s/{code}', ShortLinkController::class)
     ->where('code', '[2-9A-HJ-KM-NP-Za-hj-km-np-z]{4,8}')
     ->middleware('throttle:120,1')
     ->name('short.redirect');
-Route::post('/meet/event', ConversionBeaconController::class)
-    ->middleware('throttle:60,1')
-    ->name('meet.event');
+// /meet/event staat in routes/beacon.php (sessieloze middlewaregroep).
 
 // Oude /registreren (404 op prod; FB-tests / typefouten) → canonieke account-route.
 Route::permanentRedirect('/registreren', '/account/registreren');

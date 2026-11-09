@@ -3,6 +3,19 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.34] - 2026-11-09
+
+### Fixed
+
+- `/meet/event` (sendBeacon) draait in sessieloze middlewaregroep `beacon`
+  (EncryptCookies + bindings, géén StartSession). Voorkomt race waarbij een
+  late beacon-sessie-save geflashte validatiefouten/old input op
+  `/account/registreren` overschreef (leeg formulier zonder melding).
+- `StartSessionWhenNeeded` weigert `meet/*` sowieso (vangnet).
+- Alleen het registratieformulier vuurt nu `sendBeacon`; andere formulieren
+  hadden deze race niet. Feature-test: late sessie-write wist flash; na fix
+  blijft melding + `form_start`-telling intact.
+
 ## [0.78.33] - 2026-11-09
 
 ### Fixed
