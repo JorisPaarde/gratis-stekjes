@@ -1195,17 +1195,21 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
 .plekken-tabs a.is-actief { border-bottom-color: var(--orange, #e8833a); color: var(--forest-deep, #163820); }
 @media (max-width: 420px) { .plekken-tabs { flex-wrap: nowrap; } .plekken-tabs a { flex: 1; justify-content: center; padding: 0 .3rem; font-size: .9rem; } }
 
-/* /in-de-media — klikbare mediakaarten (één kaart: gecentreerd; desktop horizontaal) */
+/* /in-de-media — intro + mediakaarten (links uitgelijnd met titel) + redactie + doe-mee */
 .in-de-media-page {
-  padding-bottom: 2.75rem;
+  padding-bottom: 3rem;
 }
 .in-de-media-page .page-title {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+}
+.in-de-media-page .media-intro {
+  max-width: 40rem;
+  margin: 0 0 1.75rem;
 }
 .in-de-media-page .media-kaarten {
   list-style: none;
   padding: 0;
-  margin: 0 auto;
+  margin: 0 0 2.75rem;
   display: grid;
   gap: 1.25rem;
   width: 100%;
@@ -1367,8 +1371,101 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
     justify-content: center;
   }
 }
+.in-de-media-page .media-redactie {
+  max-width: 40rem;
+  margin: 0 0 2.75rem;
+  padding: 1.5rem 0 0;
+  border-top: 1px solid var(--line);
+}
+.in-de-media-page .media-redactie h2 {
+  margin: 0 0 .65rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 3vw, 1.75rem);
+  color: var(--forest);
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+.in-de-media-page .media-redactie > p {
+  margin: 0 0 1rem;
+  color: var(--ink-soft);
+}
+.in-de-media-page .media-redactie-uitnodiging {
+  margin: 0 0 1rem;
+  padding: .95rem 1.05rem;
+  border-left: 4px solid var(--orange);
+  background: var(--bg-mint);
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.45;
+}
+.in-de-media-page .media-redactie-sub {
+  margin: 0 0 .55rem;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--forest-deep);
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+.in-de-media-page .media-feiten {
+  margin: 0 0 1.1rem;
+  padding: 0 0 0 1.15rem;
+  color: var(--ink-soft);
+  display: grid;
+  gap: .55rem;
+}
+.in-de-media-page .media-feiten strong {
+  color: var(--forest-deep);
+}
+.in-de-media-page .media-downloads {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: .95rem;
+}
+.in-de-media-page .media-meedoen {
+  max-width: 40rem;
+  margin: 0;
+  padding: 1.5rem 1.35rem 1.55rem;
+  border-radius: var(--radius);
+  background: var(--forest-deep);
+  color: #e8f2e4;
+}
+.in-de-media-page .media-meedoen h2 {
+  margin: 0 0 .55rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 3vw, 1.75rem);
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+.in-de-media-page .media-meedoen > p {
+  margin: 0 0 1rem;
+  color: #e8f2e4;
+  max-width: 36rem;
+}
+.in-de-media-page .media-meedoen-acties {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem .75rem;
+  align-items: center;
+}
+.in-de-media-page .media-meedoen-acties .btn-secondary {
+  background: transparent;
+  border-color: rgba(255, 255, 255, .45);
+  color: #fff;
+}
+.in-de-media-page .media-meedoen-acties .btn-secondary:hover,
+.in-de-media-page .media-meedoen-acties .btn-secondary:focus-visible {
+  background: rgba(255, 255, 255, .1);
+  color: #fff;
+}
 @media (max-width: 420px) {
   .in-de-media-page .media-kaart-body { padding: .95rem 1rem 1.05rem; }
   .in-de-media-page .media-kaart-accent { min-height: 9.25rem; }
-  .in-de-media-page .page-title { margin-bottom: 1.15rem; }
+  .in-de-media-page .page-title { margin-bottom: .85rem; }
+  .in-de-media-page .media-intro { margin-bottom: 1.35rem; }
+  .in-de-media-page .media-kaarten { margin-bottom: 2.15rem; }
+  .in-de-media-page .media-redactie { margin-bottom: 2.15rem; }
+  .in-de-media-page .media-meedoen { padding: 1.25rem 1.05rem 1.35rem; }
+  .in-de-media-page .media-meedoen-acties { gap: .55rem; }
 }

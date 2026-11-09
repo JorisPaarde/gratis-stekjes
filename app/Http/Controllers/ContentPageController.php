@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Deelplek;
 use App\Services\InDeMedia;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
+use Throwable;
 
 class ContentPageController extends Controller
 {
@@ -44,13 +48,47 @@ class ContentPageController extends Controller
         $canonical = route('in-de-media');
         $vermeldingen = $inDeMedia->all();
 
+        $logoPad = (string) config('site.logo', '');
+        $ogPad = (string) config('site.og_image', '');
+
         return view('pages.in-de-media', [
             'title' => $title,
             'metaDescription' => $meta,
             'canonical' => $canonical,
             'vermeldingen' => $vermeldingen,
+            'contactEmail' => (string) config('site.contact_email'),
+            'deelplekkenAantal' => $this->zichtbareDeelplekkenAantal(),
+            'logoUrl' => $this->publicAssetUrlIfExists($logoPad),
+            'ogImageUrl' => $this->publicAssetUrlIfExists($ogPad),
             'schema' => $this->mediaSchema($title, $meta, $canonical, $vermeldingen),
         ]);
+    }
+
+    private function zichtbareDeelplekkenAantal(): int
+    {
+        if (! Schema::hasTable('deelplekken')) {
+            return 0;
+        }
+        try {
+            return (int) Deelplek::query()->visible()->count();
+        } catch (Throwable $e) {
+            Log::warning('In-de-media: deelplekken tellen mislukt', ['error' => $e->getMessage()]);
+
+            return 0;
+        }
+    }
+
+    private function publicAssetUrlIfExists(string $pad): ?string
+    {
+        $pad = trim($pad);
+        if ($pad === '' || ! str_starts_with($pad, '/')) {
+            return null;
+        }
+        if (! is_file(public_path(ltrim($pad, '/')))) {
+            return null;
+        }
+
+        return asset($pad);
     }
 
     public function doeMee(): RedirectResponse
