@@ -7,6 +7,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Session\SessionManager;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -15,6 +16,16 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class StartSessionWhenNeeded extends StartSession
 {
+    public function __construct(SessionManager $manager, ?callable $cacheFactoryResolver = null)
+    {
+        // Route::block() heeft een cache-factory nodig; bij middleware-replace
+        // komt die anders niet mee → TypeError op call_user_func(null).
+        parent::__construct(
+            $manager,
+            $cacheFactoryResolver ?? static fn () => app('cache'),
+        );
+    }
+
     public function handle($request, Closure $next): Response
     {
         if (! $this->shouldStartSession($request)) {

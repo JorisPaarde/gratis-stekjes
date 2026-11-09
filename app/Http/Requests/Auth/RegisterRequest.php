@@ -122,14 +122,21 @@ class RegisterRequest extends FormRequest
         // Geen wachtwoord terug; form_started komt opnieuw uit de honeypot-partial (time()).
         // Expliciet route i.p.v. previous(): ontbrekende Referer stuurde anders naar / en
         // consumeerde de flash vóór het formulier opnieuw zichtbaar was.
+        // Vangnet ?fout=snel: file-sessies zonder lock kunnen flash verliezen bij parallelle
+        // requests (staging lsphp); query-param toont de melding ook zonder flash.
         $except = array_values(array_unique(array_merge(
             ['current_password', 'password', 'password_confirmation', 'form_started', '_token'],
             FormGuard::HONEYPOT_FIELDS,
         )));
 
+        // Alleen fout-code in query (geen e-mail/PII). Flash + old() blijven primair.
+        $query = $validator->errors()->has('form_started')
+            ? ['fout' => 'snel']
+            : [];
+
         throw new HttpResponseException(
             redirect()
-                ->route('account.registreren')
+                ->route('account.registreren', $query)
                 ->withInput($this->except($except))
                 ->withErrors($validator->errors(), $this->errorBag)
         );

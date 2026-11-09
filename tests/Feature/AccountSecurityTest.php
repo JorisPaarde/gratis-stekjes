@@ -179,7 +179,7 @@ test('registratie is throttled per IP', function () {
             'email' => 'teveel@example.com',
             'password' => accountSecPassword(),
         ]))
-        ->assertRedirect(route('account.registreren'))
+        ->assertRedirect(route('account.registreren', ['fout' => 'teveel']))
         ->assertSessionHasErrors('email');
 
     expect(session('errors')->first('email'))->toContain('Even te veel pogingen');

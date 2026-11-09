@@ -207,8 +207,12 @@ Route::get('/s/{code}', ShortLinkController::class)
 Route::permanentRedirect('/registreren', '/account/registreren');
 
 Route::middleware('guest')->group(function () {
-    Route::get('/account/registreren', [RegisterController::class, 'create'])->name('account.registreren');
-    Route::post('/account/registreren', [RegisterController::class, 'store']);
+    // Session lock: file-driver + lsphp-workers kunnen anders parallel flash wissen.
+    Route::get('/account/registreren', [RegisterController::class, 'create'])
+        ->block(10, 10)
+        ->name('account.registreren');
+    Route::post('/account/registreren', [RegisterController::class, 'store'])
+        ->block(10, 10);
 
     Route::get('/account/inloggen', [LoginController::class, 'create'])->name('account.inloggen');
     Route::post('/account/inloggen', [LoginController::class, 'store']);

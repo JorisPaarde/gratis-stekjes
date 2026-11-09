@@ -15,6 +15,11 @@
         <li class="error">{{ $error }}</li>
       @endforeach
     </ul>
+  @elseif(!empty($foutMessage))
+    {{-- Vangnet zonder sessie-flash (file-session race op staging). --}}
+    <ul class="error-list" role="alert">
+      <li class="error">{{ $foutMessage }}</li>
+    </ul>
   @endif
 
   <form class="form" method="post" action="{{ route('account.registreren') }}" novalidate data-meet-form="register" autocomplete="on">

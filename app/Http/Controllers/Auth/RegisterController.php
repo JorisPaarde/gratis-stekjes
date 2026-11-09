@@ -42,6 +42,14 @@ class RegisterController extends Controller
             ?? SafeIntended::DEFAULT;
         $next = SafeIntended::sanitize($next);
 
+        $fout = strtolower(trim((string) $request->query('fout', '')));
+        $foutMessage = match ($fout) {
+            'snel' => 'Dat ging erg snel. Klik nog een keer op Account maken.',
+            // Neutraal: geen vaste 'minuut' — flash met ThrottleMessage heeft voorrang.
+            'teveel' => 'Even te veel pogingen. Probeer het straks opnieuw.',
+            default => null,
+        };
+
         return view('auth.register', [
             'title' => 'Registreren',
             'metaDescription' => 'Account maken bij '.config('site.name').'. Bevestig je e-mail om verder te gaan.',
@@ -50,6 +58,7 @@ class RegisterController extends Controller
             'countries' => Country::labels(),
             'foundViaOptions' => (array) config('conversion.found_via_options', []),
             'next' => $next,
+            'foutMessage' => $foutMessage,
         ]);
     }
 
@@ -77,8 +86,9 @@ class RegisterController extends Controller
         if (RateLimiter::tooManyAttempts($key, 8)) {
             // Altijd terug naar het formulier (niet back()/previous → /): anders verdwijnt
             // de flash op een pagina zonder error-list en lijkt het formulier leeg.
+            // Geen e-mail in query (PII in logs/GA); old() via flash als die blijft.
             return redirect()
-                ->route('account.registreren')
+                ->route('account.registreren', ['fout' => 'teveel'])
                 ->withInput(self::safeOldInput($request))
                 ->withErrors(['email' => ThrottleMessage::forKey($key)]);
         }
