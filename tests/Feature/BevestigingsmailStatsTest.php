@@ -20,13 +20,13 @@ function beheerAdminVoorBevestiging(): User
     ]);
 }
 
-test('BevestigingsmailStats telt alleen geslaagde bevestigingsmails en herinneringen', function () {
+test('BevestigingsmailStats: eerste VerifyEmailDutch is aanmelding, rest + auto = herinneringen', function () {
     Carbon::setTestNow(Carbon::parse('2026-11-09 14:00:00', 'Europe/Amsterdam'));
 
     $lid = User::factory()->unverified()->create(['name' => 'Onbevestigd Otto']);
     $ander = User::factory()->unverified()->create(['name' => 'Ander']);
 
-    // 1 registratie + 2 herinneringen (ok)
+    // 1 aanmelding + 1 handmatige Herstuur (VerifyEmailDutch) + 1 auto-herinnering
     MailLog::query()->create([
         'user_id' => $lid->id,
         'type' => 'VerifyEmailDutch',
@@ -66,7 +66,7 @@ test('BevestigingsmailStats telt alleen geslaagde bevestigingsmails en herinneri
         'status' => 'ok',
         'created_at' => now()->subMinutes(10),
     ]);
-    // andere user
+    // andere user: alleen aanmelding
     MailLog::query()->create([
         'user_id' => $ander->id,
         'type' => 'VerifyEmailDutch',
@@ -79,21 +79,23 @@ test('BevestigingsmailStats telt alleen geslaagde bevestigingsmails en herinneri
     expect($stats)->toHaveCount(2);
 
     $otto = $stats->get($lid->id);
-    expect($otto->bevestiging)->toBe(2)
-        ->and($otto->herinnering)->toBe(1)
+    expect($otto->verifyDutch)->toBe(2)
+        ->and($otto->autoHerinnering)->toBe(1)
+        ->and($otto->aanmelding())->toBe(1)
+        ->and($otto->herinneringen())->toBe(2) // 1 extra VerifyEmailDutch + 1 auto
         ->and($otto->totaalOk())->toBe(3)
         ->and($otto->mislukt)->toBe(1)
-        ->and($otto->tellingLabel())->toBe('2 + 1 herinnering')
-        ->and($otto->samenvatting())->toContain('Bevestigingsmails: 2 + 1 herinnering')
-        ->and($otto->samenvatting())->toContain('08-11-2026 14:00')
+        ->and($otto->tellingLabel())->toBe('Bevestigingsmail: 1× bij aanmelding + 2 herinneringen')
+        ->and($otto->samenvatting())->toContain('laatste: 08-11-2026 14:00')
         ->and($otto->samenvatting())->toContain('1 mislukt')
+        ->and($otto->herinnerdLabel())->toContain('2×')
         ->and($otto->laatsteVerzendHint())->toContain('Laatst verstuurd:');
 
     $anderStats = $stats->get($ander->id);
-    expect($anderStats->bevestiging)->toBe(1)
-        ->and($anderStats->herinnering)->toBe(0)
+    expect($anderStats->aanmelding())->toBe(1)
+        ->and($anderStats->herinneringen())->toBe(0)
         ->and($anderStats->mislukt)->toBe(0)
-        ->and($anderStats->tellingLabel())->toBe('1');
+        ->and($anderStats->tellingLabel())->toBe('Bevestigingsmail: alleen bij aanmelding');
 });
 
 test('BevestigingsmailStats doet één groupBy-query zonder N+1', function () {
@@ -112,8 +114,8 @@ test('BevestigingsmailStats doet één groupBy-query zonder N+1', function () {
     $queries = DB::getQueryLog();
     DB::disableQueryLog();
 
-    expect($stats->get($a->id)->totaalOk())->toBe(2)
-        ->and($stats->get($b->id)->totaalOk())->toBe(2);
+    expect($stats->get($a->id)->herinneringen())->toBe(1)
+        ->and($stats->get($b->id)->herinneringen())->toBe(1);
 
     $groupBy = array_values(array_filter(
         $queries,
@@ -122,7 +124,6 @@ test('BevestigingsmailStats doet één groupBy-query zonder N+1', function () {
     ));
     expect($groupBy)->toHaveCount(1);
 
-    // Geen per-user follow-up queries op mail_log (N+1-vrij).
     $mailLogSelects = array_values(array_filter(
         $queries,
         static fn (array $q) => str_contains(strtolower($q['query']), 'from "mail_log"')
@@ -132,7 +133,7 @@ test('BevestigingsmailStats doet één groupBy-query zonder N+1', function () {
     expect(count($mailLogSelects))->toBeLessThanOrEqual(1);
 });
 
-test('lijst toont bevestigingsmail-samenvatting voor onbevestigde leden', function () {
+test('lijst toont aanmelding + herinneringen en laatste regel', function () {
     Carbon::setTestNow(Carbon::parse('2026-11-09 15:30:00', 'Europe/Amsterdam'));
     $admin = beheerAdminVoorBevestiging();
     $lid = User::factory()->unverified()->create(['name' => 'Wachtende Wilma']);
@@ -162,15 +163,14 @@ test('lijst toont bevestigingsmail-samenvatting voor onbevestigde leden', functi
         ->assertOk()
         ->assertSee('Wachtende Wilma', false)
         ->assertDontSee('Bevestigde Bert', false)
-        ->assertSee('Bevestigingsmails:', false)
-        ->assertSee('1 + 1 herinnering', false)
-        ->assertSee('08-11-2026 15:30', false)
+        ->assertSee('Bevestigingsmail: 1× bij aanmelding + 1 herinnering', false)
+        ->assertSee('laatste: 08-11-2026 15:30', false)
         ->getContent();
 
     expect($html)->not->toContain('NewMessageMail');
 });
 
-test('detailpagina toont samenvatting en laatste verzendtijd bij herstuur-knop', function () {
+test('detailpagina heeft eigen rij Herinnerd en laatste bij herstuur-knop', function () {
     Carbon::setTestNow(Carbon::parse('2026-11-09 16:00:00', 'Europe/Amsterdam'));
     $admin = beheerAdminVoorBevestiging();
     $lid = User::factory()->unverified()->create(['name' => 'Detail Dana', 'email' => 'dana@example.test']);
@@ -198,12 +198,13 @@ test('detailpagina toont samenvatting en laatste verzendtijd bij herstuur-knop',
     $this->actingAs($admin)
         ->get(route('beheer.gebruikers.show', $lid))
         ->assertOk()
-        ->assertSee('Bevestigingsmails:', false)
-        ->assertSee('1 + 1 herinnering', false)
+        ->assertSee('>Herinnerd</dt>', false)
+        ->assertSee('1× · laatste', false)
         ->assertSee('1 mislukt', false)
         ->assertSee('Bevestigingsmail opnieuw sturen', false)
         ->assertSee('Laatst verstuurd:', false)
-        ->assertSee('09-11-2026 13:00', false);
+        ->assertSee('09-11-2026 13:00', false)
+        ->assertDontSee('Bevestigingsmail: 1× bij aanmelding', false);
 });
 
 test('filter onbevestigd blijft werken naast de nieuwe weergave', function () {

@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Schema;
  * Samenvatting van bevestigingsmails per lid uit mail_log (één groupBy-query).
  *
  * Telt alleen VerifyEmailDutch + VerifyEmailReminderDutch. Andere mailtypes tellen niet mee.
+ *
+ * De eerste geslaagde VerifyEmailDutch = aanmelding. Elke volgende geslaagde
+ * VerifyEmailDutch (handmatig Herstuur / bulk Herinner) én elke geslaagde
+ * VerifyEmailReminderDutch telt als herinnering.
  */
 final class BevestigingsmailStats
 {
@@ -24,16 +28,32 @@ final class BevestigingsmailStats
     ];
 
     public function __construct(
-        public readonly int $bevestiging = 0,
-        public readonly int $herinnering = 0,
+        /** Geslaagde VerifyEmailDutch (incl. de eerste bij aanmelding). */
+        public readonly int $verifyDutch = 0,
+        /** Geslaagde VerifyEmailReminderDutch (automatische 24u-herinnering). */
+        public readonly int $autoHerinnering = 0,
         public readonly int $mislukt = 0,
         public readonly ?CarbonInterface $laatsteOk = null,
         public readonly ?CarbonInterface $laatstePoging = null,
     ) {}
 
+    /** 1 als er minstens één geslaagde VerifyEmailDutch is, anders 0. */
+    public function aanmelding(): int
+    {
+        return $this->verifyDutch > 0 ? 1 : 0;
+    }
+
+    /**
+     * Aantal herinneringen: VerifyEmailDutch na de eerste + alle VerifyEmailReminderDutch.
+     */
+    public function herinneringen(): int
+    {
+        return max(0, $this->verifyDutch - 1) + $this->autoHerinnering;
+    }
+
     public function totaalOk(): int
     {
-        return $this->bevestiging + $this->herinnering;
+        return $this->verifyDutch + $this->autoHerinnering;
     }
 
     public function isLeeg(): bool
@@ -41,14 +61,19 @@ final class BevestigingsmailStats
         return $this->totaalOk() === 0 && $this->mislukt === 0;
     }
 
-    /** Compacte NL-tekst voor lijst en detail. */
+    public function laatste(): ?CarbonInterface
+    {
+        return $this->laatsteOk ?? $this->laatstePoging;
+    }
+
+    /** Compacte NL-tekst voor de gebruikerslijst. */
     public function samenvatting(): string
     {
-        $delen = ['Bevestigingsmails: '.$this->tellingLabel()];
+        $delen = [$this->tellingLabel()];
 
-        $laatste = $this->laatsteOk ?? $this->laatstePoging;
+        $laatste = $this->laatste();
         if ($laatste !== null) {
-            $delen[] = 'laatste '.$this->formatLaatste($laatste);
+            $delen[] = 'laatste: '.$this->formatLaatste($laatste);
         }
 
         if ($this->mislukt > 0) {
@@ -58,27 +83,55 @@ final class BevestigingsmailStats
         return implode(', ', $delen);
     }
 
+    /**
+     * Hoofdregel: «Bevestigingsmail: 1× bij aanmelding + N herinneringen»
+     * of «Bevestigingsmail: alleen bij aanmelding».
+     */
+    public function tellingLabel(): string
+    {
+        $n = $this->herinneringen();
+
+        if ($this->aanmelding() === 0) {
+            if ($n === 0) {
+                return 'Bevestigingsmail: nog geen';
+            }
+
+            $her = $n === 1 ? '1 herinnering' : $n.' herinneringen';
+
+            return 'Bevestigingsmail: '.$her;
+        }
+
+        if ($n === 0) {
+            return 'Bevestigingsmail: alleen bij aanmelding';
+        }
+
+        $her = $n === 1 ? '1 herinnering' : $n.' herinneringen';
+
+        return 'Bevestigingsmail: 1× bij aanmelding + '.$her;
+    }
+
+    /** Detailrij «Herinnerd»: «2× · laatste …» of «0×». */
+    public function herinnerdLabel(): string
+    {
+        $n = $this->herinneringen();
+        $basis = $n.'×';
+        $laatste = $this->laatste();
+        if ($laatste === null) {
+            return $n === 0 ? 'nog niet' : $basis;
+        }
+
+        return $basis.' · laatste '.$this->formatLaatste($laatste);
+    }
+
     /** Korte hint bij de herstuur-knop. */
     public function laatsteVerzendHint(): ?string
     {
-        $laatste = $this->laatsteOk ?? $this->laatstePoging;
+        $laatste = $this->laatste();
         if ($laatste === null) {
             return null;
         }
 
         return 'Laatst verstuurd: '.$this->formatLaatste($laatste);
-    }
-
-    /** @return '1' | '1 + 2 herinneringen' | '0' | … */
-    public function tellingLabel(): string
-    {
-        if ($this->herinnering === 0) {
-            return (string) $this->bevestiging;
-        }
-
-        $her = $this->herinnering === 1 ? '1 herinnering' : $this->herinnering.' herinneringen';
-
-        return $this->bevestiging.' + '.$her;
     }
 
     public function formatLaatste(CarbonInterface $at): string
@@ -101,12 +154,12 @@ final class BevestigingsmailStats
             return collect();
         }
 
-        /** @var array<int, array{bevestiging: int, herinnering: int, mislukt: int, laatste_ok: ?string, laatste_poging: ?string}> $acc */
+        /** @var array<int, array{verify_dutch: int, auto_herinnering: int, mislukt: int, laatste_ok: ?string, laatste_poging: ?string}> $acc */
         $acc = [];
         foreach ($ids as $id) {
             $acc[$id] = [
-                'bevestiging' => 0,
-                'herinnering' => 0,
+                'verify_dutch' => 0,
+                'auto_herinnering' => 0,
                 'mislukt' => 0,
                 'laatste_ok' => null,
                 'laatste_poging' => null,
@@ -130,9 +183,9 @@ final class BevestigingsmailStats
 
             if ($row->status === 'ok') {
                 if ($row->type === 'VerifyEmailDutch') {
-                    $acc[$uid]['bevestiging'] += $n;
+                    $acc[$uid]['verify_dutch'] += $n;
                 } elseif ($row->type === 'VerifyEmailReminderDutch') {
-                    $acc[$uid]['herinnering'] += $n;
+                    $acc[$uid]['auto_herinnering'] += $n;
                 }
                 $acc[$uid]['laatste_ok'] = self::maxTimestamp($acc[$uid]['laatste_ok'], $laatste);
             } else {
@@ -142,8 +195,8 @@ final class BevestigingsmailStats
         }
 
         return collect($acc)->map(static fn (array $s): self => new self(
-            bevestiging: $s['bevestiging'],
-            herinnering: $s['herinnering'],
+            verifyDutch: $s['verify_dutch'],
+            autoHerinnering: $s['auto_herinnering'],
             mislukt: $s['mislukt'],
             laatsteOk: $s['laatste_ok'] !== null ? Carbon::parse($s['laatste_ok']) : null,
             laatstePoging: $s['laatste_poging'] !== null ? Carbon::parse($s['laatste_poging']) : null,

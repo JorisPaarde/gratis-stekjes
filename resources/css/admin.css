@@ -593,19 +593,14 @@
 
 /* Bevestigingsmail-telling bij onbevestigde leden */
 .beheer-bevestigingsmails { display: inline; line-height: 1.45; }
-.beheer-bevestigingsmails__label { font-weight: 600; color: var(--forest-deep, #163820); }
+.beheer-bevestigingsmails__regel { font-weight: 600; color: var(--forest-deep, #163820); }
 .beheer-bevestigingsmails .status { margin-left: .25rem; white-space: normal; }
-.beheer-bevestigingsmails--blok { margin: .35rem 0 0; }
-.beheer-bevestigingsmails--blok p { margin: 0; }
-.beheer-bevestigingsmails__samenvatting { display: flex; flex-wrap: wrap; gap: .2rem .45rem; align-items: baseline; }
-.beheer-bevestigingsmails-inline { margin-top: .35rem; }
 .beheer-herstuur-blok { display: flex; flex-direction: column; align-items: flex-start; gap: .25rem; }
 .beheer-herstuur-hint { margin: 0; max-width: 22rem; }
 @media (max-width: 760px) {
   .beheer-page .beheer-gebruikers td[data-label="Bevestigingsmails"] { grid-column: 1 / -1; }
   /* Label zit al in de celtekst; geen dubbele «Bevestigingsmails:» via data-label. */
   .beheer-page .beheer-gebruikers td[data-label="Bevestigingsmails"]::before { content: none; }
-  .beheer-bevestigingsmails__samenvatting { flex-direction: column; align-items: flex-start; gap: .15rem; }
 }
 
 /* Onderdelen binnen Keuren / Inbox / Inhoud: pillen die doorlopen op een nieuwe regel (nooit scrollen). */

@@ -105,7 +105,7 @@
               <td data-label="{{ ! $u->hasVerifiedEmail() ? 'Bevestigingsmails' : 'Laatste mail' }}">
                 @if(! $u->hasVerifiedEmail())
                   @php($bm = $bevestigingsmails[$u->id] ?? new \App\Support\BevestigingsmailStats())
-                  @include('beheer.partials.bevestigingsmails', ['stats' => $bm, 'compact' => true])
+                  @include('beheer.partials.bevestigingsmails', ['stats' => $bm])
                 @elseif($mail)
                   {{ \App\Support\MailLabels::type($mail->type) }}
                   @if(! $mail->isOk())<span class="status status--fout">{{ \App\Support\MailLabels::fout($mail->error) }}</span>@endif

@@ -90,7 +90,7 @@ test('beheer toont bevestiging en laatste mailstatus en kan resend', function ()
         ->assertSee('Onbevestigd', false)
         ->assertSee('Bevestigd', false)
         ->assertSee('Wacht op bevestiging', false)
-        ->assertSee('Bevestigingsmails:', false)
+        ->assertSee('Bevestigingsmail: nog geen', false)
         ->assertSee('1 mislukt', false)
         ->assertDontSee('VerifyEmailDutch', false)
         ->assertSee('Herstuur', false);

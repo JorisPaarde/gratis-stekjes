@@ -40,14 +40,16 @@
         <dt>Telefoon ingevuld</dt><dd>{{ trim((string) ($u->isUnreadable('telefoon') ? '' : $u->telefoon)) !== '' ? 'ja' : 'nee' }}</dd>
         <dt>Lid sinds</dt><dd>{{ $u->created_at?->timezone('Europe/Amsterdam')->format('d-m-Y') }} <span class="muted">({{ $u->created_at?->diffForHumans() }})</span></dd>
         <dt>Bevestigd</dt>
-        <dd>
-          {{ $u->email_verified_at ? $u->email_verified_at->timezone('Europe/Amsterdam')->format('d-m-Y') : 'nee' }}
-          @if($bevestigingsmails)
-            <div class="beheer-bevestigingsmails-inline">
-              @include('beheer.partials.bevestigingsmails', ['stats' => $bevestigingsmails, 'compact' => false])
-            </div>
-          @endif
-        </dd>
+        <dd>{{ $u->email_verified_at ? $u->email_verified_at->timezone('Europe/Amsterdam')->format('d-m-Y') : 'nee' }}</dd>
+        @if($bevestigingsmails)
+          <dt>Herinnerd</dt>
+          <dd>
+            {{ $bevestigingsmails->herinnerdLabel() }}
+            @if($bevestigingsmails->mislukt > 0)
+              <span class="status status--fout">{{ $bevestigingsmails->mislukt === 1 ? '1 mislukt' : $bevestigingsmails->mislukt.' mislukt' }}</span>
+            @endif
+          </dd>
+        @endif
         <dt>Beheerder</dt><dd>{{ $u->is_admin ? 'ja' : 'nee' }}@if(\App\Support\AdminDashboard::userMayAccess($u) && ! $u->is_admin) <span class="muted">(toegang via e-maillijst)</span>@endif</dd>
         <dt>Laatst actief</dt><dd>{{ $u->last_seen_at?->diffForHumans() ?? 'onbekend' }}</dd>
         <dt>Berichtmail</dt><dd>{{ $u->berichtmail !== false ? 'aan' : 'uit' }}</dd>
