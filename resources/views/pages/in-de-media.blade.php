@@ -21,11 +21,11 @@
             <time datetime="{{ $item['datum'] }}">{{ $item['datum_label'] }}</time>
           </p>
           <h2 class="media-kop">
-            <a href="{{ $item['url'] }}" target="_blank" rel="noopener">{{ $item['kop'] }}</a>
+            <a href="{{ $item['url'] }}" target="_blank" rel="noopener noreferrer">{{ $item['kop'] }}</a>
           </h2>
           <p class="media-samenvatting">{{ $item['samenvatting'] }}</p>
           <p class="media-lees">
-            <a href="{{ $item['url'] }}" target="_blank" rel="noopener">Lees het artikel<span class="visually-hidden">: {{ $item['kop'] }}</span></a>
+            <a href="{{ $item['url'] }}" target="_blank" rel="noopener noreferrer">Lees het artikel<span class="visually-hidden">: {{ $item['kop'] }}</span></a>
           </p>
         </li>
       @endforeach

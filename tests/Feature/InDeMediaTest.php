@@ -14,7 +14,7 @@ test('in-de-media pagina laadt met vermelding, seo en schema', function () {
         ->assertSee('9 november 2026', false)
         ->assertSee('https://positief-nieuws.nl/artikelen/2026-11-09/gratis-planten-verbindt-buren/', false)
         ->assertSee('target="_blank"', false)
-        ->assertSee('rel="noopener"', false)
+        ->assertSee('rel="noopener noreferrer"', false)
         ->assertSee('Ben je journalist?', false)
         ->assertSee('info@gratisplanten.nl', false)
         ->assertSee('rel="canonical"', false)
