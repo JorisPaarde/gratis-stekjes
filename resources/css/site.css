@@ -1195,67 +1195,180 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
 .plekken-tabs a.is-actief { border-bottom-color: var(--orange, #e8833a); color: var(--forest-deep, #163820); }
 @media (max-width: 420px) { .plekken-tabs { flex-wrap: nowrap; } .plekken-tabs a { flex: 1; justify-content: center; padding: 0 .3rem; font-size: .9rem; } }
 
-/* /in-de-media — lijst van vermeldingen (geen cards) */
-.in-de-media-page .media-lijst {
+/* /in-de-media — klikbare mediakaarten (één kaart: gecentreerd; desktop horizontaal) */
+.in-de-media-page {
+  padding-bottom: 2.75rem;
+}
+.in-de-media-page .page-title {
+  margin-bottom: 1.5rem;
+}
+.in-de-media-page .media-kaarten {
   list-style: none;
   padding: 0;
-  margin: 0 0 2.5rem;
+  margin: 0 auto;
   display: grid;
-  gap: 0;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 40rem;
 }
-.in-de-media-page .media-item {
-  padding: 1.35rem 0 1.5rem;
-  border-top: 1px solid var(--line);
+@media (min-width: 900px) {
+  .in-de-media-page .media-kaarten:has(> :nth-child(2)) {
+    max-width: 48rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  .in-de-media-page .media-kaarten:has(> :nth-child(3)) {
+    max-width: 58rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
-.in-de-media-page .media-item:last-child {
-  border-bottom: 1px solid var(--line);
+.in-de-media-page .media-kaart {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
-.in-de-media-page .media-meta {
-  margin: 0 0 .45rem;
-  color: var(--forest);
-  font-size: .82rem;
-  font-weight: 700;
-  letter-spacing: .02em;
+.in-de-media-page .media-kaart:hover,
+.in-de-media-page .media-kaart:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(31, 77, 43, .28);
+  box-shadow: 0 16px 36px rgba(26, 18, 16, .12);
+  outline: none;
+}
+.in-de-media-page .media-kaart:focus-visible {
+  box-shadow: 0 0 0 3px rgba(232, 131, 58, .45), 0 16px 36px rgba(26, 18, 16, .12);
+}
+.in-de-media-page .media-kaart-beeld {
+  margin: 0;
+  position: relative;
+  background: var(--bg-mint);
+  display: flex;
+  flex-direction: column;
+}
+.in-de-media-page .media-kaart-beeld picture,
+.in-de-media-page .media-kaart-beeld img {
+  display: block;
+  width: 100%;
+  flex: 1;
+}
+.in-de-media-page .media-kaart-beeld img {
+  height: auto;
+  aspect-ratio: 960 / 644;
+  object-fit: cover;
+}
+.in-de-media-page .media-kaart-credit {
+  margin: 0;
+  padding: .35rem .75rem;
+  font-size: .72rem;
+  line-height: 1.35;
+  color: var(--ink-soft);
+  background: rgba(255, 255, 255, .94);
+}
+.in-de-media-page .media-kaart-accent {
+  display: grid;
+  place-items: center;
+  min-height: 10.5rem;
+  padding: 1.5rem 1.25rem;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(232, 131, 58, .18), transparent 42%),
+    linear-gradient(160deg, var(--forest-deep), var(--forest) 58%, #2a6a3c);
+  color: #f7f4ea;
+}
+.in-de-media-page .media-kaart-accent span {
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 4vw, 2.15rem);
+  line-height: 1.05;
+  letter-spacing: .01em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.in-de-media-page .media-kaart-body {
+  display: flex;
+  flex-direction: column;
+  gap: .55rem;
+  padding: 1.05rem 1.15rem 1.2rem;
+  flex: 1;
+}
+.in-de-media-page .media-kaart-meta {
+  margin: 0;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: .35rem .45rem;
+  gap: .3rem .45rem;
+  color: var(--forest);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .02em;
 }
-.in-de-media-page .media-sep { color: var(--ink-soft); font-weight: 500; }
-.in-de-media-page .media-kop {
-  margin: 0 0 .55rem;
-  font-size: clamp(1.2rem, 2.6vw, 1.45rem);
-  line-height: 1.25;
+.in-de-media-page .media-kaart-sep { color: var(--ink-soft); font-weight: 500; }
+.in-de-media-page .media-kaart-kop {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3vw, 1.7rem);
+  line-height: 1.12;
+  letter-spacing: .01em;
   text-transform: none;
-  letter-spacing: -0.01em;
-}
-.in-de-media-page .media-kop a {
-  text-decoration: none;
   color: var(--forest-deep);
 }
-.in-de-media-page .media-kop a:hover,
-.in-de-media-page .media-kop a:focus-visible {
+.in-de-media-page .media-kaart-tekst {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: .95rem;
+  line-height: 1.45;
+}
+.in-de-media-page .media-kaart-cta {
+  margin-top: auto;
+  padding-top: .45rem;
+  color: var(--orange-hover);
+  font-weight: 700;
+  font-size: .95rem;
+}
+.in-de-media-page .media-kaart:hover .media-kaart-cta,
+.in-de-media-page .media-kaart:focus-visible .media-kaart-cta {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.in-de-media-page .media-samenvatting {
-  margin: 0 0 .65rem;
-  color: var(--ink-soft);
-  max-width: 40rem;
-}
-.in-de-media-page .media-lees {
-  margin: 0;
-  font-size: .95rem;
-}
-.in-de-media-page .media-journalist {
-  margin-top: 2.25rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--line);
-  max-width: 40rem;
-}
-.in-de-media-page .media-journalist h2 {
-  margin-top: 0;
+/* Eén (of eerste kolom) kaart: horizontaal op tablet/desktop — vult de breedte zonder verloren te ogen. */
+@media (min-width: 720px) {
+  .in-de-media-page .media-kaarten:not(:has(> :nth-child(2))) .media-kaart {
+    flex-direction: row;
+    align-items: stretch;
+    min-height: 15.5rem;
+  }
+  .in-de-media-page .media-kaarten:not(:has(> :nth-child(2))) .media-kaart-beeld,
+  .in-de-media-page .media-kaarten:not(:has(> :nth-child(2))) .media-kaart-accent {
+    flex: 0 0 46%;
+    max-width: 46%;
+    min-height: 100%;
+  }
+  .in-de-media-page .media-kaarten:not(:has(> :nth-child(2))) .media-kaart-beeld img {
+    height: 100%;
+    min-height: 15.5rem;
+    aspect-ratio: auto;
+  }
+  .in-de-media-page .media-kaarten:not(:has(> :nth-child(2))) .media-kaart-credit {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .in-de-media-page .media-kaarten:not(:has(> :nth-child(2))) .media-kaart-beeld {
+    position: relative;
+  }
+  .in-de-media-page .media-kaarten:not(:has(> :nth-child(2))) .media-kaart-body {
+    padding: 1.35rem 1.4rem 1.4rem;
+    justify-content: center;
+  }
 }
 @media (max-width: 420px) {
-  .in-de-media-page .media-item { padding: 1.15rem 0 1.25rem; }
+  .in-de-media-page .media-kaart-body { padding: .95rem 1rem 1.05rem; }
+  .in-de-media-page .media-kaart-accent { min-height: 9.25rem; }
+  .in-de-media-page .page-title { margin-bottom: 1.15rem; }
 }

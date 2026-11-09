@@ -3,6 +3,15 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.23] - 2026-11-09
+
+### Changed
+
+- `/in-de-media`: klikbare mediakaarten (medium, titel, datum, optionele
+  preview + bronvermelding). Alleen paginatitel + kaartjes; intro en
+  «Ben je journalist?» weg. Optioneel `image`/`image_webp` in
+  `data/in-de-media.json`; Positief nieuws met lokale og-preview.
+
 ## [0.78.22] - 2026-11-09
 
 ### Added
@@ -20,6 +29,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   Facebook’s crawler OG-tags van de doelpagina kan lezen); niet in sitemap.
 - Meting: `/s/` telt niet als pageview of `cta_click` — meting blijft op
   `/ga/word-lid` (geen dubbeltelling).
+
 
 ## [0.78.21] - 2026-11-09
 

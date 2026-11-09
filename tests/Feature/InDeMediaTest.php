@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-test('in-de-media pagina laadt met vermelding, seo en schema', function () {
+test('in-de-media pagina laadt met kaart, seo en schema', function () {
     config(['site.name' => 'Gratis planten', 'site.noindex' => false]);
 
     $response = $this->get(route('in-de-media'))->assertOk();
@@ -13,14 +13,18 @@ test('in-de-media pagina laadt met vermelding, seo en schema', function () {
         ->assertSee('Een plant over? Maak er een buur blij mee.', false)
         ->assertSee('9 november 2026', false)
         ->assertSee('https://positief-nieuws.nl/artikelen/2026-11-09/gratis-planten-verbindt-buren/', false)
+        ->assertSee('class="media-kaart', false)
+        ->assertSee('/assets/images/in-de-media/positief-nieuws-2026-11-09.jpg', false)
+        ->assertSee('Beeld: Positief nieuws', false)
+        ->assertSee('Lees het artikel', false)
         ->assertSee('target="_blank"', false)
         ->assertSee('rel="noopener noreferrer"', false)
-        ->assertSee('Ben je journalist?', false)
-        ->assertSee('info@gratisplanten.nl', false)
         ->assertSee('rel="canonical"', false)
         ->assertSee('property="og:title"', false)
         ->assertSee('"@type":"ItemList"', false)
         ->assertSee('"@type":"NewsArticle"', false)
+        ->assertDontSee('Ben je journalist?', false)
+        ->assertDontSee('Artikelen en vermeldingen over', false)
         ->assertDontSee('name="robots" content="noindex, nofollow"', false);
 
     $html = $response->getContent();
