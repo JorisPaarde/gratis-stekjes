@@ -31,6 +31,13 @@
         'plant' => '<path d="M12 22v-7"/><path d="M9 22h6"/><path d="M12 15c-3.5-1-6-3.5-6-7 4 0 6 2.5 6 7Z"/><path d="M12 15c3.5-1 6-3.5 6-7-4 0-6 2.5-6 7Z"/><path d="M12 10c-1.5-3-.5-5.5 2-7"/>',
         'zaad' => '<ellipse cx="12" cy="13" rx="4.5" ry="7"/><path d="M12 6v14"/><path d="M9.5 10.5c1 .8 2.5.8 3.5 0"/><path d="M9.5 15c1 .8 2.5.8 3.5 0"/>',
         'ophalen' => '<path d="M8 13v5a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-5"/><path d="M7 13h10"/><path d="M12 3v7"/><path d="m9 7 3 3 3-3"/><path d="M5 11c0-1.5 1-2.5 2.5-2.5"/><path d="M19 11c0-1.5-1-2.5-2.5-2.5"/>',
+        // —— Trechterstappen (/beheer/statistieken) ——
+        'bezoekers' => '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+        'klik' => '<path d="M14 4.1 12 6"/><path d="m5.1 8-2.9-.8"/><path d="m6 12-1.9 2"/><path d="M7.2 2.2 8 5.1"/><path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.962l-4.31 1.022a2 2 0 0 0-1.457 1.457l-1.022 4.31a.5.5 0 0 1-.962.074z"/>',
+        'pagina' => '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
+        'formulier' => '<rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>',
+        'verstuur' => '<path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/>',
+        'mail-check' => '<path d="M22 13V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h8"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/><path d="m16 19 2 2 4-4"/>',
     ];
     // Alias: oude icoonnaam blijft werken
     $paths['partner'] = $paths['initiatief'];

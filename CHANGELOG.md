@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.18] - 2026-11-09
+
+### Changed
+
+- Stats-trechter «per week»: weken als `<details>` — alleen de laatste volledige week standaard open; dichte summary toont weeklabel + kerngetallen (bezoekers → klik → eerste aanbod).
+- Trechterstappen als compacte icooncellen (4 per rij op smal, 8 op breed) met inline SVG, `title`/`aria-label` per cel, en één legenda boven het blok. «Te weinig data» en conversiepercentages blijven.
+
 ## [0.78.17] - 2026-11-09
 
 ### Fixed
