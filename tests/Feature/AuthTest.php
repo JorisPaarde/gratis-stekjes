@@ -6,8 +6,10 @@ use App\Models\GeocodeCache;
 use App\Models\User;
 use App\Notifications\AccountBestaatAl;
 use App\Notifications\VerifyEmailDutch;
+use App\Support\FormGuard;
 use App\Support\Geo;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 
@@ -20,6 +22,7 @@ function authTestPassword(): string
 function authFormPayload(array $extra = []): array
 {
     return array_merge([
+        FormGuard::HONEYPOT_FIELD => '',
         'website' => '',
         'form_started' => time() - 10,
         'country' => 'NL',
@@ -109,26 +112,84 @@ test('wegwerpmail uit domains.txt wordt geweigerd', function () {
 
 test('honeypot bij registratie is stil succes zonder user', function () {
     Notification::fake();
+    Log::spy();
+    seedAuthRegGeo();
+    Http::fake();
 
     $this->post(route('account.registreren'), authFormPayload([
         'email' => 'bot@example.com',
         'password' => authTestPassword(),
-        'website' => 'https://spam.test',
+        FormGuard::HONEYPOT_FIELD => 'https://spam.test',
     ]))->assertRedirect(route('account.bevestiging-nodig'));
 
     expect(User::query()->where('email', 'bot@example.com')->exists())->toBeFalse();
     Notification::assertNothingSent();
+    Log::shouldHaveReceived('info')->withArgs(function ($message, $context) {
+        return $message === 'form.bot_rejected'
+            && ($context['form'] ?? null) === 'register'
+            && ($context['reason'] ?? null) === 'honeypot'
+            && ! isset($context['email']);
+    })->atLeast()->once();
 });
 
-test('te snel formulier wordt geweigerd', function () {
-    $this->from(route('account.registreren'))
+test('legacy honeypot-veld website blijft nep-succes zonder user', function () {
+    Notification::fake();
+    Log::spy();
+    seedAuthRegGeo();
+    Http::fake();
+
+    $this->post(route('account.registreren'), authFormPayload([
+        'email' => 'legacy-bot@example.com',
+        'password' => authTestPassword(),
+        'website' => 'https://old-spam.test',
+    ]))->assertRedirect(route('account.bevestiging-nodig'));
+
+    expect(User::query()->where('email', 'legacy-bot@example.com')->exists())->toBeFalse();
+    Notification::assertNothingSent();
+    Log::shouldHaveReceived('info')->withArgs(function ($message, $context) {
+        return $message === 'form.bot_rejected'
+            && ($context['reason'] ?? null) === 'honeypot';
+    })->atLeast()->once();
+});
+
+test('te snel formulier wordt geweigerd met vriendelijke melding', function () {
+    Log::spy();
+    Notification::fake();
+
+    $response = $this->from(route('account.registreren'))
         ->post(route('account.registreren'), authFormPayload([
             'email' => 'snel@example.com',
             'password' => authTestPassword(),
             'form_started' => time(),
-        ]))
-        ->assertRedirect(route('account.registreren'))
-        ->assertSessionHasErrors('form_started');
+        ]));
+
+    $response->assertRedirect(route('account.registreren'))
+        ->assertSessionHasErrors([
+            'form_started' => 'Dat ging erg snel. Klik nog een keer op Account maken.',
+        ])
+        ->assertSessionDoesntHaveErrors('email')
+        ->assertSessionMissing('status');
+
+    expect(User::query()->where('email', 'snel@example.com')->exists())->toBeFalse()
+        ->and(session()->getOldInput('password'))->toBeNull()
+        ->and(session()->getOldInput('email'))->toBe('snel@example.com');
+
+    Log::shouldHaveReceived('info')->withArgs(function ($message, $context) {
+        return $message === 'form.bot_rejected'
+            && ($context['form'] ?? null) === 'register'
+            && ($context['reason'] ?? null) === 'too_fast'
+            && ! isset($context['email']);
+    })->atLeast()->once();
+});
+
+test('registratiepagina honeypot is autofill-neutraal', function () {
+    $html = $this->get(route('account.registreren'))->assertOk()->getContent();
+    expect($html)->toContain('name="'.FormGuard::HONEYPOT_FIELD.'"')
+        ->and($html)->toContain('data-1p-ignore')
+        ->and($html)->toContain('data-lpignore="true"')
+        ->and($html)->toContain('data-bwignore')
+        ->and($html)->toContain('data-form-type="other"')
+        ->and($html)->not->toMatch('/class="hp"[^>]*>[\s\S]*name="website"/');
 });
 
 test('inloggen faalt zonder e-mailbevestiging', function () {

@@ -13,6 +13,7 @@ use App\Notifications\VerifyEmailDutch;
 use App\Services\ConversionTracker;
 use App\Services\UserLocatieService;
 use App\Support\Country;
+use App\Support\FormGuard;
 use App\Support\SafeIntended;
 use App\Support\SafeMail;
 use App\Support\ThrottleMessage;
@@ -65,6 +66,8 @@ class RegisterController extends Controller
         SafeIntended::clearAssociationResendHint($request);
 
         if ($request->isBot()) {
+            FormGuard::logBotRejected('register', 'honeypot');
+
             return redirect()
                 ->route('account.bevestiging-nodig')
                 ->with('status', 'Check je e-mail om je aanmelding te bevestigen.');

@@ -3,6 +3,21 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.32] - 2026-11-09
+
+### Fixed
+
+- Honeypot autofill-proof: veld `gp_hp_stem` (geen website/url/name/email),
+  `autocomplete=off` + `data-1p-ignore` / `data-lpignore` / `data-bwignore` /
+  `data-form-type=other`. Legacy `website` blijft server-side honeypot voor
+  gecachte HTML. Alle formulieren met `partials.honeypot` (+ help-mee).
+- Registreren te snel (honeypot leeg): geen nep-succes, formulier terug met
+  «Dat ging erg snel. Klik nog een keer op Account maken.», zonder wachtwoord
+  in old input; `form_started` opnieuw via partial. Honeypot gevuld blijft
+  nep-succes naar bevestiging-nodig.
+- Logregel `form.bot_rejected` (reden `honeypot`|`too_fast`, zonder e-mail/PII)
+  bij registratie-afwijzing.
+
 ## [0.78.31] - 2026-11-09
 
 ### Added
