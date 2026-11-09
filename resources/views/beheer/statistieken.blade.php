@@ -179,11 +179,32 @@
 
   <details class="stats-panel" open>
     <summary class="stats-panel-summary">
-      <span class="stats-panel-title">Trechter · per week</span>
+      <span class="stats-panel-title">Trechter · per {{ $funnelPeriod }}</span>
       <span class="stats-panel-hint muted">van klik tot eerste aanbod</span>
     </summary>
     <div class="stats-panel-body">
-      <p class="muted stats-funnel-intro">Unieke bezoekers zijn een schatting (daghash). Percentages tonen we pas vanaf {{ $minFormStarts }} formulierstarts in die week; daaronder staat «te weinig data» omdat de percentages nog niet betrouwbaar zijn.</p>
+      @php
+        $periodNoun = $funnelPeriod === 'week' ? 'week' : 'maand';
+        $periodNounDeze = $funnelPeriod === 'week' ? 'deze week' : 'deze maand';
+      @endphp
+      <div class="stats-funnel-toggle" role="tablist" aria-label="Trechterperiode">
+        <a
+          href="{{ route('beheer.statistieken', ['trechter' => 'maand']) }}"
+          class="stats-funnel-toggle-btn{{ $funnelPeriod === 'maand' ? ' is-actief' : '' }}"
+          role="tab"
+          aria-selected="{{ $funnelPeriod === 'maand' ? 'true' : 'false' }}"
+          @if($funnelPeriod === 'maand') aria-current="page" @endif
+        >Maand</a>
+        <a
+          href="{{ route('beheer.statistieken', ['trechter' => 'week']) }}"
+          class="stats-funnel-toggle-btn{{ $funnelPeriod === 'week' ? ' is-actief' : '' }}"
+          role="tab"
+          aria-selected="{{ $funnelPeriod === 'week' ? 'true' : 'false' }}"
+          @if($funnelPeriod === 'week') aria-current="page" @endif
+        >Week</a>
+      </div>
+
+      <p class="muted stats-funnel-intro">Unieke bezoekers zijn een schatting (daghash). Percentages tonen we pas vanaf {{ $minFormStarts }} formulierstarts in die {{ $periodNoun }}; daaronder staat «te weinig data» omdat de percentages nog niet betrouwbaar zijn.@if($funnelPeriod === 'maand') Maandtotalen tellen per kalenderdag (Europe/Amsterdam), niet per hele week over de maandgrens.@endif</p>
 
       <ul class="stats-funnel-legend" aria-label="Trechterstappen">
         @foreach($funnelLegendLabels as $key => $legendLabel)
@@ -197,44 +218,52 @@
       </ul>
 
       <div class="stats-funnel-weeks">
-        @foreach($funnelWeeks as $week)
+        @foreach($funnelPeriods as $period)
           @php
-            $firstOfferCount = (int) ($week['steps'][\App\Models\ConversionEvent::TYPE_FIRST_OFFER] ?? 0);
-            $ctaCount = (int) ($week['steps'][\App\Models\ConversionEvent::TYPE_CTA_CLICK] ?? 0);
+            $firstOfferCount = (int) ($period['steps'][\App\Models\ConversionEvent::TYPE_FIRST_OFFER] ?? 0);
+            $ctaCount = (int) ($period['steps'][\App\Models\ConversionEvent::TYPE_CTA_CLICK] ?? 0);
           @endphp
           <details
             class="stats-funnel-week-block"
-            data-week-key="{{ $week['week_key'] }}"
-            @if(! empty($week['open_default'])) open @endif
+            @if(isset($period['week_key'])) data-week-key="{{ $period['week_key'] }}" @else data-month-key="{{ $period['month_key'] }}" @endif
+            @if(! empty($period['open_default'])) open @endif
           >
             <summary class="stats-funnel-week-summary">
-              <span class="stats-funnel-week-label">{{ $week['label'] }}</span>
+              <span class="stats-funnel-week-label">
+                {{ $period['label'] }}
+                @if(! empty($period['is_current']))
+                  <span class="status status--wacht stats-funnel-lopend">lopend</span>
+                @endif
+              </span>
+              @if(! empty($period['through_label']))
+                <span class="stats-funnel-through hint">{{ $period['through_label'] }}</span>
+              @endif
               <span class="stats-funnel-week-peek">
                 <span
                   class="stats-funnel-week-peek-nums"
                   title="bezoekers → klik → eerste aanbod"
-                >{{ (int) $week['unique_visitors'] }} → {{ $ctaCount }} → {{ $firstOfferCount }}</span>
-                @if($week['too_few'])
+                >{{ (int) $period['unique_visitors'] }} → {{ $ctaCount }} → {{ $firstOfferCount }}</span>
+                @if($period['too_few'])
                   <span class="stats-funnel-week-peek-sparse hint">te weinig data</span>
                 @endif
               </span>
             </summary>
             <div class="stats-funnel-week-body">
-              @if($week['too_few'])
-                <p class="stats-funnel-sparse hint">Te weinig data: minder dan {{ $minFormStarts }} formulierstarts deze week, percentages nog niet betrouwbaar.</p>
+              @if($period['too_few'])
+                <p class="stats-funnel-sparse hint">Te weinig data: minder dan {{ $minFormStarts }} formulierstarts {{ $periodNounDeze }}, percentages nog niet betrouwbaar.</p>
               @endif
               <ul class="stats-funnel-steps">
                 @foreach($funnelLabels as $key => $label)
                   @php
                     $stepCount = $key === 'unique_visitors'
-                      ? (int) $week['unique_visitors']
-                      : (int) ($week['steps'][$key] ?? 0);
-                    $stepRate = $week['rates'][$key] ?? null;
+                      ? (int) $period['unique_visitors']
+                      : (int) ($period['steps'][$key] ?? 0);
+                    $stepRate = $period['rates'][$key] ?? null;
                     // Registratiepagina is geen conversiestap (views kunnen > klikken): altijd «x per klik».
                     $rateLabel = null;
-                    if (! $week['too_few']) {
+                    if (! $period['too_few']) {
                         if ($key === \App\Models\ConversionEvent::TYPE_REGISTER_VIEW) {
-                            $ctaPrev = (int) ($week['steps'][\App\Models\ConversionEvent::TYPE_CTA_CLICK] ?? 0);
+                            $ctaPrev = (int) ($period['steps'][\App\Models\ConversionEvent::TYPE_CTA_CLICK] ?? 0);
                             $rateLabel = $ctaPrev === 0
                                 ? '–'
                                 : number_format($stepCount / $ctaPrev, 1, ',', '').' per klik';
