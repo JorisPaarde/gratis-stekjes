@@ -3,6 +3,17 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.31] - 2026-11-09
+
+### Added
+
+- Beheer `/beheer/gebruikers` en detail: bij onbevestigde leden zichtbaar hoe
+  vaak ze zijn herinnerd. Eerste geslaagde VerifyEmailDutch = aanmelding;
+  latere VerifyEmailDutch (Herstuur/bulk) + VerifyEmailReminderDutch =
+  herinneringen. Tekst «1× bij aanmelding + N herinneringen» / «alleen bij
+  aanmelding», laatste tijd Europe/Amsterdam, mislukte apart. Detailrij
+  «Herinnerd». Eén groupBy-query, geen N+1.
+
 ## [0.78.30] - 2026-11-09
 
 ### Fixed

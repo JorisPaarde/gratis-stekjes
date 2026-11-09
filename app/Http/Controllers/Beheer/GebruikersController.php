@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Notifications\VerifyEmailDutch;
 use App\Services\MilestoneService;
 use App\Support\BeheerTellers;
+use App\Support\BevestigingsmailStats;
 use App\Support\Naam;
 use App\Support\SafeMail;
 use Illuminate\Database\Eloquent\Builder;
@@ -96,6 +97,12 @@ class GebruikersController extends Controller
                 ->keyBy('user_id')
             : collect();
 
+        $onbevestigdIds = $gebruikers->getCollection()
+            ->filter(static fn (User $u) => ! $u->hasVerifiedEmail())
+            ->pluck('id')
+            ->all();
+        $bevestigingsmails = BevestigingsmailStats::voorUsers($onbevestigdIds);
+
         $gesprekken = Schema::hasTable('conversations') && $ids !== []
             ? $this->gesprekkenPerLid($ids)
             : [];
@@ -111,6 +118,7 @@ class GebruikersController extends Controller
             'canonical' => route('beheer.gebruikers'),
             'gebruikers' => $gebruikers,
             'laatsteMail' => $laatsteMail,
+            'bevestigingsmails' => $bevestigingsmails,
             'gesprekken' => $gesprekken,
             'filter' => $filter,
             'sort' => $sort,
@@ -158,6 +166,9 @@ class GebruikersController extends Controller
         $mails = Schema::hasTable('mail_log')
             ? MailLog::query()->where('user_id', $user->id)->orderByDesc('id')->limit(10)->get()
             : collect();
+        $bevestigingsmails = ! $user->hasVerifiedEmail()
+            ? BevestigingsmailStats::voorUser((int) $user->id)
+            : null;
         $gesprekken = Schema::hasTable('conversations')
             ? Conversation::query()->where(fn ($q) => $q->where('user_a_id', $user->id)->orWhere('user_b_id', $user->id))->count()
             : 0;
@@ -171,6 +182,7 @@ class GebruikersController extends Controller
             'u' => $user,
             'aanbod' => $aanbod,
             'mails' => $mails,
+            'bevestigingsmails' => $bevestigingsmails,
             'gesprekken' => $gesprekken,
             'overdrachten' => $overdrachten,
             'badges' => $milestones->badgesFor($user),

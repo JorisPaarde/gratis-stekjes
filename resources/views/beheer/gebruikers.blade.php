@@ -64,7 +64,7 @@
             <th>Laatst actief</th>
             <th>Aanbod</th>
             <th>Gesprekken</th>
-            <th>Laatste mail</th>
+            <th>{{ $filter === 'onbevestigd' ? 'Bevestigingsmails' : 'Laatste mail' }}</th>
             <th><span class="visually-hidden">Acties</span></th>
           </tr>
         </thead>
@@ -102,8 +102,11 @@
               <td data-label="Laatst actief" class="beheer-datum">{{ $u->last_seen_at ? $u->last_seen_at->diffForHumans(['parts' => 1, 'short' => true]) : '—' }}</td>
               <td data-label="Aanbod">{{ $u->aanbod_actief }} <span class="muted">/ {{ $u->aanbod_totaal }}</span></td>
               <td data-label="Gesprekken">{{ $gesprekken[$u->id] ?? 0 }}</td>
-              <td data-label="Laatste mail">
-                @if($mail)
+              <td data-label="{{ ! $u->hasVerifiedEmail() ? 'Bevestigingsmails' : 'Laatste mail' }}">
+                @if(! $u->hasVerifiedEmail())
+                  @php($bm = $bevestigingsmails[$u->id] ?? new \App\Support\BevestigingsmailStats())
+                  @include('beheer.partials.bevestigingsmails', ['stats' => $bm])
+                @elseif($mail)
                   {{ \App\Support\MailLabels::type($mail->type) }}
                   @if(! $mail->isOk())<span class="status status--fout">{{ \App\Support\MailLabels::fout($mail->error) }}</span>@endif
                   <br><span class="muted beheer-klein">{{ $mail->created_at?->diffForHumans(['parts' => 1]) }}</span>
