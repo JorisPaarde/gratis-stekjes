@@ -3,16 +3,6 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
-<<<<<<< HEAD
-## [0.78.21] - 2026-11-09
-
-### Added
-
-- Pagina `/in-de-media` («Gratis planten in de media») met vermeldingen uit
-  `data/in-de-media.json` (nieuwste eerst). Footerlink, sitemap, SEO/OG +
-  CollectionPage/ItemList-schema. Docs: `docs/in-de-media.md`.
-- Eerste vermelding: Positief nieuws, 9 november 2026.
-=======
 ## [0.78.22] - 2026-11-09
 
 ### Added
@@ -30,7 +20,15 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   Facebook’s crawler OG-tags van de doelpagina kan lezen); niet in sitemap.
 - Meting: `/s/` telt niet als pageview of `cta_click` — meting blijft op
   `/ga/word-lid` (geen dubbeltelling).
->>>>>>> 136cb14 (0.78.22: korte deellinks /s/{code} voor social post-logs)
+
+## [0.78.21] - 2026-11-09
+
+### Added
+
+- Pagina `/in-de-media` («Gratis planten in de media») met vermeldingen uit
+  `data/in-de-media.json` (nieuwste eerst). Footerlink, sitemap, SEO/OG +
+  CollectionPage/ItemList-schema. Docs: `docs/in-de-media.md`.
+- Eerste vermelding: Positief nieuws, 9 november 2026.
 
 ## [0.78.20] - 2026-11-09
 
