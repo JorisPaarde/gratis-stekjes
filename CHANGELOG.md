@@ -3,6 +3,7 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+<<<<<<< HEAD
 ## [0.78.21] - 2026-11-09
 
 ### Added
@@ -11,6 +12,25 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   `data/in-de-media.json` (nieuwste eerst). Footerlink, sitemap, SEO/OG +
   CollectionPage/ItemList-schema. Docs: `docs/in-de-media.md`.
 - Eerste vermelding: Positief nieuws, 9 november 2026.
+=======
+## [0.78.22] - 2026-11-09
+
+### Added
+
+- Korte deellinks voor social posts: elke `post_logs`-rij krijgt een unieke
+  `short_code` (5 tekens, zonder 0/O/1/I/L). `GET /s/{code}` → 302 naar
+  `/ga/word-lid?utm_…` met dezelfde UTM als de lange mint-URL. Mint-API
+  response bevat `short_url` + `short_code` (achterwaarts compatibel).
+  `/beheer/posts` toont de korte link kopieerbaar. Zie `docs/post-log-mint.md`
+  en `docs/README.md`.
+
+### Changed
+
+- SEO: `/s/` heeft `X-Robots-Tag: noindex` (geen robots.txt-Disallow, zodat
+  Facebook’s crawler OG-tags van de doelpagina kan lezen); niet in sitemap.
+- Meting: `/s/` telt niet als pageview of `cta_click` — meting blijft op
+  `/ga/word-lid` (geen dubbeltelling).
+>>>>>>> 136cb14 (0.78.22: korte deellinks /s/{code} voor social post-logs)
 
 ## [0.78.20] - 2026-11-09
 

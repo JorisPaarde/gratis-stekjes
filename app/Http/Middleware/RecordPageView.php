@@ -37,6 +37,7 @@ class RecordPageView
         '/up',
         '/cron',
         '/ga',
+        '/s',
         '/meet',
     ];
 
