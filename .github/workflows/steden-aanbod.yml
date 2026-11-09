@@ -1,0 +1,107 @@
+name: Steden-aanbod rapport
+
+# Draait gp:steden-aanbod op de server via POST /deploy/steden-aanbod
+# (noshell HTTPS, read-only). Secrets: DEPLOY_TOKEN + STAGING_BASE_URL of PROD_BASE_URL.
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Omgeving (production pas na master-deploy)"
+        type: choice
+        options:
+          - staging
+          - production
+        required: true
+        default: staging
+      refresh:
+        description: "Wis catalogus-cache vóór het tellen"
+        type: boolean
+        required: true
+        default: true
+      alleen_boven:
+        description: "Alleen gemeenten boven de drempel tonen"
+        type: boolean
+        required: true
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  steden-aanbod:
+    name: steden-aanbod (${{ inputs.target }})
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.target }}
+    steps:
+      - name: Draai gp:steden-aanbod op ${{ inputs.target }}
+        env:
+          TARGET: ${{ inputs.target }}
+          REFRESH: ${{ inputs.refresh }}
+          ALLEEN_BOVEN: ${{ inputs.alleen_boven }}
+          STAGING_BASE: ${{ secrets.STAGING_BASE_URL }}
+          PROD_BASE: ${{ secrets.PROD_BASE_URL }}
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${DEPLOY_TOKEN:-}" ]; then
+            echo "::error::DEPLOY_TOKEN ontbreekt in environment ${TARGET}."
+            exit 1
+          fi
+          echo "::add-mask::${DEPLOY_TOKEN}"
+
+          if [ "${TARGET}" = "production" ]; then
+            BASE_URL="${PROD_BASE:-}"
+            if [ -z "${BASE_URL}" ]; then
+              echo "::error::PROD_BASE_URL ontbreekt (production pas na merge naar master + deploy)."
+              exit 1
+            fi
+          else
+            BASE_URL="${STAGING_BASE:-}"
+            if [ -z "${BASE_URL}" ]; then
+              echo "::error::STAGING_BASE_URL ontbreekt."
+              exit 1
+            fi
+          fi
+
+          BASE_URL="${BASE_URL%/}"
+          BODY=$(python3 - <<PY
+          import json
+          print(json.dumps({
+            "refresh": "${REFRESH}" == "true",
+            "alleen_boven": "${ALLEEN_BOVEN}" == "true",
+          }))
+          PY
+          )
+
+          code=$(curl -sS -o /tmp/steden-aanbod.json -w '%{http_code}' \
+            -X POST \
+            -H "Authorization: Bearer ${DEPLOY_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d "${BODY}" \
+            "${BASE_URL}/deploy/steden-aanbod" || true)
+
+          echo "${TARGET}: HTTP ${code}"
+          if command -v python3 >/dev/null 2>&1 && [ -f /tmp/steden-aanbod.json ]; then
+            python3 - <<'PY'
+          import json
+          try:
+              data = json.load(open("/tmp/steden-aanbod.json"))
+          except Exception:
+              print("response: (geen JSON)")
+              raise SystemExit(0)
+          for k in ("ok", "error", "at"):
+              if k in data:
+                  print(f"{k}: {data[k]}")
+          out = data.get("output") or ""
+          if out:
+              print("--- artisan output ---")
+              print(out)
+          PY
+          fi
+
+          if [ "${code}" != "200" ]; then
+            echo "::error::steden-aanbod faalde (HTTP ${code})."
+            exit 1
+          fi

@@ -48,6 +48,7 @@ use App\Http\Controllers\DeployImportController;
 use App\Http\Controllers\DeployImportStruikrovenAgendaController;
 use App\Http\Controllers\DeployLedenupdateMailController;
 use App\Http\Controllers\DeployNormaliseerLocatiesController;
+use App\Http\Controllers\DeployStedenAanbodController;
 use App\Http\Controllers\DeployPostcodeHerinneringController;
 use App\Http\Controllers\DeployStatsLezerController;
 use App\Http\Controllers\ErvaringController;
@@ -168,6 +169,9 @@ Route::post('/deploy/stats-lezer', DeployStatsLezerController::class)
 Route::post('/deploy/normaliseer-locaties', DeployNormaliseerLocatiesController::class)
     ->middleware('throttle:10,1')
     ->name('deploy.normaliseer-locaties');
+Route::post('/deploy/steden-aanbod', DeployStedenAanbodController::class)
+    ->middleware('throttle:10,1')
+    ->name('deploy.steden-aanbod');
 Route::post('/deploy/postcode-herinnering-lijst', DeployPostcodeHerinneringController::class)
     ->middleware('throttle:10,1')
     ->name('deploy.postcode-herinnering-lijst');
