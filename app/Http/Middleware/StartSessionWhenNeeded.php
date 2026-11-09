@@ -26,6 +26,12 @@ class StartSessionWhenNeeded extends StartSession
 
     private function shouldStartSession(Request $request): bool
     {
+        // Telemetry/beacon: nooit sessie laden of terugschrijven. sendBeacon kan
+        // parallel met form-POSTs lopen; een late save overschrijft anders flash/old.
+        if ($request->is('meet', 'meet/*')) {
+            return false;
+        }
+
         if (! in_array($request->method(), ['GET', 'HEAD', 'OPTIONS'], true)) {
             return true;
         }
