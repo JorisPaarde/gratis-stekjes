@@ -910,12 +910,12 @@ final class ConversionTracker
                 'open_default' => $openDefault,
                 'is_current' => $isCurrent,
                 'through_label' => $isCurrent
-                    ? 'tot en met '.$now->format('d-m')
+                    ? $this->throughLabelNl($now)
                     : null,
             ];
         }
 
-        return $out;
+        return $this->trimFunnelPeriodsBeforeFirstData($out);
     }
 
     /**
@@ -965,12 +965,12 @@ final class ConversionTracker
                 'open_default' => $isCurrent,
                 'is_current' => $isCurrent,
                 'through_label' => $isCurrent
-                    ? 'tot en met '.$now->format('d-m')
+                    ? $this->throughLabelNl($now)
                     : null,
             ];
         }
 
-        return $out;
+        return $this->trimFunnelPeriodsBeforeFirstData($out);
     }
 
     /**
@@ -1016,6 +1016,17 @@ final class ConversionTracker
 
     private function monthLabelNl(Carbon $monthStart): string
     {
+        return $this->monthNameNl((int) $monthStart->month).' '.$monthStart->year;
+    }
+
+    /** «tot en met 9 november» — dag zonder voorloopnul, maand NL, geen jaartal. */
+    private function throughLabelNl(Carbon $at): string
+    {
+        return 'tot en met '.(int) $at->day.' '.$this->monthNameNl((int) $at->month);
+    }
+
+    private function monthNameNl(int $month): string
+    {
         $names = [
             1 => 'januari',
             2 => 'februari',
@@ -1031,7 +1042,53 @@ final class ConversionTracker
             12 => 'december',
         ];
 
-        return ($names[(int) $monthStart->month] ?? $monthStart->format('F')).' '.$monthStart->year;
+        return $names[$month] ?? 'maand'.$month;
+    }
+
+    /**
+     * Verberg periodes vóór de oudste periode met data (nieuwste eerst).
+     * Lege periodes tussen datamaanden/-weken blijven staan.
+     * Zonder enige data: alleen de huidige (nieuwste) periode tonen.
+     *
+     * @param  list<array{unique_visitors: int, steps: array<string, int>}>  $periods
+     * @return list<array{unique_visitors: int, steps: array<string, int>}>
+     */
+    private function trimFunnelPeriodsBeforeFirstData(array $periods): array
+    {
+        if ($periods === []) {
+            return [];
+        }
+
+        $oldestWithData = null;
+        foreach ($periods as $i => $period) {
+            if ($this->funnelPeriodHasData($period)) {
+                $oldestWithData = $i;
+            }
+        }
+
+        if ($oldestWithData === null) {
+            return array_slice($periods, 0, 1);
+        }
+
+        return array_slice($periods, 0, $oldestWithData + 1);
+    }
+
+    /**
+     * @param  array{unique_visitors?: int, steps?: array<string, int>}  $period
+     */
+    private function funnelPeriodHasData(array $period): bool
+    {
+        if ((int) ($period['unique_visitors'] ?? 0) > 0) {
+            return true;
+        }
+
+        foreach ($period['steps'] ?? [] as $count) {
+            if ((int) $count > 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function countInRange(string $eventType, Carbon $from, Carbon $to): int

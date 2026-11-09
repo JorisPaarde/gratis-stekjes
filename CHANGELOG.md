@@ -28,7 +28,6 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Session lock (`Route::block`) op GET/POST `/account/registreren` tegen
   parallelle sessie-writes (`CACHE_STORE=file` op staging/prod via deploy).
 
-
 ## [0.78.34] - 2026-11-09
 
 ### Fixed
