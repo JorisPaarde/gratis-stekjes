@@ -3,6 +3,15 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.24] - 2026-11-09
+
+### Fixed
+
+- Vaste stadspagina’s uit `data/steden.json` (47 steden) blijven altijd
+  geïndexeerd en staan altijd in sitemap, overzicht en nabije-steden-links —
+  ook zonder aanbod of deelplek. Automatische steden houden drempelgedrag
+  (`GP_STAD_AANBOD_MIN`, default 1; onder de drempel 301 naar `/gratis-planten`).
+
 ## [0.78.23] - 2026-11-09
 
 ### Changed
