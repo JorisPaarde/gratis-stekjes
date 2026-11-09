@@ -207,7 +207,7 @@ final class BrevoNewsletterService
         $handled = 0;
 
         foreach ($events as $event) {
-            $type = strtolower((string) ($event['event'] ?? $event['type'] ?? ''));
+            $type = $this->normalizeEventType((string) ($event['event'] ?? $event['type'] ?? ''));
             $email = strtolower(trim((string) ($event['email'] ?? '')));
             if ($email === '' || ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 continue;
@@ -410,10 +410,28 @@ final class BrevoNewsletterService
         return [$payload];
     }
 
-    private function isUnsubscribeEvent(string $type): bool
+    /**
+     * Brevo stuurt o.a. camelCase (`contactDeleted`, `unsubscribed`).
+     * Zet camelCase/kebab/spaties om naar snake_case vóór matchen.
+     */
+    private function normalizeEventType(string $type): string
     {
+        $type = trim($type);
+        if ($type === '') {
+            return '';
+        }
+        // contactDeleted → contact_Deleted, daarna lowercase.
+        $type = (string) preg_replace('/([a-z0-9])([A-Z])/', '$1_$2', $type);
+        $type = strtolower($type);
         $type = str_replace(['-', ' '], '_', $type);
 
+        return (string) preg_replace('/_+/', '_', $type);
+    }
+
+    private function isUnsubscribeEvent(string $type): bool
+    {
+        // Al genormaliseerd naar snake_case; expliciet ook Brevo-namen
+        // (unsubscribed, contactDeleted → contact_deleted, spam).
         return in_array($type, [
             'unsubscribe',
             'unsubscribed',

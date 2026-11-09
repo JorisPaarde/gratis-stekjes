@@ -254,6 +254,24 @@ test('brevo webhook unsubscribe zet lokale opt-in uit', function () {
         ->and($user->fresh()->newsletter_listed_at)->toBeNull();
 });
 
+test('brevo webhook contactDeleted (camelCase) zet lokale opt-in uit', function () {
+    $user = User::factory()->create([
+        'email' => 'deleted-camel@example.com',
+        'newsletter_opt_in' => true,
+        'newsletter_opt_in_at' => now(),
+        'newsletter_listed_at' => now(),
+    ]);
+
+    // Staging-webhook events: unsubscribed, contactDeleted, spam.
+    $this->postJson(route('webhooks.brevo', ['token' => 'webhook-test-token-16']), [
+        'event' => 'contactDeleted',
+        'email' => 'deleted-camel@example.com',
+    ])->assertOk()->assertJsonPath('handled', 1);
+
+    expect($user->fresh()->newsletter_opt_in)->toBeFalse()
+        ->and($user->fresh()->newsletter_listed_at)->toBeNull();
+});
+
 test('brevo webhook weigert verkeerde token', function () {
     $this->postJson(route('webhooks.brevo', ['token' => 'verkeerd-token-xxxx']), [
         'event' => 'unsubscribe',
