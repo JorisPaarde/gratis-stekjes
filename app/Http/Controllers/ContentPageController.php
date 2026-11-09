@@ -59,7 +59,7 @@ class ContentPageController extends Controller
     }
 
     /**
-     * @param  list<array{medium: string, datum: string, kop: string, samenvatting: string, url: string, datum_label: string}>  $vermeldingen
+     * @param  list<array{medium: string, datum: string, kop: string, samenvatting: string, url: string, datum_label: string, image: ?string, image_webp: ?string, image_alt: string, image_credit: string}>  $vermeldingen
      * @return array<string, mixed>
      */
     private function mediaSchema(string $title, string $description, string $url, array $vermeldingen): array
@@ -67,25 +67,31 @@ class ContentPageController extends Controller
         $site = (string) config('site.name');
         $items = [];
         foreach ($vermeldingen as $i => $row) {
+            $article = [
+                '@type' => 'NewsArticle',
+                'headline' => $row['kop'],
+                'datePublished' => $row['datum'],
+                'url' => $row['url'],
+                'isPartOf' => [
+                    '@type' => 'Periodical',
+                    'name' => $row['medium'],
+                ],
+                'about' => [
+                    '@type' => 'Organization',
+                    'name' => $site,
+                    'url' => url('/'),
+                ],
+            ];
+            if ($row['samenvatting'] !== '') {
+                $article['description'] = $row['samenvatting'];
+            }
+            if ($row['image'] !== null) {
+                $article['image'] = url($row['image_webp'] ?: $row['image']);
+            }
             $items[] = [
                 '@type' => 'ListItem',
                 'position' => $i + 1,
-                'item' => [
-                    '@type' => 'NewsArticle',
-                    'headline' => $row['kop'],
-                    'datePublished' => $row['datum'],
-                    'description' => $row['samenvatting'],
-                    'url' => $row['url'],
-                    'isPartOf' => [
-                        '@type' => 'Periodical',
-                        'name' => $row['medium'],
-                    ],
-                    'about' => [
-                        '@type' => 'Organization',
-                        'name' => $site,
-                        'url' => url('/'),
-                    ],
-                ],
+                'item' => $article,
             ];
         }
 

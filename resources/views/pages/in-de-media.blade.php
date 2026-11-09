@@ -5,36 +5,57 @@
 @section('canonical', $canonical)
 
 @section('content')
-<section class="section wrap prose in-de-media-page">
+<section class="section wrap in-de-media-page">
   <h1 class="page-title">Gratis planten in de media</h1>
-  <p class="section-intro">Artikelen en vermeldingen over {{ config('site.name') }}. We zetten hier wat er over ons verschijnt — in eigen woorden, met een link naar het origineel.</p>
 
   @if($vermeldingen === [])
-    <p class="muted" role="status">Er staan nog geen vermeldingen. Check later opnieuw, of mail ons als je er een hebt gezien.</p>
+    <p class="muted" role="status">Er staan nog geen vermeldingen.</p>
   @else
-    <ul class="media-lijst">
+    <ul class="media-kaarten">
       @foreach($vermeldingen as $item)
-        <li class="media-item">
-          <p class="media-meta">
-            <span class="media-medium">{{ $item['medium'] }}</span>
-            <span class="media-sep" aria-hidden="true">·</span>
-            <time datetime="{{ $item['datum'] }}">{{ $item['datum_label'] }}</time>
-          </p>
-          <h2 class="media-kop">
-            <a href="{{ $item['url'] }}" target="_blank" rel="noopener noreferrer">{{ $item['kop'] }}</a>
-          </h2>
-          <p class="media-samenvatting">{{ $item['samenvatting'] }}</p>
-          <p class="media-lees">
-            <a href="{{ $item['url'] }}" target="_blank" rel="noopener noreferrer">Lees het artikel<span class="visually-hidden">: {{ $item['kop'] }}</span></a>
-          </p>
+        <li>
+          <a class="media-kaart{{ $item['image'] ? '' : ' media-kaart--zonder-beeld' }}"
+             href="{{ $item['url'] }}"
+             target="_blank"
+             rel="noopener noreferrer">
+            @if($item['image'])
+              <figure class="media-kaart-beeld">
+                <picture>
+                  @if($item['image_webp'])
+                    <source srcset="{{ $item['image_webp'] }}" type="image/webp">
+                  @endif
+                  <img src="{{ $item['image'] }}"
+                       alt="{{ $item['image_alt'] }}"
+                       width="960"
+                       height="644"
+                       loading="lazy"
+                       decoding="async">
+                </picture>
+                @if($item['image_credit'] !== '')
+                  <figcaption class="media-kaart-credit">Beeld: {{ $item['image_credit'] }}</figcaption>
+                @endif
+              </figure>
+            @else
+              <div class="media-kaart-accent" aria-hidden="true">
+                <span>{{ $item['medium'] }}</span>
+              </div>
+            @endif
+            <div class="media-kaart-body">
+              <p class="media-kaart-meta">
+                <span class="media-kaart-medium">{{ $item['medium'] }}</span>
+                <span class="media-kaart-sep" aria-hidden="true">·</span>
+                <time datetime="{{ $item['datum'] }}">{{ $item['datum_label'] }}</time>
+              </p>
+              <h2 class="media-kaart-kop">{{ $item['kop'] }}</h2>
+              @if($item['samenvatting'] !== '')
+                <p class="media-kaart-tekst">{{ $item['samenvatting'] }}</p>
+              @endif
+              <span class="media-kaart-cta">Lees het artikel</span>
+            </div>
+          </a>
         </li>
       @endforeach
     </ul>
   @endif
-
-  <aside class="media-journalist" aria-labelledby="journalist-titel">
-    <h2 id="journalist-titel">Ben je journalist?</h2>
-    <p>Schrijf je over delen, groen of buurtinitiatieven? Mail gerust naar <a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a> — we denken graag mee over feiten, cijfers en interviews.</p>
-  </aside>
 </section>
 @endsection

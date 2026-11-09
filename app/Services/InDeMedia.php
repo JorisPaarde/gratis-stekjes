@@ -16,7 +16,11 @@ use RuntimeException;
  *     kop: string,
  *     samenvatting: string,
  *     url: string,
- *     datum_label: string
+ *     datum_label: string,
+ *     image: string|null,
+ *     image_webp: string|null,
+ *     image_alt: string,
+ *     image_credit: string
  * }
  */
 final class InDeMedia
@@ -64,7 +68,7 @@ final class InDeMedia
         $samenvatting = trim((string) ($row['samenvatting'] ?? ''));
         $url = trim((string) ($row['url'] ?? ''));
 
-        if ($medium === '' || $kop === '' || $samenvatting === '' || $url === '') {
+        if ($medium === '' || $kop === '' || $url === '') {
             return null;
         }
         if (! preg_match('/^\d{4}-\d{2}-\d{2}$/', $datum)) {
@@ -90,6 +94,25 @@ final class InDeMedia
         ];
         $label = ((int) $carbon->format('j')).' '.$maanden[(int) $carbon->format('n')].' '.$carbon->format('Y');
 
+        $image = $this->normalizeAssetPath($row['image'] ?? null);
+        $imageWebp = $this->normalizeAssetPath($row['image_webp'] ?? null);
+        if ($image !== null && ! is_file(public_path(ltrim($image, '/')))) {
+            $image = null;
+            $imageWebp = null;
+        }
+        if ($imageWebp !== null && ! is_file(public_path(ltrim($imageWebp, '/')))) {
+            $imageWebp = null;
+        }
+
+        $imageAlt = trim((string) ($row['image_alt'] ?? ''));
+        if ($imageAlt === '' && $image !== null) {
+            $imageAlt = $kop;
+        }
+        $imageCredit = trim((string) ($row['image_credit'] ?? ''));
+        if ($imageCredit === '' && $image !== null) {
+            $imageCredit = $medium;
+        }
+
         return [
             'medium' => $medium,
             'datum' => $datum,
@@ -97,7 +120,24 @@ final class InDeMedia
             'samenvatting' => $samenvatting,
             'url' => $url,
             'datum_label' => $label,
+            'image' => $image,
+            'image_webp' => $imageWebp,
+            'image_alt' => $imageAlt,
+            'image_credit' => $imageCredit,
         ];
+    }
+
+    private function normalizeAssetPath(mixed $value): ?string
+    {
+        $path = trim((string) $value);
+        if ($path === '') {
+            return null;
+        }
+        if (! str_starts_with($path, '/assets/')) {
+            return null;
+        }
+
+        return $path;
     }
 
     /** @return array<string, mixed> */
