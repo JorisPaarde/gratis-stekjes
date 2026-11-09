@@ -3,6 +3,12 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.17] - 2026-11-09
+
+### Fixed
+
+- Stats-trechter op mobiel: staplabels zichtbaar bij elk getal (gestapelde weekrijen); «te weinig data» legt de echte drempel uit (minder dan N formulierstarts deze week).
+
 ## [0.78.14] - 2026-11-08
 
 ### Added

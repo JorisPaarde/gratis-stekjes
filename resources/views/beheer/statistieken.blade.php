@@ -183,37 +183,39 @@
       <span class="stats-panel-hint muted">van klik tot eerste aanbod</span>
     </summary>
     <div class="stats-panel-body">
-      <p class="muted">Unieke bezoekers zijn een schatting (daghash). Onder {{ $minFormStarts }} formulierstarts tonen we geen percentages («te weinig data»).</p>
+      <p class="muted stats-funnel-intro">Unieke bezoekers zijn een schatting (daghash). Percentages tonen we pas vanaf {{ $minFormStarts }} formulierstarts in die week; daaronder staat «te weinig data» omdat de percentages nog niet betrouwbaar zijn.</p>
       <div class="beheer-table-wrap stats-funnel-wrap">
         <table class="beheer-table stats-funnel-table">
           <thead>
             <tr>
-              <th>Week</th>
+              <th scope="col">Week</th>
               @foreach($funnelLabels as $key => $label)
-                <th>{{ $label }}</th>
+                <th scope="col">{{ $label }}</th>
               @endforeach
             </tr>
           </thead>
           <tbody>
             @foreach($funnelWeeks as $week)
               <tr>
-                <td>
-                  <strong>{{ $week['label'] }}</strong>
+                <th scope="row" data-label="Week" class="stats-funnel-week">
+                  <span class="stats-funnel-step-label">Week</span>
+                  <strong class="stats-funnel-step-value">{{ $week['label'] }}</strong>
                   @if($week['too_few'])
-                    <br><span class="hint">te weinig data</span>
+                    <p class="stats-funnel-sparse hint">Te weinig data: minder dan {{ $minFormStarts }} formulierstarts deze week, percentages nog niet betrouwbaar.</p>
                   @endif
-                </td>
-                <td>
-                  {{ $week['unique_visitors'] }}
-                </td>
+                </th>
                 @foreach($funnelLabels as $key => $label)
-                  @continue($key === 'unique_visitors')
-                  <td>
-                    {{ (int) ($week['steps'][$key] ?? 0) }}
-                    @if($week['too_few'])
-                      <br><span class="hint">te weinig data</span>
-                    @elseif(($week['rates'][$key] ?? null) !== null)
-                      <br><span class="hint">{{ $week['rates'][$key] }}%</span>
+                  @php
+                    $stepCount = $key === 'unique_visitors'
+                      ? (int) $week['unique_visitors']
+                      : (int) ($week['steps'][$key] ?? 0);
+                    $stepRate = $week['rates'][$key] ?? null;
+                  @endphp
+                  <td data-label="{{ $label }}" class="stats-funnel-step">
+                    <span class="stats-funnel-step-label">{{ $label }}</span>
+                    <span class="stats-funnel-step-value">{{ $stepCount }}</span>
+                    @if(! $week['too_few'] && $stepRate !== null)
+                      <span class="hint stats-funnel-step-rate">{{ $stepRate }}%</span>
                     @endif
                   </td>
                 @endforeach
