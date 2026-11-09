@@ -3,6 +3,15 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.25] - 2026-11-09
+
+### Changed
+
+- `/in-de-media` opnieuw gevuld: warme intro, mediakaarten links uitgelijnd
+  met de titel, blok «Voor redacties» (contact + kernfeiten uit bestaande
+  site-teksten; deelplekken-aantal dynamisch), optionele logo/OG-download,
+  en afsluitende «Doe mee»-CTA. Footer, sitemap en SEO blijven.
+
 ## [0.78.24] - 2026-11-09
 
 ### Fixed

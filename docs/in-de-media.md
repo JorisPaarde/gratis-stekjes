@@ -1,8 +1,13 @@
 # In de media
 
 Publieke pagina: [`/in-de-media`](/in-de-media) («Gratis planten in de media»).
-Bron: [`data/in-de-media.json`](../data/in-de-media.json) — geen database of migratie.
-De pagina toont alleen de paginatitel en klikbare kaartjes (nieuwste eerst).
+Bronvermeldingen: [`data/in-de-media.json`](../data/in-de-media.json) — geen DB-migratie voor de lijst.
+De pagina heeft: korte intro, klikbare kaartjes (nieuwste eerst, links uitgelijnd),
+blok «Voor redacties» (contact + kernfeiten) en een «Doe mee»-CTA.
+
+Kernfeiten komen uit bestaande site-teksten (`config/site.php`, `/over`) en
+optioneel het dynamische aantal zichtbare deelplekken. Logo/OG-download alleen
+als `config('site.logo')` / `config('site.og_image')` als bestand bestaat.
 
 ## Vermelding toevoegen
 
@@ -27,7 +32,7 @@ De pagina toont alleen de paginatitel en klikbare kaartjes (nieuwste eerst).
    - `datum` — ISO `YYYY-MM-DD` (verplicht; bepaalt sortering en `<time>`)
    - `kop` — titel op de kaart (verplicht)
    - `url` — volledige `http(s)`-link (verplicht; hele kaart klikbaar, nieuw tabblad, `rel="noopener noreferrer"`)
-   - `samenvatting` — optioneel; alleen als één korte regel rustig op de kaart past
+   - `samenvatting` — optioneel; 2–3 zinnen in eigen woorden op de kaart (geen overgenomen alinea’s; geen ongefundeerde bereikcijfers)
    - `image` / `image_webp` — optioneel; lokaal pad onder `/assets/…` (jpg verplicht als je een beeld wilt; webp optioneel). Bij voorkeur de `og:image` van het artikel, lokaal opgeslagen (geen hotlink). Ontbreekt het bestand of het veld, dan toont de kaart een typografisch accent met de mediumnaam.
    - `image_alt` — alt-tekst (aanbevolen bij beeld; valt terug op de kop)
    - `image_credit` — bronvermelding onder de preview (aanbevolen; valt terug op `medium`)
