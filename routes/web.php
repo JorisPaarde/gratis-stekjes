@@ -48,9 +48,9 @@ use App\Http\Controllers\DeployImportController;
 use App\Http\Controllers\DeployImportStruikrovenAgendaController;
 use App\Http\Controllers\DeployLedenupdateMailController;
 use App\Http\Controllers\DeployNormaliseerLocatiesController;
-use App\Http\Controllers\DeployStedenAanbodController;
 use App\Http\Controllers\DeployPostcodeHerinneringController;
 use App\Http\Controllers\DeployStatsLezerController;
+use App\Http\Controllers\DeployStedenAanbodController;
 use App\Http\Controllers\ErvaringController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\GaWordLidController;
@@ -62,6 +62,7 @@ use App\Http\Controllers\MeedoenController;
 use App\Http\Controllers\OrganisatieController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PartnersController;
+use App\Http\Controllers\ShortLinkController;
 use App\Http\Controllers\StektipsController;
 use App\Http\Controllers\VoorOrganisatiesController;
 use App\Http\Controllers\ZoekenController;
@@ -196,6 +197,10 @@ Route::get('/account/aanbod-verlengen', AanbodVerlengenController::class)
 Route::get('/ga/word-lid', GaWordLidController::class)
     ->middleware('throttle:60,1')
     ->name('ga.word-lid');
+Route::get('/s/{code}', ShortLinkController::class)
+    ->where('code', '[2-9A-HJ-KM-NP-Za-hj-km-np-z]{4,8}')
+    ->middleware('throttle:120,1')
+    ->name('short.redirect');
 Route::post('/meet/event', ConversionBeaconController::class)
     ->middleware('throttle:60,1')
     ->name('meet.event');

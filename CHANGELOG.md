@@ -3,6 +3,38 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.24] - 2026-11-09
+
+Hotfix naar productie: korte deellinks + vaste steden altijd geïndexeerd.
+`/in-de-media` (0.78.21/0.78.23 op staging) zit **niet** in deze release.
+Versie 0.78.24 (0.78.23 was al `/in-de-media`-kaarten op staging).
+
+### Added
+
+- Korte deellinks voor social posts: elke `post_logs`-rij krijgt een unieke
+  `short_code` (5 tekens, zonder 0/O/1/I/L). `GET /s/{code}` → 302 naar
+  `/ga/word-lid?utm_…` met dezelfde UTM als de lange mint-URL. Mint-API
+  response bevat `short_url` + `short_code` (achterwaarts compatibel).
+  `/beheer/posts` toont de korte link kopieerbaar. Migratie + backfill voor
+  bestaande rijen. Zie `docs/post-log-mint.md` en `docs/README.md`.
+  (Was 0.78.22 op staging.)
+- CI-workflow `verify-short-link-staging.yml` om korte deellinks op staging te
+  verifiëren.
+
+### Changed
+
+- SEO: `/s/` heeft `X-Robots-Tag: noindex` (geen robots.txt-Disallow, zodat
+  Facebook’s crawler OG-tags van de doelpagina kan lezen); niet in sitemap.
+- Meting: `/s/` telt niet als pageview of `cta_click` — meting blijft op
+  `/ga/word-lid` (geen dubbeltelling).
+
+### Fixed
+
+- Vaste stadspagina’s uit `data/steden.json` (47 steden) blijven altijd
+  geïndexeerd en staan altijd in sitemap, overzicht en nabije-steden-links —
+  ook zonder aanbod of deelplek. Automatische steden houden drempelgedrag
+  (`GP_STAD_AANBOD_MIN`, default 1; onder de drempel 301 naar `/gratis-planten`).
+
 ## [0.78.20] - 2026-11-09
 
 ### Added

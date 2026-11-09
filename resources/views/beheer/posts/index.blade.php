@@ -96,8 +96,18 @@
               <td data-label="Datum" class="beheer-datum">{{ $post->posted_on?->timezone('Europe/Amsterdam')->format('d-m-Y') }}</td>
               <td data-label="Groep">{{ $post->groep }}</td>
               <td data-label="Links">
+                @php($short = $post->short_code ? $post->shortUrl() : null)
+                @if($short)
+                  <label class="utm-copy">
+                    <span class="hint">Korte link</span>
+                    <div class="utm-copy-row">
+                      <input type="text" readonly value="{{ $short }}" data-utm-input id="short-{{ $post->id }}">
+                      <button type="button" class="btn btn-secondary btn-klein" data-utm-copy data-target="short-{{ $post->id }}">Kopieer</button>
+                    </div>
+                  </label>
+                @endif
                 <label class="utm-copy">
-                  <span class="hint">Tracking</span>
+                  <span class="hint">Tracking (lang)</span>
                   <div class="utm-copy-row">
                     <input type="text" readonly value="{{ $tracking }}" data-utm-input id="utm-{{ $post->id }}">
                     <button type="button" class="btn btn-secondary btn-klein" data-utm-copy data-target="utm-{{ $post->id }}">Kopieer</button>

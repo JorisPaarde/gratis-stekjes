@@ -53,6 +53,8 @@ Succes **201**:
   "id": 42,
   "titel": "Oproep stekjes delen in Amsterdam",
   "tracking_url": "https://staging.gratisplanten.nl/ga/word-lid?utm_source=facebook&utm_medium=social&utm_campaign=plantenruil-amsterdam&utm_content=42",
+  "short_url": "https://staging.gratisplanten.nl/s/H7K2M",
+  "short_code": "H7K2M",
   "utm": {
     "source": "facebook",
     "medium": "social",
@@ -67,4 +69,30 @@ Succes **201**:
 
 Fouten: **403** (lege/verkeerde token), **422** (validatie).
 
-Tracking-URL’s landen op `/ga/word-lid` (behoudt UTM; meet `cta_click`). Dashboard-stats blijven op `utm_content=<post_logs.id>`.
+## Korte deellinks (`short_url`)
+
+Bots moeten **`short_url`** in de Facebook-/Instagram-post zetten (niet de lange
+`tracking_url`). Lange UTM-URL’s ogen rommelig in social posts; `/s/{code}` is kort
+en stabiel.
+
+| Onderdeel | Gedrag |
+|-----------|--------|
+| Code | 5 tekens uit `23456789ABCDEFGHJKMNPQRSTUVWXYZ` (geen 0/O/1/I/L) |
+| Route | `GET /s/{code}` → **302** naar `/ga/word-lid?utm_source=…&utm_medium=social&utm_campaign=…&utm_content=<id>` |
+| Meting | Identiek aan `tracking_url`: `cta_click` op `/ga/word-lid`; dashboard op `utm_content=<post_logs.id>` |
+| Dubbeltelling | De `/s/`-redirect telt **niet** als pageview (alleen 200-HTML) en niet als `cta_click` |
+| SEO | Response-header `X-Robots-Tag: noindex, nofollow`; **niet** in sitemap; **geen** `Disallow: /s/` in robots.txt (Facebook’s crawler volgt de redirect en leest OG-tags van de doelpagina) |
+| Open redirect | Alleen relatief pad `/ga/word-lid?…` op het eigen domein; nooit een externe Location |
+| Onbekende code | Vriendelijke 404-pagina |
+
+Bestaande clients die alleen `tracking_url` lezen blijven werken (achterwaarts compatibel).
+Nieuwe bots: gebruik `short_url`.
+
+`/beheer/posts` toont de korte link (kopieerbaar) naast de lange tracking-URL.
+
+## Tracking-flow
+
+1. Bezoeker opent `short_url` (`/s/{code}`) of direct `tracking_url`.
+2. Korte link: 302 → `/ga/word-lid?utm_…` (geen meting op `/s/`).
+3. `/ga/word-lid` meet `cta_click` en stuurt door naar `/account/registreren` (UTM behouden).
+4. Dashboard-stats aggregatie blijft op `utm_content=<post_logs.id>`.

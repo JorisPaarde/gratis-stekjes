@@ -11,11 +11,14 @@ use App\Support\AdminDashboard;
 use App\Support\BotUserAgent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\MessageBag;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Validator;
 
 /**
  * Privacyvriendelijke conversiemeting: geen IP/UA opslaan, geen trackingcookies van derden.
@@ -266,7 +269,12 @@ final class ConversionTracker
         // First-touch: alleen vullen als nog leeg.
         if (($data['landing_path'] ?? null) === null) {
             $path = $this->normalizePath($request->getPathInfo());
-            if ($path !== null && ! str_starts_with($path, '/ga/') && ! str_starts_with($path, '/meet/')) {
+            // /ga/ en /s/ zijn doorstuurpaden; first-touch landt op de echte pagina erna.
+            if ($path !== null
+                && ! str_starts_with($path, '/ga/')
+                && ! str_starts_with($path, '/s/')
+                && $path !== '/s'
+                && ! str_starts_with($path, '/meet/')) {
                 $data['landing_path'] = $path;
             }
         }
@@ -524,11 +532,11 @@ final class ConversionTracker
     }
 
     /**
-     * @param  array<string, list<string>>|\Illuminate\Support\MessageBag  $errors
+     * @param  array<string, list<string>>|MessageBag  $errors
      */
     public function recordValidationErrors(Request $request, $errors): void
     {
-        $bag = $errors instanceof \Illuminate\Support\MessageBag
+        $bag = $errors instanceof MessageBag
             ? $errors->toArray()
             : (array) $errors;
 
@@ -552,9 +560,9 @@ final class ConversionTracker
         $alias = self::FIELD_ALIASES[$field] ?? $field;
         $failed = [];
         try {
-            /** @var \Illuminate\Validation\Validator|null $validator */
+            /** @var Validator|null $validator */
             $validator = $request->attributes->get('conversion_failed_validator');
-            if ($validator instanceof \Illuminate\Validation\Validator) {
+            if ($validator instanceof Validator) {
                 $failed = $validator->failed()[$field] ?? [];
             }
         } catch (\Throwable) {
@@ -1347,7 +1355,7 @@ final class ConversionTracker
     /**
      * @param  array<int, array<string, int>>  $byPost
      * @param  array<string, array<string, int>>  $byGroep
-     * @param  \Illuminate\Support\Collection<int, object>  $rows
+     * @param  Collection<int, object>  $rows
      */
     private function mergePostConversionRows(array &$byPost, array &$byGroep, $rows): void
     {
@@ -1369,7 +1377,7 @@ final class ConversionTracker
     /**
      * @param  array<int, array<string, int>>  $byPost
      * @param  array<string, array<string, int>>  $byGroep
-     * @param  \Illuminate\Support\Collection<int, object>  $rows
+     * @param  Collection<int, object>  $rows
      */
     private function mergePostVisitorRows(array &$byPost, array &$byGroep, $rows): void
     {

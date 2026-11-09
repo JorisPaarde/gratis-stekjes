@@ -1,0 +1,119 @@
+# Eenmalige/handmatige staging-check voor korte deellinks.
+# Draait met environment staging-secrets; print nooit POST_LOG_MINT_TOKEN.
+name: Verify short link (staging)
+
+on:
+  # workflow_dispatch pas nadat dit bestand op master staat; tot die tijd
+  # triggert een push naar staging (paths-filter) de run — zelfde patroon als stats-lezer.
+  push:
+    branches: [staging]
+    paths: ['.github/workflows/verify-short-link-staging.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Mint + curl /s/{code}
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Mint test post-log + curl short link
+        env:
+          STAGING_BASE_URL: ${{ secrets.STAGING_BASE_URL }}
+          POST_LOG_MINT_TOKEN: ${{ secrets.POST_LOG_MINT_TOKEN }}
+        run: |
+          set -euo pipefail
+          : "${STAGING_BASE_URL:?}"
+          : "${POST_LOG_MINT_TOKEN:?}"
+          echo "::add-mask::${POST_LOG_MINT_TOKEN}"
+          BASE="${STAGING_BASE_URL%/}"
+
+          mkdir -p out
+          TITLE="CI short-link verify $(date -u +%Y%m%dT%H%M%SZ)"
+
+          curl -sS -X POST "${BASE}/api/internal/post-logs" \
+            -H 'Content-Type: application/json' \
+            -H "X-Post-Log-Token: ${POST_LOG_MINT_TOKEN}" \
+            -d "$(jq -nc --arg t "$TITLE" '{
+              titel: $t,
+              groep: "CI Verify Short Link",
+              soort: "anders",
+              utm_source: "facebook",
+              notitie: "ci-verify-short-link"
+            }')" | tee out/mint.json
+
+          SHORT_URL=$(jq -r '.short_url // empty' out/mint.json)
+          CODE=$(jq -r '.short_code // empty' out/mint.json)
+          TRACK=$(jq -r '.tracking_url // empty' out/mint.json)
+          ID=$(jq -r '.id // empty' out/mint.json)
+
+          test -n "$SHORT_URL"
+          test -n "$CODE"
+          echo "short_url=${SHORT_URL}" | tee out/summary.txt
+          echo "short_code=${CODE}" | tee -a out/summary.txt
+          echo "id=${ID}" | tee -a out/summary.txt
+          echo "tracking_url=${TRACK}" | tee -a out/summary.txt
+
+          # Redirect headers (geen follow)
+          curl -sS -D out/short-headers.txt -o /dev/null "$SHORT_URL" | true
+          # curl -D writes headers; ensure we capture with -I style for Location
+          curl -sS -D out/short-headers.txt -o /dev/null "$SHORT_URL"
+          {
+            echo '=== /s/{code} response headers ==='
+            cat out/short-headers.txt
+          } | tee -a out/summary.txt
+
+          LOCATION=$(awk 'BEGIN{IGNORECASE=1} /^Location:/{sub(/\r$/,""); print substr($0,11)}' out/short-headers.txt | tail -1 | tr -d '[:space:]')
+          echo "location=${LOCATION}" | tee -a out/summary.txt
+          echo "$LOCATION" | grep -q '/ga/word-lid?'
+          echo "$LOCATION" | grep -q "utm_content=${ID}"
+          echo "$LOCATION" | grep -q 'utm_source=facebook'
+          echo "$LOCATION" | grep -q 'utm_medium=social'
+          grep -qi 'X-Robots-Tag:.*noindex' out/short-headers.txt
+
+          STATUS=$(awk 'BEGIN{IGNORECASE=1} /^HTTP\//{print $2}' out/short-headers.txt | tail -1)
+          test "$STATUS" = "302"
+
+          # Facebook crawler follows redirects; capture final OG tags
+          curl -sS -L \
+            -A 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)' \
+            -D out/fb-headers.txt \
+            -o out/fb-body.html \
+            "$SHORT_URL"
+
+          {
+            echo '=== facebookexternalhit -L final headers (truncated) ==='
+            head -n 40 out/fb-headers.txt
+            echo '=== og/canonical from final HTML ==='
+            grep -nE 'property="og:url"|rel="canonical"|property="og:title"|property="og:image"' out/fb-body.html | head -20
+          } | tee -a out/summary.txt
+
+          grep -q 'property="og:url"' out/fb-body.html
+          grep -q 'rel="canonical"' out/fb-body.html
+          grep -q 'property="og:title"' out/fb-body.html
+
+          # Sitemap mag /s/ niet bevatten
+          curl -sS "${BASE}/sitemap.xml" -o out/sitemap.xml
+          if grep -q '/s/' out/sitemap.xml; then
+            echo 'FAIL: sitemap bevat /s/' >&2
+            exit 1
+          fi
+          echo 'sitemap_ok=no_/s/' | tee -a out/summary.txt
+
+          {
+            echo '## Short link staging verify'
+            echo
+            echo "- short_url: \`${SHORT_URL}\`"
+            echo "- Location: \`${LOCATION}\`"
+            echo "- status: ${STATUS}"
+            echo "- X-Robots-Tag: $(grep -i '^X-Robots-Tag:' out/short-headers.txt | tr -d '\r')"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload curl artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: short-link-staging-verify
+          path: out/
+          retention-days: 7

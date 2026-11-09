@@ -71,7 +71,7 @@ test('drempel net erboven: automatische stad is 200, geïndexeerd en in sitemap/
     expect($xml)->toContain(route('gratis-planten.show', ['stad' => 'bunnik']));
 });
 
-test('drempel net eronder: automatische stad redirect 301, vaste stad met 0 blijft 200 met noindex', function () {
+test('drempel net eronder: automatische stad redirect 301; vaste stad blijft geïndexeerd', function () {
     config(['gratisplanten.stad_aanbod_min' => 2]);
     maakPubliekAanbod('Bunnik', ['lat' => 52.063, 'lon' => 5.198]);
     app(StadCatalogus::class)->forgetCache();
@@ -80,14 +80,21 @@ test('drempel net eronder: automatische stad redirect 301, vaste stad met 0 blij
         ->assertStatus(301)
         ->assertRedirect(route('gratis-planten.index'));
 
-    // Vaste stad zonder lokaal aanbod: URL blijft, noindex, niet in sitemap.
-    $this->get(route('gratis-planten.show', ['stad' => 'rotterdam']))
+    // Vaste stad zonder lokaal aanbod: altijd 200, geïndexeerd, in sitemap + overzicht.
+    $rotterdam = route('gratis-planten.show', ['stad' => 'rotterdam']);
+    $this->get($rotterdam)
         ->assertOk()
-        ->assertSee('name="robots" content="noindex, follow"', false);
+        ->assertDontSee('name="robots" content="noindex', false)
+        ->assertSee('<link rel="canonical" href="'.$rotterdam.'"', false);
+
+    $this->get(route('gratis-planten.index'))
+        ->assertOk()
+        ->assertSee($rotterdam, false)
+        ->assertSee('>Rotterdam</a>', false);
 
     $xml = $this->get(route('sitemap'))->assertOk()->getContent();
     expect($xml)->not->toContain(route('gratis-planten.show', ['stad' => 'bunnik']))
-        ->and($xml)->not->toContain(route('gratis-planten.show', ['stad' => 'rotterdam']));
+        ->and($xml)->toContain($rotterdam);
 });
 
 test('vaste steden blijven 200 onder dezelfde URL', function () {
@@ -142,14 +149,14 @@ test('geen dubbele stad door andere spelling van de plaatsnaam', function () {
         ->and($rows[0]['bron'])->toBe('vast');
 });
 
-test('sitemap bevat alleen geïndexeerde stadspagina’s', function () {
-    // Haarlem heeft een zichtbare deelplek in JSON → geïndexeerd.
-    // Rotterdam heeft (zonder seed-aanbod) 0 → niet in sitemap.
+test('sitemap bevat alle vaste steden plus geïndexeerde automatische', function () {
+    // Haarlem/Antwerpen: vaste steden (met of zonder aanbod) → altijd in sitemap.
+    // Rotterdam zonder seed-aanbod blijft vaste stad → ook in sitemap.
     $xml = $this->get(route('sitemap'))->assertOk()->getContent();
     expect($xml)->toContain(route('gratis-planten.index'))
         ->and($xml)->toContain(route('gratis-planten.show', ['stad' => 'haarlem']))
         ->and($xml)->toContain(route('gratis-planten.show', ['stad' => 'antwerpen']))
-        ->and($xml)->not->toContain(route('gratis-planten.show', ['stad' => 'rotterdam']));
+        ->and($xml)->toContain(route('gratis-planten.show', ['stad' => 'rotterdam']));
 });
 
 test('onbekende stad blijft nette 404', function () {
