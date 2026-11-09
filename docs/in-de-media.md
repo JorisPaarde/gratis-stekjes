@@ -4,6 +4,8 @@ Publieke pagina: [`/in-de-media`](/in-de-media) («Gratis planten in de media»)
 Bronvermeldingen: [`data/in-de-media.json`](../data/in-de-media.json) — geen DB-migratie voor de lijst.
 De pagina heeft: korte intro, klikbare kaartjes (nieuwste eerst, links uitgelijnd),
 blok «Voor redacties» (contact + kernfeiten) en een «Doe mee»-CTA.
+Vindbaar via het hoofdmenu («In de media») en in de footerkolom «Over Gratis planten»
+(direct onder «Over»).
 
 Kernfeiten komen uit bestaande site-teksten (`config/site.php`, `/over`) en
 optioneel het dynamische aantal zichtbare deelplekken. Logo/OG-download alleen

@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.27] - 2026-11-09
+
+### Changed
+
+- «In de media» ook in het hoofdmenu / uitklapmenu (na «Help mee»), naast de
+  bestaande footerkolom «Over Gratis planten» (direct onder «Over»).
+
 ## [0.78.26] - 2026-11-09
 
 ### Changed
