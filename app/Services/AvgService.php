@@ -112,6 +112,8 @@ final class AvgService
                 'active' => (bool) $user->active,
                 'berichtmail' => $user->berichtmail !== false,
                 'activatieherinnering' => $user->activatieherinnering !== false,
+                'newsletter_opt_in' => (bool) ($user->newsletter_opt_in ?? false),
+                'newsletter_opt_in_at' => optional($user->newsletter_opt_in_at ?? null)?->toIso8601String(),
                 'acquisition' => [
                     'landing_path' => $user->acquisition_landing_path ?? null,
                     'referrer_host' => $user->acquisition_referrer_host ?? null,
@@ -250,6 +252,15 @@ final class AvgService
     {
         $userId = (int) $user->id;
         $email = (string) $user->email;
+
+        // Nieuwsbrief: eerst uit Brevo-lijst (fail-soft; geen PII in logs).
+        try {
+            if ($email !== '') {
+                app(BrevoNewsletterService::class)->removeEmailFromList($email);
+            }
+        } catch (\Throwable) {
+            // Accountwissen mag niet crashen op externe API.
+        }
 
         // Foto’s op disk vóór DB-cascade wissen (AVG).
         app(AanbodFotoService::class)->deleteAllForUser($userId);

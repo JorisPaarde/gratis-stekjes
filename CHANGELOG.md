@@ -3,6 +3,21 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.79.3] - 2026-11-09
+
+### Added
+
+- Nieuwsbrief-opt-in via Brevo (aparte release E): vinkje bij registreren en op
+  het profiel (niet vooraf aangevinkt, los van privacy-akkoord). Lokale status
+  + tijdstip; Brevo double opt-in pas ná eigen e-mailbevestiging
+  (`POST /v3/contacts/doubleOptinConfirmation`), fail-soft met queue-retry.
+  Afmelden op profiel haalt het contact uit de Brevo-lijst; account wissen
+  ook. Webhook `POST /webhooks/brevo/{token}` (unsubscribe) + dagelijkse sync
+  via `/cron` als vangnet (voorbereiding badge Nieuwsbrieflezer in 0.79.4).
+  Env: `BREVO_API_KEY`, `BREVO_NEWSLETTER_LIST_ID`, `BREVO_DOI_TEMPLATE_ID`,
+  `BREVO_DOI_REDIRECT_URL`, `BREVO_WEBHOOK_TOKEN`. Privacyverklaring
+  bijgewerkt (Brevo als verwerker).
+
 ## [0.79.2] - 2026-11-09
 
 ### Added
