@@ -230,11 +230,22 @@
                       ? (int) $week['unique_visitors']
                       : (int) ($week['steps'][$key] ?? 0);
                     $stepRate = $week['rates'][$key] ?? null;
-                    $ariaParts = [$label, (string) $stepCount];
-                    if (! $week['too_few'] && $stepRate !== null) {
-                        $ariaParts[] = $stepRate.'%';
+                    // Registratiepagina is geen conversiestap (views kunnen > klikken): altijd «x per klik».
+                    $rateLabel = null;
+                    if (! $week['too_few']) {
+                        if ($key === \App\Models\ConversionEvent::TYPE_REGISTER_VIEW) {
+                            $ctaPrev = (int) ($week['steps'][\App\Models\ConversionEvent::TYPE_CTA_CLICK] ?? 0);
+                            $rateLabel = $ctaPrev === 0
+                                ? '–'
+                                : number_format($stepCount / $ctaPrev, 1, ',', '').' per klik';
+                        } elseif ($stepRate !== null) {
+                            $rateLabel = number_format((float) $stepRate, 1, ',', '').'%';
+                        }
                     }
-                    $ariaLabel = implode(', ', $ariaParts);
+                    $ariaLabel = $label.': '.$stepCount;
+                    if ($rateLabel !== null) {
+                        $ariaLabel .= ', '.$rateLabel;
+                    }
                   @endphp
                   <li
                     class="stats-funnel-cell"
@@ -245,8 +256,8 @@
                       <x-icon :name="$funnelIcons[$key]" :size="18" />
                     </span>
                     <span class="stats-funnel-step-value">{{ $stepCount }}</span>
-                    @if(! $week['too_few'] && $stepRate !== null)
-                      <span class="hint stats-funnel-step-rate" aria-hidden="true">{{ $stepRate }}%</span>
+                    @if($rateLabel !== null)
+                      <span class="hint stats-funnel-step-rate" aria-hidden="true">{{ $rateLabel }}</span>
                     @endif
                   </li>
                 @endforeach

@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.19] - 2026-11-09
+
+### Changed
+
+- Stats-trechter: percentages in Nederlandse notatie met komma en één decimaal (`52,8%`).
+- Stap Registratiepagina toont de verhouding als «x per klik» (geen percentage; bij 0 klikken «–»); aria/title-labels volgen mee. Formulier gestart blijft percentage t.o.v. registratiepagina.
+
 ## [0.78.18] - 2026-11-09
 
 ### Changed
