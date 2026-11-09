@@ -51,7 +51,11 @@ class RegisterRequest extends FormRequest
         return [
             'email.required' => 'Vul een geldig e-mailadres in.',
             'email.email' => 'Vul een geldig e-mailadres in.',
-            'password.required' => 'Kies een wachtwoord.',
+            // Na een eerdere fout is het wachtwoord bewust leeg (niet in HTML);
+            // met ingevulde e-mail is «opnieuw» duidelijker dan «kies».
+            'password.required' => trim((string) $this->input('email', '')) !== ''
+                ? 'Vul je wachtwoord opnieuw in.'
+                : 'Kies een wachtwoord.',
             'password.min' => 'Kies een wachtwoord van minstens 10 tekens.',
             'country.required' => 'Kies een land.',
             'country.in' => 'Kies Nederland of België.',

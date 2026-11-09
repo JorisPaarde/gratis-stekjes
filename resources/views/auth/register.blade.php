@@ -5,24 +5,28 @@
 @section('canonical', $canonical)
 
 @section('content')
+@php
+  $hasFormErrors = $errors->any() || ! empty($foutMessage);
+  $showPasswordReenter = $hasFormErrors && (old('email') || $errors->has('password'));
+@endphp
 <section class="section wrap">
   <h1 class="page-title">Account maken</h1>
   <p class="section-intro">Meedoen is gratis. Met één account kun je iets aanbieden én iets ophalen: planten, stekjes of zaden. Er wordt niets verkocht. Je krijgt een e-mail om je aanmelding te bevestigen. Je voornaam of bijnaam vul je daarna in op je profiel.</p>
 
   @if($errors->any())
-    <ul class="error-list" role="alert">
+    <ul class="error-list" role="alert" id="reg-errors">
       @foreach($errors->all() as $error)
         <li class="error">{{ $error }}</li>
       @endforeach
     </ul>
   @elseif(!empty($foutMessage))
     {{-- Vangnet zonder sessie-flash (file-session race op staging). --}}
-    <ul class="error-list" role="alert">
+    <ul class="error-list" role="alert" id="reg-errors">
       <li class="error">{{ $foutMessage }}</li>
     </ul>
   @endif
 
-  <form class="form" method="post" action="{{ route('account.registreren') }}" novalidate data-meet-form="register" autocomplete="on">
+  <form class="form" method="post" action="{{ route('account.registreren') }}" novalidate data-meet-form="register" autocomplete="on" @if($hasFormErrors) data-has-errors="1" @endif>
     @csrf
     @include('partials.honeypot')
     <input type="hidden" name="next" value="{{ $next ?? '/account' }}">
@@ -39,6 +43,7 @@
         autocapitalize="off"
         spellcheck="false"
         value="{{ old('email') }}"
+        @if($errors->has('email')) aria-invalid="true" @endif
       >
     </label>
     <label for="reg-password">Wachtwoord * <span class="hint">Minstens 10 tekens</span>
@@ -52,13 +57,17 @@
           maxlength="200"
           autocomplete="new-password"
           passwordrules="minlength: 10;"
+          @if($errors->has('password') || $showPasswordReenter) aria-invalid="true" aria-describedby="reg-password-hint" @endif
         >
         <button type="button" class="btn btn-secondary btn-klein" data-wachtwoord-toggle aria-controls="reg-password" aria-pressed="false">Toon</button>
       </span>
+      @if($showPasswordReenter)
+        <span class="field-hint-error" id="reg-password-hint">Vul je wachtwoord opnieuw in</span>
+      @endif
     </label>
 
     <label for="reg-country">Land *
-      <select id="reg-country" name="country" required autocomplete="country">
+      <select id="reg-country" name="country" required autocomplete="country" @if($errors->has('country')) aria-invalid="true" @endif>
         @foreach($countries as $code => $label)
           <option value="{{ $code }}" @selected(old('country', 'NL') === $code)>{{ $label }}</option>
         @endforeach
@@ -77,23 +86,24 @@
         spellcheck="false"
         value="{{ old('postcode') }}"
         placeholder="{{ old('country', 'NL') === 'BE' ? '9000' : '2011 AB' }}"
+        @if($errors->has('postcode')) aria-invalid="true" @endif
       >
     </label>
     <p class="hint">Alleen een afgeronde plek wordt zichtbaar, nooit je straatadres. Zo kunnen buren aanbod bij jou in de buurt vinden.</p>
 
     <label class="checkbox">
-      <input type="checkbox" name="gratis_akkoord" value="1" required @checked(old('gratis_akkoord'))>
+      <input type="checkbox" name="gratis_akkoord" value="1" required @checked(old('gratis_akkoord')) @if($errors->has('gratis_akkoord')) aria-invalid="true" @endif>
       <span>Ik ga akkoord: ik bied alles <strong>gratis</strong> aan en verkoop niets via deze site.</span>
     </label>
     <label class="checkbox">
-      <input type="checkbox" name="privacy" value="1" required @checked(old('privacy'))>
+      <input type="checkbox" name="privacy" value="1" required @checked(old('privacy')) @if($errors->has('privacy')) aria-invalid="true" @endif>
       <span>Ik ga akkoord met de <a href="{{ route('privacy') }}">privacyverklaring</a>.</span>
     </label>
 
     <fieldset class="form-fieldset form-fieldset--meet" data-meet-found-via>
       <legend>Hoe heb je ons gevonden? <span class="hint">(optioneel)</span></legend>
       <label for="reg-found-via">
-        <select id="reg-found-via" name="acquisition_found_via" data-found-via-select autocomplete="off">
+        <select id="reg-found-via" name="acquisition_found_via" data-found-via-select autocomplete="off" @if($errors->has('acquisition_found_via')) aria-invalid="true" @endif>
           <option value="">— kies indien je wilt —</option>
           @foreach(($foundViaOptions ?? []) as $value => $label)
             <option value="{{ $value }}" @selected(old('acquisition_found_via') === $value)>{{ $label }}</option>
@@ -109,11 +119,14 @@
           maxlength="120"
           value="{{ old('acquisition_found_via_other') }}"
           autocomplete="off"
+          @if($errors->has('acquisition_found_via_other')) aria-invalid="true" @endif
         >
       </label>
     </fieldset>
 
-    <button class="btn" type="submit">Account maken</button>
+    <div class="form-actions">
+      <button class="btn" type="submit" id="reg-submit">Account maken</button>
+    </div>
   </form>
 
   <p class="muted">Al een account? <a href="{{ route('account.inloggen', ['next' => $next ?? '/account']) }}">Inloggen</a></p>
@@ -137,8 +150,30 @@
   }
 
   var form = document.querySelector('[data-meet-form="register"]');
-  if (!form || !navigator.sendBeacon) return;
+  if (!form) return;
+
+  if (form.getAttribute('data-has-errors') === '1') {
+    var first = form.querySelector('[aria-invalid="true"]');
+    if (!first) {
+      first = document.getElementById('reg-submit') || form.querySelector('[type="submit"]');
+    }
+    if (first) {
+      try {
+        first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (e) {
+        first.scrollIntoView(true);
+      }
+      window.setTimeout(function () {
+        try { first.focus({ preventScroll: true }); } catch (e2) { try { first.focus(); } catch (e3) {} }
+      }, 120);
+    }
+  }
+
+  if (!navigator.sendBeacon) return;
+  // Max. 1× per tab-sessie (overleeft herladen na validatiefout); server dedupt ook per flow.
+  var storageKey = 'gp_form_start';
   var started = false;
+  try { started = sessionStorage.getItem(storageKey) === '1'; } catch (e) {}
   var endpoint = @json(route('meet.event'));
   var path = '/account/registreren';
   function beacon(type, extra) {
@@ -155,6 +190,7 @@
   function onStart() {
     if (started) return;
     started = true;
+    try { sessionStorage.setItem(storageKey, '1'); } catch (e) {}
     beacon('form_start');
   }
   form.addEventListener('focusin', onStart, { once: true });
