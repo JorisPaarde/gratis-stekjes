@@ -38,7 +38,7 @@ npm ci && npm run build
 php artisan serve
 ```
 
-Uitgebreider: [`docs/INSTALL.md`](docs/INSTALL.md). Branches: [`CONTRIBUTING.md`](CONTRIBUTING.md). Rollback: [`docs/ROLLBACK.md`](docs/ROLLBACK.md).
+Uitgebreider: [`docs/INSTALL.md`](docs/INSTALL.md). Branches: [`CONTRIBUTING.md`](CONTRIBUTING.md). Rollback: [`docs/ROLLBACK.md`](docs/ROLLBACK.md). Mediavermeldingen op `/in-de-media`: [`docs/in-de-media.md`](docs/in-de-media.md).
 
 ### Deploy
 

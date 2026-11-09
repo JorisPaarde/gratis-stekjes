@@ -36,6 +36,7 @@ function auditPublicGetRoutes(): array
         '/hoe-werkt-het',
         '/hulpmiddelen',
         '/over',
+        '/in-de-media',
         '/invasieve-soorten',
         '/volkstuinen',
         '/tuinverenigingen',

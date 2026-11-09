@@ -163,6 +163,7 @@
             <li><a href="{{ route('hoe-werkt-het') }}">Hoe werkt het</a></li>
             <li><a href="{{ route('help-mee') }}">Help mee</a></li>
             <li><a href="{{ route('over') }}">Over</a></li>
+            <li><a href="{{ route('in-de-media') }}">In de media</a></li>
             <li><a href="{{ route('voor-organisaties') }}">Voor organisaties</a></li>
             <li><a href="{{ route('contact') }}">Contact</a></li>
             <li><a href="{{ route('privacy') }}">Privacy</a></li>
