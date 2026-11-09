@@ -51,7 +51,10 @@ test('late sessie-write wist register-flash (model van de beacon-race)', functio
 
     $this->from(route('account.registreren'))
         ->post(route('account.registreren'), meetRacePayload())
-        ->assertRedirect(route('account.registreren'))
+        ->assertRedirect(route('account.registreren', [
+            'fout' => 'snel',
+            'email' => 'meet-race@example.com',
+        ]))
         ->assertSessionHasErrors('form_started');
 
     // Simuleer sendBeacon die de sessie vóór de flash las en ná de register-POST terugschreef.
@@ -77,7 +80,10 @@ test('meet/event na te-snelle register wist flash niet en telt form_start', func
         ->post(route('account.registreren'), meetRacePayload([
             'email' => 'meet-keep@example.com',
         ]))
-        ->assertRedirect(route('account.registreren'))
+        ->assertRedirect(route('account.registreren', [
+            'fout' => 'snel',
+            'email' => 'meet-keep@example.com',
+        ]))
         ->assertSessionHasErrors('form_started');
 
     $beacon = $this->post(route('meet.event'), [

@@ -163,7 +163,10 @@ test('te snel formulier wordt geweigerd met vriendelijke melding', function () {
             'form_started' => time(),
         ]));
 
-    $response->assertRedirect(route('account.registreren'))
+    $response->assertRedirect(route('account.registreren', [
+            'fout' => 'snel',
+            'email' => 'snel@example.com',
+        ]))
         ->assertSessionHasErrors([
             'form_started' => 'Dat ging erg snel. Klik nog een keer op Account maken.',
         ])

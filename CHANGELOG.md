@@ -3,6 +3,18 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.35] - 2026-11-09
+
+### Fixed
+
+- Registreren: intermitterend leeg formulier na te snelle submit op staging
+  (file-sessie + parallelle lsphp-requests wissen flash). Reproduceerbaar
+  ~30% bij snelle Playwright-fills; `form.bot_rejected`/too_fast wél, flash niet.
+- Vangnet: redirect met `?fout=snel` (+ gevalideerde `email`); view toont de
+  NL-melding ook zonder sessie-flash. Throttle: `?fout=teveel`.
+- Session lock (`Route::block`) op GET/POST `/account/registreren` tegen
+  parallelle sessie-writes.
+
 ## [0.78.34] - 2026-11-09
 
 ### Fixed
