@@ -122,6 +122,7 @@ class StatistiekenController extends Controller
         $botRejections = $this->botRejectionsSummary(30);
         $breakdown = $conversions->deviceAndSourceBreakdown(30);
         $minFormStarts = (int) config('conversion.min_form_starts_for_rates', 30);
+        $funnelMeasurementSinceLabel = $this->funnelMeasurementSinceLabel();
         $aanbodSearchWeek = $conversions->aanbodSearchWeekSummary(0);
         $aanbodSearchPlants = $conversions->topAanbodSearchPlants(10, 0);
 
@@ -167,6 +168,7 @@ class StatistiekenController extends Controller
             'deviceBreakdown' => $breakdown['devices'],
             'sourceBreakdown' => $breakdown['sources'],
             'minFormStarts' => $minFormStarts,
+            'funnelMeasurementSinceLabel' => $funnelMeasurementSinceLabel,
             'aanbodSearchWeek' => $aanbodSearchWeek,
             'aanbodSearchPlants' => $aanbodSearchPlants,
             'funnelLabels' => [
@@ -301,6 +303,25 @@ class StatistiekenController extends Controller
         return response($html, 200)
             ->header('Content-Type', 'text/html; charset=UTF-8')
             ->header('X-Robots-Tag', 'noindex, nofollow');
+    }
+
+    /** «5 november 2026» — vaste trechter-startlabel (Europe/Amsterdam). */
+    private function funnelMeasurementSinceLabel(): string
+    {
+        $raw = (string) config('conversion.measurement_since', '2026-11-05');
+        try {
+            $at = Carbon::parse($raw, 'Europe/Amsterdam')->startOfDay();
+        } catch (\Throwable) {
+            $at = Carbon::parse('2026-11-05', 'Europe/Amsterdam')->startOfDay();
+        }
+
+        $months = [
+            1 => 'januari', 2 => 'februari', 3 => 'maart', 4 => 'april',
+            5 => 'mei', 6 => 'juni', 7 => 'juli', 8 => 'augustus',
+            9 => 'september', 10 => 'oktober', 11 => 'november', 12 => 'december',
+        ];
+
+        return (int) $at->day.' '.($months[(int) $at->month] ?? 'maand').' '.$at->year;
     }
 
     /**

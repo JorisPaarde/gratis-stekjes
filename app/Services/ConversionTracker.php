@@ -500,6 +500,17 @@ final class ConversionTracker
             ? $this->normalizePath((string) $extra['path'])
             : $this->normalizePath($request->getPathInfo());
 
+        // form_start: max. 1× per flow (niet per paginalading na validatiefout).
+        if ($eventType === ConversionEvent::TYPE_FORM_START && $flowId !== '') {
+            $already = ConversionEvent::query()
+                ->where('event_type', ConversionEvent::TYPE_FORM_START)
+                ->where('flow_id', Str::limit($flowId, 64, ''))
+                ->exists();
+            if ($already) {
+                return;
+            }
+        }
+
         ConversionEvent::query()->create([
             'occurred_at' => $at,
             'event_type' => Str::limit($eventType, 40, ''),
@@ -1091,27 +1102,56 @@ final class ConversionTracker
         return false;
     }
 
+    /**
+     * Tel events in een periode: één bron per Amsterdam-kalenderdag.
+     *
+     * Per dag: raw events als die dag nog raw heeft, anders conversion_daily.
+     * Voorkomt mengen van dagcijfers met UTC-ruwe events over een deels
+     * geaggregeerde periode (bijv. gisteren in daily, vandaag alleen raw).
+     */
     private function countInRange(string $eventType, Carbon $from, Carbon $to): int
     {
-        if (Schema::hasTable('conversion_daily')) {
-            $sum = (int) ConversionDaily::query()
-                ->where('event_type', $eventType)
-                ->whereDate('date', '>=', $from->toDateString())
-                ->whereDate('date', '<=', $to->toDateString())
-                ->sum('count');
-            if ($sum > 0) {
-                return $sum;
+        $tz = 'Europe/Amsterdam';
+        $cursor = $from->copy()->timezone($tz)->startOfDay();
+        $endDay = $to->copy()->timezone($tz)->startOfDay();
+        $total = 0;
+
+        while ($cursor->lte($endDay)) {
+            $total += $this->countEventOnAmsterdamDay($eventType, $cursor->toDateString());
+            $cursor->addDay();
+        }
+
+        return $total;
+    }
+
+    /**
+     * Tel één event-type op één Amsterdam-kalenderdag (één telbron).
+     */
+    private function countEventOnAmsterdamDay(string $eventType, string $day): int
+    {
+        $dayStart = Carbon::parse($day, 'Europe/Amsterdam')->startOfDay()->utc();
+        $dayEnd = Carbon::parse($day, 'Europe/Amsterdam')->endOfDay()->utc();
+
+        if (Schema::hasTable('conversion_events')) {
+            $hasRaw = ConversionEvent::query()
+                ->whereBetween('occurred_at', [$dayStart, $dayEnd])
+                ->exists();
+            if ($hasRaw) {
+                return (int) ConversionEvent::query()
+                    ->where('event_type', $eventType)
+                    ->whereBetween('occurred_at', [$dayStart, $dayEnd])
+                    ->count();
             }
         }
 
-        if (! Schema::hasTable('conversion_events')) {
-            return 0;
+        if (Schema::hasTable('conversion_daily')) {
+            return (int) ConversionDaily::query()
+                ->where('event_type', $eventType)
+                ->whereDate('date', $day)
+                ->sum('count');
         }
 
-        return (int) ConversionEvent::query()
-            ->where('event_type', $eventType)
-            ->whereBetween('occurred_at', [$from->copy()->utc(), $to->copy()->utc()])
-            ->count();
+        return 0;
     }
 
     /**

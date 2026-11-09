@@ -18,6 +18,12 @@ return [
     /** Onder dit aantal form_starts geen percentagebesluit in het dashboard. */
     'min_form_starts_for_rates' => (int) env('CONVERSION_MIN_FORM_STARTS', 30),
 
+    /**
+     * Eerste betrouwbare trechtermeting (Europe/Amsterdam).
+     * Beheer toont «Meting vanaf …»; eerdere novemberdagen hadden geen volledige meetset.
+     */
+    'measurement_since' => env('CONVERSION_MEASUREMENT_SINCE', '2026-11-05'),
+
     /** Beacon rate-limit (requests per minuut per IP-hash-bucket). */
     'beacon_per_minute' => (int) env('CONVERSION_BEACON_PER_MINUTE', 30),
 

@@ -170,7 +170,10 @@
   }
 
   if (!navigator.sendBeacon) return;
+  // Max. 1× per tab-sessie (overleeft herladen na validatiefout); server dedupt ook per flow.
+  var storageKey = 'gp_form_start';
   var started = false;
+  try { started = sessionStorage.getItem(storageKey) === '1'; } catch (e) {}
   var endpoint = @json(route('meet.event'));
   var path = '/account/registreren';
   function beacon(type, extra) {
@@ -187,6 +190,7 @@
   function onStart() {
     if (started) return;
     started = true;
+    try { sessionStorage.setItem(storageKey, '1'); } catch (e) {}
     beacon('form_start');
   }
   form.addEventListener('focusin', onStart, { once: true });
