@@ -112,7 +112,7 @@ $paths = [
     '/', '/privacy', '/initiatieven', '/deelplekken',
     '/voor-organisaties', '/voor-organisaties/aanmelden', '/organisaties',
     '/robots.txt', '/sitemap.xml',
-    '/hoe-werkt-het', '/hulpmiddelen', '/over', '/invasieve-soorten', '/stektips', '/gratis-planten',
+    '/hoe-werkt-het', '/hulpmiddelen', '/over', '/in-de-media', '/invasieve-soorten', '/stektips', '/gratis-planten',
     '/aanbod', '/api/zoeken?q=Haarlem', '/api/partners', '/api/deelplekken', '/api/nu-te-stekken',
     '/account/registreren', '/account/inloggen', '/account/wachtwoord-vergeten', '/beheer',
 ];

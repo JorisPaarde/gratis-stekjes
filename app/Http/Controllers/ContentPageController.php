@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Services\InDeMedia;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -36,8 +37,76 @@ class ContentPageController extends Controller
         ]);
     }
 
+    public function inDeMedia(InDeMedia $inDeMedia): View
+    {
+        $title = 'Gratis planten in de media';
+        $meta = 'Overzicht van mediavermeldingen over Gratis planten: artikelen over gratis planten, stekjes en zaden delen in je buurt.';
+        $canonical = route('in-de-media');
+        $vermeldingen = $inDeMedia->all();
+
+        return view('pages.in-de-media', [
+            'title' => $title,
+            'metaDescription' => $meta,
+            'canonical' => $canonical,
+            'vermeldingen' => $vermeldingen,
+            'schema' => $this->mediaSchema($title, $meta, $canonical, $vermeldingen),
+        ]);
+    }
+
     public function doeMee(): RedirectResponse
     {
         return redirect()->route('account.registreren');
+    }
+
+    /**
+     * @param  list<array{medium: string, datum: string, kop: string, samenvatting: string, url: string, datum_label: string}>  $vermeldingen
+     * @return array<string, mixed>
+     */
+    private function mediaSchema(string $title, string $description, string $url, array $vermeldingen): array
+    {
+        $site = (string) config('site.name');
+        $items = [];
+        foreach ($vermeldingen as $i => $row) {
+            $items[] = [
+                '@type' => 'ListItem',
+                'position' => $i + 1,
+                'item' => [
+                    '@type' => 'NewsArticle',
+                    'headline' => $row['kop'],
+                    'datePublished' => $row['datum'],
+                    'description' => $row['samenvatting'],
+                    'url' => $row['url'],
+                    'isPartOf' => [
+                        '@type' => 'Periodical',
+                        'name' => $row['medium'],
+                    ],
+                    'about' => [
+                        '@type' => 'Organization',
+                        'name' => $site,
+                        'url' => url('/'),
+                    ],
+                ],
+            ];
+        }
+
+        return [
+            '@context' => 'https://schema.org',
+            '@type' => 'CollectionPage',
+            'name' => $title,
+            'url' => $url,
+            'description' => $description,
+            'inLanguage' => 'nl-NL',
+            'isPartOf' => [
+                '@type' => 'WebSite',
+                'name' => $site,
+                'url' => url('/'),
+            ],
+            'mainEntity' => [
+                '@type' => 'ItemList',
+                'itemListOrder' => 'https://schema.org/ItemListOrderDescending',
+                'numberOfItems' => count($items),
+                'itemListElement' => $items,
+            ],
+        ];
     }
 }

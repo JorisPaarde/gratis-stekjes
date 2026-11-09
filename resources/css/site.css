@@ -1194,3 +1194,68 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
 .plekken-tabs a:hover, .plekken-tabs a:focus-visible { color: var(--forest-deep, #163820); background: var(--bg-mint, #e6f2e1); }
 .plekken-tabs a.is-actief { border-bottom-color: var(--orange, #e8833a); color: var(--forest-deep, #163820); }
 @media (max-width: 420px) { .plekken-tabs { flex-wrap: nowrap; } .plekken-tabs a { flex: 1; justify-content: center; padding: 0 .3rem; font-size: .9rem; } }
+
+/* /in-de-media — lijst van vermeldingen (geen cards) */
+.in-de-media-page .media-lijst {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2.5rem;
+  display: grid;
+  gap: 0;
+}
+.in-de-media-page .media-item {
+  padding: 1.35rem 0 1.5rem;
+  border-top: 1px solid var(--line);
+}
+.in-de-media-page .media-item:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.in-de-media-page .media-meta {
+  margin: 0 0 .45rem;
+  color: var(--forest);
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .35rem .45rem;
+}
+.in-de-media-page .media-sep { color: var(--ink-soft); font-weight: 500; }
+.in-de-media-page .media-kop {
+  margin: 0 0 .55rem;
+  font-size: clamp(1.2rem, 2.6vw, 1.45rem);
+  line-height: 1.25;
+  text-transform: none;
+  letter-spacing: -0.01em;
+}
+.in-de-media-page .media-kop a {
+  text-decoration: none;
+  color: var(--forest-deep);
+}
+.in-de-media-page .media-kop a:hover,
+.in-de-media-page .media-kop a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.in-de-media-page .media-samenvatting {
+  margin: 0 0 .65rem;
+  color: var(--ink-soft);
+  max-width: 40rem;
+}
+.in-de-media-page .media-lees {
+  margin: 0;
+  font-size: .95rem;
+}
+.in-de-media-page .media-journalist {
+  margin-top: 2.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  max-width: 40rem;
+}
+.in-de-media-page .media-journalist h2 {
+  margin-top: 0;
+}
+@media (max-width: 420px) {
+  .in-de-media-page .media-item { padding: 1.15rem 0 1.25rem; }
+}

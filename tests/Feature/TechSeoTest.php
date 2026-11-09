@@ -156,6 +156,7 @@ test('meta descriptions privacy contact help-mee aanmelden vallen binnen 70–16
     foreach ([
         '/privacy',
         '/contact',
+        '/in-de-media',
         '/help-mee',
         '/voor-organisaties/aanmelden',
         '/stektips/aardbei',
