@@ -73,12 +73,15 @@ class PostLogMintController extends Controller
         ]);
 
         $trackingUrl = $post->trackingUrl();
+        $shortUrl = $post->shortUrl();
 
         return response()->json([
             'ok' => true,
             'id' => $post->id,
             'titel' => $post->titel,
             'tracking_url' => $trackingUrl,
+            'short_url' => $shortUrl,
+            'short_code' => $post->short_code,
             'utm' => [
                 'source' => $post->utm_source ?: 'facebook',
                 'medium' => 'social',

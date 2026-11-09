@@ -40,12 +40,19 @@ test('mint maakt post_log met tracking_url via /ga/word-lid', function () {
         ->and($url)->toContain('utm_medium=social')
         ->and($url)->toContain('utm_campaign=plantenruil-amsterdam');
 
+    $shortUrl = (string) $response->json('short_url');
+    $shortCode = (string) $response->json('short_code');
+    expect($shortCode)->toMatch('/^[2-9A-HJ-NP-Z]{5}$/')
+        ->and($shortUrl)->toEndWith('/s/'.$shortCode);
+
     $post = PostLog::query()->find($id);
     expect($post)->not->toBeNull()
         ->and($post->titel)->toBe('Oproep stekjes delen')
         ->and($post->groep_slug)->toBe('plantenruil-amsterdam')
         ->and($post->utm_source)->toBe('instagram')
-        ->and($post->trackingUrl())->toBe($url);
+        ->and($post->short_code)->toBe($shortCode)
+        ->and($post->trackingUrl())->toBe($url)
+        ->and($post->shortUrl())->toBe($shortUrl);
 });
 
 test('mint zonder of met verkeerde token geeft 403', function () {
