@@ -45,10 +45,9 @@ test('sitemap bevat overzicht en geïndexeerde steden met lastmod', function () 
         ->getContent();
 
     expect($xml)->toContain(route('gratis-planten.index'));
-    // Haarlem/BE-steden hebben zichtbare deelplekken → geïndexeerd.
+    // Vaste steden altijd in sitemap, ook zonder lokaal aanbod/deelplek.
     expect($xml)->toContain(route('gratis-planten.show', ['stad' => 'haarlem']));
-    // Rotterdam zonder lokaal aanbod/deelplek → niet in sitemap.
-    expect($xml)->not->toContain(route('gratis-planten.show', ['stad' => 'rotterdam']));
+    expect($xml)->toContain(route('gratis-planten.show', ['stad' => 'rotterdam']));
 
     foreach (['antwerpen', 'brussel', 'namen', 'lommel'] as $slug) {
         $loc = route('gratis-planten.show', ['stad' => $slug]);

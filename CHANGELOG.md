@@ -3,6 +3,26 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.23] - 2026-11-09
+
+### Added
+
+- Korte deellinks `/s/{code}` voor social post-logs: elke gemunte `post_log`
+  krijgt een `short_code`; `/s/{code}` 302’t naar `/ga/word-lid` met dezelfde
+  UTM. Mint-API levert `short_url`; beheer toont de korte link. Geen open
+  redirect, noindex-header, niet in sitemap. Migratie + backfill voor
+  bestaande rijen. (Was 0.78.22 op staging; `/in-de-media` / 0.78.21 zit niet
+  in deze release.)
+- CI-workflow `verify-short-link-staging.yml` om korte deellinks op staging te
+  verifiëren.
+
+### Fixed
+
+- Vaste stadspagina’s uit `data/steden.json` (47 steden) blijven altijd
+  geïndexeerd en staan altijd in sitemap, overzicht en nabije-steden-links —
+  ook zonder aanbod of deelplek. Automatische steden houden drempelgedrag
+  (`GP_STAD_AANBOD_MIN`, default 1; onder de drempel 301 naar `/gratis-planten`).
+
 ## [0.78.20] - 2026-11-09
 
 ### Added
