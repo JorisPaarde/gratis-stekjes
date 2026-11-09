@@ -182,4 +182,20 @@ return [
             explode(',', (string) env('REMINDER_TEST_RECIPIENTS', ''))
         ))),
     ],
+
+    /**
+     * Tipmail ~2 dagen na e-mailbevestiging als er nog geen aanbod is (max. 1×).
+     * Default UIT. Alleen accounts met email_verified_at >= enabled_at
+     * (geen terugwerkende kracht op bestaande leden).
+     * Deelt REMINDER_TEST_RECIPIENTS met verification_reminder (staging fail-closed).
+     */
+    'activation_reminder' => [
+        'enabled' => filter_var(env('ACTIVATION_REMINDER_ENABLED', false), FILTER_VALIDATE_BOOL),
+        'enabled_at' => env('ACTIVATION_REMINDER_ENABLED_AT', ''),
+        'after_hours' => (int) env('ACTIVATION_REMINDER_AFTER_HOURS', 48),
+        'test_recipients' => array_values(array_filter(array_map(
+            static fn (string $email): string => strtolower(trim($email)),
+            explode(',', (string) env('REMINDER_TEST_RECIPIENTS', ''))
+        ))),
+    ],
 ];

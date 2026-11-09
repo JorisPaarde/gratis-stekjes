@@ -106,12 +106,17 @@
                 @if(! $u->hasVerifiedEmail())
                   @php($bm = $bevestigingsmails[$u->id] ?? new \App\Support\BevestigingsmailStats())
                   @include('beheer.partials.bevestigingsmails', ['stats' => $bm])
-                @elseif($mail)
-                  {{ \App\Support\MailLabels::type($mail->type) }}
-                  @if(! $mail->isOk())<span class="status status--fout">{{ \App\Support\MailLabels::fout($mail->error) }}</span>@endif
-                  <br><span class="muted beheer-klein">{{ $mail->created_at?->diffForHumans(['parts' => 1]) }}</span>
                 @else
-                  <span class="muted">—</span>
+                  @php($ah = $activatieHerinneringen[$u->id] ?? new \App\Support\ActivatieHerinneringStats())
+                  @if(! $ah->isLeeg())
+                    @include('beheer.partials.activatie-herinnering', ['stats' => $ah])
+                  @elseif($mail)
+                    {{ \App\Support\MailLabels::type($mail->type) }}
+                    @if(! $mail->isOk())<span class="status status--fout">{{ \App\Support\MailLabels::fout($mail->error) }}</span>@endif
+                    <br><span class="muted beheer-klein">{{ $mail->created_at?->diffForHumans(['parts' => 1]) }}</span>
+                  @else
+                    <span class="muted">—</span>
+                  @endif
                 @endif
               </td>
               <td class="beheer-acties-cel"><div class="beheer-acties-inner">

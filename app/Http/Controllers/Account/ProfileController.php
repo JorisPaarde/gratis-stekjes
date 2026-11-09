@@ -67,6 +67,7 @@ class ProfileController extends Controller
             'locatie' => ['required', 'string', 'max:120'],
             'telefoon' => ['nullable', 'string', 'max:40', 'regex:/^[0-9+\s().-]{7,40}$/'],
             'berichtmail' => ['nullable', 'boolean'],
+            'activatieherinnering' => ['nullable', 'boolean'],
             'huisnummer' => ['nullable', 'string', 'max:12', 'regex:/^\d{1,5}\s*[A-Za-z0-9-]{0,6}$/'],
             'straat' => ['nullable', 'string', 'max:120'],
             'plaats' => ['nullable', 'string', 'max:120'],
@@ -165,6 +166,9 @@ class ProfileController extends Controller
         // Oude formulieren zonder dit veld laten de instelling ongemoeid.
         if ($request->has('berichtmail')) {
             $user->berichtmail = $request->boolean('berichtmail');
+        }
+        if ($request->has('activatieherinnering') && Schema::hasColumn('users', 'activatieherinnering')) {
+            $user->activatieherinnering = $request->boolean('activatieherinnering');
         }
         // Onleesbare telefoon (andere APP_KEY) niet wissen met leeg formulier.
         $user->fillEncryptedIfProvided('telefoon', $data['telefoon'] ?? '');

@@ -14,6 +14,8 @@
 #            BACKUP_RETAIN_DAYS (default 30)
 #            ADMIN_DASHBOARD_EMAILS (CSV; alleen schrijven als gezet; leeg → hook behoudt bestaande)
 #            POST_LOG_MINT_TOKEN (mint API; leeg → hook behoudt bestaande .env-waarde)
+#            ACTIVATION_REMINDER_ENABLED / _ENABLED_AT / _AFTER_HOURS / REMINDER_TEST_RECIPIENTS
+#              (alleen schrijven als gezet; leeg → hook behoudt bestaande of app-default uit)
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -78,6 +80,7 @@ mask "${CRON_TOKEN:-}"
 mask "${APP_KEY:-}"
 mask "${BACKUP_ENCRYPTION_KEY:-}"
 mask "${POST_LOG_MINT_TOKEN:-}"
+mask "${REMINDER_TEST_RECIPIENTS:-}"
 
 require_var DEPLOY_HOOK_TOKEN
 require_var DEPLOY_TOKEN
@@ -267,6 +270,20 @@ umask 077
     printf '%s\n' 'BACKUP_ENCRYPTION_KEY='
   fi
   dotenv_line BACKUP_RETAIN_DAYS "${BACKUP_RETAIN_DAYS:-30}"
+  # Activatie-/verify-herinnering: alleen schrijven als GH var/secret gezet; anders behoudt de hook
+  # de bestaande server-waarde (of app-default: uit + fail-closed). Geen waarden zelf verzinnen.
+  if [ -n "${ACTIVATION_REMINDER_ENABLED:-}" ]; then
+    dotenv_line ACTIVATION_REMINDER_ENABLED "$ACTIVATION_REMINDER_ENABLED"
+  fi
+  if [ -n "${ACTIVATION_REMINDER_ENABLED_AT:-}" ]; then
+    dotenv_line ACTIVATION_REMINDER_ENABLED_AT "$ACTIVATION_REMINDER_ENABLED_AT"
+  fi
+  if [ -n "${ACTIVATION_REMINDER_AFTER_HOURS:-}" ]; then
+    dotenv_line ACTIVATION_REMINDER_AFTER_HOURS "$ACTIVATION_REMINDER_AFTER_HOURS"
+  fi
+  if [ -n "${REMINDER_TEST_RECIPIENTS:-}" ]; then
+    dotenv_line REMINDER_TEST_RECIPIENTS "$REMINDER_TEST_RECIPIENTS"
+  fi
   # VERHUIS: workflow_dispatch import_enabled=true zet dit aan; tag-pushes laten IMPORT_ENABLED leeg → false.
   case "$(printf '%s' "${IMPORT_ENABLED:-false}" | tr '[:upper:]' '[:lower:]')" in
     1|true|yes) _IMPORT_ENABLED_VAL=true ;;

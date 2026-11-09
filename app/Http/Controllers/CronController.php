@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\AanbodExpiryService;
+use App\Services\ActivatieHerinneringService;
 use App\Services\ConversionTracker;
 use App\Services\VerificationReminderService;
 use Illuminate\Http\JsonResponse;
@@ -20,6 +21,7 @@ class CronController extends Controller
         AanbodExpiryService $expiry,
         ConversionTracker $conversions,
         VerificationReminderService $verificationReminder,
+        ActivatieHerinneringService $activatieHerinnering,
     ): Response|JsonResponse {
         $expected = (string) config('stekjes.cron_token', '');
         $given = (string) $request->header('X-Cron-Token', '');
@@ -39,6 +41,7 @@ class CronController extends Controller
                 'queue_work' => ['exit' => $queueExit],
                 'expiry_reminders' => $expiry->sendExpiryReminders(),
                 'verification_reminders' => $verificationReminder->run(),
+                'activation_reminders' => $activatieHerinnering->run(),
                 'purge_geocode_cache' => ['deleted' => $expiry->purgeGeocodeCache()],
                 'purge_mail_log' => ['deleted' => $expiry->purgeMailLog()],
                 'conversion_aggregate' => $conversions->aggregateAndPurge(),

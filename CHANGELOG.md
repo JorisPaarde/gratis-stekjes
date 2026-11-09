@@ -3,6 +3,34 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.79.2] - 2026-11-09
+
+### Added
+
+- Activatie-tipmail (~2 dagen na e-mailbevestiging) voor bevestigde leden zonder
+  aanbod: max. 1× via Laravel/SafeMail/Hoasted SMTP (nooit Resend). Config-vlag
+  default uit; alleen `email_verified_at >= ACTIVATION_REMINDER_ENABLED_AT`
+  (geen terugwerkende kracht). Staging deelt `REMINDER_TEST_RECIPIENTS`
+  (fail-closed). Cron-job `activation_reminders` + artisan
+  `gp:activatie-herinnering --dry-run` (alleen aantallen) / `--send`.
+- Afmelden: profielvinkje + ondertekende link/`List-Unsubscribe` in de mail.
+- Beheer: telling Activatieherinnering (mail_log) op gebruikerslijst/detail.
+  Privacytekst bijgewerkt.
+- Deploy schrijft optioneel `ACTIVATION_REMINDER_*` + `REMINDER_TEST_RECIPIENTS`
+  uit GitHub vars/secrets naar de server-`.env` (ontbreekt → behoud/default uit).
+- Workflow `activatie-herinnering-dry-run` (`workflow_dispatch`, staging|production):
+  alleen `--dry-run` via `POST /deploy/activatie-herinnering`, nooit versturen.
+- Ongeldige/verlopen tipmail-afmeldlink: nette GP-pagina (403) i.p.v. kale fout.
+- Activatie-tipmail: multipart HTML (GP mail-layout + knop «Zet je eerste
+  stekje online», linktekst «Zet ze uit») + plaintext met URL’s. Begroeting
+  zonder voornaam: «Hoi!» i.p.v. «Hoi,».
+- Mail-theme (centraal): geen `word-break: break-all` meer op gewone tekst
+  (alleen `.break-all` / lange URL’s → `overflow-wrap: anywhere`). Knop
+  `primary` in forest-groen `#1f4d2b`, wit label, min. 44px. Raakt alle
+  MailMessage-/markdown-mails: o.a. bevestiging, bevestigingsherinnering,
+  activatie-tipmail, wachtwoordreset, e-mailwijziging, account-bestaat-al,
+  deelplek-/vereniging-/partner-mails.
+
 ## [0.79.1] - 2026-11-09
 
 ### Fixed

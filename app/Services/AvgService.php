@@ -111,6 +111,7 @@ final class AvgService
                 'created_at' => optional($user->created_at)?->toIso8601String(),
                 'active' => (bool) $user->active,
                 'berichtmail' => $user->berichtmail !== false,
+                'activatieherinnering' => $user->activatieherinnering !== false,
                 'acquisition' => [
                     'landing_path' => $user->acquisition_landing_path ?? null,
                     'referrer_host' => $user->acquisition_referrer_host ?? null,
