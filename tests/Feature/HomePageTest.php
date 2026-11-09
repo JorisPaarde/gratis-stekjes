@@ -73,13 +73,15 @@ test('hoe werkt het heeft drie stappen', function () {
     expect(substr_count($m[1], '<li class="home-stap">'))->toBe(3);
 });
 
-test('blok «Hier kun je nu al terecht» toont tellingen per soort deelplek', function () {
+test('blok «Hier kun je nu al terecht» toont typelinks zonder deelplekken-aantal', function () {
     $this->seed(DeelplekkenSeeder::class);
     $html = $this->get('/')->assertOk()->getContent();
 
     expect($html)->toContain('Hier kun je nu al terecht')
-        ->and($html)->toMatch('/<strong>\d+<\/strong> zadenbibliotheken/')
-        ->and($html)->toContain('plekken in Nederland en België');
+        ->and($html)->toContain('Zadenbibliotheken')
+        ->and($html)->toContain('Elke week komen er nieuwe deelplekken bij')
+        ->and($html)->not->toMatch('/<strong>\d+<\/strong>\s*zadenbibliotheken/')
+        ->and($html)->not->toMatch('/\d+\s+plekken in Nederland en België/');
     // Zonder aanbod geen lege «Net aangeboden»-kop.
     expect($html)->not->toContain('Net aangeboden');
 });

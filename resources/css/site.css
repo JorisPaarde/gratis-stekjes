@@ -1071,7 +1071,6 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
   text-decoration: none; font-weight: 600;
 }
 .plek-tellingen a:hover, .plek-tellingen a:focus-visible { background: #d5ead0; color: var(--forest-deep); }
-.plek-tellingen strong { font-family: var(--font-display); font-size: 1.3rem; line-height: 1; font-weight: 400; }
 
 /* Doe mee: drie kolommen vanaf tablet (geen losse kaart op een eigen rij), klikbaarheid zichtbaar. */
 @media (min-width: 760px) {

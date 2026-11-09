@@ -159,8 +159,9 @@
         bounds.push([lat, lon]);
       });
       if (status) {
-        status.textContent =
-          items.length + (items.length === 1 ? " plek" : " plekken");
+        status.textContent = items.length
+          ? "Deelplekken op de kaart geladen"
+          : "Geen deelplekken gevonden";
       }
       // Zonder filter: beginuitsnede NL + België. Met filter: naar de gevonden plekken.
       if (heeftFilter && bounds.length) {

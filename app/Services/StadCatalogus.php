@@ -288,24 +288,33 @@ final class StadCatalogus
         $naam = (string) $stad['naam'];
         $prov = trim((string) ($stad['provincie'] ?? ''));
         $straal = (int) round((float) ($stad['straal_km'] ?? config('gratisplanten.auto_stad_straal_km', 12)));
-        $totaal = (int) ($stad['totaal'] ?? 0);
+        $aanbod = (int) ($stad['aanbod'] ?? 0);
+        $deelplekken = (int) ($stad['deelplekken'] ?? 0);
         $isBe = ($stad['country'] ?? 'NL') === 'BE';
         $waar = $prov !== '' ? "{$naam} ({$prov})" : $naam;
 
-        if ($totaal <= 0) {
+        if ($aanbod <= 0 && $deelplekken <= 0) {
             return $isBe
                 ? "Gratis planten, stekjes en zaden in {$waar}. Deel of haal via {$site}."
                 : "Gratis planten en stekjes in {$waar}. Deel of haal via {$site}.";
         }
-        if ($totaal === 1) {
+
+        // Geen deelplekken-aantal in meta (verandert steeds); wel aanbod tellen.
+        if ($aanbod <= 0) {
             return $isBe
-                ? "1 gratis plant, stekje of zadenplek in {$waar}. Bekijk de kaart of bied zelf iets aan via {$site}."
+                ? "Vaste zadenbibs en deelplekken in {$waar}. Bekijk de kaart of bied zelf iets aan via {$site}."
+                : "Vaste deelplekken in {$waar}. Bekijk de kaart of bied zelf iets aan via {$site}.";
+        }
+
+        if ($aanbod === 1) {
+            return $isBe
+                ? "1 gratis plant of stekje in {$waar}. Bekijk de kaart of bied zelf iets aan via {$site}."
                 : "1 gratis plant of stekje in {$waar}. Bekijk de kaart of bied zelf iets aan via {$site}.";
         }
 
         return $isBe
-            ? "{$totaal} gratis planten, stekjes of zadenplekken in {$waar}, binnen ongeveer {$straal} km. Haal of deel via {$site}."
-            : "{$totaal} gratis planten of stekjes in {$waar}, binnen ongeveer {$straal} km. Haal of deel via {$site}.";
+            ? "{$aanbod} gratis planten of stekjes in {$waar}, binnen ongeveer {$straal} km. Haal of deel via {$site}."
+            : "{$aanbod} gratis planten of stekjes in {$waar}, binnen ongeveer {$straal} km. Haal of deel via {$site}.";
     }
 
     /**
@@ -652,32 +661,34 @@ final class StadCatalogus
     {
         $naam = (string) $stad['naam'];
         $prov = trim((string) ($stad['provincie'] ?? ''));
-        $totaal = (int) ($stad['totaal'] ?? 0);
         $aanbod = (int) ($stad['aanbod'] ?? 0);
         $deelplekken = (int) ($stad['deelplekken'] ?? 0);
         $straal = (int) round((float) ($stad['straal_km'] ?? config('gratisplanten.auto_stad_straal_km', 12)));
         $waar = $prov !== '' ? "{$naam} ({$prov})" : $naam;
 
-        if ($totaal <= 0) {
+        if ($aanbod <= 0 && $deelplekken <= 0) {
             return "In {$waar} kun je gratis planten en stekjes delen via deze pagina. Op de kaart zie je de omgeving binnen ongeveer {$straal} km. Heb je zelf iets over? Zet het erbij.";
         }
 
-        if ($totaal === 1) {
-            if ($aanbod === 1 && $deelplekken === 0) {
-                $eerste = "In {$waar} staat nu 1 gratis plant of stekje klaar om op te halen.";
-            } elseif ($aanbod === 0 && $deelplekken === 1) {
-                $eerste = "In {$waar} ken ik nu 1 vaste deelplek waar je planten of zaden kunt delen.";
-            } else {
-                $eerste = "In {$waar} vind je nu 1 gratis plant, stekje of deelplek.";
-            }
+        // Geen deelplekken-aantal in de intro (verandert steeds); aanbod mag wel.
+        if ($aanbod <= 0) {
+            $eerste = "In {$waar} vind je vaste deelplekken waar je planten of zaden kunt delen.";
 
-            return $eerste.' Op de kaart zie je de plek bij benadering, binnen ongeveer '.$straal.' km. Zoek gerust verder in de omgeving of bied zelf iets aan.';
+            return $eerste.' Op de kaart zie je de plekken bij benadering, binnen ongeveer '.$straal.' km. Zoek gerust verder in de omgeving of bied zelf iets aan.';
         }
 
-        $eerste = "In {$waar} vind je nu {$totaal} gratis planten, stekjes of deelplekken.";
-        if ($aanbod > 0 && $deelplekken > 0) {
-            $eerste = "In {$waar} vind je nu {$aanbod} ".($aanbod === 1 ? 'actieve aanbieding' : 'actieve aanbiedingen')
-                .' en '.$deelplekken.' '.($deelplekken === 1 ? 'vaste deelplek' : 'vaste deelplekken').'.';
+        if ($aanbod === 1 && $deelplekken <= 0) {
+            return "In {$waar} staat nu 1 gratis plant of stekje klaar om op te halen. Op de kaart zie je de plek bij benadering, binnen ongeveer {$straal} km. Zoek gerust verder in de omgeving of bied zelf iets aan.";
+        }
+
+        if ($aanbod === 1 && $deelplekken > 0) {
+            return "In {$waar} staat nu 1 actieve aanbieding, naast vaste deelplekken. Locaties op de kaart zijn bij benadering, binnen ongeveer {$straal} km. Heb je zelf iets over? Zet het erbij.";
+        }
+
+        if ($deelplekken > 0) {
+            $eerste = "In {$waar} vind je nu {$aanbod} actieve aanbiedingen en vaste deelplekken.";
+        } else {
+            $eerste = "In {$waar} vind je nu {$aanbod} actieve aanbiedingen.";
         }
 
         return $eerste.' Locaties op de kaart zijn bij benadering, binnen ongeveer '.$straal.' km. Heb je zelf iets over? Zet het erbij.';
