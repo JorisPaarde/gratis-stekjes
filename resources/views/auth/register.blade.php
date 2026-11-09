@@ -38,7 +38,7 @@
         inputmode="email"
         autocapitalize="off"
         spellcheck="false"
-        value="{{ old('email', $queryEmail ?? '') }}"
+        value="{{ old('email') }}"
       >
     </label>
     <label for="reg-password">Wachtwoord * <span class="hint">Minstens 10 tekens</span>

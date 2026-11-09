@@ -41,45 +41,34 @@ beforeEach(function () {
     RateLimiter::clear('register:127.0.0.1');
 });
 
-test('te snelle register-redirect bevat fout=snel en e-mail in query', function () {
+test('te snelle register-redirect bevat alleen fout=snel (geen e-mail in query)', function () {
     $this->from(route('account.registreren'))
         ->post(route('account.registreren'), foutQueryPayload())
-        ->assertRedirect(route('account.registreren', [
-            'fout' => 'snel',
-            'email' => 'fout-query@example.com',
-        ]))
+        ->assertRedirect(route('account.registreren', ['fout' => 'snel']))
         ->assertSessionHasErrors('form_started');
+
+    expect(session()->getOldInput('email'))->toBe('fout-query@example.com');
 });
 
 test('GET met fout=snel toont melding zonder sessie-flash', function () {
-    // Verse GET zonder flash — alleen query-vangnet.
-    $html = $this->get(route('account.registreren', [
-        'fout' => 'snel',
-        'email' => 'vangnet@example.com',
-    ]))->assertOk()->getContent();
+    $html = $this->get(route('account.registreren', ['fout' => 'snel']))
+        ->assertOk()
+        ->getContent();
 
     expect($html)->toContain('Dat ging erg snel')
         ->and($html)->toContain('error-list')
-        ->and($html)->toContain('vangnet@example.com');
+        ->and($html)->not->toContain('fout-query@example.com');
 });
 
-test('GET met fout=teveel toont throttle-melding', function () {
+test('GET met fout=teveel toont neutrale throttle-vangnettekst', function () {
     $html = $this->get(route('account.registreren', ['fout' => 'teveel']))
         ->assertOk()
         ->getContent();
 
-    expect($html)->toContain('Even te veel pogingen')
-        ->and($html)->toContain('error-list');
-});
-
-test('ongeldige e-mail in query wordt genegeerd', function () {
-    $html = $this->get(route('account.registreren', [
-        'fout' => 'snel',
-        'email' => 'niet-een-email',
-    ]))->assertOk()->getContent();
-
-    expect($html)->toContain('Dat ging erg snel')
-        ->and($html)->not->toContain('niet-een-email');
+    expect($html)->toContain('Even te veel pogingen. Probeer het straks opnieuw.')
+        ->and($html)->toContain('error-list')
+        ->and($html)->not->toContain('over een minuut')
+        ->and($html)->not->toContain('over een uur');
 });
 
 test('na te snelle submit blijft melding zichtbaar als flash gewist is', function () {
@@ -88,12 +77,13 @@ test('na te snelle submit blijft melding zichtbaar als flash gewist is', functio
             'email' => 'flash-kwijt@example.com',
         ]));
 
-    $response->assertRedirect();
+    $response->assertRedirect(route('account.registreren', ['fout' => 'snel']));
     $location = $response->headers->get('Location');
     expect($location)->toContain('fout=snel')
-        ->and($location)->toContain(rawurlencode('flash-kwijt@example.com'));
+        ->and($location)->not->toContain('flash-kwijt')
+        ->and($location)->not->toContain('email=');
 
-    // Wis flash (simuleer file-session race) maar volg de Location mét query.
+    // Wis flash (simuleer file-session race) maar volg de Location mét fout-query.
     session()->flush();
     $this->app->forgetInstance('session.store');
     $manager = app('session');
@@ -103,5 +93,5 @@ test('na te snelle submit blijft melding zichtbaar als flash gewist is', functio
 
     $html = $this->get($location)->assertOk()->getContent();
     expect($html)->toContain('Dat ging erg snel')
-        ->and($html)->toContain('flash-kwijt@example.com');
+        ->and($html)->not->toContain('flash-kwijt@example.com');
 });

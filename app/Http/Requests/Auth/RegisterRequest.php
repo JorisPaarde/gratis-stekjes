@@ -129,15 +129,10 @@ class RegisterRequest extends FormRequest
             FormGuard::HONEYPOT_FIELDS,
         )));
 
-        $query = [];
-        if ($validator->errors()->has('form_started')) {
-            $query['fout'] = 'snel';
-            // Alleen bij te-snel: e-mail ook in query (sessie-flash kan wegvallen).
-            $email = strtolower(trim((string) $this->input('email', '')));
-            if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $query['email'] = $email;
-            }
-        }
+        // Alleen fout-code in query (geen e-mail/PII). Flash + old() blijven primair.
+        $query = $validator->errors()->has('form_started')
+            ? ['fout' => 'snel']
+            : [];
 
         throw new HttpResponseException(
             redirect()

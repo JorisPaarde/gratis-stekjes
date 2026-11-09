@@ -45,14 +45,10 @@ class RegisterController extends Controller
         $fout = strtolower(trim((string) $request->query('fout', '')));
         $foutMessage = match ($fout) {
             'snel' => 'Dat ging erg snel. Klik nog een keer op Account maken.',
-            'teveel' => 'Even te veel pogingen. Probeer het over een minuut opnieuw.',
+            // Neutraal: geen vaste 'minuut' — flash met ThrottleMessage heeft voorrang.
+            'teveel' => 'Even te veel pogingen. Probeer het straks opnieuw.',
             default => null,
         };
-
-        $queryEmail = strtolower(trim((string) $request->query('email', '')));
-        if ($queryEmail !== '' && filter_var($queryEmail, FILTER_VALIDATE_EMAIL) === false) {
-            $queryEmail = '';
-        }
 
         return view('auth.register', [
             'title' => 'Registreren',
@@ -63,7 +59,6 @@ class RegisterController extends Controller
             'foundViaOptions' => (array) config('conversion.found_via_options', []),
             'next' => $next,
             'foutMessage' => $foutMessage,
-            'queryEmail' => $queryEmail,
         ]);
     }
 
@@ -91,14 +86,9 @@ class RegisterController extends Controller
         if (RateLimiter::tooManyAttempts($key, 8)) {
             // Altijd terug naar het formulier (niet back()/previous → /): anders verdwijnt
             // de flash op een pagina zonder error-list en lijkt het formulier leeg.
-            $email = strtolower(trim((string) $request->input('email', '')));
-            $query = ['fout' => 'teveel'];
-            if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $query['email'] = $email;
-            }
-
+            // Geen e-mail in query (PII in logs/GA); old() via flash als die blijft.
             return redirect()
-                ->route('account.registreren', $query)
+                ->route('account.registreren', ['fout' => 'teveel'])
                 ->withInput(self::safeOldInput($request))
                 ->withErrors(['email' => ThrottleMessage::forKey($key)]);
         }

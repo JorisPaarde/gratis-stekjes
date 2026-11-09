@@ -10,10 +10,11 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Registreren: intermitterend leeg formulier na te snelle submit op staging
   (file-sessie + parallelle lsphp-requests wissen flash). Reproduceerbaar
   ~30% bij snelle Playwright-fills; `form.bot_rejected`/too_fast wél, flash niet.
-- Vangnet: redirect met `?fout=snel` (+ gevalideerde `email`); view toont de
-  NL-melding ook zonder sessie-flash. Throttle: `?fout=teveel`.
+- Vangnet: redirect met alleen `?fout=snel` / `?fout=teveel` (geen e-mail in
+  query). View toont NL-melding ook zonder sessie-flash; e-mail via `old()` als
+  flash er is. Throttle-vangnet: «Probeer het straks opnieuw.»
 - Session lock (`Route::block`) op GET/POST `/account/registreren` tegen
-  parallelle sessie-writes.
+  parallelle sessie-writes (`CACHE_STORE=file` op staging/prod via deploy).
 
 ## [0.78.34] - 2026-11-09
 

@@ -55,10 +55,7 @@ test('twee te snelle submits behouden melding en e-mail/land/postcode', function
             'form_started' => time(),
         ]));
 
-    $first->assertRedirect(route('account.registreren', [
-            'fout' => 'snel',
-            'email' => 'dubbel-snel@example.com',
-        ]))
+    $first->assertRedirect(route('account.registreren', ['fout' => 'snel']))
         ->assertSessionHasErrors([
             'form_started' => 'Dat ging erg snel. Klik nog een keer op Account maken.',
         ]);
@@ -77,10 +74,7 @@ test('twee te snelle submits behouden melding en e-mail/land/postcode', function
             'form_started' => time(),
         ]));
 
-    $second->assertRedirect(route('account.registreren', [
-            'fout' => 'snel',
-            'email' => 'dubbel-snel@example.com',
-        ]))
+    $second->assertRedirect(route('account.registreren', ['fout' => 'snel']))
         ->assertSessionHasErrors('form_started')
         ->assertSessionMissing('status');
     expect(session()->getOldInput('email'))->toBe('dubbel-snel@example.com')
@@ -103,10 +97,7 @@ test('register throttle zonder Referer toont melding op formulier met behouden i
         'email' => 'te-vaak@example.com',
     ]));
 
-    $response->assertRedirect(route('account.registreren', [
-            'fout' => 'teveel',
-            'email' => 'te-vaak@example.com',
-        ]))
+    $response->assertRedirect(route('account.registreren', ['fout' => 'teveel']))
         ->assertSessionHasErrors('email');
     expect(session('errors')->first('email'))->toBe('Even te veel pogingen. Probeer het over een uur opnieuw.')
         ->and(session()->getOldInput('email'))->toBe('te-vaak@example.com')
