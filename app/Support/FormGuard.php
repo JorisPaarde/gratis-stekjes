@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 
 final class FormGuard
 {
@@ -72,7 +75,8 @@ final class FormGuard
     }
 
     /**
-     * Log bot-afwijzing zonder PII (geen e-mail, geen IP in de context).
+     * Log bot-afwijzing zonder PII (geen e-mail, geen IP in de context)
+     * en tel op in form_bot_daily (dag × formulier × reden).
      *
      * @param  'honeypot'|'too_fast'  $reason
      */
@@ -82,10 +86,64 @@ final class FormGuard
             $reason = 'honeypot';
         }
 
+        $form = self::normalizeFormKey($form);
+
         Log::info('form.bot_rejected', [
             'form' => $form,
             'reason' => $reason,
         ]);
+
+        self::incrementBotDaily($form, $reason);
+    }
+
+    /** Alleen veilige sleutel voor aggregaat (geen PII). */
+    public static function normalizeFormKey(string $form): string
+    {
+        $form = strtolower(trim($form));
+        $form = preg_replace('/[^a-z0-9_-]/', '', $form) ?? '';
+        if ($form === '') {
+            return 'unknown';
+        }
+
+        return substr($form, 0, 40);
+    }
+
+    private static function incrementBotDaily(string $form, string $reason): void
+    {
+        try {
+            if (! Schema::hasTable('form_bot_daily')) {
+                return;
+            }
+
+            $date = now()->timezone('Europe/Amsterdam')->toDateString();
+
+            $updated = DB::table('form_bot_daily')
+                ->where('date', $date)
+                ->where('form', $form)
+                ->where('reason', $reason)
+                ->increment('count');
+
+            if ($updated > 0) {
+                return;
+            }
+
+            try {
+                DB::table('form_bot_daily')->insert([
+                    'date' => $date,
+                    'form' => $form,
+                    'reason' => $reason,
+                    'count' => 1,
+                ]);
+            } catch (UniqueConstraintViolationException) {
+                DB::table('form_bot_daily')
+                    ->where('date', $date)
+                    ->where('form', $form)
+                    ->where('reason', $reason)
+                    ->increment('count');
+            }
+        } catch (\Throwable) {
+            // Teller mag bot-afwijzing nooit blokkeren.
+        }
     }
 
     public static function isDisposableEmail(string $email): bool
