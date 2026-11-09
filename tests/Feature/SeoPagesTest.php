@@ -8,6 +8,7 @@ test('contentpagina’s laden', function () {
     $this->get(route('hoe-werkt-het'))->assertOk()->assertSee('Hoe werkt gratis planten delen', false);
     $this->get(route('hulpmiddelen'))->assertOk()->assertSee('Wilgenwater', false);
     $this->get(route('over'))->assertOk()->assertSee('Wie zit er achter', false)->assertSee('Joris', false)->assertDontSee('JP Web Creation', false);
+    $this->get(route('in-de-media'))->assertOk()->assertSee('Gratis planten in de media', false);
     $this->get(route('doe-mee'))->assertRedirect(route('account.registreren'));
 });
 

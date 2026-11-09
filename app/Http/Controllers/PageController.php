@@ -215,6 +215,10 @@ class PageController extends Controller
             ['loc' => route('stektips.index'), 'lastmod' => $this->lastmodFromFiles([base_path('data/stektips.json'), base_path('data/kennisbank')])],
             ['loc' => route('hulpmiddelen'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/hulpmiddelen.blade.php')])],
             ['loc' => route('over'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/over.blade.php')])],
+            ['loc' => route('in-de-media'), 'lastmod' => $this->lastmodFromFiles([
+                resource_path('views/pages/in-de-media.blade.php'),
+                base_path('data/in-de-media.json'),
+            ])],
             ['loc' => route('privacy'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/privacy.blade.php')])],
             ['loc' => route('contact'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/contact.blade.php')])],
             ['loc' => route('partners'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/partners.blade.php')])],

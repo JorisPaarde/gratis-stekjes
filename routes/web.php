@@ -105,6 +105,7 @@ Route::get('/manifest.webmanifest', [PageController::class, 'manifest'])->name('
 Route::get('/hoe-werkt-het', [ContentPageController::class, 'hoeWerktHet'])->name('hoe-werkt-het');
 Route::get('/hulpmiddelen', [ContentPageController::class, 'hulpmiddelen'])->name('hulpmiddelen');
 Route::get('/over', [ContentPageController::class, 'over'])->name('over');
+Route::get('/in-de-media', [ContentPageController::class, 'inDeMedia'])->name('in-de-media');
 Route::get('/doe-mee', [ContentPageController::class, 'doeMee'])->name('doe-mee');
 
 Route::get('/volkstuinen', [AudienceLandingController::class, 'volkstuinen'])->name('volkstuinen');
