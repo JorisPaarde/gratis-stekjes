@@ -4,14 +4,60 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 final class FormGuard
 {
+    /** Autofill-neutrale honeypot-veldnaam (geen website/url/name/email/…). */
+    public const HONEYPOT_FIELD = 'gp_hp_stem';
+
+    /** Legacy honeypot-naam (gecachte HTML / oude bots). */
+    public const HONEYPOT_LEGACY_FIELD = 'website';
+
+    /** @var list<string> */
+    public const HONEYPOT_FIELDS = [self::HONEYPOT_FIELD, self::HONEYPOT_LEGACY_FIELD];
+
     /** @var array<string, true>|null */
     private static ?array $disposableDomains = null;
 
-    public static function honeypotFilled(?string $website): bool
+    /**
+     * True als een van de honeypot-waarden (nieuw of legacy) gevuld is.
+     */
+    public static function honeypotFilled(?string $value): bool
     {
-        return trim((string) $website) !== '';
+        return trim((string) $value) !== '';
+    }
+
+    /**
+     * True als het request (of POST-array) een gevuld honeypot-veld heeft
+     * (nieuw veld of legacy `website`).
+     *
+     * @param  Request|array<string, mixed>  $source
+     */
+    public static function honeypotFilledIn(Request|array $source): bool
+    {
+        foreach (self::HONEYPOT_FIELDS as $key) {
+            $raw = $source instanceof Request
+                ? $source->input($key)
+                : ($source[$key] ?? null);
+            if (self::honeypotFilled(is_scalar($raw) || $raw === null ? (string) ($raw ?? '') : '')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /** @return array<string, mixed> Validatieregels voor beide honeypot-veldnamen. */
+    public static function honeypotRules(): array
+    {
+        $rules = [];
+        foreach (self::HONEYPOT_FIELDS as $key) {
+            $rules[$key] = ['nullable', 'string', 'max:200'];
+        }
+
+        return $rules;
     }
 
     public static function submittedTooFast(mixed $formStarted): bool
@@ -23,6 +69,23 @@ final class FormGuard
         }
 
         return (time() - $started) < $min;
+    }
+
+    /**
+     * Log bot-afwijzing zonder PII (geen e-mail, geen IP in de context).
+     *
+     * @param  'honeypot'|'too_fast'  $reason
+     */
+    public static function logBotRejected(string $form, string $reason): void
+    {
+        if (! in_array($reason, ['honeypot', 'too_fast'], true)) {
+            $reason = 'honeypot';
+        }
+
+        Log::info('form.bot_rejected', [
+            'form' => $form,
+            'reason' => $reason,
+        ]);
     }
 
     public static function isDisposableEmail(string $email): bool

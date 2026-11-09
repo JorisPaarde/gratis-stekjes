@@ -107,8 +107,7 @@
     @endif
     <form class="form meedoen-form" method="post" action="{{ route('help-mee.partner') }}">
       @csrf
-      <input type="hidden" name="form_started" value="{{ time() }}">
-      <div class="visually-hidden" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+      @include('partials.honeypot')
       <label>Je naam *<input name="naam" required maxlength="120" value="{{ old('naam') }}" autocomplete="name"></label>
       <label>Organisatie *<input name="organisatie" required maxlength="160" value="{{ old('organisatie') }}" autocomplete="organization"></label>
       <label>Wat voor organisatie? *

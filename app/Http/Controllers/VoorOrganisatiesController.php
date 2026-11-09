@@ -11,6 +11,7 @@ use App\Services\DeelplekAanmelding;
 use App\Services\Deelplekken;
 use App\Services\Organisaties;
 use App\Support\Country;
+use App\Support\FormGuard;
 use App\Support\SafeMail;
 use App\Support\ThrottleMessage;
 use Illuminate\Http\RedirectResponse;
@@ -56,7 +57,7 @@ class VoorOrganisatiesController extends Controller
         $key = 'deelplek-aanmelden:'.$request->ip();
         if (RateLimiter::tooManyAttempts($key, 5)) {
             return back()
-                ->withInput($request->except(['website']))
+                ->withInput($request->except([...FormGuard::HONEYPOT_FIELDS]))
                 ->withErrors(['contact_email' => ThrottleMessage::forKey($key)]);
         }
         RateLimiter::hit($key, 3600);
@@ -64,7 +65,7 @@ class VoorOrganisatiesController extends Controller
         $result = $aanmelding->submit($request->validated());
         if (empty($result['ok']) || ! isset($result['deelplek'])) {
             return back()
-                ->withInput($request->except(['website']))
+                ->withInput($request->except([...FormGuard::HONEYPOT_FIELDS]))
                 ->withErrors(['plaats' => $result['error'] ?? 'Aanmelden mislukt. Probeer het later opnieuw.']);
         }
 

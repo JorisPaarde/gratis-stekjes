@@ -41,7 +41,7 @@ class FeedbackController extends Controller
     {
         $user = $request->user();
 
-        if (FormGuard::honeypotFilled($request->input('website'))) {
+        if (FormGuard::honeypotFilledIn($request)) {
             return redirect()
                 ->route('feedback.create')
                 ->with('status', 'Dank je, ik lees alles zelf.');

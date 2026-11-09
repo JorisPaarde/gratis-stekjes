@@ -204,7 +204,7 @@ class MeedoenController extends Controller
 
     public function partner(Request $request): RedirectResponse
     {
-        if (FormGuard::honeypotFilled($request->input('website'))) {
+        if (FormGuard::honeypotFilledIn($request)) {
             return redirect()->to(route('help-mee').'#partner')->with('partner_status', 'Bedankt! Ik neem contact met je op.');
         }
         if (FormGuard::submittedTooFast($request->input('form_started'))) {

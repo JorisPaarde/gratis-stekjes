@@ -31,14 +31,14 @@ class ForgotPasswordController extends Controller
     {
         $request->validate([
             'email' => ['required', 'string', 'email:filter', 'max:254'],
-            'website' => ['nullable', 'string', 'max:200'],
+            ...FormGuard::honeypotRules(),
             'form_started' => ['required', 'integer'],
         ], [
             'email.required' => 'Vul een geldig e-mailadres in.',
             'email.email' => 'Vul een geldig e-mailadres in.',
         ]);
 
-        if (FormGuard::honeypotFilled($request->input('website'))) {
+        if (FormGuard::honeypotFilledIn($request)) {
             return back()->with('status', __('passwords.sent'));
         }
 

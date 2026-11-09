@@ -68,7 +68,11 @@ test('registratieformulier heeft correcte autocomplete type en inputmode attribu
         'spellcheck' => 'false',
     ]);
 
-    expect($html)->toMatch('/name="website"[^>]*autocomplete="off"/s')
+    expect($html)->toContain('name="'.\App\Support\FormGuard::HONEYPOT_FIELD.'"')
+        ->and($html)->toMatch('/name="'.preg_quote(\App\Support\FormGuard::HONEYPOT_FIELD, '/').'"[^>]*autocomplete="off"/s')
+        ->and($html)->toContain('data-1p-ignore')
+        ->and($html)->toContain('data-lpignore="true"')
+        ->and($html)->toContain('data-bwignore')
         ->and($email['autocomplete'])->not->toBe('off')
         ->and($password['autocomplete'])->not->toBe('off')
         ->and($country['autocomplete'])->not->toBe('off')

@@ -68,7 +68,7 @@ final class MessagingService
      */
     public function sendMessage(int $senderId, Conversation $conversation, string $body, array $post, string $ip): array
     {
-        if (FormGuard::honeypotFilled(isset($post['website']) ? (string) $post['website'] : null)) {
+        if (FormGuard::honeypotFilledIn($post)) {
             return ['ok' => true];
         }
         if (FormGuard::submittedTooFast($post['form_started'] ?? null)) {
