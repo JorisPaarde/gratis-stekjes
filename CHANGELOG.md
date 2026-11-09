@@ -3,6 +3,21 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.30] - 2026-11-09
+
+### Fixed
+
+- Autocomplete / autofill op `/account/registreren` (en gedeelde auth-formulieren):
+  stabiele `id` + `label for`, `autocomplete` (`email` / `new-password` /
+  `country` / `postal-code`; inloggen `username` + `current-password`),
+  `inputmode`/`autocapitalize`/`spellcheck` voor e-mail en postcode, en
+  `passwordrules="minlength: 10;"` passend bij de serverregel. Geen
+  `autocomplete="off"` op kernvelden. Regressietest
+  `RegisterAutocompleteTest`.
+- `.form [hidden] { display: none !important }` zodat optionele velden
+  (o.a. «Anders, namelijk» op registreren) echt verborgen blijven; `.form label
+  { display: grid }` overschreef eerder het HTML-`hidden`-attribuut.
+
 ## [0.78.29] - 2026-11-09
 
 ### Changed

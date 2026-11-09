@@ -12,19 +12,37 @@
     <p class="error" role="alert">{{ $errors->first() }}</p>
   @endif
 
-  <form class="form" method="post" action="{{ route('account.inloggen') }}">
+  <form class="form" method="post" action="{{ route('account.inloggen') }}" autocomplete="on">
     @csrf
     @include('partials.honeypot')
     <input type="hidden" name="next" value="{{ $next }}">
 
-    <label>E-mailadres
-      <input type="email" name="email" required maxlength="254" autocomplete="email" value="{{ old('email') }}">
+    <label for="login-email">E-mailadres
+      <input
+        type="email"
+        id="login-email"
+        name="email"
+        required
+        maxlength="254"
+        autocomplete="username"
+        inputmode="email"
+        autocapitalize="off"
+        spellcheck="false"
+        value="{{ old('email') }}"
+      >
     </label>
-    <label>Wachtwoord
-      <input type="password" name="password" required maxlength="200" autocomplete="current-password">
+    <label for="login-password">Wachtwoord
+      <input
+        type="password"
+        id="login-password"
+        name="password"
+        required
+        maxlength="200"
+        autocomplete="current-password"
+      >
     </label>
-    <label class="checkbox">
-      <input type="checkbox" name="remember" value="1" @checked(old('remember'))>
+    <label class="checkbox" for="login-remember">
+      <input type="checkbox" id="login-remember" name="remember" value="1" @checked(old('remember'))>
       <span>Onthoud mij</span>
     </label>
     <button class="btn" type="submit">Inloggen</button>
