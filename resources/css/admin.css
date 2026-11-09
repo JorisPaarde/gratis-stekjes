@@ -758,9 +758,13 @@
 
 .stats-funnel-step-rate {
   display: block;
-  font-size: .78rem;
-  line-height: 1.2;
+  font-size: .72rem;
+  line-height: 1.25;
   margin: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  hyphens: none;
 }
 
 @media (min-width: 720px) {

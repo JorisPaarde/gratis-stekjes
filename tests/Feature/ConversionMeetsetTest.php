@@ -698,7 +698,110 @@ test('dashboard trechter toont percentages vanaf 30 form_starts', function () {
         ->assertOk()
         ->getContent();
 
-    expect($html)->toContain('50%');
+    expect($html)->toContain('50,0%')
+        ->and($html)->not->toContain('50%');
+});
+
+test('dashboard trechter toont kommanotatie en registratiepagina als per klik', function () {
+    config(['conversion.min_form_starts_for_rates' => 30]);
+    $tracker = app(ConversionTracker::class);
+    $weekKey = $tracker->weekKey();
+
+    for ($i = 0; $i < 10; $i++) {
+        ConversionEvent::query()->create([
+            'occurred_at' => now(),
+            'event_type' => ConversionEvent::TYPE_CTA_CLICK,
+            'path' => '/',
+            'flow_id' => 'cta-f'.$i,
+            'visitor_day_hash' => 'cta-v'.$i,
+            'device_type' => 'desktop',
+            'week_key' => $weekKey,
+        ]);
+    }
+    // 27 views / 10 klikken = 2,7 per klik (geen percentage)
+    for ($i = 0; $i < 27; $i++) {
+        ConversionEvent::query()->create([
+            'occurred_at' => now(),
+            'event_type' => ConversionEvent::TYPE_REGISTER_VIEW,
+            'path' => '/account/registreren',
+            'flow_id' => 'reg-f'.$i,
+            'visitor_day_hash' => 'reg-v'.$i,
+            'device_type' => 'desktop',
+            'week_key' => $weekKey,
+        ]);
+    }
+    for ($i = 0; $i < 30; $i++) {
+        ConversionEvent::query()->create([
+            'occurred_at' => now(),
+            'event_type' => ConversionEvent::TYPE_FORM_START,
+            'path' => '/account/registreren',
+            'flow_id' => 'fs-f'.$i,
+            'visitor_day_hash' => 'fs-v'.$i,
+            'device_type' => 'desktop',
+            'week_key' => $weekKey,
+        ]);
+    }
+    // 16/30 = 53,3%
+    for ($i = 0; $i < 16; $i++) {
+        ConversionEvent::query()->create([
+            'occurred_at' => now(),
+            'event_type' => ConversionEvent::TYPE_FORM_SUBMIT,
+            'path' => '/account/registreren',
+            'flow_id' => 'fs-f'.$i,
+            'visitor_day_hash' => 'fs-v'.$i,
+            'device_type' => 'desktop',
+            'week_key' => $weekKey,
+        ]);
+    }
+
+    $html = $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken'))
+        ->assertOk()
+        ->getContent();
+
+    expect($html)->toContain('2,7 per klik')
+        ->and($html)->toContain('aria-label="Registratiepagina: 27, 2,7 per klik"')
+        ->and($html)->toContain('53,3%')
+        ->and($html)->not->toContain('270%')
+        ->and($html)->not->toContain('270,0%')
+        ->and($html)->not->toContain('53.3%');
+});
+
+test('dashboard trechter toont streepje bij registratiepagina zonder klikken', function () {
+    config(['conversion.min_form_starts_for_rates' => 30]);
+    $tracker = app(ConversionTracker::class);
+    $weekKey = $tracker->weekKey();
+
+    for ($i = 0; $i < 5; $i++) {
+        ConversionEvent::query()->create([
+            'occurred_at' => now(),
+            'event_type' => ConversionEvent::TYPE_REGISTER_VIEW,
+            'path' => '/account/registreren',
+            'flow_id' => 'zero-reg-f'.$i,
+            'visitor_day_hash' => 'zero-reg-v'.$i,
+            'device_type' => 'desktop',
+            'week_key' => $weekKey,
+        ]);
+    }
+    for ($i = 0; $i < 30; $i++) {
+        ConversionEvent::query()->create([
+            'occurred_at' => now(),
+            'event_type' => ConversionEvent::TYPE_FORM_START,
+            'path' => '/account/registreren',
+            'flow_id' => 'zero-fs-f'.$i,
+            'visitor_day_hash' => 'zero-fs-v'.$i,
+            'device_type' => 'desktop',
+            'week_key' => $weekKey,
+        ]);
+    }
+
+    $html = $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken'))
+        ->assertOk()
+        ->getContent();
+
+    expect($html)->toContain('aria-label="Registratiepagina: 5, –"')
+        ->and($html)->toMatch('/class="hint stats-funnel-step-rate"[^>]*>–</');
 });
 
 test('postlogboek crud voor admin; stats-lezer en beheerder-mutaties afgeschermd', function () {
