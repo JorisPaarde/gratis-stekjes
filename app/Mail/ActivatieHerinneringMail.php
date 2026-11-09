@@ -14,6 +14,7 @@ use Illuminate\Queue\SerializesModels;
 /**
  * Zachte tip ~2 dagen na e-mailbevestiging als er nog geen aanbod is.
  * Max. 1×; afmelden via ondertekende link. Geen aantallen deelplekken.
+ * Multipart: HTML (GP mail-layout + knop) + plaintext.
  */
 class ActivatieHerinneringMail extends Mailable
 {
@@ -46,14 +47,17 @@ class ActivatieHerinneringMail extends Mailable
 
     public function content(): Content
     {
+        $data = [
+            'voornaam' => trim($this->voornaam),
+            'aanbiedenUrl' => $this->aanbiedenUrl !== '' ? $this->aanbiedenUrl : route('aanbieden'),
+            'uitzettenUrl' => $this->uitzettenUrl,
+            'site' => (string) config('site.name'),
+        ];
+
         return new Content(
+            markdown: 'mail.activatie-herinnering-html',
             text: 'mail.activatie-herinnering',
-            with: [
-                'voornaam' => trim($this->voornaam),
-                'aanbiedenUrl' => $this->aanbiedenUrl !== '' ? $this->aanbiedenUrl : route('aanbieden'),
-                'uitzettenUrl' => $this->uitzettenUrl,
-                'site' => (string) config('site.name'),
-            ],
+            with: $data,
         );
     }
 }

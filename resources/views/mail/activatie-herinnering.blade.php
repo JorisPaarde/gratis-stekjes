@@ -1,7 +1,7 @@
 @if($voornaam !== '')
 Hoi {{ $voornaam }},
 @else
-Hoi,
+Hoi!
 @endif
 
 Je account bij {{ $site }} is bevestigd — leuk dat je erbij bent.

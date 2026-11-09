@@ -21,6 +21,9 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Workflow `activatie-herinnering-dry-run` (`workflow_dispatch`, staging|production):
   alleen `--dry-run` via `POST /deploy/activatie-herinnering`, nooit versturen.
 - Ongeldige/verlopen tipmail-afmeldlink: nette GP-pagina (403) i.p.v. kale fout.
+- Activatie-tipmail: multipart HTML (GP mail-layout + knop «Zet je eerste
+  stekje online», linktekst «Zet ze uit») + plaintext met URL’s. Begroeting
+  zonder voornaam: «Hoi!» i.p.v. «Hoi,».
 
 ## [0.79.1] - 2026-11-09
 
