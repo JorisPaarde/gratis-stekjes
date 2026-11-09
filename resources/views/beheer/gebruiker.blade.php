@@ -39,7 +39,15 @@
         <dt>Adres ingevuld</dt><dd>{{ $u->volledigAdres() !== null ? 'ja' : 'nee' }}{{ $u->volledigAdres() !== null ? ($u->adres_delen !== false ? ' · wordt gedeeld na wederzijds ja' : ' · delen staat uit') : '' }}</dd>
         <dt>Telefoon ingevuld</dt><dd>{{ trim((string) ($u->isUnreadable('telefoon') ? '' : $u->telefoon)) !== '' ? 'ja' : 'nee' }}</dd>
         <dt>Lid sinds</dt><dd>{{ $u->created_at?->timezone('Europe/Amsterdam')->format('d-m-Y') }} <span class="muted">({{ $u->created_at?->diffForHumans() }})</span></dd>
-        <dt>Bevestigd</dt><dd>{{ $u->email_verified_at ? $u->email_verified_at->timezone('Europe/Amsterdam')->format('d-m-Y') : 'nee' }}</dd>
+        <dt>Bevestigd</dt>
+        <dd>
+          {{ $u->email_verified_at ? $u->email_verified_at->timezone('Europe/Amsterdam')->format('d-m-Y') : 'nee' }}
+          @if($bevestigingsmails)
+            <div class="beheer-bevestigingsmails-inline">
+              @include('beheer.partials.bevestigingsmails', ['stats' => $bevestigingsmails, 'compact' => false])
+            </div>
+          @endif
+        </dd>
         <dt>Beheerder</dt><dd>{{ $u->is_admin ? 'ja' : 'nee' }}@if(\App\Support\AdminDashboard::userMayAccess($u) && ! $u->is_admin) <span class="muted">(toegang via e-maillijst)</span>@endif</dd>
         <dt>Laatst actief</dt><dd>{{ $u->last_seen_at?->diffForHumans() ?? 'onbekend' }}</dd>
         <dt>Berichtmail</dt><dd>{{ $u->berichtmail !== false ? 'aan' : 'uit' }}</dd>
@@ -125,11 +133,16 @@
   <h2>Acties</h2>
   <div class="beheer-acties-blok">
     @if(! $u->hasVerifiedEmail())
-      <form method="post" action="{{ route('beheer.users.resend-verification') }}">
-        @csrf
-        <input type="hidden" name="user_id" value="{{ $u->id }}">
-        <button class="btn btn-secondary btn-klein" type="submit">Bevestigingsmail opnieuw sturen</button>
-      </form>
+      <div class="beheer-herstuur-blok">
+        <form method="post" action="{{ route('beheer.users.resend-verification') }}">
+          @csrf
+          <input type="hidden" name="user_id" value="{{ $u->id }}">
+          <button class="btn btn-secondary btn-klein" type="submit">Bevestigingsmail opnieuw sturen</button>
+        </form>
+        @if($bevestigingsmails?->laatsteVerzendHint())
+          <p class="muted beheer-klein beheer-herstuur-hint">{{ $bevestigingsmails->laatsteVerzendHint() }}</p>
+        @endif
+      </div>
     @endif
     @unless($isPionier)
       <form method="post" action="{{ route('beheer.users.pionier', $u) }}" onsubmit="return confirm({{ \Illuminate\Support\Js::from('Pionier-badge naar '.$u->name.' verplaatsen? Er is er maar één.') }});">

@@ -3,6 +3,7 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+<<<<<<< HEAD
 ## [0.78.30] - 2026-11-09
 
 ### Fixed
@@ -17,6 +18,16 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - `.form [hidden] { display: none !important }` zodat optionele velden
   (o.a. «Anders, namelijk» op registreren) echt verborgen blijven; `.form label
   { display: grid }` overschreef eerder het HTML-`hidden`-attribuut.
+=======
+## [0.78.31] - 2026-11-09
+
+### Added
+
+- Beheer `/beheer/gebruikers` en detail: bij onbevestigde leden samenvatting van
+  bevestigingsmails uit `mail_log` (aantal VerifyEmailDutch +
+  VerifyEmailReminderDutch, uitsplitsing herinneringen, laatste verzendtijd
+  Europe/Amsterdam, mislukte pogingen apart). Eén groupBy-query, geen N+1.
+>>>>>>> 9fbe4cb (0.78.31: bevestigingsmail-telling in beheer gebruikers)
 
 ## [0.78.29] - 2026-11-09
 

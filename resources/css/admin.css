@@ -591,6 +591,23 @@
 .beheer-badge-rij { display: inline-flex; gap: 2px; margin-top: .2rem; vertical-align: middle; }
 .beheer-badge-rij img { display: block; }
 
+/* Bevestigingsmail-telling bij onbevestigde leden */
+.beheer-bevestigingsmails { display: inline; line-height: 1.45; }
+.beheer-bevestigingsmails__label { font-weight: 600; color: var(--forest-deep, #163820); }
+.beheer-bevestigingsmails .status { margin-left: .25rem; white-space: normal; }
+.beheer-bevestigingsmails--blok { margin: .35rem 0 0; }
+.beheer-bevestigingsmails--blok p { margin: 0; }
+.beheer-bevestigingsmails__samenvatting { display: flex; flex-wrap: wrap; gap: .2rem .45rem; align-items: baseline; }
+.beheer-bevestigingsmails-inline { margin-top: .35rem; }
+.beheer-herstuur-blok { display: flex; flex-direction: column; align-items: flex-start; gap: .25rem; }
+.beheer-herstuur-hint { margin: 0; max-width: 22rem; }
+@media (max-width: 760px) {
+  .beheer-page .beheer-gebruikers td[data-label="Bevestigingsmails"] { grid-column: 1 / -1; }
+  /* Label zit al in de celtekst; geen dubbele «Bevestigingsmails:» via data-label. */
+  .beheer-page .beheer-gebruikers td[data-label="Bevestigingsmails"]::before { content: none; }
+  .beheer-bevestigingsmails__samenvatting { flex-direction: column; align-items: flex-start; gap: .15rem; }
+}
+
 /* Onderdelen binnen Keuren / Inbox / Inhoud: pillen die doorlopen op een nieuwe regel (nooit scrollen). */
 .beheer-subtabs { display: flex; flex-wrap: wrap; gap: .4rem; margin: -.25rem 0 1.25rem; }
 .beheer-subtabs a { display: inline-flex; align-items: center; gap: .35rem; padding: .4rem .85rem; border-radius: 999px; border: 1px solid var(--line, rgba(26,18,16,.12)); text-decoration: none; color: var(--ink, #1a1210); font-weight: 600; font-size: .9rem; background: #fff; }
