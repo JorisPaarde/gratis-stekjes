@@ -3,6 +3,20 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.79.2] - 2026-11-09
+
+### Added
+
+- Activatie-tipmail (~2 dagen na e-mailbevestiging) voor bevestigde leden zonder
+  aanbod: max. 1× via Laravel/SafeMail/Hoasted SMTP (nooit Resend). Config-vlag
+  default uit; alleen `email_verified_at >= ACTIVATION_REMINDER_ENABLED_AT`
+  (geen terugwerkende kracht). Staging deelt `REMINDER_TEST_RECIPIENTS`
+  (fail-closed). Cron-job `activation_reminders` + artisan
+  `gp:activatie-herinnering --dry-run` (alleen aantallen) / `--send`.
+- Afmelden: profielvinkje + ondertekende link/`List-Unsubscribe` in de mail.
+- Beheer: telling Activatieherinnering (mail_log) op gebruikerslijst/detail.
+  Privacytekst bijgewerkt.
+
 ## [0.79.1] - 2026-11-09
 
 ### Fixed

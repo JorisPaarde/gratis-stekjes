@@ -41,6 +41,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'lon',
         'country',
         'berichtmail',
+        'activatieherinnering',
         'adres_straat',
         'adres_huisnummer',
         'adres_postcode',
@@ -100,6 +101,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
             'active' => 'boolean',
             'berichtmail' => 'boolean',
+            'activatieherinnering' => 'boolean',
             'telefoon' => SafeEncrypted::class,
             'adres_straat' => SafeEncrypted::class,
             'adres_huisnummer' => SafeEncrypted::class,
@@ -111,6 +113,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'last_seen_at' => 'datetime',
             'conversion_flow_expires_at' => 'datetime',
             'verification_reminder_sent_at' => 'datetime',
+            'activatie_herinnering_sent_at' => 'datetime',
             'lat' => 'float',
             'lon' => 'float',
         ];

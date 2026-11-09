@@ -50,9 +50,19 @@
             @endif
           </dd>
         @endif
+        @if($activatieHerinnering)
+          <dt>Activatieherinnering</dt>
+          <dd>
+            {{ $activatieHerinnering->herinnerdLabel() }}
+            @if($activatieHerinnering->mislukt > 0)
+              <span class="status status--fout">{{ $activatieHerinnering->mislukt === 1 ? '1 mislukt' : $activatieHerinnering->mislukt.' mislukt' }}</span>
+            @endif
+          </dd>
+        @endif
         <dt>Beheerder</dt><dd>{{ $u->is_admin ? 'ja' : 'nee' }}@if(\App\Support\AdminDashboard::userMayAccess($u) && ! $u->is_admin) <span class="muted">(toegang via e-maillijst)</span>@endif</dd>
         <dt>Laatst actief</dt><dd>{{ $u->last_seen_at?->diffForHumans() ?? 'onbekend' }}</dd>
         <dt>Berichtmail</dt><dd>{{ $u->berichtmail !== false ? 'aan' : 'uit' }}</dd>
+        <dt>Tipmail eerste stekje</dt><dd>{{ $u->activatieherinnering !== false ? 'aan' : 'uit' }}</dd>
         <dt>Gesprekken</dt><dd>{{ $gesprekken }} <span class="muted">({{ $overdrachten }} overdracht{{ $overdrachten === 1 ? '' : 'en' }} afgerond)</span></dd>
         <dt>Verenigingen</dt>
         <dd>
