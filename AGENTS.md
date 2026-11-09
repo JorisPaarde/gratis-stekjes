@@ -76,6 +76,12 @@ Optioneel: `APP_KEY` — alleen voor first-install. Bestaande server-`APP_KEY` e
 
 Optioneel (backups): `BACKUP_ENCRYPTION_KEY` — AES-sleutel voor `backup:database-encrypted` / `/cron/backup`; bij lege upload behoudt de hook de bestaande server-waarde. Optionele variable `BACKUP_RETAIN_DAYS` (default 30). Zie `docs/backups.md`.
 
+Optioneel (activatie-tipmail 0.79.2): environment **variables**
+`ACTIVATION_REMINDER_ENABLED`, `ACTIVATION_REMINDER_ENABLED_AT`,
+`ACTIVATION_REMINDER_AFTER_HOURS`; secret `REMINDER_TEST_RECIPIENTS` (CSV,
+staging fail-closed). Lege upload → hook behoudt bestaande server-waarde of
+app-default (uit). Geen waarden hardcoden in workflows.
+
 `CPANEL_HOST` / `CPANEL_USER` / `CPANEL_API_TOKEN` zijn voor de HTTPS-hook-flow **niet** nodig (legacy UAPI-scripts blijven in `scripts/` voor handmatig allowlisted IP).
 
 ### Workflows
@@ -88,6 +94,7 @@ Optioneel (backups): `BACKUP_ENCRYPTION_KEY` — AES-sleutel voor `backup:databa
 - **`steden-aanbod.yml`** — `workflow_dispatch` met `target` (`staging`|`production`) + `refresh`/`alleen_boven`: `POST /deploy/steden-aanbod` → artisan `gp:steden-aanbod` (read-only; plaatsnamen + aantallen, geen PII).
 - **`import-struikroven-agenda.yml`** — eenmalig `workflow_dispatch` (geen schedule) met `target` + `apply` (default false): `POST /deploy/import-struikroven-agenda` → artisan `gp:import-struikroven-agenda` uit `data/imports/struikroven-agenda-*.json` (idempotent op bron-URL + datum; Struikroven-vlag `organisatie_slug=struikroven`).
 - **`ledenupdate-mail.yml`** — eenmalig `workflow_dispatch` met `target` (`staging`|`production`) en `mode` (`dry-run`|`send`): `POST /deploy/ledenupdate-mail` → artisan `gp:ledenupdate-mail`. Send: eerst dry-run (abort bij falen), ids-guard t.o.v. dry-run, daarna per id send + sleep 180–240s (stop bij SMTP/fout). Secrets: `DEPLOY_TOKEN` + base-URL. Geen PII/e-mail in job-log.
+- **`activatie-herinnering-dry-run.yml`** — `workflow_dispatch` met `target` (`staging`|`production`): `POST /deploy/activatie-herinnering` → artisan `gp:activatie-herinnering --dry-run` (alleen aantallen; nooit `--send`). Secrets: `DEPLOY_TOKEN` + base-URL.
 - **`scripts/deploy-hook-upload.sh`** — client (chunk 5 MiB, sha256).
 - **`scripts/make-deploy-hook-config.sh`** — token + `gh secret set` + print config-hash.
 - **`deploy-staging.yml`** — **retired** (oude SSH). Alleen `workflow_dispatch` + `ALLOW_LEGACY_SSH_STAGING=1`. **Niet heractiveren** voor dataverhuis.

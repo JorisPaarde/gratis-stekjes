@@ -16,6 +16,11 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Afmelden: profielvinkje + ondertekende link/`List-Unsubscribe` in de mail.
 - Beheer: telling Activatieherinnering (mail_log) op gebruikerslijst/detail.
   Privacytekst bijgewerkt.
+- Deploy schrijft optioneel `ACTIVATION_REMINDER_*` + `REMINDER_TEST_RECIPIENTS`
+  uit GitHub vars/secrets naar de server-`.env` (ontbreekt → behoud/default uit).
+- Workflow `activatie-herinnering-dry-run` (`workflow_dispatch`, staging|production):
+  alleen `--dry-run` via `POST /deploy/activatie-herinnering`, nooit versturen.
+- Ongeldige/verlopen tipmail-afmeldlink: nette GP-pagina (403) i.p.v. kale fout.
 
 ## [0.79.1] - 2026-11-09
 
