@@ -40,6 +40,7 @@ use App\Http\Controllers\Beheer\PostLogController as BeheerPostLogController;
 use App\Http\Controllers\Beheer\StatistiekenController as BeheerStatistiekenController;
 use App\Http\Controllers\ActivatieHerinneringController;
 use App\Http\Controllers\BerichtmailController;
+use App\Http\Controllers\BrevoWebhookController;
 use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\DeelplekkenController;
@@ -162,6 +163,10 @@ Route::get('/cron', CronController::class)->name('cron');
 Route::get('/cron/backup', BackupCronController::class)
     ->middleware('throttle:10,1')
     ->name('cron.backup');
+Route::post('/webhooks/brevo/{token}', BrevoWebhookController::class)
+    ->middleware('throttle:120,1')
+    ->where('token', '[A-Za-z0-9_-]{16,128}')
+    ->name('webhooks.brevo');
 Route::post('/deploy/run', DeployController::class)
     ->middleware('throttle:10,1')
     ->name('deploy.run');

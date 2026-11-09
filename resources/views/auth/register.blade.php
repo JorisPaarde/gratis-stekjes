@@ -99,6 +99,9 @@
       <input type="checkbox" name="privacy" value="1" required @checked(old('privacy')) @if($errors->has('privacy')) aria-invalid="true" @endif>
       <span>Ik ga akkoord met de <a href="{{ route('privacy') }}">privacyverklaring</a>.</span>
     </label>
+    @include('partials.nieuwsbrief-opt-in', [
+      'checked' => (string) old('nieuwsbrief', '0') === '1',
+    ])
 
     <fieldset class="form-fieldset form-fieldset--meet" data-meet-found-via>
       <legend>Hoe heb je ons gevonden? <span class="hint">(optioneel)</span></legend>

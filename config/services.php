@@ -35,4 +35,16 @@ return [
         ],
     ],
 
+    /*
+    | Nieuwsbrief via Brevo (opt-in + DOI). Lege API-key = uit; geen HTTP-calls.
+    | Secrets nooit committen. Webhook-token beveiligt POST /webhooks/brevo/{token}.
+    */
+    'brevo' => [
+        'api_key' => env('BREVO_API_KEY', ''),
+        'newsletter_list_id' => (int) env('BREVO_NEWSLETTER_LIST_ID', 0),
+        'doi_template_id' => (int) env('BREVO_DOI_TEMPLATE_ID', 0),
+        'doi_redirect_url' => env('BREVO_DOI_REDIRECT_URL', ''),
+        'webhook_token' => env('BREVO_WEBHOOK_TOKEN', ''),
+    ],
+
 ];

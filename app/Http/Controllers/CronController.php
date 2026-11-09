@@ -6,12 +6,14 @@ namespace App\Http\Controllers;
 
 use App\Services\AanbodExpiryService;
 use App\Services\ActivatieHerinneringService;
+use App\Services\BrevoNewsletterService;
 use App\Services\ConversionTracker;
 use App\Services\VerificationReminderService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 use Throwable;
 
 class CronController extends Controller
@@ -22,6 +24,7 @@ class CronController extends Controller
         ConversionTracker $conversions,
         VerificationReminderService $verificationReminder,
         ActivatieHerinneringService $activatieHerinnering,
+        BrevoNewsletterService $newsletter,
     ): Response|JsonResponse {
         $expected = (string) config('stekjes.cron_token', '');
         $given = (string) $request->header('X-Cron-Token', '');
@@ -45,6 +48,7 @@ class CronController extends Controller
                 'purge_geocode_cache' => ['deleted' => $expiry->purgeGeocodeCache()],
                 'purge_mail_log' => ['deleted' => $expiry->purgeMailLog()],
                 'conversion_aggregate' => $conversions->aggregateAndPurge(),
+                'newsletter_sync' => $this->maybeSyncNewsletter($newsletter),
             ];
         } catch (Throwable $e) {
             return response()->json([
@@ -59,5 +63,29 @@ class CronController extends Controller
             'jobs' => $jobs,
             'at' => now()->toIso8601String(),
         ]);
+    }
+
+    /**
+     * Max. 1× per 20 uur (dagelijks vangnet), ook als /cron vaker vuurt.
+     *
+     * @return array<string, mixed>
+     */
+    private function maybeSyncNewsletter(BrevoNewsletterService $newsletter): array
+    {
+        $key = 'cron:newsletter_sync_at';
+        $last = Cache::get($key);
+        if (is_string($last) || $last instanceof \DateTimeInterface) {
+            $lastAt = \Illuminate\Support\Carbon::parse($last);
+            if ($lastAt->gt(now()->subHours(20))) {
+                return ['skipped' => true, 'reason' => 'recent'];
+            }
+        }
+
+        $result = $newsletter->syncFromBrevo();
+        if ($result['ok'] ?? false) {
+            Cache::put($key, now()->toIso8601String(), now()->addDays(2));
+        }
+
+        return $result;
     }
 }

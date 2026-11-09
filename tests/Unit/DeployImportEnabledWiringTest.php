@@ -61,6 +61,27 @@ test('deploy schrijft optioneel POST_LOG_MINT_TOKEN (gemaskeerd, behouden bij le
     }
 });
 
+test('deploy schrijft optioneel BREVO_* (gemaskeerd, behouden bij leeg)', function () {
+    $root = dirname(__DIR__, 2);
+    $script = file_get_contents($root.'/scripts/deploy-hook-upload.sh');
+    expect($script)->toContain('dotenv_line BREVO_API_KEY')
+        ->and($script)->toContain('dotenv_line BREVO_NEWSLETTER_LIST_ID')
+        ->and($script)->toContain('dotenv_line BREVO_DOI_TEMPLATE_ID')
+        ->and($script)->toContain('dotenv_line BREVO_DOI_REDIRECT_URL')
+        ->and($script)->toContain('dotenv_line BREVO_WEBHOOK_TOKEN');
+
+    $hook = file_get_contents($root.'/deploy/hook/lib.php');
+    expect($hook)->toContain("deploy_hook_preserve_env_key(\$finalEnv, \$existingEnv, 'BREVO_API_KEY')")
+        ->and($hook)->toContain("deploy_hook_preserve_env_key(\$finalEnv, \$existingEnv, 'BREVO_WEBHOOK_TOKEN')");
+
+    foreach (['deploy-staging-cpanel.yml', 'deploy-prod-hook.yml'] as $file) {
+        $yml = file_get_contents($root.'/.github/workflows/'.$file);
+        expect($yml)->toContain('BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}')
+            ->and($yml)->toContain('BREVO_WEBHOOK_TOKEN: ${{ secrets.BREVO_WEBHOOK_TOKEN }}')
+            ->and($yml)->toContain('::add-mask::${BREVO_API_KEY}');
+    }
+});
+
 test('migrate-workflow gebruikt repo-secrets zonder production-environment', function () {
     $yml = file_get_contents(dirname(__DIR__, 2).'/.github/workflows/migrate-stekjes-to-prod.yml');
     expect($yml)->toContain('Fingerprint oude staging')
