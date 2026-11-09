@@ -199,7 +199,7 @@ Route::get('/ga/word-lid', GaWordLidController::class)
     ->middleware('throttle:60,1')
     ->name('ga.word-lid');
 Route::get('/s/{code}', ShortLinkController::class)
-    ->where('code', '[2-9A-HJ-NP-Za-hj-np-z]{4,8}')
+    ->where('code', '[2-9A-HJ-KM-NP-Za-hj-km-np-z]{4,8}')
     ->middleware('throttle:120,1')
     ->name('short.redirect');
 Route::post('/meet/event', ConversionBeaconController::class)

@@ -77,7 +77,7 @@ en stabiel.
 
 | Onderdeel | Gedrag |
 |-----------|--------|
-| Code | 5 tekens uit `23456789ABCDEFGHJKLMNPQRSTUVWXYZ` (geen 0/O/1/I/L) |
+| Code | 5 tekens uit `23456789ABCDEFGHJKMNPQRSTUVWXYZ` (geen 0/O/1/I/L) |
 | Route | `GET /s/{code}` → **302** naar `/ga/word-lid?utm_source=…&utm_medium=social&utm_campaign=…&utm_content=<id>` |
 | Meting | Identiek aan `tracking_url`: `cta_click` op `/ga/word-lid`; dashboard op `utm_content=<post_logs.id>` |
 | Dubbeltelling | De `/s/`-redirect telt **niet** als pageview (alleen 200-HTML) en niet als `cta_click` |

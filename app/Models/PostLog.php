@@ -13,9 +13,9 @@ class PostLog extends Model
 {
     /**
      * Leesbaar alfabet zonder verwarrende tekens (geen 0/O/1/I/L).
-     * 32 tekens → 5 posities ≈ 33M codes.
+     * 31 tekens → 5 posities ≈ 28M codes.
      */
-    public const SHORT_CODE_ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+    public const SHORT_CODE_ALPHABET = '23456789ABCDEFGHJKMNPQRSTUVWXYZ';
 
     public const SHORT_CODE_LENGTH = 5;
 
