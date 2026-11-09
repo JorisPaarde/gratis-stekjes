@@ -19,26 +19,26 @@ final class ThrottleMessage
     public static function forSeconds(int $seconds): string
     {
         $seconds = max(1, $seconds);
+        // availableIn is vaak decay-1 (3599 i.p.v. 3600) → toon uren i.p.v. «60 minuten».
+        $minutes = (int) ceil($seconds / 60);
 
-        if ($seconds >= 3600) {
+        if ($minutes >= 60) {
             $hours = (int) ceil($seconds / 3600);
 
             return $hours === 1
-                ? 'Te veel pogingen. Probeer het over 1 uur opnieuw.'
-                : "Te veel pogingen. Probeer het over {$hours} uur opnieuw.";
+                ? 'Even te veel pogingen. Probeer het over een uur opnieuw.'
+                : "Even te veel pogingen. Probeer het over {$hours} uur opnieuw.";
         }
 
-        if ($seconds >= 60) {
-            $minutes = (int) ceil($seconds / 60);
-
+        if ($minutes >= 1 && $seconds >= 60) {
             return $minutes === 1
-                ? 'Te veel pogingen. Probeer het over 1 minuut opnieuw.'
-                : "Te veel pogingen. Probeer het over {$minutes} minuten opnieuw.";
+                ? 'Even te veel pogingen. Probeer het over een minuut opnieuw.'
+                : "Even te veel pogingen. Probeer het over {$minutes} minuten opnieuw.";
         }
 
         return $seconds === 1
-            ? 'Te veel pogingen. Probeer het over 1 seconde opnieuw.'
-            : "Te veel pogingen. Probeer het over {$seconds} seconden opnieuw.";
+            ? 'Even te veel pogingen. Probeer het over een seconde opnieuw.'
+            : "Even te veel pogingen. Probeer het over {$seconds} seconden opnieuw.";
     }
 
     /**

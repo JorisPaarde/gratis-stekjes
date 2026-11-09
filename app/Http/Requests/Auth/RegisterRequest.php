@@ -16,6 +16,9 @@ use Illuminate\Validation\Validator as IlluminateValidator;
 
 class RegisterRequest extends FormRequest
 {
+    /** @var string Altijd dit formulier — nooit previous()/back() naar / zonder melding. */
+    protected $redirectRoute = 'account.registreren';
+
     public function authorize(): bool
     {
         return true;
@@ -117,14 +120,16 @@ class RegisterRequest extends FormRequest
         }
 
         // Geen wachtwoord terug; form_started komt opnieuw uit de honeypot-partial (time()).
+        // Expliciet route i.p.v. previous(): ontbrekende Referer stuurde anders naar / en
+        // consumeerde de flash vóór het formulier opnieuw zichtbaar was.
         $except = array_values(array_unique(array_merge(
-            ['current_password', 'password', 'password_confirmation', 'form_started'],
+            ['current_password', 'password', 'password_confirmation', 'form_started', '_token'],
             FormGuard::HONEYPOT_FIELDS,
         )));
 
         throw new HttpResponseException(
             redirect()
-                ->to($this->getRedirectUrl())
+                ->route('account.registreren')
                 ->withInput($this->except($except))
                 ->withErrors($validator->errors(), $this->errorBag)
         );

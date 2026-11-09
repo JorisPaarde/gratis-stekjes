@@ -75,8 +75,11 @@ class RegisterController extends Controller
 
         $key = 'register:'.$request->ip();
         if (RateLimiter::tooManyAttempts($key, 8)) {
-            return back()
-                ->withInput($request->except('password'))
+            // Altijd terug naar het formulier (niet back()/previous → /): anders verdwijnt
+            // de flash op een pagina zonder error-list en lijkt het formulier leeg.
+            return redirect()
+                ->route('account.registreren')
+                ->withInput(self::safeOldInput($request))
                 ->withErrors(['email' => ThrottleMessage::forKey($key)]);
         }
         RateLimiter::hit($key, 3600);
@@ -104,8 +107,9 @@ class RegisterController extends Controller
 
             $geo = $locatie->applyPostcode($user, $postcode, $country, true);
             if (! ($geo['ok'] ?? false)) {
-                return back()
-                    ->withInput($request->except('password'))
+                return redirect()
+                    ->route('account.registreren')
+                    ->withInput(self::safeOldInput($request))
                     ->withErrors(['postcode' => $geo['error'] ?? 'Locatie niet gevonden.']);
             }
 
@@ -152,5 +156,21 @@ class RegisterController extends Controller
             ->with('status', $status)
             ->with('status_level', $mailOk ? 'ok' : 'warn')
             ->withInput(['email' => $email]);
+    }
+
+    /**
+     * Old input voor het registratieformulier: e-mail/land/postcode/checks behouden,
+     * nooit wachtwoord of honeypot/timing-velden.
+     *
+     * @return array<string, mixed>
+     */
+    private static function safeOldInput(Request $request): array
+    {
+        $except = array_values(array_unique(array_merge(
+            ['current_password', 'password', 'password_confirmation', 'form_started', '_token'],
+            FormGuard::HONEYPOT_FIELDS,
+        )));
+
+        return $request->except($except);
     }
 }

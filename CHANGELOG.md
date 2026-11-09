@@ -3,6 +3,19 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.33] - 2026-11-09
+
+### Fixed
+
+- Registreren: elke afwijzing (te snel, validatie, throttle, postcode/geo) redirect
+  expliciet naar `/account/registreren` met zichtbare foutmelding. `back()` /
+  `previous()` kon zonder Referer naar `/` gaan; flash verdween dan en het
+  formulier leek leeg bij een volgende poging (o.a. tweede snelle submit).
+- Throttle-kopie: «Even te veel pogingen. Probeer het over een minuut opnieuw.»
+  (dynamisch via `ThrottleMessage`). E-mail/land/postcode blijven behouden;
+  wachtwoord/honeypot/`form_started` nooit in old input.
+- Feature-test: twee te snelle submits + throttle zonder Referer.
+
 ## [0.78.32] - 2026-11-09
 
 ### Fixed
