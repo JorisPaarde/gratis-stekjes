@@ -3,10 +3,11 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
-## [0.78.23] - 2026-11-09
+## [0.78.24] - 2026-11-09
 
 Hotfix naar productie: korte deellinks + vaste steden altijd geïndexeerd.
-`/in-de-media` (0.78.21 op staging) zit **niet** in deze release.
+`/in-de-media` (0.78.21/0.78.23 op staging) zit **niet** in deze release.
+Versie 0.78.24 (0.78.23 was al `/in-de-media`-kaarten op staging).
 
 ### Added
 
