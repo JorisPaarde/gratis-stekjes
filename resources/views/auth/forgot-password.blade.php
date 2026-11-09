@@ -13,12 +13,23 @@
     <p class="error" role="alert">{{ $errors->first() }}</p>
   @endif
 
-  <form class="form" method="post" action="{{ route('account.wachtwoord.vergeten') }}">
+  <form class="form" method="post" action="{{ route('account.wachtwoord.vergeten') }}" autocomplete="on">
     @csrf
     @include('partials.honeypot')
 
-    <label>E-mail
-      <input type="email" name="email" required maxlength="254" autocomplete="email" value="{{ old('email') }}">
+    <label for="forgot-email">E-mail
+      <input
+        type="email"
+        id="forgot-email"
+        name="email"
+        required
+        maxlength="254"
+        autocomplete="email"
+        inputmode="email"
+        autocapitalize="off"
+        spellcheck="false"
+        value="{{ old('email') }}"
+      >
     </label>
     <button class="btn" type="submit">Stuur resetlink</button>
   </form>

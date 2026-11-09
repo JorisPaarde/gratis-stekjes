@@ -19,8 +19,19 @@
 
   <form class="form" method="post" action="{{ route('account.bevestiging-opnieuw') }}">
     @csrf
-    <label>E-mail opnieuw sturen
-      <input type="email" name="email" required maxlength="254" autocomplete="email" value="{{ old('email') }}">
+    <label for="verify-email">E-mail opnieuw sturen
+      <input
+        type="email"
+        id="verify-email"
+        name="email"
+        required
+        maxlength="254"
+        autocomplete="email"
+        inputmode="email"
+        autocapitalize="off"
+        spellcheck="false"
+        value="{{ old('email') }}"
+      >
     </label>
     <button class="btn btn-secondary" type="submit">Stuur opnieuw</button>
   </form>

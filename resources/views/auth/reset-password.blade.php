@@ -13,18 +13,47 @@
     <p class="error" role="alert">{{ $errors->first() }}</p>
   @endif
 
-  <form class="form" method="post" action="{{ route('account.wachtwoord.reset.store') }}">
+  <form class="form" method="post" action="{{ route('account.wachtwoord.reset.store') }}" autocomplete="on">
     @csrf
     <input type="hidden" name="token" value="{{ $token }}">
 
-    <label>E-mail
-      <input type="email" name="email" required maxlength="254" autocomplete="email" value="{{ old('email', $email) }}">
+    <label for="reset-email">E-mail
+      <input
+        type="email"
+        id="reset-email"
+        name="email"
+        required
+        maxlength="254"
+        autocomplete="email"
+        inputmode="email"
+        autocapitalize="off"
+        spellcheck="false"
+        value="{{ old('email', $email) }}"
+      >
     </label>
-    <label>Nieuw wachtwoord
-      <input type="password" name="password" required minlength="10" maxlength="200" autocomplete="new-password">
+    <label for="reset-password">Nieuw wachtwoord
+      <input
+        type="password"
+        id="reset-password"
+        name="password"
+        required
+        minlength="10"
+        maxlength="200"
+        autocomplete="new-password"
+        passwordrules="minlength: 10;"
+      >
     </label>
-    <label>Wachtwoord opnieuw
-      <input type="password" name="password_confirmation" required minlength="10" maxlength="200" autocomplete="new-password">
+    <label for="reset-password-confirm">Wachtwoord opnieuw
+      <input
+        type="password"
+        id="reset-password-confirm"
+        name="password_confirmation"
+        required
+        minlength="10"
+        maxlength="200"
+        autocomplete="new-password"
+        passwordrules="minlength: 10;"
+      >
     </label>
     <button class="btn" type="submit">Wachtwoord opslaan</button>
   </form>
