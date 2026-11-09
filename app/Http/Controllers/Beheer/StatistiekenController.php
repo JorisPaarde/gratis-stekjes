@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Aanbod;
 use App\Models\ConversionEvent;
 use App\Models\Feedback;
+use App\Models\FormBotDaily;
 use App\Models\Message;
 use App\Models\PageView;
 use App\Models\User;
@@ -118,6 +119,7 @@ class StatistiekenController extends Controller
         $funnelMonths = $conversions->funnelByMonth(6);
         $funnelPeriods = $funnelPeriod === 'week' ? $funnelWeeks : $funnelMonths;
         $validationErrors = $conversions->topValidationErrors(30, 15);
+        $botRejections = $this->botRejectionsSummary(30);
         $breakdown = $conversions->deviceAndSourceBreakdown(30);
         $minFormStarts = (int) config('conversion.min_form_starts_for_rates', 30);
         $aanbodSearchWeek = $conversions->aanbodSearchWeekSummary(0);
@@ -161,6 +163,7 @@ class StatistiekenController extends Controller
             'funnelMonths' => $funnelMonths,
             'funnelPeriods' => $funnelPeriods,
             'validationErrors' => $validationErrors,
+            'botRejections' => $botRejections,
             'deviceBreakdown' => $breakdown['devices'],
             'sourceBreakdown' => $breakdown['sources'],
             'minFormStarts' => $minFormStarts,
@@ -476,6 +479,113 @@ class StatistiekenController extends Controller
         return (int) PageView::query()
             ->whereDate('date', now()->toDateString())
             ->sum('count');
+    }
+
+    /**
+     * Botval-aggregaat zonder PII: alleen datum, formulier, reden, aantal.
+     *
+     * @return array{
+     *   todayTotal: int,
+     *   periodTotal: int,
+     *   byReasonToday: array{honeypot: int, too_fast: int},
+     *   byReasonPeriod: array{honeypot: int, too_fast: int},
+     *   rows: list<array{date: string, label: string, form: string, form_label: string, reason: string, reason_label: string, count: int}>
+     * }
+     */
+    private function botRejectionsSummary(int $days): array
+    {
+        $empty = [
+            'todayTotal' => 0,
+            'periodTotal' => 0,
+            'byReasonToday' => ['honeypot' => 0, 'too_fast' => 0],
+            'byReasonPeriod' => ['honeypot' => 0, 'too_fast' => 0],
+            'rows' => [],
+        ];
+
+        if (! Schema::hasTable('form_bot_daily')) {
+            return $empty;
+        }
+
+        $tz = 'Europe/Amsterdam';
+        $today = now()->timezone($tz)->toDateString();
+        $from = now()->timezone($tz)->subDays($days - 1)->toDateString();
+
+        $formLabels = [
+            'register' => 'Registreren',
+            'login' => 'Inloggen',
+            'feedback' => 'Feedback',
+            'contact' => 'Contact',
+            'aanbod' => 'Aanbod',
+            'deelplek' => 'Deelplek',
+        ];
+        $reasonLabels = [
+            'honeypot' => 'Honeypot',
+            'too_fast' => 'Te snel',
+        ];
+
+        $rows = FormBotDaily::query()
+            ->where('date', '>=', $from)
+            ->orderByDesc('date')
+            ->orderBy('form')
+            ->orderBy('reason')
+            ->get(['date', 'form', 'reason', 'count']);
+
+        $byReasonToday = ['honeypot' => 0, 'too_fast' => 0];
+        $byReasonPeriod = ['honeypot' => 0, 'too_fast' => 0];
+        $todayTotal = 0;
+        $periodTotal = 0;
+
+        /** @var array<string, array{date: string, label: string, form: string, form_label: string, reason: string, reason_label: string, count: int}> $merged */
+        $merged = [];
+
+        foreach ($rows as $row) {
+            // Normaliseer eventuele SQLite-datetime-restanten naar Y-m-d.
+            $date = substr((string) $row->getRawOriginal('date'), 0, 10);
+            $reason = (string) $row->reason;
+            $count = (int) $row->count;
+            $form = (string) $row->form;
+            $key = $date.'|'.$form.'|'.$reason;
+
+            $periodTotal += $count;
+            if (isset($byReasonPeriod[$reason])) {
+                $byReasonPeriod[$reason] += $count;
+            }
+
+            if ($date === $today) {
+                $todayTotal += $count;
+                if (isset($byReasonToday[$reason])) {
+                    $byReasonToday[$reason] += $count;
+                }
+            }
+
+            if (isset($merged[$key])) {
+                $merged[$key]['count'] += $count;
+                continue;
+            }
+
+            $merged[$key] = [
+                'date' => $date,
+                'label' => Carbon::parse($date)->timezone($tz)->format('d-m-Y'),
+                'form' => $form,
+                'form_label' => $formLabels[$form] ?? $form,
+                'reason' => $reason,
+                'reason_label' => $reasonLabels[$reason] ?? $reason,
+                'count' => $count,
+            ];
+        }
+
+        $outRows = array_values($merged);
+        usort($outRows, static function (array $a, array $b): int {
+            return [$b['date'], $a['form'], $a['reason']] <=> [$a['date'], $b['form'], $b['reason']];
+        });
+
+        return [
+            'todayTotal' => $todayTotal,
+            'periodTotal' => $periodTotal,
+            'byReasonToday' => $byReasonToday,
+            'byReasonPeriod' => $byReasonPeriod,
+            'rows' => $outRows,
+        ];
     }
 
     /**

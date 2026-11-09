@@ -379,6 +379,42 @@
     </div>
   </details>
 
+  <details class="stats-panel" @if(($botRejections['periodTotal'] ?? 0) > 0) open @endif>
+    <summary class="stats-panel-summary">
+      <span class="stats-panel-title">Botval · 30 dagen</span>
+      <span class="stats-panel-hint muted">honeypot / te snel · geen persoonsgegevens</span>
+    </summary>
+    <div class="stats-panel-body">
+      <p class="muted">
+        Vandaag: {{ (int) ($botRejections['todayTotal'] ?? 0) }}
+        (honeypot {{ (int) ($botRejections['byReasonToday']['honeypot'] ?? 0) }},
+        te snel {{ (int) ($botRejections['byReasonToday']['too_fast'] ?? 0) }}).
+        30 dagen: {{ (int) ($botRejections['periodTotal'] ?? 0) }}
+        (honeypot {{ (int) ($botRejections['byReasonPeriod']['honeypot'] ?? 0) }},
+        te snel {{ (int) ($botRejections['byReasonPeriod']['too_fast'] ?? 0) }}).
+      </p>
+      @if(($botRejections['rows'] ?? []) === [])
+        <p class="muted">Nog geen botval-afwijzingen geteld.</p>
+      @else
+        <table class="beheer-table">
+          <thead>
+            <tr><th>Datum</th><th>Formulier</th><th>Reden</th><th>Aantal</th></tr>
+          </thead>
+          <tbody>
+            @foreach($botRejections['rows'] as $row)
+              <tr>
+                <td data-label="Datum">{{ $row['label'] }}</td>
+                <td data-label="Formulier">{{ $row['form_label'] }}</td>
+                <td data-label="Reden">{{ $row['reason_label'] }}</td>
+                <td data-label="Aantal">{{ $row['count'] }}</td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
+      @endif
+    </div>
+  </details>
+
   <details class="stats-panel">
     <summary class="stats-panel-summary">
       <span class="stats-panel-title">Apparaat en bron · 30 dagen</span>

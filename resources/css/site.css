@@ -421,6 +421,23 @@ h1.page-title {
 }
 .form textarea { min-height: 7rem; resize: vertical; }
 .form .hint { font-weight: 400; font-size: .9rem; color: var(--ink-soft); }
+.form .field-hint-error {
+  font-weight: 400;
+  font-size: .9rem;
+  color: var(--danger);
+  margin: .15rem 0 0;
+}
+.form input[aria-invalid="true"],
+.form select[aria-invalid="true"] {
+  border-color: rgba(139, 30, 30, .55);
+}
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  align-items: center;
+  margin-top: .15rem;
+}
 .wachtwoord-veld {
   display: flex;
   gap: .5rem;

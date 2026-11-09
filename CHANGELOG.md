@@ -3,7 +3,22 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.79.0] - 2026-11-09
+
+### Fixed
+
+- Registreren: na een fout blijft het wachtwoord leeg (geen wachtwoord in HTML).
+  Bij het veld staat nu «Vul je wachtwoord opnieuw in». Scroll + focus naar het
+  eerste foutveld (handig op 390 px). Honeypot / te-snel / throttle ongewijzigd.
+
+### Added
+
+- Beheer `/beheer/statistieken`: botval-teller per dag, formulier en reden
+  (honeypot / te snel). Geen e-mail, geen IP, geen persoonsgegevens. Telt mee
+  via `form.bot_rejected` → tabel `form_bot_daily`.
+
 ## [0.78.36] - 2026-11-09
+
 
 ### Added
 
