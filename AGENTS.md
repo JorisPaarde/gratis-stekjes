@@ -68,6 +68,8 @@ Zie **`deploy/hook/INSTALL.md`**. Kort:
 
 Optioneel: `POST_LOG_MINT_TOKEN` — header `X-Post-Log-Token` voor `POST /api/internal/post-logs` (plantjes + Grok Bot minten tracking-URL’s). Leeg = mint weigert. Zie `docs/post-log-mint.md`. Nooit committen; ops zet het op de server na merge.
 
+Optioneel (nieuwsbrief Brevo): `BREVO_API_KEY`, `BREVO_NEWSLETTER_LIST_ID`, `BREVO_DOI_TEMPLATE_ID`, `BREVO_DOI_REDIRECT_URL`, `BREVO_WEBHOOK_TOKEN`. Lege upload → bestaande server-waarden behouden. Lege API-key = nieuwsbrief-sync/DOI uit.
+
 Optioneel: `ADMIN_DASHBOARD_EMAILS` — CSV met unieke account-e-mails voor Dashboard-menulink + `/beheer` zonder apart wachtwoord; bij lege upload behoudt de hook de bestaande server-waarde.
 
 Optioneel: `APP_KEY` — alleen voor first-install. Bestaande server-`APP_KEY` en

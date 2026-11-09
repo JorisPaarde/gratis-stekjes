@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\AdresOpzoeken;
+use App\Services\BrevoNewsletterService;
 use App\Services\InitiatiefPaginas;
 use App\Services\LocationGeocoder;
 use App\Services\UserLocatieService;
@@ -47,8 +48,13 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function update(Request $request, LocationGeocoder $geocoder, UserLocatieService $locatieService): RedirectResponse
-    {
+    public function update(
+        Request $request,
+        LocationGeocoder $geocoder,
+        UserLocatieService $locatieService,
+        BrevoNewsletterService $newsletter,
+    ): RedirectResponse {
+
         $data = $request->validate([
             'voornaam' => ['required', 'string', 'max:80', 'not_regex:/@/', function (string $attr, mixed $value, \Closure $fail) use ($request): void {
                 $uid = (int) $request->user()->id;
@@ -68,6 +74,7 @@ class ProfileController extends Controller
             'telefoon' => ['nullable', 'string', 'max:40', 'regex:/^[0-9+\s().-]{7,40}$/'],
             'berichtmail' => ['nullable', 'boolean'],
             'activatieherinnering' => ['nullable', 'boolean'],
+            'nieuwsbrief' => ['nullable', 'boolean'],
             'huisnummer' => ['nullable', 'string', 'max:12', 'regex:/^\d{1,5}\s*[A-Za-z0-9-]{0,6}$/'],
             'straat' => ['nullable', 'string', 'max:120'],
             'plaats' => ['nullable', 'string', 'max:120'],
@@ -169,6 +176,17 @@ class ProfileController extends Controller
         }
         if ($request->has('activatieherinnering') && Schema::hasColumn('users', 'activatieherinnering')) {
             $user->activatieherinnering = $request->boolean('activatieherinnering');
+        }
+        if ($request->has('nieuwsbrief') && Schema::hasColumn('users', 'newsletter_opt_in')) {
+            $want = $request->boolean('nieuwsbrief');
+            if ($want && ! $user->newsletter_opt_in) {
+                $newsletter->optInLocally($user);
+                if ($user->hasVerifiedEmail()) {
+                    $newsletter->queueDoubleOptIn($user->fresh() ?? $user);
+                }
+            } elseif (! $want && $user->newsletter_opt_in) {
+                $newsletter->optOut($user);
+            }
         }
         // Onleesbare telefoon (andere APP_KEY) niet wissen met leeg formulier.
         $user->fillEncryptedIfProvided('telefoon', $data['telefoon'] ?? '');

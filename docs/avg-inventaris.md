@@ -25,6 +25,7 @@ Contactadres site: `info@gratisplanten.nl` (`config('site.contact_email')`).
 | 12 | **Rate-limit / cache** | Cache store (database `cache` tabel of array in tests); keys o.a. `login:…\|ip`, `register:ip`, `message:ip`, mail-throttle | Misbruik/spam tegengaan | Gerechtvaardigd belang | Korte TTL (`RATE_LIMIT_RETENTION_SECONDS` in `.env.example` als beleidstip; Laravel RateLimiter decay per hit) | Systeem | Keys bevatten e-mail/IP tijdelijk — **GAT: geen periodieke purge van verlopen cache-rijen naast Laravel lottery** |
 | 13 | **Geocode-cache** | `geocode_cache`: query_key, label, afgeronde lat/lon, cached_at | Minder PDOK-calls | Gerechtvaardigd belang (performance) / toestemming zoekactie | `geocode_cache_retention_days` (90); cron `purgeGeocodeCache` | Systeem | Alleen genormaliseerde query + afgeronde coords |
 | 14 | **Mail (SMTP)** | Config `mail.php`; transactionele mails (verify, reset, bericht, deelplek) via hosting-SMTP (typisch Hoasted) | Accountflows | Toestemming / uitvoering | Provider-retentie — **GAT: bevestigen bij hoster** | Ontvanger; SMTP-provider als verwerker | Geen berichtinhoud in “nieuw bericht”-mail; foutlogs gemaskeerd |
+| 15 | **Nieuwsbrief (Brevo)** | `users.newsletter_opt_in` + `newsletter_opt_in_at`; Brevo-lijst via REST DOI | Tips/updates (opt-in) | Toestemming (apart vinkje) | Zolang aangemeld; sync/webhook bij afmelden; wissen bij account-delete | Eigenaar; Brevo als verwerker (EU) | Geen marketing vóór account-verify; DOI via Brevo; logs zonder e-mail |
 
 ## Keuzes (motivatie)
 

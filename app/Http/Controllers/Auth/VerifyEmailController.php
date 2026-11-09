@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ConversionEvent;
 use App\Models\User;
 use App\Notifications\VerifyEmailDutch;
+use App\Services\BrevoNewsletterService;
 use App\Services\ConversionTracker;
 use App\Support\MailThrottle;
 use App\Support\SafeIntended;
@@ -121,6 +122,13 @@ class VerifyEmailController extends Controller
                 );
             } catch (\Throwable) {
                 // Meting mag bevestigen nooit blokkeren.
+            }
+            try {
+                if ($verifiedUser->newsletter_opt_in) {
+                    app(BrevoNewsletterService::class)->queueDoubleOptIn($verifiedUser);
+                }
+            } catch (\Throwable) {
+                // Nieuwsbrief mag bevestigen nooit blokkeren (fail-soft + later retry).
             }
         }
 

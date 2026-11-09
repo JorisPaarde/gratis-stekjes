@@ -132,6 +132,12 @@ class RegisterController extends Controller
                     : null;
             }
 
+            // Nieuwsbrief: alleen lokaal opslaan; Brevo-DOI pas na e-mailbevestiging.
+            if (Schema::hasColumn('users', 'newsletter_opt_in') && $request->boolean('nieuwsbrief')) {
+                $user->newsletter_opt_in = true;
+                $user->newsletter_opt_in_at = now();
+            }
+
             $user->save();
             $user->rotateEmailVerificationToken();
             $tracker->attachFlowToUser($user->fresh(), $request);
