@@ -40,8 +40,8 @@ class AudienceLandingController extends Controller
 
     public function tuinverenigingen(): View
     {
-        $title = 'Tuinvereniging: plantmateriaal doorgeven met jullie leden';
-        $meta = 'Bestuur van een tuinvereniging: voeg jullie vereniging toe via een persoonlijk account. Eigen pagina met aanbod van leden via '.config('site.name').'.';
+        $title = 'Tuinvereniging: planten en stekjes delen tussen leden';
+        $meta = 'Wat over is op de tuin, groeit verder bij een ander. Een eigen verenigingspagina op '.config('site.name').': gratis, zonder reclame en zonder werk voor het bestuur.';
         $canonical = route('tuinverenigingen');
 
         return view('pages.audience.tuinverenigingen', [

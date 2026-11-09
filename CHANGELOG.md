@@ -3,6 +3,17 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.28] - 2026-11-09
+
+### Changed
+
+- `/tuinverenigingen`: kop en intro leggen nu uit waaróm een vereniging meedoet
+  (minder op de composthoop, ook voor wie er niet is, nieuwe leden op weg, geen
+  werk voor het bestuur) in plaats van de accountstappen. Account- en
+  e-mailuitleg staat alleen nog in «Zo doen jullie mee»; nieuwe sectie
+  «Waarom meedoen?» na de foto; stap 3 noemt de poster met QR-code. Title en
+  meta description zonder «plantmateriaal»/accountjargon.
+
 ## [0.78.27] - 2026-11-09
 
 ### Changed
