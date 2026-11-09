@@ -3,6 +3,24 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.20] - 2026-11-09
+
+### Added
+
+- Automatische stadspagina’s `/gratis-planten/{slug}` zodra een plaats minstens
+  1 actieve publieke aanbieding of zichtbare deelplek heeft (`GP_STAD_AANBOD_MIN`,
+  default 1). Catalogus met 1-uurs-cache; vaste steden uit `steden.json` blijven
+  onder dezelfde URL bereikbaar (onder de drempel: noindex, uit sitemap/interne
+  links). Automatische steden onder de drempel: 301 naar `/gratis-planten`.
+- Artisan `gp:steden-aanbod` (read-only) + `POST /deploy/steden-aanbod` +
+  workflow `steden-aanbod.yml` (plaatsnamen + aantallen, geen PII).
+
+### Changed
+
+- Sitemap en overzicht `/gratis-planten` tonen geïndexeerde (nieuwe) steden naast
+  de vaste lijst; intros/titles van vaste steden ongewijzigd. Automatische steden
+  krijgen een sjabloonintro met enkelvoud/meervoud en unieke meta-description.
+
 ## [0.78.19] - 2026-11-09
 
 ### Changed

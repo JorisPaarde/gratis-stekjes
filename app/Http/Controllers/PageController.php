@@ -12,7 +12,7 @@ use App\Services\Kennisbank;
 use App\Services\NuTeStekken;
 use App\Services\Organisaties;
 use App\Services\Plantensoorten;
-use App\Services\Steden;
+use App\Services\StadCatalogus;
 use App\Services\Stektips;
 use App\Services\VerenigingService;
 use App\Support\CanonicalUrl;
@@ -200,7 +200,7 @@ class PageController extends Controller
         );
     }
 
-    public function sitemap(Stektips $stektips, Steden $steden, Organisaties $organisaties, Kennisbank $kennisbank): Response
+    public function sitemap(Stektips $stektips, StadCatalogus $catalogus, Organisaties $organisaties, Kennisbank $kennisbank): Response
     {
         $staticLastmod = $this->lastmodFromFiles([
             base_path('VERSION'),
@@ -287,8 +287,8 @@ class PageController extends Controller
             }
         }
 
-        $stedenLastmod = $this->lastmodFromFiles([base_path('data/steden.json')]);
-        foreach ($steden->all() as $stad) {
+        $stedenLastmod = $this->lastmodFromFiles([base_path('data/steden.json'), base_path('data/deelplekken.json')]);
+        foreach ($catalogus->indexable() as $stad) {
             $entries[] = [
                 'loc' => route('gratis-planten.show', ['stad' => $stad['slug']]),
                 'lastmod' => $stedenLastmod,

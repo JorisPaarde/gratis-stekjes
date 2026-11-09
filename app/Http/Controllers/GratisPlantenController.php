@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\StadAanbod;
-use App\Services\Steden;
+use App\Services\StadCatalogus;
 use App\Support\RecentAanbod;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class GratisPlantenController extends Controller
 {
-    public function index(Steden $steden): View
+    public function index(StadCatalogus $catalogus): View
     {
         $site = config('site.name');
         $title = 'Gratis planten ophalen in jouw stad';
@@ -22,7 +23,7 @@ class GratisPlantenController extends Controller
             'title' => $title,
             'metaDescription' => $metaDescription,
             'canonical' => route('gratis-planten.index'),
-            'byLand' => $steden->groupedByLand(),
+            'byLand' => $catalogus->groupedByLandForOverview(),
             'schema' => [
                 '@context' => 'https://schema.org',
                 '@type' => 'CollectionPage',
@@ -43,21 +44,24 @@ class GratisPlantenController extends Controller
         ]);
     }
 
-    public function show(string $stad, Steden $steden, StadAanbod $stadAanbod): View|Response
+    public function show(string $stad, StadCatalogus $catalogus, StadAanbod $stadAanbod): View|Response|RedirectResponse
     {
-        $city = $steden->find($stad);
+        $city = $catalogus->find($stad);
         if ($city === null) {
             abort(404);
         }
 
+        // Automatische stad onder de drempel: geen dunne pagina, wel nette redirect.
+        if (($city['bron'] ?? 'vast') === 'auto' && ! $catalogus->isIndexable($city)) {
+            return redirect()->route('gratis-planten.index', status: 301);
+        }
+
         $site = config('site.name');
-        $title = $steden->pageTitle($city);
+        $title = $catalogus->pageTitle($city);
         $isBe = ($city['country'] ?? 'NL') === 'BE';
-        $metaDescription = $isBe
-            ? 'Gratis planten, stekjes en zaden in '.$city['naam'].' ('.$city['provincie'].'). Zadenbibs en aanbod binnen ongeveer '.(int) $city['straal_km'].' km. Haal of deel via '.$site.'.'
-            : 'Gratis planten en stekjes in '.$city['naam'].' ('.$city['provincie'].'). Actueel aanbod binnen ongeveer '.(int) $city['straal_km'].' km. Haal of deel via '.$site.'.';
+        $metaDescription = $catalogus->metaDescription($city);
         $canonical = route('gratis-planten.show', ['stad' => $city['slug']]);
-        $faq = $steden->faqFor($city);
+        $faq = $catalogus->faqFor($city);
         $aanbod = $stadAanbod->aanbodWithin($city);
         // Lijst/kop alleen bij genoeg actief aanbod mét foto in de straal; CTAs + kaart blijven.
         $toonAanbod = RecentAanbod::shouldShow($stadAanbod->countWithFotoWithin($city));
@@ -76,7 +80,8 @@ class GratisPlantenController extends Controller
                 return $plaats !== '' && $plaats === $stadNaamNorm;
             }
         ));
-        $nearby = $steden->nearby($city);
+        $nearby = $catalogus->nearby($city);
+        $indexable = $catalogus->isIndexable($city);
         $inLanguage = $isBe ? 'nl-BE' : 'nl';
         $areaServed = $isBe
             ? [['@type' => 'Country', 'name' => 'BE']]
@@ -95,6 +100,7 @@ class GratisPlantenController extends Controller
             'title' => $title,
             'metaDescription' => $metaDescription,
             'canonical' => $canonical,
+            'robots' => $indexable ? null : 'noindex, follow',
             'stad' => $city,
             'aanbod' => $aanbod,
             'toonAanbod' => $toonAanbod,

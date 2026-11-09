@@ -38,15 +38,17 @@ test('onbekende stad-slug geeft 404', function () {
         ->assertNotFound();
 });
 
-test('sitemap bevat overzicht en steden met lastmod', function () {
+test('sitemap bevat overzicht en geïndexeerde steden met lastmod', function () {
     $xml = $this->get(route('sitemap'))
         ->assertOk()
         ->assertHeader('Content-Type', 'application/xml; charset=UTF-8')
         ->getContent();
 
     expect($xml)->toContain(route('gratis-planten.index'));
+    // Haarlem/BE-steden hebben zichtbare deelplekken → geïndexeerd.
     expect($xml)->toContain(route('gratis-planten.show', ['stad' => 'haarlem']));
-    expect($xml)->toContain(route('gratis-planten.show', ['stad' => 'rotterdam']));
+    // Rotterdam zonder lokaal aanbod/deelplek → niet in sitemap.
+    expect($xml)->not->toContain(route('gratis-planten.show', ['stad' => 'rotterdam']));
 
     foreach (['antwerpen', 'brussel', 'namen', 'lommel'] as $slug) {
         $loc = route('gratis-planten.show', ['stad' => $slug]);
