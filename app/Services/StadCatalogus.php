@@ -19,10 +19,10 @@ use Throwable;
  *
  * Drempel (config `gratisplanten.stad_aanbod_min`, default 1): gemeente met
  * minstens zoveel actieve publieke aanbiedingen of zichtbare deelplekken krijgt
- * een geïndexeerde pagina. Vaste steden uit steden.json blijven altijd
- * bereikbaar; onder de drempel krijgen ze noindex en verdwijnen ze uit sitemap
- * en interne links. Automatische steden onder de drempel verdwijnen uit
- * overzicht/sitemap; onbekende slugs → 404.
+ * een geïndexeerde automatische pagina. Vaste steden uit steden.json blijven
+ * altijd bereikbaar én geïndexeerd (sitemap, overzicht, interne links), ook
+ * zonder aanbod of deelplek. Automatische steden onder de drempel: 301 naar
+ * `/gratis-planten` en uit overzicht/sitemap; onbekende slugs → 404.
  */
 final class StadCatalogus
 {
@@ -141,11 +141,16 @@ final class StadCatalogus
 
     public function isIndexable(array $stad): bool
     {
+        // Vaste steden uit steden.json altijd indexeren (ook zonder aanbod).
+        if (($stad['bron'] ?? 'vast') === 'vast') {
+            return true;
+        }
+
         return (int) ($stad['totaal'] ?? 0) >= $this->threshold();
     }
 
     /**
-     * Steden voor sitemap: alleen geïndexeerde (vast of auto).
+     * Steden voor sitemap: alle vaste + automatische boven de drempel.
      *
      * @return list<array{
      *   naam: string,

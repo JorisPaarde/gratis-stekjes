@@ -18,7 +18,7 @@ return [
      * Minimaal aantal actieve publieke aanbiedingen óf zichtbare deelplekken per
      * gemeente vóór een automatische stadspagina geïndexeerd wordt (sitemap,
      * overzichtslinks, robots index). Vaste steden uit steden.json blijven
-     * bereikbaar onder de drempel (noindex). Default 1: elke plaats met echt
+     * altijd geïndexeerd, ook onder de drempel. Default 1: elke plaats met echt
      * aanbod krijgt een pagina.
      */
     'stad_aanbod_min' => (int) env('GP_STAD_AANBOD_MIN', 1),
