@@ -23,7 +23,7 @@ class LoginRequest extends FormRequest
             'email' => ['required', 'string', 'email:filter', 'max:254'],
             'password' => ['required', 'string', 'max:200'],
             'remember' => ['nullable', 'boolean'],
-            'website' => ['nullable', 'string', 'max:200'],
+            ...FormGuard::honeypotRules(),
             'form_started' => ['required', 'integer'],
             'next' => ['nullable', 'string', 'max:200'],
         ];
@@ -32,7 +32,7 @@ class LoginRequest extends FormRequest
     public function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator): void {
-            if (FormGuard::honeypotFilled($this->input('website'))) {
+            if (FormGuard::honeypotFilledIn($this)) {
                 return;
             }
             if (FormGuard::submittedTooFast($this->input('form_started'))) {
@@ -43,7 +43,7 @@ class LoginRequest extends FormRequest
 
     public function isBot(): bool
     {
-        return FormGuard::honeypotFilled($this->input('website'));
+        return FormGuard::honeypotFilledIn($this);
     }
 
     public function safeNext(): string

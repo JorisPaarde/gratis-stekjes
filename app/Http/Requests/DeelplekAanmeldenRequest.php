@@ -30,12 +30,12 @@ class DeelplekAanmeldenRequest extends FormRequest
             'adres' => ['nullable', 'string', 'max:255'],
             'postcode' => ['nullable', 'string', 'max:16'],
             'plaats' => ['required', 'string', 'max:120'],
-            // Echte website; honeypot blijft het veld "website".
+            // Echte website van de plek = veld "url"; honeypot = gp_hp_stem (+ legacy website).
             'url' => ['nullable', 'string', 'max:500'],
             'beschrijving' => ['nullable', 'string', 'max:1000'],
             'contact_email' => ['required', 'string', 'email:filter', 'max:254'],
             'privacy' => ['accepted'],
-            'website' => ['nullable', 'string', 'max:200'],
+            ...FormGuard::honeypotRules(),
             'form_started' => ['required', 'integer'],
         ];
     }
@@ -59,7 +59,7 @@ class DeelplekAanmeldenRequest extends FormRequest
     public function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator): void {
-            if (FormGuard::honeypotFilled($this->input('website'))) {
+            if (FormGuard::honeypotFilledIn($this)) {
                 return;
             }
             if (FormGuard::submittedTooFast($this->input('form_started'))) {
@@ -86,6 +86,6 @@ class DeelplekAanmeldenRequest extends FormRequest
 
     public function isBot(): bool
     {
-        return FormGuard::honeypotFilled($this->input('website'));
+        return FormGuard::honeypotFilledIn($this);
     }
 }

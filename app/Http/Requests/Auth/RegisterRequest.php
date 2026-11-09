@@ -16,6 +16,9 @@ use Illuminate\Validation\Validator as IlluminateValidator;
 
 class RegisterRequest extends FormRequest
 {
+    /** @var string Altijd dit formulier — nooit previous()/back() naar / zonder melding. */
+    protected $redirectRoute = 'account.registreren';
+
     public function authorize(): bool
     {
         return true;
@@ -34,7 +37,7 @@ class RegisterRequest extends FormRequest
             'postcode' => ['required', 'string', 'max:10'],
             'gratis_akkoord' => ['accepted'],
             'privacy' => ['accepted'],
-            'website' => ['nullable', 'string', 'max:200'],
+            ...FormGuard::honeypotRules(),
             'form_started' => ['required', 'integer'],
             'next' => ['nullable', 'string', 'max:200'],
             'acquisition_found_via' => ['nullable', 'string', Rule::in($foundOptions)],
@@ -55,17 +58,22 @@ class RegisterRequest extends FormRequest
             'postcode.required' => 'Vul je postcode in.',
             'gratis_akkoord.accepted' => 'Je moet akkoord gaan: alleen gratis, geen verkoop.',
             'privacy.accepted' => 'Je moet akkoord gaan met de privacyverklaring.',
+            'form_started' => 'Dat ging erg snel. Klik nog een keer op Account maken.',
         ];
     }
 
     public function withValidator(IlluminateValidator $validator): void
     {
         $validator->after(function (IlluminateValidator $validator): void {
-            if (FormGuard::honeypotFilled($this->input('website'))) {
+            if (FormGuard::honeypotFilledIn($this)) {
                 return;
             }
             if (FormGuard::submittedTooFast($this->input('form_started'))) {
-                $validator->errors()->add('form_started', 'Even geduld, het formulier ging te snel.');
+                FormGuard::logBotRejected('register', 'too_fast');
+                $validator->errors()->add(
+                    'form_started',
+                    'Dat ging erg snel. Klik nog een keer op Account maken.'
+                );
             }
             $email = (string) $this->input('email', '');
             if ($email !== '' && FormGuard::isDisposableEmail($email)) {
@@ -102,7 +110,7 @@ class RegisterRequest extends FormRequest
 
     protected function failedValidation(Validator $validator): void
     {
-        if (! FormGuard::honeypotFilled($this->input('website'))) {
+        if (! FormGuard::honeypotFilledIn($this)) {
             try {
                 $this->attributes->set('conversion_failed_validator', $validator);
                 app(ConversionTracker::class)->recordValidationErrors($this, $validator->errors());
@@ -111,16 +119,31 @@ class RegisterRequest extends FormRequest
             }
         }
 
+        // Geen wachtwoord terug; form_started komt opnieuw uit de honeypot-partial (time()).
+        // Expliciet route i.p.v. previous(): ontbrekende Referer stuurde anders naar / en
+        // consumeerde de flash vóór het formulier opnieuw zichtbaar was.
+        // Vangnet ?fout=snel: file-sessies zonder lock kunnen flash verliezen bij parallelle
+        // requests (staging lsphp); query-param toont de melding ook zonder flash.
+        $except = array_values(array_unique(array_merge(
+            ['current_password', 'password', 'password_confirmation', 'form_started', '_token'],
+            FormGuard::HONEYPOT_FIELDS,
+        )));
+
+        // Alleen fout-code in query (geen e-mail/PII). Flash + old() blijven primair.
+        $query = $validator->errors()->has('form_started')
+            ? ['fout' => 'snel']
+            : [];
+
         throw new HttpResponseException(
             redirect()
-                ->to($this->getRedirectUrl())
-                ->withInput($this->except($this->dontFlash))
+                ->route('account.registreren', $query)
+                ->withInput($this->except($except))
                 ->withErrors($validator->errors(), $this->errorBag)
         );
     }
 
     public function isBot(): bool
     {
-        return FormGuard::honeypotFilled($this->input('website'));
+        return FormGuard::honeypotFilledIn($this);
     }
 }

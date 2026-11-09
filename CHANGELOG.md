@@ -3,6 +3,60 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.35] - 2026-11-09
+
+### Fixed
+
+- Registreren: intermitterend leeg formulier na te snelle submit op staging
+  (file-sessie + parallelle lsphp-requests wissen flash). Reproduceerbaar
+  ~30% bij snelle Playwright-fills; `form.bot_rejected`/too_fast wél, flash niet.
+- Vangnet: redirect met alleen `?fout=snel` / `?fout=teveel` (geen e-mail in
+  query). View toont NL-melding ook zonder sessie-flash; e-mail via `old()` als
+  flash er is. Throttle-vangnet: «Probeer het straks opnieuw.»
+- Session lock (`Route::block`) op GET/POST `/account/registreren` tegen
+  parallelle sessie-writes (`CACHE_STORE=file` op staging/prod via deploy).
+
+## [0.78.34] - 2026-11-09
+
+### Fixed
+
+- `/meet/event` (sendBeacon) draait in sessieloze middlewaregroep `beacon`
+  (EncryptCookies + bindings, géén StartSession). Voorkomt race waarbij een
+  late beacon-sessie-save geflashte validatiefouten/old input op
+  `/account/registreren` overschreef (leeg formulier zonder melding).
+- `StartSessionWhenNeeded` weigert `meet/*` sowieso (vangnet).
+- Alleen het registratieformulier vuurt nu `sendBeacon`; andere formulieren
+  hadden deze race niet. Feature-test: late sessie-write wist flash; na fix
+  blijft melding + `form_start`-telling intact.
+
+## [0.78.33] - 2026-11-09
+
+### Fixed
+
+- Registreren: elke afwijzing (te snel, validatie, throttle, postcode/geo) redirect
+  expliciet naar `/account/registreren` met zichtbare foutmelding. `back()` /
+  `previous()` kon zonder Referer naar `/` gaan; flash verdween dan en het
+  formulier leek leeg bij een volgende poging (o.a. tweede snelle submit).
+- Throttle-kopie: «Even te veel pogingen. Probeer het over een minuut opnieuw.»
+  (dynamisch via `ThrottleMessage`). E-mail/land/postcode blijven behouden;
+  wachtwoord/honeypot/`form_started` nooit in old input.
+- Feature-test: twee te snelle submits + throttle zonder Referer.
+
+## [0.78.32] - 2026-11-09
+
+### Fixed
+
+- Honeypot autofill-proof: veld `gp_hp_stem` (geen website/url/name/email),
+  `autocomplete=off` + `data-1p-ignore` / `data-lpignore` / `data-bwignore` /
+  `data-form-type=other`. Legacy `website` blijft server-side honeypot voor
+  gecachte HTML. Alle formulieren met `partials.honeypot` (+ help-mee).
+- Registreren te snel (honeypot leeg): geen nep-succes, formulier terug met
+  «Dat ging erg snel. Klik nog een keer op Account maken.», zonder wachtwoord
+  in old input; `form_started` opnieuw via partial. Honeypot gevuld blijft
+  nep-succes naar bevestiging-nodig.
+- Logregel `form.bot_rejected` (reden `honeypot`|`too_fast`, zonder e-mail/PII)
+  bij registratie-afwijzing.
+
 ## [0.78.31] - 2026-11-09
 
 ### Added

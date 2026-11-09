@@ -161,7 +161,7 @@ test('login is throttled per e-mail en IP met Nederlandse wachttijd', function (
         ->assertRedirect(route('account.inloggen'))
         ->assertSessionHasErrors('email');
 
-    expect(session('errors')->first('email'))->toContain('Te veel pogingen');
+    expect(session('errors')->first('email'))->toContain('Even te veel pogingen');
 });
 
 test('registratie is throttled per IP', function () {
@@ -179,10 +179,10 @@ test('registratie is throttled per IP', function () {
             'email' => 'teveel@example.com',
             'password' => accountSecPassword(),
         ]))
-        ->assertRedirect(route('account.registreren'))
+        ->assertRedirect(route('account.registreren', ['fout' => 'teveel']))
         ->assertSessionHasErrors('email');
 
-    expect(session('errors')->first('email'))->toContain('Te veel pogingen');
+    expect(session('errors')->first('email'))->toContain('Even te veel pogingen');
 });
 
 test('wachtwoord vergeten stuurt mail zonder enumeratie', function () {

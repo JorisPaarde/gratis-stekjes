@@ -13,6 +13,7 @@ use App\Notifications\VerifyEmailDutch;
 use App\Services\ConversionTracker;
 use App\Services\UserLocatieService;
 use App\Support\Country;
+use App\Support\FormGuard;
 use App\Support\SafeIntended;
 use App\Support\SafeMail;
 use App\Support\ThrottleMessage;
@@ -41,6 +42,14 @@ class RegisterController extends Controller
             ?? SafeIntended::DEFAULT;
         $next = SafeIntended::sanitize($next);
 
+        $fout = strtolower(trim((string) $request->query('fout', '')));
+        $foutMessage = match ($fout) {
+            'snel' => 'Dat ging erg snel. Klik nog een keer op Account maken.',
+            // Neutraal: geen vaste 'minuut' — flash met ThrottleMessage heeft voorrang.
+            'teveel' => 'Even te veel pogingen. Probeer het straks opnieuw.',
+            default => null,
+        };
+
         return view('auth.register', [
             'title' => 'Registreren',
             'metaDescription' => 'Account maken bij '.config('site.name').'. Bevestig je e-mail om verder te gaan.',
@@ -49,6 +58,7 @@ class RegisterController extends Controller
             'countries' => Country::labels(),
             'foundViaOptions' => (array) config('conversion.found_via_options', []),
             'next' => $next,
+            'foutMessage' => $foutMessage,
         ]);
     }
 
@@ -65,6 +75,8 @@ class RegisterController extends Controller
         SafeIntended::clearAssociationResendHint($request);
 
         if ($request->isBot()) {
+            FormGuard::logBotRejected('register', 'honeypot');
+
             return redirect()
                 ->route('account.bevestiging-nodig')
                 ->with('status', 'Check je e-mail om je aanmelding te bevestigen.');
@@ -72,8 +84,12 @@ class RegisterController extends Controller
 
         $key = 'register:'.$request->ip();
         if (RateLimiter::tooManyAttempts($key, 8)) {
-            return back()
-                ->withInput($request->except('password'))
+            // Altijd terug naar het formulier (niet back()/previous → /): anders verdwijnt
+            // de flash op een pagina zonder error-list en lijkt het formulier leeg.
+            // Geen e-mail in query (PII in logs/GA); old() via flash als die blijft.
+            return redirect()
+                ->route('account.registreren', ['fout' => 'teveel'])
+                ->withInput(self::safeOldInput($request))
                 ->withErrors(['email' => ThrottleMessage::forKey($key)]);
         }
         RateLimiter::hit($key, 3600);
@@ -101,8 +117,9 @@ class RegisterController extends Controller
 
             $geo = $locatie->applyPostcode($user, $postcode, $country, true);
             if (! ($geo['ok'] ?? false)) {
-                return back()
-                    ->withInput($request->except('password'))
+                return redirect()
+                    ->route('account.registreren')
+                    ->withInput(self::safeOldInput($request))
                     ->withErrors(['postcode' => $geo['error'] ?? 'Locatie niet gevonden.']);
             }
 
@@ -149,5 +166,21 @@ class RegisterController extends Controller
             ->with('status', $status)
             ->with('status_level', $mailOk ? 'ok' : 'warn')
             ->withInput(['email' => $email]);
+    }
+
+    /**
+     * Old input voor het registratieformulier: e-mail/land/postcode/checks behouden,
+     * nooit wachtwoord of honeypot/timing-velden.
+     *
+     * @return array<string, mixed>
+     */
+    private static function safeOldInput(Request $request): array
+    {
+        $except = array_values(array_unique(array_merge(
+            ['current_password', 'password', 'password_confirmation', 'form_started', '_token'],
+            FormGuard::HONEYPOT_FIELDS,
+        )));
+
+        return $request->except($except);
     }
 }

@@ -62,7 +62,7 @@ class ErvaringController extends Controller
     {
         $user = $request->user();
 
-        if (FormGuard::honeypotFilled($request->input('website'))) {
+        if (FormGuard::honeypotFilledIn($request)) {
             return redirect()
                 ->route('account.ervaringen')
                 ->with('status', 'Dank je — ik bekijk je ervaring eerst vóór die online gaat.');

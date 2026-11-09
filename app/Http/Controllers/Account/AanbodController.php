@@ -126,7 +126,7 @@ class AanbodController extends Controller
             return redirect()->route('account.profiel');
         }
 
-        if (FormGuard::honeypotFilled($request->input('website'))) {
+        if (FormGuard::honeypotFilledIn($request)) {
             return redirect()->route('account.aanbod')->with('status', 'Aanbod geplaatst.');
         }
         if (FormGuard::submittedTooFast($request->input('form_started'))) {
@@ -215,7 +215,7 @@ class AanbodController extends Controller
     ): RedirectResponse {
         abort_unless($aanbod->user_id === $request->user()->id, 403);
 
-        if (FormGuard::honeypotFilled($request->input('website'))) {
+        if (FormGuard::honeypotFilledIn($request)) {
             return redirect()->route('account.aanbod')->with('status', 'Aanbod bijgewerkt.');
         }
         if (FormGuard::submittedTooFast($request->input('form_started'))) {
