@@ -184,45 +184,76 @@
     </summary>
     <div class="stats-panel-body">
       <p class="muted stats-funnel-intro">Unieke bezoekers zijn een schatting (daghash). Percentages tonen we pas vanaf {{ $minFormStarts }} formulierstarts in die week; daaronder staat «te weinig data» omdat de percentages nog niet betrouwbaar zijn.</p>
-      <div class="beheer-table-wrap stats-funnel-wrap">
-        <table class="beheer-table stats-funnel-table">
-          <thead>
-            <tr>
-              <th scope="col">Week</th>
-              @foreach($funnelLabels as $key => $label)
-                <th scope="col">{{ $label }}</th>
-              @endforeach
-            </tr>
-          </thead>
-          <tbody>
-            @foreach($funnelWeeks as $week)
-              <tr>
-                <th scope="row" data-label="Week" class="stats-funnel-week">
-                  <span class="stats-funnel-step-label">Week</span>
-                  <strong class="stats-funnel-step-value">{{ $week['label'] }}</strong>
-                  @if($week['too_few'])
-                    <p class="stats-funnel-sparse hint">Te weinig data: minder dan {{ $minFormStarts }} formulierstarts deze week, percentages nog niet betrouwbaar.</p>
-                  @endif
-                </th>
+
+      <ul class="stats-funnel-legend" aria-label="Trechterstappen">
+        @foreach($funnelLegendLabels as $key => $legendLabel)
+          <li>
+            <span class="stats-funnel-legend-icon" aria-hidden="true">
+              <x-icon :name="$funnelIcons[$key]" :size="16" />
+            </span>
+            <span>{{ $legendLabel }}</span>
+          </li>
+        @endforeach
+      </ul>
+
+      <div class="stats-funnel-weeks">
+        @foreach($funnelWeeks as $week)
+          @php
+            $firstOfferCount = (int) ($week['steps'][\App\Models\ConversionEvent::TYPE_FIRST_OFFER] ?? 0);
+            $ctaCount = (int) ($week['steps'][\App\Models\ConversionEvent::TYPE_CTA_CLICK] ?? 0);
+          @endphp
+          <details
+            class="stats-funnel-week-block"
+            data-week-key="{{ $week['week_key'] }}"
+            @if(! empty($week['open_default'])) open @endif
+          >
+            <summary class="stats-funnel-week-summary">
+              <span class="stats-funnel-week-label">{{ $week['label'] }}</span>
+              <span class="stats-funnel-week-peek">
+                <span
+                  class="stats-funnel-week-peek-nums"
+                  title="bezoekers → klik → eerste aanbod"
+                >{{ (int) $week['unique_visitors'] }} → {{ $ctaCount }} → {{ $firstOfferCount }}</span>
+                @if($week['too_few'])
+                  <span class="stats-funnel-week-peek-sparse hint">te weinig data</span>
+                @endif
+              </span>
+            </summary>
+            <div class="stats-funnel-week-body">
+              @if($week['too_few'])
+                <p class="stats-funnel-sparse hint">Te weinig data: minder dan {{ $minFormStarts }} formulierstarts deze week, percentages nog niet betrouwbaar.</p>
+              @endif
+              <ul class="stats-funnel-steps">
                 @foreach($funnelLabels as $key => $label)
                   @php
                     $stepCount = $key === 'unique_visitors'
                       ? (int) $week['unique_visitors']
                       : (int) ($week['steps'][$key] ?? 0);
                     $stepRate = $week['rates'][$key] ?? null;
+                    $ariaParts = [$label, (string) $stepCount];
+                    if (! $week['too_few'] && $stepRate !== null) {
+                        $ariaParts[] = $stepRate.'%';
+                    }
+                    $ariaLabel = implode(', ', $ariaParts);
                   @endphp
-                  <td data-label="{{ $label }}" class="stats-funnel-step">
-                    <span class="stats-funnel-step-label">{{ $label }}</span>
+                  <li
+                    class="stats-funnel-cell"
+                    title="{{ $ariaLabel }}"
+                    aria-label="{{ $ariaLabel }}"
+                  >
+                    <span class="stats-funnel-cell-icon" aria-hidden="true">
+                      <x-icon :name="$funnelIcons[$key]" :size="18" />
+                    </span>
                     <span class="stats-funnel-step-value">{{ $stepCount }}</span>
                     @if(! $week['too_few'] && $stepRate !== null)
-                      <span class="hint stats-funnel-step-rate">{{ $stepRate }}%</span>
+                      <span class="hint stats-funnel-step-rate" aria-hidden="true">{{ $stepRate }}%</span>
                     @endif
-                  </td>
+                  </li>
                 @endforeach
-              </tr>
-            @endforeach
-          </tbody>
-        </table>
+              </ul>
+            </div>
+          </details>
+        @endforeach
       </div>
     </div>
   </details>

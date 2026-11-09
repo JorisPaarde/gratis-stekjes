@@ -561,16 +561,17 @@ test('dashboard trechter toont staplabels en drempeluitleg in HTML', function ()
         ->get(route('beheer.statistieken'))
         ->assertOk()
         ->assertSee('Trechter · per week', false)
-        ->assertSee('Klik Word lid', false)
+        ->assertSee('Klik word lid', false)
         ->assertSee('Registratiepagina', false)
         ->assertSee('Formulier gestart', false)
-        ->assertSee('Formulier verstuurd', false)
-        ->assertSee('Account gemaakt', false)
+        ->assertSee('Verstuurd', false)
+        ->assertSee('Account', false)
         ->assertSee('E-mail bevestigd', false)
         ->assertSee('Eerste aanbod', false)
-        ->assertSee('Unieke bezoekers (schatting)', false)
-        ->assertSee('data-label="Formulier gestart"', false)
-        ->assertSee('stats-funnel-step-label', false)
+        ->assertSee('Bezoekers', false)
+        ->assertSee('stats-funnel-legend', false)
+        ->assertSee('stats-funnel-week-block', false)
+        ->assertSee('aria-label="Formulier gestart', false)
         ->assertSee(
             "Te weinig data: minder dan {$minFormStarts} formulierstarts deze week, percentages nog niet betrouwbaar.",
             false
@@ -581,7 +582,89 @@ test('dashboard trechter toont staplabels en drempeluitleg in HTML', function ()
         )
         ->getContent();
 
-    expect($html)->toContain('class="stats-funnel-sparse hint"');
+    expect($html)->toContain('class="stats-funnel-sparse hint"')
+        ->and($html)->toContain('aria-label="Trechterstappen"');
+});
+
+test('dashboard trechter opent alleen de laatste volledige week en heeft legenda plus aria-labels', function () {
+    $this->travelTo(Carbon::create(2026, 11, 11, 14, 0, 0, 'Europe/Amsterdam'));
+
+    $tracker = app(ConversionTracker::class);
+    $lastCompleteStart = now('Europe/Amsterdam')->startOfWeek(Carbon::MONDAY)->subWeek();
+    $olderStart = $lastCompleteStart->copy()->subWeek();
+    $currentStart = now('Europe/Amsterdam')->startOfWeek(Carbon::MONDAY);
+
+    foreach ([
+        [$lastCompleteStart->copy()->addDays(2), 'complete-f', 'complete-v'],
+        [$olderStart->copy()->addDays(1), 'older-f', 'older-v'],
+        [$currentStart->copy()->addDay(), 'current-f', 'current-v'],
+    ] as [$when, $flow, $hash]) {
+        ConversionEvent::query()->create([
+            'occurred_at' => $when->copy()->setTime(12, 0)->utc(),
+            'event_type' => ConversionEvent::TYPE_FORM_START,
+            'path' => '/account/registreren',
+            'flow_id' => $flow,
+            'visitor_day_hash' => $hash,
+            'device_type' => 'mobile',
+            'week_key' => $tracker->weekKey($when),
+        ]);
+        ConversionEvent::query()->create([
+            'occurred_at' => $when->copy()->setTime(12, 5)->utc(),
+            'event_type' => ConversionEvent::TYPE_FIRST_OFFER,
+            'path' => '/account/aanbod',
+            'flow_id' => $flow,
+            'visitor_day_hash' => $hash,
+            'device_type' => 'mobile',
+            'week_key' => $tracker->weekKey($when),
+        ]);
+    }
+
+    $funnel = $tracker->funnelByWeek(8);
+    $openWeeks = array_values(array_filter($funnel, fn (array $w) => $w['open_default'] === true));
+    $completeWeeks = array_values(array_filter($funnel, fn (array $w) => $w['complete'] === true));
+
+    expect($openWeeks)->toHaveCount(1)
+        ->and($openWeeks[0]['week_key'])->toBe($tracker->weekKey($lastCompleteStart))
+        ->and($funnel[0]['complete'])->toBeFalse()
+        ->and($funnel[0]['open_default'])->toBeFalse()
+        ->and($completeWeeks[0]['open_default'])->toBeTrue();
+
+    $html = $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken'))
+        ->assertOk()
+        ->assertSee('stats-funnel-legend', false)
+        ->assertSee('aria-label="Trechterstappen"', false)
+        ->assertSee('aria-label="Unieke bezoekers (schatting)', false)
+        ->assertSee('aria-label="Klik Word lid', false)
+        ->assertSee('aria-label="Eerste aanbod', false)
+        ->assertSee('icon-bezoekers', false)
+        ->assertSee('icon-klik', false)
+        ->assertSee('icon-pagina', false)
+        ->assertSee('icon-formulier', false)
+        ->assertSee('icon-verstuur', false)
+        ->assertSee('icon-gebruiker', false)
+        ->assertSee('icon-mail-check', false)
+        ->assertSee('icon-plant', false)
+        ->getContent();
+
+    preg_match_all(
+        '/<details\s+[^>]*class="stats-funnel-week-block"[^>]*>/',
+        $html,
+        $matches
+    );
+    expect($matches[0])->not->toBeEmpty();
+
+    $openBlocks = array_values(array_filter(
+        $matches[0],
+        fn (string $tag) => preg_match('/\sopen(?:\s|=|>|$)/', $tag) === 1
+    ));
+    expect($openBlocks)->toHaveCount(1)
+        ->and($openBlocks[0])->toContain('data-week-key="'.$tracker->weekKey($lastCompleteStart).'"');
+
+    $closedCount = count($matches[0]) - count($openBlocks);
+    expect($closedCount)->toBeGreaterThanOrEqual(2);
+
+    $this->travelBack();
 });
 
 test('dashboard trechter toont percentages vanaf 30 form_starts', function () {
