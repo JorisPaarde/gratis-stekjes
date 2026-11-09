@@ -542,6 +542,131 @@ test('dashboard trechter toont te weinig data onder 30 form_starts', function ()
     expect($html)->not->toContain('bezoekers vandaag');
 });
 
+test('dashboard trechter toont staplabels en drempeluitleg in HTML', function () {
+    $minFormStarts = (int) config('conversion.min_form_starts_for_rates', 30);
+
+    for ($i = 0; $i < 3; $i++) {
+        ConversionEvent::query()->create([
+            'occurred_at' => now(),
+            'event_type' => ConversionEvent::TYPE_FORM_START,
+            'path' => '/account/registreren',
+            'flow_id' => 'label-f'.$i,
+            'visitor_day_hash' => 'label-v'.$i,
+            'device_type' => 'mobile',
+            'week_key' => app(ConversionTracker::class)->weekKey(),
+        ]);
+    }
+
+    $html = $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken'))
+        ->assertOk()
+        ->assertSee('Trechter · per week', false)
+        ->assertSee('Klik word lid', false)
+        ->assertSee('Registratiepagina', false)
+        ->assertSee('Formulier gestart', false)
+        ->assertSee('Verstuurd', false)
+        ->assertSee('Account', false)
+        ->assertSee('E-mail bevestigd', false)
+        ->assertSee('Eerste aanbod', false)
+        ->assertSee('Bezoekers', false)
+        ->assertSee('stats-funnel-legend', false)
+        ->assertSee('stats-funnel-week-block', false)
+        ->assertSee('aria-label="Formulier gestart', false)
+        ->assertSee(
+            "Te weinig data: minder dan {$minFormStarts} formulierstarts deze week, percentages nog niet betrouwbaar.",
+            false
+        )
+        ->assertSee(
+            "Percentages tonen we pas vanaf {$minFormStarts} formulierstarts in die week",
+            false
+        )
+        ->getContent();
+
+    expect($html)->toContain('class="stats-funnel-sparse hint"')
+        ->and($html)->toContain('aria-label="Trechterstappen"');
+});
+
+test('dashboard trechter opent alleen de laatste volledige week en heeft legenda plus aria-labels', function () {
+    $this->travelTo(Carbon::create(2026, 11, 11, 14, 0, 0, 'Europe/Amsterdam'));
+
+    $tracker = app(ConversionTracker::class);
+    $lastCompleteStart = now('Europe/Amsterdam')->startOfWeek(Carbon::MONDAY)->subWeek();
+    $olderStart = $lastCompleteStart->copy()->subWeek();
+    $currentStart = now('Europe/Amsterdam')->startOfWeek(Carbon::MONDAY);
+
+    foreach ([
+        [$lastCompleteStart->copy()->addDays(2), 'complete-f', 'complete-v'],
+        [$olderStart->copy()->addDays(1), 'older-f', 'older-v'],
+        [$currentStart->copy()->addDay(), 'current-f', 'current-v'],
+    ] as [$when, $flow, $hash]) {
+        ConversionEvent::query()->create([
+            'occurred_at' => $when->copy()->setTime(12, 0)->utc(),
+            'event_type' => ConversionEvent::TYPE_FORM_START,
+            'path' => '/account/registreren',
+            'flow_id' => $flow,
+            'visitor_day_hash' => $hash,
+            'device_type' => 'mobile',
+            'week_key' => $tracker->weekKey($when),
+        ]);
+        ConversionEvent::query()->create([
+            'occurred_at' => $when->copy()->setTime(12, 5)->utc(),
+            'event_type' => ConversionEvent::TYPE_FIRST_OFFER,
+            'path' => '/account/aanbod',
+            'flow_id' => $flow,
+            'visitor_day_hash' => $hash,
+            'device_type' => 'mobile',
+            'week_key' => $tracker->weekKey($when),
+        ]);
+    }
+
+    $funnel = $tracker->funnelByWeek(8);
+    $openWeeks = array_values(array_filter($funnel, fn (array $w) => $w['open_default'] === true));
+    $completeWeeks = array_values(array_filter($funnel, fn (array $w) => $w['complete'] === true));
+
+    expect($openWeeks)->toHaveCount(1)
+        ->and($openWeeks[0]['week_key'])->toBe($tracker->weekKey($lastCompleteStart))
+        ->and($funnel[0]['complete'])->toBeFalse()
+        ->and($funnel[0]['open_default'])->toBeFalse()
+        ->and($completeWeeks[0]['open_default'])->toBeTrue();
+
+    $html = $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken'))
+        ->assertOk()
+        ->assertSee('stats-funnel-legend', false)
+        ->assertSee('aria-label="Trechterstappen"', false)
+        ->assertSee('aria-label="Unieke bezoekers (schatting)', false)
+        ->assertSee('aria-label="Klik Word lid', false)
+        ->assertSee('aria-label="Eerste aanbod', false)
+        ->assertSee('icon-bezoekers', false)
+        ->assertSee('icon-klik', false)
+        ->assertSee('icon-pagina', false)
+        ->assertSee('icon-formulier', false)
+        ->assertSee('icon-verstuur', false)
+        ->assertSee('icon-gebruiker', false)
+        ->assertSee('icon-mail-check', false)
+        ->assertSee('icon-plant', false)
+        ->getContent();
+
+    preg_match_all(
+        '/<details\s+[^>]*class="stats-funnel-week-block"[^>]*>/',
+        $html,
+        $matches
+    );
+    expect($matches[0])->not->toBeEmpty();
+
+    $openBlocks = array_values(array_filter(
+        $matches[0],
+        fn (string $tag) => preg_match('/\sopen(?:\s|=|>|$)/', $tag) === 1
+    ));
+    expect($openBlocks)->toHaveCount(1)
+        ->and($openBlocks[0])->toContain('data-week-key="'.$tracker->weekKey($lastCompleteStart).'"');
+
+    $closedCount = count($matches[0]) - count($openBlocks);
+    expect($closedCount)->toBeGreaterThanOrEqual(2);
+
+    $this->travelBack();
+});
+
 test('dashboard trechter toont percentages vanaf 30 form_starts', function () {
     config(['conversion.min_form_starts_for_rates' => 30]);
 
@@ -573,7 +698,110 @@ test('dashboard trechter toont percentages vanaf 30 form_starts', function () {
         ->assertOk()
         ->getContent();
 
-    expect($html)->toContain('50%');
+    expect($html)->toContain('50,0%')
+        ->and($html)->not->toContain('50%');
+});
+
+test('dashboard trechter toont kommanotatie en registratiepagina als per klik', function () {
+    config(['conversion.min_form_starts_for_rates' => 30]);
+    $tracker = app(ConversionTracker::class);
+    $weekKey = $tracker->weekKey();
+
+    for ($i = 0; $i < 10; $i++) {
+        ConversionEvent::query()->create([
+            'occurred_at' => now(),
+            'event_type' => ConversionEvent::TYPE_CTA_CLICK,
+            'path' => '/',
+            'flow_id' => 'cta-f'.$i,
+            'visitor_day_hash' => 'cta-v'.$i,
+            'device_type' => 'desktop',
+            'week_key' => $weekKey,
+        ]);
+    }
+    // 27 views / 10 klikken = 2,7 per klik (geen percentage)
+    for ($i = 0; $i < 27; $i++) {
+        ConversionEvent::query()->create([
+            'occurred_at' => now(),
+            'event_type' => ConversionEvent::TYPE_REGISTER_VIEW,
+            'path' => '/account/registreren',
+            'flow_id' => 'reg-f'.$i,
+            'visitor_day_hash' => 'reg-v'.$i,
+            'device_type' => 'desktop',
+            'week_key' => $weekKey,
+        ]);
+    }
+    for ($i = 0; $i < 30; $i++) {
+        ConversionEvent::query()->create([
+            'occurred_at' => now(),
+            'event_type' => ConversionEvent::TYPE_FORM_START,
+            'path' => '/account/registreren',
+            'flow_id' => 'fs-f'.$i,
+            'visitor_day_hash' => 'fs-v'.$i,
+            'device_type' => 'desktop',
+            'week_key' => $weekKey,
+        ]);
+    }
+    // 16/30 = 53,3%
+    for ($i = 0; $i < 16; $i++) {
+        ConversionEvent::query()->create([
+            'occurred_at' => now(),
+            'event_type' => ConversionEvent::TYPE_FORM_SUBMIT,
+            'path' => '/account/registreren',
+            'flow_id' => 'fs-f'.$i,
+            'visitor_day_hash' => 'fs-v'.$i,
+            'device_type' => 'desktop',
+            'week_key' => $weekKey,
+        ]);
+    }
+
+    $html = $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken'))
+        ->assertOk()
+        ->getContent();
+
+    expect($html)->toContain('2,7 per klik')
+        ->and($html)->toContain('aria-label="Registratiepagina: 27, 2,7 per klik"')
+        ->and($html)->toContain('53,3%')
+        ->and($html)->not->toContain('270%')
+        ->and($html)->not->toContain('270,0%')
+        ->and($html)->not->toContain('53.3%');
+});
+
+test('dashboard trechter toont streepje bij registratiepagina zonder klikken', function () {
+    config(['conversion.min_form_starts_for_rates' => 30]);
+    $tracker = app(ConversionTracker::class);
+    $weekKey = $tracker->weekKey();
+
+    for ($i = 0; $i < 5; $i++) {
+        ConversionEvent::query()->create([
+            'occurred_at' => now(),
+            'event_type' => ConversionEvent::TYPE_REGISTER_VIEW,
+            'path' => '/account/registreren',
+            'flow_id' => 'zero-reg-f'.$i,
+            'visitor_day_hash' => 'zero-reg-v'.$i,
+            'device_type' => 'desktop',
+            'week_key' => $weekKey,
+        ]);
+    }
+    for ($i = 0; $i < 30; $i++) {
+        ConversionEvent::query()->create([
+            'occurred_at' => now(),
+            'event_type' => ConversionEvent::TYPE_FORM_START,
+            'path' => '/account/registreren',
+            'flow_id' => 'zero-fs-f'.$i,
+            'visitor_day_hash' => 'zero-fs-v'.$i,
+            'device_type' => 'desktop',
+            'week_key' => $weekKey,
+        ]);
+    }
+
+    $html = $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken'))
+        ->assertOk()
+        ->getContent();
+
+    expect($html)->toContain('aria-label="Registratiepagina: 5, –"')
+        ->and($html)->toMatch('/class="hint stats-funnel-step-rate"[^>]*>–</');
 });
 
 test('postlogboek crud voor admin; stats-lezer en beheerder-mutaties afgeschermd', function () {

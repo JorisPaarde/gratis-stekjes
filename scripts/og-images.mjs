@@ -85,7 +85,7 @@ if (only === 'alles' || only === 'pagina') {
     { file: 'stektips', label: 'Stektips', titel: 'Zelf planten stekken, zaaien en snoeien', sub: 'Tips per soort: hoe en wanneer het lukt.', foto: P + 'aanmelden-960.jpg' },
     { file: 'deelplekken', label: 'Deelplekken', titel: 'Plantenasiels, plantenbiebs en zadenbibliotheken', sub: 'Vind een plek in de buurt om planten te brengen, ruilen of op te halen.', foto: P + 'kaart-960.jpg', credit: '© OpenStreetMap-bijdragers' },
     { file: 'hoe-werkt-het', label: 'Hoe werkt het', titel: 'Gratis, zelf ophalen en een praatje', sub: 'Zoek een plant of geef er een weg, met één account.', foto: P + 'delen-960.jpg' },
-    { file: 'gratis-planten', label: 'Per stad', titel: 'Gratis planten in jouw stad', sub: 'Aanbod en deelplekken in 46 steden in Nederland en België.' },
+    { file: 'gratis-planten', label: 'Per stad', titel: 'Gratis planten in jouw stad', sub: 'Aanbod en deelplekken in 47 steden in Nederland en België.' },
   );
 }
 

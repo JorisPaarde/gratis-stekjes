@@ -15,6 +15,27 @@ test('homepage toont «Hier kun je ook aan meedoen» onder «Doe mee» met kaart
         ->and($html)->toContain('stekchallenge-groep')
         ->and($html)->toContain('Foto: Carpe Vitam')
         ->and(strpos($html, 'id="ook-meedoen"'))->toBeGreaterThan(strpos($html, 'id="doe-mee"'));
+
+    // Tuinverenigingen-kaart naast STEKchallenge (zelfde grid/kaartstijl).
+    expect(preg_match('/<section[^>]*id="ook-meedoen"[^>]*>(.*?)<\/section>/s', $html, $sectie))->toBe(1);
+    expect($sectie[1])->toContain('href="'.route('tuinverenigingen').'"')
+        ->and($sectie[1])->toContain('id="meedoen-tuinverenigingen"')
+        ->and($sectie[1])->toContain('Voor tuinverenigingen')
+        ->and($sectie[1])->toContain('Laat leden planten en stekjes met elkaar delen.')
+        ->and($sectie[1])->toContain('Bekijk hoe het werkt')
+        ->and($sectie[1])->toContain('tuinverenigingen/dreef-')
+        ->and($sectie[1])->toContain('Foto: Gouwenaar')
+        ->and($sectie[1])->toContain('class="init-foto"');
+    expect(strpos($sectie[1], 'meedoen-stekchallenge'))->toBeLessThan(strpos($sectie[1], 'meedoen-tuinverenigingen'));
+    expect(strpos($sectie[1], 'meedoen-tuinverenigingen'))->toBeLessThan(strpos($sectie[1], 'meedoen-struikroven'));
+
+    // Geen geneste klikdoelen: één outer <a> per kaart, geen <a> erin.
+    expect(preg_match_all('/<a class="home-meedoen-kaart"[^>]*>/', $sectie[1]))->toBe(3);
+    preg_match_all('/<a class="home-meedoen-kaart"[^>]*>(.*?)<\/a>/s', $sectie[1], $kaarten);
+    expect($kaarten[1])->toHaveCount(3);
+    foreach ($kaarten[1] as $kaartHtml) {
+        expect($kaartHtml)->not->toContain('<a ');
+    }
 });
 
 test('/initiatieven toont STEKchallenge en Struikroven bovenaan met «Doe mee»', function () {

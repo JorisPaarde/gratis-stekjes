@@ -855,20 +855,27 @@ final class ConversionTracker
     /**
      * Trechtercijfers per week uit conversion_daily (fallback: ruwe events).
      *
+     * Weken lopen van huidig (mogelijk onvolledig) naar ouder. Alleen de
+     * meest recente volledige week (einde zondag < nu) heeft open_default.
+     *
      * @return list<array{
      *   week_key: string,
      *   label: string,
      *   unique_visitors: int,
      *   steps: array<string, int>,
      *   rates: array<string, float|null>,
-     *   too_few: bool
+     *   too_few: bool,
+     *   complete: bool,
+     *   open_default: bool
      * }>
      */
     public function funnelByWeek(int $weeks = 8): array
     {
         $out = [];
         $tz = 'Europe/Amsterdam';
-        $cursor = now($tz)->startOfWeek(Carbon::MONDAY);
+        $now = now($tz);
+        $cursor = $now->copy()->startOfWeek(Carbon::MONDAY);
+        $openDefaultAssigned = false;
 
         for ($i = 0; $i < $weeks; $i++) {
             $weekStart = $cursor->copy()->subWeeks($i);
@@ -897,6 +904,12 @@ final class ConversionTracker
                 $prev = $val;
             }
 
+            $complete = $weekEnd->lt($now);
+            $openDefault = $complete && ! $openDefaultAssigned;
+            if ($openDefault) {
+                $openDefaultAssigned = true;
+            }
+
             $out[] = [
                 'week_key' => $weekKey,
                 'label' => $weekStart->format('d-m').' – '.$weekEnd->format('d-m'),
@@ -904,6 +917,8 @@ final class ConversionTracker
                 'steps' => $steps,
                 'rates' => $rates,
                 'too_few' => $tooFew,
+                'complete' => $complete,
+                'open_default' => $openDefault,
             ];
         }
 

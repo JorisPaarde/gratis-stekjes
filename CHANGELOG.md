@@ -3,6 +3,32 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.19] - 2026-11-09
+
+### Changed
+
+- Stats-trechter: percentages in Nederlandse notatie met komma en één decimaal (`52,8%`).
+- Stap Registratiepagina toont de verhouding als «x per klik» (geen percentage; bij 0 klikken «–»); aria/title-labels volgen mee. Formulier gestart blijft percentage t.o.v. registratiepagina.
+
+## [0.78.18] - 2026-11-09
+
+### Changed
+
+- Stats-trechter «per week»: weken als `<details>` — alleen de laatste volledige week standaard open; dichte summary toont weeklabel + kerngetallen (bezoekers → klik → eerste aanbod).
+- Trechterstappen als compacte icooncellen (4 per rij op smal, 8 op breed) met inline SVG, `title`/`aria-label` per cel, en één legenda boven het blok. «Te weinig data» en conversiepercentages blijven.
+
+## [0.78.17] - 2026-11-09
+
+### Fixed
+
+- Stats-trechter op mobiel: staplabels zichtbaar bij elk getal (gestapelde weekrijen); «te weinig data» legt de echte drempel uit (minder dan N formulierstarts deze week).
+
+## [0.78.14] - 2026-11-08
+
+### Added
+
+- Stadspagina /gratis-planten/den-helder (+ social image). Den Helder is de enige plaats met live aanbod die nog geen stadspagina had.
+
 ## [0.78.12] - 2026-11-07
 
 ### Fixed
