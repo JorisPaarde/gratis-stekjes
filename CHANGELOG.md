@@ -3,6 +3,19 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.29] - 2026-11-09
+
+### Changed
+
+- Geen exacte deelplekken-aantallen meer op de site (home, `/deelplekken`,
+  `/in-de-media`, `/aanbod`-status, automatische stad-intro’s/meta, BE-stadintros).
+  Vervangen door tekst zonder getal («steeds meer», «elke week komen er nieuwe
+  deelplekken bij»). Aantallen van aanbod/planten blijven.
+- `/in-de-media`-kaarten: vaste vorm «wie is het medium» + «plaatste artikel
+  over Gratis planten met kop …» (`over_medium` i.p.v. artikelsamenvatting).
+  Positief nieuws-tekst herschreven op basis van hun over-pagina; vastgelegd in
+  `CONTEXT.md` en `docs/in-de-media.md`.
+
 ## [0.78.28] - 2026-11-09
 
 ### Changed
