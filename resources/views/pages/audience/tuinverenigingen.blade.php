@@ -14,14 +14,11 @@
 @endphp
 <x-audience-page
   eyebrow="Voor tuinverenigingen"
-  heading="Geef plantmateriaal door met jullie tuinvereniging"
-  intro="Een openbare pagina met het aanbod van jullie leden. Leden plaatsen zelf; het bestuur deelt de link."
+  heading="Wat over is op de tuin, groeit verder bij een ander"
+  intro="Op elke tuin is wel iets over: zaailingen, stekjes, een gescheurde vaste plant. Met een eigen verenigingspagina zien jullie leden in één oogopslag wat er te halen valt. Gratis, zonder reclame en zonder extra werk voor het bestuur."
   :current="$currentSeries"
   :series="$series"
 >
-  <p>Laat een bestuurslid of ander lid de vereniging toevoegen met een gratis persoonlijk account. Je koppelt hiermee ook jezelf als lid. Heb je al een account? Log dan in.</p>
-  <p>Bij een nieuw account bevestig je eerst je e-mailadres.</p>
-
   <div class="audience-cta audience-cta--inline">
     <div class="audience-cta-actions">
       <a class="btn" href="{{ route('account.verenigingen') }}">Voeg jullie vereniging toe</a>
@@ -31,6 +28,7 @@
       ·
       <a href="{{ route('account.inloggen', ['next' => $intended]) }}">Inloggen</a>
     </p>
+    <p class="muted">Alles wat je nodig hebt is een gratis persoonlijk account. Een apart bestuursaccount is niet nodig.</p>
   </div>
 
   <figure class="audience-hero">
@@ -57,8 +55,13 @@
     </figcaption>
   </figure>
 
-  <p>Op de tuin geven jullie al plantjes aan elkaar door. Via {{ config('site.name') }} kunnen leden ook zien wat er over is als ze er zelf even niet zijn: planten, stekjes en zaden die bij een ander verder kunnen groeien.</p>
-  <p>Jullie vereniging kan een eigen openbare pagina krijgen met het aanbod van leden. Het bestuur deelt de pagina; leden zetten zelf hun aanbod erop en spreken het ophalen met elkaar af. Een apart bestuursaccount is niet nodig.</p>
+  <h2>Waarom meedoen?</h2>
+  <ul class="list-plain audience-steps">
+    <li><strong>Minder op de composthoop</strong> Wat de een over heeft, kan bij een ander verder groeien. Planten, stekjes en zaden blijven op de tuin in gebruik.</li>
+    <li><strong>Ook voor wie er zaterdag niet is</strong> Op de tuin geven jullie al plantjes aan elkaar door. Online zien leden ook wat er over is als ze elkaar mislopen.</li>
+    <li><strong>Nieuwe leden op weg helpen</strong> Wie net een tuin heeft, kan beginnen met planten van medetuinders. Zelf ophalen, met een praatje erbij.</li>
+    <li><strong>Geen werk voor het bestuur</strong> Leden zetten zelf hun aanbod online en spreken samen het ophalen af. Het bestuur deelt één link, bijvoorbeeld in de nieuwsbrief.</li>
+  </ul>
 
   <h2>Zo doen jullie mee</h2>
   <ol class="list-plain audience-steps">
@@ -72,7 +75,7 @@
     </li>
     <li>
       <strong>Deel de link met de leden</strong>
-      Zodra de vereniging is goedgekeurd, vind je de link bij Mijn verenigingen. Deel die bijvoorbeeld in jullie nieuwsbrief of een bericht aan de leden. Zo hebben jullie één plek om het aanbod terug te vinden, zonder dat het bestuur alle aanbiedingen hoeft te verzamelen.
+      Zodra de vereniging is goedgekeurd, vind je de link bij Mijn verenigingen. Deel die bijvoorbeeld in jullie nieuwsbrief of een bericht aan de leden. Op de verenigingspagina staat ook een poster met QR-code om op te hangen in het clubhuis of bij het prikbord.
     </li>
   </ol>
 

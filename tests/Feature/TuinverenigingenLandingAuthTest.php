@@ -45,10 +45,13 @@ test('tuinverenigingen landing: hiërarchie belofte→account→CTA vóór foto;
     $html = $this->get(route('tuinverenigingen'))
         ->assertOk()
         ->assertSee('Voor tuinverenigingen', false)
-        ->assertSee('<h1 class="page-title">Geef plantmateriaal door met jullie tuinvereniging</h1>', false)
-        ->assertSee('Een openbare pagina met het aanbod van jullie leden. Leden plaatsen zelf; het bestuur deelt de link.', false)
-        ->assertSee('Laat een bestuurslid of ander lid de vereniging toevoegen met een gratis persoonlijk account. Je koppelt hiermee ook jezelf als lid. Heb je al een account? Log dan in.', false)
-        ->assertSee('Bij een nieuw account bevestig je eerst je e-mailadres.', false)
+        ->assertSee('<h1 class="page-title">Wat over is op de tuin, groeit verder bij een ander</h1>', false)
+        ->assertSee('Met een eigen verenigingspagina zien jullie leden in één oogopslag wat er te halen valt.', false)
+        ->assertSee('zonder extra werk voor het bestuur', false)
+        ->assertSee('Alles wat je nodig hebt is een gratis persoonlijk account.', false)
+        ->assertSee('Waarom meedoen?', false)
+        ->assertSee('Geen werk voor het bestuur', false)
+        ->assertSee('poster met QR-code', false)
         ->assertSee('Voeg jullie vereniging toe', false)
         ->assertSee('Maak een eigen account', false)
         ->assertSee('Inloggen', false)
@@ -71,14 +74,18 @@ test('tuinverenigingen landing: hiërarchie belofte→account→CTA vóór foto;
         ->assertDontSee('OpenRouter', false)
         ->assertDontSee('deelplek-bridge', false)
         ->assertDontSee('carousel', false)
+        ->assertDontSee('plantmateriaal', false)
         ->getContent();
 
-    // Hiërarchie: compacte belofte + CTA vóór hero-foto.
-    $promisePos = strpos($html, 'Een openbare pagina met het aanbod van jullie leden');
+    // Hiërarchie: belofte (waarom) + CTA vóór hero-foto; waarom-lijst vóór stappen.
+    $promisePos = strpos($html, 'Met een eigen verenigingspagina zien jullie leden');
     $ctaPos = strpos($html, 'Voeg jullie vereniging toe');
     $heroPos = strpos($html, 'audience-hero');
     $creditPos = strpos($html, 'Gouwenaar / Wikimedia Commons');
+    $waaromPos = strpos($html, 'Waarom meedoen?');
     $stepsPos = strpos($html, 'Zo doen jullie mee');
+    expect($waaromPos)->toBeInt()->and($creditPos)->toBeLessThan($waaromPos)
+        ->and($waaromPos)->toBeLessThan($stepsPos);
     expect($promisePos)->toBeInt()->and($ctaPos)->toBeInt()->and($heroPos)->toBeInt()
         ->and($creditPos)->toBeInt()->and($stepsPos)->toBeInt();
     expect($promisePos)->toBeLessThan($ctaPos)
