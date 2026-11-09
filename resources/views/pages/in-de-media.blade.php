@@ -65,9 +65,7 @@
 
   <aside class="media-redactie" aria-labelledby="redactie-titel">
     <h2 id="redactie-titel">Voor redacties</h2>
-    <p class="media-redactie-uitnodiging">
-      Schrijf jij over Gratis planten? Dan delen wij je artikel op Facebook en schrijven we hier een kort stukje met een link terug naar jouw artikel.
-    </p>
+    <p class="media-redactie-uitnodiging">{{ $redactieUitnodiging }}</p>
     <p>
       Vragen over feiten, interviews of beeld? Mail naar
       <a href="mailto:{{ $contactEmail }}">{{ $contactEmail }}</a>.
