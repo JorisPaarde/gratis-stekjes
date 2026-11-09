@@ -3,6 +3,11 @@
 name: Verify short link (staging)
 
 on:
+  # workflow_dispatch pas nadat dit bestand op master staat; tot die tijd
+  # triggert een push naar staging (paths-filter) de run — zelfde patroon als stats-lezer.
+  push:
+    branches: [staging]
+    paths: ['.github/workflows/verify-short-link-staging.yml']
   workflow_dispatch:
 
 permissions:
