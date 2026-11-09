@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.26] - 2026-11-09
+
+### Changed
+
+- `/in-de-media` redactieblok: bereik in woorden zonder exact cijfer
+  («veel plantenliefhebbers in heel Nederland en België»).
+
 ## [0.78.25] - 2026-11-09
 
 ### Changed

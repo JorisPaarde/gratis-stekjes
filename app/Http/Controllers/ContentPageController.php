@@ -59,6 +59,8 @@ class ContentPageController extends Controller
             'contactEmail' => (string) config('site.contact_email'),
             // Letterlijke uitnodiging voor redacties (bewuste «wij»-vorm t.o.v. de site).
             'redactieUitnodiging' => 'Schrijf jij over Gratis planten? Dan delen wij je artikel op Facebook en schrijven we hier een kort stukje met een link terug naar jouw artikel.',
+            // Bereik in woorden, zonder exact cijfer (verandert steeds).
+            'redactieBereik' => 'We bereiken veel plantenliefhebbers in heel Nederland en België.',
             'deelplekkenAantal' => $this->zichtbareDeelplekkenAantal(),
             'logoUrl' => $this->publicAssetUrlIfExists($logoPad),
             'ogImageUrl' => $this->publicAssetUrlIfExists($ogPad),
