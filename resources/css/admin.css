@@ -610,7 +610,58 @@
 @media (max-width: 480px) { .beheer-tabs { grid-template-columns: repeat(5, auto); justify-content: space-between; } .beheer-tabs a { font-size: .82rem; padding: 0 .2rem; gap: .2rem; } .beheer-tabs .nav-badge { font-size: .68rem; } }
 .beheer-inhoud { margin-top: 1.5rem; }
 
-/* Conversietrechter: uitklapbare weken + compacte icooncellen (0.78.18) */
+/* Conversietrechter: uitklapbare weken/maanden + compacte icooncellen (0.78.18 / 0.78.36) */
+.stats-funnel-toggle {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin: 0 0 .85rem;
+  padding: .25rem;
+  border: 1px solid var(--line, rgba(26, 18, 16, .12));
+  border-radius: .75rem;
+  background: rgba(255, 255, 255, .7);
+}
+
+.stats-funnel-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  min-width: 4.75rem;
+  padding: .45rem .95rem;
+  border-radius: .55rem;
+  border: 1px solid transparent;
+  text-decoration: none;
+  color: var(--ink, #1a1210);
+  font-weight: 700;
+  font-size: .9rem;
+  line-height: 1.2;
+  background: transparent;
+}
+
+.stats-funnel-toggle-btn:hover,
+.stats-funnel-toggle-btn:focus-visible {
+  background: var(--bg-mint, #e6f2e1);
+  color: var(--forest-deep, #163820);
+}
+
+.stats-funnel-toggle-btn.is-actief {
+  background: var(--forest-deep, #163820);
+  border-color: var(--forest-deep, #163820);
+  color: #fff;
+}
+
+.stats-funnel-lopend {
+  margin-left: .4rem;
+  vertical-align: middle;
+  font-weight: 700;
+}
+
+.stats-funnel-through {
+  font-size: .82rem;
+  font-weight: 500;
+}
+
 .stats-funnel-intro { margin: 0 0 .65rem; line-height: 1.45; }
 
 .stats-funnel-legend {
@@ -695,6 +746,11 @@
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   letter-spacing: .01em;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .2rem .15rem;
+  min-width: 0;
 }
 
 .stats-funnel-week-peek {
@@ -779,6 +835,25 @@
   hyphens: none;
 }
 
+@media (max-width: 419px) {
+  .stats-funnel-toggle {
+    width: 100%;
+  }
+
+  .stats-funnel-toggle-btn {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .stats-funnel-week-summary {
+    gap: .45rem .65rem;
+  }
+
+  .stats-funnel-week-peek {
+    width: 100%;
+  }
+}
+
 @media (min-width: 720px) {
   .stats-funnel-steps {
     grid-template-columns: repeat(8, minmax(0, 1fr));
@@ -795,6 +870,10 @@
 
   .stats-funnel-week-body {
     padding: 0 1rem 1.1rem;
+  }
+
+  .stats-funnel-toggle {
+    margin-bottom: 1rem;
   }
 }
 

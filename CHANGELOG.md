@@ -3,6 +3,18 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.78.36] - 2026-11-09
+
+### Added
+
+- Beheer `/beheer/statistieken` trechter: maandweergave naast week. Wissel via
+  Maand/Week (standaard maand). Maandtotalen tellen op dag-/eventniveau
+  (Europe/Amsterdam), niet per hele week over de maandgrens. Zelfde drempel
+  van 30 formulierstarts, nu over de maand. Lopende periode: badge «lopend» +
+  «tot en met 9 november» (NL). Lege periodes vóór de eerste met data worden
+  verborgen (gaten tussen dataperiodes blijven). Feature-tests voor
+  maandgrens, drempel, lopende maand en trim.
+
 ## [0.78.35] - 2026-11-09
 
 ### Fixed

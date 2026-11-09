@@ -13,6 +13,7 @@ use App\Models\PageView;
 use App\Models\User;
 use App\Services\ConversionTracker;
 use App\Support\StatsSvg;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\Schema;
 
 class StatistiekenController extends Controller
 {
-    public function index(ConversionTracker $conversions): Response
+    public function index(Request $request, ConversionTracker $conversions): Response
     {
         $leden = User::query()->members()->count();
         $confirmed = User::query()->members()->whereNotNull('email_verified_at')->count();
@@ -112,7 +113,10 @@ class StatistiekenController extends Controller
             'title' => $r['label'].': '.$r['total'].' pageviews',
         ])->all();
 
+        $funnelPeriod = $request->query('trechter') === 'week' ? 'week' : 'maand';
         $funnelWeeks = $conversions->funnelByWeek(8);
+        $funnelMonths = $conversions->funnelByMonth(6);
+        $funnelPeriods = $funnelPeriod === 'week' ? $funnelWeeks : $funnelMonths;
         $validationErrors = $conversions->topValidationErrors(30, 15);
         $breakdown = $conversions->deviceAndSourceBreakdown(30);
         $minFormStarts = (int) config('conversion.min_form_starts_for_rates', 30);
@@ -152,7 +156,10 @@ class StatistiekenController extends Controller
             'pageViewsTop' => $pageViews14['top'],
             'pageViewsTotal' => $pageViews14['total'],
             'pageViewsToday' => $pageViewsToday,
+            'funnelPeriod' => $funnelPeriod,
             'funnelWeeks' => $funnelWeeks,
+            'funnelMonths' => $funnelMonths,
+            'funnelPeriods' => $funnelPeriods,
             'validationErrors' => $validationErrors,
             'deviceBreakdown' => $breakdown['devices'],
             'sourceBreakdown' => $breakdown['sources'],

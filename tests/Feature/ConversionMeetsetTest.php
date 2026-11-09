@@ -557,10 +557,11 @@ test('dashboard trechter toont staplabels en drempeluitleg in HTML', function ()
         ]);
     }
 
-    $html = $this->withSession(['admin_ok' => true])
+    $htmlMaand = $this->withSession(['admin_ok' => true])
         ->get(route('beheer.statistieken'))
         ->assertOk()
-        ->assertSee('Trechter · per week', false)
+        ->assertSee('Trechter · per maand', false)
+        ->assertSee('stats-funnel-toggle', false)
         ->assertSee('Klik word lid', false)
         ->assertSee('Registratiepagina', false)
         ->assertSee('Formulier gestart', false)
@@ -573,6 +574,24 @@ test('dashboard trechter toont staplabels en drempeluitleg in HTML', function ()
         ->assertSee('stats-funnel-week-block', false)
         ->assertSee('aria-label="Formulier gestart', false)
         ->assertSee(
+            "Te weinig data: minder dan {$minFormStarts} formulierstarts deze maand, percentages nog niet betrouwbaar.",
+            false
+        )
+        ->assertSee(
+            "Percentages tonen we pas vanaf {$minFormStarts} formulierstarts in die maand",
+            false
+        )
+        ->getContent();
+
+    expect($htmlMaand)->toContain('class="stats-funnel-sparse hint"')
+        ->and($htmlMaand)->toContain('aria-label="Trechterstappen"')
+        ->and($htmlMaand)->toContain('lopend');
+
+    $htmlWeek = $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken', ['trechter' => 'week']))
+        ->assertOk()
+        ->assertSee('Trechter · per week', false)
+        ->assertSee(
             "Te weinig data: minder dan {$minFormStarts} formulierstarts deze week, percentages nog niet betrouwbaar.",
             false
         )
@@ -582,8 +601,7 @@ test('dashboard trechter toont staplabels en drempeluitleg in HTML', function ()
         )
         ->getContent();
 
-    expect($html)->toContain('class="stats-funnel-sparse hint"')
-        ->and($html)->toContain('aria-label="Trechterstappen"');
+    expect($htmlWeek)->toContain('data-week-key=');
 });
 
 test('dashboard trechter opent alleen de laatste volledige week en heeft legenda plus aria-labels', function () {
@@ -630,7 +648,7 @@ test('dashboard trechter opent alleen de laatste volledige week en heeft legenda
         ->and($completeWeeks[0]['open_default'])->toBeTrue();
 
     $html = $this->withSession(['admin_ok' => true])
-        ->get(route('beheer.statistieken'))
+        ->get(route('beheer.statistieken', ['trechter' => 'week']))
         ->assertOk()
         ->assertSee('stats-funnel-legend', false)
         ->assertSee('aria-label="Trechterstappen"', false)
@@ -802,6 +820,236 @@ test('dashboard trechter toont streepje bij registratiepagina zonder klikken', f
 
     expect($html)->toContain('aria-label="Registratiepagina: 5, –"')
         ->and($html)->toMatch('/class="hint stats-funnel-step-rate"[^>]*>–</');
+});
+
+test('funnelByMonth splitst week over maandgrens op dag-/eventniveau', function () {
+    $this->travelTo(Carbon::create(2026, 11, 9, 15, 0, 0, 'Europe/Amsterdam'));
+
+    $tracker = app(ConversionTracker::class);
+    // Week ma 26-10 t/m zo 01-11 2026 overschrijdt de maandgrens.
+    $octInSharedWeek = Carbon::create(2026, 10, 28, 12, 0, 0, 'Europe/Amsterdam');
+    $novInSharedWeek = Carbon::create(2026, 11, 1, 12, 0, 0, 'Europe/Amsterdam');
+    $novLater = Carbon::create(2026, 11, 5, 12, 0, 0, 'Europe/Amsterdam');
+
+    foreach ([
+        [$octInSharedWeek, 'oct-border', 12],
+        [$novInSharedWeek, 'nov-border', 8],
+        [$novLater, 'nov-later', 10],
+    ] as [$when, $prefix, $count]) {
+        for ($i = 0; $i < $count; $i++) {
+            ConversionEvent::query()->create([
+                'occurred_at' => $when->copy()->addMinutes($i)->utc(),
+                'event_type' => ConversionEvent::TYPE_FORM_START,
+                'path' => '/account/registreren',
+                'flow_id' => $prefix.'-f'.$i,
+                'visitor_day_hash' => $prefix.'-v'.$i,
+                'device_type' => 'desktop',
+                'week_key' => $tracker->weekKey($when),
+            ]);
+        }
+    }
+
+    $months = $tracker->funnelByMonth(3);
+    $byKey = collect($months)->keyBy('month_key');
+
+    expect($byKey->get('2026-10')['steps'][ConversionEvent::TYPE_FORM_START])->toBe(12)
+        ->and($byKey->get('2026-11')['steps'][ConversionEvent::TYPE_FORM_START])->toBe(18)
+        ->and($byKey->get('2026-10')['steps'][ConversionEvent::TYPE_FORM_START]
+            + $byKey->get('2026-11')['steps'][ConversionEvent::TYPE_FORM_START])->toBe(30);
+
+    // Hele gedeelde week optellen zou 20 starts aan één maand geven;
+    // dagtelling houdt oktober op 12 en november-border op 8.
+    $sharedWeekStart = Carbon::create(2026, 10, 26, 0, 0, 0, 'Europe/Amsterdam');
+    $sharedWeekEnd = $sharedWeekStart->copy()->endOfWeek(Carbon::SUNDAY);
+    $sharedWeek = collect($tracker->funnelByWeek(8))
+        ->firstWhere('week_key', $tracker->weekKey($sharedWeekStart));
+    expect($sharedWeek['steps'][ConversionEvent::TYPE_FORM_START])->toBe(20)
+        ->and($sharedWeekEnd->toDateString())->toBe('2026-11-01');
+
+    $this->travelBack();
+});
+
+test('funnelByMonth toont percentages vanaf 30 form_starts en te weinig data eronder', function () {
+    $this->travelTo(Carbon::create(2026, 10, 15, 12, 0, 0, 'Europe/Amsterdam'));
+    config(['conversion.min_form_starts_for_rates' => 30]);
+    $tracker = app(ConversionTracker::class);
+
+    for ($i = 0; $i < 29; $i++) {
+        ConversionEvent::query()->create([
+            'occurred_at' => now('Europe/Amsterdam')->copy()->subDays($i % 10)->setTime(10, $i % 60)->utc(),
+            'event_type' => ConversionEvent::TYPE_FORM_START,
+            'path' => '/account/registreren',
+            'flow_id' => 'm29-f'.$i,
+            'visitor_day_hash' => 'm29-v'.$i,
+            'device_type' => 'mobile',
+            'week_key' => $tracker->weekKey(),
+        ]);
+    }
+
+    $sparse = $tracker->funnelByMonth(1)[0];
+    expect($sparse['too_few'])->toBeTrue()
+        ->and($sparse['steps'][ConversionEvent::TYPE_FORM_START])->toBe(29)
+        ->and($sparse['rates'][ConversionEvent::TYPE_FORM_SUBMIT])->toBeNull();
+
+    ConversionEvent::query()->create([
+        'occurred_at' => now('Europe/Amsterdam')->copy()->setTime(11, 0)->utc(),
+        'event_type' => ConversionEvent::TYPE_FORM_START,
+        'path' => '/account/registreren',
+        'flow_id' => 'm30-f',
+        'visitor_day_hash' => 'm30-v',
+        'device_type' => 'mobile',
+        'week_key' => $tracker->weekKey(),
+    ]);
+    for ($i = 0; $i < 15; $i++) {
+        ConversionEvent::query()->create([
+            'occurred_at' => now('Europe/Amsterdam')->copy()->setTime(12, $i)->utc(),
+            'event_type' => ConversionEvent::TYPE_FORM_SUBMIT,
+            'path' => '/account/registreren',
+            'flow_id' => 'm30-sub-f'.$i,
+            'visitor_day_hash' => 'm30-sub-v'.$i,
+            'device_type' => 'mobile',
+            'week_key' => $tracker->weekKey(),
+        ]);
+    }
+
+    $enough = $tracker->funnelByMonth(1)[0];
+    expect($enough['too_few'])->toBeFalse()
+        ->and($enough['steps'][ConversionEvent::TYPE_FORM_START])->toBe(30)
+        ->and($enough['rates'][ConversionEvent::TYPE_FORM_SUBMIT])->toBe(50.0);
+
+    $html = $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken', ['trechter' => 'maand']))
+        ->assertOk()
+        ->assertSee('50,0%', false)
+        ->assertSee('data-month-key="2026-10"', false)
+        ->getContent();
+
+    expect($html)->toContain('aria-label="Formulier gestart: 30"')
+        ->and($html)->toContain('aria-label="Formulier verstuurd: 15, 50,0%"');
+
+    $this->travelBack();
+});
+
+test('funnelByMonth markeert lopende maand met badge en tot-en-met', function () {
+    $this->travelTo(Carbon::create(2026, 11, 9, 16, 30, 0, 'Europe/Amsterdam'));
+    $tracker = app(ConversionTracker::class);
+
+    ConversionEvent::query()->create([
+        'occurred_at' => now('Europe/Amsterdam')->copy()->subDays(3)->utc(),
+        'event_type' => ConversionEvent::TYPE_FORM_START,
+        'path' => '/account/registreren',
+        'flow_id' => 'lopend-f',
+        'visitor_day_hash' => 'lopend-v',
+        'device_type' => 'desktop',
+        'week_key' => $tracker->weekKey(),
+    ]);
+
+    $months = $tracker->funnelByMonth(2);
+    expect($months)->toHaveCount(1)
+        ->and($months[0]['month_key'])->toBe('2026-11')
+        ->and($months[0]['is_current'])->toBeTrue()
+        ->and($months[0]['complete'])->toBeFalse()
+        ->and($months[0]['open_default'])->toBeTrue()
+        ->and($months[0]['through_label'])->toBe('tot en met 9 november')
+        ->and($months[0]['label'])->toBe('november 2026');
+
+    $html = $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken'))
+        ->assertOk()
+        ->assertSee('Trechter · per maand', false)
+        ->assertSee('november 2026', false)
+        ->assertSee('lopend', false)
+        ->assertSee('tot en met 9 november', false)
+        ->assertSee('stats-funnel-lopend', false)
+        ->getContent();
+
+    preg_match_all(
+        '/<details\s+[^>]*class="stats-funnel-week-block"[^>]*>/',
+        $html,
+        $matches
+    );
+    $openBlocks = array_values(array_filter(
+        $matches[0],
+        fn (string $tag) => preg_match('/\sopen(?:\s|=|>|$)/', $tag) === 1
+    ));
+    expect($openBlocks)->toHaveCount(1)
+        ->and($openBlocks[0])->toContain('data-month-key="2026-11"');
+
+    $this->travelBack();
+});
+
+test('funnelByMonth verbergt lege maanden vóór eerste data maar houdt gat ertussen', function () {
+    $this->travelTo(Carbon::create(2026, 11, 9, 12, 0, 0, 'Europe/Amsterdam'));
+    $tracker = app(ConversionTracker::class);
+
+    // Data in november en september; oktober leeg (mag blijven); juni–augustus leeg vóór eerste data (weg).
+    ConversionEvent::query()->create([
+        'occurred_at' => Carbon::create(2026, 11, 3, 10, 0, 0, 'Europe/Amsterdam')->utc(),
+        'event_type' => ConversionEvent::TYPE_FORM_START,
+        'path' => '/account/registreren',
+        'flow_id' => 'trim-nov',
+        'visitor_day_hash' => 'trim-nov-v',
+        'device_type' => 'desktop',
+        'week_key' => $tracker->weekKey(Carbon::create(2026, 11, 3, 10, 0, 0, 'Europe/Amsterdam')),
+    ]);
+    ConversionEvent::query()->create([
+        'occurred_at' => Carbon::create(2026, 9, 14, 10, 0, 0, 'Europe/Amsterdam')->utc(),
+        'event_type' => ConversionEvent::TYPE_CTA_CLICK,
+        'path' => '/',
+        'flow_id' => 'trim-sep',
+        'visitor_day_hash' => 'trim-sep-v',
+        'device_type' => 'mobile',
+        'week_key' => $tracker->weekKey(Carbon::create(2026, 9, 14, 10, 0, 0, 'Europe/Amsterdam')),
+    ]);
+
+    $months = $tracker->funnelByMonth(6);
+    $keys = array_column($months, 'month_key');
+
+    expect($keys)->toBe(['2026-11', '2026-10', '2026-09'])
+        ->and($months[1]['steps'][ConversionEvent::TYPE_FORM_START])->toBe(0)
+        ->and($months[1]['unique_visitors'])->toBe(0);
+
+    $html = $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.statistieken', ['trechter' => 'maand']))
+        ->assertOk()
+        ->assertSee('september 2026', false)
+        ->assertDontSee('augustus 2026', false)
+        ->assertDontSee('juli 2026', false)
+        ->getContent();
+
+    expect($html)->toContain('data-month-key="2026-10"')
+        ->and($html)->not->toContain('data-month-key="2026-08"');
+
+    $this->travelBack();
+});
+
+test('funnelByWeek verbergt lege weken vóór eerste data', function () {
+    $this->travelTo(Carbon::create(2026, 11, 9, 12, 0, 0, 'Europe/Amsterdam'));
+    $tracker = app(ConversionTracker::class);
+
+    $withData = Carbon::create(2026, 10, 27, 11, 0, 0, 'Europe/Amsterdam'); // week 26-10–01-11
+    ConversionEvent::query()->create([
+        'occurred_at' => $withData->copy()->utc(),
+        'event_type' => ConversionEvent::TYPE_FORM_START,
+        'path' => '/account/registreren',
+        'flow_id' => 'trim-week',
+        'visitor_day_hash' => 'trim-week-v',
+        'device_type' => 'desktop',
+        'week_key' => $tracker->weekKey($withData),
+    ]);
+
+    $weeks = $tracker->funnelByWeek(8);
+    $keys = array_column($weeks, 'week_key');
+
+    expect($keys)->toContain($tracker->weekKey($withData))
+        ->and($keys)->toContain($tracker->weekKey(now('Europe/Amsterdam')))
+        ->and(count($keys))->toBeLessThan(8)
+        ->and($keys[count($keys) - 1])->toBe($tracker->weekKey($withData));
+
+    // Lege week tussen huidige en oudste-met-data blijft (nieuwste eerst).
+    expect(count($keys))->toBeGreaterThanOrEqual(2);
+
+    $this->travelBack();
 });
 
 test('postlogboek crud voor admin; stats-lezer en beheerder-mutaties afgeschermd', function () {

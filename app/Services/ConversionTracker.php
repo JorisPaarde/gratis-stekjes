@@ -874,7 +874,9 @@ final class ConversionTracker
      *   rates: array<string, float|null>,
      *   too_few: bool,
      *   complete: bool,
-     *   open_default: bool
+     *   open_default: bool,
+     *   is_current: bool,
+     *   through_label: string|null
      * }>
      */
     public function funnelByWeek(int $weeks = 8): array
@@ -889,30 +891,9 @@ final class ConversionTracker
             $weekStart = $cursor->copy()->subWeeks($i);
             $weekEnd = $weekStart->copy()->endOfWeek(Carbon::SUNDAY);
             $weekKey = $this->weekKey($weekStart);
-            $steps = [];
-            foreach (ConversionEvent::FUNNEL_TYPES as $type) {
-                $steps[$type] = $this->countInRange($type, $weekStart, $weekEnd);
-            }
-            $unique = $this->uniqueVisitorsInRange($weekStart, $weekEnd);
-            $formStarts = $steps[ConversionEvent::TYPE_FORM_START] ?? 0;
-            $minStarts = max(1, (int) config('conversion.min_form_starts_for_rates', 30));
-            $tooFew = $formStarts < $minStarts;
-
-            $order = array_merge(['unique_visitors'], ConversionEvent::FUNNEL_TYPES);
-            $values = ['unique_visitors' => $unique] + $steps;
-            $rates = [];
-            $prev = null;
-            foreach ($order as $step) {
-                $val = (int) ($values[$step] ?? 0);
-                if ($tooFew || $prev === null || $prev === 0) {
-                    $rates[$step] = null;
-                } else {
-                    $rates[$step] = round(($val / $prev) * 100, 1);
-                }
-                $prev = $val;
-            }
-
+            $built = $this->buildFunnelPeriod($weekStart, $weekEnd);
             $complete = $weekEnd->lt($now);
+            $isCurrent = ! $complete && $weekStart->lte($now) && $weekEnd->gte($now);
             $openDefault = $complete && ! $openDefaultAssigned;
             if ($openDefault) {
                 $openDefaultAssigned = true;
@@ -921,16 +902,193 @@ final class ConversionTracker
             $out[] = [
                 'week_key' => $weekKey,
                 'label' => $weekStart->format('d-m').' – '.$weekEnd->format('d-m'),
-                'unique_visitors' => $unique,
-                'steps' => $steps,
-                'rates' => $rates,
-                'too_few' => $tooFew,
+                'unique_visitors' => $built['unique_visitors'],
+                'steps' => $built['steps'],
+                'rates' => $built['rates'],
+                'too_few' => $built['too_few'],
                 'complete' => $complete,
                 'open_default' => $openDefault,
+                'is_current' => $isCurrent,
+                'through_label' => $isCurrent
+                    ? $this->throughLabelNl($now)
+                    : null,
             ];
         }
 
-        return $out;
+        return $this->trimFunnelPeriodsBeforeFirstData($out);
+    }
+
+    /**
+     * Trechtercijfers per kalendermaand (Europe/Amsterdam).
+     *
+     * Telt op dag-/eventniveau via countInRange — niet per hele week — zodat
+     * weken over een maandgrens niet dubbel of verkeerd meetellen.
+     * Drempel: zelfde min_form_starts_for_rates, maar over de maand.
+     * Lopende maand: is_current + through_label, standaard open.
+     *
+     * @return list<array{
+     *   month_key: string,
+     *   label: string,
+     *   unique_visitors: int,
+     *   steps: array<string, int>,
+     *   rates: array<string, float|null>,
+     *   too_few: bool,
+     *   complete: bool,
+     *   open_default: bool,
+     *   is_current: bool,
+     *   through_label: string|null
+     * }>
+     */
+    public function funnelByMonth(int $months = 6): array
+    {
+        $out = [];
+        $tz = 'Europe/Amsterdam';
+        $now = now($tz);
+        $cursor = $now->copy()->startOfMonth();
+
+        for ($i = 0; $i < $months; $i++) {
+            $monthStart = $cursor->copy()->subMonthsNoOverflow($i)->startOfMonth();
+            $monthEnd = $monthStart->copy()->endOfMonth();
+            $monthKey = $monthStart->format('Y-m');
+            $built = $this->buildFunnelPeriod($monthStart, $monthEnd);
+            $isCurrent = $monthStart->isSameMonth($now);
+            $complete = $monthEnd->lt($now);
+
+            $out[] = [
+                'month_key' => $monthKey,
+                'label' => $this->monthLabelNl($monthStart),
+                'unique_visitors' => $built['unique_visitors'],
+                'steps' => $built['steps'],
+                'rates' => $built['rates'],
+                'too_few' => $built['too_few'],
+                'complete' => $complete,
+                'open_default' => $isCurrent,
+                'is_current' => $isCurrent,
+                'through_label' => $isCurrent
+                    ? $this->throughLabelNl($now)
+                    : null,
+            ];
+        }
+
+        return $this->trimFunnelPeriodsBeforeFirstData($out);
+    }
+
+    /**
+     * @return array{
+     *   unique_visitors: int,
+     *   steps: array<string, int>,
+     *   rates: array<string, float|null>,
+     *   too_few: bool
+     * }
+     */
+    private function buildFunnelPeriod(Carbon $from, Carbon $to): array
+    {
+        $steps = [];
+        foreach (ConversionEvent::FUNNEL_TYPES as $type) {
+            $steps[$type] = $this->countInRange($type, $from, $to);
+        }
+        $unique = $this->uniqueVisitorsInRange($from, $to);
+        $formStarts = $steps[ConversionEvent::TYPE_FORM_START] ?? 0;
+        $minStarts = max(1, (int) config('conversion.min_form_starts_for_rates', 30));
+        $tooFew = $formStarts < $minStarts;
+
+        $order = array_merge(['unique_visitors'], ConversionEvent::FUNNEL_TYPES);
+        $values = ['unique_visitors' => $unique] + $steps;
+        $rates = [];
+        $prev = null;
+        foreach ($order as $step) {
+            $val = (int) ($values[$step] ?? 0);
+            if ($tooFew || $prev === null || $prev === 0) {
+                $rates[$step] = null;
+            } else {
+                $rates[$step] = round(($val / $prev) * 100, 1);
+            }
+            $prev = $val;
+        }
+
+        return [
+            'unique_visitors' => $unique,
+            'steps' => $steps,
+            'rates' => $rates,
+            'too_few' => $tooFew,
+        ];
+    }
+
+    private function monthLabelNl(Carbon $monthStart): string
+    {
+        return $this->monthNameNl((int) $monthStart->month).' '.$monthStart->year;
+    }
+
+    /** «tot en met 9 november» — dag zonder voorloopnul, maand NL, geen jaartal. */
+    private function throughLabelNl(Carbon $at): string
+    {
+        return 'tot en met '.(int) $at->day.' '.$this->monthNameNl((int) $at->month);
+    }
+
+    private function monthNameNl(int $month): string
+    {
+        $names = [
+            1 => 'januari',
+            2 => 'februari',
+            3 => 'maart',
+            4 => 'april',
+            5 => 'mei',
+            6 => 'juni',
+            7 => 'juli',
+            8 => 'augustus',
+            9 => 'september',
+            10 => 'oktober',
+            11 => 'november',
+            12 => 'december',
+        ];
+
+        return $names[$month] ?? 'maand'.$month;
+    }
+
+    /**
+     * Verberg periodes vóór de oudste periode met data (nieuwste eerst).
+     * Lege periodes tussen datamaanden/-weken blijven staan.
+     * Zonder enige data: alleen de huidige (nieuwste) periode tonen.
+     *
+     * @param  list<array{unique_visitors: int, steps: array<string, int>}>  $periods
+     * @return list<array{unique_visitors: int, steps: array<string, int>}>
+     */
+    private function trimFunnelPeriodsBeforeFirstData(array $periods): array
+    {
+        if ($periods === []) {
+            return [];
+        }
+
+        $oldestWithData = null;
+        foreach ($periods as $i => $period) {
+            if ($this->funnelPeriodHasData($period)) {
+                $oldestWithData = $i;
+            }
+        }
+
+        if ($oldestWithData === null) {
+            return array_slice($periods, 0, 1);
+        }
+
+        return array_slice($periods, 0, $oldestWithData + 1);
+    }
+
+    /**
+     * @param  array{unique_visitors?: int, steps?: array<string, int>}  $period
+     */
+    private function funnelPeriodHasData(array $period): bool
+    {
+        if ((int) ($period['unique_visitors'] ?? 0) > 0) {
+            return true;
+        }
+
+        foreach ($period['steps'] ?? [] as $count) {
+            if ((int) $count > 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function countInRange(string $eventType, Carbon $from, Carbon $to): int
