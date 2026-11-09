@@ -277,15 +277,85 @@ test('deploy activatie-herinnering endpoint draait alleen dry-run en vereist tok
 test('activatieherinneringmailtekst is warm en zonder deelplek-aantallen', function () {
     $user = User::factory()->create(['name' => 'Sam']);
     $mail = app(ActivatieHerinneringService::class)->buildMail($user);
-    $rendered = $mail->render();
+    $html = $mail->render();
 
     expect($mail->envelope()->subject)->toBe('Zet je eerste stekje online op '.config('site.name'))
-        ->and($rendered)->toContain('Hoi Sam,')
-        ->and($rendered)->toContain('leuk dat je erbij bent')
-        ->and($rendered)->toContain('Geen haast')
-        ->and($rendered)->toContain(route('aanbieden'))
-        ->and($rendered)->not->toMatch('/\d+\s*deelplek/i')
-        ->and($rendered)->not->toContain('Resend');
+        ->and($html)->toContain('Hoi Sam,')
+        ->and($html)->toContain('leuk dat je erbij bent')
+        ->and($html)->toContain('Geen haast')
+        ->and($html)->toContain('Zet je eerste stekje online')
+        ->and($html)->toContain(route('aanbieden'))
+        ->and($html)->not->toMatch('/\d+\s*deelplek/i')
+        ->and($html)->not->toContain('Resend');
+});
+
+test('GP mail-layout: normale tekst zonder break-all, knop forest-groen', function () {
+    $mail = new \App\Mail\ActivatieHerinneringMail(
+        voornaam: 'Sam',
+        aanbiedenUrl: route('aanbieden'),
+        uitzettenUrl: 'https://example.test/activatieherinnering/uit/1?signature=abc&expires=1',
+    );
+    $html = $mail->render();
+
+    expect($html)->toContain('word-break: normal')
+        ->and($html)->toContain('#1f4d2b')
+        ->and($html)->not->toMatch('/\.content-cell[^}]*word-break:\s*break-all/')
+        ->and($html)->toContain('min-height: 44px');
+
+    // Zichtbare body bevat hele woorden (geen CSS-middenbreaks in de HTML-tekst zelf).
+    expect(strip_tags($html))->toContain('zaadje')
+        ->and(strip_tags($html))->toContain('verkopen');
+});
+
+test('activatieherinnering HTML heeft knoptekst, geen signature-URL als zichtbare tekst, Hoi! zonder naam', function () {
+    $metNaam = User::factory()->create(['name' => 'Sam', 'email' => 'html-sam@example.com']);
+    $zonderNaam = User::factory()->create([
+        'name' => '',
+        'email' => 'html-anon@example.com',
+    ]);
+
+    $mailMet = app(ActivatieHerinneringService::class)->buildMail($metNaam);
+    $htmlMet = $mailMet->render();
+    $plainMet = view('mail.activatie-herinnering', [
+        'voornaam' => 'Sam',
+        'aanbiedenUrl' => route('aanbieden'),
+        'uitzettenUrl' => $mailMet->uitzettenUrl,
+        'site' => config('site.name'),
+    ])->render();
+
+    expect($htmlMet)->toContain('Zet je eerste stekje online')
+        ->and($htmlMet)->toContain('class="button')
+        ->and($htmlMet)->toContain('>Zet ze uit</a>')
+        ->and($htmlMet)->not->toContain('>'.$mailMet->uitzettenUrl.'<')
+        ->and($htmlMet)->not->toMatch('/>https?:\/\/[^"<\s]+signature=[^"<\s]+</')
+        ->and($plainMet)->toContain($mailMet->uitzettenUrl)
+        ->and($plainMet)->toContain('Hoi Sam,');
+
+    // Zichtbare tekst mag de signature-query niet tonen (alleen in href).
+    $visible = trim(html_entity_decode(strip_tags($htmlMet), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+    expect($visible)->not->toContain('signature=')
+        ->and($visible)->toContain('Zet ze uit')
+        ->and($visible)->toContain('Zet je eerste stekje online');
+
+    $mailZonder = new \App\Mail\ActivatieHerinneringMail(
+        voornaam: '',
+        aanbiedenUrl: route('aanbieden'),
+        uitzettenUrl: 'https://example.test/activatieherinnering/uit/1?signature=abc&expires=1',
+    );
+    $htmlZonder = $mailZonder->render();
+    $plainZonder = view('mail.activatie-herinnering', [
+        'voornaam' => '',
+        'aanbiedenUrl' => route('aanbieden'),
+        'uitzettenUrl' => $mailZonder->uitzettenUrl,
+        'site' => config('site.name'),
+    ])->render();
+
+    expect($htmlZonder)->toContain('Hoi!')
+        ->and($htmlZonder)->not->toContain('Hoi,')
+        ->and($plainZonder)->toContain('Hoi!')
+        ->and($plainZonder)->not->toContain('Hoi,');
+
+    unset($zonderNaam);
 });
 
 test('ActivatieHerinneringStats telt mail_log voor beheer', function () {

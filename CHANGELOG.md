@@ -21,6 +21,15 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Workflow `activatie-herinnering-dry-run` (`workflow_dispatch`, staging|production):
   alleen `--dry-run` via `POST /deploy/activatie-herinnering`, nooit versturen.
 - Ongeldige/verlopen tipmail-afmeldlink: nette GP-pagina (403) i.p.v. kale fout.
+- Activatie-tipmail: multipart HTML (GP mail-layout + knop «Zet je eerste
+  stekje online», linktekst «Zet ze uit») + plaintext met URL’s. Begroeting
+  zonder voornaam: «Hoi!» i.p.v. «Hoi,».
+- Mail-theme (centraal): geen `word-break: break-all` meer op gewone tekst
+  (alleen `.break-all` / lange URL’s → `overflow-wrap: anywhere`). Knop
+  `primary` in forest-groen `#1f4d2b`, wit label, min. 44px. Raakt alle
+  MailMessage-/markdown-mails: o.a. bevestiging, bevestigingsherinnering,
+  activatie-tipmail, wachtwoordreset, e-mailwijziging, account-bestaat-al,
+  deelplek-/vereniging-/partner-mails.
 
 ## [0.79.1] - 2026-11-09
 
