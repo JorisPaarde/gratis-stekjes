@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Notifications\VerifyEmailDutch;
 use App\Services\MilestoneService;
 use App\Support\BeheerTellers;
+use App\Support\ActivatieHerinneringStats;
 use App\Support\BevestigingsmailStats;
 use App\Support\Naam;
 use App\Support\SafeMail;
@@ -102,6 +103,11 @@ class GebruikersController extends Controller
             ->pluck('id')
             ->all();
         $bevestigingsmails = BevestigingsmailStats::voorUsers($onbevestigdIds);
+        $bevestigdIds = $gebruikers->getCollection()
+            ->filter(static fn (User $u) => $u->hasVerifiedEmail())
+            ->pluck('id')
+            ->all();
+        $activatieHerinneringen = ActivatieHerinneringStats::voorUsers($bevestigdIds);
 
         $gesprekken = Schema::hasTable('conversations') && $ids !== []
             ? $this->gesprekkenPerLid($ids)
@@ -119,6 +125,7 @@ class GebruikersController extends Controller
             'gebruikers' => $gebruikers,
             'laatsteMail' => $laatsteMail,
             'bevestigingsmails' => $bevestigingsmails,
+            'activatieHerinneringen' => $activatieHerinneringen,
             'gesprekken' => $gesprekken,
             'filter' => $filter,
             'sort' => $sort,
@@ -169,6 +176,9 @@ class GebruikersController extends Controller
         $bevestigingsmails = ! $user->hasVerifiedEmail()
             ? BevestigingsmailStats::voorUser((int) $user->id)
             : null;
+        $activatieHerinnering = $user->hasVerifiedEmail()
+            ? ActivatieHerinneringStats::voorUser((int) $user->id)
+            : null;
         $gesprekken = Schema::hasTable('conversations')
             ? Conversation::query()->where(fn ($q) => $q->where('user_a_id', $user->id)->orWhere('user_b_id', $user->id))->count()
             : 0;
@@ -183,6 +193,7 @@ class GebruikersController extends Controller
             'aanbod' => $aanbod,
             'mails' => $mails,
             'bevestigingsmails' => $bevestigingsmails,
+            'activatieHerinnering' => $activatieHerinnering,
             'gesprekken' => $gesprekken,
             'overdrachten' => $overdrachten,
             'badges' => $milestones->badgesFor($user),

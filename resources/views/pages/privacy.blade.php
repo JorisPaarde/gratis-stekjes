@@ -101,7 +101,7 @@
 
   <h2>Mails en hosting</h2>
   <ul class="list-plain">
-    <li>Bevestigingsmails (en, alleen als ik dat aanzet, één herinnering na een dag als je e-mailadres nog niet bevestigd is), wachtwoordreset, e-mailwijziging, “je hebt een nieuw bericht” (met de voornaam van de afzender, zonder berichtinhoud of andermans adres; uit te zetten op je profiel of via de link in de mail), aanbod-herinneringen en, alleen als ik dat aanzet, een felicitatiemail bij je eerste stekje gaan via mijn eigen mailbox bij de hoster.</li>
+    <li>Bevestigingsmails (en, alleen als ik dat aanzet, één herinnering na een dag als je e-mailadres nog niet bevestigd is), wachtwoordreset, e-mailwijziging, “je hebt een nieuw bericht” (met de voornaam van de afzender, zonder berichtinhoud of andermans adres; uit te zetten op je profiel of via de link in de mail), één tipmail als je account bevestigd is maar je nog geen aanbod hebt geplaatst (alleen als ik dat aanzet; uit te zetten op je profiel of via de link in de mail), aanbod-herinneringen en, alleen als ik dat aanzet, een felicitatiemail bij je eerste stekje gaan via mijn eigen mailbox bij de hoster.</li>
     <li>Organisatie-aanmelders krijgen een bevestiging; ik krijg een melding. Geen mail naar derden buiten de aanmelder.</li>
     <li>Verbinders die zich aanmelden via de pagina Help mee: dat gaat via contact (jij mailt zelf) of via feedback (alleen opgeslagen, zonder automatische bevestigingsmail).</li>
     <li>Gegevens staan op hosting in de EU die ik beheer. Mail gaat via diezelfde hoster.</li>

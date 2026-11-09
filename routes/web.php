@@ -38,6 +38,7 @@ use App\Http\Controllers\Beheer\GebruikersController as BeheerGebruikersControll
 use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
 use App\Http\Controllers\Beheer\PostLogController as BeheerPostLogController;
 use App\Http\Controllers\Beheer\StatistiekenController as BeheerStatistiekenController;
+use App\Http\Controllers\ActivatieHerinneringController;
 use App\Http\Controllers\BerichtmailController;
 use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\CronController;
@@ -433,6 +434,15 @@ Route::get('/berichtmail/uit/{user}', [BerichtmailController::class, 'show'])
     ->whereNumber('user')
     ->name('berichtmail.uit');
 Route::post('/berichtmail/uit/{user}', [BerichtmailController::class, 'update'])
+    ->middleware(['signed', 'throttle:20,1'])
+    ->whereNumber('user');
+
+// Tipmail «eerste stekje» uitzetten via ondertekende link (zonder inloggen).
+Route::get('/activatieherinnering/uit/{user}', [ActivatieHerinneringController::class, 'show'])
+    ->middleware(['signed', 'throttle:20,1'])
+    ->whereNumber('user')
+    ->name('activatieherinnering.uit');
+Route::post('/activatieherinnering/uit/{user}', [ActivatieHerinneringController::class, 'update'])
     ->middleware(['signed', 'throttle:20,1'])
     ->whereNumber('user');
 

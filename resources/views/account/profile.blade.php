@@ -107,6 +107,11 @@
       <input type="checkbox" name="berichtmail" value="1" @checked(old('berichtmail', $user->berichtmail !== false ? '1' : '0') === '1')>
       Stuur me een mail als iemand me een bericht stuurt
     </label>
+    <label class="checkbox">
+      <input type="hidden" name="activatieherinnering" value="0">
+      <input type="checkbox" name="activatieherinnering" value="1" @checked(old('activatieherinnering', $user->activatieherinnering !== false ? '1' : '0') === '1')>
+      Stuur me een tipmail als ik nog geen aanbod heb geplaatst
+    </label>
     @foreach($aanmeldVinkjes ?? [] as $vink)
       <label class="checkbox">
         <input type="hidden" name="{{ $vink['param'] }}" value="0">

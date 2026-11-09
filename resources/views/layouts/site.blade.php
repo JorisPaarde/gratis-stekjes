@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   @php($siteName = config('site.name'))
   @php($noindex = (bool) config('site.noindex') || app()->environment('staging'))
-  @php($accountNoindex = request()->is('account', 'account/*', 'berichtmail/*'))
+  @php($accountNoindex = request()->is('account', 'account/*', 'berichtmail/*', 'activatieherinnering/*'))
   @php($documentTitle = \App\Support\SeoTitle::document($__env->yieldContent('title')))
   @php($ogPad = trim($__env->yieldContent('og_image')) ?: (string) config('site.og_image', '/assets/og/standaard.jpg'))
   @php($ogImage = \App\Support\CanonicalUrl::asset($ogPad))

@@ -10,6 +10,7 @@ final class MailLabels
     private const TYPES = [
         'VerifyEmailDutch' => 'Bevestigingsmail',
         'VerifyEmailReminderDutch' => 'Bevestigingsherinnering',
+        'ActivatieHerinneringMail' => 'Activatieherinnering',
         'ResetPasswordDutch' => 'Wachtwoord vergeten',
         'EmailChangeNoticeDutch' => 'E-mailadres gewijzigd',
         'NewMessageMail' => 'Nieuw bericht',
