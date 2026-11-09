@@ -75,6 +75,7 @@
       <li><strong>Gratis</strong> — er wordt niets verkocht; meedoen kost niets.</li>
       <li><strong>Zonder reclame</strong> — geen advertenties en geen meetcode van derden die je volgt.</li>
       <li><strong>Nederland en België</strong> — planten, stekjes en zaden delen bij jou in de buurt; je haalt alles zelf op, de enige tegenprestatie is een praatje.</li>
+      <li><strong>Bereik</strong> — {{ $redactieBereik }}</li>
       <li>
         <strong>Deelplekken en verenigingen</strong> —
         @if(($deelplekkenAantal ?? 0) > 0)

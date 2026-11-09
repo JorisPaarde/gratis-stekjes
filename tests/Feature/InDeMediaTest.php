@@ -27,6 +27,7 @@ test('in-de-media pagina laadt met intro, kaart, redactie en doe-mee', function 
         ->assertSee('Kernfeiten', false)
         ->assertSee('Zonder reclame', false)
         ->assertSee('Nederland en België', false)
+        ->assertSee('We bereiken veel plantenliefhebbers in heel Nederland en België.', false)
         ->assertSee('niets verkocht of verstuurd', false)
         ->assertSee('Doe je mee?', false)
         ->assertSee('target="_blank"', false)
