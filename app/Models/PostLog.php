@@ -28,7 +28,7 @@ class PostLog extends Model
         'link',
         'utm_source',
         'notitie',
-        'short_code',
+        // short_code: alleen via creating-boot / migratie-backfill, niet mass-assign.
     ];
 
     protected function casts(): array

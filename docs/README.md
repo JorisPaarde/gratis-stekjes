@@ -29,4 +29,5 @@ Volledige API-contract, env en voorbeelden: [`post-log-mint.md`](post-log-mint.m
 | [`backups.md`](backups.md) | Versleutelde DB-backups |
 | [`avg-inventaris.md`](avg-inventaris.md) | AVG-inventaris |
 | [`uitnodigingen.md`](uitnodigingen.md) | Organisatie-uitnodigingen |
+| [`in-de-media.md`](in-de-media.md) | Mediavermeldingen (`/in-de-media`) |
 | [`design-stijl.md`](design-stijl.md) | Visuele richtlijnen |
