@@ -204,7 +204,7 @@
         >Week</a>
       </div>
 
-      <p class="muted stats-funnel-intro">Unieke bezoekers zijn een schatting (daghash). Percentages tonen we pas vanaf {{ $minFormStarts }} formulierstarts in die {{ $periodNoun }}; daaronder staat «te weinig data» omdat de percentages nog niet betrouwbaar zijn.@if($funnelPeriod === 'maand') Maandtotalen tellen per kalenderdag (Europe/Amsterdam), niet per hele week over de maandgrens.@endif</p>
+      <p class="muted stats-funnel-intro">Unieke bezoekers zijn een schatting (daghash). Percentages tonen we pas vanaf {{ $minFormStarts }} formulierstarts in die {{ $periodNoun }}; daaronder staat «te weinig data» omdat de percentages nog niet betrouwbaar zijn.@if($funnelPeriod === 'maand') Maandtotalen tellen per kalenderdag (Europe/Amsterdam), niet per hele week over de maandgrens.@endif Formulierstart telt max. 1× per bezoek/flow. <strong>Meting vanaf {{ $funnelMeasurementSinceLabel }}</strong>.</p>
 
       <ul class="stats-funnel-legend" aria-label="Trechterstappen">
         @foreach($funnelLegendLabels as $key => $legendLabel)

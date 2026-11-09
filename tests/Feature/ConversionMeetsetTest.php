@@ -581,6 +581,8 @@ test('dashboard trechter toont staplabels en drempeluitleg in HTML', function ()
             "Percentages tonen we pas vanaf {$minFormStarts} formulierstarts in die maand",
             false
         )
+        ->assertSee('Meting vanaf 5 november 2026', false)
+        ->assertSee('Formulierstart telt max. 1× per bezoek/flow', false)
         ->getContent();
 
     expect($htmlMaand)->toContain('class="stats-funnel-sparse hint"')
@@ -1154,4 +1156,159 @@ test('privacy noemt conversiemeting zonder cookiebanner', function () {
         ->assertSee('Flow-cookie', false)
         ->assertSee('Geen cookiebanner', false)
         ->assertSee('welkomstscherm', false);
+});
+
+test('form_start telt max 1x per flow bij herhaalde beacon', function () {
+    $this->withoutMiddleware(EncryptCookies::class);
+    $cookieName = (string) config('conversion.flow_cookie', 'gp_flow');
+
+    $first = $this->post(route('meet.event'), [
+        'type' => 'form_start',
+        'path' => '/account/registreren',
+    ])->assertNoContent();
+
+    $cookie = collect($first->headers->getCookies())->first(fn ($c) => $c->getName() === $cookieName);
+    expect($cookie)->not->toBeNull();
+    expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_FORM_START)->count())->toBe(1);
+
+    // Zelfde flow (herladen na validatiefout): geen tweede form_start.
+    $this->withUnencryptedCookie($cookieName, (string) $cookie->getValue())
+        ->post(route('meet.event'), [
+            'type' => 'form_start',
+            'path' => '/account/registreren',
+        ])
+        ->assertNoContent();
+
+    expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_FORM_START)->count())->toBe(1);
+
+    // Nieuwe flow (andere cookie): wél opnieuw tellen.
+    $newFlow = json_encode([
+        'flow_id' => 'newflow123456789012345678901234',
+        'landing_path' => '/account/registreren',
+        'referrer_host' => null,
+        'utm_source' => null,
+        'utm_medium' => null,
+        'utm_campaign' => null,
+        'utm_content' => null,
+        'created_at' => now()->getTimestamp(),
+        'expires_at' => now()->addDays(7)->getTimestamp(),
+    ], JSON_THROW_ON_ERROR);
+
+    $this->withUnencryptedCookie($cookieName, $newFlow)
+        ->post(route('meet.event'), [
+            'type' => 'form_start',
+            'path' => '/account/registreren',
+        ])
+        ->assertNoContent();
+
+    expect(ConversionEvent::query()->where('event_type', ConversionEvent::TYPE_FORM_START)->count())->toBe(2);
+});
+
+test('countInRange gebruikt Amsterdam-daggrenzen rond middernacht', function () {
+    $tracker = app(ConversionTracker::class);
+    $tz = 'Europe/Amsterdam';
+
+    // Net vóór middernacht Amsterdam → hoort bij 5 nov.
+    ConversionEvent::query()->create([
+        'occurred_at' => Carbon::parse('2026-11-05 23:30:00', $tz)->utc(),
+        'event_type' => ConversionEvent::TYPE_FORM_START,
+        'path' => '/account/registreren',
+        'flow_id' => 'tz-before',
+        'visitor_day_hash' => 'tz-before',
+        'device_type' => 'desktop',
+        'week_key' => $tracker->weekKey(Carbon::parse('2026-11-05 23:30:00', $tz)),
+    ]);
+    // Net na middernacht Amsterdam → hoort bij 6 nov.
+    ConversionEvent::query()->create([
+        'occurred_at' => Carbon::parse('2026-11-06 00:15:00', $tz)->utc(),
+        'event_type' => ConversionEvent::TYPE_FORM_START,
+        'path' => '/account/registreren',
+        'flow_id' => 'tz-after',
+        'visitor_day_hash' => 'tz-after',
+        'device_type' => 'desktop',
+        'week_key' => $tracker->weekKey(Carbon::parse('2026-11-06 00:15:00', $tz)),
+    ]);
+
+    // Reis naar nov 2026 zodat funnelByMonth de juiste maand pakt.
+    $this->travelTo(Carbon::parse('2026-11-09 12:00:00', $tz));
+    $months = collect($tracker->funnelByMonth(3))->keyBy('month_key');
+    expect($months->get('2026-11')['steps'][ConversionEvent::TYPE_FORM_START])->toBe(2);
+
+    // Alleen 5 nov (daggrenzen): 1 event.
+    $dayStart = Carbon::parse('2026-11-05', $tz)->startOfDay();
+    $dayEnd = Carbon::parse('2026-11-05', $tz)->endOfDay();
+    $only5 = (new \ReflectionClass($tracker))->getMethod('countInRange');
+    $only5->setAccessible(true);
+    expect($only5->invoke($tracker, ConversionEvent::TYPE_FORM_START, $dayStart, $dayEnd))->toBe(1);
+
+    $day6Start = Carbon::parse('2026-11-06', $tz)->startOfDay();
+    $day6End = Carbon::parse('2026-11-06', $tz)->endOfDay();
+    expect($only5->invoke($tracker, ConversionEvent::TYPE_FORM_START, $day6Start, $day6End))->toBe(1);
+
+    $this->travelBack();
+});
+
+test('countInRange mengt daily en raw niet over dezelfde periode', function () {
+    $tracker = app(ConversionTracker::class);
+    $tz = 'Europe/Amsterdam';
+    $this->travelTo(Carbon::parse('2026-11-09 15:00:00', $tz));
+
+    // Gisteren: alleen daily (raw al weg / niet aanwezig).
+    $yesterday = Carbon::parse('2026-11-08', $tz)->startOfDay();
+    ConversionDaily::query()->create([
+        'date' => $yesterday->toDateString(),
+        'week_key' => $tracker->weekKey($yesterday),
+        'event_type' => ConversionEvent::TYPE_FORM_START,
+        'device_type' => null,
+        'utm_source' => null,
+        'utm_medium' => null,
+        'utm_campaign' => null,
+        'utm_content' => null,
+        'field_name' => null,
+        'error_code' => null,
+        'count' => 10,
+        'unique_visitors' => 8,
+    ]);
+
+    // Vandaag: alleen raw (nog niet geaggregeerd).
+    ConversionEvent::query()->create([
+        'occurred_at' => Carbon::parse('2026-11-09 10:00:00', $tz),
+        'event_type' => ConversionEvent::TYPE_FORM_START,
+        'path' => '/account/registreren',
+        'flow_id' => 'mix-today',
+        'visitor_day_hash' => 'mix-today',
+        'device_type' => 'mobile',
+        'week_key' => $tracker->weekKey(),
+    ]);
+
+    $month = $tracker->funnelByMonth(1)[0];
+    // Oude bug: daily sum > 0 → return 10, vandaag gemist. Nu: 10 + 1 = 11.
+    expect($month['steps'][ConversionEvent::TYPE_FORM_START])->toBe(11);
+
+    // Geen dubbeltelling als raw én daily voor dezelfde dag bestaan.
+    ConversionDaily::query()->create([
+        'date' => '2026-11-09',
+        'week_key' => $tracker->weekKey(),
+        'event_type' => ConversionEvent::TYPE_FORM_START,
+        'device_type' => null,
+        'utm_source' => null,
+        'utm_medium' => null,
+        'utm_campaign' => null,
+        'utm_content' => null,
+        'field_name' => null,
+        'error_code' => null,
+        'count' => 99,
+        'unique_visitors' => 1,
+    ]);
+    // Raw bestaat voor 9 nov → raw wint (1), daily 99 wordt genegeerd.
+    expect($tracker->funnelByMonth(1)[0]['steps'][ConversionEvent::TYPE_FORM_START])->toBe(11);
+
+    $this->travelBack();
+});
+
+test('registratiepagina zet sessionStorage-sleutel voor form_start', function () {
+    $html = $this->get(route('account.registreren'))->assertOk()->getContent();
+    expect($html)->toContain("sessionStorage.setItem(storageKey, '1')")
+        ->and($html)->toContain("sessionStorage.getItem(storageKey) === '1'")
+        ->and($html)->toContain("storageKey = 'gp_form_start'");
 });

@@ -3,6 +3,22 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.79.1] - 2026-11-09
+
+### Fixed
+
+- Trechter: `form_start` telt max. 1× per bezoek/flow (server-dedup op
+  flow-id + sessionStorage op de registratiepagina). Herladen na een
+  validatiefout telt niet opnieuw — trechter bovenin minder opgeblazen.
+- Trechter: `countInRange` gebruikt één telbron per Amsterdam-kalenderdag
+  (raw als die dag nog raw heeft, anders `conversion_daily`). Geen mengen
+  van dagcijfers met UTC-ruwe events over een deels geaggregeerde periode.
+
+### Changed
+
+- Beheer trechter-UI: label «Meting vanaf 5 november 2026» + uitleg dat
+  formulierstart max. 1× per flow telt. Tijdzone overal Europe/Amsterdam.
+
 ## [0.79.0] - 2026-11-09
 
 ### Fixed
