@@ -830,6 +830,8 @@ test('postlogboek crud voor admin; stats-lezer en beheerder-mutaties afgeschermd
     $this->withSession(['admin_ok' => true])
         ->get(route('beheer.posts.index'))
         ->assertOk()
+        ->assertSee('Korte link', false)
+        ->assertSee('/s/'.$post->short_code, false)
         ->assertSee('Tracking', false)
         ->assertSee('Kopieer', false)
         ->assertSee('Bezoekers', false)
