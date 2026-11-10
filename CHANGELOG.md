@@ -13,6 +13,12 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   gedrag (`/ga/word-lid`). Ongeldige/open-redirect-waarden → **422**. Kolom
   `post_logs.target_path` (nullable); beheer/posts toont het doelpad.
 
+### Fixed
+
+- Conversietest «unieke bezoekers … deels opgeschoonde week»: vaste mid-week
+  `setTestNow`, zodat de «oude» dag niet meer samenvalt met vandaag (CI-flake
+  op dinsdag).
+
 ## [0.79.2] - 2026-11-09
 
 ### Added
