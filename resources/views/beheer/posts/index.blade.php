@@ -113,6 +113,7 @@
                     <button type="button" class="btn btn-secondary btn-klein" data-utm-copy data-target="utm-{{ $post->id }}">Kopieer</button>
                   </div>
                 </label>
+                <p class="beheer-klein muted">Doel: <code>{{ $post->resolvedTargetPath() }}</code></p>
                 @if($post->link)
                   <p class="beheer-klein"><a href="{{ $post->link }}" rel="noopener noreferrer">Sociale post</a></p>
                 @endif
