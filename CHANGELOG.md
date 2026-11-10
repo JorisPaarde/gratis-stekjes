@@ -3,6 +3,22 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.79.3] - 2026-11-10
+
+### Added
+
+- Mint-API `POST /api/internal/post-logs`: optioneel veld `target_path` (intern
+  pad zoals `/tuinverenigingen` of `/stektips/kiwibes`). Korte link `/s/{code}`
+  en `tracking_url` landen daar met dezelfde UTM-parameters. Zonder veld: bestaand
+  gedrag (`/ga/word-lid`). Ongeldige/open-redirect-waarden → **422**. Kolom
+  `post_logs.target_path` (nullable); beheer/posts toont het doelpad.
+
+### Fixed
+
+- Conversietest «unieke bezoekers … deels opgeschoonde week»: vaste mid-week
+  `setTestNow`, zodat de «oude» dag niet meer samenvalt met vandaag (CI-flake
+  op dinsdag).
+
 ## [0.79.2] - 2026-11-09
 
 ### Added

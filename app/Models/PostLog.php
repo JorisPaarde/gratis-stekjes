@@ -19,6 +19,12 @@ class PostLog extends Model
 
     public const SHORT_CODE_LENGTH = 5;
 
+    /** Standaard doel na /s/{code} wanneer target_path leeg is. */
+    public const DEFAULT_TARGET_PATH = '/ga/word-lid';
+
+    /** Max lengte opgeslagen intern pad (kolom target_path). */
+    public const TARGET_PATH_MAX = 200;
+
     protected $fillable = [
         'posted_on',
         'titel',
@@ -27,6 +33,7 @@ class PostLog extends Model
         'soort',
         'link',
         'utm_source',
+        'target_path',
         'notitie',
         // short_code: alleen via creating-boot / migratie-backfill, niet mass-assign.
     ];
@@ -100,7 +107,84 @@ class PostLog extends Model
     }
 
     /**
-     * Relatief pad + query naar /ga/word-lid (eigen domein; veilig voor redirect).
+     * Alleen interne relatieve paden: begint met `/`, geen `//`, geen schema/host.
+     * Lege string → null (betekent: gebruik DEFAULT_TARGET_PATH).
+     * Ongeldig → null (caller moet 422 geven wanneer invoer niet-leeg was).
+     */
+    public static function normalizeTargetPath(?string $candidate): ?string
+    {
+        $path = trim((string) $candidate);
+        if ($path === '') {
+            return null;
+        }
+
+        if (strlen($path) > self::TARGET_PATH_MAX) {
+            return null;
+        }
+
+        // Geen schema, protocol-relatief, backslash of control chars.
+        if (
+            str_starts_with($path, '//')
+            || str_contains($path, '\\')
+            || str_contains($path, '://')
+            || preg_match('/[\x00-\x1F\x7F]/', $path) === 1
+        ) {
+            return null;
+        }
+
+        // Schemes zonder slash (javascript:, data:) en absolute URLs.
+        if (preg_match('#^[a-z][a-z0-9+.-]*:#i', $path) === 1) {
+            return null;
+        }
+
+        if (! str_starts_with($path, '/') || str_starts_with($path, '//')) {
+            return null;
+        }
+
+        // Geen query/fragment in opgeslagen pad — UTM wordt apart geplakt.
+        if (str_contains($path, '?') || str_contains($path, '#')) {
+            return null;
+        }
+
+        // Geen `:` in pad (voorkomt /javascript:…-achtige trucs).
+        if (str_contains($path, ':')) {
+            return null;
+        }
+
+        // Alleen veilige padtekens (Unicode-letters/cijfers, streepjes, underscore, slash, punt, tilde).
+        if (preg_match('#^/[\p{L}\p{N}\-._~/]*$#u', $path) !== 1) {
+            return null;
+        }
+
+        // Collapse dubbele slashes (na //evil-check); blijft met / beginnen.
+        $normalized = (string) preg_replace('#/{2,}#', '/', $path);
+        if ($normalized === '' || ! str_starts_with($normalized, '/') || str_starts_with($normalized, '//')) {
+            return null;
+        }
+
+        // Geen trailing slash behalve root.
+        if ($normalized !== '/' && str_ends_with($normalized, '/')) {
+            $normalized = rtrim($normalized, '/');
+        }
+
+        return $normalized;
+    }
+
+    /**
+     * Opgelost doelpad voor redirect/tracking (nooit leeg; fallback DEFAULT).
+     */
+    public function resolvedTargetPath(): string
+    {
+        $stored = trim((string) ($this->target_path ?? ''));
+        if ($stored === '') {
+            return self::DEFAULT_TARGET_PATH;
+        }
+
+        return static::normalizeTargetPath($stored) ?? self::DEFAULT_TARGET_PATH;
+    }
+
+    /**
+     * Relatief pad + UTM-query op eigen domein (veilig voor /s/-redirect).
      */
     public function trackingPath(): string
     {
@@ -111,7 +195,7 @@ class PostLog extends Model
             'utm_content' => (string) $this->id,
         ]);
 
-        return '/ga/word-lid?'.$query;
+        return $this->resolvedTargetPath().'?'.$query;
     }
 
     public function trackingUrl(?string $base = null): string
