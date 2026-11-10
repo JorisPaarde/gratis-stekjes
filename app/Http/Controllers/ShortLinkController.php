@@ -10,8 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Korte deellink /s/{code} → 302 naar /ga/word-lid?utm_… (zelfde meting als lange mint-URL).
- * Geen open redirect: doelpad is hard gecodeerd via PostLog::trackingPath().
+ * Korte deellink /s/{code} → 302 naar target_path?utm_… (default /ga/word-lid).
+ * Geen open redirect: doelpad komt uit PostLog::trackingPath() (alleen interne paden).
  */
 class ShortLinkController extends Controller
 {

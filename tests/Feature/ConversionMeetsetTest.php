@@ -346,39 +346,46 @@ test('aggregatie gebruikt Amsterdam-dagen, niet UTC DATE(occurred_at)', function
 });
 
 test('unieke bezoekers vallen terug op conversion_daily bij deels opgeschoonde week', function () {
-    $tracker = app(ConversionTracker::class);
-    $weekStart = now('Europe/Amsterdam')->startOfWeek(Carbon::MONDAY);
-    $oldDay = $weekStart->copy()->addDay(); // maandag+1
-    // Forceer "oude" dag buiten raw-retentie door retentie tijdelijk laag te zetten na aggregatie.
+    // Pin mid-week zodat "oude" dag (maandag) strikt vóór "vandaag" blijft.
+    // Zonder pin botst maandag+1 op dinsdag met vandaag → raw-count blijft 1.
+    Carbon::setTestNow(Carbon::parse('2026-11-10 14:00:00', 'Europe/Amsterdam'));
 
-    ConversionEvent::query()->create([
-        'occurred_at' => $oldDay->copy()->setTime(12, 0),
-        'event_type' => ConversionEvent::TYPE_REGISTER_VIEW,
-        'path' => '/account/registreren',
-        'flow_id' => 'a',
-        'visitor_day_hash' => 'hash-old-week',
-        'device_type' => 'desktop',
-        'week_key' => $tracker->weekKey($oldDay),
-    ]);
-    ConversionEvent::query()->create([
-        'occurred_at' => now(),
-        'event_type' => ConversionEvent::TYPE_REGISTER_VIEW,
-        'path' => '/account/registreren',
-        'flow_id' => 'b',
-        'visitor_day_hash' => 'hash-new-week',
-        'device_type' => 'mobile',
-        'week_key' => $tracker->weekKey(),
-    ]);
+    try {
+        $tracker = app(ConversionTracker::class);
+        $weekStart = now('Europe/Amsterdam')->startOfWeek(Carbon::MONDAY);
+        $oldDay = $weekStart->copy(); // maandag van dezelfde week, vóór dinsdag
 
-    $tracker->aggregateAndPurge(now());
+        ConversionEvent::query()->create([
+            'occurred_at' => $oldDay->copy()->setTime(12, 0),
+            'event_type' => ConversionEvent::TYPE_REGISTER_VIEW,
+            'path' => '/account/registreren',
+            'flow_id' => 'a',
+            'visitor_day_hash' => 'hash-old-week',
+            'device_type' => 'desktop',
+            'week_key' => $tracker->weekKey($oldDay),
+        ]);
+        ConversionEvent::query()->create([
+            'occurred_at' => now(),
+            'event_type' => ConversionEvent::TYPE_REGISTER_VIEW,
+            'path' => '/account/registreren',
+            'flow_id' => 'b',
+            'visitor_day_hash' => 'hash-new-week',
+            'device_type' => 'mobile',
+            'week_key' => $tracker->weekKey(),
+        ]);
 
-    // Simuleer raw-purge van de oude dag terwijl daily blijft.
-    ConversionEvent::query()
-        ->where('visitor_day_hash', 'hash-old-week')
-        ->delete();
+        $tracker->aggregateAndPurge(now());
 
-    $funnel = $tracker->funnelByWeek(1);
-    expect($funnel[0]['unique_visitors'])->toBeGreaterThanOrEqual(2);
+        // Simuleer raw-purge van de oude dag terwijl daily blijft.
+        ConversionEvent::query()
+            ->where('visitor_day_hash', 'hash-old-week')
+            ->delete();
+
+        $funnel = $tracker->funnelByWeek(1);
+        expect($funnel[0]['unique_visitors'])->toBeGreaterThanOrEqual(2);
+    } finally {
+        Carbon::setTestNow();
+    }
 });
 
 test('post bezoekers tellen unieke register_view, niet som van alle events', function () {

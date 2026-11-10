@@ -155,3 +155,97 @@ test('PostLog trackingUrl gebruikt /ga/word-lid pad', function () {
         ->and($url)->toContain('utm_content='.$post->id)
         ->and($url)->not->toContain('https://example.test/?');
 });
+
+test('mint met target_path landt op dat pad met UTM', function () {
+    $response = $this->postJson('/api/internal/post-logs', [
+        'titel' => 'Tuinverenigingen post',
+        'groep' => 'Plantenruil Amsterdam',
+        'soort' => 'aankondiging',
+        'utm_source' => 'facebook',
+        'target_path' => '/tuinverenigingen',
+    ], [
+        'X-Post-Log-Token' => 'test-mint-token',
+    ]);
+
+    $response->assertCreated()
+        ->assertJsonPath('ok', true)
+        ->assertJsonPath('target_path', '/tuinverenigingen');
+
+    $id = (int) $response->json('id');
+    $url = (string) $response->json('tracking_url');
+    expect($url)->toContain('/tuinverenigingen?')
+        ->and($url)->not->toContain('/ga/word-lid')
+        ->and($url)->toContain('utm_source=facebook')
+        ->and($url)->toContain('utm_medium=social')
+        ->and($url)->toContain('utm_campaign=plantenruil-amsterdam')
+        ->and($url)->toContain('utm_content='.$id);
+
+    $post = PostLog::query()->find($id);
+    expect($post)->not->toBeNull()
+        ->and($post->target_path)->toBe('/tuinverenigingen')
+        ->and($post->resolvedTargetPath())->toBe('/tuinverenigingen')
+        ->and($post->trackingPath())->toStartWith('/tuinverenigingen?');
+});
+
+test('mint zonder target_path blijft /ga/word-lid', function () {
+    $response = $this->postJson('/api/internal/post-logs', [
+        'titel' => 'Default pad',
+        'groep' => 'Stekjes Utrecht',
+        'soort' => 'oproep',
+    ], [
+        'X-Post-Log-Token' => 'test-mint-token',
+    ]);
+
+    $response->assertCreated()
+        ->assertJsonPath('target_path', '/ga/word-lid');
+
+    $post = PostLog::query()->find((int) $response->json('id'));
+    expect($post->target_path)->toBeNull()
+        ->and($post->resolvedTargetPath())->toBe('/ga/word-lid')
+        ->and((string) $response->json('tracking_url'))->toContain('/ga/word-lid?');
+});
+
+test('mint weigert open-redirect target_path met 422', function (string $bad) {
+    $this->postJson('/api/internal/post-logs', [
+        'titel' => 'Bad path',
+        'groep' => 'Test',
+        'soort' => 'anders',
+        'target_path' => $bad,
+    ], [
+        'X-Post-Log-Token' => 'test-mint-token',
+    ])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors(['target_path']);
+
+    expect(PostLog::query()->count())->toBe(0);
+})->with([
+    'https absolute' => 'https://evil.example/phish',
+    'protocol-relative' => '//evil.com',
+    'javascript scheme' => 'javascript:alert(1)',
+    'data scheme' => 'data:text/html,hi',
+    'backslash' => '/\\evil',
+    'query in path' => '/tuinverenigingen?x=1',
+    'colon in path' => '/javascript:alert(1)',
+    'no leading slash' => 'tuinverenigingen',
+]);
+
+test('mint accepteert genest intern pad zoals /stektips/kiwibes', function () {
+    $response = $this->postJson('/api/internal/post-logs', [
+        'titel' => 'Kiwibes tip',
+        'groep' => 'Stektips',
+        'soort' => 'uitleg',
+        'utm_source' => 'instagram',
+        'target_path' => '/stektips/kiwibes',
+    ], [
+        'X-Post-Log-Token' => 'test-mint-token',
+    ]);
+
+    $response->assertCreated()
+        ->assertJsonPath('target_path', '/stektips/kiwibes');
+
+    $id = (int) $response->json('id');
+    expect((string) $response->json('tracking_url'))
+        ->toContain('/stektips/kiwibes?')
+        ->and((string) $response->json('tracking_url'))->toContain('utm_content='.$id)
+        ->and((string) $response->json('tracking_url'))->toContain('utm_source=instagram');
+});

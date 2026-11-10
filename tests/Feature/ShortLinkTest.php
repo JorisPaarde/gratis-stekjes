@@ -180,3 +180,71 @@ test('/s/{code} → /ga/word-lid meet één cta_click (geen dubbeltelling op /s/
         ->where('utm_content', (string) $post->id)
         ->count())->toBe(1);
 });
+
+test('/s/{code} met target_path redirect naar dat pad met UTM', function () {
+    $post = PostLog::query()->create([
+        'posted_on' => now()->toDateString(),
+        'titel' => 'Custom target',
+        'groep' => 'Tuinvereniging Test',
+        'groep_slug' => 'tuinvereniging-test',
+        'soort' => 'aankondiging',
+        'utm_source' => 'facebook',
+        'target_path' => '/tuinverenigingen',
+    ]);
+
+    $response = $this->get('/s/'.$post->short_code);
+    $response->assertStatus(302)
+        ->assertHeader('X-Robots-Tag', 'noindex, nofollow');
+
+    $location = (string) $response->headers->get('Location');
+    expect($location)->toContain('/tuinverenigingen?')
+        ->and($location)->not->toContain('/ga/word-lid')
+        ->and($location)->toContain('utm_source=facebook')
+        ->and($location)->toContain('utm_medium=social')
+        ->and($location)->toContain('utm_campaign=tuinvereniging-test')
+        ->and($location)->toContain('utm_content='.$post->id);
+
+    $host = parse_url($location, PHP_URL_HOST);
+    if ($host !== null) {
+        $appHost = parse_url((string) config('app.url'), PHP_URL_HOST);
+        expect($host)->toBeIn(array_values(array_filter([$appHost, 'localhost'])));
+    }
+});
+
+test('bestaande short link zonder target_path blijft /ga/word-lid', function () {
+    $post = PostLog::query()->create([
+        'posted_on' => now()->toDateString(),
+        'titel' => 'Legacy null target',
+        'groep' => 'Legacy',
+        'groep_slug' => 'legacy',
+        'soort' => 'anders',
+        'utm_source' => 'instagram',
+        'target_path' => null,
+    ]);
+
+    $this->get('/s/'.$post->short_code)
+        ->assertStatus(302)
+        ->assertRedirect($post->trackingPath());
+
+    expect($post->trackingPath())->toStartWith('/ga/word-lid?')
+        ->and($post->trackingPath())->toContain('utm_source=instagram');
+});
+
+test('beheer posts toont doelpad', function () {
+    $post = PostLog::query()->create([
+        'posted_on' => now()->toDateString(),
+        'titel' => 'Doel zichtbaar',
+        'groep' => 'Beheer groep',
+        'groep_slug' => 'beheer-groep',
+        'soort' => 'aankondiging',
+        'utm_source' => 'facebook',
+        'target_path' => '/stektips/kiwibes',
+    ]);
+
+    $this->withSession(['admin_ok' => true])
+        ->get(route('beheer.posts.index'))
+        ->assertOk()
+        ->assertSee('Doel:', false)
+        ->assertSee('/stektips/kiwibes', false)
+        ->assertSee('utm_content='.$post->id, false);
+});

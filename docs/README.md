@@ -13,10 +13,12 @@ Plantjes en Grok Bot minten per Facebook/Instagram-post een tracking-URL via
 | `tracking_url` | Lange UTM-URL (achterwaarts compatibel; zelfde meting) |
 | `utm` | source/medium/campaign/content voor logging |
 
-`/s/{code}` doet een **302** naar `/ga/word-lid?utm_…` met dezelfde UTM-parameters
-als `tracking_url`. De meting (`cta_click`, dashboard op `utm_content=<post_logs.id>`)
-blijft daardoor identiek. De redirect zelf telt **niet** als pageview en niet als
-`cta_click` — die valt pas op `/ga/word-lid`.
+`/s/{code}` doet een **302** naar `{target_path}?utm_…` (default `/ga/word-lid`)
+met dezelfde UTM-parameters als `tracking_url`. Optioneel veld `target_path` bij mint
+kiest het landingspad (alleen interne paden). De meting (dashboard op
+`utm_content=<post_logs.id>`; `cta_click` op `/ga/word-lid`) blijft daardoor
+gekoppeld. De `/s/`-redirect zelf telt **niet** als pageview en niet als
+`cta_click`.
 
 Volledige API-contract, env en voorbeelden: [`post-log-mint.md`](post-log-mint.md).
 
