@@ -3,6 +3,16 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.79.4] - 2026-11-14
+
+### Changed
+
+- `/struikroven`: «Wie zijn de Struikrovers» en «Wat is Struikroven» samengevoegd tot
+  één kop en alinea (zonder jaartallen/historie); link «Meer over Struikroven» naar
+  https://struikroven.nl. Sectie «Voor Struikrovers» (poster/flyer/nieuwsbrieftekst)
+  van de pagina gehaald; Struikrover-vinkje, beheer-telling en agenda-import ongewijzigd.
+- Wit Struikroven-logo op donker bosgroen vlak bovenaan `/struikroven` (webp + width/height).
+
 ## [0.79.3] - 2026-11-10
 
 ### Added

@@ -30,10 +30,14 @@ test('/struikroven geeft 200 met kopvolgorde, knoppen en lege acties', function 
     $html = $this->get(route('struikroven'))
         ->assertOk()
         ->assertSee('Struikroven redt planten van de sloop', false)
-        ->assertSee('Wie zijn de Struikrovers?', false)
+        ->assertSee('Wat is Struikroven?', false)
+        ->assertDontSee('Wie zijn de Struikrovers?', false)
         ->assertSee('Meer over Struikroven', false)
-        ->assertSee('https://struikroven.nu', false)
+        ->assertSee('https://struikroven.nl', false)
+        ->assertSee('https://struikroven.nu/agenda', false)
         ->assertDontSee('Over de stichting', false)
+        ->assertDontSee('begon in 2017', false)
+        ->assertDontSee('Houthalen-Helchteren', false)
         ->assertSee('Doe je mee met Struikroven?', false)
         ->assertSee('Planten zoeken in je buurt', false)
         ->assertSee('Planten over? Bied ze gratis aan', false)
@@ -45,28 +49,28 @@ test('/struikroven geeft 200 met kopvolgorde, knoppen en lege acties', function 
         ->assertSee('geen straatadressen', false)
         ->assertSee('Komende Struikroven-acties', false)
         ->assertSee('Er staan nu geen Struikroven-acties gepland', false)
-        ->assertSee('Voor Struikrovers', false)
-        ->assertSee('/poster?voor=struikroven', false)
-        ->assertSee('formaat=a5', false)
-        ->assertSee('Kopieer tekst', false)
-        ->assertSee('gratisplanten.nl/struikroven', false)
+        ->assertDontSee('Voor Struikrovers', false)
+        ->assertDontSee('Kopieer tekst', false)
+        ->assertDontSee('struikroven-deeltekst', false)
+        ->assertDontSee('/poster?voor=struikroven', false)
         ->assertDontSee('Wat is Gratis planten?', false)
         ->assertDontSee('Joris', false)
         ->assertDontSee('JP Web', false)
-        ->assertDontSee('struikroven-logo', false)
+        ->assertSee('struikroven-logo', false)
+        ->assertSee('logo-struikroven-wit.webp', false)
+        ->assertSee('alt="Struikroven"', false)
         ->getContent();
 
     $h1 = strpos($html, 'Struikroven redt planten van de sloop');
+    $intro = strpos($html, 'Wat is Struikroven?');
     $mee = strpos($html, 'Doe je mee met Struikroven?');
     $werkt = strpos($html, 'Zo werkt het');
-    $voor = strpos($html, 'Voor Struikrovers');
-    expect($h1)->toBeInt()->and($mee)->toBeInt()->and($werkt)->toBeInt()->and($voor)->toBeInt();
-    expect($h1 < $mee && $mee < $werkt && $werkt < $voor)->toBeTrue();
+    expect($h1)->toBeInt()->and($intro)->toBeInt()->and($mee)->toBeInt()->and($werkt)->toBeInt();
+    expect($h1 < $intro && $intro < $mee && $mee < $werkt)->toBeTrue();
 
     expect($html)->toContain('rel="canonical"')
         ->and($html)->toContain('application/ld+json')
-        ->and($html)->toContain('id="struikroven-deeltekst"')
-        ->and($html)->toContain('Planten over na een struikroofactie?');
+        ->and($html)->toContain('Roverspact');
 });
 
 test('/struikroven toont gekoppelde komende acties en negeert andere', function () {

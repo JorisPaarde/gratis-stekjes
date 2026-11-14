@@ -18,9 +18,28 @@
   $agendaUrl = trim((string) $init->agenda_url);
   $agendaHost = $agendaUrl !== '' ? (preg_replace('#^https?://#i', '', $agendaUrl) ?: $agendaUrl) : '';
   $isStekchallenge = $slug === 'stekchallenge';
+  $isStruikroven = $slug === 'struikroven';
+  $toonLedenBlok = $init->leden_titel !== '';
 @endphp
 <section class="section wrap struikroven-page">
   <h1 class="page-title">{{ $init->pagina_titel !== '' ? $init->pagina_titel : $korte }}</h1>
+
+  @if($isStruikroven)
+    <div class="struikroven-logo-band" aria-label="Struikroven">
+      <picture>
+        <source type="image/webp" srcset="/assets/images/initiatieven/logo-struikroven-wit.webp">
+        <img
+          class="struikroven-logo"
+          src="/assets/images/initiatieven/logo-struikroven-wit.png"
+          width="220"
+          height="121"
+          alt="Struikroven"
+          fetchpriority="high"
+          decoding="async"
+        >
+      </picture>
+    </div>
+  @endif
 
   @if($isStekchallenge)
     <figure class="struikroven-hero">
@@ -133,26 +152,30 @@
     </ul>
   @endif
 
-  <h2>{{ $init->leden_titel !== '' ? $init->leden_titel : 'Voor leden' }}</h2>
-  <p>{{ $init->leden_intro !== '' ? $init->leden_intro : 'Wil je Gratis planten bij een actie of in je nieuwsbrief noemen? Gebruik dit gerust.' }}</p>
-  <ul class="struikroven-materiaal list-plain">
-    <li><a href="{{ route('poster', ['voor' => $slug]) }}">A4-poster om te printen</a></li>
-    <li><a href="{{ route('poster', ['voor' => $slug, 'formaat' => 'a5']) }}">A5-flyer om te printen</a></li>
-  </ul>
-  @if($isStekchallenge)
-    <figure class="struikroven-banner">
-      <picture>
-        <source type="image/webp" srcset="/assets/images/initiatieven/stekchallenge-banner-215.webp 215w, /assets/images/initiatieven/stekchallenge-banner-430.webp 430w" sizes="215px">
-        <img src="/assets/images/initiatieven/stekchallenge-banner-215.jpg" srcset="/assets/images/initiatieven/stekchallenge-banner-215.jpg 215w, /assets/images/initiatieven/stekchallenge-banner-430.jpg 430w" sizes="215px" width="215" height="215" alt="STEKchallenge-campagnebanner" loading="lazy" decoding="async">
-      </picture>
-      <figcaption>Foto: Carpe Vitam · Deel met #STEKchallenge</figcaption>
-    </figure>
+  @if($toonLedenBlok)
+    <h2>{{ $init->leden_titel }}</h2>
+    <p>{{ $init->leden_intro !== '' ? $init->leden_intro : 'Wil je Gratis planten bij een actie of in je nieuwsbrief noemen? Gebruik dit gerust.' }}</p>
+    <ul class="struikroven-materiaal list-plain">
+      <li><a href="{{ route('poster', ['voor' => $slug]) }}">A4-poster om te printen</a></li>
+      <li><a href="{{ route('poster', ['voor' => $slug, 'formaat' => 'a5']) }}">A5-flyer om te printen</a></li>
+    </ul>
+    @if($isStekchallenge)
+      <figure class="struikroven-banner">
+        <picture>
+          <source type="image/webp" srcset="/assets/images/initiatieven/stekchallenge-banner-215.webp 215w, /assets/images/initiatieven/stekchallenge-banner-430.webp 430w" sizes="215px">
+          <img src="/assets/images/initiatieven/stekchallenge-banner-215.jpg" srcset="/assets/images/initiatieven/stekchallenge-banner-215.jpg 215w, /assets/images/initiatieven/stekchallenge-banner-430.jpg 430w" sizes="215px" width="215" height="215" alt="STEKchallenge-campagnebanner" loading="lazy" decoding="async">
+        </picture>
+        <figcaption>Foto: Carpe Vitam · Deel met #STEKchallenge</figcaption>
+      </figure>
+    @endif
+    @if($init->kopieertekst !== '')
+      <div class="struikroven-kopieer">
+        <label class="struikroven-kopieer-label" for="{{ $deelId }}">Tekst voor nieuwsbrief of socials</label>
+        <textarea id="{{ $deelId }}" class="struikroven-deeltekst" readonly rows="4">{{ $init->kopieertekst }}</textarea>
+        <button type="button" class="btn btn-secondary btn-klein" data-kopieer="{{ $deelId }}">Kopieer tekst</button>
+      </div>
+    @endif
   @endif
-  <div class="struikroven-kopieer">
-    <label class="struikroven-kopieer-label" for="{{ $deelId }}">Tekst voor nieuwsbrief of socials</label>
-    <textarea id="{{ $deelId }}" class="struikroven-deeltekst" readonly rows="4">{{ $init->kopieertekst }}</textarea>
-    <button type="button" class="btn btn-secondary btn-klein" data-kopieer="{{ $deelId }}">Kopieer tekst</button>
-  </div>
 </section>
 @endsection
 

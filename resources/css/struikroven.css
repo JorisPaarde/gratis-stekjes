@@ -4,6 +4,25 @@
   font-size: 0.95rem;
 }
 
+/* Wit Struikroven-logo op donker Struikroven-teal (herkenbaarheid; contrast AA). */
+.struikroven-logo-band {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 1.5rem;
+  max-width: 36rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 0.75rem;
+  background: #003d43;
+}
+
+.struikroven-logo-band .struikroven-logo {
+  display: block;
+  width: min(100%, 220px);
+  height: auto;
+  max-width: 220px;
+}
+
 .struikroven-ctas {
   display: flex;
   flex-direction: column;
