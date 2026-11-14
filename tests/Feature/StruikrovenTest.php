@@ -59,18 +59,29 @@ test('/struikroven geeft 200 met kopvolgorde, knoppen en lege acties', function 
         ->assertSee('struikroven-intro', false)
         ->assertDontSee('struikroven-logo-kaart', false)
         ->assertDontSee('struikroven-tip-met-foto', false)
+        ->assertDontSee('struikroven-intro-kop', false)
         ->assertSee('logo-struikroven.webp', false)
         ->assertDontSee('logo-struikroven-wit', false)
         ->assertSee('alt="Struikroven"', false)
+        ->assertSee('width="144"', false)
+        ->assertSee('height="72"', false)
+        ->assertSee('of in een logeertuin.', false)
+        ->assertSee('Meedoen is gratis en iedereen is welkom', false)
+        ->assertSee('zodat struikroven daar onderdeel wordt', false)
         ->assertSee('roverspacten in drie andere gemeenten', false)
         ->getContent();
 
     $h1 = strpos($html, 'Struikroven redt planten van de sloop');
+    $logo = strpos($html, 'logo-struikroven.webp');
     $intro = strpos($html, 'Wat is Struikroven?');
+    $alinea1 = strpos($html, 'of in een logeertuin.');
+    $alinea2 = strpos($html, 'Meedoen is gratis en iedereen is welkom');
     $mee = strpos($html, 'Doe je mee met Struikroven?');
     $werkt = strpos($html, 'Zo werkt het');
-    expect($h1)->toBeInt()->and($intro)->toBeInt()->and($mee)->toBeInt()->and($werkt)->toBeInt();
-    expect($h1 < $intro && $intro < $mee && $mee < $werkt)->toBeTrue();
+    expect($h1)->toBeInt()->and($logo)->toBeInt()->and($intro)->toBeInt()
+        ->and($alinea1)->toBeInt()->and($alinea2)->toBeInt()
+        ->and($mee)->toBeInt()->and($werkt)->toBeInt();
+    expect($h1 < $logo && $logo < $intro && $intro < $alinea1 && $alinea1 < $alinea2 && $alinea2 < $mee && $mee < $werkt)->toBeTrue();
 
     expect($html)->toContain('rel="canonical"')
         ->and($html)->toContain('application/ld+json')
@@ -84,6 +95,7 @@ test('/struikroven toont plantenbieb-foto met CC BY-SA-credit', function () {
         ->assertSee('Struikroven en Gratis planten vullen elkaar aan', false)
         ->assertDontSee('struikroven-tip-met-foto', false)
         ->assertDontSee('struikroven-logo-kaart', false)
+        ->assertDontSee('struikroven-intro-kop', false)
         ->assertSee('plantenbieb-schiebroek-480.webp', false)
         ->assertSee('plantenbieb-schiebroek-960.webp', false)
         ->assertSee('alt="Plantenbieb met houten rek en planten in Schiebroek, Rotterdam"', false)
@@ -96,16 +108,19 @@ test('/struikroven toont plantenbieb-foto met CC BY-SA-credit', function () {
         ->getContent();
 
     expect($html)->toContain('width="480"')
-        ->and($html)->toContain('struikroven-plantenbieb-media')
-        ->and($html)->toContain('struikroven-intro-kop');
+        ->and($html)->toContain('height="480"')
+        ->and($html)->toContain('struikroven-plantenbieb-media');
 
+    $logo = strpos($html, 'logo-struikroven.webp');
     $intro = strpos($html, 'Wat is Struikroven?');
+    $link = strpos($html, 'Meer over Struikroven');
     $foto = strpos($html, 'plantenbieb-schiebroek-480.webp');
     $tip = strpos($html, 'Struikroven en Gratis planten vullen elkaar aan');
     $zoek = strpos($html, 'Wat zoek je?');
-    expect($intro)->toBeInt()->and($foto)->toBeInt()->and($tip)->toBeInt()->and($zoek)->toBeInt();
-    // Intro + foto eerst, tipblok daarna op volle breedte, dan «Wat zoek je?»
-    expect($intro < $foto && $foto < $tip && $tip < $zoek)->toBeTrue();
+    expect($logo)->toBeInt()->and($intro)->toBeInt()->and($link)->toBeInt()
+        ->and($foto)->toBeInt()->and($tip)->toBeInt()->and($zoek)->toBeInt();
+    // Logo → H2 → link → foto → tipblok → «Wat zoek je?»
+    expect($logo < $intro && $intro < $link && $link < $foto && $foto < $tip && $tip < $zoek)->toBeTrue();
 });
 
 test('/struikroven toont gekoppelde komende acties en negeert andere', function () {
