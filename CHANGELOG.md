@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.79.7] - 2026-11-14
+
+### Changed
+
+- `/struikroven`: intro-polish — link direct onder de alinea, tekstkolom verticaal
+  gecentreerd t.o.v. de foto, vaste spacing H1↔intro (~28px) en logo↔H2 (~16px).
+
 ## [0.79.6] - 2026-11-14
 
 ### Changed
