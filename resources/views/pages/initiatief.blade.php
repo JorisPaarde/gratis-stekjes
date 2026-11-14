@@ -24,22 +24,6 @@
 <section class="section wrap struikroven-page">
   <h1 class="page-title">{{ $init->pagina_titel !== '' ? $init->pagina_titel : $korte }}</h1>
 
-  @if($isStruikroven)
-    <div class="struikroven-logo-kaart">
-      <picture>
-        <source type="image/webp" srcset="/assets/images/initiatieven/logo-struikroven.webp">
-        <img
-          class="struikroven-logo"
-          src="/assets/images/initiatieven/logo-struikroven.png"
-          width="220"
-          height="110"
-          alt="Struikroven"
-          decoding="async"
-        >
-      </picture>
-    </div>
-  @endif
-
   @if($isStekchallenge)
     <figure class="struikroven-hero">
       <picture>
@@ -58,73 +42,96 @@
     </div>
   @endif
 
-  @if($init->intro_titel !== '')
-    <h2>{{ $init->intro_titel }}</h2>
-  @endif
-  @foreach($init->introAlineas() as $alinea)
-    <p>{{ $alinea }}</p>
-  @endforeach
-
-  @if($isStekchallenge)
-    <div class="struikroven-verhaal">
-      <figure class="struikroven-verhaal-foto">
-        <picture>
-          <source type="image/webp" srcset="/assets/images/initiatieven/stekchallenge-dewy-stekje-400.webp 400w, /assets/images/initiatieven/stekchallenge-dewy-stekje-800.webp 800w" sizes="(min-width: 720px) 280px, 70vw">
-          <img src="/assets/images/initiatieven/stekchallenge-dewy-stekje-400.jpg" srcset="/assets/images/initiatieven/stekchallenge-dewy-stekje-400.jpg 400w, /assets/images/initiatieven/stekchallenge-dewy-stekje-800.jpg 800w" sizes="(min-width: 720px) 280px, 70vw" width="400" height="533" alt="Dewy Mulder houdt een stekje in een pot vast" loading="lazy" decoding="async">
+  @if($isStruikroven)
+    <div class="struikroven-intro">
+      <div class="struikroven-intro-tekst">
+        <picture class="struikroven-logo-wrap">
+          <source type="image/webp" srcset="/assets/images/initiatieven/logo-struikroven.webp">
+          <img
+            class="struikroven-logo"
+            src="/assets/images/initiatieven/logo-struikroven.png"
+            width="150"
+            height="75"
+            alt="Struikroven"
+            decoding="async"
+          >
         </picture>
-        <figcaption>Foto: Carpe Vitam</figcaption>
-      </figure>
-      <div>
-        <p>Geschikte soorten voor houtstekken in het najaar zijn onder meer <a href="{{ route('stektips.show', ['slug' => 'rode-bes']) }}">rode bes</a>, <a href="{{ route('stektips.show', ['slug' => 'zwarte-bes']) }}">zwarte bes</a>, <a href="{{ route('stektips.show', ['slug' => 'wilg']) }}">wilg</a> en <a href="{{ route('stektips.show', ['slug' => 'zwarte-vlier']) }}">vlier</a>.</p>
-        <p><a href="https://carpevitam.net/stekchallenge/" rel="noopener noreferrer" target="_blank">Registreer je stekken</a> — je krijgt een persoonlijke link per mail. <a href="https://carpevitam.net/geef-je-snoeihout-een-toekomst-doe-mee-met-de-stekchallenge/" rel="noopener noreferrer" target="_blank">Lees het persbericht</a>.</p>
-        <p class="muted">Kijk ook op onze <a href="{{ route('vermeerderen') }}">stektips</a> hoe je planten vermeerdert.</p>
+        @if($init->intro_titel !== '')
+          <h2>{{ $init->intro_titel }}</h2>
+        @endif
+        @foreach($init->introAlineas() as $alinea)
+          <p>{{ $alinea }}</p>
+        @endforeach
+        @if($init->site_url !== '')
+          <p class="struikroven-links muted">
+            <a href="{{ $init->site_url }}" rel="noopener noreferrer" target="_blank">{{ $init->site_link_tekst !== '' ? $init->site_link_tekst : 'Meer info' }}</a>
+          </p>
+        @endif
       </div>
+      <figure class="struikroven-plantenbieb">
+        <div class="struikroven-plantenbieb-media">
+          <picture>
+            <source
+              type="image/webp"
+              srcset="/assets/images/initiatieven/plantenbieb-schiebroek-480.webp 480w, /assets/images/initiatieven/plantenbieb-schiebroek-960.webp 960w"
+              sizes="(min-width: 768px) 38vw, min(100vw - 2rem, 360px)"
+            >
+            <img
+              src="/assets/images/initiatieven/plantenbieb-schiebroek-480.webp"
+              srcset="/assets/images/initiatieven/plantenbieb-schiebroek-480.webp 480w, /assets/images/initiatieven/plantenbieb-schiebroek-960.webp 960w"
+              sizes="(min-width: 768px) 38vw, min(100vw - 2rem, 360px)"
+              width="480"
+              height="853"
+              loading="lazy"
+              decoding="async"
+              alt="Plantenbieb met houten rek en planten in Schiebroek, Rotterdam"
+            >
+          </picture>
+        </div>
+        <figcaption>
+          Foto:
+          <a href="https://commons.wikimedia.org/wiki/File:Plantenbieb,_Schiebroek,_Rotterdam_(2021)_01.jpg" rel="noopener noreferrer" target="_blank">Donald Trung Quoc Don</a>,
+          Wikimedia Commons,
+          <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener noreferrer" target="_blank">CC BY-SA 4.0</a>
+        </figcaption>
+      </figure>
     </div>
-  @endif
+  @else
+    @if($init->intro_titel !== '')
+      <h2>{{ $init->intro_titel }}</h2>
+    @endif
+    @foreach($init->introAlineas() as $alinea)
+      <p>{{ $alinea }}</p>
+    @endforeach
 
-  @if($init->site_url !== '')
-    <p class="struikroven-links muted">
-      <a href="{{ $init->site_url }}" rel="noopener noreferrer" target="_blank">{{ $init->site_link_tekst !== '' ? $init->site_link_tekst : 'Meer info' }}</a>
-    </p>
+    @if($isStekchallenge)
+      <div class="struikroven-verhaal">
+        <figure class="struikroven-verhaal-foto">
+          <picture>
+            <source type="image/webp" srcset="/assets/images/initiatieven/stekchallenge-dewy-stekje-400.webp 400w, /assets/images/initiatieven/stekchallenge-dewy-stekje-800.webp 800w" sizes="(min-width: 720px) 280px, 70vw">
+            <img src="/assets/images/initiatieven/stekchallenge-dewy-stekje-400.jpg" srcset="/assets/images/initiatieven/stekchallenge-dewy-stekje-400.jpg 400w, /assets/images/initiatieven/stekchallenge-dewy-stekje-800.jpg 800w" sizes="(min-width: 720px) 280px, 70vw" width="400" height="533" alt="Dewy Mulder houdt een stekje in een pot vast" loading="lazy" decoding="async">
+          </picture>
+          <figcaption>Foto: Carpe Vitam</figcaption>
+        </figure>
+        <div>
+          <p>Geschikte soorten voor houtstekken in het najaar zijn onder meer <a href="{{ route('stektips.show', ['slug' => 'rode-bes']) }}">rode bes</a>, <a href="{{ route('stektips.show', ['slug' => 'zwarte-bes']) }}">zwarte bes</a>, <a href="{{ route('stektips.show', ['slug' => 'wilg']) }}">wilg</a> en <a href="{{ route('stektips.show', ['slug' => 'zwarte-vlier']) }}">vlier</a>.</p>
+          <p><a href="https://carpevitam.net/stekchallenge/" rel="noopener noreferrer" target="_blank">Registreer je stekken</a> — je krijgt een persoonlijke link per mail. <a href="https://carpevitam.net/geef-je-snoeihout-een-toekomst-doe-mee-met-de-stekchallenge/" rel="noopener noreferrer" target="_blank">Lees het persbericht</a>.</p>
+          <p class="muted">Kijk ook op onze <a href="{{ route('vermeerderen') }}">stektips</a> hoe je planten vermeerdert.</p>
+        </div>
+      </div>
+    @endif
+
+    @if($init->site_url !== '')
+      <p class="struikroven-links muted">
+        <a href="{{ $init->site_url }}" rel="noopener noreferrer" target="_blank">{{ $init->site_link_tekst !== '' ? $init->site_link_tekst : 'Meer info' }}</a>
+      </p>
+    @endif
   @endif
 
   @if($init->secties !== [])
     <div class="stektips-page stektips-artikel-body org-secties">
       @foreach($init->secties as $block)
-        @if($isStruikroven && ($block['type'] ?? '') === 'tip')
-          <div class="struikroven-tip-met-foto">
-            <div class="struikroven-tip-tekst">
-              @include('partials.kennisbank-blok', ['block' => $block])
-            </div>
-            <figure class="struikroven-plantenbieb">
-              <picture>
-                <source
-                  type="image/webp"
-                  srcset="/assets/images/initiatieven/plantenbieb-schiebroek-480.webp 480w, /assets/images/initiatieven/plantenbieb-schiebroek-960.webp 960w"
-                  sizes="(min-width: 720px) 240px, min(100vw - 2rem, 360px)"
-                >
-                <img
-                  src="/assets/images/initiatieven/plantenbieb-schiebroek-480.webp"
-                  srcset="/assets/images/initiatieven/plantenbieb-schiebroek-480.webp 480w, /assets/images/initiatieven/plantenbieb-schiebroek-960.webp 960w"
-                  sizes="(min-width: 720px) 240px, min(100vw - 2rem, 360px)"
-                  width="480"
-                  height="853"
-                  loading="lazy"
-                  decoding="async"
-                  alt="Plantenbieb met houten rek en planten in Schiebroek, Rotterdam"
-                >
-              </picture>
-              <figcaption>
-                Foto:
-                <a href="https://commons.wikimedia.org/wiki/File:Plantenbieb,_Schiebroek,_Rotterdam_(2021)_01.jpg" rel="noopener noreferrer" target="_blank">Donald Trung Quoc Don</a>,
-                Wikimedia Commons,
-                <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener noreferrer" target="_blank">CC BY-SA 4.0</a>
-              </figcaption>
-            </figure>
-          </div>
-        @else
-          @include('partials.kennisbank-blok', ['block' => $block])
-        @endif
+        @include('partials.kennisbank-blok', ['block' => $block])
       @endforeach
     </div>
   @endif
