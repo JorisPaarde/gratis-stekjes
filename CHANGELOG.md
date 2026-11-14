@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.79.8] - 2026-11-14
+
+### Changed
+
+- `/struikroven`: desktop-intro v3 — tekst/foto 55/45 boven uitgelijnd, liggende
+  plantenbieb-foto (4:3), klein logo naast de H2 als één kopblok.
+
 ## [0.79.7] - 2026-11-14
 
 ### Changed

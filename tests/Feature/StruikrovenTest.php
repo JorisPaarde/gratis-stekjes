@@ -96,8 +96,8 @@ test('/struikroven toont plantenbieb-foto met CC BY-SA-credit', function () {
         ->getContent();
 
     expect($html)->toContain('width="480"')
-        ->and($html)->toContain('height="853"')
-        ->and($html)->toContain('struikroven-plantenbieb-media');
+        ->and($html)->toContain('struikroven-plantenbieb-media')
+        ->and($html)->toContain('struikroven-intro-kop');
 
     $intro = strpos($html, 'Wat is Struikroven?');
     $foto = strpos($html, 'plantenbieb-schiebroek-480.webp');
