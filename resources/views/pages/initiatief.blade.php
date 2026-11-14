@@ -45,22 +45,20 @@
   @if($isStruikroven)
     <div class="struikroven-intro">
       <div class="struikroven-intro-tekst">
-        <div class="struikroven-intro-kop">
-          <picture class="struikroven-logo-wrap">
-            <source type="image/webp" srcset="/assets/images/initiatieven/logo-struikroven.webp">
-            <img
-              class="struikroven-logo"
-              src="/assets/images/initiatieven/logo-struikroven.png"
-              width="88"
-              height="44"
-              alt="Struikroven"
-              decoding="async"
-            >
-          </picture>
-          @if($init->intro_titel !== '')
-            <h2>{{ $init->intro_titel }}</h2>
-          @endif
-        </div>
+        <picture class="struikroven-logo-wrap">
+          <source type="image/webp" srcset="/assets/images/initiatieven/logo-struikroven.webp">
+          <img
+            class="struikroven-logo"
+            src="/assets/images/initiatieven/logo-struikroven.png"
+            width="144"
+            height="72"
+            alt="Struikroven"
+            decoding="async"
+          >
+        </picture>
+        @if($init->intro_titel !== '')
+          <h2>{{ $init->intro_titel }}</h2>
+        @endif
         @foreach($init->introAlineas() as $alinea)
           <p>{{ $alinea }}</p>
         @endforeach
@@ -76,14 +74,14 @@
             <source
               type="image/webp"
               srcset="/assets/images/initiatieven/plantenbieb-schiebroek-480.webp 480w, /assets/images/initiatieven/plantenbieb-schiebroek-960.webp 960w"
-              sizes="(min-width: 768px) 42vw, min(100vw - 2rem, 360px)"
+              sizes="(min-width: 1024px) 38vw, min(100vw - 2rem, 360px)"
             >
             <img
               src="/assets/images/initiatieven/plantenbieb-schiebroek-480.webp"
               srcset="/assets/images/initiatieven/plantenbieb-schiebroek-480.webp 480w, /assets/images/initiatieven/plantenbieb-schiebroek-960.webp 960w"
-              sizes="(min-width: 768px) 42vw, min(100vw - 2rem, 360px)"
+              sizes="(min-width: 1024px) 38vw, min(100vw - 2rem, 360px)"
               width="480"
-              height="360"
+              height="480"
               loading="lazy"
               decoding="async"
               alt="Plantenbieb met houten rek en planten in Schiebroek, Rotterdam"

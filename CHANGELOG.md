@@ -3,6 +3,15 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.79.9] - 2026-11-14
+
+### Changed
+
+- `/struikroven`: intro UX 0.79.9 — logo op eigen rij (144×72 / 120×60), alinea
+  in tweeën na «logeertuin», grid 7/5 vanaf 1024 met gap 48px, vierkante
+  plantenbieb-crop (1:1, object-position 50% 60%), tipblok-afstand 40/48px.
+  «Wat zoek je?» ongemoeid (gedeeld kennisbank-blok).
+
 ## [0.79.8] - 2026-11-14
 
 ### Changed
