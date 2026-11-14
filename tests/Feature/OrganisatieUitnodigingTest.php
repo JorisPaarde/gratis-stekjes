@@ -128,8 +128,8 @@ test('struikroven heeft initiatiefpagina: org-URL 301, kruislink MeerBomen Nu na
 
     $this->get(route('struikroven'))
         ->assertOk()
-        ->assertSee('Wie zijn de Struikrovers?', false)
-        ->assertSee('https://struikroven.nu', false)
+        ->assertSee('Wat is Struikroven?', false)
+        ->assertSee('https://struikroven.nl', false)
         ->assertSee('https://struikroven.nu/agenda', false);
 
     $this->get(route('organisaties.show', ['slug' => 'meerbomen-nu']))

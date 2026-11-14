@@ -76,36 +76,24 @@
       "initiatief": {
         "slug": "struikroven",
         "pagina_titel": "Struikroven redt planten van de sloop",
-        "intro_titel": "Wie zijn de Struikrovers?",
-        "intro_tekst": "Als huizen worden gesloopt of opgeknapt, verdwijnt vaak veel gezond groen uit voor- en achtertuinen. Zonde, want volwassen planten en struiken geven karakter aan een buurt.\n\nDaarom organiseert Stichting Struikroven struikroofacties. Buurtbewoners halen dan samen de planten uit de grond en geven ze een tweede leven in hun eigen tuin, op hun balkon, in de buurt of in een logeertuin. Meedoen is gratis en iedereen is welkom, jong en oud.",
+        "intro_titel": "Wat is Struikroven?",
+        "intro_tekst": "Bij sloop, renovatie en nieuwbouw verdwijnt vaak al het groen uit tuinen en plantsoenen, terwijl het om volwassen planten gaat die karakter geven aan een buurt en waar ook insecten in leven. Struikroven redt wat er te redden valt, in opdracht en met toestemming van gemeenten, woningcorporaties, projectontwikkelaars of sloopbedrijven. Tijdens struikroofacties halen buurtbewoners samen de planten uit de grond en geven ze een tweede leven in hun eigen tuin, op hun balkon, in de buurt of in een logeertuin. Meedoen is gratis en iedereen is welkom, jong en oud. In Utrecht sloten de gemeente, woningcorporaties en Struikroven een Roverspact, zodat struikroven daar onderdeel wordt van sloop- en bouwprojecten. Inmiddels zijn er ook roverspacten in drie andere gemeenten.",
         "korte_naam": "Struikroven",
         "aanmeld_param": "struikrover",
         "aanmeld_label": "Ik ben Struikrover",
-        "site_url": "https://struikroven.nu",
+        "site_url": "https://struikroven.nl",
         "site_link_tekst": "Meer over Struikroven",
         "agenda_url": "https://struikroven.nu/agenda",
         "acties_leeg_tekst": "Er staan nu geen Struikroven-acties gepland op deze agenda. Zodra er iets bij komt, zie je het hier.",
-        "leden_titel": "Voor Struikrovers",
-        "leden_intro": "Wil je Gratis planten bij een actie of in je nieuwsbrief noemen? Gebruik dit gerust.",
-        "kopieertekst": "Planten over na een struikroofactie? Of zoek je juist groen voor je tuin? Op Gratis planten deel je planten, stekjes en zaden gratis met mensen in de buurt. Kijk op gratisplanten.nl/struikroven",
+        "leden_titel": "",
+        "leden_intro": "",
+        "kopieertekst": "",
         "meta_description": "Struikroven redt planten bij sloop en vernieuwing. Via Gratis planten deel je overgebleven planten, stekjes en zaden gratis met iemand in de buurt.",
         "secties": [
           {
             "type": "tip",
             "titel": "Struikroven en Gratis planten vullen elkaar aan",
             "tekst": "Struikroofacties zijn er niet zo vaak, en dan staan de planten maar op één dag op één plek klaar. Daartussen vind je vraag en aanbod van particulieren hier, het hele jaar door. Daarom wijzen Struikroven en Gratis planten naar elkaar."
-          },
-          {
-            "type": "h2",
-            "tekst": "Wat is Struikroven?"
-          },
-          {
-            "type": "p",
-            "tekst": "Bij sloop, renovatie en nieuwbouw gaat vaak al het groen in tuinen en plantsoenen verloren, terwijl het vaak om volwassen planten gaat waar ook insecten in leven. Struikroven redt wat er te redden valt. Dat gebeurt in opdracht en met toestemming van gemeenten, woningcorporaties, projectontwikkelaars of sloopbedrijven."
-          },
-          {
-            "type": "p",
-            "tekst": "Het begon in 2017 als buurtinitiatief in Eindhoven en is uitgegroeid tot een landelijke stichting. In december 2025 was de eerste actie in België, in Houthalen-Helchteren. In Utrecht sloten de gemeente, woningcorporaties en Struikroven een Roverspact, zodat struikroven daar onderdeel wordt van sloop- en bouwprojecten."
           },
           {
             "type": "h2",
