@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.79.11] - 2026-11-14
+
+### Changed
+
+- `/struikroven`: op 1024–1279 plantenbieb 5:6 (`object-position: 50% 80%`);
+  «Meer over Struikroven» tapdoel 44px via padding/negatieve margin.
+
 ## [0.79.10] - 2026-11-14
 
 ### Changed
