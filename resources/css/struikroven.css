@@ -1,70 +1,63 @@
 /* Landingspagina /struikroven — wie / meedoen / stappen / acties / materiaal. */
 .struikroven-page .struikroven-links {
-  margin: 0 0 2rem;
+  margin: 0 0 1.25rem;
   font-size: 0.95rem;
 }
 
-/* Kleurenlogo Struikroven op licht kaartje (merkbeeld ongewijzigd). */
-.struikroven-logo-kaart {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 0 1.5rem;
-  padding: 0.85rem 1rem;
-  border-radius: 0.75rem;
-  background: #fff;
-  border: 1px solid var(--line, rgba(26, 18, 16, 0.12));
-  box-sizing: border-box;
-}
-
-.struikroven-logo-kaart .struikroven-logo {
-  display: block;
-  width: min(100%, 180px);
-  height: auto;
-  max-width: 180px;
-}
-
-@media (min-width: 720px) {
-  .struikroven-logo-kaart .struikroven-logo {
-    width: min(100%, 220px);
-    max-width: 220px;
-  }
-}
-
-/* Tip + plantenbieb-foto: tekst links / foto rechts (desktop), gestapeld op smal. */
-.struikroven-tip-met-foto {
-  display: grid;
+/* Intro: mobiel gestapeld; vanaf 768px tweekoloms (~7/5) met foto even hoog als tekst. */
+.struikroven-intro {
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
   margin: 0 0 1.5rem;
-  max-width: 52rem;
-  align-items: start;
 }
 
-.struikroven-tip-met-foto .struikroven-tip-tekst > .kb-tip {
-  margin: 0;
-  height: 100%;
-  box-sizing: border-box;
+.struikroven-logo-wrap {
+  display: block;
+  margin: 0 0 0.85rem;
+}
+
+.struikroven-logo {
+  display: block;
+  width: min(100%, 150px);
+  height: auto;
+  max-width: 150px;
+}
+
+.struikroven-intro-tekst > h2 {
+  margin-top: 0;
 }
 
 .struikroven-plantenbieb {
+  display: flex;
+  flex-direction: column;
   margin: 0;
-  max-width: 22rem;
+  min-width: 0;
 }
 
-.struikroven-plantenbieb img {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 360px;
-  object-fit: cover;
-  object-position: center;
+.struikroven-plantenbieb-media {
+  margin: 0;
   border-radius: 0.6rem;
+  overflow: hidden;
   background: #e8f3e3;
 }
 
+.struikroven-plantenbieb-media picture,
+.struikroven-plantenbieb-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.struikroven-plantenbieb-media img {
+  max-height: 360px;
+  object-fit: cover;
+  object-position: center 55%;
+}
+
 .struikroven-plantenbieb figcaption {
-  margin: 0.35rem 0 0;
-  font-size: 0.8rem;
+  margin: 0.4rem 0 0;
+  font-size: 0.8125rem;
   line-height: 1.35;
   color: var(--muted, #5a6b5e);
 }
@@ -73,19 +66,50 @@
   color: inherit;
 }
 
-@media (min-width: 720px) {
-  .struikroven-tip-met-foto {
-    grid-template-columns: minmax(0, 1fr) minmax(11rem, 15rem);
-    gap: 1.25rem;
+@media (min-width: 768px) {
+  .struikroven-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 2.5rem;
+    align-items: stretch;
+  }
+
+  .struikroven-intro-tekst {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .struikroven-intro-tekst .struikroven-links {
+    margin-bottom: 0;
+    margin-top: auto;
   }
 
   .struikroven-plantenbieb {
-    max-width: 15rem;
+    height: 100%;
   }
 
-  .struikroven-plantenbieb img {
+  .struikroven-plantenbieb-media {
+    flex: 1 1 auto;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+    height: 100%;
+  }
+
+  .struikroven-plantenbieb-media picture {
+    height: 100%;
+  }
+
+  .struikroven-plantenbieb-media img {
+    height: 100%;
     max-height: none;
-    aspect-ratio: 9 / 16;
+    object-fit: cover;
+    object-position: center 55%;
+  }
+
+  .struikroven-plantenbieb figcaption {
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
 }
 

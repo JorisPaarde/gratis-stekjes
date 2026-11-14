@@ -56,7 +56,9 @@ test('/struikroven geeft 200 met kopvolgorde, knoppen en lege acties', function 
         ->assertDontSee('Wat is Gratis planten?', false)
         ->assertDontSee('Joris', false)
         ->assertDontSee('JP Web', false)
-        ->assertSee('struikroven-logo-kaart', false)
+        ->assertSee('struikroven-intro', false)
+        ->assertDontSee('struikroven-logo-kaart', false)
+        ->assertDontSee('struikroven-tip-met-foto', false)
         ->assertSee('logo-struikroven.webp', false)
         ->assertDontSee('logo-struikroven-wit', false)
         ->assertSee('alt="Struikroven"', false)
@@ -78,8 +80,10 @@ test('/struikroven geeft 200 met kopvolgorde, knoppen en lege acties', function 
 test('/struikroven toont plantenbieb-foto met CC BY-SA-credit', function () {
     $html = $this->get(route('struikroven'))
         ->assertOk()
+        ->assertSee('struikroven-intro', false)
         ->assertSee('Struikroven en Gratis planten vullen elkaar aan', false)
-        ->assertSee('struikroven-tip-met-foto', false)
+        ->assertDontSee('struikroven-tip-met-foto', false)
+        ->assertDontSee('struikroven-logo-kaart', false)
         ->assertSee('plantenbieb-schiebroek-480.webp', false)
         ->assertSee('plantenbieb-schiebroek-960.webp', false)
         ->assertSee('alt="Plantenbieb met houten rek en planten in Schiebroek, Rotterdam"', false)
@@ -92,13 +96,16 @@ test('/struikroven toont plantenbieb-foto met CC BY-SA-credit', function () {
         ->getContent();
 
     expect($html)->toContain('width="480"')
-        ->and($html)->toContain('height="853"');
+        ->and($html)->toContain('height="853"')
+        ->and($html)->toContain('struikroven-plantenbieb-media');
 
-    $tip = strpos($html, 'Struikroven en Gratis planten vullen elkaar aan');
+    $intro = strpos($html, 'Wat is Struikroven?');
     $foto = strpos($html, 'plantenbieb-schiebroek-480.webp');
-    $mee = strpos($html, 'Doe je mee met Struikroven?');
-    expect($tip)->toBeInt()->and($foto)->toBeInt()->and($mee)->toBeInt();
-    expect($tip < $foto && $foto < $mee)->toBeTrue();
+    $tip = strpos($html, 'Struikroven en Gratis planten vullen elkaar aan');
+    $zoek = strpos($html, 'Wat zoek je?');
+    expect($intro)->toBeInt()->and($foto)->toBeInt()->and($tip)->toBeInt()->and($zoek)->toBeInt();
+    // Intro + foto eerst, tipblok daarna op volle breedte, dan «Wat zoek je?»
+    expect($intro < $foto && $foto < $tip && $tip < $zoek)->toBeTrue();
 });
 
 test('/struikroven toont gekoppelde komende acties en negeert andere', function () {

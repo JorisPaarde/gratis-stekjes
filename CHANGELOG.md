@@ -3,6 +3,14 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.79.6] - 2026-11-14
+
+### Changed
+
+- `/struikroven`: desktop-intro herwerkt — logo + «Wat is Struikroven?» links,
+  plantenbieb-foto rechts (gelijke kolomhoogte, ~7/5), tipblok weer volle breedte
+  eronder. Geen logo-kaartje meer. Mobiel gestapeld ongewijzigd in opbouw.
+
 ## [0.79.5] - 2026-11-14
 
 ### Added
