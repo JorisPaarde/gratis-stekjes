@@ -25,7 +25,7 @@
 
 .struikroven-logo-wrap {
   display: block;
-  margin: 0 0 1rem; /* 16px tot H2 */
+  margin: 0 0 1rem; /* 16px tot H2 op 390 */
   line-height: 0;
 }
 
@@ -41,13 +41,18 @@
   line-height: 1.15;
 }
 
+/* Geen margin-bottom op alinea’s: anders telt die op bij de link in flex. */
 .struikroven-intro-tekst > p {
   margin-top: 0;
-  margin-bottom: 1rem; /* 16px tussen alinea’s */
+  margin-bottom: 0;
 }
 
-.struikroven-intro-tekst .struikroven-links {
-  margin-top: 0.75rem; /* 12px na laatste alinea */
+.struikroven-intro-tekst > p + p {
+  margin-top: 1rem; /* 16px tussen alinea’s */
+}
+
+.struikroven-page .struikroven-intro-tekst .struikroven-links {
+  margin-top: 1rem; /* 16px, gelijk aan alinea-gap; geen mb van vorige p */
   margin-bottom: 0;
 }
 
@@ -98,6 +103,12 @@
 
 .struikroven-page .org-secties > .kb-tip + h2 {
   margin-top: 3rem; /* 48px */
+}
+
+@media (min-width: 768px) {
+  .struikroven-logo-wrap {
+    margin-bottom: 1.25rem; /* 20px tot H2 op tablet/desktop */
+  }
 }
 
 @media (min-width: 1024px) {
