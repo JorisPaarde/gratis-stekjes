@@ -56,9 +56,11 @@ test('/struikroven geeft 200 met kopvolgorde, knoppen en lege acties', function 
         ->assertDontSee('Wat is Gratis planten?', false)
         ->assertDontSee('Joris', false)
         ->assertDontSee('JP Web', false)
-        ->assertSee('struikroven-logo', false)
-        ->assertSee('logo-struikroven-wit.webp', false)
+        ->assertSee('struikroven-logo-kaart', false)
+        ->assertSee('logo-struikroven.webp', false)
+        ->assertDontSee('logo-struikroven-wit', false)
         ->assertSee('alt="Struikroven"', false)
+        ->assertSee('roverspacten in drie andere gemeenten', false)
         ->getContent();
 
     $h1 = strpos($html, 'Struikroven redt planten van de sloop');

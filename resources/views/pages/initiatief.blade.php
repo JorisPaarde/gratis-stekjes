@@ -25,16 +25,15 @@
   <h1 class="page-title">{{ $init->pagina_titel !== '' ? $init->pagina_titel : $korte }}</h1>
 
   @if($isStruikroven)
-    <div class="struikroven-logo-band" aria-label="Struikroven">
+    <div class="struikroven-logo-kaart">
       <picture>
-        <source type="image/webp" srcset="/assets/images/initiatieven/logo-struikroven-wit.webp">
+        <source type="image/webp" srcset="/assets/images/initiatieven/logo-struikroven.webp">
         <img
           class="struikroven-logo"
-          src="/assets/images/initiatieven/logo-struikroven-wit.png"
+          src="/assets/images/initiatieven/logo-struikroven.png"
           width="220"
-          height="121"
+          height="110"
           alt="Struikroven"
-          fetchpriority="high"
           decoding="async"
         >
       </picture>

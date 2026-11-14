@@ -11,9 +11,8 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   één kop en alinea (zonder jaartallen/historie); link «Meer over Struikroven» naar
   https://struikroven.nl. Sectie «Voor Struikrovers» (poster/flyer/nieuwsbrieftekst)
   van de pagina gehaald; Struikrover-vinkje, beheer-telling en agenda-import ongewijzigd.
-- Wit Struikroven-logo op donker teal-vlak (`#003d43`) bovenaan `/struikroven`
-  (webp + width/height). Het aangeleverde «wit»-PNG bleek kleur-op-wit; omgezet naar
-  echt wit-op-transparant voor contrast op de band.
+- Kleurenlogo Struikroven (merkbeeld ongewijzigd, witruimte bijgesneden + webp) op een
+  wit kaartje met rand bovenaan `/struikroven` (max. ~220 px / ~180 px op smal).
 
 ## [0.79.3] - 2026-11-10
 
