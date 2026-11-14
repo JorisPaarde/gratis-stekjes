@@ -31,6 +31,64 @@
   }
 }
 
+/* Tip + plantenbieb-foto: tekst links / foto rechts (desktop), gestapeld op smal. */
+.struikroven-tip-met-foto {
+  display: grid;
+  gap: 1rem;
+  margin: 0 0 1.5rem;
+  max-width: 52rem;
+  align-items: start;
+}
+
+.struikroven-tip-met-foto .struikroven-tip-tekst > .kb-tip {
+  margin: 0;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.struikroven-plantenbieb {
+  margin: 0;
+  max-width: 22rem;
+}
+
+.struikroven-plantenbieb img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 360px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0.6rem;
+  background: #e8f3e3;
+}
+
+.struikroven-plantenbieb figcaption {
+  margin: 0.35rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--muted, #5a6b5e);
+}
+
+.struikroven-plantenbieb figcaption a {
+  color: inherit;
+}
+
+@media (min-width: 720px) {
+  .struikroven-tip-met-foto {
+    grid-template-columns: minmax(0, 1fr) minmax(11rem, 15rem);
+    gap: 1.25rem;
+  }
+
+  .struikroven-plantenbieb {
+    max-width: 15rem;
+  }
+
+  .struikroven-plantenbieb img {
+    max-height: none;
+    aspect-ratio: 9 / 16;
+  }
+}
+
 .struikroven-ctas {
   display: flex;
   flex-direction: column;

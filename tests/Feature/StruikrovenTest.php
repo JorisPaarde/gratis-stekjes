@@ -75,6 +75,32 @@ test('/struikroven geeft 200 met kopvolgorde, knoppen en lege acties', function 
         ->and($html)->toContain('Roverspact');
 });
 
+test('/struikroven toont plantenbieb-foto met CC BY-SA-credit', function () {
+    $html = $this->get(route('struikroven'))
+        ->assertOk()
+        ->assertSee('Struikroven en Gratis planten vullen elkaar aan', false)
+        ->assertSee('struikroven-tip-met-foto', false)
+        ->assertSee('plantenbieb-schiebroek-480.webp', false)
+        ->assertSee('plantenbieb-schiebroek-960.webp', false)
+        ->assertSee('alt="Plantenbieb met houten rek en planten in Schiebroek, Rotterdam"', false)
+        ->assertSee('Donald Trung Quoc Don', false)
+        ->assertSee('https://commons.wikimedia.org/wiki/File:Plantenbieb,_Schiebroek,_Rotterdam_(2021)_01.jpg', false)
+        ->assertSee('https://creativecommons.org/licenses/by-sa/4.0/', false)
+        ->assertSee('CC BY-SA 4.0', false)
+        ->assertSee('Wikimedia Commons', false)
+        ->assertSee('loading="lazy"', false)
+        ->getContent();
+
+    expect($html)->toContain('width="480"')
+        ->and($html)->toContain('height="853"');
+
+    $tip = strpos($html, 'Struikroven en Gratis planten vullen elkaar aan');
+    $foto = strpos($html, 'plantenbieb-schiebroek-480.webp');
+    $mee = strpos($html, 'Doe je mee met Struikroven?');
+    expect($tip)->toBeInt()->and($foto)->toBeInt()->and($mee)->toBeInt();
+    expect($tip < $foto && $foto < $mee)->toBeTrue();
+});
+
 test('/struikroven toont gekoppelde komende acties en negeert andere', function () {
     Evenement::query()->create([
         'titel' => 'Struikroof Eindhoven',

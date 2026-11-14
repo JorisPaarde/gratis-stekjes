@@ -91,7 +91,40 @@
   @if($init->secties !== [])
     <div class="stektips-page stektips-artikel-body org-secties">
       @foreach($init->secties as $block)
-        @include('partials.kennisbank-blok', ['block' => $block])
+        @if($isStruikroven && ($block['type'] ?? '') === 'tip')
+          <div class="struikroven-tip-met-foto">
+            <div class="struikroven-tip-tekst">
+              @include('partials.kennisbank-blok', ['block' => $block])
+            </div>
+            <figure class="struikroven-plantenbieb">
+              <picture>
+                <source
+                  type="image/webp"
+                  srcset="/assets/images/initiatieven/plantenbieb-schiebroek-480.webp 480w, /assets/images/initiatieven/plantenbieb-schiebroek-960.webp 960w"
+                  sizes="(min-width: 720px) 240px, min(100vw - 2rem, 360px)"
+                >
+                <img
+                  src="/assets/images/initiatieven/plantenbieb-schiebroek-480.webp"
+                  srcset="/assets/images/initiatieven/plantenbieb-schiebroek-480.webp 480w, /assets/images/initiatieven/plantenbieb-schiebroek-960.webp 960w"
+                  sizes="(min-width: 720px) 240px, min(100vw - 2rem, 360px)"
+                  width="480"
+                  height="853"
+                  loading="lazy"
+                  decoding="async"
+                  alt="Plantenbieb met houten rek en planten in Schiebroek, Rotterdam"
+                >
+              </picture>
+              <figcaption>
+                Foto:
+                <a href="https://commons.wikimedia.org/wiki/File:Plantenbieb,_Schiebroek,_Rotterdam_(2021)_01.jpg" rel="noopener noreferrer" target="_blank">Donald Trung Quoc Don</a>,
+                Wikimedia Commons,
+                <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener noreferrer" target="_blank">CC BY-SA 4.0</a>
+              </figcaption>
+            </figure>
+          </div>
+        @else
+          @include('partials.kennisbank-blok', ['block' => $block])
+        @endif
       @endforeach
     </div>
   @endif
