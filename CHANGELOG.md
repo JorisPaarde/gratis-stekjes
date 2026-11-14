@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.79.10] - 2026-11-14
+
+### Changed
+
+- `/struikroven`: spacing-polish — 16px boven «Meer over Struikroven» (geen
+  optelling met alinea-margin), logo↔H2 20px op tablet/desktop en 16px op 390.
+
 ## [0.79.9] - 2026-11-14
 
 ### Changed
