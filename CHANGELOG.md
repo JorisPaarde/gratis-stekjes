@@ -3,6 +3,14 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.79.5] - 2026-11-14
+
+### Added
+
+- `/struikroven`: echte plantenbieb-foto (Schiebroek, Rotterdam) naast het tipblok
+  «Struikroven en Gratis planten vullen elkaar aan», met CC BY-SA 4.0-credit
+  (Donald Trung Quoc Don / Wikimedia Commons) en regel in `docs/afbeeldingen-licenties.md`.
+
 ## [0.79.4] - 2026-11-14
 
 ### Changed
