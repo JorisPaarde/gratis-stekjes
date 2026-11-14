@@ -3,6 +3,70 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.79.11] - 2026-11-14
+
+### Changed
+
+- `/struikroven`: op 1024–1279 plantenbieb 5:6 (`object-position: 50% 80%`);
+  «Meer over Struikroven» tapdoel 44px via padding/negatieve margin.
+
+## [0.79.10] - 2026-11-14
+
+### Changed
+
+- `/struikroven`: spacing-polish — 16px boven «Meer over Struikroven» (geen
+  optelling met alinea-margin), logo↔H2 20px op tablet/desktop en 16px op 390.
+
+## [0.79.9] - 2026-11-14
+
+### Changed
+
+- `/struikroven`: intro UX 0.79.9 — logo op eigen rij (144×72 / 120×60), alinea
+  in tweeën na «logeertuin», grid 7/5 vanaf 1024 met gap 48px, vierkante
+  plantenbieb-crop (1:1, object-position 50% 60%), tipblok-afstand 40/48px.
+  «Wat zoek je?» ongemoeid (gedeeld kennisbank-blok).
+
+## [0.79.8] - 2026-11-14
+
+### Changed
+
+- `/struikroven`: desktop-intro v3 — tekst/foto 55/45 boven uitgelijnd, liggende
+  plantenbieb-foto (4:3), klein logo naast de H2 als één kopblok.
+
+## [0.79.7] - 2026-11-14
+
+### Changed
+
+- `/struikroven`: intro-polish — link direct onder de alinea, tekstkolom verticaal
+  gecentreerd t.o.v. de foto, vaste spacing H1↔intro (~28px) en logo↔H2 (~16px).
+
+## [0.79.6] - 2026-11-14
+
+### Changed
+
+- `/struikroven`: desktop-intro herwerkt — logo + «Wat is Struikroven?» links,
+  plantenbieb-foto rechts (gelijke kolomhoogte, ~7/5), tipblok weer volle breedte
+  eronder. Geen logo-kaartje meer. Mobiel gestapeld ongewijzigd in opbouw.
+
+## [0.79.5] - 2026-11-14
+
+### Added
+
+- `/struikroven`: echte plantenbieb-foto (Schiebroek, Rotterdam) naast het tipblok
+  «Struikroven en Gratis planten vullen elkaar aan», met CC BY-SA 4.0-credit
+  (Donald Trung Quoc Don / Wikimedia Commons) en regel in `docs/afbeeldingen-licenties.md`.
+
+## [0.79.4] - 2026-11-14
+
+### Changed
+
+- `/struikroven`: «Wie zijn de Struikrovers» en «Wat is Struikroven» samengevoegd tot
+  één kop en alinea (zonder jaartallen/historie); link «Meer over Struikroven» naar
+  https://struikroven.nl. Sectie «Voor Struikrovers» (poster/flyer/nieuwsbrieftekst)
+  van de pagina gehaald; Struikrover-vinkje, beheer-telling en agenda-import ongewijzigd.
+- Kleurenlogo Struikroven (merkbeeld ongewijzigd, witruimte bijgesneden + webp) op een
+  wit kaartje met rand bovenaan `/struikroven` (max. ~220 px / ~180 px op smal).
+
 ## [0.79.3] - 2026-11-10
 
 ### Added

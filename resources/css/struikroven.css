@@ -1,7 +1,166 @@
 /* Landingspagina /struikroven — wie / meedoen / stappen / acties / materiaal. */
 .struikroven-page .struikroven-links {
-  margin: 0 0 2rem;
+  margin: 0 0 1.25rem;
   font-size: 0.95rem;
+}
+
+/* Intro 0.79.9: logo eigen rij, 2 alinea’s, grid 7/5 vanaf 1024, foto 1:1. */
+.struikroven-page.section > h1.page-title {
+  margin-bottom: 1.5rem; /* 24px tot logo (mobiel); desktop: zelfde ritme */
+}
+
+.struikroven-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* 24px: link → foto op mobiel */
+  margin: 0;
+}
+
+.struikroven-intro-tekst {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 36em;
+}
+
+.struikroven-logo-wrap {
+  display: block;
+  margin: 0 0 1rem; /* 16px tot H2 op 390 */
+  line-height: 0;
+}
+
+.struikroven-logo {
+  display: block;
+  width: 120px;
+  height: 60px;
+  max-width: none;
+}
+
+.struikroven-intro-tekst > h2 {
+  margin: 0 0 1rem; /* 16px tot alinea 1; 700 + kapitalen via .section h2 */
+  line-height: 1.15;
+}
+
+/* Geen margin-bottom op alinea’s: anders telt die op bij de link in flex. */
+.struikroven-intro-tekst > p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.struikroven-intro-tekst > p + p {
+  margin-top: 1rem; /* 16px tussen alinea’s */
+}
+
+.struikroven-page .struikroven-intro-tekst .struikroven-links {
+  margin-top: 1rem; /* 16px, gelijk aan alinea-gap; geen mb van vorige p */
+  margin-bottom: 0;
+}
+
+/* Tapdoel 44px zonder visuele verschuiving (padding + negatieve margin). */
+.struikroven-page .struikroven-intro-tekst .struikroven-links a {
+  display: inline-block;
+  padding-block: 12px;
+  margin-block: -12px;
+}
+
+.struikroven-plantenbieb {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  min-width: 0;
+  align-self: start;
+}
+
+.struikroven-plantenbieb-media {
+  margin: 0;
+  border-radius: 0.85rem;
+  overflow: hidden;
+  background: #e8f3e3;
+  aspect-ratio: 4 / 3;
+}
+
+.struikroven-plantenbieb-media picture,
+.struikroven-plantenbieb-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.struikroven-plantenbieb-media img {
+  object-fit: cover;
+  object-position: 50% 57%;
+}
+
+.struikroven-plantenbieb figcaption {
+  margin: 0.4rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: var(--muted, #5a6b5e);
+}
+
+.struikroven-plantenbieb figcaption a {
+  color: inherit;
+}
+
+/* Tipblok: 24px na credit op mobiel; 40px op desktop; 48px tot «Wat zoek je?». */
+.struikroven-page .org-secties > .kb-tip:first-child {
+  margin-top: 1.5rem; /* 24px */
+  margin-bottom: 0;
+}
+
+.struikroven-page .org-secties > .kb-tip + h2 {
+  margin-top: 3rem; /* 48px */
+}
+
+@media (min-width: 768px) {
+  .struikroven-logo-wrap {
+    margin-bottom: 1.25rem; /* 20px tot H2 op tablet/desktop */
+  }
+}
+
+@media (min-width: 1024px) {
+  .struikroven-page.section > h1.page-title {
+    margin-bottom: 1.5rem;
+  }
+
+  .struikroven-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 3rem; /* 48px */
+    align-items: start;
+  }
+
+  .struikroven-logo {
+    width: 144px;
+    height: 72px;
+  }
+
+  .struikroven-plantenbieb-media {
+    aspect-ratio: 1 / 1;
+  }
+
+  .struikroven-plantenbieb-media img {
+    object-position: 50% 60%;
+  }
+
+  .struikroven-plantenbieb figcaption {
+    white-space: nowrap;
+  }
+
+  .struikroven-page .org-secties > .kb-tip:first-child {
+    margin-top: 2.5rem; /* 40px */
+  }
+}
+
+/* Alleen 1024–1279: iets hoger kader zodat foto met de link eindigt. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .struikroven-plantenbieb-media {
+    aspect-ratio: 5 / 6;
+  }
+
+  .struikroven-plantenbieb-media img {
+    object-position: 50% 80%;
+  }
 }
 
 .struikroven-ctas {

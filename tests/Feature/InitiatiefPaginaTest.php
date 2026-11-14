@@ -101,7 +101,9 @@ test('struikroven toont de secties uit de JSON en geen beheerscherm meer', funct
 
     $this->get(route('struikroven'))
         ->assertOk()
-        ->assertSee('Wie zijn de Struikrovers?', false)
+        ->assertSee('Wat is Struikroven?', false)
+        ->assertDontSee('Wie zijn de Struikrovers?', false)
+        ->assertDontSee('Voor Struikrovers', false)
         ->assertSee('Struikroven en Gratis planten vullen elkaar aan', false)
         ->assertSee('Geredde plant thuis? Zo slaat hij aan', false);
 
