@@ -56,7 +56,7 @@
       label +=
         ", waarvan " +
         evenementCount +
-        (evenementCount === 1 ? " uitdeeldag" : " uitdeeldagen");
+        (evenementCount === 1 ? " evenement" : " evenementen");
     }
     return label;
   }
