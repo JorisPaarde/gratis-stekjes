@@ -7,8 +7,8 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Added
 
-- Deelplekken: 127 nieuwe vaste plekken (ZBN 2026 + research 16 nov; geen
-  Middelburg-ZB / Roeach / privé), types voedselbos/tuinvereniging in gebruik;
+- Deelplekken: 120 nieuwe vaste plekken (ZBN 2026 + research 16 nov; geen
+  Middelburg-ZB / Roeach / privé-woonadressen volgens BAG), types voedselbos/tuinvereniging in gebruik;
   seeder behoudt `visible=false`.
 - Tijdelijke evenementen op `/deelplekken` en `/api/deelplekken` (scopeOpKaart:
   zichtbaar, met lat/lon, tot einddatum, start ≤ vandaag+1 maand).

@@ -109,7 +109,8 @@
       "Plantenasiel Oosterhout: alleen aggregatorvermelding zonder primaire bron met adres.",
       "Zadenbibliotheek Hoeksche Waard: domein stond geparkeerd tijdens controle.",
       "Agenda-acties uit scan 31 okt 2026 (o.a. Nuenen/Oisterwijk/Sittard-Geleen × Het Bomenproject, Amsterdam De Gezonde Stad, Hilversum, Sint-Niklaas, Bornem, Velt Zandhoven, Apeldoorn, Menen, Waspik): agenda staat op pauze — geen agenda-item en geen deelplek.",
-      "Twijfel/bewust-niet uit scan 31 okt 2026 (o.a. tegelruil, verplichte ruil, smalle beurs, verlopen inschrijvingen): niet opgenomen."
+      "Twijfel/bewust-niet uit scan 31 okt 2026 (o.a. tegelruil, verplichte ruil, smalle beurs, verlopen inschrijvingen): niet opgenomen.",
+      "Research 16 nov 2026: kasten/zadenbiebs op een adres met alleen woonfunctie (BAG) zonder publieke plek (o.a. Zoetermeer, Mierlo, Holsloot, BuurtBloei Rijswijk, Stek Exchange Hatert, ForestParents Burgum, Oirschot De Moriaan): niet opgenomen."
     ]
   },
   "plekken": [
@@ -1713,18 +1714,6 @@
       "visible": true
     },
     {
-      "id": "rijswijk-buurtbloei-plantenbieb",
-      "naam": "BuurtBloei Rijswijk",
-      "type": "plantenbieb",
-      "plaats": "Rijswijk",
-      "provincie": "Zuid-Holland",
-      "adres": "Louis Bouwmeesterstraat 63, 2284 XN Rijswijk",
-      "lat": 52.037338,
-      "lng": 4.320464,
-      "bron_url": "https://www.stekjesroute.eu/pages/ruilkasten/kast.php?id=156",
-      "geraadpleegd": "2026-11-16"
-    },
-    {
       "id": "dordrecht-tiny-houses-crabbehof",
       "naam": "Tiny Houses Crabbehof",
       "type": "plantenbieb",
@@ -1734,42 +1723,6 @@
       "lat": 51.78898,
       "lng": 4.66052,
       "bron_url": "https://www.stekjesroute.eu/pages/ruilkasten/kast.php?id=798",
-      "geraadpleegd": "2026-11-16"
-    },
-    {
-      "id": "nijmegen-stek-exchange-hatert",
-      "naam": "Stek Exchange Hatert",
-      "type": "stekjesruilpunt",
-      "plaats": "Nijmegen",
-      "provincie": "Gelderland",
-      "adres": "Schouwenburgstraat 12, 6535 ME Nijmegen",
-      "lat": 51.803624,
-      "lng": 5.822318,
-      "bron_url": "https://www.stekjesroute.eu/pages/ruilkasten/kast.php?id=779",
-      "geraadpleegd": "2026-11-16"
-    },
-    {
-      "id": "oirschot-plantenbieb-de-moriaan",
-      "naam": "Plantenbieb Oirschot (De Moriaan)",
-      "type": "plantenbieb",
-      "plaats": "Oirschot",
-      "provincie": "Noord-Brabant",
-      "adres": "De Moriaan 1, 5688 ER Oirschot",
-      "lat": 51.502503,
-      "lng": 5.307447,
-      "bron_url": "https://www.stekjesroute.eu/pages/ruilkasten/kast.php?id=45",
-      "geraadpleegd": "2026-11-16"
-    },
-    {
-      "id": "burgum-forestparents-stekjes",
-      "naam": "ForestParents-Burgum",
-      "type": "plantenbieb",
-      "plaats": "Burgum",
-      "provincie": "Fryslân",
-      "adres": "Bulthuissingel 53, 9251 BS Burgum",
-      "lat": 53.195879,
-      "lng": 5.989285,
-      "bron_url": "https://www.stekjesroute.eu/pages/ruilkasten/kast.php?id=129",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2258,21 +2211,9 @@
       "type": "zaadbibliotheek",
       "plaats": "Hessum-Dalfsen",
       "provincie": "Overijssel",
-      "adres": "Markeweg 22, 7722HC Hessum- Dalfsen",
-      "lat": 52.511297,
-      "lng": 6.314786,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
-      "geraadpleegd": "2026-11-16"
-    },
-    {
-      "id": "holsloot-zadenbibliotheek",
-      "naam": "Zadenbibliotheek Holsloot",
-      "type": "zaadbibliotheek",
-      "plaats": "Holsloot",
-      "provincie": "Drenthe",
-      "adres": "Van Goghstraat 48, 7845 TR Holsloot",
-      "lat": 52.720978,
-      "lng": 6.82122,
+      "adres": "Markeweg 22, 7722 HD Dalfsen",
+      "lat": 52.511084,
+      "lng": 6.321869,
       "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
       "geraadpleegd": "2026-11-16"
     },
@@ -2417,18 +2358,6 @@
       "adres": "Pastoor Dominicus Hexstraat 16a, 6231 HG Meerssen",
       "lat": 50.887667,
       "lng": 5.750005,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
-      "geraadpleegd": "2026-11-16"
-    },
-    {
-      "id": "mierlo-zadenbibliotheek",
-      "naam": "Zadenbibliotheek Mierlo",
-      "type": "zaadbibliotheek",
-      "plaats": "Mierlo",
-      "provincie": "Noord-Brabant",
-      "adres": "Schaatsenrijder 11, 5731 SX Mierlo",
-      "lat": 51.444161,
-      "lng": 5.608454,
       "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
       "geraadpleegd": "2026-11-16"
     },
@@ -2753,18 +2682,6 @@
       "adres": "Kerkstraat 27c, 6901 AA Zevenaar",
       "lat": 51.924725,
       "lng": 6.075931,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
-      "geraadpleegd": "2026-11-16"
-    },
-    {
-      "id": "zoetermeer-zadenbibliotheek",
-      "naam": "Zadenbibliotheek Zoetermeer",
-      "type": "zaadbibliotheek",
-      "plaats": "Zoetermeer",
-      "provincie": "Zuid-Holland",
-      "adres": "Wildenberg 37, 2716 NE Zoetermeer",
-      "lat": 52.060749,
-      "lng": 4.460887,
       "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
       "geraadpleegd": "2026-11-16"
     },
