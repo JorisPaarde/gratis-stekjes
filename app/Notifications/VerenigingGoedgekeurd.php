@@ -28,7 +28,7 @@ class VerenigingGoedgekeurd extends Notification
         return (new MailMessage)
             ->subject('Je vereniging staat op '.$site.': '.$naam)
             ->greeting('Hoi,')
-            ->line('Ik heb “'.$naam.'” goedgekeurd — je vereniging staat nu op '.$site.'.')
+            ->line('Ik heb “'.$naam.'” goedgekeurd. Je vereniging staat nu op '.$site.'.')
             ->line('Op de pagina kunnen buurtgenoten je vereniging terugvinden.')
             ->action('Bekijk je pagina', $this->vereniging->url())
             ->salutation('Groet,'.PHP_EOL.(string) config('site.maker'));

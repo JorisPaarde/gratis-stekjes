@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.79.13] - 2026-11-16
+
+### Changed
+
+- Goedkeuringsmails vereniging/deelplek: gedachtestreep vervangen door twee zinnen
+  («… goedgekeurd. Je vereniging/deelplek staat nu op …»).
+
 ## [0.79.12] - 2026-11-16
 
 ### Added
