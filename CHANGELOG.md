@@ -3,6 +3,21 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.79.13] - 2026-11-16
+
+### Changed
+
+- Goedkeuringsmails vereniging/deelplek: gedachtestreep vervangen door twee zinnen
+  («… goedgekeurd. Je vereniging/deelplek staat nu op …»).
+
+## [0.79.12] - 2026-11-16
+
+### Added
+
+- Goedkeuringsmail bij eerste approve van een lid-vereniging (aan `created_by`)
+  en bij goedkeuring van een deelplek-aanmelding (aan contact-e-mail), via
+  SafeMail + `approval_mailed_at` (idempotent; geen backfill-mails).
+
 ## [0.79.11] - 2026-11-14
 
 ### Changed

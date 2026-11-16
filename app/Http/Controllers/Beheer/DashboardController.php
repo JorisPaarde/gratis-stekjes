@@ -15,6 +15,7 @@ use App\Models\Report;
 use App\Models\User;
 use App\Models\Vereniging;
 use App\Notifications\VerifyEmailDutch;
+use App\Notifications\VerenigingGoedgekeurd;
 use App\Services\AvgService;
 use App\Services\DeelplekAanmelding;
 use App\Services\Deelplekken;
@@ -154,7 +155,23 @@ class DashboardController extends Controller
     {
         $status = (string) $request->input('status');
         abort_unless(in_array($status, [Vereniging::STATUS_APPROVED, Vereniging::STATUS_HIDDEN], true), 422);
+
+        $wasApproved = $vereniging->status === Vereniging::STATUS_APPROVED;
         $vereniging->update(['status' => $status]);
+
+        if (
+            $status === Vereniging::STATUS_APPROVED
+            && ! $wasApproved
+            && $vereniging->approval_mailed_at === null
+            && $vereniging->created_by !== null
+        ) {
+            $maker = $vereniging->maker;
+            if ($maker !== null && filled($maker->email)) {
+                if (SafeMail::notify($maker, new VerenigingGoedgekeurd($vereniging))) {
+                    $vereniging->forceFill(['approval_mailed_at' => now()])->save();
+                }
+            }
+        }
 
         return redirect()
             ->route('beheer.verenigingen')
