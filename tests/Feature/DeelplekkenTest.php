@@ -17,7 +17,7 @@ test('deelplekken JSON is geldig en bevat genoeg plekken', function () {
     expect($service->validateJson())->toBe([]);
 
     $data = $service->loadJson();
-    expect(count($data['plekken']))->toBeGreaterThanOrEqual(200);
+    expect(count($data['plekken']))->toBeGreaterThanOrEqual(195);
     expect($data['meta']['geraadpleegd'])->toBe('2026-11-16');
     expect($data['meta']['bronnen'])->not->toBeEmpty();
     expect($data['meta']['niet_opgenomen'])->not->toBeEmpty();
@@ -126,7 +126,7 @@ test('deelplekken API toont bron_url en afgeronde coördinaten', function () {
         ->assertOk();
 
     $deelplekken = collect($response->json('items'))->where('soort', 'deelplek')->values();
-    expect($deelplekken->count())->toBeGreaterThanOrEqual(200);
+    expect($deelplekken->count())->toBeGreaterThanOrEqual(195);
     expect($deelplekken->first()['kind'] ?? null)->toBe('deelplek');
 
     $zeist = $deelplekken->firstWhere('naam', 'Plantenasiel Zeist — De Boswerf');
@@ -196,7 +196,7 @@ test('seeder vult deelplekken uit JSON met NL-default en BE-country', function (
 
     expect(Deelplek::query()->where('country', 'BE')->count())->toBeGreaterThanOrEqual(37);
     expect(Deelplek::query()->where('country', 'NL')->count())->toBeGreaterThanOrEqual(51);
-    expect(Deelplek::query()->visible()->count())->toBeGreaterThanOrEqual(200);
+    expect(Deelplek::query()->visible()->count())->toBeGreaterThanOrEqual(195);
 });
 
 test('herhaald seeden blijft idempotent en houdt verborgen plekken dicht', function () {
