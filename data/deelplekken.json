@@ -1419,18 +1419,6 @@
       "geraadpleegd": "2026-11-16"
     },
     {
-      "id": "middelburg-zadenbibliotheek-zb-middelburg",
-      "naam": "Zadenbibliotheek ZB Middelburg",
-      "type": "zaadbibliotheek",
-      "plaats": "Middelburg",
-      "provincie": "Zeeland",
-      "adres": "Kousteensedijk 7, 4331 JE Middelburg",
-      "lat": 51.496322,
-      "lng": 3.615795,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
-      "geraadpleegd": "2026-11-16"
-    },
-    {
       "id": "haarlem-zadenbibliotheek-haarlem-noord",
       "naam": "Zadenbibliotheek Bibliotheek Haarlem-Noord",
       "type": "zaadbibliotheek",
