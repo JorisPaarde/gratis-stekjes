@@ -3,6 +3,21 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.80.0] - 2026-11-16
+
+### Added
+
+- Deelplekken: 120 nieuwe vaste plekken (ZBN 2026 + research 16 nov; geen
+  Middelburg-ZB / Roeach / privé-woonadressen volgens BAG), types voedselbos/tuinvereniging in gebruik;
+  seeder behoudt `visible=false`.
+- Tijdelijke evenementen op `/deelplekken` en `/api/deelplekken` (scopeOpKaart:
+  zichtbaar, met lat/lon, tot einddatum, start ≤ vandaag+1 maand).
+- Evenementvelden `start_tijd`/`eind_tijd` (+ adres/omschrijving), types
+  `bomenhub` en `stekchallenge`; import `gp:import-meerbomen-uitdeeldagen`
+  + workflow_dispatch (24 uitdeeldagen, Schaarsbergen 2×).
+- Lijst `/deelplekken` (en zoek-plekken): «Laad meer» per 12 items; kaartpins
+  blijven allemaal zichtbaar.
+
 ## [0.79.13] - 2026-11-16
 
 ### Changed

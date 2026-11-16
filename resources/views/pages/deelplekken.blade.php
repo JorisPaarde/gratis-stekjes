@@ -88,8 +88,8 @@
   <span class="visually-hidden" id="deelplekken-status" aria-live="polite"></span>
 
   <ul class="zoek-lijst deelplekken-lijst" id="deelplekken-lijst">
-    @forelse($items as $plek)
-      <li class="zoek-item zoek-item--plek zoek-item--deelplek" data-kind="deelplek" data-type="{{ $plek->type }}">
+    @forelse($items as $index => $plek)
+      <li class="zoek-item zoek-item--plek zoek-item--deelplek{{ $index >= 12 ? ' is-lijst-verborgen' : '' }}" data-kind="deelplek" data-type="{{ $plek->type }}" @if($index >= 12) hidden @endif>
         <div class="zoek-item-kop"><h2>{{ $plek->naam }}</h2></div>
         <p class="zoek-item-meta"><span class="badge badge--{{ $plek->type }}">{{ $typeLabels[$plek->type] ?? $plek->type }}</span> {{ $plek->plaats }}@if($plek->provincie) · {{ $plek->provincie }}@endif</p>
         @if($plek->adres !== '')
@@ -111,6 +111,12 @@
       </li>
     @endforelse
   </ul>
+  @if($items->count() > 12)
+    <p class="deelplekken-meer">
+      <button type="button" class="btn btn-secondary" id="deelplekken-laad-meer" data-stap="12" aria-controls="deelplekken-lijst">Laad meer</button>
+    </p>
+    <p class="visually-hidden" id="deelplekken-meer-status" aria-live="polite"></p>
+  @endif
 
   @if(!empty($faq))
     <section class="stektips-faq deelplekken-faq" id="veelgestelde-vragen" aria-labelledby="faq-titel">

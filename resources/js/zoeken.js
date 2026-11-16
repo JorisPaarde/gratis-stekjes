@@ -146,8 +146,8 @@
   // Alleen het 2e veld (plant) ingevuld: { plant, sortering: "afstand"|"recent", reden }.
   // Afstand komt van de server (vanaf het eigen adres); coördinaten van het lid krijgen we niet.
   var plantModus = null;
-  var limits = { aanbod: 6, plekken: 6, dichtbij: 9 };
-  var STAP = { aanbod: 6, plekken: 6, dichtbij: 9 };
+  var limits = { aanbod: 6, plekken: 12, dichtbij: 12 };
+  var STAP = { aanbod: 6, plekken: 12, dichtbij: 12 };
 
   function distanceKm(lat1, lon1, lat2, lon2) {
     var r = 6371;
@@ -397,9 +397,14 @@
   function meerKnop(soort, rest) {
     var li = document.createElement("li");
     li.className = "zoek-meer";
-    var tekst = soort === "aanbod" ? "Toon meer aanbod" : soort === "dichtbij" ? "Toon meer" : "Toon meer plekken";
+    var tekst =
+      soort === "aanbod"
+        ? "Laad meer"
+        : soort === "dichtbij"
+          ? "Laad meer"
+          : "Laad meer";
     // Bij plekken geen rest-telling: catalogusaantallen van deelplekken tonen we niet.
-    var label = rest == null || soort === "plekken" ? tekst : tekst + " (nog " + rest + ")";
+    var label = rest == null || soort === "plekken" || soort === "dichtbij" ? tekst : tekst + " (nog " + rest + ")";
     li.innerHTML =
       '<button type="button" class="btn btn-secondary" data-meer="' +
       soort +
@@ -480,11 +485,9 @@
   }
 
   function resetLimits() {
-    var hasAanbod = showAanbod() && aanbodItems.length > 0;
     limits.aanbod = STAP.aanbod;
     limits.dichtbij = STAP.dichtbij;
-    // Weinig of geen aanbod: plekken krijgen meer ruimte; veel aanbod: plekken compact.
-    limits.plekken = hasAanbod ? 3 : 6;
+    limits.plekken = STAP.plekken;
   }
 
   list.addEventListener("click", function (ev) {
@@ -493,8 +496,18 @@
     var meer = target.closest("[data-meer]");
     if (meer) {
       var soort = meer.getAttribute("data-meer");
+      var before = list.querySelectorAll(".zoek-item").length;
       limits[soort] += STAP[soort];
       renderList(visiblePlekken());
+      var items = list.querySelectorAll(".zoek-item");
+      if (items.length > before) {
+        var firstNew = items[before];
+        var focusTarget = firstNew && (firstNew.querySelector("h3, a, button") || firstNew);
+        if (focusTarget && focusTarget.focus) {
+          if (focusTarget.tagName === "H3") focusTarget.setAttribute("tabindex", "-1");
+          focusTarget.focus();
+        }
+      }
       return;
     }
     var kaartBtn = target.closest("[data-kaart]");

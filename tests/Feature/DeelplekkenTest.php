@@ -17,13 +17,13 @@ test('deelplekken JSON is geldig en bevat genoeg plekken', function () {
     expect($service->validateJson())->toBe([]);
 
     $data = $service->loadJson();
-    expect($data['plekken'])->toHaveCount(88);
-    expect($data['meta']['geraadpleegd'])->toBe('2026-11-03');
+    expect(count($data['plekken']))->toBeGreaterThanOrEqual(195);
+    expect($data['meta']['geraadpleegd'])->toBe('2026-11-16');
     expect($data['meta']['bronnen'])->not->toBeEmpty();
     expect($data['meta']['niet_opgenomen'])->not->toBeEmpty();
 });
 
-test('NL-deelplekkenrijen blijven ongewijzigd (aantal en inhoud)', function () {
+test('NL-deelplekkenrijen uit v0.27 blijven ongewijzigd aanwezig', function () {
     $service = app(Deelplekken::class);
     $plekken = $service->loadJson()['plekken'];
 
@@ -33,18 +33,20 @@ test('NL-deelplekkenrijen blijven ongewijzigd (aantal en inhoud)', function () {
     );
     expect($expected)->toBeArray()->toHaveCount(51);
 
-    $nl = array_values(array_filter(
-        $plekken,
-        static fn (array $row): bool => ($row['country'] ?? 'NL') !== 'BE'
-    ));
-    expect($nl)->toHaveCount(51);
-    expect($nl)->toBe($expected);
+    $byId = [];
+    foreach ($plekken as $row) {
+        $byId[(string) $row['id']] = $row;
+    }
+    foreach ($expected as $row) {
+        expect($byId)->toHaveKey($row['id']);
+        expect($byId[$row['id']])->toBe($row);
+    }
 
     $be = array_values(array_filter(
         $plekken,
         static fn (array $row): bool => ($row['country'] ?? null) === 'BE'
     ));
-    expect($be)->toHaveCount(37);
+    expect(count($be))->toBeGreaterThanOrEqual(37);
     foreach ($be as $row) {
         expect($row['country'] ?? null)->toBe('BE');
         expect(str_starts_with((string) $row['id'], 'be-'))->toBeTrue();
@@ -121,18 +123,19 @@ test('deelplekken filtert op type en provincie', function () {
 
 test('deelplekken API toont bron_url en afgeronde coördinaten', function () {
     $response = $this->getJson(route('api.deelplekken'))
-        ->assertOk()
-        ->assertJsonPath('items.0.kind', 'deelplek');
+        ->assertOk();
 
-    expect($response->json('items'))->toHaveCount(78);
+    $deelplekken = collect($response->json('items'))->where('soort', 'deelplek')->values();
+    expect($deelplekken->count())->toBeGreaterThanOrEqual(195);
+    expect($deelplekken->first()['kind'] ?? null)->toBe('deelplek');
 
-    $zeist = collect($response->json('items'))->firstWhere('naam', 'Plantenasiel Zeist — De Boswerf');
+    $zeist = $deelplekken->firstWhere('naam', 'Plantenasiel Zeist — De Boswerf');
     expect($zeist)->not->toBeNull();
     expect($zeist['bron_url'])->toContain('plantenasielzeist.nl');
     expect($zeist['lat'])->toBe(Geo::roundCoord(52.084342));
     expect($zeist['lng'])->toBe(Geo::roundCoord(5.261313));
 
-    $be = collect($response->json('items'))->firstWhere('slug', 'be-brussel-muntpunt-zadenbib');
+    $be = $deelplekken->firstWhere('slug', 'be-brussel-muntpunt-zadenbib');
     expect($be)->not->toBeNull();
     expect($be['country'])->toBe('BE');
 });
@@ -167,7 +170,8 @@ test('sitemap, nav en homepage linken naar deelplekken', function () {
 });
 
 test('seeder vult deelplekken uit JSON met NL-default en BE-country', function () {
-    expect(Deelplek::query()->count())->toBe(88);
+    $total = count(app(Deelplekken::class)->loadJson()['plekken']);
+    expect(Deelplek::query()->count())->toBe($total);
     expect(Deelplek::query()->where('slug', 'haarlem-plantenasiel')->exists())->toBeTrue();
 
     $haarlem = Deelplek::query()->where('slug', 'haarlem-plantenasiel')->first();
@@ -186,20 +190,55 @@ test('seeder vult deelplekken uit JSON met NL-default en BE-country', function (
     expect($hidden)->not->toBeNull();
     expect($hidden->visible)->toBeFalse();
 
-    expect(Deelplek::query()->where('country', 'BE')->count())->toBe(37);
-    expect(Deelplek::query()->where('country', 'NL')->count())->toBe(51);
-    expect(Deelplek::query()->visible()->count())->toBe(78);
+    $happy = Deelplek::query()->where('slug', 'groesbeek-happy-stekkie')->first();
+    expect($happy)->not->toBeNull();
+    expect($happy->visible)->toBeFalse();
+
+    expect(Deelplek::query()->where('country', 'BE')->count())->toBeGreaterThanOrEqual(37);
+    expect(Deelplek::query()->where('country', 'NL')->count())->toBeGreaterThanOrEqual(51);
+    expect(Deelplek::query()->visible()->count())->toBeGreaterThanOrEqual(195);
 });
 
-test('herhaald seeden blijft bij 88 plekken zonder dubbelen', function () {
+test('herhaald seeden blijft idempotent en houdt verborgen plekken dicht', function () {
+    $this->seed(DeelplekkenSeeder::class);
+    Deelplek::query()->where('slug', 'groesbeek-happy-stekkie')->update(['visible' => false]);
     $this->seed(DeelplekkenSeeder::class);
     $this->seed(DeelplekkenSeeder::class);
 
-    expect(Deelplek::query()->count())->toBe(88);
-    expect(Deelplek::query()->distinct()->count('slug'))->toBe(88);
+    $total = count(app(Deelplekken::class)->loadJson()['plekken']);
+    expect(Deelplek::query()->count())->toBe($total);
+    expect(Deelplek::query()->distinct()->count('slug'))->toBe($total);
     expect(Deelplek::query()->where('slug', 'haarlem-plantenasiel')->count())->toBe(1);
     expect(Deelplek::query()->where('slug', 'be-londerzeel-zadenbib')->count())->toBe(1);
     expect(Deelplek::query()->where('slug', 'maarssen-plant-voor-plant')->count())->toBe(0);
+    expect(Deelplek::query()->where('slug', 'groesbeek-happy-stekkie')->value('visible'))->toBeFalsy();
+    expect(Deelplek::query()->where('slug', 'elim-carpe-vitam-knabbelbos')->exists())->toBeTrue();
+    expect(Deelplek::query()->where('slug', 'amsterdam-bieb-in-bloei-oba-linnaeus')->exists())->toBeTrue();
+});
+
+test('deelplekkenlijst toont laad-meer knop bij meer dan 12 plekken', function () {
+    $html = $this->get('/deelplekken')->assertOk()->getContent();
+    expect($html)->toContain('id="deelplekken-laad-meer"')
+        ->and($html)->toContain('Laad meer')
+        ->and($html)->toContain('is-lijst-verborgen')
+        ->and($html)->toContain('aria-live="polite"')
+        ->and($html)->toContain('aria-controls="deelplekken-lijst"');
+
+    preg_match_all('/class="[^"]*zoek-item--deelplek[^"]*"/', $html, $all);
+    preg_match_all('/class="[^"]*is-lijst-verborgen[^"]*"/', $html, $hidden);
+    $totaal = count($all[0] ?? []);
+    $verborgen = count($hidden[0] ?? []);
+    expect($totaal)->toBeGreaterThan(12)
+        ->and($verborgen)->toBe($totaal - 12)
+        ->and($totaal - $verborgen)->toBe(12);
+});
+
+test('deelplekkenlijst zonder filters behoudt seed-volgorde in eerste twaalf', function () {
+    $html = $this->get('/deelplekken')->assertOk()->getContent();
+    $eerste = app(\App\Services\Deelplekken::class)->queryVisible([])->take(12)->pluck('naam')->all();
+    foreach ($eerste as $naam) {
+        expect($html)->toContain(e($naam));
+    }
 });
 
 test('verborgen JSON-rij verschijnt niet op stadspagina', function () {

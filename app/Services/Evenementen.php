@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Evenement;
+use App\Support\Geo;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
@@ -147,6 +148,97 @@ final class Evenementen
         }
 
         return $start->format('j-n-Y').' – '.$end->format('j-n-Y');
+    }
+
+    /**
+     * Datum + optionele tijd voor kaart/agenda, Europe/Amsterdam-labels.
+     * Voorbeeld: «za 12 dec, 10.00–16.00» of zonder tijd alleen «za 12 dec».
+     */
+    public function formatDateTimeLabel(Evenement $event): string
+    {
+        $dagen = ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'];
+        $maanden = [
+            1 => 'jan', 2 => 'feb', 3 => 'mrt', 4 => 'apr', 5 => 'mei', 6 => 'jun',
+            7 => 'jul', 8 => 'aug', 9 => 'sep', 10 => 'okt', 11 => 'nov', 12 => 'dec',
+        ];
+        $start = $event->start_datum;
+        $dag = ($dagen[(int) $start->dayOfWeek] ?? '').' '.$start->day.' '.($maanden[(int) $start->month] ?? '');
+        $dag = trim($dag);
+
+        $startTijd = $event->startTijdHm();
+        $eindTijd = $event->eindTijdHm();
+        if ($startTijd === '') {
+            return $dag;
+        }
+
+        $fmt = static fn (string $hm): string => str_replace(':', '.', $hm);
+        if ($eindTijd !== '') {
+            return $dag.', '.$fmt($startTijd).'–'.$fmt($eindTijd);
+        }
+
+        return $dag.', '.$fmt($startTijd);
+    }
+
+    /**
+     * Evenementen voor de deelplekkenkaart / API (scopeOpKaart).
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function listPublicForKaart(?string $provincie = null, ?string $plaats = null): array
+    {
+        if (! Schema::hasTable('evenementen')
+            || ! Schema::hasColumn('evenementen', 'lat')
+            || ! Schema::hasColumn('evenementen', 'lon')) {
+            return [];
+        }
+
+        $labels = $this->typeLabels();
+        $query = Evenement::query()->opKaart()->orderBy('start_datum')->orderBy('id');
+
+        $provincie = trim((string) $provincie);
+        if ($provincie !== '' && $this->provincieValid($provincie)) {
+            $query->inProvincie($provincie);
+        }
+
+        $plaats = trim((string) $plaats);
+        if ($plaats !== '') {
+            $needle = mb_strtolower($plaats, 'UTF-8');
+            $query->whereRaw('LOWER(plaats) LIKE ?', ['%'.$needle.'%']);
+        }
+
+        return $query->get()->map(function (Evenement $row) use ($labels) {
+            $type = (string) $row->type;
+            $adres = Schema::hasColumn('evenementen', 'adres') ? trim((string) ($row->adres ?? '')) : '';
+            $omschrijving = Schema::hasColumn('evenementen', 'omschrijving')
+                ? trim((string) ($row->omschrijving ?? ''))
+                : '';
+
+            return [
+                'id' => (int) $row->id,
+                'slug' => 'evenement-'.$row->id,
+                'naam' => (string) $row->titel,
+                'type' => $type,
+                'type_label' => $labels[$type] ?? $type,
+                'plaats' => (string) $row->plaats,
+                'provincie' => (string) $row->provincie,
+                'country' => 'NL',
+                'adres' => $adres,
+                'lat' => Geo::roundCoord((float) $row->lat),
+                'lng' => Geo::roundCoord((float) $row->lon),
+                'lon' => Geo::roundCoord((float) $row->lon),
+                'bron_url' => (string) $row->url,
+                'geraadpleegd' => $row->gecontroleerd_op?->format('Y-m-d') ?? '',
+                'kind' => 'evenement',
+                'soort' => 'evenement',
+                'start_datum' => $row->start_datum->format('Y-m-d'),
+                'eind_datum' => $row->eind_datum?->format('Y-m-d'),
+                'start_tijd' => $row->startTijdHm(),
+                'eind_tijd' => $row->eindTijdHm(),
+                'datum_label' => $this->formatDateTimeLabel($row),
+                'omschrijving' => $omschrijving,
+                'tijdelijk' => true,
+            ];
+        })->all();
     }
 
     /**
@@ -301,6 +393,24 @@ final class Evenementen
         if (Schema::hasColumn('evenementen', 'organisatie_slug')) {
             $payload['organisatie_slug'] = $organisatieSlug !== '' ? $organisatieSlug : null;
         }
+        if (Schema::hasColumn('evenementen', 'start_tijd')) {
+            $payload['start_tijd'] = $this->parseTime(trim((string) ($fields['start_tijd'] ?? '')));
+        }
+        if (Schema::hasColumn('evenementen', 'eind_tijd')) {
+            $payload['eind_tijd'] = $this->parseTime(trim((string) ($fields['eind_tijd'] ?? '')));
+        }
+        if (Schema::hasColumn('evenementen', 'adres')) {
+            $payload['adres'] = trim(mb_substr((string) ($fields['adres'] ?? ''), 0, 255));
+        }
+        if (Schema::hasColumn('evenementen', 'omschrijving')) {
+            $payload['omschrijving'] = trim(mb_substr((string) ($fields['omschrijving'] ?? ''), 0, 500));
+        }
+        if (Schema::hasColumn('evenementen', 'lat') && array_key_exists('lat', $fields) && $fields['lat'] !== null && $fields['lat'] !== '') {
+            $payload['lat'] = Geo::roundCoord((float) $fields['lat']);
+        }
+        if (Schema::hasColumn('evenementen', 'lon') && array_key_exists('lon', $fields) && $fields['lon'] !== null && $fields['lon'] !== '') {
+            $payload['lon'] = Geo::roundCoord((float) $fields['lon']);
+        }
 
         $existing = $id ? Evenement::query()->find($id) : null;
         if ($existing) {
@@ -341,5 +451,24 @@ final class Evenementen
         } catch (\Throwable) {
             return null;
         }
+    }
+
+    /** @return string|null HH:MM:SS of null bij leeg/ongeldig */
+    private function parseTime(string $raw): ?string
+    {
+        if ($raw === '') {
+            return null;
+        }
+        if (preg_match('/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/', $raw, $m) !== 1) {
+            return null;
+        }
+        $h = (int) $m[1];
+        $i = (int) $m[2];
+        $s = isset($m[3]) ? (int) $m[3] : 0;
+        if ($h > 23 || $i > 59 || $s > 59) {
+            return null;
+        }
+
+        return sprintf('%02d:%02d:%02d', $h, $i, $s);
     }
 }
