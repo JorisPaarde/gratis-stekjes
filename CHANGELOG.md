@@ -21,6 +21,9 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Mobiele popup (390): `autoPanPaddingTopLeft` + offset zodat zoomknoppen (+/−) titel/badge
   niet meer overlappen.
 - Popuptypografie: site-font (Titillium), vet titel, kleinere grijze meta, huisstijl-link.
+- Popup op 390: Leaflet-marge op `<p>` (17px) overschreven, `maxWidth` 260 / `maxHeight` 280,
+  en cluster-laag `removeOutsideVisibleBounds: false` zodat een popup op touch niet direct
+  weer sluit wanneer autoPan de pin even buiten beeld schuift.
 
 ## [0.80.0] - 2026-11-16
 
