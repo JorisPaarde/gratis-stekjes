@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Deelplek;
+use App\Models\User;
+use App\Notifications\DeelplekGoedgekeurd;
 use App\Support\Country;
 use App\Support\PostalCode;
+use App\Support\SafeMail;
 use Illuminate\Support\Str;
 
 final class DeelplekAanmelding
@@ -116,6 +119,17 @@ final class DeelplekAanmelding
             'visible' => true,
             'reviewed_at' => now(),
         ]);
+
+        if ($plek->approval_mailed_at === null) {
+            $email = strtolower(trim((string) $plek->contact_email));
+            if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                // Is het contactadres ook een lid, dan komt de mail in diens mail_log in /beheer.
+                $userId = User::query()->where('email', $email)->value('id');
+                if (SafeMail::toAddress($email, new DeelplekGoedgekeurd($plek), $userId !== null ? (int) $userId : null)) {
+                    $plek->forceFill(['approval_mailed_at' => now()])->save();
+                }
+            }
+        }
 
         return $plek->refresh();
     }

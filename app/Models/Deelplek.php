@@ -43,6 +43,7 @@ class Deelplek extends Model
         'contact_email',
         'privacy_at',
         'reviewed_at',
+        'approval_mailed_at',
     ];
 
     protected function casts(): array
@@ -55,6 +56,7 @@ class Deelplek extends Model
             'contact_email' => \App\Casts\SafeEncrypted::class,
             'privacy_at' => 'datetime',
             'reviewed_at' => 'datetime',
+            'approval_mailed_at' => 'datetime',
         ];
     }
 
