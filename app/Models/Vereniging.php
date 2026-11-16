@@ -37,7 +37,15 @@ class Vereniging extends Model
         'json_slug',
         'status',
         'created_by',
+        'approval_mailed_at',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'approval_mailed_at' => 'datetime',
+        ];
+    }
 
     public function leden(): BelongsToMany
     {

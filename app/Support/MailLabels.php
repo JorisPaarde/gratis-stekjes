@@ -18,7 +18,9 @@ final class MailLabels
         'EersteStekjeMail' => 'Eerste stekje',
         'DeelplekAanmeldingBevestiging' => 'Aanmelding deelplek',
         'DeelplekAanmeldingAdminMelding' => 'Nieuwe aanmelding (beheer)',
+        'DeelplekGoedgekeurd' => 'Deelplek goedgekeurd',
         'VerenigingAangemeld' => 'Nieuwe vereniging (beheer)',
+        'VerenigingGoedgekeurd' => 'Vereniging goedgekeurd',
         'AccountBestaatAl' => 'Account bestaat al',
     ];
 
