@@ -3,6 +3,25 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.80.1] - 2026-11-16
+
+### Added
+
+- Marker clustering op `/deelplekken` en de deelplekkenlaag op `/aanbod`
+  (Leaflet.markercluster 1.5.3 via unpkg, zelfde globale `L` als Leaflet-CDN;
+  GP-clusterbubbels in Vite-CSS). Uitgezoomd: bolletjes met aantal; klik/inzoomen
+  splitst (`zoomToBoundsOnClick` + spiderfy bij gelijke coördinaten). Clusters met
+  uitdeeldagen krijgen evenement-accent + aria-label «N plekken, waarvan M uitdeeldag».
+  Lijst «Op de kaart» gebruikt `zoomToShowLayer` zodat popups ook vanuit een cluster openen.
+- Filterchip «Uitdeeldagen» op `/deelplekken` (`?type=uitdeeldagen`): alleen tijdelijke
+  evenementen in lijst + kaart.
+
+### Fixed
+
+- Mobiele popup (390): `autoPanPaddingTopLeft` + offset zodat zoomknoppen (+/−) titel/badge
+  niet meer overlappen.
+- Popuptypografie: site-font (Titillium), vet titel, kleinere grijze meta, huisstijl-link.
+
 ## [0.80.0] - 2026-11-16
 
 ### Added

@@ -49,7 +49,64 @@
   });
   var aanbodLayer = L.layerGroup().addTo(map);
   var partnerLayer = L.layerGroup().addTo(map);
-  var deelplekLayer = L.layerGroup().addTo(map);
+
+  function deelplekClusterLabel(count, evenementCount) {
+    var label = count + (count === 1 ? " plek" : " plekken");
+    if (evenementCount > 0) {
+      label +=
+        ", waarvan " +
+        evenementCount +
+        (evenementCount === 1 ? " uitdeeldag" : " uitdeeldagen");
+    }
+    return label;
+  }
+
+  function deelplekClusterIcon(cluster) {
+    var childMarkers = cluster.getAllChildMarkers();
+    var count = childMarkers.length;
+    var evenementCount = 0;
+    childMarkers.forEach(function (m) {
+      if (m.options && m.options.gpEvenement) evenementCount++;
+    });
+    var size = count < 10 ? "sm" : count < 40 ? "md" : "lg";
+    var px = size === "sm" ? 36 : size === "md" ? 44 : 54;
+    var label = deelplekClusterLabel(count, evenementCount);
+    var classes =
+      "gp-cluster-bubble gp-cluster-bubble--" +
+      size +
+      (evenementCount ? " gp-cluster-bubble--evenement" : "");
+    return L.divIcon({
+      html:
+        '<span class="' +
+        classes +
+        '" role="img" aria-label="' +
+        escapeHtml(label) +
+        '" title="' +
+        escapeHtml(label) +
+        '"><span class="gp-cluster-count">' +
+        count +
+        "</span>" +
+        (evenementCount
+          ? '<span class="gp-cluster-event-badge" aria-hidden="true"></span>'
+          : "") +
+        "</span>",
+      className: "gp-cluster",
+      iconSize: L.point(px, px),
+      iconAnchor: [px / 2, px / 2],
+    });
+  }
+
+  var deelplekLayer =
+    typeof L.markerClusterGroup === "function"
+      ? L.markerClusterGroup({
+          showCoverageOnHover: false,
+          zoomToBoundsOnClick: true,
+          spiderfyOnMaxZoom: true,
+          maxClusterRadius: 55,
+          chunkedLoading: true,
+          iconCreateFunction: deelplekClusterIcon,
+        }).addTo(map)
+      : L.layerGroup().addTo(map);
 
   var cfg = window.STEKJES_SITE || {};
   var api = cfg.api_zoeken || "/api/zoeken.php";
@@ -77,6 +134,9 @@
     ruilkast: "#6b4c2f",
     stekjesruilpunt: "#5a6b3d",
     zaadbibliotheek: "#8a6a3a",
+    tuinvereniging: "#3d6b4a",
+    bomenhub: "#b54a2a",
+    stekchallenge: "#b54a2a",
   };
 
   function enabledPartnerTypes() {
@@ -111,10 +171,15 @@
     });
   }
 
-  function deelplekIcon(type) {
-    var color = markerColors[type] || markerColors.partner;
+  function isEvenement(item) {
+    return item && (item.soort === "evenement" || item.kind === "evenement" || item.tijdelijk);
+  }
+
+  function deelplekIcon(type, evenement) {
+    var color = evenement ? "#b54a2a" : markerColors[type] || markerColors.partner;
+    var mod = evenement ? "evenement" : type;
     return L.divIcon({
-      className: "deelplek-marker deelplek-marker--" + type,
+      className: "deelplek-marker deelplek-marker--" + mod,
       html:
         '<span class="deelplek-marker-dot" style="background:' +
         color +
@@ -200,24 +265,46 @@
     return plekken;
   }
 
+  var plekPopupOpts = {
+    className: "gp-leaflet-popup",
+    autoPan: true,
+    autoPanPaddingTopLeft: L.point(50, 56),
+    autoPanPaddingBottomRight: L.point(24, 24),
+    offset: L.point(0, -6),
+  };
+
   function plekPopup(item, label) {
-    var popup =
-      "<strong>" +
-      escapeHtml(item.naam) +
-      "</strong><br>" +
+    var evenement = item.kind === "deelplek" && isEvenement(item);
+    var popup = '<div class="gp-popup">';
+    popup += '<strong class="gp-popup-titel">' + escapeHtml(item.naam) + "</strong>";
+    if (evenement) {
+      popup += '<span class="deelplek-popup-badge">Tijdelijk</span>';
+      if (item.datum_label) {
+        popup += '<p class="gp-popup-meta">' + escapeHtml(item.datum_label) + "</p>";
+      }
+    }
+    popup +=
+      '<p class="gp-popup-meta">' +
       escapeHtml(label) +
-      (item.plaats ? " · " + escapeHtml(item.plaats) : "");
+      (item.plaats ? " · " + escapeHtml(item.plaats) : "") +
+      "</p>";
     if (item.kind === "deelplek") {
-      if (item.adres) popup += "<br>" + escapeHtml(item.adres);
+      if (item.adres) popup += '<p class="gp-popup-meta">' + escapeHtml(item.adres) + "</p>";
+      if (evenement && item.omschrijving) {
+        popup += '<p class="gp-popup-meta">' + escapeHtml(item.omschrijving) + "</p>";
+      }
       if (item.bron_url) {
         popup +=
-          '<br><a href="' +
+          '<a class="gp-popup-link" href="' +
           escapeHtml(item.bron_url) +
-          '" rel="noopener noreferrer" target="_blank">Website</a>';
+          '" rel="noopener noreferrer" target="_blank">' +
+          (evenement ? "Bron" : "Website") +
+          "</a>";
       }
     } else if (item.beschrijving) {
-      popup += "<br>" + escapeHtml(item.beschrijving);
+      popup += '<p class="gp-popup-meta">' + escapeHtml(item.beschrijving) + "</p>";
     }
+    popup += "</div>";
     return popup;
   }
 
@@ -232,19 +319,52 @@
     partnerLayer.clearLayers();
     deelplekLayer.clearLayers();
     var bounds = [];
+    var deelplekBatch = [];
     plekken.forEach(function (item) {
       var lon = itemLon(item);
       if (item.lat == null || lon == null) return;
       var label = item.type_label || typeLabels[item.type] || item.type;
       var isDeelplek = item.kind === "deelplek";
+      var evenement = isDeelplek && isEvenement(item);
       var m = L.marker([item.lat, lon], {
-        icon: isDeelplek ? deelplekIcon(item.type) : partnerIcon(item.type),
-      }).bindPopup(plekPopup(item, label));
-      (isDeelplek ? deelplekLayer : partnerLayer).addLayer(m);
+        icon: isDeelplek ? deelplekIcon(item.type, evenement) : partnerIcon(item.type),
+        zIndexOffset: evenement ? 200 : 0,
+        gpEvenement: !!evenement,
+      }).bindPopup(plekPopup(item, label), plekPopupOpts);
+      if (isDeelplek) {
+        deelplekBatch.push(m);
+      } else {
+        partnerLayer.addLayer(m);
+      }
       markerByKey[plekKey(item)] = m;
       bounds.push([item.lat, lon]);
     });
+    if (deelplekBatch.length) {
+      if (typeof deelplekLayer.addLayers === "function") {
+        deelplekLayer.addLayers(deelplekBatch);
+      } else {
+        deelplekBatch.forEach(function (m) {
+          deelplekLayer.addLayer(m);
+        });
+      }
+    }
     return bounds;
+  }
+
+  function openPlekMarker(m) {
+    if (!m) return;
+    if (
+      typeof deelplekLayer.zoomToShowLayer === "function" &&
+      typeof deelplekLayer.hasLayer === "function" &&
+      deelplekLayer.hasLayer(m)
+    ) {
+      deelplekLayer.zoomToShowLayer(m, function () {
+        m.openPopup();
+      });
+      return;
+    }
+    map.setView(m.getLatLng(), Math.max(map.getZoom(), 13));
+    m.openPopup();
   }
 
   var aanbodTypeLabels = { uitdelen: "Te geef", ophalen: "Gezocht" };
@@ -514,8 +634,7 @@
     if (kaartBtn) {
       var m = markerByKey[kaartBtn.getAttribute("data-kaart")];
       if (!m) return;
-      map.setView(m.getLatLng(), Math.max(map.getZoom(), 13));
-      m.openPopup();
+      openPlekMarker(m);
       if (mapEl.scrollIntoView) {
         mapEl.scrollIntoView({ behavior: "smooth", block: "center" });
       }
@@ -695,6 +814,9 @@
       .then(function (data) {
         if (data && data.types) {
           typeLabels = Object.assign(typeLabels, data.types);
+        }
+        if (data && data.evenement_types) {
+          typeLabels = Object.assign(typeLabels, data.evenement_types);
         }
         deelplekItems = (data && data.items) || [];
         geladen.deelplekken = true;

@@ -118,6 +118,27 @@ test('API deelplekken voegt tijdelijke evenementen toe zonder bestaande velden t
     // Met typefilter: geen evenementen mengen.
     $filtered = collect($this->getJson(route('api.deelplekken', ['type' => 'plantenbieb']))->json('items'));
     expect($filtered->where('soort', 'evenement'))->toBeEmpty();
+
+    // Chip «Uitdeeldagen»: alleen evenementen.
+    $alleen = collect($this->getJson(route('api.deelplekken', ['type' => 'uitdeeldagen']))->json('items'));
+    expect($alleen)->not->toBeEmpty()
+        ->and($alleen->every(fn ($item) => ($item['soort'] ?? null) === 'evenement'))->toBeTrue();
+});
+
+test('deelplekkenpagina toont filterchip Uitdeeldagen en filtert de lijst', function () {
+    $this->seed(DeelplekkenSeeder::class);
+    kaartEvenement(['titel' => 'Chip-test uitdeeldag']);
+
+    $this->get(route('deelplekken'))
+        ->assertOk()
+        ->assertSee('Uitdeeldagen', false)
+        ->assertSee('type=uitdeeldagen', false);
+
+    $this->get(route('deelplekken', ['type' => 'uitdeeldagen']))
+        ->assertOk()
+        ->assertSee('Chip-test uitdeeldag', false)
+        ->assertSee('badge--tijdelijk', false)
+        ->assertDontSee('Plantenasiel Zeist — De Boswerf', false);
 });
 
 test('formatDateTimeLabel toont tijd alleen als die er is', function () {
