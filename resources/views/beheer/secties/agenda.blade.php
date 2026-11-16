@@ -21,8 +21,20 @@
     <label>Einddatum (optioneel)
       <input type="date" name="eind_datum" value="{{ old('eind_datum', isset($editingEvenement) ? $editingEvenement->eind_datum?->format('Y-m-d') : '') }}">
     </label>
+    <label>Starttijd (optioneel)
+      <input type="time" name="start_tijd" value="{{ old('start_tijd', isset($editingEvenement) ? $editingEvenement->startTijdHm() : '') }}">
+    </label>
+    <label>Eindtijd (optioneel)
+      <input type="time" name="eind_tijd" value="{{ old('eind_tijd', isset($editingEvenement) ? $editingEvenement->eindTijdHm() : '') }}">
+    </label>
     <label>Plaats (gemeente)
       <input name="plaats" required maxlength="120" value="{{ old('plaats', $editingEvenement->plaats ?? '') }}">
+    </label>
+    <label>Adres (optioneel, voor de kaart)
+      <input name="adres" maxlength="255" value="{{ old('adres', $editingEvenement->adres ?? '') }}">
+    </label>
+    <label>Korte omschrijving (optioneel)
+      <input name="omschrijving" maxlength="500" value="{{ old('omschrijving', $editingEvenement->omschrijving ?? '') }}">
     </label>
     <label>Provincie
       <select name="provincie" required>

@@ -14,8 +14,8 @@ use App\Models\PartnerMarker;
 use App\Models\Report;
 use App\Models\User;
 use App\Models\Vereniging;
-use App\Notifications\VerifyEmailDutch;
 use App\Notifications\VerenigingGoedgekeurd;
+use App\Notifications\VerifyEmailDutch;
 use App\Services\AvgService;
 use App\Services\DeelplekAanmelding;
 use App\Services\Deelplekken;
@@ -350,7 +350,11 @@ class DashboardController extends Controller
             'type' => $request->input('type'),
             'start_datum' => $request->input('start_datum'),
             'eind_datum' => $request->input('eind_datum'),
+            'start_tijd' => $request->input('start_tijd'),
+            'eind_tijd' => $request->input('eind_tijd'),
             'plaats' => $request->input('plaats'),
+            'adres' => $request->input('adres'),
+            'omschrijving' => $request->input('omschrijving'),
             'provincie' => $request->input('provincie'),
             'organisator' => $request->input('organisator'),
             'organisatie_slug' => $request->boolean('struikroven_actie') ? 'struikroven' : '',

@@ -215,6 +215,7 @@ final class Deelplekken
                 'bron_url' => (string) $row->bron_url,
                 'geraadpleegd' => $row->geraadpleegd?->format('Y-m-d') ?? '',
                 'kind' => 'deelplek',
+                'soort' => 'deelplek',
             ];
         })->all();
     }

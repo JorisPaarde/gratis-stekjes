@@ -17,6 +17,7 @@ use App\Http\Controllers\Account\StartConversationController;
 use App\Http\Controllers\Account\VerenigingController;
 use App\Http\Controllers\Account\WelcomeController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ActivatieHerinneringController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\Api\DeelplekkenController as ApiDeelplekkenController;
 use App\Http\Controllers\Api\NuTeStekkenController as ApiNuTeStekkenController;
@@ -38,7 +39,6 @@ use App\Http\Controllers\Beheer\GebruikersController as BeheerGebruikersControll
 use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
 use App\Http\Controllers\Beheer\PostLogController as BeheerPostLogController;
 use App\Http\Controllers\Beheer\StatistiekenController as BeheerStatistiekenController;
-use App\Http\Controllers\ActivatieHerinneringController;
 use App\Http\Controllers\BerichtmailController;
 use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\CronController;
@@ -46,6 +46,7 @@ use App\Http\Controllers\DeelplekkenController;
 use App\Http\Controllers\DeployActivatieHerinneringController;
 use App\Http\Controllers\DeployController;
 use App\Http\Controllers\DeployImportController;
+use App\Http\Controllers\DeployImportMeerbomenUitdeeldagenController;
 use App\Http\Controllers\DeployImportStruikrovenAgendaController;
 use App\Http\Controllers\DeployLedenupdateMailController;
 use App\Http\Controllers\DeployNormaliseerLocatiesController;
@@ -187,6 +188,9 @@ Route::post('/deploy/ledenupdate-mail', DeployLedenupdateMailController::class)
 Route::post('/deploy/import-struikroven-agenda', DeployImportStruikrovenAgendaController::class)
     ->middleware('throttle:10,1')
     ->name('deploy.import-struikroven-agenda');
+Route::post('/deploy/import-meerbomen-uitdeeldagen', DeployImportMeerbomenUitdeeldagenController::class)
+    ->middleware('throttle:10,1')
+    ->name('deploy.import-meerbomen-uitdeeldagen');
 Route::post('/deploy/import/init', [DeployImportController::class, 'init'])
     ->middleware('throttle:20,1')
     ->name('deploy.import.init');
