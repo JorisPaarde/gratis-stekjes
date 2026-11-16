@@ -64,6 +64,7 @@ test('aanbodpagina levert kaartcontainer, Leaflet en markerdata bij openen', fun
         ->assertOk()
         ->assertSee('id="kaart"', false)
         ->assertSee('unpkg.com/leaflet@1.9.4/dist/leaflet.js', false)
+        ->assertSee('unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js', false)
         ->assertSee('role="img"', false)
         ->assertSee('api_partners', false)
         ->assertSee('api_deelplekken', false);
@@ -86,11 +87,54 @@ test('deelplekkenpagina levert kaartcontainer, Leaflet en markers bij openen', f
         ->assertOk()
         ->assertSee('id="deelplekken-kaart"', false)
         ->assertSee('unpkg.com/leaflet@1.9.4/dist/leaflet.js', false)
+        ->assertSee('unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js', false)
         ->assertSee('aria-label="Kaart met deelplekken voor planten"', false);
 
     $items = $this->getJson(route('api.deelplekken'))->assertOk()->json('items');
     expect($items)->not->toBeEmpty();
     expect(collect($items)->firstWhere('naam', 'Plantenasiel Zeist — De Boswerf'))->not->toBeNull();
+});
+
+test('aanbod- en deelplekkenpagina laden markercluster-assets (SRI + CSP-unpkg)', function () {
+    $this->get(route('deelplekken'))
+        ->assertOk()
+        ->assertSee('leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js', false)
+        ->assertSee('sha256-Hk4dIpcqOSb0hZjgyvFOP+cEmDXUKKNE/tT542ZbNQg=', false);
+
+    $this->get(route('aanbod'))
+        ->assertOk()
+        ->assertSee('leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js', false);
+
+    $csp = (string) $this->get(route('deelplekken'))->headers->get('Content-Security-Policy');
+    expect($csp)->toContain("script-src 'self' https://unpkg.com")
+        ->and($csp)->toContain("style-src 'self' https://unpkg.com");
+});
+
+test('deelplekken.js en zoeken.js clusteren deelplekmarkers met evenement-accent', function () {
+    foreach (['resources/js/deelplekken.js', 'resources/js/zoeken.js'] as $rel) {
+        $js = (string) file_get_contents(base_path($rel));
+        expect($js)->toContain('markerClusterGroup')
+            ->and($js)->toContain('zoomToShowLayer')
+            ->and($js)->toContain('zoomToBoundsOnClick')
+            ->and($js)->toContain('spiderfyOnMaxZoom')
+            ->and($js)->toContain('gpEvenement')
+            ->and($js)->toContain('gp-cluster-bubble--evenement')
+            ->and($js)->toContain('" evenementen"')
+            ->and($js)->toContain('chunkedLoading')
+            ->and($js)->toContain('autoPanPaddingTopLeft')
+            ->and($js)->toContain('gp-leaflet-popup')
+            ->and($js)->toContain('gp-popup-titel')
+            ->and($js)->not->toContain('unpkg.com/leaflet');
+    }
+
+    $css = (string) file_get_contents(base_path('resources/css/deelplekken.css'));
+    expect($css)->toContain('.gp-cluster-bubble')
+        ->and($css)->toContain('.gp-cluster-bubble--evenement')
+        ->and($css)->toContain('.gp-cluster-event-badge')
+        ->and($css)->toContain('.leaflet-cluster-anim')
+        ->and($css)->toContain('.gp-popup-titel')
+        ->and($css)->toContain('.gp-popup-meta')
+        ->and($css)->toContain('.gp-popup-link');
 });
 
 test('zoeken na postcode zoomt rond resultaat (geen landelijke fitBounds)', function () {

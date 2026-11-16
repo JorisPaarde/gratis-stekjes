@@ -34,6 +34,16 @@ class DeelplekkenSeeder extends Seeder
                 $visible = (bool) $row['visible'];
             }
 
+            // Bewust verborgen seed-rijen (o.a. Happy stekkie Groesbeek) niet opnieuw openzetten.
+            $existing = Deelplek::query()->where('slug', $slug)->first();
+            if ($existing !== null && ! $existing->visible) {
+                $visible = false;
+            }
+            if (array_key_exists('visible', $row)
+                && filter_var($row['visible'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) === false) {
+                $visible = false;
+            }
+
             Deelplek::query()->updateOrCreate(
                 ['slug' => $slug],
                 [

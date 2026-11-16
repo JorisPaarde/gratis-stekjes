@@ -3,6 +3,50 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.80.2] - 2026-11-16
+
+### Changed
+
+- Filterchip op `/deelplekken` heet nu «Evenementen» (was «Uitdeeldagen»); de URL
+  `?type=uitdeeldagen` blijft werken. Cluster-aria-label noemt nu «waarvan N evenement(en)».
+
+## [0.80.1] - 2026-11-16
+
+### Added
+
+- Marker clustering op `/deelplekken` en de deelplekkenlaag op `/aanbod`
+  (Leaflet.markercluster 1.5.3 via unpkg, zelfde globale `L` als Leaflet-CDN;
+  GP-clusterbubbels in Vite-CSS). Uitgezoomd: bolletjes met aantal; klik/inzoomen
+  splitst (`zoomToBoundsOnClick` + spiderfy bij gelijke coördinaten). Clusters met
+  uitdeeldagen krijgen evenement-accent + aria-label «N plekken, waarvan M uitdeeldag».
+  Lijst «Op de kaart» gebruikt `zoomToShowLayer` zodat popups ook vanuit een cluster openen.
+- Filterchip «Uitdeeldagen» op `/deelplekken` (`?type=uitdeeldagen`): alleen tijdelijke
+  evenementen in lijst + kaart.
+
+### Fixed
+
+- Mobiele popup (390): `autoPanPaddingTopLeft` + offset zodat zoomknoppen (+/−) titel/badge
+  niet meer overlappen.
+- Popuptypografie: site-font (Titillium), vet titel, kleinere grijze meta, huisstijl-link.
+- Popup op 390: Leaflet-marge op `<p>` (17px) overschreven, `maxWidth` 260 / `maxHeight` 280,
+  en cluster-laag `removeOutsideVisibleBounds: false` zodat een popup op touch niet direct
+  weer sluit wanneer autoPan de pin even buiten beeld schuift.
+
+## [0.80.0] - 2026-11-16
+
+### Added
+
+- Deelplekken: 120 nieuwe vaste plekken (ZBN 2026 + research 16 nov; geen
+  Middelburg-ZB / Roeach / privé-woonadressen volgens BAG), types voedselbos/tuinvereniging in gebruik;
+  seeder behoudt `visible=false`.
+- Tijdelijke evenementen op `/deelplekken` en `/api/deelplekken` (scopeOpKaart:
+  zichtbaar, met lat/lon, tot einddatum, start ≤ vandaag+1 maand).
+- Evenementvelden `start_tijd`/`eind_tijd` (+ adres/omschrijving), types
+  `bomenhub` en `stekchallenge`; import `gp:import-meerbomen-uitdeeldagen`
+  + workflow_dispatch (24 uitdeeldagen, Schaarsbergen 2×).
+- Lijst `/deelplekken` (en zoek-plekken): «Laad meer» per 12 items; kaartpins
+  blijven allemaal zichtbaar.
+
 ## [0.79.13] - 2026-11-16
 
 ### Changed

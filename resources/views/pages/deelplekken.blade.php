@@ -9,6 +9,8 @@
 @push('head')
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  {{-- Markercluster via unpkg (zelfde L als Leaflet-CDN); cluster-CSS zit in deelplekken.css (GP-huisstijl). --}}
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" integrity="sha256-Hk4dIpcqOSb0hZjgyvFOP+cEmDXUKKNE/tT542ZbNQg=" crossorigin=""></script>
   <script>
     window.STEKJES_DEELPLEKKEN = {
       api: @json(route('api.deelplekken')),
@@ -74,6 +76,14 @@
         <a class="dp-chip {{ $filters['type'] === $key ? 'is-actief' : '' }}" href="{{ route('deelplekken', ['type' => $key]) }}">{{ $meervoud[$key] ?? $label }}</a>
       @endif
     @endforeach
+    @if(($uitdeeldagenAantal ?? 0) > 0)
+      <a class="dp-chip dp-chip--uitdeeldagen {{ $filters['type'] === 'uitdeeldagen' ? 'is-actief' : '' }}" href="{{ route('deelplekken', ['type' => 'uitdeeldagen']) }}">
+        Evenementen
+        @if($filters['type'] !== 'uitdeeldagen')
+          <span>{{ $uitdeeldagenAantal }}</span>
+        @endif
+      </a>
+    @endif
   </nav>
 
   <div id="deelplekken-kaart" role="img" aria-label="Kaart met deelplekken voor planten"></div>
@@ -88,20 +98,37 @@
   <span class="visually-hidden" id="deelplekken-status" aria-live="polite"></span>
 
   <ul class="zoek-lijst deelplekken-lijst" id="deelplekken-lijst">
-    @forelse($items as $plek)
-      <li class="zoek-item zoek-item--plek zoek-item--deelplek" data-kind="deelplek" data-type="{{ $plek->type }}">
+    @forelse($items as $index => $plek)
+      @php
+        $isEvenement = ! empty($plek->tijdelijk);
+        $typeLabel = $isEvenement
+          ? ($plek->type_label ?? ($evenementTypeLabels[$plek->type] ?? $plek->type))
+          : ($typeLabels[$plek->type] ?? $plek->type);
+        $datumLabel = trim((string) ($plek->datum_label ?? ''));
+        $lijstVerborgen = $index >= 12;
+      @endphp
+      <li class="zoek-item zoek-item--plek zoek-item--deelplek{{ $isEvenement ? ' zoek-item--evenement' : '' }}{{ $lijstVerborgen ? ' is-lijst-verborgen' : '' }}" data-kind="{{ $isEvenement ? 'evenement' : 'deelplek' }}" data-type="{{ $plek->type }}" @if($lijstVerborgen) hidden @endif>
         <div class="zoek-item-kop"><h2>{{ $plek->naam }}</h2></div>
-        <p class="zoek-item-meta"><span class="badge badge--{{ $plek->type }}">{{ $typeLabels[$plek->type] ?? $plek->type }}</span> {{ $plek->plaats }}@if($plek->provincie) · {{ $plek->provincie }}@endif</p>
+        <p class="zoek-item-meta">
+          @if($isEvenement)
+            <span class="badge badge--tijdelijk">Tijdelijk</span>
+          @endif
+          <span class="badge badge--{{ $plek->type }}">{{ $typeLabel }}</span>
+          {{ $plek->plaats }}@if($plek->provincie) · {{ $plek->provincie }}@endif
+        </p>
+        @if($isEvenement && $datumLabel !== '')
+          <p class="zoek-item-datum">{{ $datumLabel }}</p>
+        @endif
         @if($plek->adres !== '')
           <p class="zoek-item-adres">{{ $plek->adres }}</p>
         @endif
         <p class="zoek-item-acties">
           <button type="button" class="zoek-op-kaart" data-lat="{{ $plek->lat }}" data-lng="{{ $plek->lng }}">Op de kaart</button>
           @if($plek->bron_url)
-            <a href="{{ $plek->bron_url }}" rel="noopener noreferrer" target="_blank">{{ $bronLabel($plek) }}</a>
+            <a href="{{ $plek->bron_url }}" rel="noopener noreferrer" target="_blank">{{ $isEvenement ? 'Bron' : $bronLabel($plek) }}</a>
           @endif
         </p>
-        @if($plek->geraadpleegd)
+        @if($isEvenement === false && $plek->geraadpleegd)
           <p class="zoek-item-datum">Gecontroleerd op {{ $plek->geraadpleegd->locale('nl')->translatedFormat('j F Y') }}</p>
         @endif
       </li>
@@ -111,6 +138,12 @@
       </li>
     @endforelse
   </ul>
+  @if($items->count() > 12)
+    <p class="deelplekken-meer">
+      <button type="button" class="btn btn-secondary" id="deelplekken-laad-meer" data-stap="12" aria-controls="deelplekken-lijst">Laad meer</button>
+    </p>
+    <p class="visually-hidden" id="deelplekken-meer-status" aria-live="polite"></p>
+  @endif
 
   @if(!empty($faq))
     <section class="stektips-faq deelplekken-faq" id="veelgestelde-vragen" aria-labelledby="faq-titel">

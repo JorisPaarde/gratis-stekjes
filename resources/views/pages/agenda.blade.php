@@ -50,7 +50,7 @@
               <li class="partners-event soft-card">
                 <p class="partners-event-meta">
                   <span class="badge">{{ $typeLabels[$event->type] ?? $event->type }}</span>
-                  <time datetime="{{ $event->start_datum->format('Y-m-d') }}">{{ $evenementen->formatDateRange($event) }}</time>
+                  <time datetime="{{ $event->start_datum->format('Y-m-d') }}">{{ $evenementen->formatDateTimeLabel($event) }}</time>
                 </p>
                 <h4 class="partners-event-title">
                   @if($event->url !== '')
@@ -90,7 +90,7 @@
           <li class="partners-event soft-card">
             <p class="partners-event-meta">
               <span class="badge">{{ $typeLabels[$event->type] ?? $event->type }}</span>
-              <time datetime="{{ $event->start_datum->format('Y-m-d') }}">{{ $evenementen->formatDateRange($event) }}</time>
+              <time datetime="{{ $event->start_datum->format('Y-m-d') }}">{{ $evenementen->formatDateTimeLabel($event) }}</time>
             </p>
             <h4 class="partners-event-title">
               @if($event->url !== '')

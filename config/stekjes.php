@@ -105,6 +105,8 @@ return [
         'stekjesmarkt' => 'Stekjesmarkt',
         'plantenruilbeurs' => 'Plantenruilbeurs',
         'ruildag' => 'Ruildag',
+        'bomenhub' => 'Bomen-uitdeeldag',
+        'stekchallenge' => 'STEKchallenge',
         'overig' => 'Overig',
     ],
 
