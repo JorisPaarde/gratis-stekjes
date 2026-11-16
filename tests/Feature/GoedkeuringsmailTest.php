@@ -231,3 +231,24 @@ test('goedkeuringsmails zijn ik-vorm zonder we/wij', function () {
         ->and($pLines)->not->toMatch('/\b[Ww]ij\b/')
         ->and((string) $pMail->salutation)->toContain((string) config('site.maker'));
 });
+
+test('deelplek-goedkeuringsmail aan een lid komt in diens mail_log', function () {
+    Notification::fake();
+    goedkeuringGeoUtrecht();
+    $lid = goedkeuringLid('lid-aanmelder@example.org', 'Lid');
+
+    $this->post(route('voor-organisaties.aanmelden'), goedkeuringAanmeldPayload([
+        'naam' => 'Ruilkast Van Een Lid',
+        'contact_email' => 'lid-aanmelder@example.org',
+    ]))->assertRedirect();
+    $plek = Deelplek::query()->where('naam', 'Ruilkast Van Een Lid')->firstOrFail();
+
+    $this->withSession(['admin_ok' => true])
+        ->post(route('beheer.deelplekken.approve'), ['id' => $plek->id])
+        ->assertRedirect();
+
+    $row = MailLog::query()->where('type', 'DeelplekGoedgekeurd')->first();
+    expect($row)->not->toBeNull()
+        ->and($row->user_id)->toBe($lid->id)
+        ->and($row->status)->toBe('ok');
+});
