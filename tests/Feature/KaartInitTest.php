@@ -119,7 +119,7 @@ test('deelplekken.js en zoeken.js clusteren deelplekmarkers met evenement-accent
             ->and($js)->toContain('spiderfyOnMaxZoom')
             ->and($js)->toContain('gpEvenement')
             ->and($js)->toContain('gp-cluster-bubble--evenement')
-            ->and($js)->toContain('uitdeeldag')
+            ->and($js)->toContain('" evenementen"')
             ->and($js)->toContain('chunkedLoading')
             ->and($js)->toContain('autoPanPaddingTopLeft')
             ->and($js)->toContain('gp-leaflet-popup')

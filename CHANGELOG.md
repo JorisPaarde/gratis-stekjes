@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.80.2] - 2026-11-16
+
+### Changed
+
+- Filterchip op `/deelplekken` heet nu «Evenementen» (was «Uitdeeldagen»); de URL
+  `?type=uitdeeldagen` blijft werken. Cluster-aria-label noemt nu «waarvan N evenement(en)».
+
 ## [0.80.1] - 2026-11-16
 
 ### Added

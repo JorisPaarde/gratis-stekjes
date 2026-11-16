@@ -78,7 +78,7 @@
     @endforeach
     @if(($uitdeeldagenAantal ?? 0) > 0)
       <a class="dp-chip dp-chip--uitdeeldagen {{ $filters['type'] === 'uitdeeldagen' ? 'is-actief' : '' }}" href="{{ route('deelplekken', ['type' => 'uitdeeldagen']) }}">
-        Uitdeeldagen
+        Evenementen
         @if($filters['type'] !== 'uitdeeldagen')
           <span>{{ $uitdeeldagenAantal }}</span>
         @endif
