@@ -218,6 +218,8 @@ test('goedkeuringsmails zijn ik-vorm zonder we/wij', function () {
     $v = new Vereniging(['naam' => 'Testvereniging', 'slug' => 'testvereniging']);
     $vMail = (new VerenigingGoedgekeurd($v))->toMail((object) []);
     $vLines = collect($vMail->introLines)->implode(' ');
+    expect($vMail->introLines[0])->toBe('Ik heb “Testvereniging” goedgekeurd. Je vereniging staat nu op '.config('site.name').'.')
+        ->and($vLines)->not->toContain('—');
     expect($vLines)->toContain('Ik heb')
         ->and($vLines)->not->toMatch('/\b[Ww]e\b/')
         ->and($vLines)->not->toMatch('/\b[Ww]ij\b/')
@@ -226,6 +228,8 @@ test('goedkeuringsmails zijn ik-vorm zonder we/wij', function () {
     $p = new Deelplek(['naam' => 'Testplek', 'plaats' => 'Utrecht']);
     $pMail = (new DeelplekGoedgekeurd($p))->toMail((object) []);
     $pLines = collect($pMail->introLines)->implode(' ');
+    expect($pMail->introLines[0])->toBe('Ik heb “Testplek” goedgekeurd. Je deelplek staat nu op '.config('site.name').'.')
+        ->and($pLines)->not->toContain('—');
     expect($pLines)->toContain('Ik heb')
         ->and($pLines)->not->toMatch('/\b[Ww]e\b/')
         ->and($pLines)->not->toMatch('/\b[Ww]ij\b/')

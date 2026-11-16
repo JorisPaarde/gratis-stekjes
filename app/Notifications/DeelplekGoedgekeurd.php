@@ -32,7 +32,7 @@ class DeelplekGoedgekeurd extends Notification
         return (new MailMessage)
             ->subject('Je deelplek staat op '.$site.': '.$naam)
             ->greeting('Hoi,')
-            ->line('Ik heb “'.$naam.'” goedgekeurd — je deelplek staat nu op '.$site.'.')
+            ->line('Ik heb “'.$naam.'” goedgekeurd. Je deelplek staat nu op '.$site.'.')
             ->line('Mensen in de buurt kunnen je plek daar terugvinden.')
             ->action('Bekijk je deelplek', $url)
             ->salutation('Groet,'.PHP_EOL.(string) config('site.maker'));
