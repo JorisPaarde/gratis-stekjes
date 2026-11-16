@@ -177,6 +177,8 @@
       spiderfyOnMaxZoom: true,
       maxClusterRadius: 55,
       chunkedLoading: true,
+      // Anders haalt autoPan de pin uit beeld, verwijdert de cluster-laag hem en sluit de popup (touch).
+      removeOutsideVisibleBounds: false,
       iconCreateFunction: clusterIcon,
     });
   }
@@ -217,6 +219,9 @@
     autoPanPaddingTopLeft: L.point(50, 56),
     autoPanPaddingBottomRight: L.point(24, 24),
     offset: L.point(0, -6),
+    // Smal genoeg voor de 390-kaart (358px) incl. autoPan-padding; lange inhoud scrollt.
+    maxWidth: 260,
+    maxHeight: 280,
   };
 
   function buildPopup(item) {

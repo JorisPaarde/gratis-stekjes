@@ -235,7 +235,9 @@
   line-height: 1.25;
   color: var(--forest-deep, #163820);
 }
-.gp-popup-meta {
+.gp-popup-meta,
+.leaflet-container .leaflet-popup-content .gp-popup-meta {
+  /* Leaflet zet .leaflet-popup-content p { margin: 17px 0 } — hier overschrijven. */
   margin: 0;
   font-size: 0.82rem;
   line-height: 1.35;
