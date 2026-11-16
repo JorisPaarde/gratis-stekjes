@@ -35,6 +35,6 @@ class DeelplekGoedgekeurd extends Notification
             ->line('Ik heb “'.$naam.'” goedgekeurd — je deelplek staat nu op '.$site.'.')
             ->line('Mensen in de buurt kunnen je plek daar terugvinden.')
             ->action('Bekijk je deelplek', $url)
-            ->salutation('Groet,'.PHP_EOL.'Joris');
+            ->salutation('Groet,'.PHP_EOL.(string) config('site.maker'));
     }
 }

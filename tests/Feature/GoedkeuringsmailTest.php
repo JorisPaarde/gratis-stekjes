@@ -94,7 +94,7 @@ test('eerste approve van vereniging stuurt mail aan maker en schrijft mail_log',
             && $mail->subject === 'Je vereniging staat op Gratis planten: Volkstuin De Goedkeuring'
             && str_contains(collect($mail->introLines)->implode(' '), 'goedgekeurd')
             && str_contains((string) $mail->actionUrl, '/organisaties/'.$v->slug)
-            && str_contains((string) $mail->salutation, 'Joris');
+            && str_contains((string) $mail->salutation, (string) config('site.maker'));
     });
 
     $row = MailLog::query()->where('user_id', $maker->id)->where('type', 'VerenigingGoedgekeurd')->first();
@@ -181,7 +181,7 @@ test('eerste approve van deelplek-aanmelding stuurt mail en schrijft mail_log', 
             && $mail->subject === 'Je deelplek staat op Gratis planten: Goedgekeurde Ruilkast Utrecht'
             && str_contains(collect($mail->introLines)->implode(' '), 'goedgekeurd')
             && str_contains((string) $mail->actionUrl, '/deelplekken')
-            && str_contains((string) $mail->salutation, 'Joris');
+            && str_contains((string) $mail->salutation, (string) config('site.maker'));
     });
 
     $row = MailLog::query()->where('type', 'DeelplekGoedgekeurd')->first();
@@ -221,7 +221,7 @@ test('goedkeuringsmails zijn ik-vorm zonder we/wij', function () {
     expect($vLines)->toContain('Ik heb')
         ->and($vLines)->not->toMatch('/\b[Ww]e\b/')
         ->and($vLines)->not->toMatch('/\b[Ww]ij\b/')
-        ->and((string) $vMail->salutation)->toContain('Joris');
+        ->and((string) $vMail->salutation)->toContain((string) config('site.maker'));
 
     $p = new Deelplek(['naam' => 'Testplek', 'plaats' => 'Utrecht']);
     $pMail = (new DeelplekGoedgekeurd($p))->toMail((object) []);
@@ -229,5 +229,5 @@ test('goedkeuringsmails zijn ik-vorm zonder we/wij', function () {
     expect($pLines)->toContain('Ik heb')
         ->and($pLines)->not->toMatch('/\b[Ww]e\b/')
         ->and($pLines)->not->toMatch('/\b[Ww]ij\b/')
-        ->and((string) $pMail->salutation)->toContain('Joris');
+        ->and((string) $pMail->salutation)->toContain((string) config('site.maker'));
 });

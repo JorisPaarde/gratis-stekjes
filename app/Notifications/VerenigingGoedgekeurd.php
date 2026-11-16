@@ -31,6 +31,6 @@ class VerenigingGoedgekeurd extends Notification
             ->line('Ik heb “'.$naam.'” goedgekeurd — je vereniging staat nu op '.$site.'.')
             ->line('Op de pagina kunnen buurtgenoten je vereniging terugvinden.')
             ->action('Bekijk je pagina', $this->vereniging->url())
-            ->salutation('Groet,'.PHP_EOL.'Joris');
+            ->salutation('Groet,'.PHP_EOL.(string) config('site.maker'));
     }
 }
