@@ -1,4 +1,4 @@
-/* Deelplekken: eigen kaart + markers (ruit-icoon) + tijdelijke evenementen. */
+/* Deelplekken: eigen kaart + markers (ruit-icoon) + tijdelijke evenementen + clustering. */
 (function () {
   var mapEl = document.getElementById("deelplekken-kaart");
   var status = document.getElementById("deelplekken-status");
@@ -108,11 +108,80 @@
       else map.invalidateSize();
     }, 1000);
   });
-  var layer = L.layerGroup().addTo(map);
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
 
   function isEvenement(item) {
     return item && (item.soort === "evenement" || item.kind === "evenement" || item.tijdelijk);
   }
+
+  function clusterLabel(count, evenementCount) {
+    var label = count + (count === 1 ? " plek" : " plekken");
+    if (evenementCount > 0) {
+      label +=
+        ", waarvan " +
+        evenementCount +
+        (evenementCount === 1 ? " uitdeeldag" : " uitdeeldagen");
+    }
+    return label;
+  }
+
+  function clusterIcon(cluster) {
+    var markers = cluster.getAllChildMarkers();
+    var count = markers.length;
+    var evenementCount = 0;
+    markers.forEach(function (m) {
+      if (m.options && m.options.gpEvenement) evenementCount++;
+    });
+    var size = count < 10 ? "sm" : count < 40 ? "md" : "lg";
+    var px = size === "sm" ? 36 : size === "md" ? 44 : 54;
+    var label = clusterLabel(count, evenementCount);
+    var classes =
+      "gp-cluster-bubble gp-cluster-bubble--" +
+      size +
+      (evenementCount ? " gp-cluster-bubble--evenement" : "");
+    return L.divIcon({
+      html:
+        '<span class="' +
+        classes +
+        '" role="img" aria-label="' +
+        escapeHtml(label) +
+        '" title="' +
+        escapeHtml(label) +
+        '"><span class="gp-cluster-count">' +
+        count +
+        "</span>" +
+        (evenementCount
+          ? '<span class="gp-cluster-event-badge" aria-hidden="true"></span>'
+          : "") +
+        "</span>",
+      className: "gp-cluster",
+      iconSize: L.point(px, px),
+      iconAnchor: [px / 2, px / 2],
+    });
+  }
+
+  function makeDeelplekClusterGroup() {
+    if (typeof L.markerClusterGroup !== "function") {
+      return L.layerGroup();
+    }
+    return L.markerClusterGroup({
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true,
+      spiderfyOnMaxZoom: true,
+      maxClusterRadius: 55,
+      chunkedLoading: true,
+      iconCreateFunction: clusterIcon,
+    });
+  }
+
+  var layer = makeDeelplekClusterGroup().addTo(map);
 
   function deelplekIcon(type, evenement) {
     var color = evenement ? "#b54a2a" : markerColors[type] || "#1f4d2b";
@@ -131,14 +200,6 @@
     });
   }
 
-  function escapeHtml(s) {
-    return String(s)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
-
   function queryUrl() {
     var params = new URLSearchParams();
     if (cfg.type) params.set("type", cfg.type);
@@ -148,35 +209,60 @@
     return (cfg.api || "/api/deelplekken") + (q ? "?" + q : "");
   }
 
+  // Ruimte t.o.v. zoomcontrols (+/−, linksboven) zodat popups op smalle viewports
+  // niet onder de knoppen vallen.
+  var popupOpts = {
+    className: "gp-leaflet-popup",
+    autoPan: true,
+    autoPanPaddingTopLeft: L.point(50, 56),
+    autoPanPaddingBottomRight: L.point(24, 24),
+    offset: L.point(0, -6),
+  };
+
   function buildPopup(item) {
     var evenement = isEvenement(item);
     var label = item.type_label || typeLabels[item.type] || item.type;
-    var html = "<strong>" + escapeHtml(item.naam) + "</strong>";
+    var html = '<div class="gp-popup">';
+    html += '<strong class="gp-popup-titel">' + escapeHtml(item.naam) + "</strong>";
     if (evenement) {
-      html += '<br><span class="deelplek-popup-badge">Tijdelijk</span>';
+      html += '<span class="deelplek-popup-badge">Tijdelijk</span>';
       if (item.datum_label) {
-        html += "<br>" + escapeHtml(item.datum_label);
+        html += '<p class="gp-popup-meta">' + escapeHtml(item.datum_label) + "</p>";
       }
     }
     html +=
-      "<br>" +
+      '<p class="gp-popup-meta">' +
       escapeHtml(label) +
-      (item.plaats ? " · " + escapeHtml(item.plaats) : "");
+      (item.plaats ? " · " + escapeHtml(item.plaats) : "") +
+      "</p>";
     if (item.adres) {
-      html += "<br>" + escapeHtml(item.adres);
+      html += '<p class="gp-popup-meta">' + escapeHtml(item.adres) + "</p>";
     }
     if (evenement && item.omschrijving) {
-      html += "<br>" + escapeHtml(item.omschrijving);
+      html += '<p class="gp-popup-meta">' + escapeHtml(item.omschrijving) + "</p>";
     }
     if (item.bron_url) {
       html +=
-        '<br><a href="' +
+        '<a class="gp-popup-link" href="' +
         escapeHtml(item.bron_url) +
         '" rel="noopener noreferrer" target="_blank">' +
         (evenement ? "Bron" : "Website") +
         "</a>";
     }
+    html += "</div>";
     return html;
+  }
+
+  function openMarker(m) {
+    if (!m) return;
+    if (typeof layer.zoomToShowLayer === "function") {
+      layer.zoomToShowLayer(m, function () {
+        m.openPopup();
+      });
+      return;
+    }
+    map.setView(m.getLatLng(), Math.max(map.getZoom(), 14));
+    m.openPopup();
   }
 
   var markers = [];
@@ -200,8 +286,11 @@
         best = m;
       }
     });
-    map.setView([lat, lng], 14);
-    if (best && bestD < 0.01) best.openPopup();
+    if (best && bestD < 0.01) {
+      openMarker(best);
+    } else {
+      map.setView([lat, lng], 14);
+    }
     if (mapEl && mapEl.scrollIntoView) mapEl.scrollIntoView({ behavior: "smooth", block: "center" });
   });
 
@@ -224,6 +313,7 @@
       }
       var items = (data && data.items) || [];
       var bounds = [];
+      var batch = [];
       items.forEach(function (item) {
         var lat = item.lat;
         var lon = item.lng != null ? item.lng : item.lon;
@@ -232,11 +322,19 @@
         var m = L.marker([lat, lon], {
           icon: deelplekIcon(item.type, evenement),
           zIndexOffset: evenement ? 200 : 0,
-        }).bindPopup(buildPopup(item));
-        layer.addLayer(m);
+          gpEvenement: !!evenement,
+        }).bindPopup(buildPopup(item), popupOpts);
+        batch.push(m);
         markers.push(m);
         bounds.push([lat, lon]);
       });
+      if (typeof layer.addLayers === "function") {
+        layer.addLayers(batch);
+      } else {
+        batch.forEach(function (m) {
+          layer.addLayer(m);
+        });
+      }
       if (status) {
         status.textContent = items.length
           ? "Deelplekken op de kaart geladen"

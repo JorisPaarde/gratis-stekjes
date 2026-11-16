@@ -101,6 +101,12 @@
 .dp-chip:hover { border-color: var(--forest); color: var(--forest-deep); }
 .dp-chip.is-actief { background: var(--forest); border-color: var(--forest); color: #fff; }
 .dp-chip.is-actief span { color: #d9e8d4; }
+.dp-chip--uitdeeldagen { border-color: rgba(181, 74, 42, 0.45); }
+.dp-chip--uitdeeldagen:hover { border-color: #b54a2a; color: #b54a2a; }
+.dp-chip--uitdeeldagen.is-actief { background: #b54a2a; border-color: #b54a2a; color: #fff; }
+.dp-chip--uitdeeldagen.is-actief span { color: #f6d7cc; }
+.badge--tijdelijk { background: #b54a2a; color: #fff; }
+.page-deelplekken .zoek-item--evenement { border-left-color: #b54a2a; }
 .page-deelplekken #deelplekken-kaart { margin-bottom: 1rem; }
 .page-deelplekken .zoek-lijst { grid-template-columns: 1fr; }
 @media (min-width: 640px) { .page-deelplekken .zoek-lijst { grid-template-columns: repeat(2, 1fr); } }
@@ -127,15 +133,126 @@
   background: #b54a2a;
   box-shadow: 0 0 0 2px #fff, 0 1px 4px rgba(28, 46, 34, 0.35);
 }
+
+/* —— Marker clustering (Leaflet.markercluster + GP-huisstijl) —— */
+.leaflet-cluster-anim .leaflet-marker-icon,
+.leaflet-cluster-anim .leaflet-marker-shadow {
+  transition: transform 0.25s ease-out, opacity 0.25s ease-in;
+}
+.leaflet-cluster-spider-leg {
+  transition: stroke-dashoffset 0.25s ease-out, stroke-opacity 0.25s ease-in;
+}
+.gp-cluster {
+  background: transparent;
+  border: 0;
+}
+.gp-cluster-bubble {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #1f4d2b;
+  color: #fff;
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-weight: 700;
+  line-height: 1;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(22, 56, 32, 0.35);
+}
+.gp-cluster-bubble--sm {
+  font-size: 0.78rem;
+}
+.gp-cluster-bubble--md {
+  font-size: 0.9rem;
+}
+.gp-cluster-bubble--lg {
+  font-size: 1rem;
+}
+.gp-cluster-bubble--evenement {
+  box-shadow:
+    0 0 0 3px #b54a2a,
+    0 2px 8px rgba(22, 56, 32, 0.35);
+}
+.gp-cluster-event-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #b54a2a;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 2px rgba(28, 46, 34, 0.35);
+}
+.gp-cluster-count {
+  position: relative;
+  z-index: 1;
+}
 .deelplek-popup-badge {
   display: inline-block;
-  margin: 0.2rem 0 0.15rem;
+  align-self: flex-start;
+  margin: 0.15rem 0 0;
   padding: 0.1rem 0.45rem;
   border-radius: 0.35rem;
   background: #b54a2a;
   color: #fff;
+  font-family: var(--font-body, "Titillium Web", "Segoe UI", sans-serif);
   font-size: 0.75rem;
   font-weight: 600;
+  line-height: 1.2;
+}
+
+/* Leaflet-popup in GP-huisstijl (site-font i.p.v. Leaflet-default) */
+.leaflet-container .gp-leaflet-popup .leaflet-popup-content-wrapper {
+  border-radius: 0.7rem;
+  box-shadow: 0 6px 18px rgba(22, 56, 32, 0.18);
+  font-family: var(--font-body, "Titillium Web", "Segoe UI", sans-serif);
+  color: var(--ink, #1a1210);
+}
+.leaflet-container .gp-leaflet-popup .leaflet-popup-content {
+  margin: 0.7rem 0.85rem;
+  font-family: inherit;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  min-width: 10rem;
+}
+.leaflet-container .gp-leaflet-popup .leaflet-popup-tip {
+  box-shadow: none;
+}
+.gp-popup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-family: var(--font-body, "Titillium Web", "Segoe UI", sans-serif);
+}
+.gp-popup-titel {
+  display: block;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.25;
+  color: var(--forest-deep, #163820);
+}
+.gp-popup-meta {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: var(--ink-soft, #3d4a3f);
+  font-weight: 400;
+}
+.gp-popup-link {
+  margin-top: 0.2rem;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--forest-deep, #163820);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.gp-popup-link:hover,
+.gp-popup-link:focus-visible {
+  color: var(--forest, #1f4d2b);
 }
 .page-deelplekken .deelplekken-lijst h2 { font-family: var(--font-body); font-size: 1.02rem; font-weight: 700; margin: 0; }
 .page-deelplekken .zoek-item p { margin: 0; }

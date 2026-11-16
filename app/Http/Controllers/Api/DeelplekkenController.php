@@ -12,32 +12,43 @@ use Illuminate\Http\Request;
 
 class DeelplekkenController extends Controller
 {
+    public const FILTER_UITDEELDAGEN = 'uitdeeldagen';
+
     public function __invoke(Request $request, Deelplekken $deelplekken, Evenementen $evenementen): JsonResponse
     {
         $type = trim((string) $request->query('type', ''));
-        if ($type !== '' && ! $deelplekken->typeValid($type)) {
+        $alleenUitdeeldagen = $type === self::FILTER_UITDEELDAGEN;
+
+        if ($type !== '' && ! $alleenUitdeeldagen && ! $deelplekken->typeValid($type)) {
             return response()->json(['error' => 'Onbekend type.'], 400);
         }
 
         $provincie = trim((string) $request->query('provincie', ''));
         $plaats = trim((string) $request->query('plaats', ''));
 
-        $items = $deelplekken->listPublic(
-            $type !== '' ? $type : null,
-            $provincie !== '' ? $provincie : null,
-            $plaats !== '' ? $plaats : null,
-        );
+        if ($alleenUitdeeldagen) {
+            $items = $evenementen->listPublicForKaart(
+                $provincie !== '' ? $provincie : null,
+                $plaats !== '' ? $plaats : null,
+            );
+        } else {
+            $items = $deelplekken->listPublic(
+                $type !== '' ? $type : null,
+                $provincie !== '' ? $provincie : null,
+                $plaats !== '' ? $plaats : null,
+            );
 
-        // Tijdelijke evenementen alleen zonder deelplek-typefilter (anders verdwijnen
-        // bomenhubs bij filter plantenbieb e.d.). Provincie/plaats gelden wel.
-        if ($type === '') {
-            $items = array_values(array_merge(
-                $items,
-                $evenementen->listPublicForKaart(
-                    $provincie !== '' ? $provincie : null,
-                    $plaats !== '' ? $plaats : null,
-                ),
-            ));
+            // Tijdelijke evenementen alleen zonder deelplek-typefilter (anders verdwijnen
+            // bomenhubs bij filter plantenbieb e.d.). Provincie/plaats gelden wel.
+            if ($type === '') {
+                $items = array_values(array_merge(
+                    $items,
+                    $evenementen->listPublicForKaart(
+                        $provincie !== '' ? $provincie : null,
+                        $plaats !== '' ? $plaats : null,
+                    ),
+                ));
+            }
         }
 
         return response()->json([
