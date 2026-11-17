@@ -3,7 +3,7 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
-## [0.81.2] - 2026-11-17
+## [0.81.3] - 2026-11-17
 
 ### Added
 
@@ -11,6 +11,14 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   vermeerderen, deelplekken, contact, help-mee, tuinverenigingen, struikroven,
   gratis-planten, invasieve-soorten); kennisbank-token `@zadenbibliotheken` →
   `/deelplekken?type=zaadbibliotheek`. Feature-test controleert anker + doel-200.
+
+## [0.81.2] - 2026-11-17
+
+### Fixed
+
+- Beheer: ruimte onder de statusmelding (melding plakte aan de paginatitel).
+- Data: tijdelijke staging-testrijen `zz-testplek-verwijderen-*` weer uit `deelplekken.json`
+  (waren alleen voor de verwijder-check; tombstones voorkomen terugkeer).
 
 ## [0.81.1] - 2026-11-17
 
