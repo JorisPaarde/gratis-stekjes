@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.4] - 2026-11-17
+
+### Fixed
+
+- Beheer deelplekken: «Bekijken», «Verwijderen» en de checkboxes zijn op mobiel minstens
+  44 px hoog/breed met ruimte ertussen; desktop ongewijzigd.
+
 ## [0.81.3] - 2026-11-17
 
 ### Added
