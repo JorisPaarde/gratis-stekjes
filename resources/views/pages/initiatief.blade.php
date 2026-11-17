@@ -138,7 +138,12 @@
 
   <h2>Doe je mee met {{ $korte }}?</h2>
   <p>
-    Of heb je zelf planten die een tweede leven verdienen? Op Gratis planten deel je planten, stekjes en zaden gratis met iemand in de buurt. Kijk hier verder.
+    Of heb je zelf planten die een tweede leven verdienen? Op Gratis planten deel je planten, stekjes en zaden gratis met iemand in de buurt.
+    @if($isStruikroven)
+      Bekijk ook <a href="{{ route('gratis-planten.index') }}">gratis planten per stad</a>.
+    @else
+      Kijk hier verder.
+    @endif
   </p>
   <div class="struikroven-ctas" role="group" aria-label="Wat wil je doen?">
     <a class="btn struikroven-cta" href="{{ route('aanbod') }}">Planten zoeken in je buurt</a>
@@ -189,6 +194,9 @@
         </li>
       @endforeach
     </ul>
+  @endif
+  @if($isStruikroven)
+    <p class="muted">Meer in de buurt? Bekijk de <a href="{{ route('agenda') }}">agenda met ruildagen en uitdeeldagen</a>.</p>
   @endif
 
   @if($toonLedenBlok)

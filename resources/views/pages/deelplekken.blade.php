@@ -47,7 +47,7 @@
 <section class="section wrap deelplekken-page">
   @include('partials.plekken-tabs')
   <h1 class="deelplekken-titel">Vind een deelplek in de buurt</h1>
-  <p class="section-intro">Plantenasiels, plantenbiebs, ruilkastjes en zadenbibliotheken in Nederland en België: plekken waar je planten, stekjes of zaden kunt brengen, ruilen of ophalen. Kijk vóór je gaat even op de website van de plek voor de openingstijden.</p>
+  <p class="section-intro">Plantenasiels, plantenbiebs, ruilkastjes en zadenbibliotheken in Nederland en België: plekken waar je planten, stekjes of zaden kunt brengen, ruilen of ophalen. Kijk vóór je gaat even op de website van de plek voor de openingstijden. Zoek je liever per plaats? Bekijk <a href="{{ route('gratis-planten.index') }}">gratis planten per stad</a>.</p>
 
   <form class="zoekbalk deelplekken-zoek" method="get" action="{{ route('deelplekken') }}" role="search">
     @if($filters['type'] !== '')

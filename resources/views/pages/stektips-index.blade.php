@@ -90,7 +90,7 @@
     @endif
   </form>
 
-  <p class="section-intro">Zelf nieuwe planten kweken: stekken, zaaien, scheuren en snoeien. Zoek je plant op en lees hoe en wanneer het lukt. Alle manieren op een rij staan bij <a href="{{ route('vermeerderen') }}">planten vermeerderen</a>.</p>
+  <p class="section-intro">Zelf nieuwe planten kweken: stekken, zaaien, scheuren en snoeien. Zoek je plant op en lees hoe en wanneer het lukt. Alle manieren op een rij staan bij <a href="{{ route('vermeerderen') }}">planten vermeerderen</a>. Zoek je liever iets dat al klaar is? Kijk wat er <a href="{{ route('aanbod') }}">gratis in de buurt</a> staat.</p>
 
   @if(!empty($pillars))
     <nav class="stektips-pillars" aria-label="Onderwerpen">
