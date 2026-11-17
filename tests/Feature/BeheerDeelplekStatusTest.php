@@ -85,3 +85,16 @@ test('aanmelding in beoordeling en afgewezen aanmelding zijn verwijderbaar met t
     expect(Deelplek::query()->count())->toBe(0)
         ->and(DeelplekTombstone::query()->pluck('slug')->sort()->values()->all())->toBe(['st-pending', 'st-rejected']);
 });
+
+test('bevestigingspagina noemt de status per plek en spreekt niet van verborgen bij een aanmelding', function () {
+    $admin = statusTestAdmin();
+    $pending = statusTestPlek('st-pending', 'Pending Plek', false, Deelplek::STATUS_PENDING);
+    $rejected = statusTestPlek('st-rejected', 'Afgewezen Plek', false, Deelplek::STATUS_REJECTED);
+
+    $this->actingAs($admin)->get(route('beheer.deelplekken.destroy.confirm', $pending))
+        ->assertOk()->assertSee('Je verwijdert deze deelplek:', false)->assertSee('In beoordeling', false)
+        ->assertDontSee('verborgen deelplek', false);
+
+    $this->actingAs($admin)->post(route('beheer.deelplekken.bulk-destroy.confirm'), ['ids' => [$pending->id, $rejected->id]])
+        ->assertOk()->assertSee('<strong>2</strong> deelplekken', false)->assertSee('Afgewezen', false);
+});
