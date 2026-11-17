@@ -22,13 +22,13 @@
   <div class="beheer-gevaar">
     <h2>Weet je het zeker?</h2>
     @if($bulk)
-      <p>Je verwijdert <strong>{{ $plekken->count() }}</strong> verborgen deelplek{{ $plekken->count() === 1 ? '' : 'ken' }}:</p>
+      <p>Je verwijdert <strong>{{ $plekken->count() }}</strong> deelplek{{ $plekken->count() === 1 ? '' : 'ken' }}:</p>
     @else
-      <p>Je verwijdert deze verborgen deelplek:</p>
+      <p>Je verwijdert deze deelplek:</p>
     @endif
     <ul class="beheer-delete-lijst">
       @foreach($plekken as $plek)
-        <li><strong>{{ $plek->naam }}</strong> · {{ $plek->plaats }}</li>
+        <li><strong>{{ $plek->naam }}</strong> · {{ $plek->plaats }} <span class="status {{ $plek->statusChipClass() }}">{{ $plek->statusLabel() }}</span></li>
       @endforeach
     </ul>
     <p class="muted">Dit kan niet meer terug. De plek verdwijnt uit API, kaart en stadspagina’s. Bij de volgende deploy komt hij niet terug.</p>
