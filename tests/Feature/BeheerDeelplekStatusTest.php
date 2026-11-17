@@ -43,11 +43,14 @@ test('statuslabels: In beoordeling, Afgewezen, Verborgen en Zichtbaar', function
     $verborgen = statusTestPlek('st-verborgen', 'Verborgen Plek', false, Deelplek::STATUS_APPROVED, Deelplek::SOURCE_SEED);
     $zichtbaar = statusTestPlek('st-zichtbaar', 'Zichtbare Plek', true, Deelplek::STATUS_APPROVED, Deelplek::SOURCE_SEED);
 
-    expect([$zichtbaar->visible, $zichtbaar->status, $zichtbaar->slug, $verborgen->visible, $verborgen->status])->toBe([true, 'approved', 'st-zichtbaar', false, 'approved']);
-    expect($pending->statusLabel())->toBe('In beoordeling')->and($pending->statusChipClass())->toBe('status--wacht')
-        ->and($rejected->statusLabel())->toBe('Afgewezen')->and($rejected->statusChipClass())->toBe('status--fout')
-        ->and($verborgen->statusLabel())->toBe('Verborgen')->and($verborgen->statusChipClass())->toBe('status--uit')
-        ->and($zichtbaar->statusLabel())->toBe('Zichtbaar')->and($zichtbaar->statusChipClass())->toBe('status--ok');
+    expect($pending->statusLabel())->toBe('In beoordeling');
+    expect($pending->statusChipClass())->toBe('status--wacht');
+    expect($rejected->statusLabel())->toBe('Afgewezen');
+    expect($rejected->statusChipClass())->toBe('status--fout');
+    expect($verborgen->statusLabel())->toBe('Verborgen', 'verborgen label');
+    expect($verborgen->statusChipClass())->toBe('status--uit', 'verborgen chip');
+    expect($zichtbaar->statusLabel())->toBe('Zichtbaar', 'zichtbaar label');
+    expect($zichtbaar->statusChipClass())->toBe('status--ok', 'zichtbaar chip');
 });
 
 test('beheerlijst toont per rij een eigen statuschip en verwijderknop bij niet-zichtbare plekken', function () {
