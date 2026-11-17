@@ -47,11 +47,11 @@
   @endforeach
 
   <p class="muted gp-index-cta">Staat jouw plaats er niet bij of wil je in heel het land zoeken? Ga naar het <a href="{{ route('aanbod') }}">aanbod op de kaart</a>
-    of bekijk de <a href="{{ route('deelplekken') }}">vaste deelplekken</a>
+    of bekijk de <a href="{{ route('deelplekken') }}">vaste deelplekken</a>.
     @auth
-      . Wil je zelf iets delen? <a href="{{ route('account.aanbod') }}">Bied iets aan</a>.
+      Wil je zelf iets delen? <a href="{{ route('account.aanbod') }}">Bied iets aan</a>.
     @else
-      . Wil je zelf iets delen? <a href="{{ route('account.registreren') }}">Maak een account</a> om iets aan te bieden.
+      Wil je zelf iets delen? <a href="{{ route('account.registreren') }}">Maak een account</a> om iets aan te bieden.
     @endauth
   </p>
 </section>
