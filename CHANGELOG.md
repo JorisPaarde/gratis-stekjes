@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.7] - 2026-11-17
+
+### Fixed
+
+- Beheer deelplekken, bevestigingspagina: geen «verborgen» meer in de tekst bij aanmeldingen
+  in beoordeling of afgewezen; per plek staat nu de statuschip.
+
 ## [0.81.6] - 2026-11-17
 
 ### Changed
