@@ -7,7 +7,8 @@
   $huidig = request()->route()?->getName() ?? '';
   $isRoute = fn (string $r) => $huidig === $r
     || str_starts_with($huidig, $r.'.')
-    || ($r === 'beheer.posts.index' && str_starts_with($huidig, 'beheer.posts.'));
+    || ($r === 'beheer.posts.index' && str_starts_with($huidig, 'beheer.posts.'))
+    || ($r === 'beheer.deelplekken.index' && str_starts_with($huidig, 'beheer.deelplekken.'));
 
   // Groepen: hoofdtab → onderdelen [route, label, teller]. Hoofdtab linkt naar het eerste onderdeel met werk.
   $groepen = [
@@ -23,6 +24,7 @@
     'inhoud' => ['Inhoud', [
       ['beheer.agenda', 'Agenda', 0],
       ['beheer.kaartmarkers', 'Kaartmarkers', 0],
+      ['beheer.deelplekken.index', 'Alle deelplekken', 0],
       ['beheer.posts.index', 'Postlogboek', 0],
     ]],
   ];
@@ -73,10 +75,8 @@
   </nav>
 @endif
 
-@if(session('status'))
-  <p class="flash flash-ok" role="status">{{ session('status') }}</p>
-@endif
-@foreach(['marker', 'evenement', 'deelplek', 'user'] as $veld)
+{{-- Statusmelding (session status) staat al in layouts/site.blade.php; hier niet nog eens. --}}
+@foreach(['marker', 'evenement', 'deelplek', 'user', 'vereniging'] as $veld)
   @if($errors->has($veld))
     <p class="error" role="alert">{{ $errors->first($veld) }}</p>
   @endif

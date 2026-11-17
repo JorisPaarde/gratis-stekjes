@@ -3,7 +3,45 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
-## [0.80.3] - 2026-11-17
+## [0.81.7] - 2026-11-17
+
+### Fixed
+
+- Beheer deelplekken, bevestigingspagina: geen «verborgen» meer in de tekst bij aanmeldingen
+  in beoordeling of afgewezen; per plek staat nu de statuschip.
+
+## [0.81.6] - 2026-11-17
+
+### Changed
+
+- Beheer deelplekken: duidelijke statuschip per rij (In beoordeling, Afgewezen, Verborgen,
+  Zichtbaar). Aanmeldingen in beoordeling en afgewezen aanmeldingen blijven verwijderbaar.
+
+### Fixed
+
+- Beheer: statusmelding stond dubbel (layout en beheer-nav toonden allebei dezelfde melding).
+
+## [0.81.5] - 2026-11-17
+
+### Added
+
+- Beheer > Verenigingen: verborgen verenigingen van leden definitief verwijderen
+  (enkel en bulk), met bevestigingspagina, alleen voor beheerders. Verenigingen uit de
+  vaste lijst (`json_slug`) blijven verborgen, zodat ze niet terugkomen bij een nieuwe
+  koppeling. Koppelingen met leden verdwijnen, ledenaccounts blijven.
+
+### Changed
+
+- Beheer deelplekken: kortere introtekst, geen gedachtestreepjes in nieuwe teksten.
+
+## [0.81.4] - 2026-11-17
+
+### Fixed
+
+- Beheer deelplekken: «Bekijken», «Verwijderen» en de checkboxes zijn op mobiel minstens
+  44 px hoog/breed met ruimte ertussen; desktop ongewijzigd.
+
+## [0.81.3] - 2026-11-17
 
 ### Added
 
@@ -11,6 +49,49 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   vermeerderen, deelplekken, contact, help-mee, tuinverenigingen, struikroven,
   gratis-planten, invasieve-soorten); kennisbank-token `@zadenbibliotheken` →
   `/deelplekken?type=zaadbibliotheek`. Feature-test controleert anker + doel-200.
+
+## [0.81.2] - 2026-11-17
+
+### Fixed
+
+- Beheer: ruimte onder de statusmelding (melding plakte aan de paginatitel).
+- Data: tijdelijke staging-testrijen `zz-testplek-verwijderen-*` weer uit `deelplekken.json`
+  (waren alleen voor de verwijder-check; tombstones voorkomen terugkeer).
+
+## [0.81.1] - 2026-11-17
+
+### Fixed
+
+- Beheer verwijderen: bevestigingsvinkje staat naast het label (niet gecentreerd erboven)
+  en het formulier is net zo breed als het waarschuwingsblok.
+
+## [0.81.0] - 2026-11-17
+
+### Added
+
+- Beheer: overzicht/detail van deelplekken (`/beheer/deelplekken`) met filter
+  «Alleen verborgen», checkboxes + «Selectie verwijderen», en knop Verwijderen
+  alleen bij `visible=false`.
+- Server-side bevestigingspagina («Weet je het zeker?») voor enkelvoudig en
+  bulk-verwijderen; toont naam + plaats (of aantal + namen).
+- Tombstone-tabel `deelplek_tombstones`: verwijderde slugs komen niet terug via
+  `DeelplekkenSeeder` bij deploy.
+- Publieke legacy-URL `/deelplekken/{slug}`: tombstone → HTTP 410; bestaande
+  zichtbare slug → 301 naar `/deelplekken`; onbekend → 404. (Geen canonieke
+  detailpagina’s — lijst/kaart blijft leidend.)
+
+### Changed
+
+- Na verwijderen: rij weg, stad-cataloguscache geleegd; weg uit API/kaart/
+  stadspagina’s. Geen FK-relaties op deelplekken; contact_email verdwijnt met
+  de rij.
+
+## [0.80.3] - 2026-11-17
+
+### Added
+
+- Productierelease met alleen de spaarzame interne links uit 0.81.3 (#376); de
+  verwijderknop voor verborgen deelplekken (0.81.0–0.81.2, 0.81.4) zat er bewust niet in.
 
 ## [0.80.2] - 2026-11-16
 
