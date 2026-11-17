@@ -14,7 +14,7 @@
   @include('beheer.partials.nav')
 
   <h1 class="page-title">Deelplekken</h1>
-  <p class="muted">Verborgen plekken (o.a. tuinverenigingen die niet op de kaart mogen) kun je hier definitief verwijderen. Zichtbare plekken niet — die blijven op de kaart tot je ze eerst verbergt in de data of via afwijzen.</p>
+  <p class="muted">Verborgen plekken kun je hier definitief verwijderen. Zichtbare plekken blijven op de kaart staan.</p>
 
   <nav class="beheer-filters" aria-label="Filter deelplekken">
     <a href="{{ route('beheer.deelplekken.index', ['zichtbaar' => 'verborgen']) }}" @class(['is-actief' => $filter === 'verborgen'])>Alleen verborgen</a>
