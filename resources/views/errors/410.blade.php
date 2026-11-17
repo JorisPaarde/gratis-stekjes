@@ -7,7 +7,7 @@
 @section('content')
 <section class="section wrap prose">
   <h1 class="page-title">Deze deelplek is weg</h1>
-  <p>De plek die je zoekt is definitief verwijderd. Geen zorgen — op de kaart staan nog genoeg andere deelplekken.</p>
+  <p>De plek die je zoekt is definitief verwijderd. Geen zorgen, op de kaart staan nog genoeg andere deelplekken.</p>
   <p class="404-actions">
     <a class="btn" href="{{ route('deelplekken') }}">Naar deelplekken</a>
     <a class="btn btn-secondary" href="{{ route('home') }}">Naar home</a>
