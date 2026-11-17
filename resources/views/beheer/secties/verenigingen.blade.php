@@ -2,14 +2,36 @@
   @if(count($verenigingen ?? []) === 0)
     <p class="muted">Nog geen verenigingen.</p>
   @else
+    @php
+      $verwijderbaar = fn ($v) => \App\Services\VerenigingVerwijdering::verwijderbaar($v);
+      $heeftVerwijderbaar = collect($verenigingen)->contains($verwijderbaar);
+    @endphp
+    @if($heeftVerwijderbaar)
+      {{-- Eigen formulier buiten de tabel: rijen bevatten al formulieren (geen geneste forms). --}}
+      <form id="vereniging-bulk" method="post" action="{{ route('beheer.verenigingen.bulk-destroy.confirm') }}" class="beheer-bulk-balk">
+        @csrf
+        <button type="submit" class="btn btn-gevaar btn-klein">Selectie verwijderen</button>
+        <span class="muted beheer-klein">Alleen verborgen verenigingen; daarna volgt een bevestiging.</span>
+      </form>
+    @endif
     <div class="beheer-table-wrap">
-      <table class="beheer-table">
+      <table class="beheer-table beheer-deelplekken-table">
         <thead>
-          <tr><th>Naam</th><th>Plaats</th><th>Soort</th><th>Leden</th><th>Status</th><th></th></tr>
+          <tr>@if($heeftVerwijderbaar)<th class="beheer-check-col"><span class="visually-hidden">Selecteer</span></th>@endif<th>Naam</th><th>Plaats</th><th>Soort</th><th>Leden</th><th>Status</th><th></th></tr>
         </thead>
         <tbody>
           @foreach($verenigingen as $v)
             <tr>
+              @if($heeftVerwijderbaar)
+                <td class="beheer-check-col" data-label="Selecteer">
+                  @if($verwijderbaar($v))
+                    <label class="beheer-check">
+                      <input type="checkbox" name="ids[]" value="{{ $v->id }}" form="vereniging-bulk">
+                      <span class="visually-hidden">{{ $v->naam }}</span>
+                    </label>
+                  @endif
+                </td>
+              @endif
               <td data-label="Naam">@if($v->isApproved())<a href="{{ $v->url() }}">{{ $v->naam }}</a>@else{{ $v->naam }}@endif</td>
               <td data-label="Plaats">{{ $v->plaats }}</td>
               <td data-label="Soort">{{ $v->typeLabel() }}</td>
@@ -25,6 +47,11 @@
                     </form>
                   @endif
                 @endforeach
+                @if($verwijderbaar($v))
+                  <a class="beheer-link-gevaar" href="{{ route('beheer.verenigingen.destroy.confirm', $v) }}">Verwijderen</a>
+                @elseif($v->status === 'hidden' && $v->json_slug)
+                  <span class="muted beheer-klein">Vaste lijst, blijft verborgen</span>
+                @endif
               </td>
             </tr>
           @endforeach
