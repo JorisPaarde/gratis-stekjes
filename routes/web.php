@@ -40,6 +40,7 @@ use App\Http\Controllers\Beheer\GebruikersController as BeheerGebruikersControll
 use App\Http\Controllers\Beheer\LoginController as BeheerLoginController;
 use App\Http\Controllers\Beheer\PostLogController as BeheerPostLogController;
 use App\Http\Controllers\Beheer\StatistiekenController as BeheerStatistiekenController;
+use App\Http\Controllers\Beheer\VerenigingenController as BeheerVerenigingenController;
 use App\Http\Controllers\BerichtmailController;
 use App\Http\Controllers\ContentPageController;
 use App\Http\Controllers\CronController;
@@ -423,6 +424,19 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::post('/gebruikers/bevestiging-opnieuw', [BeheerDashboardController::class, 'resendVerification'])
         ->middleware('throttle:10,1')
         ->name('beheer.users.resend-verification');
+    Route::post('/verenigingen/selectie-verwijderen', [BeheerVerenigingenController::class, 'confirmBulkDestroy'])
+        ->middleware('throttle:30,1')
+        ->name('beheer.verenigingen.bulk-destroy.confirm');
+    Route::post('/verenigingen/selectie-verwijderen/bevestig', [BeheerVerenigingenController::class, 'bulkDestroy'])
+        ->middleware('throttle:10,1')
+        ->name('beheer.verenigingen.bulk-destroy');
+    Route::get('/verenigingen/{vereniging}/verwijderen', [BeheerVerenigingenController::class, 'confirmDestroy'])
+        ->whereNumber('vereniging')
+        ->name('beheer.verenigingen.destroy.confirm');
+    Route::post('/verenigingen/{vereniging}/verwijderen', [BeheerVerenigingenController::class, 'destroy'])
+        ->middleware('throttle:10,1')
+        ->whereNumber('vereniging')
+        ->name('beheer.verenigingen.destroy');
     Route::post('/verenigingen/{vereniging}/status', [BeheerDashboardController::class, 'setVerenigingStatus'])
         ->middleware('throttle:30,1')
         ->whereNumber('vereniging')
