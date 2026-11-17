@@ -3,6 +3,17 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.6] - 2026-11-17
+
+### Changed
+
+- Beheer deelplekken: duidelijke statuschip per rij (In beoordeling, Afgewezen, Verborgen,
+  Zichtbaar). Aanmeldingen in beoordeling en afgewezen aanmeldingen blijven verwijderbaar.
+
+### Fixed
+
+- Beheer: statusmelding stond dubbel (layout en beheer-nav toonden allebei dezelfde melding).
+
 ## [0.81.5] - 2026-11-17
 
 ### Added
