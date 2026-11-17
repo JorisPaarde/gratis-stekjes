@@ -43,6 +43,7 @@ test('statuslabels: In beoordeling, Afgewezen, Verborgen en Zichtbaar', function
     $verborgen = statusTestPlek('st-verborgen', 'Verborgen Plek', false, Deelplek::STATUS_APPROVED, Deelplek::SOURCE_SEED);
     $zichtbaar = statusTestPlek('st-zichtbaar', 'Zichtbare Plek', true, Deelplek::STATUS_APPROVED, Deelplek::SOURCE_SEED);
 
+    expect([$zichtbaar->visible, $zichtbaar->status, $zichtbaar->slug, $verborgen->visible, $verborgen->status])->toBe([true, 'approved', 'st-zichtbaar', false, 'approved']);
     expect($pending->statusLabel())->toBe('In beoordeling')->and($pending->statusChipClass())->toBe('status--wacht')
         ->and($rejected->statusLabel())->toBe('Afgewezen')->and($rejected->statusChipClass())->toBe('status--fout')
         ->and($verborgen->statusLabel())->toBe('Verborgen')->and($verborgen->statusChipClass())->toBe('status--uit')
