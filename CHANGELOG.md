@@ -68,6 +68,13 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   stadspagina’s. Geen FK-relaties op deelplekken; contact_email verdwijnt met
   de rij.
 
+## [0.80.3] - 2026-11-17
+
+### Added
+
+- Productierelease met alleen de spaarzame interne links uit 0.81.3 (#376); de
+  verwijderknop voor verborgen deelplekken (0.81.0–0.81.2, 0.81.4) zat er bewust niet in.
+
 ## [0.80.2] - 2026-11-16
 
 ### Changed
