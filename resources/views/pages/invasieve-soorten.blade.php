@@ -15,7 +15,7 @@
 
   <h2>Wat kun je wel doen?</h2>
   <ul>
-    <li>Deel inheemse of niet-invasieve tuinplanten, kamerplanten, bessenstruiken, kruiden en zaden.</li>
+    <li>Deel <a href="{{ route('stektips.index', ['tag' => 'inheems']) }}">inheemse planten</a> of niet-invasieve tuinplanten, kamerplanten, bessenstruiken, kruiden en zaden.</li>
     <li>Twijfel je over een soort? Bied hem dan niet aan en kijk bij de NVWA of in de lijst hieronder.</li>
     <li>Heb je een plant van de Unielijst in je tuin? Ruim die veilig op volgens de adviezen in je gemeente en geef hem niet door.</li>
   </ul>

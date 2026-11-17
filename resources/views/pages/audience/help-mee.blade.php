@@ -60,7 +60,7 @@
   </ul>
   <p class="muted poster-kaart-uitleg">Klik op een poster. Je ziet hem dan op ware grootte en kunt hem printen of als pdf bewaren.</p>
   <p class="meedoen-tip"><strong>Tip: stekjeslabels.</strong> Geef je een stekje weg? Steek er een labeltje bij met de QR-code. Zo wordt elk stekje een uitnodiging. <a href="{{ route('stekjeslabels') }}">Print 8 labels op A4</a>.</p>
-  <p class="muted">Lid van een volkstuin? <a href="{{ route('account.verenigingen') }}">Koppel je vereniging</a>, dan krijgt jullie tuin een eigen poster met het aanbod van leden.</p>
+  <p class="muted">Lid van een volkstuin? <a href="{{ route('account.verenigingen') }}">Koppel je vereniging</a>, dan krijgt jullie tuin een eigen poster met het aanbod van leden. Lees <a href="{{ route('tuinverenigingen') }}">wat het voor een tuinvereniging betekent</a>.</p>
 
   <h2 id="delen">Deel een bericht</h2>
   <p>Kopieer een tekst en plak hem in Facebook, Instagram, WhatsApp of de app van je vereniging. Of deel de link direct.</p>

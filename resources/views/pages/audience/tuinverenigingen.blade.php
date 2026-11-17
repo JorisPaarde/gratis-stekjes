@@ -87,7 +87,7 @@
     <div class="audience-cta-actions">
       <a class="btn" href="{{ route('account.verenigingen') }}">Voeg jullie vereniging toe</a>
     </div>
-    <p class="muted">Ben je lid en wil je zelf iets delen of vinden? <a href="{{ route('volkstuinen') }}">Lees hoe het werkt voor volkstuinders</a>.</p>
+    <p class="muted">Ben je lid en wil je zelf iets delen of vinden? <a href="{{ route('volkstuinen') }}">Lees hoe het werkt voor volkstuinders</a>. Of hang een <a href="{{ route('poster', ['voor' => 'volkstuin']) }}">poster voor het clubhuis</a> op.</p>
   </x-slot:cta>
 </x-audience-page>
 @endsection
