@@ -34,7 +34,7 @@ function statusTestPlek(string $slug, string $naam, bool $visible, string $statu
         'visible' => $visible,
         'source' => $source,
         'status' => $status,
-    ]);
+    ])->fresh();
 }
 
 test('statuslabels: In beoordeling, Afgewezen, Verborgen en Zichtbaar', function () {
