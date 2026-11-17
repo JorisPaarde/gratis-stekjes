@@ -17,11 +17,7 @@
 
   <h1 class="page-title">{{ $plek->naam }}</h1>
   <p>
-    @if($plek->visible)
-      <span class="status status--ok">Zichtbaar</span>
-    @else
-      <span class="status status--uit">Verborgen</span>
-    @endif
+    <span class="status {{ $plek->statusChipClass() }}">{{ $plek->statusLabel() }}</span>
     <span class="muted">· {{ $typeLabels[$plek->type] ?? $plek->type }}</span>
   </p>
 

@@ -85,4 +85,30 @@ class Deelplek extends Model
     {
         return $this->status === self::STATUS_APPROVED && $this->visible;
     }
+
+    /** Label voor beheerlijsten: In beoordeling, Afgewezen, Zichtbaar of Verborgen. */
+    public function statusLabel(): string
+    {
+        if ($this->status === self::STATUS_PENDING) {
+            return 'In beoordeling';
+        }
+        if ($this->status === self::STATUS_REJECTED) {
+            return 'Afgewezen';
+        }
+
+        return $this->getAttribute('visible') ? 'Zichtbaar' : 'Verborgen';
+    }
+
+    /** CSS-modifier bij {@see statusLabel()} (kleur naast tekst, zodat chips onderscheidbaar zijn). */
+    public function statusChipClass(): string
+    {
+        if ($this->status === self::STATUS_PENDING) {
+            return 'status--wacht';
+        }
+        if ($this->status === self::STATUS_REJECTED) {
+            return 'status--fout';
+        }
+
+        return $this->getAttribute('visible') ? 'status--ok' : 'status--uit';
+    }
 }
