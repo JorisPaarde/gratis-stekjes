@@ -31,7 +31,7 @@ test('overzicht toont aandacht-nodig kaarten met links en tabs', function () {
         ->assertSee('Mailserver niet bereikbaar', false)
         ->assertSee('class="beheer-tabs"', false);
 
-    foreach (['beheer.gebruikers', 'beheer.verenigingen', 'beheer.aanmeldingen', 'beheer.agenda', 'beheer.kaartmarkers', 'beheer.meldingen', 'beheer.feedback', 'beheer.ervaringen', 'beheer.statistieken'] as $r) {
+    foreach (['beheer.gebruikers', 'beheer.verenigingen', 'beheer.aanmeldingen', 'beheer.agenda', 'beheer.kaartmarkers', 'beheer.deelplekken.index', 'beheer.meldingen', 'beheer.feedback', 'beheer.ervaringen', 'beheer.statistieken'] as $r) {
         $this->actingAs($admin)->get(route($r))->assertOk()->assertSee('class="beheer-tabs"', false);
     }
 });

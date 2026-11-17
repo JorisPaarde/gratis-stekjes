@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Models\Deelplek;
+use App\Models\DeelplekTombstone;
 use App\Services\Deelplekken;
 use App\Support\Country;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 use RuntimeException;
 
 class DeelplekkenSeeder extends Seeder
@@ -22,9 +24,21 @@ class DeelplekkenSeeder extends Seeder
 
         $data = $service->loadJson();
         $slugs = [];
+        $tombstones = Schema::hasTable('deelplek_tombstones')
+            ? DeelplekTombstone::query()->pluck('slug')->all()
+            : [];
+        $tombstoneSet = array_fill_keys($tombstones, true);
 
         foreach ($data['plekken'] as $row) {
             $slug = (string) $row['id'];
+
+            // Definitief verwijderd via beheer: niet opnieuw aanmaken bij deploy-seed.
+            if (isset($tombstoneSet[$slug])) {
+                Deelplek::query()->where('slug', $slug)->delete();
+
+                continue;
+            }
+
             $slugs[] = $slug;
             $country = Country::normalize(isset($row['country']) ? (string) $row['country'] : Country::NL);
             $visible = array_key_exists('visible', $row)
@@ -65,6 +79,7 @@ class DeelplekkenSeeder extends Seeder
         }
 
         // Alleen geseede rijen opruimen; goedgekeurde/afgewezen aanmeldingen blijven staan.
+        // Tombstone-slugs staan niet in $slugs → eventuele restanten verdwijnen hier ook.
         if ($slugs !== []) {
             Deelplek::query()
                 ->where('source', Deelplek::SOURCE_SEED)
