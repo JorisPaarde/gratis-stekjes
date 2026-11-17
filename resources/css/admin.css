@@ -998,3 +998,11 @@
     padding: 0 0.25rem;
   }
 }
+
+/* Verenigingen: verwijderen, zelfde tap-targets als deelplekken */
+@media (max-width: 760px) {
+  .beheer-page .beheer-deelplekken-table td.beheer-actions .linkish {
+    min-height: 44px;
+    padding: 0 0.25rem;
+  }
+}
