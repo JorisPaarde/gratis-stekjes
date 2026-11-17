@@ -3,6 +3,17 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.8] - 2026-11-17
+
+### Fixed
+
+- E-mails: de bevestigingsmail (en wachtwoord-reset en de andere knopmails) werd op iPhone breder
+  dan het scherm door de lange, ondertekende fallback-URL, waardoor iOS Mail alles klein schaalde.
+  De fallback is nu een korte link («Werkt de knop niet? Gebruik dan deze link in je browser.»);
+  in de platte-tekstversie blijft de volledige URL staan.
+- E-mails: de container is maximaal 600px breed en past zich aan het scherm aan (was vast 570px),
+  en lange woorden of URL's breken af in plaats van de mail op te rekken.
+
 ## [0.81.7] - 2026-11-17
 
 ### Fixed
