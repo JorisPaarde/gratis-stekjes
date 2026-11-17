@@ -75,9 +75,7 @@
   </nav>
 @endif
 
-@if(session('status'))
-  <p class="flash flash-ok" role="status">{{ session('status') }}</p>
-@endif
+{{-- Statusmelding (session status) staat al in layouts/site.blade.php; hier niet nog eens. --}}
 @foreach(['marker', 'evenement', 'deelplek', 'user', 'vereniging'] as $veld)
   @if($errors->has($veld))
     <p class="error" role="alert">{{ $errors->first($veld) }}</p>
