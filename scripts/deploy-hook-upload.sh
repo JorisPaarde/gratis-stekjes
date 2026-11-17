@@ -293,59 +293,27 @@ umask 077
 } > "$ENVFILE"
 
 # --- HTTP helpers ---
-# hook_post fields...  → zet HOOK_HTTP + HOOK_BODY; gebruikt curl form fields
-hook_curl() {
-  local tmp http
-  tmp="$(mktemp)"
-  set +e
-  http=$(curl -sS -o "$tmp" -w '%{http_code}' --connect-timeout 20 --max-time 300 \
-    -H "Authorization: Bearer ${DEPLOY_HOOK_TOKEN}" \
-    -H "Accept: application/json" \
-    "$@" 2>/dev/null)
-  local ec=$?
-  set -e
-  HOOK_HTTP="$http"
-  HOOK_BODY="$(cat "$tmp" 2>/dev/null || true)"
-  rm -f "$tmp"
-  if [ "$ec" -ne 0 ] || [ -z "$HOOK_HTTP" ] || [ "$HOOK_HTTP" = "000" ]; then
-    die "curl naar deploy-hook faalde (connectie)."
-  fi
-  if [ "$HOOK_HTTP" = "404" ]; then
-    print_install_hint
-    exit 1
-  fi
-}
+# hook_curl (één call) en hook_call_retry (met herhaling bij tijdelijke storingen).
+# shellcheck source=scripts/deploy-hook-http.sh
+source "${ROOT}/scripts/deploy-hook-http.sh"
 
 # --- init ---
-# Init soms 403 vóór de hook (WAF/proxy, body zonder hook-foutcode). Dan opnieuw proberen.
-# Echte token-fout (error=forbidden/https_required) niet herhalen: telt mee in de authfail-limiet.
-init_attempt=0
-while :; do
-  init_attempt=$((init_attempt + 1))
-  notice "Hook init → ${HOOK_URL} (poging ${init_attempt})"
-  hook_curl -X POST \
-    -F "action=init" \
-    -F "release=${RELEASE_ID}" \
-    -F "total_size=${SIZE}" \
-    -F "total_sha256=${TOTAL_SHA}" \
-    -F "chunk_count=${CHUNK_COUNT}" \
-    "$HOOK_URL"
-  [ "$HOOK_HTTP" = "200" ] && break
+# Init soms 403 vóór de hook (Imunify bot-protection, body zonder hook-foutcode), of 5xx/time-out.
+# Dan met backoff opnieuw (zie scripts/deploy-hook-http.sh). Een echte hook-fout
+# (error=forbidden/https_required/...) wordt niet herhaald: telt mee in de authfail-limiet.
+notice "Hook init → ${HOOK_URL}"
+hook_call_retry init 1 -X POST \
+  -F "action=init" \
+  -F "release=${RELEASE_ID}" \
+  -F "total_size=${SIZE}" \
+  -F "total_sha256=${TOTAL_SHA}" \
+  -F "chunk_count=${CHUNK_COUNT}" \
+  "$HOOK_URL"
+if [ "$HOOK_HTTP" != "200" ]; then
   error_ann "Hook init HTTP ${HOOK_HTTP}"
-  ok="$(printf '%s' "$HOOK_BODY" | python3 -c 'import json,sys
-try:
- d=json.load(sys.stdin); print(d.get("error","?") if isinstance(d,dict) else "?")
-except Exception:
- print("non-json")' 2>/dev/null || echo non-json)"
-  # Serverantwoord (geen secrets) kort loggen zodat een blokkade herkenbaar is.
   echo "Init-antwoord: $(printf '%s' "$HOOK_BODY" | tr -d '\r' | tr '\n' ' ' | cut -c1-200)"
-  case "$ok" in '?'|non-json|rate_limited|server_error) ;; *) die "Hook init faalde: ${ok}" ;; esac
-  case "$HOOK_HTTP" in 403|429|5??) ;; *) die "Hook init faalde: ${ok}" ;; esac
-  if [ "$init_attempt" -ge 4 ]; then
-    die "Hook init faalde na ${init_attempt} pogingen: ${ok}"
-  fi
-  sleep $((init_attempt * 15))
-done
+  die "Hook init faalde (HTTP ${HOOK_HTTP}: $(hook_error_code)) na ${HOOK_ATTEMPTS} poging(en)."
+fi
 
 UPLOAD_ID="$(printf '%s' "$HOOK_BODY" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("upload_id",""))')"
 if [ -z "$UPLOAD_ID" ]; then
@@ -357,7 +325,8 @@ notice "upload_id=${UPLOAD_ID}"
 idx=0
 for chunk_path in "${CHUNKS[@]}"; do
   csha="$(sha256sum "$chunk_path" | awk '{print $1}')"
-  hook_curl -X POST \
+  # Chunk-upload is idempotent (zelfde index overschrijft), dus ook bij time-out/reset opnieuw.
+  hook_call_retry "chunk ${idx}" 1 -X POST \
     -F "action=chunk" \
     -F "upload_id=${UPLOAD_ID}" \
     -F "chunk_index=${idx}" \
@@ -370,14 +339,16 @@ try:
  print(json.load(sys.stdin).get("error","?"))
 except Exception:
  print("non-json")' 2>/dev/null || echo non-json)"
-    die "Hook chunk ${idx} faalde (HTTP ${HOOK_HTTP}: ${err})."
+    die "Hook chunk ${idx} faalde (HTTP ${HOOK_HTTP}: ${err}) na ${HOOK_ATTEMPTS} poging(en)."
   fi
   idx=$((idx + 1))
 done
 notice "Alle ${CHUNK_COUNT} chunks geüpload."
 
 # --- finish ---
-hook_curl -X POST \
+# Niet idempotent (uitpakken + swap): alleen herhalen bij een WAF-403/429 vóór de hook,
+# nooit bij time-out of 5xx (dan kan de finish al gelopen hebben).
+hook_call_retry finish 0 -X POST \
   -F "action=finish" \
   -F "upload_id=${UPLOAD_ID}" \
   -F "env=<${ENVFILE}" \
@@ -388,7 +359,7 @@ try:
  print(json.load(sys.stdin).get("error","?"))
 except Exception:
  print("non-json")' 2>/dev/null || echo non-json)"
-  die "Hook finish faalde (HTTP ${HOOK_HTTP}: ${err})."
+  die "Hook finish faalde (HTTP ${HOOK_HTTP}: ${err}) na ${HOOK_ATTEMPTS} poging(en)."
 fi
 METHOD="$(printf '%s' "$HOOK_BODY" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("method",""))' 2>/dev/null || true)"
 FINISH_RESTART="$(printf '%s' "$HOOK_BODY" | python3 -c 'import json,sys
