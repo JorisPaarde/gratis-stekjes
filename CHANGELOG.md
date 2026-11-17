@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.1] - 2026-11-17
+
+### Fixed
+
+- Beheer verwijderen: bevestigingsvinkje staat naast het label (niet gecentreerd erboven)
+  en het formulier is net zo breed als het waarschuwingsblok.
+
 ## [0.81.0] - 2026-11-17
 
 ### Added
