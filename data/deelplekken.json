@@ -2708,34 +2708,6 @@
       "lng": 4.996636,
       "bron_url": "https://bomenplanner.meerbomen.nu/bomenhubs/plant-voor-plant-moestuin-de-haar",
       "geraadpleegd": "2026-11-16"
-    },
-    {
-      "id": "zz-testplek-verwijderen-a",
-      "naam": "ZZ Testplek verwijderen A",
-      "type": "plantenbieb",
-      "plaats": "Utrecht",
-      "provincie": "Utrecht",
-      "adres": "Testplein 1, 3511 AA Utrecht",
-      "lat": 52.0907,
-      "lng": 5.1214,
-      "bron_url": "https://www.gratisplanten.nl/",
-      "geraadpleegd": "2026-11-17",
-      "visible": false,
-      "verborgen_reden": "tijdelijke testplek voor PR #372, wordt verwijderd"
-    },
-    {
-      "id": "zz-testplek-verwijderen-b",
-      "naam": "ZZ Testplek verwijderen B",
-      "type": "plantenbieb",
-      "plaats": "Utrecht",
-      "provincie": "Utrecht",
-      "adres": "Testplein 1, 3511 AA Utrecht",
-      "lat": 52.0907,
-      "lng": 5.1214,
-      "bron_url": "https://www.gratisplanten.nl/",
-      "geraadpleegd": "2026-11-17",
-      "visible": false,
-      "verborgen_reden": "tijdelijke testplek voor PR #372, wordt verwijderd"
     }
   ]
 }
