@@ -3,6 +3,27 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.0] - 2026-11-17
+
+### Added
+
+- Beheer: overzicht/detail van deelplekken (`/beheer/deelplekken`) met filter
+  «Alleen verborgen», checkboxes + «Selectie verwijderen», en knop Verwijderen
+  alleen bij `visible=false`.
+- Server-side bevestigingspagina («Weet je het zeker?») voor enkelvoudig en
+  bulk-verwijderen; toont naam + plaats (of aantal + namen).
+- Tombstone-tabel `deelplek_tombstones`: verwijderde slugs komen niet terug via
+  `DeelplekkenSeeder` bij deploy.
+- Publieke legacy-URL `/deelplekken/{slug}`: tombstone → HTTP 410; bestaande
+  zichtbare slug → 301 naar `/deelplekken`; onbekend → 404. (Geen canonieke
+  detailpagina’s — lijst/kaart blijft leidend.)
+
+### Changed
+
+- Na verwijderen: rij weg, stad-cataloguscache geleegd; weg uit API/kaart/
+  stadspagina’s. Geen FK-relaties op deelplekken; contact_email verdwijnt met
+  de rij.
+
 ## [0.80.2] - 2026-11-16
 
 ### Changed

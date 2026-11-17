@@ -896,3 +896,64 @@
 .inline-form { display: inline; }
 .form-fieldset--meet { border: 0; padding: 0; margin: 1rem 0; }
 .form-fieldset--meet legend { font-weight: 600; margin-bottom: .35rem; }
+
+/* Deelplekken verwijderen */
+.beheer-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin: 0 0 1.25rem;
+  align-items: center;
+}
+.beheer-filters a {
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--forest-deep, #163820);
+  padding: 0.35rem 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  border-bottom: 2px solid transparent;
+}
+.beheer-filters a.is-actief {
+  border-bottom-color: var(--leaf, #2f6b3a);
+}
+.beheer-bulk-balk {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1rem;
+  align-items: center;
+  margin: 0 0 1rem;
+}
+.beheer-check-col { width: 2.5rem; }
+.beheer-check {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  min-width: 44px;
+  margin: 0;
+  cursor: pointer;
+}
+.beheer-link-gevaar {
+  color: #a03218 !important;
+  font-weight: 600;
+}
+.beheer-delete-lijst {
+  margin: 0.5rem 0 1rem;
+  padding-left: 1.2rem;
+}
+.beheer-delete-form .beheer-acties-blok {
+  margin-top: 1rem;
+}
+@media (max-width: 760px) {
+  .beheer-page .beheer-deelplekken-table td.beheer-check-col {
+    padding-bottom: 0.35rem;
+  }
+  .beheer-page .beheer-deelplekken-table td.beheer-check-col[data-label]::before {
+    content: none;
+  }
+  .beheer-bulk-balk {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

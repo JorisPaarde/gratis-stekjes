@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Api\DeelplekkenController as ApiDeelplekkenController;
+use App\Models\Deelplek;
+use App\Models\DeelplekTombstone;
 use App\Services\Deelplekken;
 use App\Services\Evenementen;
 use App\Services\LocationGeocoder;
@@ -12,13 +14,48 @@ use App\Support\Country;
 use App\Support\Faq;
 use App\Support\Geo;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 use Throwable;
 
 class DeelplekkenController extends Controller
 {
+    /**
+     * Geen canonieke detailpagina’s voor deelplekken: lijst/kaart is leidend.
+     * Tombstone → 410 (weg); bestaande zichtbare slug → 301 naar de lijst;
+     * anders 404. Voorkomt 500 bij oude/diepe links.
+     */
+    public function legacySlug(string $slug): Response|RedirectResponse
+    {
+        $slug = trim($slug);
+        if ($slug === '' || ! preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $slug)) {
+            abort(404);
+        }
+
+        if (Schema::hasTable('deelplek_tombstones') && DeelplekTombstone::existsForSlug($slug)) {
+            return response()
+                ->view('errors.410', [
+                    'title' => 'Deze deelplek is weg',
+                    'metaDescription' => 'Deze deelplek bestaat niet meer.',
+                    'canonical' => route('deelplekken'),
+                ], 410);
+        }
+
+        $plek = Schema::hasTable('deelplekken')
+            ? Deelplek::query()->where('slug', $slug)->first()
+            : null;
+
+        if ($plek !== null && $plek->visible) {
+            return redirect()->route('deelplekken', status: 301);
+        }
+
+        abort(404);
+    }
+
     public function __invoke(
         Request $request,
         Deelplekken $deelplekken,

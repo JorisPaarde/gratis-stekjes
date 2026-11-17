@@ -33,6 +33,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\BackupCronController;
 use App\Http\Controllers\Beheer\DashboardController as BeheerDashboardController;
+use App\Http\Controllers\Beheer\DeelplekkenController as BeheerDeelplekkenController;
 use App\Http\Controllers\Beheer\ErvaringController as BeheerErvaringController;
 use App\Http\Controllers\Beheer\FeedbackController as BeheerFeedbackController;
 use App\Http\Controllers\Beheer\GebruikersController as BeheerGebruikersController;
@@ -80,6 +81,9 @@ Route::get('/ervaringen/{ervaring}/foto', [ErvaringController::class, 'photo'])
 Route::get('/initiatieven', PartnersController::class)->name('partners');
 Route::get('/agenda', AgendaController::class)->name('agenda');
 Route::get('/deelplekken', DeelplekkenController::class)->name('deelplekken');
+Route::get('/deelplekken/{slug}', [DeelplekkenController::class, 'legacySlug'])
+    ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+    ->name('deelplekken.legacy');
 Route::get('/voor-organisaties', [VoorOrganisatiesController::class, 'index'])->name('voor-organisaties');
 Route::get('/voor-organisaties/aanmelden', [VoorOrganisatiesController::class, 'create'])
     ->name('voor-organisaties.aanmelden');
@@ -353,6 +357,23 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
     Route::get('/aanmeldingen', [BeheerDashboardController::class, 'aanmeldingen'])->name('beheer.aanmeldingen');
     Route::get('/agenda', [BeheerDashboardController::class, 'agenda'])->name('beheer.agenda');
     Route::get('/kaartmarkers', [BeheerDashboardController::class, 'kaartmarkers'])->name('beheer.kaartmarkers');
+    Route::get('/deelplekken', [BeheerDeelplekkenController::class, 'index'])->name('beheer.deelplekken.index');
+    Route::post('/deelplekken/selectie-verwijderen', [BeheerDeelplekkenController::class, 'confirmBulkDestroy'])
+        ->middleware('throttle:30,1')
+        ->name('beheer.deelplekken.bulk-destroy.confirm');
+    Route::post('/deelplekken/selectie-verwijderen/bevestig', [BeheerDeelplekkenController::class, 'bulkDestroy'])
+        ->middleware('throttle:10,1')
+        ->name('beheer.deelplekken.bulk-destroy');
+    Route::get('/deelplekken/{deelplek}', [BeheerDeelplekkenController::class, 'show'])
+        ->whereNumber('deelplek')
+        ->name('beheer.deelplekken.show');
+    Route::get('/deelplekken/{deelplek}/verwijderen', [BeheerDeelplekkenController::class, 'confirmDestroy'])
+        ->whereNumber('deelplek')
+        ->name('beheer.deelplekken.destroy.confirm');
+    Route::post('/deelplekken/{deelplek}/verwijderen', [BeheerDeelplekkenController::class, 'destroy'])
+        ->middleware('throttle:10,1')
+        ->whereNumber('deelplek')
+        ->name('beheer.deelplekken.destroy');
     Route::get('/meldingen', [BeheerDashboardController::class, 'meldingen'])->name('beheer.meldingen');
     Route::post('/gebruikers/herinner-onbevestigd', [BeheerGebruikersController::class, 'herinnerOnbevestigd'])
         ->name('beheer.gebruikers.herinner');
