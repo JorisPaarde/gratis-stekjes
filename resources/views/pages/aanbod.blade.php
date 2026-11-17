@@ -33,7 +33,7 @@
       Je ziet aanbod met <strong>{{ $plant }}</strong>.
       Vul een postcode of plaats in om dichtbij te zoeken, of laat die leeg om alleen op plant te zoeken. Straatadressen staan niet op de site.
     @else
-      Zoek op postcode of plaats in Nederland of België, of alleen op plant. Je ziet aanbod van leden en vaste plekken zoals zadenbibliotheken en plantenasiels, het dichtstbij eerst. Straatadressen van leden staan niet op de site.
+      Zoek op postcode of plaats in Nederland of België, of alleen op plant. Je ziet aanbod van leden en <a href="{{ route('deelplekken') }}">vaste plekken</a> zoals zadenbibliotheken en plantenasiels, het dichtstbij eerst. Of bekijk <a href="{{ route('gratis-planten.index') }}">gratis planten per stad</a>. Straatadressen van leden staan niet op de site.
     @endif
   </p>
   <p class="home-actions"><x-word-lid-cta content="aanbod-boven" /></p>

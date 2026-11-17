@@ -17,11 +17,26 @@
       </figure>
     @endif
     @php
-      $linkRoutes = ['@stektips' => 'stektips.index', '@aanbod' => 'aanbod', '@vermeerderen' => 'vermeerderen'];
+      $linkRoutes = [
+          '@stektips' => 'stektips.index',
+          '@aanbod' => 'aanbod',
+          '@vermeerderen' => 'vermeerderen',
+          // Query-type is zaadbibliotheek (interne sleutel); ankertekst mag «zadenbibliotheek» zijn.
+          '@zadenbibliotheken' => ['deelplekken', ['type' => 'zaadbibliotheek']],
+      ];
       $html = preg_replace_callback('/\[\[(@?[a-z0-9-]+)\|([^\]]+)\]\]/', function ($m) use ($linkRoutes) {
-          $url = str_starts_with($m[1], '@')
-              ? (isset($linkRoutes[$m[1]]) ? route($linkRoutes[$m[1]]) : null)
-              : route('stektips.artikel', ['slug' => $m[1]]);
+          if (str_starts_with($m[1], '@')) {
+              if (! isset($linkRoutes[$m[1]])) {
+                  $url = null;
+              } else {
+                  $target = $linkRoutes[$m[1]];
+                  $url = is_array($target)
+                      ? route($target[0], $target[1] ?? [])
+                      : route($target);
+              }
+          } else {
+              $url = route('stektips.artikel', ['slug' => $m[1]]);
+          }
 
           return $url === null ? $m[2] : '<a href="'.e($url).'">'.$m[2].'</a>';
       }, e($block['tekst'] ?? ''));
