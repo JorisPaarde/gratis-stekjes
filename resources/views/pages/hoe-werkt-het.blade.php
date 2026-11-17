@@ -52,7 +52,7 @@
           <button class="btn" type="submit"><x-icon name="zoeken" :size="18" /> Zoek</button>
         </div>
       </form>
-      <p class="hwh-extra">Liever een vaste plek? Bekijk de <a href="{{ route('deelplekken') }}">deelplekken</a>, zoals plantenasiels en zadenbibliotheken.</p>
+      <p class="hwh-extra">Liever een vaste plek? Bekijk de <a href="{{ route('deelplekken') }}">deelplekken</a>, zoals plantenasiels en zadenbibliotheken. Of zoek <a href="{{ route('gratis-planten.index') }}">gratis planten in jouw stad</a>.</p>
     </article>
 
     <article class="hwh-route" aria-labelledby="route-geef">
@@ -66,7 +66,7 @@
       <p class="home-actions">
         <x-word-lid-cta content="hwh-geef" />
       </p>
-      <p class="hwh-extra">Je aanbod blijft 60 dagen staan. Daarna krijg je een mail om het met één klik te verlengen. Bied geen <a href="{{ route('invasieve-soorten') }}">invasieve soorten</a> aan.</p>
+      <p class="hwh-extra">Je aanbod blijft 60 dagen staan. Daarna krijg je een mail om het met één klik te verlengen. Bied geen <a href="{{ route('invasieve-soorten') }}">invasieve soorten</a> aan. Wil je zelf meer planten maken? Lees over <a href="{{ route('vermeerderen') }}">planten vermeerderen</a>.</p>
     </article>
   </div>
 </section>

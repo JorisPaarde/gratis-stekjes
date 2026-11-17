@@ -3,6 +3,15 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.2] - 2026-11-17
+
+### Added
+
+- Spaarzame interne links tussen contentpagina’s (aanbod, hoe-werkt-het, stektips,
+  vermeerderen, deelplekken, contact, help-mee, tuinverenigingen, struikroven,
+  gratis-planten, invasieve-soorten); kennisbank-token `@zadenbibliotheken` →
+  `/deelplekken?type=zaadbibliotheek`. Feature-test controleert anker + doel-200.
+
 ## [0.81.1] - 2026-11-17
 
 ### Fixed
