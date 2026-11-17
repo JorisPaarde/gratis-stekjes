@@ -447,7 +447,7 @@ test('verificatiemail heeft Nederlandse onderwerp met sitenaam', function () {
     });
 });
 
-test('accountmails: NL footer/subcopy, link één keer met word-break', function () {
+test('accountmails: NL footer/subcopy, korte fallback-link zonder volle URL als tekst', function () {
     config(['site.name' => 'Gratis planten', 'app.name' => 'Gratis planten']);
 
     $user = User::factory()->unverified()->create(['email' => 'template@example.com']);
@@ -464,15 +464,15 @@ test('accountmails: NL footer/subcopy, link één keer met word-break', function
         expect($html)->toContain('gratis planten delen, nooit verkopen')
             ->and($html)->not->toContain('All rights reserved')
             ->and($html)->not->toContain("If you're having trouble")
-            ->and($html)->toContain('Als de knop')
-            ->and($html)->toContain('break-all')
+            ->and($html)->toContain('Werkt de knop niet? Gebruik dan')
+            ->and($html)->toContain('>deze link</a>')
+            ->and($html)->not->toContain('Als de knop')
             ->and($html)->not->toContain('Of kopieer deze link');
 
-        // Knop (href) + subcopy (zichtbare link); geen derde body-regel met dezelfde URL.
+        // Alleen de knop (href) en de korte link (href): de volle URL staat nooit als zichtbare tekst in de mail.
         $encodedUrl = e($mail->actionUrl);
-        $urlCount = substr_count($html, $encodedUrl);
-        expect($urlCount)->toBeLessThanOrEqual(3);
-        expect($urlCount)->toBeGreaterThanOrEqual(2);
+        expect(substr_count($html, $encodedUrl))->toBe(2);
+        expect(substr_count($html, '>'.$encodedUrl.'<'))->toBe(0);
     }
 
     $noticeHtml = (string) (new EmailChangeNoticeDutch('nieuw@example.com'))->toMail($user)->render();
