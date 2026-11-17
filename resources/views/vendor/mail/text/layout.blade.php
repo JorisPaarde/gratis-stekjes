@@ -3,7 +3,8 @@
 {!! strip_tags($slot) !!}
 @isset($subcopy)
 
-{!! strip_tags($subcopy) !!}
+{{-- Markdown-link [tekst](url) wordt in platte tekst gewoon de url. --}}
+{!! preg_replace('/\[([^\]]*)\]\(([^)]*)\)/', '$2', strip_tags($subcopy)) !!}
 @endisset
 
 {!! strip_tags($footer ?? '') !!}
