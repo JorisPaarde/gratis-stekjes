@@ -29,7 +29,7 @@
       @csrf
       <div class="beheer-bulk-balk">
         <button type="submit" class="btn btn-gevaar btn-klein" @disabled($filter === 'zichtbaar')>Selectie verwijderen</button>
-        <span class="muted beheer-klein">Alleen verborgen plekken; daarna volgt een bevestiging.</span>
+        <span class="muted beheer-klein">Verborgen, in beoordeling en afgewezen plekken; daarna volgt een bevestiging.</span>
       </div>
 
       <div class="beheer-table-wrap">
@@ -62,11 +62,7 @@
                 <td data-label="Type">{{ $typeLabels[$plek->type] ?? $plek->type }}</td>
                 <td data-label="Plaats">{{ $plek->plaats }}</td>
                 <td data-label="Status">
-                  @if($plek->visible)
-                    <span class="status status--ok">Zichtbaar</span>
-                  @else
-                    <span class="status status--uit">Verborgen</span>
-                  @endif
+                  <span class="status {{ $plek->statusChipClass() }}">{{ $plek->statusLabel() }}</span>
                 </td>
                 <td class="beheer-actions">
                   <a href="{{ route('beheer.deelplekken.show', $plek) }}">Bekijken</a>
