@@ -96,7 +96,7 @@ class Deelplek extends Model
             return 'Afgewezen';
         }
 
-        return $this->visible ? 'Zichtbaar' : 'Verborgen';
+        return $this->getAttribute('visible') ? 'Zichtbaar' : 'Verborgen';
     }
 
     /** CSS-modifier bij {@see statusLabel()} (kleur naast tekst, zodat chips onderscheidbaar zijn). */
@@ -109,6 +109,6 @@ class Deelplek extends Model
             return 'status--fout';
         }
 
-        return $this->visible ? 'status--ok' : 'status--uit';
+        return $this->getAttribute('visible') ? 'status--ok' : 'status--uit';
     }
 }
