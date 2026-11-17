@@ -27,14 +27,14 @@
 
   <dl class="beheer-dl">
     <dt>Plaats</dt><dd>{{ $plek->plaats }}@if($plek->provincie) <span class="muted">({{ $plek->provincie }})</span>@endif</dd>
-    <dt>Adres</dt><dd>{{ $plek->adres !== '' ? $plek->adres : '—' }}</dd>
+    <dt>Adres</dt><dd>{{ $plek->adres !== '' ? $plek->adres : 'Geen adres bekend' }}</dd>
     <dt>Slug</dt><dd><code>{{ $plek->slug }}</code></dd>
     <dt>Bron</dt>
     <dd>
       @if($plek->bron_url !== '')
         <a href="{{ $plek->bron_url }}" rel="noopener noreferrer" target="_blank">Website</a>
       @else
-        —
+        Geen bron bekend
       @endif
     </dd>
     <dt>Bron in app</dt><dd>{{ $plek->source }} · {{ $plek->status }}</dd>

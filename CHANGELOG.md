@@ -3,6 +3,19 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.5] - 2026-11-17
+
+### Added
+
+- Beheer > Verenigingen: verborgen verenigingen van leden definitief verwijderen
+  (enkel en bulk), met bevestigingspagina, alleen voor beheerders. Verenigingen uit de
+  vaste lijst (`json_slug`) blijven verborgen, zodat ze niet terugkomen bij een nieuwe
+  koppeling. Koppelingen met leden verdwijnen, ledenaccounts blijven.
+
+### Changed
+
+- Beheer deelplekken: kortere introtekst, geen gedachtestreepjes in nieuwe teksten.
+
 ## [0.81.4] - 2026-11-17
 
 ### Fixed
