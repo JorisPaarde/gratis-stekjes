@@ -136,3 +136,28 @@ test('Plantenasiel Haarlem heeft een rijke pagina zonder gratis ophalen bij het 
         ->assertDontSee('Joris', false)
         ->assertDontSee('JP Web', false);
 });
+
+test('Plantenasiel Leiden heeft een rijke pagina met bron-gebonden tekst', function () {
+    $this->seed(\Database\Seeders\DeelplekkenSeeder::class);
+
+    $this->get(route('organisaties.show', ['slug' => 'plantenasiel-leiden']))
+        ->assertOk()
+        ->assertSee('Thuisloze kamerplanten en plantenliefhebbers', false)
+        ->assertSee('thuisloze kamerplanten en plantenliefhebbers bij elkaar worden gebracht', false)
+        ->assertSee('Broedplaats Hazewind', false)
+        ->assertSee('Hazewindsteeg 2, Leiden', false)
+        ->assertSee('Elke vrijdagmiddag open tussen 14.00 en 17.00 uur', false)
+        ->assertSee('Elke eerste zaterdag van de maand open tussen 13.00 en 16.00 uur', false)
+        ->assertSee('oude planten heen brengen', false)
+        ->assertSee('vrijwillige donatie', false)
+        ->assertSee('https://www.facebook.com/plantshelterleiden', false)
+        ->assertSee('https://www.instagram.com/plantenasielleiden/', false)
+        ->assertSee('Bekijk de deelplek op de kaart', false)
+        ->assertSee(route('aanbieden'), false)
+        ->assertDontSee('<h2>Een plant aanbieden</h2>', false)
+        ->assertDontSee('tuinplanten niet', false)
+        ->assertDontSee(e('1 deelplek'), false)
+        ->assertDontSee(e('2 deelplekken'), false)
+        ->assertDontSee('Joris', false)
+        ->assertDontSee('JP Web', false);
+});
