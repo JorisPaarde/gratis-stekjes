@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Deelplek;
+use App\Support\BronLabel;
 use App\Support\Geo;
 use Illuminate\Support\Collection;
 use RuntimeException;
@@ -183,6 +184,25 @@ final class Deelplekken
     }
 
     /**
+     * bron_url → aantal zichtbare deelplekken (voor overzicht-detectie).
+     *
+     * @return array<string, int>
+     */
+    public function bronUrlCounts(): array
+    {
+        $counts = [];
+        foreach (Deelplek::query()->visible()->pluck('bron_url') as $url) {
+            $url = trim((string) $url);
+            if ($url === '') {
+                continue;
+            }
+            $counts[$url] = ($counts[$url] ?? 0) + 1;
+        }
+
+        return $counts;
+    }
+
+    /**
      * Publieke markers (afgeronde coördinaten).
      *
      * @return list<array<string, mixed>>
@@ -190,19 +210,22 @@ final class Deelplekken
     public function listPublic(?string $type = null, ?string $provincie = null, ?string $plaats = null): array
     {
         $labels = $this->typeLabels();
+        $urlCounts = $this->bronUrlCounts();
         $rows = $this->queryVisible([
             'type' => $type ?? '',
             'provincie' => $provincie ?? '',
             'plaats' => $plaats ?? '',
         ]);
 
-        return $rows->map(function (Deelplek $row) use ($labels) {
+        return $rows->map(function (Deelplek $row) use ($labels, $urlCounts) {
             $type = (string) $row->type;
+            $bronUrl = (string) $row->bron_url;
+            $naam = (string) $row->naam;
 
             return [
                 'id' => (int) $row->id,
                 'slug' => (string) $row->slug,
-                'naam' => (string) $row->naam,
+                'naam' => $naam,
                 'type' => $type,
                 'type_label' => $labels[$type] ?? $type,
                 'plaats' => (string) $row->plaats,
@@ -212,7 +235,8 @@ final class Deelplekken
                 'lat' => Geo::roundCoord((float) $row->lat),
                 'lng' => Geo::roundCoord((float) $row->lng),
                 'lon' => Geo::roundCoord((float) $row->lng),
-                'bron_url' => (string) $row->bron_url,
+                'bron_url' => $bronUrl,
+                'bron_label' => BronLabel::for($bronUrl, $naam, false, $urlCounts),
                 'geraadpleegd' => $row->geraadpleegd?->format('Y-m-d') ?? '',
                 'kind' => 'deelplek',
                 'soort' => 'deelplek',

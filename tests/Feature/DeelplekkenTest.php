@@ -99,14 +99,54 @@ test('deelplekken: type-chips zonder aantallen; bronlink «Website» bij eigen s
         ->and($html)->toContain('Steeds meer deelplekken in Nederland en België')
         ->and($html)->not->toMatch('/Zadenbibliotheken <span>\d+<\/span>/')
         ->and($html)->not->toMatch('/>\s*\d+\s+plekken\b/');
-    // plantenasielzeist.nl hoort bij Plantenasiel Zeist → eigen website.
-    expect($html)->toMatch('/plantenasielzeist\.nl[^"]*" rel="noopener noreferrer" target="_blank">Website<\/a>/');
+    // plantenasielzeist.nl/plantenasielen/ is een gedeeld overzicht → «Bron», niet «Website».
+    expect($html)->toMatch('/plantenasielzeist\.nl\/plantenasielen\/[^"]*" rel="noopener noreferrer" target="_blank">Bron<\/a>/');
+    // Eigen site (naam ≈ host) → «Website».
+    expect($html)->toMatch('/plantenasielhaarlem\.nl[^"]*" rel="noopener noreferrer" target="_blank">Website<\/a>/');
 
     $gefilterd = $this->get('/deelplekken?type=plantenasiel')->assertOk()->getContent();
     expect($gefilterd)->not->toContain('id="veelgestelde-vragen"')
         ->and($gefilterd)->toContain('Toon alles')
         ->and($gefilterd)->toContain('Gevonden deelplekken')
         ->and($gefilterd)->not->toMatch('/\d+\s+plekken gevonden/');
+});
+
+test('overzichts-URL heet Bron; eigen URL nooit Website als overzicht; wel Website bij naam-match', function () {
+    $html = $this->get(route('deelplekken', ['type' => 'zaadbibliotheek', 'plaats' => 'Aalten']))
+        ->assertOk()
+        ->getContent();
+    expect($html)->toContain('Zadenbibliotheek Aalten')
+        ->and($html)->toMatch('/poortvangelre\.nl[^"]*" rel="noopener noreferrer" target="_blank">Meer informatie<\/a>/')
+        ->and($html)->not->toMatch('/zadenbibliotheeknederland\.nl\/locaties\/[^"]*">Website</');
+
+    $overzicht = $this->get(route('deelplekken', ['type' => 'zaadbibliotheek', 'plaats' => 'Beilen']))
+        ->assertOk()
+        ->getContent();
+    expect($overzicht)->toContain('Zadenbibliotheek Beilen')
+        ->and($overzicht)->toMatch('/zadenbibliotheeknederland\.nl\/locaties\/[^"]*" rel="noopener noreferrer" target="_blank">Bron<\/a>/');
+
+    $api = collect($this->getJson(route('api.deelplekken', ['type' => 'zaadbibliotheek']))->json('items'));
+    $aalten = $api->firstWhere('slug', 'aalten-zadenbibliotheek');
+    expect($aalten)->not->toBeNull()
+        ->and($aalten['bron_url'])->toBe('https://www.poortvangelre.nl/vestigingen-en-openingstijden/detail.11221888.html')
+        ->and($aalten['bron_label'])->toBe('Meer informatie');
+
+    $beilen = $api->firstWhere('slug', 'beilen-zadenbibliotheek');
+    expect($beilen)->not->toBeNull()
+        ->and($beilen['bron_url'])->toBe('https://zadenbibliotheeknederland.nl/locaties/')
+        ->and($beilen['bron_label'])->toBe('Bron');
+
+    $klepel = $api->firstWhere('slug', 's-hertogenbosch-zadenbibliotheek-buurthuis-de-klepel');
+    expect($klepel)->not->toBeNull()
+        ->and($klepel['bron_url'])->toBe('https://www.denboschnoord.nl/organisaties/10154/de-klepel')
+        ->and($klepel['bron_label'])->toBe('Meer informatie');
+
+    $gouda = $api->firstWhere('slug', 'gouda-zadenbibliotheek-chocoladefabriek-gouda');
+    if ($gouda === null) {
+        $gouda = $api->first(fn ($row) => str_contains((string) ($row['naam'] ?? ''), 'Chocoladefabriek'));
+    }
+    expect($gouda)->not->toBeNull()
+        ->and($gouda['bron_label'])->toBe('Website');
 });
 
 test('deelplekken filtert op type en provincie', function () {

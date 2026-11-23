@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Evenement;
+use App\Support\BronLabel;
 use App\Support\Geo;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
@@ -227,6 +228,7 @@ final class Evenementen
                 'lng' => Geo::roundCoord((float) $row->lon),
                 'lon' => Geo::roundCoord((float) $row->lon),
                 'bron_url' => (string) $row->url,
+                'bron_label' => BronLabel::BRON,
                 'geraadpleegd' => $row->gecontroleerd_op?->format('Y-m-d') ?? '',
                 'kind' => 'evenement',
                 'soort' => 'evenement',
