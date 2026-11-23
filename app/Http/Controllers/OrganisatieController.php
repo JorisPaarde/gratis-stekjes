@@ -106,6 +106,19 @@ class OrganisatieController extends Controller
             ]);
         }
 
+        if ($slug === 'plantenasiel-leiden') {
+            return view('pages.plantenasiel-leiden', [
+                'title' => $title,
+                'metaDescription' => $meta,
+                'canonical' => route('organisaties.show', ['slug' => $slug]),
+                'org' => $org,
+                'deelplekken' => $deelplekkenRows,
+                'extraLinks' => $extraLinks,
+                'typeLabels' => $deelplekken->typeLabels(),
+                'initiatief' => $init,
+            ]);
+        }
+
         return view('pages.organisatie-show', [
             'title' => $title,
             'metaDescription' => $meta,

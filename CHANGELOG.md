@@ -3,6 +3,17 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.11] - 2026-11-23
+
+### Added
+
+- `/organisaties/plantenasiel-leiden`: rijkere pagina (zelfde structuur als
+  Haarlem) met alleen feiten uit hun eigen bronnen: wat het asiel is, brengen
+  of ophalen met vrijwillige donatie, openingstijden, adres Broedplaats
+  Hazewind, links naar Facebook/Instagram, en link naar de deelplekkenkaart.
+  Geen FAQ en geen «wat mag je wel/niet brengen» (niet in hun bronnen
+  gevonden). SEO title/meta uit 0.81.10 ongewijzigd.
+
 ## [0.81.10] - 2026-11-23
 
 ### Changed

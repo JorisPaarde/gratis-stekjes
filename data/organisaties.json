@@ -326,10 +326,30 @@
       "plaats": "Leiden",
       "website": "https://www.gagoed.nl/plantenasiel-leiden/",
       "bron_url": "https://www.gagoed.nl/plantenasiel-leiden/",
-      "kort": "Plantenasiel in Broedplaats Hazewind (Hazewindsteeg 2, Leiden), vermeld via Goed Leiden / GA Goed.",
+      "kort": "Plantenasiel in Broedplaats Hazewind (Hazewindsteeg 2, Leiden). Open vrijdag 14.00 tot 17.00 uur en de eerste zaterdag van de maand 13.00 tot 16.00 uur. Oude planten brengen of een plant ophalen voor een vrijwillige donatie.",
       "deelplek_slugs": [
         "leiden-plantenasiel"
-      ]
+      ],
+      "links": [
+        {
+          "label": "Facebook",
+          "url": "https://www.facebook.com/plantshelterleiden"
+        },
+        {
+          "label": "Instagram",
+          "url": "https://www.instagram.com/plantenasielleiden/"
+        }
+      ],
+      "initiatief": {
+        "pagina_titel": "Plantenasiel Leiden",
+        "intro_titel": "Thuisloze kamerplanten en plantenliefhebbers",
+        "intro_tekst": "Het plantenasiel Leiden is een plek waar thuisloze kamerplanten en plantenliefhebbers bij elkaar worden gebracht.",
+        "praktisch_tekst": "Broedplaats Hazewind\nHazewindsteeg 2, Leiden\n\nElke vrijdagmiddag open tussen 14.00 en 17.00 uur.\nElke eerste zaterdag van de maand open tussen 13.00 en 16.00 uur.",
+        "ruilen_tekst": "Je kunt oude planten heen brengen, waar ze worden opgevangen.\n\nJe kunt er ook een nieuwe plant halen voor een vrijwillige donatie.",
+        "korte_naam": "Plantenasiel Leiden",
+        "site_url": "https://www.gagoed.nl/plantenasiel-leiden/",
+        "site_link_tekst": "Meer over Plantenasiel Leiden"
+      }
     },
     {
       "slug": "plantenasiel-houten",
