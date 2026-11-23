@@ -11,6 +11,7 @@ use App\Services\Deelplekken;
 use App\Services\InitiatiefPaginas;
 use App\Services\Organisaties;
 use App\Services\VerenigingService;
+use App\Support\SeoOverrides;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
@@ -89,10 +90,12 @@ class OrganisatieController extends Controller
         if ($meta === '') {
             $meta = $kort !== '' ? $kort : $naam.': organisatie rond gratis planten delen.';
         }
+        $title = SeoOverrides::organisatieTitle($slug, $naam);
+        $meta = SeoOverrides::organisatieDescription($slug, $meta);
 
         if ($slug === 'plantenasiel-haarlem') {
             return view('pages.plantenasiel-haarlem', [
-                'title' => $naam,
+                'title' => $title,
                 'metaDescription' => $meta,
                 'canonical' => route('organisaties.show', ['slug' => $slug]),
                 'org' => $org,
@@ -104,7 +107,7 @@ class OrganisatieController extends Controller
         }
 
         return view('pages.organisatie-show', [
-            'title' => $naam,
+            'title' => $title,
             'metaDescription' => $meta,
             'canonical' => route('organisaties.show', ['slug' => $slug]),
             'org' => $org,
