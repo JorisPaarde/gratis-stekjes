@@ -31,6 +31,15 @@
   <h1 class="page-title">{{ $title }}</h1>
   <p class="section-intro">{{ $stad['intro'] }}</p>
 
+  @if(!empty($relatedOrganisatie))
+    <aside class="gp-related-org" aria-label="Gerelateerde organisatie">
+      <p class="gp-related-org__intro">{{ $relatedOrganisatie['intro'] }}</p>
+      <p class="gp-related-org__link">
+        <a href="{{ $relatedOrganisatie['url'] }}">{{ $relatedOrganisatie['anchor'] }}</a>
+      </p>
+    </aside>
+  @endif
+
   <div class="gp-layout">
     <div>
       @if(!empty($toonAanbod))

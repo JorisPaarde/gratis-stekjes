@@ -3,6 +3,19 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.10] - 2026-11-23
+
+### Changed
+
+- SEO (Search Console): title en meta description van Plantenasiel Haarlem en
+  Plantenasiel Leiden herschreven op «planten brengen of ophalen» (config
+  `seo.organisaties`, geen DB-edit). og:title en og:description volgen mee.
+
+### Added
+
+- Stadspagina’s Leiden en Utrecht: interne link naar de organisatiepagina
+  (Plantenasiel Leiden / Het Plantenhuis), via `seo.stad_related_organisatie`.
+
 ## [0.81.9] - 2026-11-17
 
 ### Fixed
