@@ -3,6 +3,25 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.12] - 2026-11-23
+
+### Fixed
+
+- Zadenbibliotheken: overzichts-URL
+  `zadenbibliotheeknederland.nl/locaties/` vervangen door de eigen website uit
+  de store-locator (Agile Store Locator), gekoppeld op naam/plaats; alleen HTTP
+  200 na redirects. Aalten → poortvangelre.nl, De Klepel (Den Bosch) →
+  denboschnoord.nl. Gedeelde overzichten: Namen en Alkmaar per vestiging
+  gekoppeld; Antwerpen (Cloudflare 403) en Noord-Limburg blijven overzicht.
+- Linklabel: overzichts-URL (gedeeld door >1 plek of pad zoals `/locaties/`)
+  heet nu «Bron», nooit «Website». Label server-side als `bron_label` in de
+  API (kaart/zoeken/stad). Strengere `similar_text`-drempel voor «Website».
+
+### Added
+
+- `scripts/koppel-zadenbib-websites.py` + rapport
+  `data/imports/zadenbib-website-koppeling.json` (herbruikbaar).
+
 ## [0.81.11] - 2026-11-23
 
 ### Added

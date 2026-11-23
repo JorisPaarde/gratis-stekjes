@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Aanbod;
+use App\Support\BronLabel;
 use App\Support\Geo;
 use Illuminate\Support\Facades\Schema;
 
@@ -142,6 +143,7 @@ final class StadAanbod
         $lng = (float) $stad['lng'];
         $straal = (float) $stad['straal_km'];
         $labels = $this->deelplekken->typeLabels();
+        $urlCounts = $this->bronUrlCounts();
 
         try {
             $rows = \App\Models\Deelplek::query()
@@ -161,8 +163,10 @@ final class StadAanbod
                 continue;
             }
             $type = (string) $row->type;
+            $naam = (string) $row->naam;
+            $bronUrl = (string) $row->bron_url;
             $out[] = [
-                'naam' => (string) $row->naam,
+                'naam' => $naam,
                 'type' => $type,
                 'type_label' => $labels[$type] ?? $type,
                 'plaats' => (string) $row->plaats,
@@ -170,11 +174,58 @@ final class StadAanbod
                 'lat' => Geo::roundCoord($rlat),
                 'lng' => Geo::roundCoord($rlng),
                 'afstand_km' => round($km, 1),
-                'bron_url' => (string) $row->bron_url,
+                'bron_url' => $bronUrl,
+                'bron_label' => BronLabel::for($bronUrl, $naam, false, $urlCounts),
             ];
         }
 
         return $out;
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    private function bronUrlCounts(): array
+    {
+        try {
+            return $this->deelplekken->bronUrlCounts();
+        } catch (\Throwable) {
+            return $this->bronUrlCountsFromJson();
+        }
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    private function bronUrlCountsFromJson(): array
+    {
+        try {
+            $data = $this->deelplekken->loadJson();
+        } catch (\Throwable) {
+            return [];
+        }
+        $counts = [];
+        foreach ($data['plekken'] as $row) {
+            if (! is_array($row)) {
+                continue;
+            }
+            if (array_key_exists('visible', $row)) {
+                $visible = filter_var($row['visible'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                if ($visible === null) {
+                    $visible = (bool) $row['visible'];
+                }
+                if (! $visible) {
+                    continue;
+                }
+            }
+            $url = trim((string) ($row['bron_url'] ?? ''));
+            if ($url === '') {
+                continue;
+            }
+            $counts[$url] = ($counts[$url] ?? 0) + 1;
+        }
+
+        return $counts;
     }
 
     private function deelplekkenJsonReadable(): bool
@@ -209,6 +260,7 @@ final class StadAanbod
         $lng = (float) $stad['lng'];
         $straal = (float) $stad['straal_km'];
         $labels = $this->deelplekken->typeLabels();
+        $urlCounts = $this->bronUrlCounts();
 
         try {
             $rows = \App\Models\Deelplek::query()->visible()->get();
@@ -225,8 +277,10 @@ final class StadAanbod
                 continue;
             }
             $type = (string) $row->type;
+            $naam = (string) $row->naam;
+            $bronUrl = (string) $row->bron_url;
             $out[] = [
-                'naam' => (string) $row->naam,
+                'naam' => $naam,
                 'type' => $type,
                 'type_label' => $labels[$type] ?? $type,
                 'plaats' => (string) $row->plaats,
@@ -234,7 +288,8 @@ final class StadAanbod
                 'lat' => Geo::roundCoord($rlat),
                 'lng' => Geo::roundCoord($rlng),
                 'afstand_km' => round($km, 1),
-                'bron_url' => (string) $row->bron_url,
+                'bron_url' => $bronUrl,
+                'bron_label' => BronLabel::for($bronUrl, $naam, false, $urlCounts),
             ];
         }
 
@@ -259,6 +314,7 @@ final class StadAanbod
         $lng = (float) $stad['lng'];
         $straal = (float) $stad['straal_km'];
         $labels = $this->deelplekken->typeLabels();
+        $urlCounts = $this->bronUrlCountsFromJson();
         $out = [];
 
         foreach ($data['plekken'] as $row) {
@@ -284,8 +340,10 @@ final class StadAanbod
                 continue;
             }
             $type = (string) ($row['type'] ?? '');
+            $naam = (string) ($row['naam'] ?? '');
+            $bronUrl = (string) ($row['bron_url'] ?? '');
             $out[] = [
-                'naam' => (string) ($row['naam'] ?? ''),
+                'naam' => $naam,
                 'type' => $type,
                 'type_label' => $labels[$type] ?? $type,
                 'plaats' => (string) ($row['plaats'] ?? ''),
@@ -293,7 +351,8 @@ final class StadAanbod
                 'lat' => Geo::roundCoord($rlat),
                 'lng' => Geo::roundCoord($rlng),
                 'afstand_km' => round($km, 1),
-                'bron_url' => (string) ($row['bron_url'] ?? ''),
+                'bron_url' => $bronUrl,
+                'bron_label' => BronLabel::for($bronUrl, $naam, false, $urlCounts),
             ];
         }
 

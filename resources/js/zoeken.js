@@ -298,7 +298,7 @@
           '<a class="gp-popup-link" href="' +
           escapeHtml(item.bron_url) +
           '" rel="noopener noreferrer" target="_blank">' +
-          (evenement ? "Bron" : "Website") +
+          escapeHtml(item.bron_label || (evenement ? "Bron" : "Meer informatie")) +
           "</a>";
       }
     } else if (item.beschrijving) {
@@ -437,7 +437,15 @@
       '<p class="zoek-item-acties">' +
       opKaartKnop(plekKey(item)) +
       (linkUrl
-        ? '<a href="' + escapeHtml(linkUrl) + '" rel="noopener noreferrer" target="_blank">Website</a>'
+        ? '<a href="' +
+          escapeHtml(linkUrl) +
+          '" rel="noopener noreferrer" target="_blank">' +
+          escapeHtml(
+            item.kind === "deelplek"
+              ? item.bron_label || "Meer informatie"
+              : "Website"
+          ) +
+          "</a>"
         : "") +
       "</p>";
     return li;

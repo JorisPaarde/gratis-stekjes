@@ -251,7 +251,7 @@
         '<a class="gp-popup-link" href="' +
         escapeHtml(item.bron_url) +
         '" rel="noopener noreferrer" target="_blank">' +
-        (evenement ? "Bron" : "Website") +
+        escapeHtml(item.bron_label || (evenement ? "Bron" : "Meer informatie")) +
         "</a>";
     }
     html += "</div>";
