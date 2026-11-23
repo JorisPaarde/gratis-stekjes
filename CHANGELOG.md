@@ -3,6 +3,31 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.10] - 2026-11-23
+
+### Changed
+
+- SEO (Search Console): title en meta description van Plantenasiel Haarlem en
+  Plantenasiel Leiden herschreven op «planten brengen of ophalen» (config
+  `seo.organisaties`, geen DB-edit). og:title en og:description volgen mee.
+
+### Added
+
+- Stadspagina’s Leiden en Utrecht: interne link naar de organisatiepagina
+  (Plantenasiel Leiden / Het Plantenhuis), via `seo.stad_related_organisatie`.
+
+## [0.81.9] - 2026-11-17
+
+### Fixed
+
+- Deploy (staging én productie, zelfde `scripts/deploy-hook-upload.sh`): tijdelijke storingen bij
+  de HTTPS-hook worden nu met backoff opnieuw geprobeerd (6 pogingen, 20-60 s ertussen, ruim
+  4 minuten) in plaats van 4 pogingen in 90 s. Het gaat om de Imunify360-bot-protection (HTTP 403 zonder
+  hook-foutcode), 429, gateway-5xx en time-outs of connection resets. De upload van chunks wordt
+  ook herhaald (idempotent); de finish alleen bij een 403/429 vóór de hook. Echte fouten
+  (hook-foutcode zoals `forbidden`, 4xx anders dan de challenge, mislukte migratie) falen direct.
+  Zo krijgt niemand een alarmmail over een storing die vanzelf overgaat.
+
 ## [0.81.8] - 2026-11-17
 
 ### Fixed

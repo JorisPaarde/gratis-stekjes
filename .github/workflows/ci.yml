@@ -67,6 +67,11 @@ jobs:
           php -l deploy/hook/lib.php
           php deploy/hook/self-test.php
 
+      - name: Deploy-hook retry self-test (Imunify 403 / 5xx / time-out)
+        run: |
+          bash -n scripts/deploy-hook-upload.sh
+          bash scripts/test-deploy-hook-retry.sh
+
       - name: Validate data JSON
         run: |
           python3 -c "import json; json.load(open('data/niet-aanbieden.json')); print('niet-aanbieden ok')"

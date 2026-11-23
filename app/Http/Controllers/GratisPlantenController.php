@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Services\Organisaties;
 use App\Services\StadAanbod;
 use App\Services\StadCatalogus;
 use App\Support\RecentAanbod;
+use App\Support\SeoOverrides;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
@@ -44,8 +46,12 @@ class GratisPlantenController extends Controller
         ]);
     }
 
-    public function show(string $stad, StadCatalogus $catalogus, StadAanbod $stadAanbod): View|Response|RedirectResponse
-    {
+    public function show(
+        string $stad,
+        StadCatalogus $catalogus,
+        StadAanbod $stadAanbod,
+        Organisaties $organisaties,
+    ): View|Response|RedirectResponse {
         $city = $catalogus->find($stad);
         if ($city === null) {
             abort(404);
@@ -87,6 +93,16 @@ class GratisPlantenController extends Controller
             ? [['@type' => 'Country', 'name' => 'BE']]
             : [['@type' => 'Country', 'name' => 'NL']];
 
+        $relatedOrganisatie = null;
+        $relatedConfig = SeoOverrides::stadRelatedOrganisatie((string) $city['slug']);
+        if ($relatedConfig !== null && $organisaties->find($relatedConfig['organisatie_slug']) !== null) {
+            $relatedOrganisatie = [
+                'url' => route('organisaties.show', ['slug' => $relatedConfig['organisatie_slug']]),
+                'anchor' => $relatedConfig['anchor'],
+                'intro' => $relatedConfig['intro'],
+            ];
+        }
+
         $faqEntities = array_map(static fn (array $item) => [
             '@type' => 'Question',
             'name' => $item['vraag'],
@@ -106,6 +122,7 @@ class GratisPlantenController extends Controller
             'toonAanbod' => $toonAanbod,
             'deelplekken' => $deelplekken,
             'plantenasiels' => $plantenasiels,
+            'relatedOrganisatie' => $relatedOrganisatie,
             'nearby' => $nearby,
             'faq' => $faq,
             'schema' => [

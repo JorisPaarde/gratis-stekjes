@@ -89,6 +89,37 @@
   margin-top: 1rem;
 }
 
+/* Interne link naar organisatiepagina (SEO; Leiden/Utrecht e.d.) */
+.gp-related-org {
+  margin: 0 0 1.75rem;
+  padding: 1rem 1.15rem;
+  max-width: 40rem;
+  border-left: 3px solid var(--leaf, #1f4d2b);
+  background: var(--card, rgba(255, 252, 246, 0.92));
+  border-radius: 0 0.55rem 0.55rem 0;
+}
+
+.gp-related-org__intro {
+  margin: 0 0 0.55rem;
+  color: var(--ink-soft, #4a3f3a);
+  line-height: 1.45;
+}
+
+.gp-related-org__link {
+  margin: 0;
+}
+
+.gp-related-org__link a {
+  display: inline-block;
+  padding: 0.35rem 0;
+  min-height: 44px;
+  line-height: 1.4;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  color: var(--leaf-deep, #163820);
+}
+
 .gp-deelplekken,
 .gp-nearby,
 .gp-faq {
