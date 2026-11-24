@@ -354,6 +354,7 @@ test('sitemap bevat voor-organisaties en organisatiepaginas', function () {
     expect($xml)->not->toContain('/organisaties/struikroven');
     expect($xml)->toContain('/organisaties/meerbomen-nu');
     expect($xml)->toContain('/organisaties/het-bomenproject');
+    expect($xml)->toContain('/organisaties/steenbreek');
     expect($xml)->not->toContain('/organisaties/stekjesroute');
     expect($xml)->not->toContain('/organisaties/plant-voor-plant');
 });
