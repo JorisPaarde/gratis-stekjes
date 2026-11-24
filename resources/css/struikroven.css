@@ -36,6 +36,15 @@
   max-width: none;
 }
 
+/* Breder logo (bijv. Steenbreek): behoud breedte-verhouding i.p.v. 2:1-kader. */
+.struikroven-logo--breed {
+  width: 180px;
+  height: auto;
+  max-height: 56px;
+  object-fit: contain;
+  object-position: left center;
+}
+
 .struikroven-intro-tekst > h2 {
   margin: 0 0 1rem; /* 16px tot alinea 1; 700 + kapitalen via .section h2 */
   line-height: 1.15;
@@ -133,6 +142,11 @@
   .struikroven-logo {
     width: 144px;
     height: 72px;
+  }
+
+  .struikroven-logo--breed {
+    width: 220px;
+    max-height: 62px;
   }
 
   .struikroven-plantenbieb-media {

@@ -3,6 +3,16 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.14] - 2026-11-24
+
+### Changed
+
+- `/organisaties/steenbreek` uitgewerkt naar dezelfde opbouw als Struikroven /
+  STEKchallenge: intro met logo + geveltuin-beeld, secties «Wat Steenbreek doet»
+  en «Meedoen» (tegels eruit, geveltuin, straatactie/tegelruiltaxi, NK
+  Tegelwippen 2026; seizoen is afgelopen), tip naar hun artikel over Gratis planten. Alleen tekst en
+  beeld van steenbreek.nl; gids-korttekst bijgewerkt.
+
 ## [0.81.13] - 2026-11-24
 
 ### Added

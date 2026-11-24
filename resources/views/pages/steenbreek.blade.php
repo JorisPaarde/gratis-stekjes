@@ -5,36 +5,86 @@
 @section('canonical', $canonical)
 
 @push('head')
-  @vite(['resources/css/struikroven.css'])
+  @vite(array_merge(
+    ['resources/css/struikroven.css'],
+    ($initiatief?->secties ?? []) !== [] ? ['resources/css/stektips.css'] : []
+  ))
 @endpush
 
 @section('content')
 @php
   $intro = $initiatief?->introAlineas() ?? [];
   $introTitel = trim((string) ($initiatief?->intro_titel ?? ''));
+  $siteUrl = trim((string) ($initiatief?->site_url ?? $org['website'] ?? ''));
+  $siteLinkTekst = trim((string) ($initiatief?->site_link_tekst ?? ''));
+  $secties = $initiatief?->secties ?? [];
 @endphp
-<section class="section wrap prose plantenasiel-page">
+<section class="section wrap struikroven-page plantenasiel-page">
   <h1 class="page-title">{{ $org['naam'] }}</h1>
   <p class="muted">{{ $org['plaats'] }} · Initiatief</p>
 
-  <picture class="struikroven-logo-wrap">
-    <source type="image/webp" srcset="/assets/images/initiatieven/logo-steenbreek.webp">
-    <img
-      class="struikroven-logo"
-      src="/assets/images/initiatieven/logo-steenbreek.png"
-      width="220"
-      height="62"
-      alt="Steenbreek"
-      decoding="async"
-    >
-  </picture>
+  <div class="struikroven-intro">
+    <div class="struikroven-intro-tekst">
+      <picture class="struikroven-logo-wrap">
+        <source type="image/webp" srcset="/assets/images/initiatieven/logo-steenbreek.webp">
+        <img
+          class="struikroven-logo struikroven-logo--breed"
+          src="/assets/images/initiatieven/logo-steenbreek.png"
+          width="220"
+          height="62"
+          alt="Steenbreek"
+          decoding="async"
+        >
+      </picture>
 
-  @if($introTitel !== '')
-    <h2>{{ $introTitel }}</h2>
+      @if($introTitel !== '')
+        <h2>{{ $introTitel }}</h2>
+      @endif
+      @foreach($intro as $alinea)
+        <p>{{ $alinea }}</p>
+      @endforeach
+
+      @if($siteUrl !== '')
+        <p class="struikroven-links muted">
+          <a href="{{ $siteUrl }}" rel="noopener noreferrer" target="_blank">{{ $siteLinkTekst !== '' ? $siteLinkTekst : 'Meer info' }}</a>
+        </p>
+      @endif
+    </div>
+
+    <figure class="struikroven-plantenbieb">
+      <div class="struikroven-plantenbieb-media">
+        <picture>
+          <source
+            type="image/webp"
+            srcset="/assets/images/initiatieven/steenbreek-geveltuin-480.webp 480w, /assets/images/initiatieven/steenbreek-geveltuin-960.webp 960w"
+            sizes="(min-width: 1024px) 38vw, min(100vw - 2rem, 360px)"
+          >
+          <img
+            src="/assets/images/initiatieven/steenbreek-geveltuin-480.jpg"
+            srcset="/assets/images/initiatieven/steenbreek-geveltuin-480.jpg 480w, /assets/images/initiatieven/steenbreek-geveltuin-960.jpg 960w"
+            sizes="(min-width: 1024px) 38vw, min(100vw - 2rem, 360px)"
+            width="480"
+            height="360"
+            loading="lazy"
+            decoding="async"
+            alt="Bloeiende geveltuin met klimrozen en stokrozen tegen een bakstenen gevel"
+          >
+        </picture>
+      </div>
+      <figcaption>
+        Foto:
+        <a href="https://steenbreek.nl/word-steenbreker/inwoners/" rel="noopener noreferrer" target="_blank">Steenbreek</a>
+      </figcaption>
+    </figure>
+  </div>
+
+  @if($secties !== [])
+    <div class="stektips-page stektips-artikel-body org-secties">
+      @foreach($secties as $block)
+        @include('partials.kennisbank-blok', ['block' => $block])
+      @endforeach
+    </div>
   @endif
-  @foreach($intro as $alinea)
-    <p>{{ $alinea }}</p>
-  @endforeach
 
   <p>
     <a href="{{ $org['website'] }}" rel="noopener noreferrer" target="_blank">Website</a>
