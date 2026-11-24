@@ -10,7 +10,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - `/organisaties/steenbreek` uitgewerkt naar dezelfde opbouw als Struikroven /
   STEKchallenge: intro met logo + geveltuin-beeld, secties «Wat Steenbreek doet»
   en «Meedoen» (tegels eruit, geveltuin, straatactie/tegelruiltaxi, NK
-  Tegelwippen), tip naar hun artikel over Gratis planten. Alleen tekst en
+  Tegelwippen 2026; seizoen is afgelopen), tip naar hun artikel over Gratis planten. Alleen tekst en
   beeld van steenbreek.nl; gids-korttekst bijgewerkt.
 
 ## [0.81.13] - 2026-11-24
