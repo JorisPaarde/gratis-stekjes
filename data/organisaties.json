@@ -2,7 +2,7 @@
   "meta": {
     "titel": "Organisaties rond gratis planten delen",
     "omschrijving": "Korte, feitelijke pagina’s over publiek vindbare organisaties en initiatieven. Geen partnerschappen; alleen controleerbare info met bronlink. Contactgegevens voor uitnodigen staan alleen in docs/uitnodigingen.md (niet versturen).",
-    "geraadpleegd": "2026-10-31"
+    "geraadpleegd": "2026-11-24"
   },
   "organisaties": [
     {
@@ -175,6 +175,112 @@
       "gerelateerde_slugs": [
         "meerbomen-nu"
       ]
+    },
+    {
+      "slug": "steenbreek",
+      "naam": "Stichting Steenbreek",
+      "type": "initiatief",
+      "plaats": "Nederland",
+      "website": "https://steenbreek.nl/",
+      "bron_url": "https://steenbreek.nl/wie-we-zijn/",
+      "kort": "Leuze: «Minder steen, méér groen». Landelijke kennis- en netwerkorganisatie: communicatie, kennisdeling en participatie bij vergroenen van tuinen en straten. Acties o.a. geveltuinen, boomspiegels, straatacties en NK Tegelwippen. Sinds 2015 («Tegel eruit, plant erin»); ruim 200 gemeenten.",
+      "deelplek_slugs": [],
+      "meta_description": "Stichting Steenbreek: minder steen, méér groen. Landelijke kennis- en netwerkorganisatie voor vergroenen van tuinen en straten; ruim 200 gemeenten doen mee.",
+      "links": [
+        {
+          "label": "Wat ze doen",
+          "url": "https://steenbreek.nl/wat-we-doen/"
+        },
+        {
+          "label": "Missie",
+          "url": "https://steenbreek.nl/missie/"
+        },
+        {
+          "label": "Meedoen als inwoner",
+          "url": "https://steenbreek.nl/word-steenbreker/inwoners/"
+        },
+        {
+          "label": "Acties",
+          "url": "https://steenbreek.nl/word-steenbreker/inwoners/acties/"
+        },
+        {
+          "label": "Geveltuin aanleggen",
+          "url": "https://steenbreek.nl/1-leg-een-geveltuin-aan/"
+        },
+        {
+          "label": "NK Tegelwippen",
+          "url": "https://steenbreek.nl/deze-gemeenten-winnen-het-nk-tegelwippen-2026/"
+        },
+        {
+          "label": "Artikel over Gratis planten",
+          "url": "https://steenbreek.nl/gratis-planten-buren-verbinden-en-samen-de-wereld-groener-maken/"
+        }
+      ],
+      "initiatief": {
+        "pagina_titel": "Stichting Steenbreek",
+        "intro_titel": "Minder steen, méér groen",
+        "intro_tekst": "Steenbreek ondersteunt gemeenten, partners en inwoners met communicatie, kennisdeling en participatie bij het vergroenen van tuinen en straten. Samen met hen werkt Steenbreek aan minder steen en méér groen voor een gezonde, sociale én klimaatbestendige leefomgeving.\n\nSteenbreek wil de trend om te verstenen stoppen en de leefomgeving in Nederland zoveel mogelijk duurzaam vergroenen, in zowel de publieke als private ruimte. Steenbreek is uitgegroeid tot een landelijke kennis- en netwerkorganisatie.\n\nIn 2015 werd Operatie Steenbreek opgericht. Zo startte Steenbreek met de actie «Tegel eruit, plant erin». Ruim 200 gemeenten doen mee.\n\nZe schreven over Gratis planten.",
+        "korte_naam": "Steenbreek",
+        "site_url": "https://steenbreek.nl/",
+        "site_link_tekst": "Meer over Steenbreek",
+        "meta_description": "Stichting Steenbreek: minder steen, méér groen. Landelijke kennis- en netwerkorganisatie voor vergroenen van tuinen en straten; ruim 200 gemeenten doen mee.",
+        "secties": [
+          {
+            "type": "h2",
+            "tekst": "Wat Steenbreek doet"
+          },
+          {
+            "type": "p",
+            "tekst": "Steenbreek ondersteunt en ontzorgt al 200 gemeenten bij campagnes en activiteiten die hun bewoners enthousiast maken om hun tuin, straat of buurt duurzaam groen in te richten. Als landelijke kennis- en netwerkorganisatie is Steenbreek samenwerkingspartner voor onder andere gemeenten, provincies, waterschappen en (overheids)instanties."
+          },
+          {
+            "type": "p",
+            "tekst": "Samen met gemeenten, provincies, waterschappen, inwoners en bedrijven zet Steenbreek zich in voor meer biodiversiteit, een betere klimaatadaptatie en een gezondere, prettigere leefomgeving. Vergroeningsacties zijn bijvoorbeeld het aanleggen van voorbeeldtuinen, geveltuinen en het vergroenen van een hele straat samen met buurtbewoners."
+          },
+          {
+            "type": "h2",
+            "tekst": "Meedoen"
+          },
+          {
+            "type": "p",
+            "tekst": "Samen wil Steenbreek zoveel mogelijk tuinen, straten en wijken vergroenen. Dat is beter voor het leefgebied, beter voor de biodiversiteit en ook beter én gezonder voor buurtbewoners. Steenbreek helpt inwoners op weg."
+          },
+          {
+            "type": "kaarten",
+            "items": [
+              {
+                "titel": "Tegels eruit, plant erin",
+                "wanneer": "in je eigen tuin",
+                "illustratie": "grond",
+                "tekst": "Wip die steen eruit en breng je tuin tot leven met bloemen, bijen en vlinders."
+              },
+              {
+                "titel": "Leg een geveltuin aan",
+                "wanneer": "zonder voortuin",
+                "illustratie": "delen",
+                "tekst": "Een geveltuin is een smalle strook groen van ongeveer anderhalve stoeptegel direct tegen de gevel van een gebouw. Een groene straat bevordert de leefbaarheid, helpt bij waterafvoer en vermindert hitteoverlast; voor een geveltuin is meestal geen vergunning nodig, maar controleer dit bij twijfel altijd bij je gemeente."
+              },
+              {
+                "titel": "Organiseer een straatactie",
+                "wanneer": "met buurtgenoten",
+                "illustratie": "scheuren",
+                "tekst": "Steeds meer gemeenten in Nederland vergroenen samen met inwoners via Operatie Steenbreek, met acties zoals een tegelruiltaxi of straatacties. Informeer bij jouw gemeente naar de mogelijkheden."
+              },
+              {
+                "titel": "NK Tegelwippen",
+                "wanneer": "in 2026",
+                "illustratie": "afleggen",
+                "tekst": "Tijdens het NK Tegelwippen 2026 hebben bijna 5 miljoen tegels plaatsgemaakt voor groen. Door het enorme enthousiasme en succes van de afgelopen jaren gaat het tegelwippen nog zeker twee jaar door."
+              }
+            ]
+          },
+          {
+            "type": "tip",
+            "titel": "Steenbreek over Gratis planten",
+            "tekst": "Op steenbreek.nl staat hun artikel «Gratis planten: buren verbinden en samen de wereld groener maken»."
+          }
+        ]
+      }
     },
     {
       "slug": "stekjesroute",

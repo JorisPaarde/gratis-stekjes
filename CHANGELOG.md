@@ -3,6 +3,45 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.14] - 2026-11-24
+
+### Changed
+
+- `/organisaties/steenbreek` uitgewerkt naar dezelfde opbouw als Struikroven /
+  STEKchallenge: intro met logo + geveltuin-beeld, secties «Wat Steenbreek doet»
+  en «Meedoen» (tegels eruit, geveltuin, straatactie/tegelruiltaxi, NK
+  Tegelwippen 2026; seizoen is afgelopen), tip naar hun artikel over Gratis planten. Alleen tekst en
+  beeld van steenbreek.nl; gids-korttekst bijgewerkt.
+
+## [0.81.13] - 2026-11-24
+
+### Added
+
+- Stichting Steenbreek op `/organisaties/steenbreek` (gids `/initiatieven`):
+  leuze «Minder steen, méér groen», ondersteuning bij vergroenen van tuinen en
+  straten, start in 2015 als Operatie Steenbreek met «Tegel eruit, plant erin»,
+  ruim 200 gemeenten, link naar hun artikel over Gratis planten. Logo uit hun
+  eigen site-header (`steenbreek.nl`). Alleen feiten van hun pagina’s.
+
+## [0.81.12] - 2026-11-23
+
+### Fixed
+
+- Zadenbibliotheken: overzichts-URL
+  `zadenbibliotheeknederland.nl/locaties/` vervangen door de eigen website uit
+  de store-locator (Agile Store Locator), gekoppeld op naam/plaats; alleen HTTP
+  200 na redirects. Aalten → poortvangelre.nl, De Klepel (Den Bosch) →
+  denboschnoord.nl. Gedeelde overzichten: Namen en Alkmaar per vestiging
+  gekoppeld; Antwerpen (Cloudflare 403) en Noord-Limburg blijven overzicht.
+- Linklabel: overzichts-URL (gedeeld door >1 plek of pad zoals `/locaties/`)
+  heet nu «Bron», nooit «Website». Label server-side als `bron_label` in de
+  API (kaart/zoeken/stad). Strengere `similar_text`-drempel voor «Website».
+
+### Added
+
+- `scripts/koppel-zadenbib-websites.py` + rapport
+  `data/imports/zadenbib-website-koppeling.json` (herbruikbaar).
+
 ## [0.81.11] - 2026-11-23
 
 ### Added

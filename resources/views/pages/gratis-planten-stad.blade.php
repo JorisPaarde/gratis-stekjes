@@ -118,7 +118,7 @@
               @endif
             </span>
             @if(!empty($plek['bron_url']))
-              · <a href="{{ $plek['bron_url'] }}" rel="noopener noreferrer" target="_blank">Bron</a>
+              · <a href="{{ $plek['bron_url'] }}" rel="noopener noreferrer" target="_blank">{{ $plek['bron_label'] ?? 'Bron' }}</a>
             @endif
           </li>
         @endforeach

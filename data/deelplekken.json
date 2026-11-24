@@ -380,7 +380,7 @@
       "adres": "Gasthuisstraat 2 (Bibliotheek Alkmaar Centrum), Alkmaar",
       "lat": 52.633284,
       "lng": 4.743228,
-      "bron_url": "https://zadenbibliotheeknederland.nl/zadenbibliotheken-in-alkmaar-in-het-zonnetje/",
+      "bron_url": "https://www.bibliotheekkennemerwaard.nl/openingstijden#199258",
       "geraadpleegd": "2026-10-29"
     },
     {
@@ -392,7 +392,7 @@
       "adres": "Laan van Straatsburg 2 (Bibliotheek De Mare), Alkmaar",
       "lat": 52.653514,
       "lng": 4.758969,
-      "bron_url": "https://zadenbibliotheeknederland.nl/zadenbibliotheken-in-alkmaar-in-het-zonnetje/",
+      "bron_url": "https://www.bibliotheekkennemerwaard.nl/alkmaar-de-mare",
       "geraadpleegd": "2026-10-29"
     },
     {
@@ -950,7 +950,7 @@
       "adres": "Hendrik Conscienceplein 4, 2000 Antwerpen",
       "lat": 51.22093,
       "lng": 4.403809,
-      "bron_url": "https://antwerpen.bibliotheek.be/zadenbib",
+      "bron_url": "https://consciencebibliotheek.be/nl",
       "geraadpleegd": "2026-10-31",
       "country": "BE",
       "visible": true
@@ -1132,7 +1132,7 @@
       "adres": "Rue Emile Vandervelde 8, 5020 Flawinne",
       "lat": 50.458847,
       "lng": 4.80717,
-      "bron_url": "https://bibliotheques.namur.be/services/grainotheques",
+      "bron_url": "https://bibliotheques.namur.be/bibliotheques-du-reseau/flawinne",
       "geraadpleegd": "2026-10-31",
       "country": "BE",
       "visible": true
@@ -1146,7 +1146,7 @@
       "adres": "Champ-Ha 20, 5020 Malonne",
       "lat": 50.42251,
       "lng": 4.798227,
-      "bron_url": "https://bibliotheques.namur.be/services/grainotheques",
+      "bron_url": "https://bibliotheques.namur.be/bibliotheques-du-reseau/malonne",
       "geraadpleegd": "2026-10-31",
       "country": "BE",
       "visible": true
@@ -1160,7 +1160,7 @@
       "adres": "Rue du Premier Lanciers 3A, 5000 Namur",
       "lat": 50.466482,
       "lng": 4.871491,
-      "bron_url": "https://bibliotheques.namur.be/services/grainotheques",
+      "bron_url": "https://bibliotheques.namur.be/bibliotheques-du-reseau/la-celestine",
       "geraadpleegd": "2026-10-31",
       "country": "BE",
       "visible": true
@@ -1284,7 +1284,7 @@
       "adres": "Klokkenlaan 85, 5231 AP 's-Hertogenbosch",
       "lat": 51.714942,
       "lng": 5.310107,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.denboschnoord.nl/organisaties/10154/de-klepel",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1320,7 +1320,7 @@
       "adres": "Oostenrijkstraat 2, 1363 CB Almere",
       "lat": 52.345973,
       "lng": 5.15112,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.denieuwebibliotheek.nl/de-nieuwe-bibliotheek-poort",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1332,7 +1332,7 @@
       "adres": "De Rede 80, 8251 EX Dronten",
       "lat": 52.523684,
       "lng": 5.719363,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.flevomeerbibliotheek.nl/bibliotheek-dronten",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1344,7 +1344,7 @@
       "adres": "Kerkstraat 2, 3891 ET Zeewolde",
       "lat": 52.3308,
       "lng": 5.541668,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.flevomeerbibliotheek.nl/bibliotheek-zeewolde",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1356,7 +1356,7 @@
       "adres": "Kortestraat 16, 6811 EP Arnhem",
       "lat": 51.980605,
       "lng": 5.904828,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://rozet.nl/locaties/?focus=rozet-centrum",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1368,7 +1368,7 @@
       "adres": "Singravenlaan, hoek Middachtensingel 1, 6825 HG Arnhem (bij de geparkeerde auto's, bord boven de deur)",
       "lat": 51.984372,
       "lng": 5.956644,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://arnhemspeil.nl/ontdek/ecovrede.html",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1380,7 +1380,7 @@
       "adres": "Weiersstraat 1, 9401 ET Assen",
       "lat": 52.994696,
       "lng": 6.558568,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://denieuwekolk.nl/bezoek/openingstijden",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1404,7 +1404,7 @@
       "adres": "Noorderplein 101, 7811 MG Emmen",
       "lat": 52.788202,
       "lng": 6.892639,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.facet-emmen.nl/vestigingen-en-openingstijden/vestigingen.557144.html/facet-emmen-centrum/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1416,7 +1416,7 @@
       "adres": "Viermarkenweg 85, 7522 LC Enschede",
       "lat": 52.23972,
       "lng": 6.867966,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://duurzaamheidseducatie-enschede.yurls.net/nl/page/1003563",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1428,7 +1428,7 @@
       "adres": "Planetenlaan 170, 2024 EX Haarlem",
       "lat": 52.408369,
       "lng": 4.6481,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bibliotheekzuidkennemerland.nl/klantenservice/openingstijden-adressen/haarlem-noord.html",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1440,7 +1440,7 @@
       "adres": "Kajuit 4, 9733 CA Groningen",
       "lat": 53.237446,
       "lng": 6.623101,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://forum.nl/nl/bibliotheek-lewenborg",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1452,7 +1452,7 @@
       "adres": "Van Swindenstraat 129, 3514 XR Utrecht (boerderijcafé Stadsboerderij Griftsteede)",
       "lat": 52.101601,
       "lng": 5.128818,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.utrechtnatuurlijk.nl/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1464,7 +1464,7 @@
       "adres": "Vreugdenhillaan 31, 3526 ZB Utrecht",
       "lat": 52.069576,
       "lng": 5.104202,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.utrechtnatuurlijk.nl/locatie/eilandsteede/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1476,7 +1476,7 @@
       "adres": "Koppeldijk 115, 3524 SK Utrecht",
       "lat": 52.057028,
       "lng": 5.137917,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.utrechtnatuurlijk.nl/locatie/koppelsteede/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1488,7 +1488,7 @@
       "adres": "Klein Amerika 20, 2806 CA Gouda",
       "lat": 52.012297,
       "lng": 4.716365,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://chocoladefabriekgouda.nl/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1500,7 +1500,7 @@
       "adres": "Kerkplein 5, 5691 BB Son en Breugel",
       "lat": 51.510207,
       "lng": 5.494099,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.dommelhuis.nl/openingstijden",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1512,7 +1512,7 @@
       "adres": "Zeven Alleetjes 1a, 8011 CV Zwolle",
       "lat": 52.50853,
       "lng": 6.093366,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://stadkamer.nl/openingstijden",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1524,7 +1524,7 @@
       "adres": "Markt 1, 3701 JZ Zeist",
       "lat": 52.087384,
       "lng": 5.240424,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://kunstenhuisidea.nl/bibliotheek/service/bibliotheek-zeist/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1560,7 +1560,7 @@
       "adres": "Havendam 56, 3841 AA Harderwijk",
       "lat": 52.351731,
       "lng": 5.622985,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.hortusharderwijk.nl/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1584,7 +1584,7 @@
       "adres": "Rechtbankstraat 3, 4001 JR Tiel",
       "lat": 51.884579,
       "lng": 5.436624,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bibliotheekrivierenland.nl/Openingstijden/openingstijden/detail.11563942.html/bibliotheek-tiel/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1596,7 +1596,7 @@
       "adres": "Kennedyplein 1, 5801 VH Venray",
       "lat": 51.521574,
       "lng": 5.969996,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.biblionu.nl/over-ons/openingstijden.html",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1608,7 +1608,7 @@
       "adres": "Torenstreek 18A, 9166 LK Schiermonnikoog",
       "lat": 53.480173,
       "lng": 6.159485,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9723094.html/bibliotheek-schiermonnikoog/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1632,7 +1632,7 @@
       "adres": "Siersteenlaan 480/6, 9743 EZ Groningen",
       "lat": 53.224799,
       "lng": 6.524824,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://forum.nl/nl/bibliotheek-vinkhuizen",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1746,7 +1746,7 @@
       "adres": "Lage Blik 28, 7121 DZ Aalten",
       "lat": 51.925523,
       "lng": 6.581548,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.poortvangelre.nl/vestigingen-en-openingstijden/detail.11221888.html",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1758,7 +1758,7 @@
       "adres": "Jan van Arkelweg 12, 3791AC Achterveld",
       "lat": 52.136729,
       "lng": 5.497294,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bibliotheekeemland.nl/openingstijden/detail.622446.html/de-bibliotheek-achterveld/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1794,7 +1794,7 @@
       "adres": "Rosalind Franklinweg 6, 1341 HV Almere",
       "lat": 52.367053,
       "lng": 5.287002,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.denieuwebibliotheek.nl/de-nieuwe-bibliotheek-nobelhorst",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1806,7 +1806,7 @@
       "adres": "Bureweg 2, 9163 KE Nes",
       "lat": 53.441266,
       "lng": 5.773873,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9744384.html/bibliotheek-ameland--nes-/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1818,7 +1818,7 @@
       "adres": "Professor Cleveringaplein 5, 9901 AZ Appingedam",
       "lat": 53.320832,
       "lng": 6.855576,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/appingedam.html",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1830,7 +1830,7 @@
       "adres": "Hoofdstraat 1, 3741 AC Baarn",
       "lat": 52.212343,
       "lng": 5.293388,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bibliotheekeemland.nl/openingstijden/detail.608554.html/de-bibliotheek-baarn/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1842,7 +1842,7 @@
       "adres": "Roerdompstraat 6, 6573BH Beek",
       "lat": 51.831256,
       "lng": 5.928956,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.obgz.nl/openingstijden/gids/detail.11357435.html/bibliotheek-beek-ubbergen/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1878,7 +1878,7 @@
       "adres": "Schoolstraat 16, 6641DC Beuningen",
       "lat": 51.862014,
       "lng": 5.771956,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.obgz.nl/openingstijden/gids/detail.11360101.html/bibliotheek-beuningen/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1890,7 +1890,7 @@
       "adres": "Akkerhof 1, 8256 BK Biddinghuizen",
       "lat": 52.456454,
       "lng": 5.691684,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.flevomeerbibliotheek.nl/bibliotheek-biddinghuizen",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1914,7 +1914,7 @@
       "adres": "Kerkstraat 51, 9285 TA Buitenpost",
       "lat": 53.252289,
       "lng": 6.145009,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9709805.html/bibliotheek-buitenpost/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1926,7 +1926,7 @@
       "adres": "Schoolstraat 27, 9251 EA Burgum",
       "lat": 53.192801,
       "lng": 5.99192,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.dbieb.nl/openingstijden-overzicht/detail.9659602.html/dbieb-burgum/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1950,7 +1950,7 @@
       "adres": "Badhúswei 1, 9271 VA De Westereen",
       "lat": 53.255041,
       "lng": 6.041926,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9728075.html/bibliotheek-de-westereen/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -1974,7 +1974,7 @@
       "adres": "Landstraat 12, 9934 BL Delfzijl",
       "lat": 53.331285,
       "lng": 6.927145,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/delfzijl.html",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2010,7 +2010,7 @@
       "adres": "Norgerweg 219B, 9497 TC Donderen",
       "lat": 53.085212,
       "lng": 6.515049,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://zadenbiebnoordenveld.nl/contact/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2022,7 +2022,7 @@
       "adres": "De Akkers 5, 9204 WE Drachten",
       "lat": 53.092829,
       "lng": 6.081877,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://passiflora.alliade.nl/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2046,7 +2046,7 @@
       "adres": "Sint Martiniplantsoen 41, 8801 LK Franeker",
       "lat": 53.186197,
       "lng": 5.545658,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9734656.html/bibliotheek-franeker/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2058,7 +2058,7 @@
       "adres": "Heuvel 94, 5664 HN Geldrop",
       "lat": 51.42268,
       "lng": 5.560053,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bibliotheekdommeldal.nl/iguana/www.main.cls?surl=vestiginggeldrop",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2070,7 +2070,7 @@
       "adres": "Schoolstraat 2, 6691 XS Gendt",
       "lat": 51.876522,
       "lng": 5.970236,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.obgz.nl/openingstijden/gids/detail.11324563.html/bibliotheek-gendt/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2082,7 +2082,7 @@
       "adres": "Simke Kloostermanstrjitte 6, 9061 BE Giekerk",
       "lat": 53.241102,
       "lng": 5.892269,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.dbieb.nl/openingstijden-overzicht/detail.9663491.html/dbieb-gytsjerk/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2094,7 +2094,7 @@
       "adres": "Eexterweg 12, 9461 BD Gieten",
       "lat": 53.005882,
       "lng": 6.760151,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bindbibliotheken.nl/vestigingen/gieten.html",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2106,7 +2106,7 @@
       "adres": "Kolveniershof 106, 4461 DB Goes",
       "lat": 51.50393,
       "lng": 3.887655,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bibliotheekoosterschelde.nl/home/openingstijden/detail.12182934.html/bibliotheek-goes/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2118,7 +2118,7 @@
       "adres": "de Höfte 9, 7471 DK Goor",
       "lat": 52.233266,
       "lng": 6.585585,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bibliotheektwente.nl/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2130,7 +2130,7 @@
       "adres": "Schansburg 1, 8401 RX Gorredijk",
       "lat": 53.003986,
       "lng": 6.065453,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bzof.nl/openingstijden-bzof/detail.9777507.html/bibliotheek-gorredijk/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2142,7 +2142,7 @@
       "adres": "Burstumerdyk 6, 9001 ZC Grou",
       "lat": 53.088882,
       "lng": 5.826254,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.dbieb.nl/openingstijden-overzicht/detail.9668321.html/dbieb-grou/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2154,7 +2154,7 @@
       "adres": "de Singel 7, 9047 CZ Hallum",
       "lat": 53.304451,
       "lng": 5.784503,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.ontdekdebieb.nl/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2166,7 +2166,7 @@
       "adres": "Voorstraat 54, 8861 BM Harlingen",
       "lat": 53.174614,
       "lng": 5.419102,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9730715.html/bibliotheek-harlingen/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2178,7 +2178,7 @@
       "adres": "Promenade 153-155, 6411 JE Heerlen",
       "lat": 50.886929,
       "lng": 5.975501,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bvvvd.nl/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2190,7 +2190,7 @@
       "adres": "Westerweg 250, 1852 AR Heiloo",
       "lat": 52.600825,
       "lng": 4.699471,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bibliotheekheiloo.nl/over-ons/openingstijden-en-adres/detail.9962089.html/bibliotheek-heiloo/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2202,7 +2202,7 @@
       "adres": "Beursstraat 34, 7551 HV Hengelo",
       "lat": 52.263571,
       "lng": 6.796398,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bibliotheektwente.nl/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2214,7 +2214,7 @@
       "adres": "Markeweg 22, 7722 HD Dalfsen",
       "lat": 52.511084,
       "lng": 6.321869,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://verbondengrond.nl/onze-gronden/deeltuin-and-deelkeet/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2250,7 +2250,7 @@
       "adres": "Schoolstraat 7, 6579AN Kekerdom",
       "lat": 51.863905,
       "lng": 6.010641,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "http://www.kulturhuskekerdom.nl/index.html",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2274,7 +2274,7 @@
       "adres": "Gerrit Bleekerstraat 3, 9291BS Kollum",
       "lat": 53.280628,
       "lng": 6.145654,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9719640.html/bibliotheek-kollum/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2286,7 +2286,7 @@
       "adres": "Heiligeweg 170, 1561 DM Krommenie",
       "lat": 52.503248,
       "lng": 4.757713,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://debieb.nl/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2310,7 +2310,7 @@
       "adres": "Hamersveldseweg 77, 3833 GL Leusden",
       "lat": 52.130494,
       "lng": 5.427045,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bibliotheekeemland.nl/openingstijden/detail.615810.html/de-bibliotheek-leusden/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2334,7 +2334,7 @@
       "adres": "Nachtegaallaan 30, 3738 EB Maartensdijk",
       "lat": 52.156923,
       "lng": 5.173555,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://kunstenhuisidea.nl/bibliotheek/service/bibliotheek-maartensdijk/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2346,7 +2346,7 @@
       "adres": "Oostgaag 25A, 3155 CE Maasland",
       "lat": 51.954197,
       "lng": 4.284927,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.boerderij-landlust.nl/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2358,7 +2358,7 @@
       "adres": "Pastoor Dominicus Hexstraat 16a, 6231 HG Meerssen",
       "lat": 50.887667,
       "lng": 5.750005,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bibliotheekmeerssen.nl/onze-vestigingen/vestiging.9512978.html/bibliotheek-meerssen/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2406,7 +2406,7 @@
       "adres": "In den Vijfhoek 75, 7571DV Oldenzaal",
       "lat": 52.312614,
       "lng": 6.926915,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bibliotheektwente.nl/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2418,7 +2418,7 @@
       "adres": "Quadoelenweg 29 b, 8431 LN Oosterwolde",
       "lat": 52.992178,
       "lng": 6.288991,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bzof.nl/openingstijden-bzof/detail.9784154.html/bibliotheek-oosterwolde/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2466,7 +2466,7 @@
       "adres": "Kasteellaan 36, 5156 CJ Oudheusden",
       "lat": 51.725374,
       "lng": 5.136353,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bibliotheekheusden.nl/home/vestigingen-en-openingstijden/detail.934538.html/de-bibliotheek-oudheusden/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2490,7 +2490,7 @@
       "adres": "Hoff van Hollantlaan 1, 5243 SR Rosmalen",
       "lat": 51.716506,
       "lng": 5.372702,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.huis73.nl/contact-en-bezoek",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2514,7 +2514,7 @@
       "adres": "Hoofdstraat 12, 9443 TJ Schoonloo",
       "lat": 52.906041,
       "lng": 6.697696,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.deelderij.nl/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2526,7 +2526,7 @@
       "adres": "Beuckelaerstraat 2, 9076 DA Sint Annaparochie",
       "lat": 53.275059,
       "lng": 5.661134,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9701025.html/bibliotheek-st--annaparochie/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2550,7 +2550,7 @@
       "adres": "Meppelerweg 47A, 8331 CS Steenwijk",
       "lat": 52.787487,
       "lng": 6.123629,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://mijnbieb.nl/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2562,7 +2562,7 @@
       "adres": "Valentijn 3, 6029 RJ Sterksel Sterksel",
       "lat": 51.349946,
       "lng": 5.611673,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bibliotheekdommeldal.nl/iguana/www.main.cls?surl=bibliotheekpuntsterksel",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2574,7 +2574,7 @@
       "adres": "Ljipstrjitte 1, 9051 AR Stiens",
       "lat": 53.260836,
       "lng": 5.758594,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.dbieb.nl/openingstijden-overzicht/detail.9665705.html/dbieb-stiens/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2586,7 +2586,7 @@
       "adres": "De Schutsluis 13, 8255 HT Swifterbant",
       "lat": 52.572298,
       "lng": 5.644032,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.flevomeerbibliotheek.nl/bibliotheek-swifterbant",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2598,7 +2598,7 @@
       "adres": "Brouwershoekweg 4, 8891 JH Midsland",
       "lat": 53.380834,
       "lng": 5.286358,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9706225.html/bibliotheek-terschelling/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2610,7 +2610,7 @@
       "adres": "Burgemeester Zwaansweg 2, 5251 CJ Vlijmen",
       "lat": 51.694296,
       "lng": 5.20865,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bibliotheekheusden.nl/home/vestigingen-en-openingstijden/detail.933055.html/de-bibliotheek-vlijmen/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2670,7 +2670,7 @@
       "adres": "Griffioenpark 10, 8471 KP Wolvega",
       "lat": 52.877162,
       "lng": 6.00559,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://www.bzof.nl/openingstijden-bzof/detail.9773844.html/bibliotheek-wolvega/",
       "geraadpleegd": "2026-11-16"
     },
     {
@@ -2682,7 +2682,7 @@
       "adres": "Kerkstraat 27c, 6901 AA Zevenaar",
       "lat": 51.924725,
       "lng": 6.075931,
-      "bron_url": "https://zadenbibliotheeknederland.nl/locaties/",
+      "bron_url": "https://liemerskunstwerk.nl/bibliotheek/",
       "geraadpleegd": "2026-11-16"
     },
     {

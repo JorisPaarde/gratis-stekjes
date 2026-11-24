@@ -1,0 +1,1586 @@
+{
+  "meta": {
+    "bron": "https://zadenbibliotheeknederland.nl/wp-admin/admin-ajax.php",
+    "asl_stores": 162,
+    "zadenbibliotheken": 171,
+    "updates": 80,
+    "applied": true,
+    "changed_rows": 80
+  },
+  "updates": {
+    "aalten-zadenbibliotheek": "https://www.poortvangelre.nl/vestigingen-en-openingstijden/detail.11221888.html",
+    "achterveld-zadenbibliotheek": "https://www.bibliotheekeemland.nl/openingstijden/detail.622446.html/de-bibliotheek-achterveld/",
+    "alkmaar-zadenbieb-centrum": "https://www.bibliotheekkennemerwaard.nl/openingstijden#199258",
+    "alkmaar-zadenbieb-de-mare": "https://www.bibliotheekkennemerwaard.nl/alkmaar-de-mare",
+    "almere-zadenbibliotheek-de-nieuwe-bibliotheek-almere-poort": "https://www.denieuwebibliotheek.nl/de-nieuwe-bibliotheek-poort",
+    "almere-zadenbibliotheek-nobelhorst": "https://www.denieuwebibliotheek.nl/de-nieuwe-bibliotheek-nobelhorst",
+    "appingedam-zadenbibliotheek": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/appingedam.html",
+    "arnhem-zadenbibliotheek-ecovrede-arnhem": "https://arnhemspeil.nl/ontdek/ecovrede.html",
+    "arnhem-zadenbibliotheek-rozet-arnhem": "https://rozet.nl/locaties/?focus=rozet-centrum",
+    "assen-zadenbibliotheek-assen-dnk": "https://denieuwekolk.nl/bezoek/openingstijden",
+    "baarn-zadenbibliotheek": "https://www.bibliotheekeemland.nl/openingstijden/detail.608554.html/de-bibliotheek-baarn/",
+    "be-antwerpen-conscience-zadenbib": "https://consciencebibliotheek.be/nl",
+    "be-namen-celestine-grainotheque": "https://bibliotheques.namur.be/bibliotheques-du-reseau/la-celestine",
+    "be-namen-flawinne-grainotheque": "https://bibliotheques.namur.be/bibliotheques-du-reseau/flawinne",
+    "be-namen-malonne-grainotheque": "https://bibliotheques.namur.be/bibliotheques-du-reseau/malonne",
+    "beek-zadenbibliotheek-ubbergen": "https://www.obgz.nl/openingstijden/gids/detail.11357435.html/bibliotheek-beek-ubbergen/",
+    "beuningen-zadenbibliotheek": "https://www.obgz.nl/openingstijden/gids/detail.11360101.html/bibliotheek-beuningen/",
+    "biddinghuizen-zadenbibliotheek": "https://www.flevomeerbibliotheek.nl/bibliotheek-biddinghuizen",
+    "buitenpost-zadenbibliotheek": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9709805.html/bibliotheek-buitenpost/",
+    "burgum-zadenbibliotheek": "https://www.dbieb.nl/openingstijden-overzicht/detail.9659602.html/dbieb-burgum/",
+    "de-westereen-zadenbibliotheek": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9728075.html/bibliotheek-de-westereen/",
+    "delfzijl-zadenbibliotheek": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/delfzijl.html",
+    "donderen-zadenbibliotheek-noordenveld": "https://zadenbiebnoordenveld.nl/contact/",
+    "drachten-zadenbibliotheek": "https://passiflora.alliade.nl/",
+    "dronten-zadenbibliotheek": "https://www.flevomeerbibliotheek.nl/bibliotheek-dronten",
+    "emmen-zadenbibliotheek-facet-emmen": "https://www.facet-emmen.nl/vestigingen-en-openingstijden/vestigingen.557144.html/facet-emmen-centrum/",
+    "enschede-zadenbibliotheek-duurzaamheidseducatie-enschede": "https://duurzaamheidseducatie-enschede.yurls.net/nl/page/1003563",
+    "franeker-zadenbibliotheek": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9734656.html/bibliotheek-franeker/",
+    "geldrop-zadenbibliotheek": "https://www.bibliotheekdommeldal.nl/iguana/www.main.cls?surl=vestiginggeldrop",
+    "gendt-zadenbibliotheek": "https://www.obgz.nl/openingstijden/gids/detail.11324563.html/bibliotheek-gendt/",
+    "giekerk-zadenbibliotheek": "https://www.dbieb.nl/openingstijden-overzicht/detail.9663491.html/dbieb-gytsjerk/",
+    "gieten-zadenbibliotheek": "https://www.bindbibliotheken.nl/vestigingen/gieten.html",
+    "goes-zadenbibliotheek": "https://www.bibliotheekoosterschelde.nl/home/openingstijden/detail.12182934.html/bibliotheek-goes/",
+    "goor-zadenbibliotheek": "https://www.bibliotheektwente.nl/",
+    "gorredijk-zadenbibliotheek": "https://www.bzof.nl/openingstijden-bzof/detail.9777507.html/bibliotheek-gorredijk/",
+    "gouda-zadenbibliotheek-chocoladefabriek-gouda": "https://chocoladefabriekgouda.nl/",
+    "groningen-zadenbibliotheek-forum-bibliotheek-groningen-lewenborg": "https://forum.nl/nl/bibliotheek-lewenborg",
+    "groningen-zadenbibliotheek-forum-bibliotheek-groningen-vinkhuizen": "https://forum.nl/nl/bibliotheek-vinkhuizen",
+    "grou-zadenbibliotheek": "https://www.dbieb.nl/openingstijden-overzicht/detail.9668321.html/dbieb-grou/",
+    "haarlem-zadenbibliotheek-haarlem-noord": "https://www.bibliotheekzuidkennemerland.nl/klantenservice/openingstijden-adressen/haarlem-noord.html",
+    "hallum-zadenbibliotheek": "https://www.ontdekdebieb.nl/",
+    "harderwijk-zadenbibliotheek-hortus-harderwijk": "https://www.hortusharderwijk.nl/",
+    "harlingen-zadenbibliotheek": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9730715.html/bibliotheek-harlingen/",
+    "heerlen-zadenbibliotheek": "https://www.bvvvd.nl/",
+    "heiloo-zadenbibliotheek": "https://www.bibliotheekheiloo.nl/over-ons/openingstijden-en-adres/detail.9962089.html/bibliotheek-heiloo/",
+    "hengelo-zadenbibliotheek": "https://www.bibliotheektwente.nl/",
+    "hessum-dalfsen-zadenbibliotheek": "https://verbondengrond.nl/onze-gronden/deeltuin-and-deelkeet/",
+    "kekerdom-zadenbibliotheek": "http://www.kulturhuskekerdom.nl/index.html",
+    "kollum-zadenbibliotheek": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9719640.html/bibliotheek-kollum/",
+    "krommenie-zadenbibliotheek": "https://debieb.nl/",
+    "leusden-zadenbibliotheek": "https://www.bibliotheekeemland.nl/openingstijden/detail.615810.html/de-bibliotheek-leusden/",
+    "maartensdijk-zadenbibliotheek": "https://kunstenhuisidea.nl/bibliotheek/service/bibliotheek-maartensdijk/",
+    "maasland-zadenbibliotheek": "https://www.boerderij-landlust.nl/",
+    "meerssen-zadenbibliotheek": "https://www.bibliotheekmeerssen.nl/onze-vestigingen/vestiging.9512978.html/bibliotheek-meerssen/",
+    "midsland-zadenbibliotheek-terschelling": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9706225.html/bibliotheek-terschelling/",
+    "nes-zadenbibliotheek-ameland": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9744384.html/bibliotheek-ameland--nes-/",
+    "oldenzaal-zadenbibliotheek": "https://www.bibliotheektwente.nl/",
+    "oosterwolde-zadenbibliotheek": "https://www.bzof.nl/openingstijden-bzof/detail.9784154.html/bibliotheek-oosterwolde/",
+    "oudheusden-zadenbibliotheek": "https://www.bibliotheekheusden.nl/home/vestigingen-en-openingstijden/detail.934538.html/de-bibliotheek-oudheusden/",
+    "rosmalen-zadenbibliotheek": "https://www.huis73.nl/contact-en-bezoek",
+    "s-hertogenbosch-zadenbibliotheek-buurthuis-de-klepel": "https://www.denboschnoord.nl/organisaties/10154/de-klepel",
+    "schiermonnikoog-zadenbibliotheek": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9723094.html/bibliotheek-schiermonnikoog/",
+    "schoonloo-zadenbibliotheek": "https://www.deelderij.nl/",
+    "sint-annaparochie-zadenbibliotheek": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9701025.html/bibliotheek-st--annaparochie/",
+    "son-en-breugel-zadenbibliotheek-het-dommelhuis-son-en-breugel": "https://www.dommelhuis.nl/openingstijden",
+    "steenwijk-zadenbibliotheek": "https://mijnbieb.nl/",
+    "sterksel-zadenbibliotheek": "https://www.bibliotheekdommeldal.nl/iguana/www.main.cls?surl=bibliotheekpuntsterksel",
+    "stiens-zadenbibliotheek": "https://www.dbieb.nl/openingstijden-overzicht/detail.9665705.html/dbieb-stiens/",
+    "swifterbant-zadenbibliotheek": "https://www.flevomeerbibliotheek.nl/bibliotheek-swifterbant",
+    "tiel-zadenbibliotheek": "https://www.bibliotheekrivierenland.nl/Openingstijden/openingstijden/detail.11563942.html/bibliotheek-tiel/",
+    "utrecht-zadenbibliotheek-natuurlijk-eilandsteede": "https://www.utrechtnatuurlijk.nl/locatie/eilandsteede/",
+    "utrecht-zadenbibliotheek-natuurlijk-griftsteede": "https://www.utrechtnatuurlijk.nl/",
+    "utrecht-zadenbibliotheek-natuurlijk-koppelsteede": "https://www.utrechtnatuurlijk.nl/locatie/koppelsteede/",
+    "venray-zadenbibliotheek": "https://www.biblionu.nl/over-ons/openingstijden.html",
+    "vlijmen-zadenbibliotheek": "https://www.bibliotheekheusden.nl/home/vestigingen-en-openingstijden/detail.933055.html/de-bibliotheek-vlijmen/",
+    "wolvega-zadenbibliotheek": "https://www.bzof.nl/openingstijden-bzof/detail.9773844.html/bibliotheek-wolvega/",
+    "zeewolde-zadenbibliotheek": "https://www.flevomeerbibliotheek.nl/bibliotheek-zeewolde",
+    "zeist-zadenbibliotheek": "https://kunstenhuisidea.nl/bibliotheek/service/bibliotheek-zeist/",
+    "zevenaar-zadenbibliotheek": "https://liemerskunstwerk.nl/bibliotheek/",
+    "zwolle-zadenbibliotheek-stadkamer-zwolle": "https://stadkamer.nl/openingstijden"
+  },
+  "results": [
+    {
+      "id": "be-namen-flawinne-grainotheque",
+      "naam": "Grainothèque Bibliothèque de Flawinne",
+      "plaats": "Namen",
+      "status": "override-ok",
+      "oud": "https://bibliotheques.namur.be/services/grainotheques",
+      "nieuw": "https://bibliotheques.namur.be/bibliotheques-du-reseau/flawinne",
+      "http": 200
+    },
+    {
+      "id": "be-namen-malonne-grainotheque",
+      "naam": "Grainothèque Bibliothèque de Malonne",
+      "plaats": "Namen",
+      "status": "override-ok",
+      "oud": "https://bibliotheques.namur.be/services/grainotheques",
+      "nieuw": "https://bibliotheques.namur.be/bibliotheques-du-reseau/malonne",
+      "http": 200
+    },
+    {
+      "id": "be-namen-celestine-grainotheque",
+      "naam": "Grainothèque Bibliothèque La Célestine",
+      "plaats": "Namen",
+      "status": "override-ok",
+      "oud": "https://bibliotheques.namur.be/services/grainotheques",
+      "nieuw": "https://bibliotheques.namur.be/bibliotheques-du-reseau/la-celestine",
+      "http": 200
+    },
+    {
+      "id": "alkmaar-zadenbieb-centrum",
+      "naam": "Zadenbibliotheek Alkmaar Centrum",
+      "plaats": "Alkmaar",
+      "status": "override-ok",
+      "oud": "https://zadenbibliotheeknederland.nl/zadenbibliotheken-in-alkmaar-in-het-zonnetje/",
+      "nieuw": "https://www.bibliotheekkennemerwaard.nl/openingstijden#199258",
+      "http": 200
+    },
+    {
+      "id": "alkmaar-zadenbieb-de-mare",
+      "naam": "Zadenbibliotheek Alkmaar De Mare",
+      "plaats": "Alkmaar",
+      "status": "override-ok",
+      "oud": "https://zadenbibliotheeknederland.nl/zadenbibliotheken-in-alkmaar-in-het-zonnetje/",
+      "nieuw": "https://www.bibliotheekkennemerwaard.nl/alkmaar-de-mare",
+      "http": 200
+    },
+    {
+      "id": "be-antwerpen-conscience-zadenbib",
+      "naam": "Zadenbib Erfgoedbibliotheek Hendrik Conscience",
+      "plaats": "Antwerpen",
+      "status": "override-ok",
+      "oud": "https://antwerpen.bibliotheek.be/zadenbib",
+      "nieuw": "https://consciencebibliotheek.be/nl",
+      "http": 200
+    },
+    {
+      "id": "aalten-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Aalten",
+      "plaats": "Aalten",
+      "status": "override-ok",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.poortvangelre.nl/vestigingen-en-openingstijden/detail.11221888.html",
+      "http": 200
+    },
+    {
+      "id": "s-hertogenbosch-zadenbibliotheek-buurthuis-de-klepel",
+      "naam": "Zadenbibliotheek Buurthuis De Klepel",
+      "plaats": "'s-Hertogenbosch",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.denboschnoord.nl/organisaties/10154/de-klepel",
+      "asl_title": "'s Hertogenbosch",
+      "reden": "score=170",
+      "http": 200
+    },
+    {
+      "id": "almere-zadenbibliotheek-de-nieuwe-bibliotheek-almere-stad",
+      "naam": "Zadenbibliotheek De Nieuwe Bibliotheek Almere Stad",
+      "plaats": "Almere",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Almere Stad",
+      "url": "https://www.bing.com/maps?q=openingstijden+bibliotheek+Almere+stad&FORM=OU11DF&PC=OU11&cp=52.3712455.220864&lvl=11.9"
+    },
+    {
+      "id": "almere-zadenbibliotheek-de-nieuwe-bibliotheek-almere-poort",
+      "naam": "Zadenbibliotheek De Nieuwe Bibliotheek Almere Poort",
+      "plaats": "Almere",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.denieuwebibliotheek.nl/de-nieuwe-bibliotheek-poort",
+      "asl_title": "Almere Poort",
+      "reden": "score=205",
+      "http": 200
+    },
+    {
+      "id": "dronten-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Bibliotheek Dronten",
+      "plaats": "Dronten",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.flevomeerbibliotheek.nl/bibliotheek-dronten",
+      "asl_title": "Dronten",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "zeewolde-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Bibliotheek Zeewolde",
+      "plaats": "Zeewolde",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.flevomeerbibliotheek.nl/bibliotheek-zeewolde",
+      "asl_title": "Zeewolde",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "arnhem-zadenbibliotheek-rozet-arnhem",
+      "naam": "Zadenbibliotheek Rozet Arnhem",
+      "plaats": "Arnhem",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://rozet.nl/locaties/?focus=rozet-centrum",
+      "asl_title": "Arnhem",
+      "reden": "score=140",
+      "http": 200
+    },
+    {
+      "id": "arnhem-zadenbibliotheek-ecovrede-arnhem",
+      "naam": "Zadenbibliotheek Ecovrede Arnhem",
+      "plaats": "Arnhem",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://arnhemspeil.nl/ontdek/ecovrede.html",
+      "asl_title": "Arnhem",
+      "reden": "score=140",
+      "http": 200
+    },
+    {
+      "id": "assen-zadenbibliotheek-assen-dnk",
+      "naam": "Zadenbibliotheek Bibliotheek Assen (DNK)",
+      "plaats": "Assen",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://denieuwekolk.nl/bezoek/openingstijden",
+      "asl_title": "Assen",
+      "reden": "score=140",
+      "http": 200
+    },
+    {
+      "id": "emmen-zadenbibliotheek-facet-emmen",
+      "naam": "Zadenbibliotheek FACET Emmen",
+      "plaats": "Emmen",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.facet-emmen.nl/vestigingen-en-openingstijden/vestigingen.557144.html/facet-emmen-centrum/",
+      "asl_title": "Emmen",
+      "reden": "score=140",
+      "http": 200
+    },
+    {
+      "id": "enschede-zadenbibliotheek-duurzaamheidseducatie-enschede",
+      "naam": "Zadenbibliotheek Duurzaamheidseducatie Enschede",
+      "plaats": "Enschede",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://duurzaamheidseducatie-enschede.yurls.net/nl/page/1003563",
+      "asl_title": "Enschede",
+      "reden": "score=140",
+      "http": 200
+    },
+    {
+      "id": "haarlem-zadenbibliotheek-haarlem-noord",
+      "naam": "Zadenbibliotheek Bibliotheek Haarlem-Noord",
+      "plaats": "Haarlem",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bibliotheekzuidkennemerland.nl/klantenservice/openingstijden-adressen/haarlem-noord.html",
+      "asl_title": "Haarlem",
+      "reden": "score=140",
+      "http": 200
+    },
+    {
+      "id": "groningen-zadenbibliotheek-forum-bibliotheek-groningen-lewenborg",
+      "naam": "Zadenbibliotheek Forum Bibliotheek Groningen Lewenborg",
+      "plaats": "Groningen",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://forum.nl/nl/bibliotheek-lewenborg",
+      "asl_title": "Groningen Lewenborg",
+      "reden": "score=205",
+      "http": 200
+    },
+    {
+      "id": "utrecht-zadenbibliotheek-natuurlijk-griftsteede",
+      "naam": "Zadenbibliotheek Utrecht Natuurlijk Griftsteede",
+      "plaats": "Utrecht",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.utrechtnatuurlijk.nl/",
+      "asl_title": "Utrecht",
+      "reden": "score=165",
+      "http": 200
+    },
+    {
+      "id": "utrecht-zadenbibliotheek-natuurlijk-eilandsteede",
+      "naam": "Zadenbibliotheek Utrecht Natuurlijk Eilandsteede",
+      "plaats": "Utrecht",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.utrechtnatuurlijk.nl/locatie/eilandsteede/",
+      "asl_title": "Utrecht",
+      "reden": "score=165",
+      "http": 200
+    },
+    {
+      "id": "utrecht-zadenbibliotheek-natuurlijk-koppelsteede",
+      "naam": "Zadenbibliotheek Utrecht Natuurlijk Koppelsteede",
+      "plaats": "Utrecht",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.utrechtnatuurlijk.nl/locatie/koppelsteede/",
+      "asl_title": "Utrecht",
+      "reden": "score=165",
+      "http": 200
+    },
+    {
+      "id": "gouda-zadenbibliotheek-chocoladefabriek-gouda",
+      "naam": "Zadenbibliotheek Chocoladefabriek Gouda",
+      "plaats": "Gouda",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://chocoladefabriekgouda.nl/",
+      "asl_title": "Gouda",
+      "reden": "score=140",
+      "http": 200
+    },
+    {
+      "id": "son-en-breugel-zadenbibliotheek-het-dommelhuis-son-en-breugel",
+      "naam": "Zadenbibliotheek Het Dommelhuis Son en Breugel",
+      "plaats": "Son en Breugel",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.dommelhuis.nl/openingstijden",
+      "asl_title": "Son en Breugel",
+      "reden": "score=165",
+      "http": 200
+    },
+    {
+      "id": "zwolle-zadenbibliotheek-stadkamer-zwolle",
+      "naam": "Zadenbibliotheek Stadkamer Zwolle",
+      "plaats": "Zwolle",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://stadkamer.nl/openingstijden",
+      "asl_title": "Stadkamer Zwolle",
+      "reden": "score=160",
+      "http": 200
+    },
+    {
+      "id": "zeist-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Bibliotheek Zeist",
+      "plaats": "Zeist",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://kunstenhuisidea.nl/bibliotheek/service/bibliotheek-zeist/",
+      "asl_title": "Zeist",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "woerden-zadenbibliotheek-duurzaamheidswinkel-woerden",
+      "naam": "Zadenbibliotheek Duurzaamheidswinkel Woerden",
+      "plaats": "Woerden",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Woerden",
+      "url": null
+    },
+    {
+      "id": "den-helder-zadenbibliotheek-consuminderhuis-den-helder",
+      "naam": "Zadenbibliotheek Consuminderhuis Den Helder",
+      "plaats": "Den Helder",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Den Helder",
+      "url": "https://www.cylex.nl/bedrijf/consuminderhuis-het-fundament-13274208.html"
+    },
+    {
+      "id": "harderwijk-zadenbibliotheek-hortus-harderwijk",
+      "naam": "Zadenbibliotheek Hortus Harderwijk",
+      "plaats": "Harderwijk",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.hortusharderwijk.nl/",
+      "asl_title": "Harderwijk",
+      "reden": "score=145",
+      "http": 200
+    },
+    {
+      "id": "spijkenisse-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Bibliotheek Spijkenisse",
+      "plaats": "Spijkenisse",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Spijkenisse",
+      "url": "https://www.bing.com/search?q=openingstijden+bibliotheek+spijkernisse&qs=n&form=QBRE&sp=-1&ghc=1&lq=0&pq=openingstijden+bibliotheek+spijkernisse&sc=1-39&sk=&cvid=4E6ED92B35EA4264B243C3C1B31DDAA1&ghsh=0&ghacc=0&ghpl="
+    },
+    {
+      "id": "tiel-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Bibliotheek Tiel",
+      "plaats": "Tiel",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bibliotheekrivierenland.nl/Openingstijden/openingstijden/detail.11563942.html/bibliotheek-tiel/",
+      "asl_title": "Tiel",
+      "reden": "score=70",
+      "http": 200
+    },
+    {
+      "id": "venray-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Venray",
+      "plaats": "Venray",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.biblionu.nl/over-ons/openingstijden.html",
+      "asl_title": "Venray",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "schiermonnikoog-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Bibliotheek Schiermonnikoog",
+      "plaats": "Schiermonnikoog",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9723094.html/bibliotheek-schiermonnikoog/",
+      "asl_title": "Schiermonnikoog",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "tilburg-zadenbibliotheek-un-bietje-groen-tilburg",
+      "naam": "Zadenbibliotheek Un Bietje Groen Tilburg",
+      "plaats": "Tilburg",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Tilburg",
+      "url": null
+    },
+    {
+      "id": "groningen-zadenbibliotheek-forum-bibliotheek-groningen-vinkhuizen",
+      "naam": "Zadenbibliotheek Forum Bibliotheek Groningen Vinkhuizen",
+      "plaats": "Groningen",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://forum.nl/nl/bibliotheek-vinkhuizen",
+      "asl_title": "Groningen Vinkhuizen",
+      "reden": "score=205",
+      "http": 200
+    },
+    {
+      "id": "achterveld-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Achterveld",
+      "plaats": "Achterveld",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bibliotheekeemland.nl/openingstijden/detail.622446.html/de-bibliotheek-achterveld/",
+      "asl_title": "Achterveld",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "almere-zadenbibliotheek-buiten",
+      "naam": "Zadenbibliotheek Almere Buiten",
+      "plaats": "Almere",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Almere Buiten",
+      "url": "https://www.bing.com/maps?q=openingstijden+bibliotheek+Almere+stad&FORM=OU11DF&PC=OU11&cp=52.3940325.276481&lvl=11.9"
+    },
+    {
+      "id": "almere-zadenbibliotheek-haven",
+      "naam": "Zadenbibliotheek Almere Haven",
+      "plaats": "Almere",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Almere Haven",
+      "url": "https://www.bing.com/maps?q=openingstijden+bibliotheek+Almere+stad&FORM=OU11DF&PC=OU11&cp=52.3363455.218578&lvl=11.9"
+    },
+    {
+      "id": "almere-zadenbibliotheek-nobelhorst",
+      "naam": "Zadenbibliotheek Almere Nobelhorst",
+      "plaats": "Almere",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.denieuwebibliotheek.nl/de-nieuwe-bibliotheek-nobelhorst",
+      "asl_title": "Almere Nobelhorst",
+      "reden": "score=185",
+      "http": 200
+    },
+    {
+      "id": "nes-zadenbibliotheek-ameland",
+      "naam": "Zadenbibliotheek Ameland",
+      "plaats": "Nes",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9744384.html/bibliotheek-ameland--nes-/",
+      "asl_title": "Ameland",
+      "reden": "score=160",
+      "http": 200
+    },
+    {
+      "id": "appingedam-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Appingedam",
+      "plaats": "Appingedam",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/appingedam.html",
+      "asl_title": "Appingedam",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "baarn-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Baarn",
+      "plaats": "Baarn",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bibliotheekeemland.nl/openingstijden/detail.608554.html/de-bibliotheek-baarn/",
+      "asl_title": "Baarn",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "beek-zadenbibliotheek-ubbergen",
+      "naam": "Zadenbibliotheek Beek-Ubbergen",
+      "plaats": "Beek",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.obgz.nl/openingstijden/gids/detail.11357435.html/bibliotheek-beek-ubbergen/",
+      "asl_title": "Beek-Ubbergen",
+      "reden": "score=185",
+      "http": 200
+    },
+    {
+      "id": "beetsterzwaag-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Beetsterzwaag",
+      "plaats": "Beetsterzwaag",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Beetsterzwaag",
+      "url": null
+    },
+    {
+      "id": "beilen-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Beilen",
+      "plaats": "Beilen",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Beilen",
+      "url": null
+    },
+    {
+      "id": "beuningen-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Beuningen",
+      "plaats": "Beuningen",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.obgz.nl/openingstijden/gids/detail.11360101.html/bibliotheek-beuningen/",
+      "asl_title": "Beuningen",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "biddinghuizen-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Biddinghuizen",
+      "plaats": "Biddinghuizen",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.flevomeerbibliotheek.nl/bibliotheek-biddinghuizen",
+      "asl_title": "Biddinghuizen",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "borne-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Borne",
+      "plaats": "Borne",
+      "status": "blijft-overzicht",
+      "reden": "http-404",
+      "url": "https://www.bibliotheekborne.nl/bibliotheek/openingstijden"
+    },
+    {
+      "id": "buitenpost-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Buitenpost",
+      "plaats": "Buitenpost",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9709805.html/bibliotheek-buitenpost/",
+      "asl_title": "Buitenpost",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "burgum-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Burgum",
+      "plaats": "Burgum",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.dbieb.nl/openingstijden-overzicht/detail.9659602.html/dbieb-burgum/",
+      "asl_title": "Burgum",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "dalfsen-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Dalfsen",
+      "plaats": "Dalfsen",
+      "status": "blijft-overzicht",
+      "reden": "http-400",
+      "url": "https://www.natuurboerderijdalfsen.nl/contact.html"
+    },
+    {
+      "id": "de-westereen-zadenbibliotheek",
+      "naam": "Zadenbibliotheek De Westereen",
+      "plaats": "De Westereen",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9728075.html/bibliotheek-de-westereen/",
+      "asl_title": "De Westereen",
+      "reden": "score=145",
+      "http": 200
+    },
+    {
+      "id": "delden-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Delden",
+      "plaats": "Delden",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Delden",
+      "url": "https://www.openingstijden.nl/Bibliotheek/Delden/"
+    },
+    {
+      "id": "delfzijl-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Delfzijl",
+      "plaats": "Delfzijl",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.groningsebibliotheken.nl/bibliotheekvestigingen/delfzijl.html",
+      "asl_title": "Delfzijl",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "diever-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Diever",
+      "plaats": "Diever",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Diever",
+      "url": null
+    },
+    {
+      "id": "dokkum-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Dokkum",
+      "plaats": "Dokkum",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Dokkum",
+      "url": "https://www.openingstijden.com/o3477792/de-bibliotheek-dokkum-brokmui-62-dokkum/"
+    },
+    {
+      "id": "donderen-zadenbibliotheek-noordenveld",
+      "naam": "Zadenbibliotheek Donderen/Noordenveld",
+      "plaats": "Donderen",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://zadenbiebnoordenveld.nl/contact/",
+      "asl_title": "Donderen/Noordenveld",
+      "reden": "score=185",
+      "http": 200
+    },
+    {
+      "id": "drachten-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Drachten",
+      "plaats": "Drachten",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://passiflora.alliade.nl/",
+      "asl_title": "Drachten",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "esch-zadenbibliotheek-per-1-maart-2026",
+      "naam": "Zadenbibliotheek Esch (per 1 maart 2026)",
+      "plaats": "Esch",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Esch (per 1 maart 2026)",
+      "url": null
+    },
+    {
+      "id": "franeker-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Franeker",
+      "plaats": "Franeker",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9734656.html/bibliotheek-franeker/",
+      "asl_title": "Franeker",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "geldrop-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Geldrop",
+      "plaats": "Geldrop",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bibliotheekdommeldal.nl/iguana/www.main.cls?surl=vestiginggeldrop",
+      "asl_title": "Geldrop",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "gendt-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Gendt",
+      "plaats": "Gendt",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.obgz.nl/openingstijden/gids/detail.11324563.html/bibliotheek-gendt/",
+      "asl_title": "Gendt",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "giekerk-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Giekerk",
+      "plaats": "Giekerk",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.dbieb.nl/openingstijden-overzicht/detail.9663491.html/dbieb-gytsjerk/",
+      "asl_title": "Giekerk",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "gieten-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Gieten",
+      "plaats": "Gieten",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bindbibliotheken.nl/vestigingen/gieten.html",
+      "asl_title": "Gieten",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "goes-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Goes",
+      "plaats": "Goes",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bibliotheekoosterschelde.nl/home/openingstijden/detail.12182934.html/bibliotheek-goes/",
+      "asl_title": "Goes",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "goor-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Goor",
+      "plaats": "Goor",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bibliotheektwente.nl/",
+      "asl_title": "Goor",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "gorredijk-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Gorredijk",
+      "plaats": "Gorredijk",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bzof.nl/openingstijden-bzof/detail.9777507.html/bibliotheek-gorredijk/",
+      "asl_title": "Gorredijk",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "grou-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Grou",
+      "plaats": "Grou",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.dbieb.nl/openingstijden-overzicht/detail.9668321.html/dbieb-grou/",
+      "asl_title": "Grou",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "hallum-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Hallum",
+      "plaats": "Hallum",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.ontdekdebieb.nl/",
+      "asl_title": "Hallum",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "harlingen-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Harlingen",
+      "plaats": "Harlingen",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9730715.html/bibliotheek-harlingen/",
+      "asl_title": "Harlingen",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "heerlen-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Heerlen",
+      "plaats": "Heerlen",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bvvvd.nl/",
+      "asl_title": "Heerlen",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "heiloo-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Heiloo",
+      "plaats": "Heiloo",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bibliotheekheiloo.nl/over-ons/openingstijden-en-adres/detail.9962089.html/bibliotheek-heiloo/",
+      "asl_title": "Heiloo",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "hengelo-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Hengelo",
+      "plaats": "Hengelo",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bibliotheektwente.nl/",
+      "asl_title": "Hengelo",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "hessum-dalfsen-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Hessum-Dalfsen",
+      "plaats": "Hessum-Dalfsen",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://verbondengrond.nl/onze-gronden/deeltuin-and-deelkeet/",
+      "asl_title": "Hessum-Dalfsen",
+      "reden": "score=145",
+      "http": 200
+    },
+    {
+      "id": "noordscheschut-zadenbibliotheek-hoogeveen",
+      "naam": "Zadenbibliotheek Hoogeveen",
+      "plaats": "Noordscheschut",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Hoogeveen",
+      "url": null
+    },
+    {
+      "id": "kekerdom-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Kekerdom",
+      "plaats": "Kekerdom",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "http://www.kulturhuskekerdom.nl/index.html",
+      "asl_title": "Kekerdom",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "kerkrade-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Kerkrade",
+      "plaats": "Kerkrade",
+      "status": "blijft-overzicht",
+      "reden": "http-0",
+      "url": "https://www.bibliotheekkerkrade.nl/klantenservice/vestigingen-en-openingstijden/overzicht/detail.199372.html/hub-bibliotheek-kerkrade/"
+    },
+    {
+      "id": "kollum-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Kollum",
+      "plaats": "Kollum",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9719640.html/bibliotheek-kollum/",
+      "asl_title": "Kollum",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "krommenie-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Krommenie",
+      "plaats": "Krommenie",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://debieb.nl/",
+      "asl_title": "Krommenie",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "lelystad-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Lelystad",
+      "plaats": "Lelystad",
+      "status": "blijft-overzicht",
+      "reden": "asl-gedeelde-website",
+      "asl_title": "Lelystad",
+      "url": "https://www.groningsebibliotheken.nl/bibliotheken/bibliotheek.473860.html/bibliotheek-oude-pekela/"
+    },
+    {
+      "id": "leusden-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Leusden",
+      "plaats": "Leusden",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bibliotheekeemland.nl/openingstijden/detail.615810.html/de-bibliotheek-leusden/",
+      "asl_title": "Leusden",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "lochem-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Lochem",
+      "plaats": "Lochem",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Lochem",
+      "url": "https://www.bing.com/search?q=bibliotheek+lochem+openingstijden&FORM=OU11DF&PC=OU11"
+    },
+    {
+      "id": "maartensdijk-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Maartensdijk",
+      "plaats": "Maartensdijk",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://kunstenhuisidea.nl/bibliotheek/service/bibliotheek-maartensdijk/",
+      "asl_title": "Maartensdijk",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "maasland-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Maasland",
+      "plaats": "Maasland",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.boerderij-landlust.nl/",
+      "asl_title": "Maasland",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "meerssen-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Meerssen",
+      "plaats": "Meerssen",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bibliotheekmeerssen.nl/onze-vestigingen/vestiging.9512978.html/bibliotheek-meerssen/",
+      "asl_title": "Meerssen",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "naaldwijk-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Naaldwijk",
+      "plaats": "Naaldwijk",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Naaldwijk",
+      "url": null
+    },
+    {
+      "id": "nootdorp-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Nootdorp",
+      "plaats": "Nootdorp",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Nootdorp",
+      "url": null
+    },
+    {
+      "id": "norg-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Norg",
+      "plaats": "Norg",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Norg",
+      "url": null
+    },
+    {
+      "id": "oldenzaal-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Oldenzaal",
+      "plaats": "Oldenzaal",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bibliotheektwente.nl/",
+      "asl_title": "Oldenzaal",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "oosterwolde-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Oosterwolde",
+      "plaats": "Oosterwolde",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bzof.nl/openingstijden-bzof/detail.9784154.html/bibliotheek-oosterwolde/",
+      "asl_title": "Oosterwolde",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "ossendrecht-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Ossendrecht",
+      "plaats": "Ossendrecht",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Ossendrecht",
+      "url": null
+    },
+    {
+      "id": "oude-pekela-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Oude Pekela",
+      "plaats": "Oude Pekela",
+      "status": "blijft-overzicht",
+      "reden": "asl-gedeelde-website",
+      "asl_title": "Oude Pekela",
+      "url": "https://www.groningsebibliotheken.nl/bibliotheken/bibliotheek.473860.html/bibliotheek-oude-pekela/"
+    },
+    {
+      "id": "ouderkerk-aan-de-amstel-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Ouderkerk aan de Amstel",
+      "plaats": "Ouderkerk aan de Amstel",
+      "status": "blijft-overzicht",
+      "reden": "http-403",
+      "url": "https://www.oba.nl/openingstijden/detail.199297.html/oba-ouderkerk/"
+    },
+    {
+      "id": "oudheusden-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Oudheusden",
+      "plaats": "Oudheusden",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bibliotheekheusden.nl/home/vestigingen-en-openingstijden/detail.934538.html/de-bibliotheek-oudheusden/",
+      "asl_title": "Oudheusden",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "roden-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Roden",
+      "plaats": "Roden",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Roden",
+      "url": null
+    },
+    {
+      "id": "rosmalen-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Rosmalen",
+      "plaats": "Rosmalen",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.huis73.nl/contact-en-bezoek",
+      "asl_title": "Rosmalen",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "scharnegoutum-zadenbibliotheek-per-1-mei-2026",
+      "naam": "Zadenbibliotheek Scharnegoutum (per 1 mei 2026)",
+      "plaats": "Scharnegoutum",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Scharnegoutum (per 1 mei 2026)",
+      "url": null
+    },
+    {
+      "id": "schoonloo-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Schoonloo",
+      "plaats": "Schoonloo",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.deelderij.nl/",
+      "asl_title": "Schoonloo",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "sint-annaparochie-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Sint Annaparochie",
+      "plaats": "Sint Annaparochie",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9701025.html/bibliotheek-st--annaparochie/",
+      "asl_title": "Sint Annaparochie",
+      "reden": "score=145",
+      "http": 200
+    },
+    {
+      "id": "soest-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Soest",
+      "plaats": "Soest",
+      "status": "blijft-overzicht",
+      "reden": "http-0",
+      "url": "https://bibliotheek.ideacultuur.nl/service/openingstijden/openingstijden-en-vestigingen#228649"
+    },
+    {
+      "id": "steenwijk-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Steenwijk",
+      "plaats": "Steenwijk",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://mijnbieb.nl/",
+      "asl_title": "Steenwijk",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "sterksel-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Sterksel",
+      "plaats": "Sterksel",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bibliotheekdommeldal.nl/iguana/www.main.cls?surl=bibliotheekpuntsterksel",
+      "asl_title": "Sterksel",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "stiens-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Stiens",
+      "plaats": "Stiens",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.dbieb.nl/openingstijden-overzicht/detail.9665705.html/dbieb-stiens/",
+      "asl_title": "Stiens",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "swifterbant-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Swifterbant",
+      "plaats": "Swifterbant",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.flevomeerbibliotheek.nl/bibliotheek-swifterbant",
+      "asl_title": "Swifterbant",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "midsland-zadenbibliotheek-terschelling",
+      "naam": "Zadenbibliotheek Terschelling",
+      "plaats": "Midsland",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.ontdekdebieb.nl/onze-vestigingen/vestiging.9706225.html/bibliotheek-terschelling/",
+      "asl_title": "Terschelling",
+      "reden": "score=160",
+      "http": 200
+    },
+    {
+      "id": "vlijmen-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Vlijmen",
+      "plaats": "Vlijmen",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bibliotheekheusden.nl/home/vestigingen-en-openingstijden/detail.933055.html/de-bibliotheek-vlijmen/",
+      "asl_title": "Vlijmen",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "warfstermolen-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Warfstermolen",
+      "plaats": "Warfstermolen",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Warfstermolen",
+      "url": null
+    },
+    {
+      "id": "warnsveld-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Warnsveld",
+      "plaats": "Warnsveld",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Warnsveld",
+      "url": "https://www.openingstijden.nl/Bibliotheek/Warnsveld/Dreiumme-43/"
+    },
+    {
+      "id": "wergea-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Wergea",
+      "plaats": "Wergea",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Wergea",
+      "url": null
+    },
+    {
+      "id": "wijchen-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Wijchen",
+      "plaats": "Wijchen",
+      "status": "blijft-overzicht",
+      "reden": "http-404",
+      "url": "https://www.bibliotheek-wijchen.nl/algemene-informatie/openingstijden-overzicht/detail.html"
+    },
+    {
+      "id": "wolvega-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Wolvega",
+      "plaats": "Wolvega",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://www.bzof.nl/openingstijden-bzof/detail.9773844.html/bibliotheek-wolvega/",
+      "asl_title": "Wolvega",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "zevenaar-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Zevenaar",
+      "plaats": "Zevenaar",
+      "status": "gekoppeld",
+      "oud": "https://zadenbibliotheeknederland.nl/locaties/",
+      "nieuw": "https://liemerskunstwerk.nl/bibliotheek/",
+      "asl_title": "Zevenaar",
+      "reden": "score=120",
+      "http": 200
+    },
+    {
+      "id": "zuidwolde-zadenbibliotheek",
+      "naam": "Zadenbibliotheek Zuidwolde",
+      "plaats": "Zuidwolde",
+      "status": "blijft-overzicht",
+      "reden": "geen-bruikbare-website",
+      "asl_title": "Zuidwolde",
+      "url": null
+    },
+    {
+      "id": "be-antwerpen-permeke-zadenbib",
+      "naam": "Zadenbib A-bib Permeke",
+      "plaats": "Antwerpen",
+      "status": "blijft-gedeeld-overzicht",
+      "url": "https://antwerpen.bibliotheek.be/zadenbib"
+    },
+    {
+      "id": "be-antwerpen-luchtbal-zadenbib",
+      "naam": "Zadenbib A-bib Luchtbal",
+      "plaats": "Antwerpen",
+      "status": "blijft-gedeeld-overzicht",
+      "url": "https://antwerpen.bibliotheek.be/zadenbib"
+    },
+    {
+      "id": "be-berchem-zadenbib",
+      "naam": "Zadenbib A-bib Berchem",
+      "plaats": "Berchem",
+      "status": "blijft-gedeeld-overzicht",
+      "url": "https://antwerpen.bibliotheek.be/zadenbib"
+    },
+    {
+      "id": "be-antwerpen-linkeroever-zadenbib",
+      "naam": "Zadenbib A-bib Linkeroever",
+      "plaats": "Antwerpen",
+      "status": "blijft-gedeeld-overzicht",
+      "url": "https://antwerpen.bibliotheek.be/zadenbib"
+    },
+    {
+      "id": "be-merksem-zadenbib",
+      "naam": "Zadenbib A-bib Merksem",
+      "plaats": "Merksem",
+      "status": "blijft-gedeeld-overzicht",
+      "url": "https://antwerpen.bibliotheek.be/zadenbib"
+    },
+    {
+      "id": "be-wilrijk-bist-zadenbib",
+      "naam": "Zadenbib A-bib Bist",
+      "plaats": "Wilrijk",
+      "status": "blijft-gedeeld-overzicht",
+      "url": "https://antwerpen.bibliotheek.be/zadenbib"
+    },
+    {
+      "id": "be-borgerhout-ecohuis-zadenbib",
+      "naam": "Zadenbib EcoHuis Antwerpen",
+      "plaats": "Borgerhout",
+      "status": "blijft-gedeeld-overzicht",
+      "url": "https://antwerpen.bibliotheek.be/zadenbib"
+    },
+    {
+      "id": "be-hamont-zadenbib",
+      "naam": "Zadenbib Bibliotheek Hamont",
+      "plaats": "Hamont-Achel",
+      "status": "blijft-gedeeld-overzicht",
+      "url": "https://www.zadenbibnoordlimburg.be/"
+    },
+    {
+      "id": "be-achel-zadenbib",
+      "naam": "Zadenbib Bibliotheek Achel",
+      "plaats": "Hamont-Achel",
+      "status": "blijft-gedeeld-overzicht",
+      "url": "https://www.zadenbibnoordlimburg.be/"
+    },
+    {
+      "id": "be-pelt-zadenbib",
+      "naam": "Zadenbib Bibliotheek Pelt",
+      "plaats": "Pelt",
+      "status": "blijft-gedeeld-overzicht",
+      "url": "https://www.zadenbibnoordlimburg.be/"
+    },
+    {
+      "id": "be-lommel-zadenbib",
+      "naam": "Zadenbib Bibliotheek Lommel",
+      "plaats": "Lommel",
+      "status": "blijft-gedeeld-overzicht",
+      "url": "https://www.zadenbibnoordlimburg.be/"
+    },
+    {
+      "id": "be-peer-zadenbib",
+      "naam": "Zadenbib Bibliotheek Peer",
+      "plaats": "Peer",
+      "status": "blijft-gedeeld-overzicht",
+      "url": "https://www.zadenbibnoordlimburg.be/"
+    },
+    {
+      "id": "be-bocholt-zadenbib",
+      "naam": "Zadenbib Bibliotheek De Priool Bocholt",
+      "plaats": "Bocholt",
+      "status": "blijft-gedeeld-overzicht",
+      "url": "https://www.zadenbibnoordlimburg.be/"
+    },
+    {
+      "id": "be-eksel-zadenbib",
+      "naam": "Zadenbib Bibliotheek Eksel",
+      "plaats": "Hechtel-Eksel",
+      "status": "blijft-gedeeld-overzicht",
+      "url": "https://www.zadenbibnoordlimburg.be/"
+    }
+  ],
+  "blijft_als_bron": [
+    {
+      "naam": "Zadenbibliotheek De Nieuwe Bibliotheek Almere Stad",
+      "plaats": "Almere",
+      "url": "https://www.bing.com/maps?q=openingstijden+bibliotheek+Almere+stad&FORM=OU11DF&PC=OU11&cp=52.3712455.220864&lvl=11.9"
+    },
+    {
+      "naam": "Zadenbibliotheek Duurzaamheidswinkel Woerden",
+      "plaats": "Woerden",
+      "url": "https://zadenbibliotheeknederland.nl/locaties/"
+    },
+    {
+      "naam": "Zadenbibliotheek Consuminderhuis Den Helder",
+      "plaats": "Den Helder",
+      "url": "https://www.cylex.nl/bedrijf/consuminderhuis-het-fundament-13274208.html"
+    },
+    {
+      "naam": "Zadenbibliotheek Bibliotheek Spijkenisse",
+      "plaats": "Spijkenisse",
+      "url": "https://www.bing.com/search?q=openingstijden+bibliotheek+spijkernisse&qs=n&form=QBRE&sp=-1&ghc=1&lq=0&pq=openingstijden+bibliotheek+spijkernisse&sc=1-39&sk=&cvid=4E6ED92B35EA4264B243C3C1B31DDAA1&ghsh=0&ghacc=0&ghpl="
+    },
+    {
+      "naam": "Zadenbibliotheek Un Bietje Groen Tilburg",
+      "plaats": "Tilburg",
+      "url": "https://zadenbibliotheeknederland.nl/locaties/"
+    },
+    {
+      "naam": "Zadenbibliotheek Almere Buiten",
+      "plaats": "Almere",
+      "url": "https://www.bing.com/maps?q=openingstijden+bibliotheek+Almere+stad&FORM=OU11DF&PC=OU11&cp=52.3940325.276481&lvl=11.9"
+    },
+    {
+      "naam": "Zadenbibliotheek Almere Haven",
+      "plaats": "Almere",
+      "url": "https://www.bing.com/maps?q=openingstijden+bibliotheek+Almere+stad&FORM=OU11DF&PC=OU11&cp=52.3363455.218578&lvl=11.9"
+    },
+    {
+      "naam": "Zadenbibliotheek Beetsterzwaag",
+      "plaats": "Beetsterzwaag",
+      "url": "https://zadenbibliotheeknederland.nl/locaties/"
+    },
+    {
+      "naam": "Zadenbibliotheek Beilen",
+      "plaats": "Beilen",
+      "url": "https://zadenbibliotheeknederland.nl/locaties/"
+    },
+    {
+      "naam": "Zadenbibliotheek Borne",
+      "plaats": "Borne",
+      "url": "https://www.bibliotheekborne.nl/bibliotheek/openingstijden"
+    },
+    {
+      "naam": "Zadenbibliotheek Dalfsen",
+      "plaats": "Dalfsen",
+      "url": "https://www.natuurboerderijdalfsen.nl/contact.html"
+    },
+    {
+      "naam": "Zadenbibliotheek Delden",
+      "plaats": "Delden",
+      "url": "https://www.openingstijden.nl/Bibliotheek/Delden/"
+    },
+    {
+      "naam": "Zadenbibliotheek Diever",
+      "plaats": "Diever",
+      "url": "https://zadenbibliotheeknederland.nl/locaties/"
+    },
+    {
+      "naam": "Zadenbibliotheek Dokkum",
+      "plaats": "Dokkum",
+      "url": "https://www.openingstijden.com/o3477792/de-bibliotheek-dokkum-brokmui-62-dokkum/"
+    },
+    {
+      "naam": "Zadenbibliotheek Esch (per 1 maart 2026)",
+      "plaats": "Esch",
+      "url": "https://zadenbibliotheeknederland.nl/locaties/"
+    },
+    {
+      "naam": "Zadenbibliotheek Hoogeveen",
+      "plaats": "Noordscheschut",
+      "url": "https://zadenbibliotheeknederland.nl/locaties/"
+    },
+    {
+      "naam": "Zadenbibliotheek Kerkrade",
+      "plaats": "Kerkrade",
+      "url": "https://www.bibliotheekkerkrade.nl/klantenservice/vestigingen-en-openingstijden/overzicht/detail.199372.html/hub-bibliotheek-kerkrade/"
+    },
+    {
+      "naam": "Zadenbibliotheek Lelystad",
+      "plaats": "Lelystad",
+      "url": "https://www.groningsebibliotheken.nl/bibliotheken/bibliotheek.473860.html/bibliotheek-oude-pekela/"
+    },
+    {
+      "naam": "Zadenbibliotheek Lochem",
+      "plaats": "Lochem",
+      "url": "https://www.bing.com/search?q=bibliotheek+lochem+openingstijden&FORM=OU11DF&PC=OU11"
+    },
+    {
+      "naam": "Zadenbibliotheek Naaldwijk",
+      "plaats": "Naaldwijk",
+      "url": "https://zadenbibliotheeknederland.nl/locaties/"
+    },
+    {
+      "naam": "Zadenbibliotheek Nootdorp",
+      "plaats": "Nootdorp",
+      "url": "https://zadenbibliotheeknederland.nl/locaties/"
+    },
+    {
+      "naam": "Zadenbibliotheek Norg",
+      "plaats": "Norg",
+      "url": "https://zadenbibliotheeknederland.nl/locaties/"
+    },
+    {
+      "naam": "Zadenbibliotheek Ossendrecht",
+      "plaats": "Ossendrecht",
+      "url": "https://zadenbibliotheeknederland.nl/locaties/"
+    },
+    {
+      "naam": "Zadenbibliotheek Oude Pekela",
+      "plaats": "Oude Pekela",
+      "url": "https://www.groningsebibliotheken.nl/bibliotheken/bibliotheek.473860.html/bibliotheek-oude-pekela/"
+    },
+    {
+      "naam": "Zadenbibliotheek Ouderkerk aan de Amstel",
+      "plaats": "Ouderkerk aan de Amstel",
+      "url": "https://www.oba.nl/openingstijden/detail.199297.html/oba-ouderkerk/"
+    },
+    {
+      "naam": "Zadenbibliotheek Roden",
+      "plaats": "Roden",
+      "url": "https://zadenbibliotheeknederland.nl/locaties/"
+    },
+    {
+      "naam": "Zadenbibliotheek Scharnegoutum (per 1 mei 2026)",
+      "plaats": "Scharnegoutum",
+      "url": "https://zadenbibliotheeknederland.nl/locaties/"
+    },
+    {
+      "naam": "Zadenbibliotheek Soest",
+      "plaats": "Soest",
+      "url": "https://bibliotheek.ideacultuur.nl/service/openingstijden/openingstijden-en-vestigingen#228649"
+    },
+    {
+      "naam": "Zadenbibliotheek Warfstermolen",
+      "plaats": "Warfstermolen",
+      "url": "https://zadenbibliotheeknederland.nl/locaties/"
+    },
+    {
+      "naam": "Zadenbibliotheek Warnsveld",
+      "plaats": "Warnsveld",
+      "url": "https://www.openingstijden.nl/Bibliotheek/Warnsveld/Dreiumme-43/"
+    },
+    {
+      "naam": "Zadenbibliotheek Wergea",
+      "plaats": "Wergea",
+      "url": "https://zadenbibliotheeknederland.nl/locaties/"
+    },
+    {
+      "naam": "Zadenbibliotheek Wijchen",
+      "plaats": "Wijchen",
+      "url": "https://www.bibliotheek-wijchen.nl/algemene-informatie/openingstijden-overzicht/detail.html"
+    },
+    {
+      "naam": "Zadenbibliotheek Zuidwolde",
+      "plaats": "Zuidwolde",
+      "url": "https://zadenbibliotheeknederland.nl/locaties/"
+    },
+    {
+      "naam": "Zadenbib A-bib Permeke",
+      "plaats": "Antwerpen",
+      "url": "https://antwerpen.bibliotheek.be/zadenbib"
+    },
+    {
+      "naam": "Zadenbib A-bib Luchtbal",
+      "plaats": "Antwerpen",
+      "url": "https://antwerpen.bibliotheek.be/zadenbib"
+    },
+    {
+      "naam": "Zadenbib A-bib Berchem",
+      "plaats": "Berchem",
+      "url": "https://antwerpen.bibliotheek.be/zadenbib"
+    },
+    {
+      "naam": "Zadenbib A-bib Linkeroever",
+      "plaats": "Antwerpen",
+      "url": "https://antwerpen.bibliotheek.be/zadenbib"
+    },
+    {
+      "naam": "Zadenbib A-bib Merksem",
+      "plaats": "Merksem",
+      "url": "https://antwerpen.bibliotheek.be/zadenbib"
+    },
+    {
+      "naam": "Zadenbib A-bib Bist",
+      "plaats": "Wilrijk",
+      "url": "https://antwerpen.bibliotheek.be/zadenbib"
+    },
+    {
+      "naam": "Zadenbib EcoHuis Antwerpen",
+      "plaats": "Borgerhout",
+      "url": "https://antwerpen.bibliotheek.be/zadenbib"
+    },
+    {
+      "naam": "Zadenbib Bibliotheek Hamont",
+      "plaats": "Hamont-Achel",
+      "url": "https://www.zadenbibnoordlimburg.be/"
+    },
+    {
+      "naam": "Zadenbib Bibliotheek Achel",
+      "plaats": "Hamont-Achel",
+      "url": "https://www.zadenbibnoordlimburg.be/"
+    },
+    {
+      "naam": "Zadenbib Bibliotheek Pelt",
+      "plaats": "Pelt",
+      "url": "https://www.zadenbibnoordlimburg.be/"
+    },
+    {
+      "naam": "Zadenbib Bibliotheek Lommel",
+      "plaats": "Lommel",
+      "url": "https://www.zadenbibnoordlimburg.be/"
+    },
+    {
+      "naam": "Zadenbib Bibliotheek Peer",
+      "plaats": "Peer",
+      "url": "https://www.zadenbibnoordlimburg.be/"
+    },
+    {
+      "naam": "Zadenbib Bibliotheek De Priool Bocholt",
+      "plaats": "Bocholt",
+      "url": "https://www.zadenbibnoordlimburg.be/"
+    },
+    {
+      "naam": "Zadenbib Bibliotheek Eksel",
+      "plaats": "Hechtel-Eksel",
+      "url": "https://www.zadenbibnoordlimburg.be/"
+    }
+  ]
+}

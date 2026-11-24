@@ -26,17 +26,15 @@
 @section('content')
 @php
   $isFilter = $filters['type'] !== '' || $filters['provincie'] !== '' || $filters['plaats'] !== '';
-  $bronLabel = function ($plek): string {
-      $host = strtolower((string) parse_url((string) $plek->bron_url, PHP_URL_HOST));
-      $host = preg_replace('/^www\./', '', $host) ?? '';
-      $hostKern = preg_replace('/[^a-z0-9]/', '', (string) strstr($host.'.', '.', true));
-      $naam = preg_replace('/[^a-z0-9]/', '', \Illuminate\Support\Str::ascii(mb_strtolower((string) $plek->naam)));
-      $generiek = ['facebook', 'instagram', 'google', 'nextdoor', 'linktree'];
-      if ($hostKern !== '' && ! in_array($hostKern, $generiek, true)
-          && (str_contains($naam, $hostKern) || str_contains($hostKern, $naam) || similar_text($naam, $hostKern) >= 8)) {
-          return 'Website';
-      }
-      return 'Meer informatie';
+  $bronUrlCounts = app(\App\Services\Deelplekken::class)->bronUrlCounts();
+  $bronLabel = function ($plek) use ($bronUrlCounts): string {
+      $evenement = ! empty($plek->tijdelijk);
+      return \App\Support\BronLabel::for(
+          (string) ($plek->bron_url ?? ''),
+          (string) ($plek->naam ?? ''),
+          $evenement,
+          $bronUrlCounts,
+      );
   };
   $meervoud = [
       'plantenasiel' => 'Plantenasiels', 'plantenbieb' => 'Plantenbiebs', 'ruilkast' => 'Ruilkasten',
@@ -125,7 +123,7 @@
         <p class="zoek-item-acties">
           <button type="button" class="zoek-op-kaart" data-lat="{{ $plek->lat }}" data-lng="{{ $plek->lng }}">Op de kaart</button>
           @if($plek->bron_url)
-            <a href="{{ $plek->bron_url }}" rel="noopener noreferrer" target="_blank">{{ $isEvenement ? 'Bron' : $bronLabel($plek) }}</a>
+            <a href="{{ $plek->bron_url }}" rel="noopener noreferrer" target="_blank">{{ $bronLabel($plek) }}</a>
           @endif
         </p>
         @if($isEvenement === false && $plek->geraadpleegd)

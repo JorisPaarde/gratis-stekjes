@@ -15,6 +15,7 @@ test('initiatievenpagina laadt op /initiatieven', function () {
         ->assertDontSee('>Partners<', false)
         ->assertSee('Stichting Voedselbosbouw Nederland', false)
         ->assertSee('MeerBomen Nu', false)
+        ->assertSee('Stichting Steenbreek', false)
         ->assertSee('id="organisaties"', false)
         ->assertDontSee('Stekjesroute', false);
 

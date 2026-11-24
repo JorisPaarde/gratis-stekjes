@@ -119,6 +119,17 @@ class OrganisatieController extends Controller
             ]);
         }
 
+        if ($slug === 'steenbreek') {
+            return view('pages.steenbreek', [
+                'title' => $title,
+                'metaDescription' => $meta,
+                'canonical' => route('organisaties.show', ['slug' => $slug]),
+                'org' => $org,
+                'extraLinks' => $extraLinks,
+                'initiatief' => $init,
+            ]);
+        }
+
         return view('pages.organisatie-show', [
             'title' => $title,
             'metaDescription' => $meta,
