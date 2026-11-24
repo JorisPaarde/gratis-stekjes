@@ -3,6 +3,16 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.13] - 2026-11-24
+
+### Added
+
+- Stichting Steenbreek op `/organisaties/steenbreek` (gids `/initiatieven`):
+  leuze «Minder steen, méér groen», ondersteuning bij vergroenen van tuinen en
+  straten, start in 2015 als Operatie Steenbreek met «Tegel eruit, plant erin»,
+  ruim 200 gemeenten, link naar hun artikel over Gratis planten. Logo uit hun
+  eigen site-header (`steenbreek.nl`). Alleen feiten van hun pagina’s.
+
 ## [0.81.12] - 2026-11-23
 
 ### Fixed

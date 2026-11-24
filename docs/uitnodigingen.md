@@ -48,6 +48,7 @@ Joris
 | Stichting Struikroven | initiatief | Nederland | https://struikroven.nu | info@struikroven.nl; bestuur@struikroven.nl (ANBI) | https://struikroven.nu/werkwijze · https://struikroven.nu/anbi | `/organisaties/struikroven` |
 | Stekjesroute | initiatief | Nederland | https://stekjesroute.com/ | info@stekjesroute.eu; contactformulier | https://stekjesroute.com/pages/contact/ | verborgen (`visible: false`) — twijfel of gratis |
 | Het Bomenproject | initiatief | Nederland | https://hetbomenproject.nl/ | via hun site | https://hetbomenproject.nl/over-het-bomenproject/ | `/organisaties/het-bomenproject` |
+| Stichting Steenbreek | initiatief | Nederland | https://steenbreek.nl/ | info@steenbreek.nl (vermeld op hun site) | https://steenbreek.nl/wie-we-zijn/ · https://steenbreek.nl/wat-we-doen/ | `/organisaties/steenbreek` |
 | Velt Nederland | tuinvereniging | Nederland | https://velt.nu/velt-nederland | info.nederland@velt.nu | https://velt.nu/velt-nederland | `/organisaties/velt` |
 | Zadenbibliotheek Nederland | zaadbibliotheek | Leeuwarden | https://zadenbibliotheeknederland.nl/ | welkom@zadenbibliotheeknederland.nl | https://zadenbibliotheeknederland.nl/contact/ | `/organisaties/zadenbibliotheek-nederland` |
 | Permacultuur Nederland | initiatief | Nederland | https://www.permacultuurnederland.org/ | info@permacultuurnederland.org | http://www.permacultuurnederland.org/wp/contact-en-netwerk/ | `/organisaties/permacultuur-nederland` |

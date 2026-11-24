@@ -2,7 +2,7 @@
   "meta": {
     "titel": "Organisaties rond gratis planten delen",
     "omschrijving": "Korte, feitelijke pagina’s over publiek vindbare organisaties en initiatieven. Geen partnerschappen; alleen controleerbare info met bronlink. Contactgegevens voor uitnodigen staan alleen in docs/uitnodigingen.md (niet versturen).",
-    "geraadpleegd": "2026-10-31"
+    "geraadpleegd": "2026-11-24"
   },
   "organisaties": [
     {
@@ -175,6 +175,36 @@
       "gerelateerde_slugs": [
         "meerbomen-nu"
       ]
+    },
+    {
+      "slug": "steenbreek",
+      "naam": "Stichting Steenbreek",
+      "type": "initiatief",
+      "plaats": "Nederland",
+      "website": "https://steenbreek.nl/",
+      "bron_url": "https://steenbreek.nl/wie-we-zijn/",
+      "kort": "Leuze: «Minder steen, méér groen». Steenbreek ondersteunt gemeenten, partners en inwoners met communicatie, kennisdeling en participatie bij het vergroenen van tuinen en straten. In 2015 begonnen als Operatie Steenbreek, met de actie «Tegel eruit, plant erin»; ruim 200 gemeenten doen mee.",
+      "deelplek_slugs": [],
+      "meta_description": "Stichting Steenbreek: minder steen, méér groen. Ondersteunt gemeenten, partners en inwoners bij het vergroenen van tuinen en straten; ruim 200 gemeenten doen mee.",
+      "links": [
+        {
+          "label": "Wat ze doen",
+          "url": "https://steenbreek.nl/wat-we-doen/"
+        },
+        {
+          "label": "Artikel over Gratis planten",
+          "url": "https://steenbreek.nl/gratis-planten-buren-verbinden-en-samen-de-wereld-groener-maken/"
+        }
+      ],
+      "initiatief": {
+        "pagina_titel": "Stichting Steenbreek",
+        "intro_titel": "Minder steen, méér groen",
+        "intro_tekst": "Steenbreek ondersteunt gemeenten, partners en inwoners met communicatie, kennisdeling en participatie bij het vergroenen van tuinen en straten.\n\nIn 2015 werd Operatie Steenbreek opgericht. Zo startte Steenbreek met de actie «Tegel eruit, plant erin». Ruim 200 gemeenten doen mee.\n\nZe schreven over Gratis planten.",
+        "korte_naam": "Steenbreek",
+        "site_url": "https://steenbreek.nl/",
+        "site_link_tekst": "Meer over Steenbreek",
+        "meta_description": "Stichting Steenbreek: minder steen, méér groen. Ondersteunt gemeenten, partners en inwoners bij het vergroenen van tuinen en straten."
+      }
     },
     {
       "slug": "stekjesroute",
