@@ -3,6 +3,33 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.83.0] - 2026-11-25
+
+### Added
+
+- Hero-zoekveld op de homepage zoekt nu op plaats, postcode én plant, in één veld
+  (`/aanbod?zoek=`). `App\Services\ZoekIntent` herkent: postcode, bekende stad, plantnaam /
+  volksnaam / Latijnse naam (`plantensoorten.json`), een woord uit het aanbod (bv. «vetplant»)
+  of een combinatie als «monstera haarlem» (ook «haarlem monstera», «monstera in Haarlem»,
+  «8102 monstera»), en stuurt door naar de bestaande `?q=` en `?plant=`. Rest gaat via de
+  geocoder (PDOK/Nominatim, gecachet; max. 30 opzoekingen per uur per IP vanuit het hero-veld).
+- Nette lege staat op `/aanbod` voor invoer die geen plaats of plant is: «Ik vond geen plaats
+  of plant met “…”», met «Bedoelde je …?» uit de plantencatalogus en gewoon het nieuwste
+  aanbod en de kaart eronder.
+- Statusregel bij plaats + plant: «Rond Haarlem: 2 aanbod met “monstera”».
+
+### Changed
+
+- Plant zoeken (`/aanbod?plant=`, `/api/zoeken?plant=`) vindt nu ook aanbod onder een andere
+  naam van dezelfde soort (volksnaam, synoniem, Latijnse naam) en via het gekozen soort-id:
+  «gatenplant» vindt ook «Monstera». Accent- en hoofdletterongevoelig.
+- Teksten hero (homepage en «Ik zoek een plant» op /hoe-werkt-het): label «Wat of waar zoek je?»
+  (was «Wat is er bij jou in de buurt?»), placeholder «Plaats, postcode of plant», hulpregel
+  met voorbeelden, meta-description «Zoek op plaats, postcode of plant». Het veld heet nu `zoek`
+  en vult het browser-postcode-autocomplete niet meer in; `?q=` en `?plant=` blijven werken.
+- Bij plaats + plant verbergt de pagina de server-lijst «alle plaatsen», zodat er geen dubbele
+  lijst staat.
+
 ## [0.82.3] - 2026-11-25
 
 ### Fixed

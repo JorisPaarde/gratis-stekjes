@@ -1028,6 +1028,7 @@ img, svg, video, iframe, #kaart, #deelplekken-kaart, #stad-kaart {
 }
 .hero-zoek-veld input:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
 .hero-zoek-veld .btn { min-height: 48px; flex: 0 0 auto; }
+.hero-zoek-hint { margin: .5rem 0 0; font-size: .95rem; color: #f5faf3; }
 @media (max-width: 479px) {
   .hero-zoek-veld .btn { flex: 1 1 100%; }
 }

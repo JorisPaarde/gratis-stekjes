@@ -31,13 +31,14 @@ test('homepage is 200 en toont merk Gratis planten', function () {
     $response->assertSee('<title>Gratis planten en stekjes delen in je buurt', false);
 });
 
-test('hero heeft een zoekveld dat naar /aanbod?q= gaat, met account als tweede actie', function () {
+test('hero heeft één zoekveld voor plaats, postcode of plant dat naar /aanbod?zoek= gaat, met account als tweede actie', function () {
     $html = $this->get('/')->assertOk()->getContent();
 
     expect($html)->toContain('class="hero-zoek"')
         ->and($html)->toContain('action="'.route('aanbod').'"')
-        ->and($html)->toContain('name="q"')
-        ->and($html)->toContain('Wat is er bij jou in de buurt?');
+        ->and($html)->toContain('name="zoek"')
+        ->and($html)->toContain('Wat of waar zoek je?')
+        ->and($html)->toContain('Plaats, postcode of plant');
     preg_match('/<section class="home-hero".*?<\/section>/s', $html, $hero);
     expect($hero[0])->toContain('/ga/word-lid')
         ->and($hero[0])->toContain('utm_content=home-hero');

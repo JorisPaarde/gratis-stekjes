@@ -81,6 +81,7 @@
 }
 .hwh-zoek { margin: 0 0 0.75rem; max-width: none; }
 .hwh-zoek label { color: var(--forest-deep); }
+.hwh-zoek .hero-zoek-hint { color: var(--ink-soft); }
 .hwh-zoek .hero-zoek-veld input { border-color: rgba(31, 77, 43, 0.3); }
 .hwh-route .home-actions { margin: 0 0 0.75rem; }
 .hwh-extra { margin: 0; color: var(--ink-soft); font-size: 0.95rem; }

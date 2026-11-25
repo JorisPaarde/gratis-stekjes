@@ -13,7 +13,10 @@ use Illuminate\Database\Eloquent\Builder;
 
 final class AanbodSearch
 {
-    public function __construct(private readonly LocationGeocoder $geocoder) {}
+    public function __construct(
+        private readonly LocationGeocoder $geocoder,
+        private readonly Plantensoorten $plantensoorten,
+    ) {}
 
     /**
      * @return array{
@@ -26,19 +29,12 @@ final class AanbodSearch
     {
         $rows = $this->baseQuery($typeFilter)->get();
 
-        $items = $rows->map(fn (Aanbod $a) => $this->toPublicItem($a))->all();
-
-        $plantNeedle = mb_strtolower(trim((string) $plant), 'UTF-8');
-        if ($plantNeedle !== '') {
-            $items = array_values(array_filter(
-                $items,
-                static function (array $item) use ($plantNeedle): bool {
-                    $tekst = mb_strtolower((string) ($item['tekst'] ?? ''), 'UTF-8');
-
-                    return str_contains($tekst, $plantNeedle);
-                }
-            ));
+        $plantFilter = $this->plantFilter((string) $plant);
+        if ($plantFilter !== null) {
+            $rows = $rows->filter(fn (Aanbod $a): bool => $this->matchtPlant($a, $plantFilter))->values();
         }
+
+        $items = $rows->map(fn (Aanbod $a) => $this->toPublicItem($a))->all();
 
         $q = trim((string) $query);
         if ($q !== '') {
@@ -62,6 +58,96 @@ final class AanbodSearch
         }
 
         return ['meta' => null, 'items' => $items];
+    }
+
+    /**
+     * Of er publiek aanbod is waarvan de tekst deze term bevat (ook zonder catalogusnaam,
+     * bijvoorbeeld «vetplant»). Voor het herkennen van een plant in het hero-zoekveld.
+     */
+    public function heeftAanbodMet(string $term): bool
+    {
+        $filter = $this->plantFilter($term);
+        if ($filter === null) {
+            return false;
+        }
+        $needle = mb_strtolower(trim($term), 'UTF-8');
+        if (preg_match('/[%_\\\\]/', $needle) === 1) {
+            return false; // LIKE-jokertekens: geen plantnaam
+        }
+        $like = '%'.$needle.'%';
+
+        // Voorselectie in SQL op de term en de namen van de soort; daarna dezelfde matching
+        // als het zoeken zelf. Beperkt tot een handvol rijen.
+        $kandidaten = $this->eligibleQuery(null)
+            ->where(function ($q) use ($like, $filter) {
+                $q->whereRaw('LOWER(tekst) LIKE ?', [$like]);
+                foreach ($filter['needles'] as $naam) {
+                    $q->orWhereRaw('LOWER(tekst) LIKE ?', ['%'.$naam.'%']);
+                }
+                if ($filter['id'] !== null) {
+                    $q->orWhere('plantensoort_id', $filter['id']);
+                }
+            })
+            ->limit(25)
+            ->get();
+
+        foreach ($kandidaten as $aanbod) {
+            if ($this->matchtPlant($aanbod, $filter)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Zoekfilter voor een plantterm: de term zelf plus, bij een bekende soort, alle namen
+     * (volksnaam, synoniem, Latijn) en het soort-id van de catalogus.
+     *
+     * @return array{id: ?int, needles: list<string>, raw: string}|null
+     */
+    private function plantFilter(string $plant): ?array
+    {
+        $raw = mb_strtolower(trim($plant), 'UTF-8');
+        if ($raw === '') {
+            return null;
+        }
+
+        $needles = [];
+        $norm = $this->plantensoorten->normalize($raw);
+        if ($norm !== '') {
+            $needles[$norm] = true;
+        }
+        $soort = $this->plantensoorten->zoeknamen($raw);
+        foreach ($soort['namen'] ?? [] as $naam) {
+            $needles[$naam] = true;
+        }
+
+        return ['id' => $soort['id'] ?? null, 'needles' => array_keys($needles), 'raw' => $raw];
+    }
+
+    /**
+     * @param  array{id: ?int, needles: list<string>, raw: string}  $filter
+     */
+    private function matchtPlant(Aanbod $aanbod, array $filter): bool
+    {
+        if ($filter['id'] !== null && (int) $aanbod->plantensoort_id === $filter['id']) {
+            return true;
+        }
+
+        $tekst = (string) $aanbod->tekst;
+        if (str_contains(mb_strtolower($tekst, 'UTF-8'), $filter['raw'])) {
+            return true;
+        }
+
+        $tekstNorm = $this->plantensoorten->normalize($tekst);
+        foreach ($filter['needles'] as $needle) {
+            if (str_contains($tekstNorm, $needle)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
