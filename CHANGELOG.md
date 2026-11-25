@@ -3,6 +3,15 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.84.6] - 2026-11-25
+
+### Fixed
+
+- In het aanbod-detailvenster kwam de laatste regel (zoals «Beschikbaar tot»)
+  onder de actiebalk tevoorschijn, en op een lang aanbod vielen «Afstand» en
+  de datums achter de knoppen weg. De balk sluit nu aan op de onderkant, de
+  foto is iets lager, zodat de velden en knoppen samen in beeld blijven.
+
 ## [0.84.5] - 2026-11-25
 
 ### Fixed
