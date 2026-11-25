@@ -80,15 +80,16 @@ final class ZoekIntent
             return $this->uitkomst(self::PLAATS, $tekst, q: $tekst);
         }
 
-        $gevonden = $this->geocoder->resolve($tekst, null, true);
-        if ($gevonden['ok'] ?? false) {
-            return $this->uitkomst(self::PLAATS, $tekst, q: $tekst);
-        }
-
+        // Dichtbij een plantnaam? Dan mag een zwak geocoder-resultaat («monstra» → Meise) niet winnen.
         $suggesties = array_map(
             static fn (array $s): string => $s['naam'],
             $this->plantensoorten->suggestClose($tekst, 3),
         );
+
+        $gevonden = $this->geocoder->resolve($tekst, null, true);
+        if (($gevonden['ok'] ?? false) && ($suggesties === [] || $this->lijktOpPlaats($tekst, $gevonden))) {
+            return $this->uitkomst(self::PLAATS, $tekst, q: $tekst);
+        }
 
         return $this->uitkomst(self::ONBEKEND, $tekst, suggesties: $suggesties);
     }
@@ -127,6 +128,36 @@ final class ZoekIntent
         }
 
         return $this->isCatalogusPlant($deel) || (! $alleenCatalogus && $this->isAanbodPlant($deel));
+    }
+
+    /**
+     * Komt het gevonden label overeen met wat er getypt is? PDOK/Nominatim zijn tolerant
+     * en geven bij een typfout soms een willekeurige plaats terug.
+     *
+     * @param  array<string, mixed>  $gevonden
+     */
+    private function lijktOpPlaats(string $tekst, array $gevonden): bool
+    {
+        $label = $this->plantensoorten->normalize(trim(($gevonden['label'] ?? '').' '.($gevonden['woonplaats'] ?? '')));
+        if ($label === '') {
+            return false;
+        }
+        $labelWoorden = explode(' ', $label);
+        foreach (explode(' ', $this->plantensoorten->normalize($tekst)) as $woord) {
+            if (mb_strlen($woord) < 3) {
+                continue;
+            }
+            if (str_contains($label, $woord)) {
+                return true;
+            }
+            foreach ($labelWoorden as $labelWoord) {
+                if ($labelWoord !== '' && levenshtein($woord, $labelWoord) <= 1) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private function isCatalogusPlant(string $tekst): bool

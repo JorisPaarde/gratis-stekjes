@@ -15,7 +15,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   Veiligheidstips, verder contact en melden/blokkeren staan in inklapbare
   blokken. Footer en feedbackknop zijn op deze pagina verborgen.
 
-## [0.84.1] - 2026-11-25
+## [0.84.2] - 2026-11-25
 
 ### Fixed
 
@@ -24,6 +24,9 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   Raalte (`/api/zoeken?q=8102`, ook op productie). De geocoder probeert zo'n postcode nu eerst
   als Nederlandse postcode via PDOK; vindt PDOK niets (bijv. een Belgische postcode), dan blijft
   de oude route gelden.
+- Hero-zoekveld: een typfout in een plantnaam («monstra») gaf een willekeurige plaats
+  (Nominatim gaf «1860 Meise»). Als de invoer dicht bij een plantnaam ligt en het gevonden
+  label niet op wat is getypt lijkt, toont de lege staat nu «Bedoelde je Monstera?».
 
 ## [0.84.0] - 2026-11-25
 
