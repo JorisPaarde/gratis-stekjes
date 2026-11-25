@@ -3,6 +3,15 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.17] - 2026-11-25
+
+### Fixed
+
+- Aanbod-knop en SEO-tekst op stektips-pagina's volgt de vermeerdering: «stekjes»
+  als de soort te stekken is, «zaad» als die alleen via zaad gaat, anders
+  «plantjes» (scheuren, uitlopers, enten, knollen). Zelfde woordkeuze op de
+  aanbodpagina met plantfilter.
+
 ## [0.81.16] - 2026-11-25
 
 ### Added

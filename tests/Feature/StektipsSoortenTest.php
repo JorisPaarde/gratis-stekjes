@@ -18,13 +18,14 @@ test('elke soortpagina laadt met 200 en SEO-titel', function () {
         $seoNaam = trim((string) ($soort['seo_naam'] ?? '')) ?: $naam;
         $seoWerkwoord = trim((string) ($soort['seo_werkwoord'] ?? '')) ?: 'stekken';
 
-        $expectedTitle = SeoTitle::document($seoNaam.' '.$seoWerkwoord.' en gratis stekjes');
+        $deelwoord = $stektips->aanbodZelfstandigNaam($soort);
+        $expectedTitle = SeoTitle::document($seoNaam.' '.$seoWerkwoord.' en gratis '.$deelwoord);
 
         $this->get(route('stektips.show', ['slug' => $slug]))
             ->assertOk()
             ->assertSee($seoNaam.' '.$seoWerkwoord.': zo doe je het', false)
             ->assertSee('<title>'.$expectedTitle.'</title>', false)
-            ->assertSee('Gratis '.$naam.'-stekjes in je buurt', false)
+            ->assertSee('Gratis '.$naam.'-'.$deelwoord.' in je buurt', false)
             ->assertSee((string) $soort['latijn'], false);
     }
 });
@@ -132,4 +133,31 @@ test('faq-data: elke link verwijst naar een bestaande pagina', function () {
             $this->get($v['link']['pad'])->assertOk();
         }
     }
+});
+
+test('palmkool-CTA en titel spreken van zaad, niet van stekjes', function () {
+    $html = $this->get(route('stektips.show', ['slug' => 'palmkool']))
+        ->assertOk()
+        ->assertSee('Gratis Palmkool-zaad in je buurt', false)
+        ->assertSee('Palmkool zaaien en gratis zaad', false)
+        ->assertDontSee('Gratis Palmkool-stekjes', false)
+        ->getContent();
+
+    expect($html)->toContain('Daarna gratis zaad delen');
+});
+
+test('aanbod-filter voor palmkool zegt zaad, voor monstera stekjes', function () {
+    $this->get(route('aanbod', ['plant' => 'Palmkool']))
+        ->assertOk()
+        ->assertSee('Gratis Palmkool-zaad', false)
+        ->assertDontSee('Gratis Palmkool-stekjes', false);
+
+    $this->get(route('aanbod', ['plant' => 'cavolo nero']))
+        ->assertOk()
+        ->assertSee('Gratis cavolo nero-zaad', false);
+
+    $this->get(route('aanbod', ['plant' => 'Monstera']))
+        ->assertOk()
+        ->assertSee('Gratis Monstera-stekjes', false)
+        ->assertDontSee('Gratis Monstera-zaad', false);
 });
