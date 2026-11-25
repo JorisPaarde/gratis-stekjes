@@ -18,6 +18,7 @@ export default defineConfig({
                 'resources/css/stektips.css',
                 'resources/css/gratis-planten.css',
                 'resources/js/app.js',
+                'resources/js/gesprek.js',
                 'resources/js/zoeken.js',
                 'resources/js/deelplekken.js',
                 'resources/js/stad-kaart.js',

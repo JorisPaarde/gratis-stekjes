@@ -124,3 +124,56 @@ test('inbox toont gesprekken', function () {
         ->assertOk()
         ->assertSee('Gesprek met Ben', false);
 });
+
+test('gesprekspagina toont chat en invoervak in chat-layout', function () {
+    $a = messagingUser('a5@example.com', 'Ada');
+    $b = messagingUser('b5@example.com', 'Ben');
+    $conv = Conversation::query()->create([
+        'user_a_id' => min($a->id, $b->id),
+        'user_b_id' => max($a->id, $b->id),
+    ]);
+
+    $this->actingAs($a)
+        ->post(route('account.gesprek.store', $conv), [
+            'action' => 'message',
+            'body' => 'Hoi Ben, de munt staat klaar.',
+            'website' => '',
+            'form_started' => time() - 10,
+        ])
+        ->assertRedirect();
+
+    $html = $this->actingAs($a)
+        ->get(route('account.gesprek', $conv))
+        ->assertOk()
+        ->assertSee('Gesprek met Ben', false)
+        ->assertSee('Hoi Ben, de munt staat klaar.', false)
+        ->assertSee('data-gesprek', false)
+        ->assertSee('data-gesprek-chat', false)
+        ->assertSee('data-gesprek-composer', false)
+        ->assertSee('data-gesprek-input', false)
+        ->assertSee('Verstuur', false)
+        ->assertSee('Terug naar inbox', false)
+        ->assertSee('Schrijf een bericht', false)
+        ->getContent();
+
+    expect(strpos($html, 'data-gesprek-chat'))->toBeLessThan(strpos($html, 'data-gesprek-composer'));
+    expect($html)->toContain('page-gesprek');
+    expect($html)->not->toContain('data-feedback-fab');
+    expect($html)->not->toContain('autofocus');
+});
+
+test('leeg gesprek toont invoervak en uitnodiging om te schrijven', function () {
+    $a = messagingUser('a6@example.com', 'Ada');
+    $b = messagingUser('b6@example.com', 'Ben');
+    $conv = Conversation::query()->create([
+        'user_a_id' => min($a->id, $b->id),
+        'user_b_id' => max($a->id, $b->id),
+    ]);
+
+    $this->actingAs($a)
+        ->get(route('account.gesprek', $conv))
+        ->assertOk()
+        ->assertSee('Nog geen berichten. Zeg hallo.', false)
+        ->assertSee('data-gesprek-composer', false)
+        ->assertSee('Verstuur', false);
+});

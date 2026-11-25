@@ -87,3 +87,184 @@
   border-radius: 0.7rem;
   border: 1px solid rgba(139, 30, 30, 0.3);
 }
+
+
+/* —— Gesprek: chat-layout, invoervak altijd in beeld —— */
+body.page-gesprek {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  height: calc(100dvh - var(--kb-inset, 0px));
+  overflow: hidden;
+}
+
+body.page-gesprek .site-footer,
+body.page-gesprek .feedback-fab-wrap {
+  display: none;
+}
+
+body.page-gesprek .site-header,
+body.page-gesprek .postcode-herinnering,
+body.page-gesprek .volgende-stap {
+  flex: 0 0 auto;
+}
+
+body.page-gesprek main#inhoud {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+body.page-gesprek main#inhoud > .wrap:has(.flash) {
+  flex: 0 0 auto;
+  padding-top: 0.5rem;
+  padding-bottom: 0;
+}
+
+body.page-gesprek main#inhoud > .wrap:has(.flash) .flash {
+  margin: 0;
+}
+
+.gesprek.wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0.6rem 0 0;
+  width: min(100% - 2rem, 40rem);
+}
+
+.gesprek-top {
+  flex: 0 0 auto;
+  padding-bottom: 0.5rem;
+}
+
+.gesprek-terug {
+  margin: 0 0 0.4rem;
+  font-weight: 600;
+}
+
+.gesprek-terug a {
+  text-decoration: none;
+}
+
+.gesprek-titel.page-title,
+.gesprek h1.page-title {
+  font-size: 1.35rem;
+  padding: 0.25rem 0.55rem 0.3rem;
+  margin: 0 0 0.35rem;
+  line-height: 1.15;
+  max-width: 100%;
+}
+
+.gesprek-meta {
+  margin: 0 0 0.6rem;
+  font-size: 0.95rem;
+}
+
+.gesprek-panel {
+  background: var(--card, rgba(255, 252, 246, 0.92));
+  border: 1px solid var(--line, rgba(26, 18, 16, 0.12));
+  border-radius: 0.75rem;
+  padding: 0.35rem 0.75rem;
+  margin: 0 0 0.4rem;
+  font-size: 0.95rem;
+}
+
+.gesprek-panel summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--leaf-deep, #163820);
+  padding: 0.35rem 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.gesprek-panel summary:focus-visible {
+  outline: 2px solid var(--leaf, #1f4d2b);
+  outline-offset: 2px;
+}
+
+.gesprek-panel p {
+  margin: 0 0 0.65rem;
+}
+
+.gesprek-keuzes {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 0 0 0.5rem;
+}
+
+.gesprek .chat {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: none;
+  padding: 0.5rem 0 0.85rem;
+  overscroll-behavior: contain;
+}
+
+.gesprek .bubble {
+  max-width: 85%;
+}
+
+.gesprek .bubble.me {
+  align-self: flex-end;
+}
+
+.gesprek-leeg {
+  margin: auto 0 0;
+}
+
+.gesprek-composer {
+  flex: 0 0 auto;
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.6rem;
+  background: var(--bg, #fff);
+  border-top: 1px solid var(--line, rgba(26, 18, 16, 0.12));
+  padding: 0.65rem 0 calc(0.65rem + env(safe-area-inset-bottom, 0px));
+}
+
+.gesprek-composer textarea {
+  flex: 1 1 auto;
+  font: inherit;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--line, rgba(26, 18, 16, 0.12));
+  border-radius: 0.75rem;
+  background: #fff;
+  color: var(--ink, #1a1210);
+  min-height: 2.75rem;
+  max-height: 8rem;
+  resize: none;
+  line-height: 1.4;
+}
+
+.gesprek-composer textarea:focus {
+  outline: 2px solid var(--leaf, #1f4d2b);
+  outline-offset: 1px;
+}
+
+.gesprek-composer .btn {
+  flex: 0 0 auto;
+  min-height: 44px;
+}
+
+@media (min-width: 900px) {
+  .gesprek-titel.page-title,
+  .gesprek h1.page-title {
+    font-size: 1.6rem;
+  }
+}
