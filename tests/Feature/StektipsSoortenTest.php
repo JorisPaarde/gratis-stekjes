@@ -135,29 +135,29 @@ test('faq-data: elke link verwijst naar een bestaande pagina', function () {
     }
 });
 
-test('palmkool-CTA en titel spreken van planten, niet van stekjes', function () {
+test('palmkool-CTA en titel spreken van zaad, niet van stekjes', function () {
     $html = $this->get(route('stektips.show', ['slug' => 'palmkool']))
         ->assertOk()
-        ->assertSee('Gratis Palmkool-planten in je buurt', false)
-        ->assertSee('Palmkool zaaien en gratis planten', false)
+        ->assertSee('Gratis Palmkool-zaad in je buurt', false)
+        ->assertSee('Palmkool zaaien en gratis zaad', false)
         ->assertDontSee('Gratis Palmkool-stekjes', false)
         ->getContent();
 
-    expect($html)->toContain('Daarna gratis planten delen');
+    expect($html)->toContain('Daarna gratis zaad delen');
 });
 
-test('aanbod-filter voor palmkool zegt planten, voor monstera stekjes', function () {
+test('aanbod-filter voor palmkool zegt zaad, voor monstera stekjes', function () {
     $this->get(route('aanbod', ['plant' => 'Palmkool']))
         ->assertOk()
-        ->assertSee('Gratis Palmkool-planten', false)
+        ->assertSee('Gratis Palmkool-zaad', false)
         ->assertDontSee('Gratis Palmkool-stekjes', false);
 
     $this->get(route('aanbod', ['plant' => 'cavolo nero']))
         ->assertOk()
-        ->assertSee('Gratis cavolo nero-planten', false);
+        ->assertSee('Gratis cavolo nero-zaad', false);
 
     $this->get(route('aanbod', ['plant' => 'Monstera']))
         ->assertOk()
         ->assertSee('Gratis Monstera-stekjes', false)
-        ->assertDontSee('Gratis Monstera-planten', false);
+        ->assertDontSee('Gratis Monstera-zaad', false);
 });

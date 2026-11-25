@@ -4,34 +4,44 @@ declare(strict_types=1);
 
 use App\Services\Stektips;
 
-test('aanbodZelfstandigNaam is stekjes alleen als stekken een methode is', function () {
+test('aanbodZelfstandigNaam: stekjes, zaad of plantjes', function () {
     $stektips = new Stektips(dirname(__DIR__, 2).'/data/stektips.json');
 
-    expect($stektips->aanbodZelfstandigNaam($stektips->find('palmkool')))->toBe('planten')
-        ->and($stektips->aanbodZelfstandigNaam($stektips->find('akelei')))->toBe('planten')
-        ->and($stektips->aanbodZelfstandigNaam($stektips->find('rabarber')))->toBe('planten')
-        ->and($stektips->aanbodZelfstandigNaam($stektips->find('peer')))->toBe('planten')
+    expect($stektips->aanbodZelfstandigNaam($stektips->find('palmkool')))->toBe('zaad')
+        ->and($stektips->aanbodZelfstandigNaam($stektips->find('akelei')))->toBe('zaad')
+        ->and($stektips->aanbodZelfstandigNaam($stektips->find('rabarber')))->toBe('plantjes')
+        ->and($stektips->aanbodZelfstandigNaam($stektips->find('peer')))->toBe('plantjes')
+        ->and($stektips->aanbodZelfstandigNaam($stektips->find('aardbei')))->toBe('plantjes')
         ->and($stektips->aanbodZelfstandigNaam($stektips->find('monstera')))->toBe('stekjes')
         ->and($stektips->aanbodZelfstandigNaam($stektips->find('pelargonium')))->toBe('stekjes')
         ->and($stektips->aanbodZelfstandigNaam($stektips->find('eeuwig-moes')))->toBe('stekjes');
 });
 
-test('elke soort zonder stekken-methode krijgt planten als aanbodwoord', function () {
+test('elke soort krijgt stekjes, zaad of plantjes volgens de methodes', function () {
     $stektips = new Stektips(dirname(__DIR__, 2).'/data/stektips.json');
-    $zonderStek = [];
+    $zaad = [];
+    $plantjes = [];
+    $stekjes = [];
 
     foreach ($stektips->all() as $soort) {
-        if (! in_array('stekken', $stektips->methodes($soort), true)) {
-            $zonderStek[] = $soort['slug'];
-            expect($stektips->aanbodZelfstandigNaam($soort))->toBe(
-                'planten',
-                "{$soort['slug']} heeft geen stek-methode maar werd '{$stektips->aanbodZelfstandigNaam($soort)}'"
-            );
+        $woord = $stektips->aanbodZelfstandigNaam($soort);
+        $methodes = $stektips->methodes($soort);
+        if (in_array('stekken', $methodes, true)) {
+            expect($woord)->toBe('stekjes', $soort['slug']);
+            $stekjes[] = $soort['slug'];
+        } elseif ($methodes === ['zaaien']) {
+            expect($woord)->toBe('zaad', $soort['slug']);
+            $zaad[] = $soort['slug'];
         } else {
-            expect($stektips->aanbodZelfstandigNaam($soort))->toBe('stekjes');
+            expect($woord)->toBe('plantjes', $soort['slug']);
+            $plantjes[] = $soort['slug'];
         }
     }
 
-    expect($zonderStek)->toContain('palmkool')
-        ->and($zonderStek)->not->toBeEmpty();
+    expect($zaad)->toContain('palmkool')
+        ->and($plantjes)->toContain('rabarber')
+        ->and($stekjes)->toContain('monstera')
+        ->and($zaad)->not->toBeEmpty()
+        ->and($plantjes)->not->toBeEmpty()
+        ->and($stekjes)->not->toBeEmpty();
 });

@@ -67,7 +67,7 @@ class ZoekenController extends Controller
 
     /**
      * «stekjes» alleen als de gezochte plant een stektip heeft waarin stekken een methode is.
-     * Anders «planten»: /aanbod filtert alleen op plantnaam, niet op type (stekjes/zaden).
+     * Alleen zaad → «zaad»; anders zonder stek → «plantjes».
      */
     private function aanbodZelfstandigNaamVoorPlant(string $plant, Stektips $stektips, Plantensoorten $plantensoorten): string
     {
@@ -88,6 +88,6 @@ class ZoekenController extends Controller
             }
         }
 
-        return 'planten';
+        return 'plantjes';
     }
 }

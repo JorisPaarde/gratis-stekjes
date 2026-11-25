@@ -67,14 +67,21 @@ final class Stektips
     }
 
     /**
-     * Zelfstandig naamwoord in aanbod-CTA's en SEO-titels.
-     * Het zoekfilter op /aanbod kent geen type stekjes/zaden/planten, alleen een plantnaam
-     * («Plant, stekje of zaad»). «stekjes» alleen als de soort echt te stekken is;
-     * anders «planten» (bestaande parapluterm). Geen «zaden»: dat filter bestaat niet.
+     * Zelfstandig naamwoord in aanbod-CTA's en SEO-titels, uit de bestaande
+     * vermeerderingsmethodes van de soort (geen extra categorieën):
+     * stekken mogelijk → «stekjes»; alleen zaad → «zaad»; anders → «plantjes».
      */
     public function aanbodZelfstandigNaam(array $soort): string
     {
-        return in_array('stekken', $this->methodes($soort), true) ? 'stekjes' : 'planten';
+        $methodes = $this->methodes($soort);
+        if (in_array('stekken', $methodes, true)) {
+            return 'stekjes';
+        }
+        if ($methodes === ['zaaien']) {
+            return 'zaad';
+        }
+
+        return 'plantjes';
     }
 
     /** @return array<string, mixed>|null */

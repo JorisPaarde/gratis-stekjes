@@ -7,10 +7,10 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
 ### Fixed
 
-- Aanbod-knop en SEO-tekst op stektips-pagina's: «stekjes» alleen nog bij soorten
-  die je kunt stekken. Bij palmkool en andere soorten zonder stekmethode staat
-  nu «planten» (het zoekfilter op /aanbod kent geen apart type zaden of stekjes).
-  Zelfde woordkeuze op de aanbodpagina met plantfilter.
+- Aanbod-knop en SEO-tekst op stektips-pagina's volgt de vermeerdering: «stekjes»
+  als de soort te stekken is, «zaad» als die alleen via zaad gaat, anders
+  «plantjes» (scheuren, uitlopers, enten, knollen). Zelfde woordkeuze op de
+  aanbodpagina met plantfilter.
 
 ## [0.81.16] - 2026-11-25
 

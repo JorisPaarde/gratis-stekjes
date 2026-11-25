@@ -64,7 +64,7 @@ test('kernroutes hebben unieke title-tags volgens keyword-onderzoek', function (
         ],
         [
             'get' => route('stektips.show', ['slug' => 'pilea']),
-            'expect' => 'Pannenkoekplant stekken en gratis planten · Gratis planten',
+            'expect' => 'Pannenkoekplant stekken en gratis plantjes · Gratis planten',
             'h1' => 'Pannenkoekplant stekken: zo doe je het',
         ],
         [
