@@ -154,6 +154,10 @@ test('gesprekspagina toont chat en invoervak in chat-layout', function () {
         ->assertSee('Verstuur', false)
         ->assertSee('Terug naar inbox', false)
         ->assertSee('Schrijf een bericht', false)
+        ->assertSee('Tips, contact en instellingen', false)
+        ->assertSee('Veiligheidstips', false)
+        ->assertSee('Verder contact?', false)
+        ->assertSee('Melden of blokkeren', false)
         ->getContent();
 
     expect(strpos($html, 'data-gesprek-chat'))->toBeLessThan(strpos($html, 'data-gesprek-composer'));

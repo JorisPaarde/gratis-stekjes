@@ -125,6 +125,8 @@ body.page-gesprek main#inhoud > .wrap:has(.flash) {
 
 body.page-gesprek main#inhoud > .wrap:has(.flash) .flash {
   margin: 0;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.95rem;
 }
 
 .gesprek.wrap {
@@ -139,7 +141,7 @@ body.page-gesprek main#inhoud > .wrap:has(.flash) .flash {
 
 .gesprek-top {
   flex: 0 0 auto;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.35rem;
 }
 
 .gesprek-terug {
@@ -161,8 +163,39 @@ body.page-gesprek main#inhoud > .wrap:has(.flash) .flash {
 }
 
 .gesprek-meta {
-  margin: 0 0 0.6rem;
+  margin: 0 0 0.45rem;
   font-size: 0.95rem;
+}
+
+.gesprek-meer {
+  margin: 0 0 0.35rem;
+  background: var(--card, rgba(255, 252, 246, 0.92));
+  border: 1px solid var(--line, rgba(26, 18, 16, 0.12));
+  border-radius: 0.75rem;
+  padding: 0.25rem 0.75rem;
+}
+
+.gesprek-meer-knop {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--leaf-deep, #163820);
+  padding: 0.35rem 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.gesprek-meer-knop:focus-visible {
+  outline: 2px solid var(--leaf, #1f4d2b);
+  outline-offset: 2px;
+}
+
+.gesprek-meer-inhoud {
+  padding: 0 0 0.35rem;
+}
+
+.gesprek-meer-inhoud .gesprek-panel:last-child {
+  margin-bottom: 0;
 }
 
 .gesprek-panel {
@@ -209,7 +242,7 @@ body.page-gesprek main#inhoud > .wrap:has(.flash) .flash {
   flex-direction: column;
   gap: 0.75rem;
   max-width: none;
-  padding: 0.5rem 0 0.85rem;
+  padding: 0.5rem 0 1rem;
   overscroll-behavior: contain;
 }
 
@@ -232,14 +265,15 @@ body.page-gesprek main#inhoud > .wrap:has(.flash) .flash {
   z-index: 5;
   display: flex;
   align-items: flex-end;
-  gap: 0.6rem;
+  gap: 0.75rem;
   background: var(--bg, #fff);
   border-top: 1px solid var(--line, rgba(26, 18, 16, 0.12));
-  padding: 0.65rem 0 calc(0.65rem + env(safe-area-inset-bottom, 0px));
+  padding: 0.75rem 0 calc(0.75rem + env(safe-area-inset-bottom, 0px));
 }
 
 .gesprek-composer textarea {
-  flex: 1 1 auto;
+  flex: 1 1 0;
+  min-width: 0;
   font: inherit;
   padding: 0.65rem 0.75rem;
   border: 1px solid var(--line, rgba(26, 18, 16, 0.12));
@@ -260,6 +294,47 @@ body.page-gesprek main#inhoud > .wrap:has(.flash) .flash {
 .gesprek-composer .btn {
   flex: 0 0 auto;
   min-height: 44px;
+  min-width: 44px;
+  padding: 0.55rem 0.9rem;
+  letter-spacing: 0.03em;
+}
+
+@media (max-width: 39.99rem) {
+  .gesprek-terug {
+    margin: 0 0 0.25rem;
+    font-size: 0.95rem;
+  }
+
+  .gesprek-titel.page-title,
+  .gesprek h1.page-title {
+    font-size: 1.15rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .gesprek-meta {
+    margin-bottom: 0.35rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Desktop: de drie panelen blijven zichtbaar, de extra samenvatting niet. */
+@media (min-width: 40rem) {
+  .gesprek-meer {
+    background: none;
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  .gesprek-meer-knop {
+    display: none;
+  }
+
+  .gesprek-meer-inhoud,
+  .gesprek-meer:not([open]) .gesprek-meer-inhoud {
+    display: block;
+    padding: 0;
+  }
 }
 
 @media (min-width: 900px) {
