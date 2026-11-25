@@ -64,12 +64,34 @@ function initGesprek() {
     scrollToLatest(chat);
   }
 
+  const meer = root.querySelector('[data-gesprek-meer]');
+  const syncMeer = () => {
+    if (!meer || typeof window.matchMedia !== 'function') {
+      return;
+    }
+    if (window.matchMedia('(min-width: 40rem)').matches) {
+      meer.open = true;
+    }
+  };
+  syncMeer();
+  if (typeof window.matchMedia === 'function') {
+    const mq = window.matchMedia('(min-width: 40rem)');
+    if (typeof mq.addEventListener === 'function') {
+      mq.addEventListener('change', syncMeer);
+    } else if (typeof mq.addListener === 'function') {
+      mq.addListener(syncMeer);
+    }
+  }
+
   if (field) {
     field.addEventListener('focus', () => {
       window.setTimeout(keepLatestVisible, 50);
       window.setTimeout(keepLatestVisible, 300);
     });
-    field.addEventListener('input', () => fitTextarea(field));
+    field.addEventListener('input', () => {
+      fitTextarea(field);
+      scrollToLatest(chat);
+    });
   }
 
   if (form && field) {
