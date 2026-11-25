@@ -1370,6 +1370,24 @@
       "status": "goedgekeurd",
       "sha256": "6e8adde5983e7d00c710cdaed1e22b5b98b3c8537c62f6f13e40326c2be44e7e"
     },
+    "palmkool": {
+      "slug": "palmkool",
+      "naam": "Palmkool",
+      "latijn": "Brassica oleracea var. palmifolia",
+      "auteur": "Frank Vincentz",
+      "licentie": "CC BY-SA",
+      "licentie_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "bron_url": "https://commons.wikimedia.org/wiki/File:Kluse_-_Brassica_oleracea_var._palmifolia_-_Ostfriesische_Palme_01_ies.jpg",
+      "bron_titel": "File:Kluse - Brassica oleracea var. palmifolia - Ostfriesische Palme 01 ies.jpg",
+      "originele_mime": "image/jpeg",
+      "alt": "Palmkool (Brassica oleracea var. palmifolia)",
+      "bestand": "assets/images/soorten/palmkool.jpg",
+      "notitie": "Kale \"Ostfriesische Palme\" Brassica oleracea var. palmifolia in a garden in Kluse (Emsland)",
+      "status": "goedgekeurd",
+      "sha256": "ae15a01226a1fd3940139d092dd391f6dd8596ea6436c38159bfda1c07339594",
+      "bytes": 353771,
+      "width_max": 1200
+    },
     "ruig-klokje": {
       "slug": "ruig-klokje",
       "naam": "Ruig klokje",
@@ -2631,6 +2649,6 @@
       "sha256": "cd2f1a960d81897e4acd6b4b3d28b64ce0811ac21b61b8577a573a50c8f75165"
     }
   },
-  "count": 146,
+  "count": 147,
   "missing": []
 }
