@@ -65,26 +65,45 @@
     <p class="muted" style="margin-top:0">Je hebt er {{ $verdiend }} van de {{ count($badges) }}. Elke stap die je zet, levert er een op.</p>
 
     @if($pionier)
-      <div class="badge-pionier">
+      <a class="badge-pionier" href="{{ $pionier['doel']['href'] }}">
         <img src="{{ $pionier['img'] }}" alt="" width="96" height="99">
         <div>
           <p class="badge-pionier-label">Exclusief · er is er maar één</p>
           <h3>{{ $pionier['label'] }}</h3>
           <p>{{ $pionier['hint'] }}</p>
+          <span class="visually-hidden">{{ $pionier['doel']['label'] }}</span>
         </div>
-      </div>
+      </a>
     @endif
 
     <ul class="badge-grid">
       @foreach($gewoon as $badge)
-        <li class="badge-item{{ $badge['earned'] ? ' is-verdiend' : '' }}">
-          <img src="{{ $badge['img'] }}" alt="" width="72" height="72" loading="lazy">
-          <strong>{{ $badge['label'] }}</strong>
-          <span class="visually-hidden">{{ $badge['earned'] ? 'Verdiend.' : 'Nog niet verdiend.' }}</span>
-          <span class="badge-hint">{{ $badge['hint'] }}</span>
+        <li>
+          <a class="badge-item{{ $badge['earned'] ? ' is-verdiend' : '' }}" href="{{ $badge['doel']['href'] }}">
+            <img src="{{ $badge['img'] }}" alt="" width="72" height="72" loading="lazy">
+            <strong>{{ $badge['label'] }}</strong>
+            <span class="visually-hidden">{{ $badge['earned'] ? 'Verdiend.' : 'Nog niet verdiend.' }} {{ $badge['doel']['label'] }}.</span>
+            <span class="badge-hint">{{ $badge['hint'] }}</span>
+          </a>
         </li>
       @endforeach
     </ul>
+
+    <div class="badge-uitleg-lijst">
+      <aside class="badge-uitleg" id="uitleg-oprichters" tabindex="-1">
+        <h3>Eerste leden</h3>
+        <p>De badges «Een van de eerste 10», «eerste 50», «eerste 100» en «eerste 200» krijg je automatisch als je tot de eerste leden hoort, op volgorde van aanmelden. Je kunt ze niet achteraf verdienen.</p>
+      </aside>
+      <aside class="badge-uitleg" id="uitleg-pionier" tabindex="-1">
+        <h3>Pionier</h3>
+        <p>Pionier is voor het lid dat als allereerste iets weggaf. Deze badge bestaat maar één keer; je kunt hem niet zelf invullen.</p>
+      </aside>
+      <aside class="badge-uitleg" id="uitleg-vaste-plant" tabindex="-1">
+        <h3>Vaste plant</h3>
+        <p>Vaste plant krijg je als je een jaar lid bent. Dat gaat vanzelf; je hoeft niets in te vullen.</p>
+      </aside>
+    </div>
+
     <p style="margin-top:.75rem"><a href="{{ route('account.ervaringen.create') }}">Deel een ervaring</a> · <a href="{{ route('account.aanbod') }}">Bied iets aan</a></p>
   </div>
   @endisset

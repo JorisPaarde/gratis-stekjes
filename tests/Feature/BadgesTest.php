@@ -186,3 +186,82 @@ test('oprichtersbadge eerste 200 voor lid 101 tot 200, daarna geen tier', functi
         ->and($tweehonderd['eerste_200']['hint'])->toContain('lid nummer 101')
         ->and($tweehonderd['eerste_200']['img'])->toBe('/assets/badges/eerste_200.svg');
 });
+
+test('elke badge heeft een doel: actie of uitleg, geen ontbrekende sleutel', function () {
+    $service = app(MilestoneService::class);
+    $keys = MilestoneService::alleBadgeKeys();
+
+    expect($keys)->toContain('geworteld', 'profiel_compleet', 'eerste_stekje', 'eerste_praatje', 'eerste_overdracht', 'gulle_gever', 'stekjesheld', 'verbinder', 'verteller', 'vaste_plant', 'pionier', 'eerste_10', 'eerste_50', 'eerste_100', 'eerste_200')
+        ->and($keys)->toHaveCount(15);
+
+    foreach ($keys as $key) {
+        $doel = $service->doelVoor($key);
+        expect($doel['type'])->toBeIn(['actie', 'uitleg'])
+            ->and($doel['href'])->not->toBeEmpty()
+            ->and($doel['label'])->not->toBeEmpty();
+        if ($doel['type'] === 'uitleg') {
+            expect($doel['href'])->toContain('#uitleg-');
+        }
+    }
+
+    expect(fn () => $service->doelVoor('onbekende_badge'))
+        ->toThrow(InvalidArgumentException::class);
+});
+
+test('badgesFor vult doel voor elke getoonde badge, ook oprichters en pionier', function () {
+    $u = badgeUser('doel@example.com', 'Ada');
+    $service = app(MilestoneService::class);
+    $service->setPionier($u);
+    $badges = collect($service->badgesFor($u));
+
+    expect($badges->pluck('key')->diff(MilestoneService::alleBadgeKeys())->all())->toBeEmpty();
+    foreach ($badges as $badge) {
+        expect($badge)->toHaveKey('doel')
+            ->and($badge['doel']['href'])->toBe($service->doelVoor($badge['key'])['href'])
+            ->and($badge['doel']['label'])->not->toBeEmpty();
+    }
+
+    expect($badges->firstWhere('key', 'pionier')['doel']['href'])->toEndWith('#uitleg-pionier')
+        ->and($badges->firstWhere('key', 'eerste_10')['doel']['href'])->toEndWith('#uitleg-oprichters')
+        ->and($badges->firstWhere('key', 'geworteld')['doel']['href'])->toEndWith('#profiel-postcode')
+        ->and($badges->firstWhere('key', 'profiel_compleet')['doel']['href'])->toEndWith('#profiel-adres')
+        ->and($badges->firstWhere('key', 'eerste_stekje')['doel']['href'])->toBe(route('aanbieden'))
+        ->and($badges->firstWhere('key', 'eerste_praatje')['doel']['href'])->toBe(route('aanbod'))
+        ->and($badges->firstWhere('key', 'eerste_overdracht')['doel']['href'])->toBe(route('account.inbox'))
+        ->and($badges->firstWhere('key', 'verteller')['doel']['href'])->toBe(route('account.ervaringen.create'))
+        ->and($badges->firstWhere('key', 'vaste_plant')['doel']['href'])->toEndWith('#uitleg-vaste-plant');
+});
+
+test('account toont klikbare badges naar het juiste doel en uitlegankers', function () {
+    $u = badgeUser('klik@example.com', 'Piet');
+    app(MilestoneService::class)->setPionier($u);
+
+    $this->actingAs($u)->get(route('account.index'))
+        ->assertOk()
+        ->assertSee('class="badge-item is-verdiend"', false)
+        ->assertSee('href="'.route('aanbieden').'"', false)
+        ->assertSee('href="'.route('aanbod').'"', false)
+        ->assertSee('href="'.route('account.inbox').'"', false)
+        ->assertSee('href="'.route('account.ervaringen.create').'"', false)
+        ->assertSee('href="'.route('account.profiel').'#profiel-postcode"', false)
+        ->assertSee('href="'.route('account.profiel').'#profiel-adres"', false)
+        ->assertSee('href="'.route('account.index').'#uitleg-oprichters"', false)
+        ->assertSee('href="'.route('account.index').'#uitleg-pionier"', false)
+        ->assertSee('href="'.route('account.index').'#uitleg-vaste-plant"', false)
+        ->assertSee('id="uitleg-oprichters"', false)
+        ->assertSee('id="uitleg-pionier"', false)
+        ->assertSee('id="uitleg-vaste-plant"', false)
+        ->assertSee('Je kunt ze niet achteraf verdienen', false);
+});
+
+test('profielpagina heeft ankers voor postcode en adres', function () {
+    $u = badgeUser('anker@example.com', 'Piet');
+
+    $this->actingAs($u)->get(route('account.profiel'))
+        ->assertOk()
+        ->assertSee('id="profiel-voornaam"', false)
+        ->assertSee('id="profiel-postcode"', false)
+        ->assertSee('id="profiel-adres"', false)
+        ->assertSee('id="profiel-straat"', false)
+        ->assertSee('focusHash', false);
+});
