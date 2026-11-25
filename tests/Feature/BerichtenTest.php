@@ -125,7 +125,7 @@ test('inbox toont gesprekken', function () {
         ->assertSee('Gesprek met Ben', false);
 });
 
-test('gesprekspagina toont chat en invoervak in chat-layout', function () {
+test('gesprekspagina toont invoervak bovenaan met nieuwste bericht eerst', function () {
     $a = messagingUser('a5@example.com', 'Ada');
     $b = messagingUser('b5@example.com', 'Ben');
     $conv = Conversation::query()->create([
@@ -136,7 +136,18 @@ test('gesprekspagina toont chat en invoervak in chat-layout', function () {
     $this->actingAs($a)
         ->post(route('account.gesprek.store', $conv), [
             'action' => 'message',
-            'body' => 'Hoi Ben, de munt staat klaar.',
+            'body' => 'Eerste bericht, het oudere.',
+            'website' => '',
+            'form_started' => time() - 10,
+        ])
+        ->assertRedirect();
+
+    $this->travel(1)->minutes();
+
+    $this->actingAs($a)
+        ->post(route('account.gesprek.store', $conv), [
+            'action' => 'message',
+            'body' => 'Tweede bericht, het nieuwste.',
             'website' => '',
             'form_started' => time() - 10,
         ])
@@ -146,7 +157,8 @@ test('gesprekspagina toont chat en invoervak in chat-layout', function () {
         ->get(route('account.gesprek', $conv))
         ->assertOk()
         ->assertSee('Gesprek met Ben', false)
-        ->assertSee('Hoi Ben, de munt staat klaar.', false)
+        ->assertSee('Eerste bericht, het oudere.', false)
+        ->assertSee('Tweede bericht, het nieuwste.', false)
         ->assertSee('data-gesprek', false)
         ->assertSee('data-gesprek-chat', false)
         ->assertSee('data-gesprek-composer', false)
@@ -154,6 +166,7 @@ test('gesprekspagina toont chat en invoervak in chat-layout', function () {
         ->assertSee('Verstuur', false)
         ->assertSee('Terug naar inbox', false)
         ->assertSee('Schrijf een bericht', false)
+        ->assertSee('autofocus', false)
         ->assertSee('data-gesprek-meer', false)
         ->assertSee('Tips, contact en instellingen', false)
         ->assertSee('Veiligheidstips', false)
@@ -161,10 +174,12 @@ test('gesprekspagina toont chat en invoervak in chat-layout', function () {
         ->assertSee('Melden of blokkeren', false)
         ->getContent();
 
-    expect(strpos($html, 'data-gesprek-chat'))->toBeLessThan(strpos($html, 'data-gesprek-composer'));
+    expect(strpos($html, 'data-gesprek-composer'))->toBeLessThan(strpos($html, 'data-gesprek-chat'));
+    expect(strpos($html, 'data-gesprek-chat'))->toBeLessThan(strpos($html, 'data-gesprek-meer'));
+    expect(strpos($html, 'Tweede bericht, het nieuwste.'))->toBeLessThan(strpos($html, 'Eerste bericht, het oudere.'));
     expect($html)->toContain('page-gesprek');
     expect($html)->not->toContain('data-feedback-fab');
-    expect($html)->not->toContain('autofocus');
+    expect($html)->not->toContain('scrollTop = el.scrollHeight');
 });
 
 test('leeg gesprek toont invoervak en uitnodiging om te schrijven', function () {
