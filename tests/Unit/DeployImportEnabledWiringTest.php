@@ -66,8 +66,8 @@ test('deploy schrijft optioneel BREVO_* (gemaskeerd, behouden bij leeg)', functi
     $script = file_get_contents($root.'/scripts/deploy-hook-upload.sh');
     expect($script)->toContain('dotenv_line BREVO_API_KEY')
         ->and($script)->toContain('dotenv_line BREVO_NEWSLETTER_LIST_ID')
-        ->and($script)->toContain('dotenv_line BREVO_DOI_TEMPLATE_ID')
-        ->and($script)->toContain('dotenv_line BREVO_DOI_REDIRECT_URL')
+        ->and($script)->toContain('dotenv_line BREVO_SYNC_ENABLED')
+        ->and($script)->not->toContain('BREVO_DOI')
         ->and($script)->toContain('dotenv_line BREVO_WEBHOOK_TOKEN');
 
     $hook = file_get_contents($root.'/deploy/hook/lib.php');
@@ -78,6 +78,7 @@ test('deploy schrijft optioneel BREVO_* (gemaskeerd, behouden bij leeg)', functi
         $yml = file_get_contents($root.'/.github/workflows/'.$file);
         expect($yml)->toContain('BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}')
             ->and($yml)->toContain('BREVO_WEBHOOK_TOKEN: ${{ secrets.BREVO_WEBHOOK_TOKEN }}')
+            ->and($yml)->toContain('BREVO_SYNC_ENABLED: ${{ vars.BREVO_SYNC_ENABLED }}')
             ->and($yml)->toContain('::add-mask::${BREVO_API_KEY}');
     }
 });

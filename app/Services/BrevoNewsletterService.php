@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Jobs\RequestNewsletterDoiJob;
+use App\Jobs\SyncNewsletterContactJob;
 use App\Models\User;
 use App\Support\SafeMail;
 use Illuminate\Http\Client\Response;
@@ -14,19 +14,35 @@ use Illuminate\Support\Facades\Schema;
 use Throwable;
 
 /**
- * Nieuwsbrief via Brevo REST API (DOI + list sync). Geen persoonsgegevens in logs.
- * Lege config = uit (geen HTTP-calls).
+ * Nieuwsbrief (opt-out) via Brevo REST API: alleen contacten/lijst synchroniseren.
+ * Deze klasse verstuurt NOOIT een mail of campagne (geen /emailCampaigns, /smtp/email,
+ * geen DOI-mail). Versturen doe je zelf in Brevo, met de verplichte afmeldlink.
+ *
+ * Bron van waarheid: users.newsletter_opt_in. Alleen bevestigde (email_verified_at) en
+ * actieve leden komen op de Brevo-lijst. Geen persoonsgegevens in logs.
+ *
+ * Twee schakelaars: sync_enabled (BREVO_SYNC_ENABLED, standaard uit) + API-key/lijst-id.
+ * Zonder sync_enabled doet de site lokaal alles (vlag, profiel, webhook) maar roept
+ * Brevo nooit aan — zo raakt staging de echte lijst niet.
  */
 final class BrevoNewsletterService
 {
     public const API_BASE = 'https://api.brevo.com/v3';
 
+    /** Max. nieuwe contacten per sync-run (cron-request kort houden). */
+    public const MAX_ADDS_PER_RUN = 30;
+
+    public function enabled(): bool
+    {
+        return filter_var(config('services.brevo.sync_enabled', false), FILTER_VALIDATE_BOOLEAN);
+    }
+
+    /** Mag de site Brevo aanroepen? (aan + sleutel + lijst-id) */
     public function configured(): bool
     {
-        return $this->apiKey() !== ''
-            && $this->listId() > 0
-            && $this->doiTemplateId() > 0
-            && $this->doiRedirectUrl() !== '';
+        return $this->enabled()
+            && $this->apiKey() !== ''
+            && $this->listId() > 0;
     }
 
     public function apiKey(): string
@@ -39,43 +55,48 @@ final class BrevoNewsletterService
         return (int) config('services.brevo.newsletter_list_id', 0);
     }
 
-    public function doiTemplateId(): int
-    {
-        return (int) config('services.brevo.doi_template_id', 0);
-    }
-
-    public function doiRedirectUrl(): string
-    {
-        return trim((string) config('services.brevo.doi_redirect_url', ''));
-    }
-
     public function webhookToken(): string
     {
         return trim((string) config('services.brevo.webhook_token', ''));
     }
 
-    /** Lokale opt-in aanzetten (registreren/profiel). DOI pas na e-mailbevestiging. */
+    private function hasColumns(): bool
+    {
+        return Schema::hasColumn('users', 'newsletter_opt_in');
+    }
+
+    /** Komt dit lid in aanmerking voor de Brevo-lijst? */
+    public function eligible(User $user): bool
+    {
+        return (bool) $user->newsletter_opt_in
+            && $user->hasVerifiedEmail()
+            && $user->active !== false;
+    }
+
+    /** Lokale opt-in aanzetten (registreren/profiel). Wist een eerdere afmelding. */
     public function optInLocally(User $user): void
     {
-        if (! Schema::hasColumn('users', 'newsletter_opt_in')) {
+        if (! $this->hasColumns()) {
             return;
         }
 
         $user->forceFill([
             'newsletter_opt_in' => true,
-            'newsletter_opt_in_at' => $user->newsletter_opt_in_at ?? now(),
+            'newsletter_opt_in_at' => now(),
+            'newsletter_opt_out_at' => null,
         ])->save();
     }
 
     /**
-     * Lokale opt-out + contact uit Brevo-lijst (fail-soft).
+     * Afmelden: lokale vlag uit (+ afmeldmoment) en contact van de Brevo-lijst (fail-soft).
      * @return array{ok: bool, removed: bool}
      */
     public function optOut(User $user): array
     {
-        if (Schema::hasColumn('users', 'newsletter_opt_in')) {
+        if ($this->hasColumns()) {
             $user->forceFill([
                 'newsletter_opt_in' => false,
+                'newsletter_opt_out_at' => now(),
                 'newsletter_listed_at' => null,
             ])->save();
         }
@@ -85,80 +106,93 @@ final class BrevoNewsletterService
             return ['ok' => true, 'removed' => false];
         }
 
-        $removed = $this->removeEmailFromList($email);
-
-        return ['ok' => true, 'removed' => $removed];
+        return ['ok' => true, 'removed' => $this->removeEmailFromList($email)];
     }
 
-    /** Na eigen e-mailbevestiging: DOI-job inplannen (of direct als queue niet nodig). */
-    public function queueDoubleOptIn(User $user): void
+    /**
+     * Contact (opnieuw) naar de lijst, op de achtergrond. $explicit = het lid zette het zojuist
+     * zelf aan in het profiel: dan heft de sync een eerdere Brevo-blacklist van onze lijst op.
+     */
+    public function queueSync(User $user, bool $explicit = false): void
     {
-        if (! Schema::hasColumn('users', 'newsletter_opt_in')) {
-            return;
-        }
-        if (! $user->newsletter_opt_in || ! $user->hasVerifiedEmail()) {
+        if (! $this->hasColumns() || ! $this->eligible($user)) {
             return;
         }
         if (! $this->configured()) {
-            Log::info('brevo.doi_skipped', ['reason' => 'not_configured', 'user_id' => (int) $user->id]);
-
             return;
         }
 
         try {
-            RequestNewsletterDoiJob::dispatch((int) $user->id);
+            SyncNewsletterContactJob::dispatch((int) $user->id, $explicit);
         } catch (Throwable $e) {
-            Log::error('brevo.doi_dispatch_failed', [
+            Log::error('brevo.sync_dispatch_failed', [
                 'user_id' => (int) $user->id,
                 'error' => SafeMail::safeSummary($e),
             ]);
-            // Fail-soft: probeer synchroon als fallback.
-            $this->sendDoubleOptIn($user);
+            $this->syncUser($user, $explicit);
         }
     }
 
     /**
-     * POST /v3/contacts/doubleOptinConfirmation
-     * @return array{ok: bool, status?: int, skipped?: bool}
+     * Eén lid naar de lijst zetten (upsert, géén mail). Respecteert een afmelding in Brevo:
+     * staat het contact geblacklist of uitgeschreven van onze lijst, dan gaat de lokale vlag uit
+     * (tenzij $explicit).
+     *
+     * @return array{ok: bool, status?: int, skipped?: bool, respected?: bool}
      */
-    public function sendDoubleOptIn(User $user): array
+    public function syncUser(User $user, bool $explicit = false): array
     {
-        if (! $this->configured()) {
-            return ['ok' => true, 'skipped' => true];
-        }
-        if (! $user->newsletter_opt_in || ! $user->hasVerifiedEmail()) {
+        if (! $this->configured() || ! $this->hasColumns() || ! $this->eligible($user)) {
             return ['ok' => true, 'skipped' => true];
         }
 
         $email = strtolower(trim((string) $user->email));
         if ($email === '' || ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return ['ok' => false, 'status' => 0];
-        }
-
-        $payload = [
-            'email' => $email,
-            'includeListIds' => [$this->listId()],
-            'templateId' => $this->doiTemplateId(),
-            'redirectionUrl' => $this->doiRedirectUrl(),
-        ];
-        $name = trim((string) ($user->name ?? ''));
-        if ($name !== '') {
-            $payload['attributes'] = ['FIRSTNAME' => mb_substr($name, 0, 80)];
+            return ['ok' => true, 'skipped' => true];
         }
 
         try {
-            $response = $this->client()->post(self::API_BASE.'/contacts/doubleOptinConfirmation', $payload);
-            $ok = $response->successful();
-            if ($ok && Schema::hasColumn('users', 'newsletter_doi_sent_at')) {
-                $user->forceFill(['newsletter_doi_sent_at' => now()])->save();
-            }
-            if (! $ok) {
-                $this->logHttpFailure('doi', $response, (int) $user->id);
+            $existing = $this->client()->get(self::API_BASE.'/contacts/'.rawurlencode($email));
+            if ($existing->successful()) {
+                $blacklisted = $existing->json('emailBlacklisted') === true;
+                $unsubscribedHere = in_array($this->listId(), array_map('intval', (array) ($existing->json('listUnsubscribed') ?? [])), true);
+                if (($blacklisted || $unsubscribedHere) && ! $explicit) {
+                    $user->forceFill([
+                        'newsletter_opt_in' => false,
+                        'newsletter_opt_out_at' => now(),
+                        'newsletter_listed_at' => null,
+                    ])->save();
+
+                    return ['ok' => true, 'respected' => true];
+                }
+            } elseif ($existing->status() !== 404) {
+                $this->logHttpFailure('contact_get', $existing, (int) $user->id);
+
+                return ['ok' => false, 'status' => $existing->status()];
             }
 
-            return ['ok' => $ok, 'status' => $response->status()];
+            $payload = [
+                'email' => $email,
+                'listIds' => [$this->listId()],
+                'updateEnabled' => true,
+                'attributes' => ['VOORNAAM' => (string) $user->name],
+            ];
+            if ($explicit) {
+                $payload['emailBlacklisted'] = false;
+            }
+
+            $response = $this->client()->post(self::API_BASE.'/contacts', $payload);
+            if (! $response->successful()) {
+                $this->logHttpFailure('contact_upsert', $response, (int) $user->id);
+
+                return ['ok' => false, 'status' => $response->status()];
+            }
+
+            $user->forceFill(['newsletter_listed_at' => now()])->save();
+
+            return ['ok' => true, 'status' => $response->status()];
         } catch (Throwable $e) {
-            Log::error('brevo.doi_exception', [
+            Log::error('brevo.sync_user_exception', [
                 'user_id' => (int) $user->id,
                 'error' => SafeMail::safeSummary($e),
             ]);
@@ -197,7 +231,7 @@ final class BrevoNewsletterService
     }
 
     /**
-     * Webhook: afmelden / contact verwijderd → lokale opt-in uit.
+     * Webhook: afmelden / spam / contact verwijderd → lokale vlag uit. Werkt los van sync_enabled.
      * @param  array<string, mixed>  $payload
      * @return array{ok: bool, handled: int}
      */
@@ -218,12 +252,13 @@ final class BrevoNewsletterService
             }
 
             $user = User::query()->where('email', $email)->first();
-            if ($user === null || ! Schema::hasColumn('users', 'newsletter_opt_in')) {
+            if ($user === null || ! $this->hasColumns()) {
                 continue;
             }
 
             $user->forceFill([
                 'newsletter_opt_in' => false,
+                'newsletter_opt_out_at' => now(),
                 'newsletter_listed_at' => null,
             ])->save();
             $handled++;
@@ -233,67 +268,83 @@ final class BrevoNewsletterService
     }
 
     /**
-     * Dagelijkse sync: lokale opt-in bijwerken + DOI opnieuw proberen.
-     * @return array{ok: bool, listed: int, opted_out: int, doi_queued: int, removed: int, skipped?: bool}
+     * Sync (cron): leden mét opt-in → lijst; afgemeld → van de lijst; in Brevo afgemeld → vlag uit.
+     * Raakt alleen contacten van leden; andere contacten op de lijst blijven met rust.
+     *
+     * @return array{ok: bool, listed: int, added: int, opted_out: int, removed: int, pending: int, skipped?: bool}
      */
-    public function syncFromBrevo(): array
+    public function sync(): array
     {
-        if (! $this->configured() || ! Schema::hasColumn('users', 'newsletter_opt_in')) {
-            return ['ok' => true, 'listed' => 0, 'opted_out' => 0, 'doi_queued' => 0, 'removed' => 0, 'skipped' => true];
+        $empty = ['ok' => true, 'listed' => 0, 'added' => 0, 'opted_out' => 0, 'removed' => 0, 'pending' => 0];
+        if (! $this->configured() || ! $this->hasColumns()) {
+            return $empty + ['skipped' => true];
         }
 
         $onList = $this->fetchListEmails();
         if ($onList === null) {
-            return ['ok' => false, 'listed' => 0, 'opted_out' => 0, 'doi_queued' => 0, 'removed' => 0];
+            return ['ok' => false] + $empty;
         }
 
         $listed = 0;
+        $added = 0;
         $optedOut = 0;
-        $doiQueued = 0;
         $removed = 0;
+        $pending = 0;
 
         User::query()
             ->where('newsletter_opt_in', true)
             ->orderBy('id')
-            ->chunkById(100, function ($users) use ($onList, &$listed, &$optedOut, &$doiQueued): void {
+            ->chunkById(100, function ($users) use ($onList, &$listed, &$added, &$optedOut, &$pending): void {
                 foreach ($users as $user) {
                     /** @var User $user */
+                    if (! $this->eligible($user)) {
+                        continue;
+                    }
                     $email = strtolower(trim((string) $user->email));
                     if ($email === '') {
                         continue;
                     }
                     if (isset($onList[$email])) {
-                        if (Schema::hasColumn('users', 'newsletter_listed_at')) {
+                        if ($user->newsletter_listed_at === null) {
                             $user->forceFill(['newsletter_listed_at' => now()])->save();
                         }
                         $listed++;
                         continue;
                     }
 
-                    // Was op de lijst, nu weg → afgemeld via Brevo.
+                    // Stond op de lijst, nu weg → afgemeld in Brevo.
                     if ($user->newsletter_listed_at !== null) {
                         $user->forceFill([
                             'newsletter_opt_in' => false,
+                            'newsletter_opt_out_at' => now(),
                             'newsletter_listed_at' => null,
                         ])->save();
                         $optedOut++;
                         continue;
                     }
 
-                    // Nog niet op de lijst: DOI opnieuw als bevestigd en (nog nooit / >1 dag geleden) verstuurd.
-                    if ($user->hasVerifiedEmail()) {
-                        $sentAt = $user->newsletter_doi_sent_at;
-                        if ($sentAt === null || $sentAt->lt(now()->subDay())) {
-                            $this->queueDoubleOptIn($user);
-                            $doiQueued++;
-                        }
+                    if ($added >= self::MAX_ADDS_PER_RUN) {
+                        $pending++;
+                        continue;
+                    }
+                    $result = $this->syncUser($user);
+                    if (($result['respected'] ?? false) === true) {
+                        $optedOut++;
+                    } elseif (($result['ok'] ?? false) === true) {
+                        $added++;
+                    } else {
+                        $pending++;
                     }
                 }
             });
 
-        // Lokaal uit, nog wel op Brevo-lijst → uit de lijst.
+        // Lid niet (meer) in aanmerking, maar nog wel op de lijst → eraf.
         User::query()
-            ->where('newsletter_opt_in', false)
+            ->where(function ($q): void {
+                $q->where('newsletter_opt_in', false)
+                    ->orWhereNull('email_verified_at')
+                    ->orWhere('active', false);
+            })
             ->orderBy('id')
             ->chunkById(100, function ($users) use ($onList, &$removed): void {
                 foreach ($users as $user) {
@@ -307,9 +358,10 @@ final class BrevoNewsletterService
         return [
             'ok' => true,
             'listed' => $listed,
+            'added' => $added,
             'opted_out' => $optedOut,
-            'doi_queued' => $doiQueued,
             'removed' => $removed,
+            'pending' => $pending,
         ];
     }
 

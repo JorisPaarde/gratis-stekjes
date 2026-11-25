@@ -16,9 +16,10 @@ use Illuminate\Support\Facades\Log;
 use Throwable;
 
 /**
- * Brevo double opt-in na eigen e-mailbevestiging. Fail-soft + retries via queue.
+ * Zet één lid op de Brevo-nieuwsbrieflijst (contact-upsert). Verstuurt geen mail of campagne.
+ * Fail-soft + retries via queue.
  */
-class RequestNewsletterDoiJob implements ShouldQueue
+class SyncNewsletterContactJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -27,7 +28,7 @@ class RequestNewsletterDoiJob implements ShouldQueue
     /** @var list<int> */
     public array $backoff = [60, 300, 900, 3600];
 
-    public function __construct(public int $userId) {}
+    public function __construct(public int $userId, public bool $explicit = false) {}
 
     public function handle(BrevoNewsletterService $brevo): void
     {
@@ -36,15 +37,15 @@ class RequestNewsletterDoiJob implements ShouldQueue
             return;
         }
 
-        $result = $brevo->sendDoubleOptIn($user);
+        $result = $brevo->syncUser($user, $this->explicit);
         if (! ($result['ok'] ?? false) && ! ($result['skipped'] ?? false)) {
-            throw new \RuntimeException('Brevo DOI mislukt (status '.((int) ($result['status'] ?? 0)).')');
+            throw new \RuntimeException('Brevo sync mislukt (status '.((int) ($result['status'] ?? 0)).')');
         }
     }
 
     public function failed(?Throwable $e): void
     {
-        Log::error('brevo.doi_job_failed', [
+        Log::error('brevo.sync_job_failed', [
             'user_id' => $this->userId,
             'error' => $e ? SafeMail::safeSummary($e) : 'unknown',
         ]);

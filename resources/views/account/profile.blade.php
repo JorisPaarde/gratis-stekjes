@@ -114,6 +114,7 @@
     </label>
     @include('partials.nieuwsbrief-opt-in', [
       'checked' => (string) old('nieuwsbrief', $user->newsletter_opt_in ? '1' : '0') === '1',
+      'profile' => true,
     ])
     @foreach($aanmeldVinkjes ?? [] as $vink)
       <label class="checkbox">

@@ -36,14 +36,15 @@ return [
     ],
 
     /*
-    | Nieuwsbrief via Brevo (opt-in + DOI). Lege API-key = uit; geen HTTP-calls.
+    | Nieuwsbrief (opt-out) via Brevo: alleen contacten/lijst, nooit mail of campagne.
+    | sync_enabled (BREVO_SYNC_ENABLED) staat standaard UIT: zonder die schakelaar roept de site
+    | Brevo nooit aan (staging raakt de echte lijst niet). Alleen productie zet hem aan.
     | Secrets nooit committen. Webhook-token beveiligt POST /webhooks/brevo/{token}.
     */
     'brevo' => [
+        'sync_enabled' => filter_var(env('BREVO_SYNC_ENABLED', false), FILTER_VALIDATE_BOOLEAN),
         'api_key' => env('BREVO_API_KEY', ''),
         'newsletter_list_id' => (int) env('BREVO_NEWSLETTER_LIST_ID', 0),
-        'doi_template_id' => (int) env('BREVO_DOI_TEMPLATE_ID', 0),
-        'doi_redirect_url' => env('BREVO_DOI_REDIRECT_URL', ''),
         'webhook_token' => env('BREVO_WEBHOOK_TOKEN', ''),
     ],
 

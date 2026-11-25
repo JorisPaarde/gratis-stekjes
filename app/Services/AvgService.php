@@ -114,6 +114,7 @@ final class AvgService
                 'activatieherinnering' => $user->activatieherinnering !== false,
                 'newsletter_opt_in' => (bool) ($user->newsletter_opt_in ?? false),
                 'newsletter_opt_in_at' => optional($user->newsletter_opt_in_at ?? null)?->toIso8601String(),
+                'newsletter_opt_out_at' => optional($user->newsletter_opt_out_at ?? null)?->toIso8601String(),
                 'acquisition' => [
                     'landing_path' => $user->acquisition_landing_path ?? null,
                     'referrer_host' => $user->acquisition_referrer_host ?? null,

@@ -139,8 +139,7 @@ jobs:
           REMINDER_TEST_RECIPIENTS: ${{ secrets.REMINDER_TEST_RECIPIENTS }}
           BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
           BREVO_NEWSLETTER_LIST_ID: ${{ secrets.BREVO_NEWSLETTER_LIST_ID }}
-          BREVO_DOI_TEMPLATE_ID: ${{ secrets.BREVO_DOI_TEMPLATE_ID }}
-          BREVO_DOI_REDIRECT_URL: ${{ secrets.BREVO_DOI_REDIRECT_URL }}
+          BREVO_SYNC_ENABLED: ${{ vars.BREVO_SYNC_ENABLED }}
           BREVO_WEBHOOK_TOKEN: ${{ secrets.BREVO_WEBHOOK_TOKEN }}
           BASE_URL: ${{ secrets.PROD_BASE_URL }}
           APP_ENV_NAME: production
@@ -185,7 +184,7 @@ jobs:
           if [ -n "${BREVO_API_KEY:-}" ]; then
             echo "::add-mask::${BREVO_API_KEY}"
           else
-            echo "::notice::BREVO_API_KEY ontbreekt — nieuwsbrief sync/DOI blijft uit tot secret gezet is."
+            echo "::notice::BREVO_API_KEY ontbreekt — nieuwsbrief-sync blijft uit tot secret gezet is."
           fi
           if [ -n "${BREVO_WEBHOOK_TOKEN:-}" ]; then
             echo "::add-mask::${BREVO_WEBHOOK_TOKEN}"

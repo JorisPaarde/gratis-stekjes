@@ -100,7 +100,7 @@
       <span>Ik ga akkoord met de <a href="{{ route('privacy') }}">privacyverklaring</a>.</span>
     </label>
     @include('partials.nieuwsbrief-opt-in', [
-      'checked' => (string) old('nieuwsbrief', '0') === '1',
+      'checked' => (string) old('nieuwsbrief', '1') === '1',
     ])
 
     <fieldset class="form-fieldset form-fieldset--meet" data-meet-found-via>

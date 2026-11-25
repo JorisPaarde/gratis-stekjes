@@ -21,11 +21,8 @@ return new class extends Migration
             if (! Schema::hasColumn('users', 'newsletter_opt_in_at')) {
                 $table->timestamp('newsletter_opt_in_at')->nullable();
             }
-            if (! Schema::hasColumn('users', 'newsletter_doi_sent_at')) {
-                $table->timestamp('newsletter_doi_sent_at')->nullable();
-            }
             if (! Schema::hasColumn('users', 'newsletter_listed_at')) {
-                // Laatst gezien op de Brevo-lijst (webhook/sync); voorbereiding badge 0.79.4.
+                // Laatst gezien op de Brevo-lijst (webhook/sync); 
                 $table->timestamp('newsletter_listed_at')->nullable();
             }
         });
@@ -38,7 +35,7 @@ return new class extends Migration
         }
 
         Schema::table('users', function (Blueprint $table): void {
-            foreach (['newsletter_opt_in', 'newsletter_opt_in_at', 'newsletter_doi_sent_at', 'newsletter_listed_at'] as $col) {
+            foreach (['newsletter_opt_in', 'newsletter_opt_in_at', 'newsletter_listed_at'] as $col) {
                 if (Schema::hasColumn('users', $col)) {
                     $table->dropColumn($col);
                 }

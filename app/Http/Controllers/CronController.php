@@ -81,8 +81,9 @@ class CronController extends Controller
             }
         }
 
-        $result = $newsletter->syncFromBrevo();
-        if ($result['ok'] ?? false) {
+        $result = $newsletter->sync();
+        // Pas "klaar" melden als er niets meer wacht; anders volgende cron-run verder (max N per run).
+        if (($result['ok'] ?? false) && (int) ($result['pending'] ?? 0) === 0) {
             Cache::put($key, now()->toIso8601String(), now()->addDays(2));
         }
 

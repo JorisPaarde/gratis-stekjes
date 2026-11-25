@@ -181,9 +181,7 @@ class ProfileController extends Controller
             $want = $request->boolean('nieuwsbrief');
             if ($want && ! $user->newsletter_opt_in) {
                 $newsletter->optInLocally($user);
-                if ($user->hasVerifiedEmail()) {
-                    $newsletter->queueDoubleOptIn($user->fresh() ?? $user);
-                }
+                $newsletter->queueSync($user->fresh() ?? $user, true);
             } elseif (! $want && $user->newsletter_opt_in) {
                 $newsletter->optOut($user);
             }

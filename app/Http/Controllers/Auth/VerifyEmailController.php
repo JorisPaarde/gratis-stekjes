@@ -125,10 +125,10 @@ class VerifyEmailController extends Controller
             }
             try {
                 if ($verifiedUser->newsletter_opt_in) {
-                    app(BrevoNewsletterService::class)->queueDoubleOptIn($verifiedUser);
+                    app(BrevoNewsletterService::class)->queueSync($verifiedUser);
                 }
             } catch (\Throwable) {
-                // Nieuwsbrief mag bevestigen nooit blokkeren (fail-soft + later retry).
+                // Nieuwsbrief mag bevestigen nooit blokkeren (fail-soft + dagelijkse sync als vangnet).
             }
         }
 

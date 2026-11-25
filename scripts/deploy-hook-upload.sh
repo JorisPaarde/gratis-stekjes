@@ -267,15 +267,11 @@ umask 077
   else
     printf '%s\n' 'BREVO_NEWSLETTER_LIST_ID='
   fi
-  if [ -n "${BREVO_DOI_TEMPLATE_ID:-}" ]; then
-    dotenv_line BREVO_DOI_TEMPLATE_ID "$BREVO_DOI_TEMPLATE_ID"
+  # Sync-schakelaar (standaard uit): alleen productie zet BREVO_SYNC_ENABLED=true (GitHub-variabele).
+  if [ -n "${BREVO_SYNC_ENABLED:-}" ]; then
+    dotenv_line BREVO_SYNC_ENABLED "$BREVO_SYNC_ENABLED"
   else
-    printf '%s\n' 'BREVO_DOI_TEMPLATE_ID='
-  fi
-  if [ -n "${BREVO_DOI_REDIRECT_URL:-}" ]; then
-    dotenv_line BREVO_DOI_REDIRECT_URL "$BREVO_DOI_REDIRECT_URL"
-  else
-    printf '%s\n' 'BREVO_DOI_REDIRECT_URL='
+    printf '%s\n' 'BREVO_SYNC_ENABLED='
   fi
   if [ -n "${BREVO_WEBHOOK_TOKEN:-}" ]; then
     dotenv_line BREVO_WEBHOOK_TOKEN "$BREVO_WEBHOOK_TOKEN"
