@@ -7,9 +7,9 @@ namespace App\Console\Commands;
 use App\Models\User;
 use App\Services\MilestoneService;
 use App\Support\AdminDashboard;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Console\Command;
 
 /**
  * Lees-only: somt actieve bevestigde leden op die een postcode-herinneringsmail
@@ -79,16 +79,17 @@ class PostcodeHerinneringLijst extends Command
         $heeftIsAdmin = Schema::hasColumn('users', 'is_admin');
 
         $rijen = [];
-        $tiers = ['10' => 0, '50' => 0, '100' => 0, 'geen' => 0];
+        $tiers = ['10' => 0, '50' => 0, '100' => 0, '200' => 0, 'geen' => 0];
         $zonder = [];
         $boven100 = [];
+        $boven200 = [];
         $nr = 0;
 
         User::query()
             ->members()
             ->when($admins !== [], fn ($q) => $q->whereNotIn(DB::raw('LOWER(email)'), $admins))
             ->orderBy('id')
-            ->chunkById(200, function ($users) use (&$rijen, &$tiers, &$zonder, &$boven100, &$nr, $heeftIsAdmin): void {
+            ->chunkById(200, function ($users) use (&$rijen, &$tiers, &$zonder, &$boven100, &$boven200, &$nr, $heeftIsAdmin): void {
                 foreach ($users as $user) {
                     $nr++;
                     if ($heeftIsAdmin && (bool) $user->is_admin) {
@@ -110,6 +111,9 @@ class PostcodeHerinneringLijst extends Command
                     if ($nr > 100) {
                         $boven100[] = (int) $user->id;
                     }
+                    if ($nr > 200) {
+                        $boven200[] = (int) $user->id;
+                    }
                     $rijen[] = sprintf('  #%d · postcode %s · lidnummer %d · tier %s', $user->id, $geldig ? 'ja' : 'nee', $nr, $tier);
                 }
             });
@@ -121,8 +125,10 @@ class PostcodeHerinneringLijst extends Command
         $this->line('Tier 10: '.$tiers['10']);
         $this->line('Tier 50: '.$tiers['50']);
         $this->line('Tier 100: '.$tiers['100']);
+        $this->line('Tier 200: '.$tiers['200']);
         $this->line('Tier geen: '.$tiers['geen']);
         $this->line('Lidnummer > 100: '.count($boven100).($boven100 !== [] ? ' ('.implode(', ', $boven100).')' : ''));
+        $this->line('Lidnummer > 200: '.count($boven200).($boven200 !== [] ? ' ('.implode(', ', $boven200).')' : ''));
         $this->line('Zonder postcode id\'s: '.($zonder !== [] ? implode(', ', $zonder) : '-'));
         $this->newLine();
         foreach ($rijen as $r) {

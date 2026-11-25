@@ -3,6 +3,23 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.84.3] - 2026-11-25
+
+### Added
+
+- Oprichtersbadge «Een van de eerste 200» (tin, zelfde stijl als 10/50/100). Gaat
+  automatisch naar de eerste 200 leden op volgorde van aanmelden; wie al een
+  hogere tier heeft (10/50/100) ziet alleen die. Geen losse toekenning of
+  backfill: het lidnummer wordt berekend.
+
+### Fixed
+
+- Beheerders in `ADMIN_DASHBOARD_EMAILS` kregen geen lidnummer, en zagen daardoor
+  de oprichtersbadge («Een van de eerste 10/50/100/200», met «Je bent lid nummer
+  …») niet op hun eigen account. Zij tellen nog steeds niet mee voor andere
+  leden (nummers schuiven niet), maar krijgen zelf wél een lidnummer. Stats-lezers
+  blijven buiten de telling.
+
 ## [0.84.2] - 2026-11-25
 
 ### Added
