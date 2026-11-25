@@ -542,3 +542,9 @@ test('Brevo-fouten breken sync niet: lid blijft aan en krijgt geen listed-stempe
         ->and($user->fresh()->newsletter_opt_in)->toBeTrue()
         ->and($user->fresh()->newsletter_listed_at)->toBeNull();
 });
+
+test('brevo webhook is uitgezonderd van CSRF (Brevo stuurt geen sessie/token)', function () {
+    // Tests slaan CSRF-validatie over; controleer daarom de uitzonderingslijst zelf.
+    $paths = app(\App\Http\Middleware\VerifyCsrfTokenWhenSession::class)->getExcludedPaths();
+    expect($paths)->toContain('webhooks/brevo/*');
+});

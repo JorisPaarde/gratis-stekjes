@@ -3,6 +3,14 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.82.1] - 2026-11-25
+
+### Fixed
+
+- Brevo-webhook `POST /webhooks/brevo/{token}` uitgezonderd van CSRF-validatie: Brevo
+  stuurt geen sessie/token en kreeg daardoor een 419 in plaats van de afmelding te
+  verwerken (gevonden bij de browsertest op staging).
+
 ## [0.82.0] - 2026-11-25
 
 ### Changed

@@ -71,6 +71,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'deploy/import/init',
             'deploy/import/chunk',
             'api/internal/post-logs',
+            // Brevo-webhook (server-naar-server, geen sessie/CSRF); beveiligd met token in het pad.
+            'webhooks/brevo/*',
             'meet/event',
         ]);
         $middleware->alias([
