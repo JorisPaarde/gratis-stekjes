@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.84.4] - 2026-11-25
+
+### Fixed
+
+- In het aanbod-detailvenster blijven «Stuur bericht» en «Sluiten» onderaan in beeld,
+  ook als er veel velden en een grote foto staan.
+
 ## [0.84.3] - 2026-11-25
 
 ### Added
@@ -41,6 +48,14 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Als «Stuur bericht» niet kan (bijvoorbeeld je eigen aanbod) zie je nu een
   duidelijke melding op de pagina waar je vandaan kwam, in plaats van stil
   terug te vallen op `/aanbod`.
+- Zoeken op een kale postcode zonder land («8102», «8102 AB») werd als vrije tekst naar
+  Nominatim gestuurd, dat «8102» als huisnummer las: zoeken op 8102 gaf Enschede in plaats van
+  Raalte (`/api/zoeken?q=8102`, ook op productie). De geocoder probeert zo'n postcode nu eerst
+  als Nederlandse postcode via PDOK; vindt PDOK niets (bijv. een Belgische postcode), dan blijft
+  de oude route gelden.
+- Hero-zoekveld: een typfout in een plantnaam («monstra») gaf een willekeurige plaats
+  (Nominatim gaf «1860 Meise»). Als de invoer dicht bij een plantnaam ligt en het gevonden
+  label niet op wat is getypt lijkt, toont de lege staat nu «Bedoelde je Monstera?».
 
 ## [0.84.1] - 2026-11-25
 
@@ -53,19 +68,6 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   toetsenbord niet vanzelf opengaat en de laatste berichten wegduwt.
   Veiligheidstips, verder contact en melden/blokkeren staan in inklapbare
   blokken. Footer en feedbackknop zijn op deze pagina verborgen.
-
-## [0.84.2] - 2026-11-25
-
-### Fixed
-
-- Zoeken op een kale postcode zonder land («8102», «8102 AB») werd als vrije tekst naar
-  Nominatim gestuurd, dat «8102» als huisnummer las: zoeken op 8102 gaf Enschede in plaats van
-  Raalte (`/api/zoeken?q=8102`, ook op productie). De geocoder probeert zo'n postcode nu eerst
-  als Nederlandse postcode via PDOK; vindt PDOK niets (bijv. een Belgische postcode), dan blijft
-  de oude route gelden.
-- Hero-zoekveld: een typfout in een plantnaam («monstra») gaf een willekeurige plaats
-  (Nominatim gaf «1860 Meise»). Als de invoer dicht bij een plantnaam ligt en het gevonden
-  label niet op wat is getypt lijkt, toont de lege staat nu «Bedoelde je Monstera?».
 
 ## [0.84.0] - 2026-11-25
 
