@@ -3,6 +3,16 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.84.5] - 2026-11-25
+
+### Fixed
+
+- Gesprekspagina op mobiel: de drie info-panelen staan achter één knop
+  («Tips, contact en instellingen»), zodat er meer berichten in beeld passen.
+  Het typvak krijgt meer ruimte naast een compactere «Verstuur»-knop, en
+  tussen het laatste bericht en het vak zit duidelijkere ruimte. Op desktop
+  blijven de drie panelen gewoon onder elkaar zichtbaar.
+
 ## [0.84.4] - 2026-11-25
 
 ### Fixed
