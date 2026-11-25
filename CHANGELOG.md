@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.82.2] - 2026-11-25
+
+### Added
+
+- Statische afbeelding `public/img/nieuwsbrief/editie-1-kaart.jpg` (kaartbeeld voor nieuwsbrief
+  editie 1), bereikbaar op `/img/nieuwsbrief/editie-1-kaart.jpg`. Verder geen wijzigingen aan de site.
+
 ## [0.82.1] - 2026-11-25
 
 ### Fixed
