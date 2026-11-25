@@ -238,6 +238,7 @@ final class Deelplekken
                 'bron_url' => $bronUrl,
                 'bron_label' => BronLabel::for($bronUrl, $naam, false, $urlCounts),
                 'geraadpleegd' => $row->geraadpleegd?->format('Y-m-d') ?? '',
+                'beschrijving' => trim((string) ($row->beschrijving ?? '')),
                 'kind' => 'deelplek',
                 'soort' => 'deelplek',
             ];

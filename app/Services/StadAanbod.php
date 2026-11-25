@@ -166,16 +166,20 @@ final class StadAanbod
             $naam = (string) $row->naam;
             $bronUrl = (string) $row->bron_url;
             $out[] = [
+                'id' => (int) $row->id,
                 'naam' => $naam,
                 'type' => $type,
                 'type_label' => $labels[$type] ?? $type,
                 'plaats' => (string) $row->plaats,
                 'provincie' => (string) $row->provincie,
+                'adres' => (string) ($row->adres ?? ''),
+                'beschrijving' => trim((string) ($row->beschrijving ?? '')),
                 'lat' => Geo::roundCoord($rlat),
                 'lng' => Geo::roundCoord($rlng),
                 'afstand_km' => round($km, 1),
                 'bron_url' => $bronUrl,
                 'bron_label' => BronLabel::for($bronUrl, $naam, false, $urlCounts),
+                'kind' => 'deelplek',
             ];
         }
 
@@ -280,16 +284,20 @@ final class StadAanbod
             $naam = (string) $row->naam;
             $bronUrl = (string) $row->bron_url;
             $out[] = [
+                'id' => (int) $row->id,
                 'naam' => $naam,
                 'type' => $type,
                 'type_label' => $labels[$type] ?? $type,
                 'plaats' => (string) $row->plaats,
                 'provincie' => (string) $row->provincie,
+                'adres' => (string) ($row->adres ?? ''),
+                'beschrijving' => trim((string) ($row->beschrijving ?? '')),
                 'lat' => Geo::roundCoord($rlat),
                 'lng' => Geo::roundCoord($rlng),
                 'afstand_km' => round($km, 1),
                 'bron_url' => $bronUrl,
                 'bron_label' => BronLabel::for($bronUrl, $naam, false, $urlCounts),
+                'kind' => 'deelplek',
             ];
         }
 
@@ -343,16 +351,20 @@ final class StadAanbod
             $naam = (string) ($row['naam'] ?? '');
             $bronUrl = (string) ($row['bron_url'] ?? '');
             $out[] = [
+                'id' => isset($row['id']) && is_numeric($row['id']) ? (int) $row['id'] : null,
                 'naam' => $naam,
                 'type' => $type,
                 'type_label' => $labels[$type] ?? $type,
                 'plaats' => (string) ($row['plaats'] ?? ''),
                 'provincie' => (string) ($row['provincie'] ?? ''),
+                'adres' => (string) ($row['adres'] ?? ''),
+                'beschrijving' => trim((string) ($row['beschrijving'] ?? '')),
                 'lat' => Geo::roundCoord($rlat),
                 'lng' => Geo::roundCoord($rlng),
                 'afstand_km' => round($km, 1),
                 'bron_url' => $bronUrl,
                 'bron_label' => BronLabel::for($bronUrl, $naam, false, $urlCounts),
+                'kind' => 'deelplek',
             ];
         }
 

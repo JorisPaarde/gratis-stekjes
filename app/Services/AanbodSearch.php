@@ -302,6 +302,50 @@ final class AanbodSearch
             'user_id' => (int) $aanbod->user_id,
             'fotos' => $fotos->map(fn ($f) => $f->toPublicArray())->values()->all(),
             'verenigingen' => $this->verenigingenVoor($user),
+            'geplaatst' => $aanbod->created_at?->timezone(config('app.timezone', 'Europe/Amsterdam'))->format('Y-m-d'),
+            'verloopt' => $aanbod->expires_at?->timezone(config('app.timezone', 'Europe/Amsterdam'))->format('Y-m-d'),
+            'soort' => $this->soortVoor($aanbod),
+        ];
+    }
+
+    /**
+     * Catalogussoort bij dit aanbod (naam, andere namen, stektips-link). Geen id als de soort onbekend is.
+     *
+     * @return array{naam: string, andere: list<string>, url: ?string}|null
+     */
+    private function soortVoor(Aanbod $aanbod): ?array
+    {
+        $id = (int) ($aanbod->plantensoort_id ?? 0);
+        if ($id <= 0) {
+            return null;
+        }
+        $row = $this->plantensoorten->find($id);
+        if ($row === null || trim((string) ($row['naam'] ?? '')) === '') {
+            return null;
+        }
+        $andere = [];
+        $latijn = trim((string) ($row['latijn'] ?? ''));
+        if ($latijn !== '' && strcasecmp($latijn, (string) $row['naam']) !== 0) {
+            $andere[] = $latijn;
+        }
+        foreach ($row['synoniemen'] ?? [] as $syn) {
+            $syn = trim((string) $syn);
+            if ($syn === '' || strcasecmp($syn, (string) $row['naam']) === 0) {
+                continue;
+            }
+            if (! in_array($syn, $andere, true)) {
+                $andere[] = $syn;
+            }
+        }
+        $url = null;
+        if (($row['zichtbaar'] ?? true) && is_string($row['url'] ?? null) && $row['url'] !== '') {
+            $url = $row['url'];
+        }
+
+        return [
+            'naam' => (string) $row['naam'],
+            'andere' => $andere,
+            'url' => $url,
         ];
     }
 

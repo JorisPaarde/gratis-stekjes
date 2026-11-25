@@ -3,6 +3,28 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.84.2] - 2026-11-25
+
+### Added
+
+- Aanbod-detailvenster geldt nu overal waar aanbodregels staan: zoek- en
+  postcoderesultaten, stadspagina's, soort-/plantlijsten, verenigingspagina's,
+  deelplekkaarten en kaartpopups. Eén gedeelde component (`aanbod-detail.js` +
+  Blade-partials), geen kopieën.
+- Het venster toont alle nuttige velden die al in de data zitten, lege velden
+  blijven weg: volledige omschrijving, aantal, catalogussoort (+ andere namen
+  en stektips-link), plaats en afstand, geplaatst/beschikbaar tot, aanbieder
+  (voornaam, geen e-mail of straat) en eventueel lidmaatschap. Bij meerdere
+  foto's kun je wisselen. Deelplekken en evenementen hebben een eigen venster
+  met beschrijving, adres, datum en bronlink (openingstijden alleen als die in
+  de data staan; die kolom bestaat nog niet).
+
+### Fixed
+
+- Als «Stuur bericht» niet kan (bijvoorbeeld je eigen aanbod) zie je nu een
+  duidelijke melding op de pagina waar je vandaan kwam, in plaats van stil
+  terug te vallen op `/aanbod`.
+
 ## [0.84.1] - 2026-11-25
 
 ### Changed

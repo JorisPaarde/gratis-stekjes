@@ -1,3 +1,5 @@
+import { escapeHtml, registerPlek, plekKey as detailPlekKey } from "./aanbod-detail.js";
+
 /* Deelplekken: eigen kaart + markers (ruit-icoon) + tijdelijke evenementen + clustering. */
 (function () {
   var mapEl = document.getElementById("deelplekken-kaart");
@@ -108,14 +110,6 @@
       else map.invalidateSize();
     }, 1000);
   });
-
-  function escapeHtml(s) {
-    return String(s)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
 
   function isEvenement(item) {
     return item && (item.soort === "evenement" || item.kind === "evenement" || item.tijdelijk);
@@ -246,6 +240,7 @@
     if (evenement && item.omschrijving) {
       html += '<p class="gp-popup-meta">' + escapeHtml(item.omschrijving) + "</p>";
     }
+    registerPlek(item);
     if (item.bron_url) {
       html +=
         '<a class="gp-popup-link" href="' +
@@ -254,6 +249,10 @@
         escapeHtml(item.bron_label || (evenement ? "Bron" : "Meer informatie")) +
         "</a>";
     }
+    html +=
+      '<p class="gp-popup-acties"><button type="button" class="zoek-regel-meer-knop" data-plek-open="' +
+      escapeHtml(detailPlekKey(item)) +
+      '" aria-haspopup="dialog">Meer info</button></p>';
     html += "</div>";
     return html;
   }

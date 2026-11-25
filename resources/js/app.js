@@ -1,3 +1,4 @@
+import './aanbod-detail.js';
 import './bootstrap';
 
 document.addEventListener('DOMContentLoaded', () => {

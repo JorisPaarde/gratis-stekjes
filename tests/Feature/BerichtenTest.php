@@ -177,3 +177,54 @@ test('leeg gesprek toont invoervak en uitnodiging om te schrijven', function () 
         ->assertSee('data-gesprek-composer', false)
         ->assertSee('Verstuur', false);
 });
+
+
+test('eigen aanbod toont een duidelijke foutmelding op de vorige pagina', function () {
+    $owner = messagingUser('owner-zelf@example.com', 'Owner');
+    $aanbod = Aanbod::query()->create([
+        'user_id' => $owner->id,
+        'type' => 'uitdelen',
+        'tekst' => 'Mijn munt',
+        'visible' => true,
+        'expires_at' => now()->addDays(30),
+    ]);
+
+    $this->actingAs($owner)
+        ->from(route('aanbod'))
+        ->get(route('account.bericht-starten', [
+            'aanbod_id' => $aanbod->id,
+            'user_id' => $owner->id,
+        ]))
+        ->assertRedirect(route('aanbod'))
+        ->assertSessionHas('error', 'Dit is je eigen aanbod. Je kunt jezelf geen bericht sturen.');
+
+    $html = $this->actingAs($owner)
+        ->get(route('aanbod'))
+        ->assertOk()
+        ->assertSee('Dit is je eigen aanbod. Je kunt jezelf geen bericht sturen.', false)
+        ->getContent();
+
+    expect($html)->toContain('role="alert"')
+        ->and($html)->toContain('flash-error');
+});
+
+test('mislukt gesprek start keert terug naar de stadspagina als je daar vandaan kwam', function () {
+    $owner = messagingUser('owner-stad@example.com', 'Owner');
+    $aanbod = Aanbod::query()->create([
+        'user_id' => $owner->id,
+        'type' => 'uitdelen',
+        'tekst' => 'Mijn munt',
+        'visible' => true,
+        'expires_at' => now()->addDays(30),
+    ]);
+    $from = route('gratis-planten.show', ['stad' => 'haarlem']);
+
+    $this->actingAs($owner)
+        ->from($from)
+        ->get(route('account.bericht-starten', [
+            'aanbod_id' => $aanbod->id,
+            'user_id' => $owner->id,
+        ]))
+        ->assertRedirect($from)
+        ->assertSessionHas('error', 'Dit is je eigen aanbod. Je kunt jezelf geen bericht sturen.');
+});

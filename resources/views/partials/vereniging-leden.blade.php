@@ -7,20 +7,7 @@
   @if(count($blok['aanbod']) === 0)
     <p>Nog geen aanbod van leden. Ben je lid? <a href="{{ route('account.verenigingen') }}">Koppel je account</a> en zet iets online.</p>
   @else
-    <ul class="zoek-lijst gp-aanbod-lijst">
-      @foreach($blok['aanbod'] as $item)
-        <li class="zoek-item">
-          <h3>{{ $item['voornaam'] ?: 'Iemand' }} · {{ $item['type'] === 'ophalen' ? 'zoekt' : 'deelt' }}</h3>
-          <p>{{ $item['tekst'] }} @include('partials.aanbod-aantal', ['aantal' => $item['aantal'] ?? 1])</p>
-          <p class="muted">{{ $item['locatie_label'] }}</p>
-          @auth
-            <p><a href="{{ route('account.bericht-starten', ['aanbod_id' => $item['id'], 'user_id' => $item['user_id']]) }}">Bericht sturen</a></p>
-          @else
-            <p class="muted"><a href="{{ route('account.inloggen') }}">Log in</a> om een bericht te sturen.</p>
-          @endauth
-        </li>
-      @endforeach
-    </ul>
+    @include('partials.aanbod-lijst', ['items' => $blok['aanbod']])
   @endif
   <p class="vereniging-acties">
     <a class="btn" href="{{ route('account.verenigingen') }}">Ik ben lid: koppel mijn account</a>
