@@ -3,6 +3,29 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.82.0] - 2026-11-25
+
+### Changed
+
+- Nieuwsbrief wordt **opt-out** (bouwt voort op PR #338): bevestigde, actieve leden
+  staan standaard aan, nieuwe leden krijgen het vinkje standaard aan bij registreren,
+  en op het profiel kun je je afmelden (vinkje weg + Opslaan). Geen double opt-in en
+  geen Brevo-DOI-mail meer. Onbevestigde accounts worden niet meegenomen.
+- Migratie `2026_11_25_140000_newsletter_opt_out_backfill`: kolom
+  `newsletter_opt_out_at` (zelf afgemeld, voorkomt her-aanzetten) en eenmalige,
+  idempotente zet van bevestigde, actieve leden zonder keuze op aan.
+  `php artisan gp:nieuwsbrief-backfill --dry-run` toont alleen het aantal.
+- Brevo-sync zet alleen contacten op lijst 6 (upsert); verstuurt nooit een mail of
+  campagne. Een afmelding in Brevo (blacklist/uitgeschreven) wint van de site.
+  `BREVO_SYNC_ENABLED` (standaard uit) bepaalt of de site Brevo aanroept, zodat
+  staging de echte lijst niet raakt.
+- Brevo-webhook (`POST /webhooks/brevo/{token}`) zet de vlag uit bij `unsubscribed`,
+  `spam` en `contactDeleted`; beveiligd met token. Zie `docs/nieuwsbrief.md` (o.a. de
+  stap om de webhook-URL bij de productie-release om te zetten, en de afmeldlink-eis
+  voor campagnes).
+- Privacyverklaring: nieuwe sectie «Nieuwsbrief en Brevo» (opt-out, Brevo als
+  verwerker, afmelden) en bijgewerkte grondslag/bewaartermijn.
+
 ## [0.81.18] - 2026-11-25
 
 ### Changed

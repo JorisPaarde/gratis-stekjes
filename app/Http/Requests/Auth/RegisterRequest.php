@@ -37,6 +37,7 @@ class RegisterRequest extends FormRequest
             'postcode' => ['required', 'string', 'max:10'],
             'gratis_akkoord' => ['accepted'],
             'privacy' => ['accepted'],
+            'nieuwsbrief' => ['nullable', 'boolean'],
             ...FormGuard::honeypotRules(),
             'form_started' => ['required', 'integer'],
             'next' => ['nullable', 'string', 'max:200'],

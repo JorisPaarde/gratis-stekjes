@@ -32,6 +32,7 @@
     <li><strong>Technisch:</strong> sessie (login/“onthoud mij”), beveiliging van formulieren, korte limieten tegen misbruik (die tijdelijk een IP of e-mail kunnen bevatten), en tijdelijke opslag van zoeklocaties (zoekterm, label, afgeronde coördinaten, tijdstip). Serverlogs zonder herleidbare e-mail/IP. Geen trackingcookies, geen analytiek van derden, geen advertenties.</li>
     <li><strong>Conversiemeting (eigen site):</strong> anonieme gebeurtenissen zoals een klik op «Word lid», openen van de registratiepagina, starten/versturen van het formulier, validatiefouten (alleen veldnaam + foutcode, nooit je invoer), account aangemaakt, e-mail bevestigd, welkomstscherm (gezien / klik op de knop) en eerste aanbod. Ook: dat iemand op de aanbodlijst zocht, met optioneel typefilter, een resultaatgrootte-categorie en de catalogusplantnaam als die exact in de plantenlijst staat — nooit de getypte plaats/postcode en nooit vrije planttekst. Per gebeurtenis: tijdstip, genormaliseerd pad, referrer-domein (alleen de host), UTM-velden, grof apparaattype (mobiel/tablet/desktop) en een tijdelijk flow-id. Geen IP-adres en geen volledige user-agent in die meetgegevens. Unieke bezoekers schat ik met een dagelijks wisselende hash (alleen de hash wordt bewaard).</li>
     <li><strong>Herkomst bij je account:</strong> bij registratie bewaar ik optioneel hoe je de site vond (keuze + eventueel korte vrije tekst) en de UTM/referrer van je eerste landing. Die gegevens horen bij je account, gaan mee in je gegevensdownload en verdwijnen bij accountverwijdering.</li>
+    <li><strong>Nieuwsbrief:</strong> of je de nieuwsbrief ontvangt (standaard aan voor bevestigde accounts), sinds wanneer, en wanneer je je afmeldde. Bij Brevo, mijn nieuwsbriefdienst, staan alleen je e-mailadres en voornaam (zie Nieuwsbrief en Brevo).</li>
   </ul>
 
   <h2>Wat staat er publiek</h2>
@@ -56,15 +57,15 @@
 
   <h2>Doel en grondslag</h2>
   <ul class="list-plain">
-    <li><strong>Doel:</strong> elkaar vinden om planten en stekjes gratis uit te delen of op te halen; berichten; organisatie-/deelplek-zichtbaarheid na controle; beveiliging tegen misbruik en spam; en mails die bij je account horen.</li>
-    <li><strong>Grondslag:</strong> toestemming (vinkjes bij registratie/aanmelding + deze verklaring) en, waar nodig, gerechtvaardigd belang voor beveiliging en misbruikpreventie.</li>
+    <li><strong>Doel:</strong> elkaar vinden om planten en stekjes gratis uit te delen of op te halen; berichten; organisatie-/deelplek-zichtbaarheid na controle; beveiliging tegen misbruik en spam; mails die bij je account horen; en een nieuwsbrief met af en toe tips en updates over Gratis planten (standaard aan; je kunt je altijd afmelden).</li>
+    <li><strong>Grondslag:</strong> toestemming (vinkjes bij registratie/aanmelding + deze verklaring) en, waar nodig, gerechtvaardigd belang voor beveiliging en misbruikpreventie. Voor de nieuwsbrief aan leden is dat mijn gerechtvaardigd belang om leden van Gratis planten af en toe te informeren; je kunt daar altijd bezwaar tegen maken door je af te melden (zie Nieuwsbrief en Brevo).</li>
   </ul>
 
   <h2>Jouw rechten</h2>
   <ul class="list-plain">
     <li><strong>Inzien en downloaden:</strong> ingelogd via <a href="{{ route('account.export') }}">Gegevens downloaden</a> (een bestand met account, aanbod, ervaringen, berichten, blokkades/meldingen en links naar jouw aanbodfoto’s; zonder wachtwoord of geheime links).</li>
     <li><strong>Wissen (ervaring):</strong> via <a href="{{ route('account.ervaringen') }}">Mijn ervaringen</a> kun je een ervaring (inclusief foto) zelf verwijderen.</li>
-    <li><strong>Wissen (account):</strong> <a href="{{ route('account.verwijderen') }}">Account verwijderen</a> (bevestiging met wachtwoord). Daarmee verdwijnen account, aanbod, bijbehorende foto’s, ervaringen en foto’s, berichten/gesprekken, mijlpaalregistraties, blokkades, jouw meldingen, wachtwoordreset-links en sessies. Feedback blijft bewaard zonder koppeling aan jou (geanonimiseerd). Verwijder je een apart aanboditem, dan wis ik ook de foto’s van dat item.</li>
+    <li><strong>Wissen (account):</strong> <a href="{{ route('account.verwijderen') }}">Account verwijderen</a> (bevestiging met wachtwoord). Daarmee verdwijnen account, aanbod, bijbehorende foto’s, ervaringen en foto’s, berichten/gesprekken, mijlpaalregistraties, blokkades, jouw meldingen, wachtwoordreset-links, sessies en je plek op de nieuwsbrieflijst bij Brevo. Feedback blijft bewaard zonder koppeling aan jou (geanonimiseerd). Verwijder je een apart aanboditem, dan wis ik ook de foto’s van dat item.</li>
     <li><strong>Corrigeren:</strong> via je accountprofiel (naam, telefoon, locatie, e-mailwijziging met herbevestiging).</li>
     <li><strong>Bezwaar of klacht:</strong> mail <a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a>. Kom je er met mij niet uit, dan kun je een klacht indienen bij een toezichthouder:
       <ul>
@@ -86,6 +87,7 @@
     <li><strong>Sessies:</strong> standaard {{ (int) config('session.lifetime', 120) }} minuten; “onthoud mij” houdt je langer ingelogd.</li>
     <li><strong>Inactieve accounts:</strong> na {{ (int) config('stekjes.inactive_account_months', 12) }} maanden zonder activiteit. Automatisch opschonen volgt later, als dat nodig is.</li>
     <li><strong>Backups:</strong> worden versleuteld gemaakt en bewaard met een beperkte bewaartermijn; de sleutel staat niet in de openbare broncode.</li>
+    <li><strong>Nieuwsbrief:</strong> zolang je aangemeld bent. Meld je je af (op je profiel of via de afmeldlink in een nieuwsbrief), dan haal ik je van de Brevo-lijst en onthoud ik alleen dát je je afmeldde, zodat je niet opnieuw wordt aangemeld. Verwijder je je account, dan haal ik je van de Brevo-lijst.</li>
   </ul>
 
   <h2>Cookies (alleen functioneel)</h2>
@@ -104,7 +106,14 @@
     <li>Bevestigingsmails (en, alleen als ik dat aanzet, één herinnering na een dag als je e-mailadres nog niet bevestigd is), wachtwoordreset, e-mailwijziging, “je hebt een nieuw bericht” (met de voornaam van de afzender, zonder berichtinhoud of andermans adres; uit te zetten op je profiel of via de link in de mail), één tipmail als je account bevestigd is maar je nog geen aanbod hebt geplaatst (alleen als ik dat aanzet; uit te zetten op je profiel of via de link in de mail), aanbod-herinneringen en, alleen als ik dat aanzet, een felicitatiemail bij je eerste stekje gaan via mijn eigen mailbox bij de hoster.</li>
     <li>Organisatie-aanmelders krijgen een bevestiging; ik krijg een melding. Geen mail naar derden buiten de aanmelder.</li>
     <li>Verbinders die zich aanmelden via de pagina Help mee: dat gaat via contact (jij mailt zelf) of via feedback (alleen opgeslagen, zonder automatische bevestigingsmail).</li>
-    <li>Gegevens staan op hosting in de EU die ik beheer. Mail gaat via diezelfde hoster.</li>
+    <li>Gegevens staan op hosting in de EU die ik beheer. Transactionele mail (account) gaat via diezelfde hoster.</li>
+  </ul>
+
+  <h2>Nieuwsbrief en Brevo</h2>
+  <ul class="list-plain">
+    <li><strong>Wat je krijgt:</strong> af en toe een nieuwsbrief met tips en updates over {{ config('site.name') }}. Bevestigde accounts staan standaard aan: bij registratie staat het vinkje aan (je kunt het uitzetten), en bestaande bevestigde leden heb ik aangezet. Accounts die hun e-mailadres nog niet bevestigden krijgen niets.</li>
+    <li><strong>Brevo als verwerker:</strong> de nieuwsbrief verstuur ik via Brevo, een e-maildienst (verwerker) in de EU. Brevo krijgt alleen je e-mailadres en voornaam, uitsluitend voor deze nieuwsbrief. De site zet je pas op de Brevo-lijst nadat je je e-mailadres bevestigd hebt; de synchronisatie zet alleen contactgegevens op de lijst en verstuurt zelf geen mails.</li>
+    <li><strong>Afmelden:</strong> haal het vinkje weg op je <a href="{{ route('account.profiel') }}">profiel</a> en klik op Opslaan, of klik op de afmeldlink onderaan elke nieuwsbrief. Beide werken direct en zonder reden. Meld je je af bij Brevo (of markeer je een nieuwsbrief als spam), dan zet de site het vinkje in je account automatisch uit. Aanmelden kan later weer op je profiel.</li>
   </ul>
 
   <h2>Kaart en derden</h2>
@@ -120,6 +129,6 @@
   <p>Gratis planten is een gratis dienst. Ik verkoop niets en neem geen betalingen aan; planten en stekjes geef je onderling weg. Op deze site is Nederlands recht van toepassing. Woon je in België, dan houd je de bescherming die het Belgische recht je dwingend geeft. Ben je het ergens niet mee eens, mail me dan eerst, dan zoek ik met je naar een oplossing.</p>
 
   <h2>Wijzigingen</h2>
-  <p>Versie van deze site: {{ config('site.version') }}. Laatst bijgewerkt: 1 november 2026. Bij inhoudelijke wijzigingen werk ik deze pagina bij.</p>
+  <p>Versie van deze site: {{ config('site.version') }}. Laatst bijgewerkt: 25 november 2026. Bij inhoudelijke wijzigingen werk ik deze pagina bij.</p>
 </section>
 @endsection

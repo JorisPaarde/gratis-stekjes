@@ -256,6 +256,28 @@ umask 077
   else
     printf '%s\n' 'POST_LOG_MINT_TOKEN='
   fi
+  # Brevo nieuwsbrief: alleen schrijven als gezet; anders behoudt de hook bestaande waarden.
+  if [ -n "${BREVO_API_KEY:-}" ]; then
+    dotenv_line BREVO_API_KEY "$BREVO_API_KEY"
+  else
+    printf '%s\n' 'BREVO_API_KEY='
+  fi
+  if [ -n "${BREVO_NEWSLETTER_LIST_ID:-}" ]; then
+    dotenv_line BREVO_NEWSLETTER_LIST_ID "$BREVO_NEWSLETTER_LIST_ID"
+  else
+    printf '%s\n' 'BREVO_NEWSLETTER_LIST_ID='
+  fi
+  # Sync-schakelaar (standaard uit): alleen productie zet BREVO_SYNC_ENABLED=true (GitHub-variabele).
+  if [ -n "${BREVO_SYNC_ENABLED:-}" ]; then
+    dotenv_line BREVO_SYNC_ENABLED "$BREVO_SYNC_ENABLED"
+  else
+    printf '%s\n' 'BREVO_SYNC_ENABLED='
+  fi
+  if [ -n "${BREVO_WEBHOOK_TOKEN:-}" ]; then
+    dotenv_line BREVO_WEBHOOK_TOKEN "$BREVO_WEBHOOK_TOKEN"
+  else
+    printf '%s\n' 'BREVO_WEBHOOK_TOKEN='
+  fi
   dotenv_line ADMIN_PASSWORD "$ADMIN_PASSWORD"
   # Dashboard-accounts: alleen schrijven als secret gezet; anders behoudt de hook de bestaande waarde.
   if [ -n "${ADMIN_DASHBOARD_EMAILS:-}" ]; then

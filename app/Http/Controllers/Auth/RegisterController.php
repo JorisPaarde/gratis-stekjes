@@ -132,6 +132,18 @@ class RegisterController extends Controller
                     : null;
             }
 
+            // Nieuwsbrief (opt-out): vinkje staat standaard aan. Alleen lokaal opslaan; naar de
+            // Brevo-lijst gaat het contact pas ná e-mailbevestiging. Veld ontbreekt = standaard aan.
+            if (Schema::hasColumn('users', 'newsletter_opt_in')) {
+                $wantsNewsletter = $request->has('nieuwsbrief') ? $request->boolean('nieuwsbrief') : true;
+                if ($wantsNewsletter) {
+                    $user->newsletter_opt_in = true;
+                    $user->newsletter_opt_in_at = now();
+                } elseif (Schema::hasColumn('users', 'newsletter_opt_out_at')) {
+                    $user->newsletter_opt_out_at = now();
+                }
+            }
+
             $user->save();
             $user->rotateEmailVerificationToken();
             $tracker->attachFlowToUser($user->fresh(), $request);
