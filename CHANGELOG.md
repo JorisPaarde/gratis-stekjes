@@ -3,6 +3,24 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.16] - 2026-11-25
+
+### Added
+
+- Palmkool (`Brassica oleracea var. palmifolia`) als soort en stektip, met de
+  Commons-foto die eerder per abuis bij eeuwig moes stond (Frank Vincentz,
+  CC BY-SA 3.0). Synoniemen: cavolo nero, zwarte kool, Toscaanse kool,
+  Nero di Toscana. Vermeerderen via zaad.
+
+## [0.81.15] - 2026-11-25
+
+### Fixed
+
+- Eeuwig moes: verkeerde Commons-foto (palmkool / Ostfriesische Palme) vervangen
+  door echte eeuwig-moesfoto (FarceRéjeane, CC BY-SA 4.0). Latijnse naam overal
+  `Brassica oleracea var. ramosa` i.p.v. `palmifolia`. OG-afbeelding opnieuw
+  gegenereerd met maker + licentie.
+
 ## [0.81.14] - 2026-11-24
 
 ### Changed

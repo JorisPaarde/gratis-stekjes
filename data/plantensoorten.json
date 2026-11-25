@@ -1,9 +1,9 @@
 {
   "meta": {
     "omschrijving": "Plantensoorten voor autocomplete bij stekje aanbieden. Alleen soorten die hobbyisten realistisch kunnen vermeerderen en delen (stek, scheuren, uitlopers, offsets, zaden), plus typische voedselbos-soorten. Verborgen soorten blijven in de data voor bestaande aanbod-referenties. Geen soorten van de EU-Unielijst invasieve exoten. Zie docs/plantensoorten-selectie.md.",
-    "aantal": 374,
-    "met_stektips_pagina": 146,
-    "zichtbaar": 346,
+    "aantal": 380,
+    "met_stektips_pagina": 147,
+    "zichtbaar": 352,
     "verborgen": 28,
     "voedselbos": 114,
     "inheems": 34
@@ -4268,7 +4268,7 @@
     {
       "id": 359,
       "naam": "Eeuwig moes",
-      "latijn": "Brassica oleracea var. palmifolia",
+      "latijn": "Brassica oleracea var. ramosa",
       "synoniemen": [
         "Eeuwigmoes",
         "Perennial kale",
@@ -4590,7 +4590,21 @@
       "tags": [
         "inheems"
       ]
+    },
+    {
+      "id": 380,
+      "naam": "Palmkool",
+      "latijn": "Brassica oleracea var. palmifolia",
+      "synoniemen": [
+        "Cavolo nero",
+        "Zwarte kool",
+        "Toscaanse kool",
+        "Nero di Toscana"
+      ],
+      "slug": "palmkool",
+      "categorie": "moestuin",
+      "zichtbaar": true
     }
   ],
-  "count": 379
+  "count": 380
 }
