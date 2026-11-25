@@ -3,6 +3,18 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.84.1] - 2026-11-25
+
+### Changed
+
+- Gesprekspagina (`/account/gesprek/{id}`): chat-layout zodat het berichtvak op
+  mobiel meteen in beeld staat. Berichten scrollen naar het laatste, het
+  invoervak blijft onderaan (ook boven het toetsenbord via `visualViewport`).
+  Autofocus alleen op desktop; op iOS/aanraakschermen niet, zodat het
+  toetsenbord niet vanzelf opengaat en de laatste berichten wegduwt.
+  Veiligheidstips, verder contact en melden/blokkeren staan in inklapbare
+  blokken. Footer en feedbackknop zijn op deze pagina verborgen.
+
 ## [0.84.0] - 2026-11-25
 
 ### Added
