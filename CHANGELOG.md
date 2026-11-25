@@ -3,6 +3,15 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.82.3] - 2026-11-25
+
+### Fixed
+
+- Staging had geen `SMTP_*` in de GitHub Environment, waardoor de deploy de repo-secrets
+  (andere mailbox) schreef. Bevestigingsmails stonden in `mail_log` op ok maar kwamen niet
+  aan (sinds 16 nov). Staging gebruikt nu dezelfde mailbox als productie
+  (`mail.gratisplanten.nl` / info@). Zie `AGENTS.md`.
+
 ## [0.82.2] - 2026-11-25
 
 ### Added
