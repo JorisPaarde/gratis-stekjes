@@ -453,36 +453,157 @@
     return li;
   }
 
+  // Aanbod per id bewaren, zodat een tik op een regel de details in het venster kan tonen.
+  var regelItems = {};
+
+  function berichtUrl(item) {
+    return (
+      (cfg.bericht_starten || "/account/bericht-starten") +
+      "?aanbod_id=" +
+      encodeURIComponent(item.id) +
+      "&user_id=" +
+      encodeURIComponent(item.user_id)
+    );
+  }
+
+  function aantalTekst(item) {
+    return item.aantal > 1 ? item.aantal + " stuks" : "";
+  }
+
   function aanbodRegel(item) {
+    regelItems[item.id] = item;
     var fotos = Array.isArray(item.fotos) ? item.fotos : [];
     var foto = fotos[0] && (fotos[0].thumb_url || fotos[0].url);
+    var label = aanbodTypeLabels[item.type] || item.type;
     var bericht = cfg.bericht_binnenkort
       ? ""
-      : '<a class="zoek-regel-bericht" href="' +
-        (cfg.bericht_starten || "/account/bericht-starten") +
-        "?aanbod_id=" +
-        encodeURIComponent(item.id) +
-        "&user_id=" +
-        encodeURIComponent(item.user_id) +
-        '">Stuur bericht</a>';
+      : '<a class="zoek-regel-bericht" href="' + berichtUrl(item) + '">Stuur bericht</a>';
     return (
       '<li class="zoek-regel">' +
+      '<button type="button" class="zoek-regel-open" data-aanbod-open="' +
+      escapeHtml(String(item.id)) +
+      '" aria-haspopup="dialog" aria-label="' +
+      escapeHtml(label + " " + (item.tekst || "") + (aantalTekst(item) ? ", " + aantalTekst(item) : "") + ": bekijk foto en info") +
+      '">' +
       (foto
-        ? '<img src="' +
-          escapeHtml(foto) +
-          '" alt="' +
-          escapeHtml(fotos[0].alt || "Foto bij aanbod") +
-          '" width="48" height="48" loading="lazy">'
+        ? '<img src="' + escapeHtml(foto) + '" alt="" width="56" height="56" loading="lazy">'
         : "") +
       '<span class="zoek-regel-tekst"><span class="badge">' +
-      escapeHtml(aanbodTypeLabels[item.type] || item.type) +
+      escapeHtml(label) +
       "</span> " +
       escapeHtml(item.tekst || "") +
       (item.aantal > 1 ? ' <span class="aanbod-aantal">(' + item.aantal + " stuks)</span>" : "") +
-      "</span>" +
+      '<span class="zoek-regel-meer" aria-hidden="true">' +
+      (foto ? "Foto en info" : "Meer info") +
+      "</span></span>" +
+      "</button>" +
       bericht +
       "</li>"
     );
+  }
+
+  // —— Detailvenster (native <dialog>): grote foto, info en direct «Stuur bericht» ——
+  var detailDlg = null;
+  var detailTrigger = null;
+  var detailHistory = false;
+
+  function ensureDetailDialog() {
+    if (detailDlg) return detailDlg;
+    detailDlg = document.createElement("dialog");
+    detailDlg.className = "aanbod-detail";
+    detailDlg.setAttribute("aria-labelledby", "aanbod-detail-titel");
+    detailDlg.addEventListener("click", function (ev) {
+      // Klik op de donkere achtergrond (de dialog zelf, niet de inhoud) sluit.
+      if (ev.target === detailDlg) detailDlg.close();
+      var sluit = ev.target.closest && ev.target.closest("[data-detail-sluit]");
+      if (sluit) detailDlg.close();
+      var thumb = ev.target.closest && ev.target.closest("[data-detail-foto]");
+      if (thumb) toonDetailFoto(parseInt(thumb.getAttribute("data-detail-foto"), 10));
+    });
+    detailDlg.addEventListener("close", function () {
+      document.documentElement.classList.remove("aanbod-detail-open");
+      // Zelf sluiten (knop, Esc, achtergrond): de extra historie-stap weer weghalen.
+      if (detailHistory) {
+        detailHistory = false;
+        if (history.state && history.state.gpAanbodDetail) history.back();
+      }
+      if (detailTrigger && detailTrigger.isConnected && detailTrigger.focus) detailTrigger.focus();
+      detailTrigger = null;
+    });
+    window.addEventListener("popstate", function () {
+      // Terugknop van telefoon/browser sluit het venster i.p.v. de pagina te verlaten.
+      if (detailDlg.open) {
+        detailHistory = false;
+        detailDlg.close();
+      }
+    });
+    document.body.appendChild(detailDlg);
+    return detailDlg;
+  }
+
+  var detailFotos = [];
+
+  function toonDetailFoto(i) {
+    var f = detailFotos[i];
+    var img = detailDlg.querySelector(".aanbod-detail-foto img");
+    if (!f || !img) return;
+    img.src = f.url;
+    img.alt = f.alt || "Foto bij aanbod";
+    detailDlg.querySelectorAll("[data-detail-foto]").forEach(function (b) {
+      b.setAttribute("aria-current", String(parseInt(b.getAttribute("data-detail-foto"), 10) === i));
+    });
+  }
+
+  function openAanbodDetail(item, trigger) {
+    var dlg = ensureDetailDialog();
+    var fotos = Array.isArray(item.fotos) ? item.fotos : [];
+    detailFotos = fotos;
+    var label = aanbodTypeLabels[item.type] || item.type;
+    var wie = (item.voornaam || "") + (item.locatie_label ? " · " + item.locatie_label : "");
+    var meta = [];
+    if (aantalTekst(item)) meta.push("<strong>" + escapeHtml(aantalTekst(item)) + "</strong>");
+    if (wie) meta.push("Van " + escapeHtml(wie));
+    if (item.afstand_km != null) meta.push(escapeHtml(formatKm(item.afstand_km)));
+    dlg.innerHTML =
+      '<div class="aanbod-detail-kop">' +
+      '<span class="badge">' + escapeHtml(label) + "</span>" +
+      '<button type="button" class="aanbod-detail-x" data-detail-sluit aria-label="Sluiten">' +
+      '<span aria-hidden="true">×</span></button></div>' +
+      (fotos.length
+        ? '<div class="aanbod-detail-foto"><img src="' +
+          escapeHtml(fotos[0].url) +
+          '" alt="' +
+          escapeHtml(fotos[0].alt || "Foto bij aanbod") +
+          '"></div>'
+        : "") +
+      (fotos.length > 1
+        ? '<ul class="aanbod-detail-thumbs">' +
+          fotos
+            .map(function (f, i) {
+              return (
+                '<li><button type="button" data-detail-foto="' + i + '" aria-label="Foto ' + (i + 1) + " van " + fotos.length +
+                '" aria-current="' + (i === 0) + '"><img src="' + escapeHtml(f.thumb_url || f.url) + '" alt="" width="56" height="56"></button></li>'
+              );
+            })
+            .join("") +
+          "</ul>"
+        : "") +
+      '<h2 id="aanbod-detail-titel" class="aanbod-detail-titel" tabindex="-1">' +
+      escapeHtml(item.tekst || label) +
+      "</h2>" +
+      (meta.length ? '<p class="aanbod-detail-meta">' + meta.join(" · ") + "</p>" : "") +
+      lidVanHtml(item.verenigingen) +
+      '<div class="aanbod-detail-acties">' +
+      (cfg.bericht_binnenkort
+        ? ""
+        : '<a class="btn aanbod-detail-bericht" href="' + berichtUrl(item) + '">Stuur bericht</a>') +
+      '<button type="button" class="btn btn-secondary" data-detail-sluit>Sluiten</button></div>';
+    detailTrigger = trigger || null;
+    document.documentElement.classList.add("aanbod-detail-open");
+    dlg.showModal();
+    dlg.scrollTop = 0;
+    history.pushState({ gpAanbodDetail: true }, "", location.href);
+    detailHistory = true;
   }
 
   function lidVanHtml(verenigingen) {
@@ -623,6 +744,12 @@
   list.addEventListener("click", function (ev) {
     var target = ev.target.closest ? ev.target : null;
     if (!target) return;
+    var openBtn = target.closest("[data-aanbod-open]");
+    if (openBtn) {
+      var gekozen = regelItems[openBtn.getAttribute("data-aanbod-open")];
+      if (gekozen) openAanbodDetail(gekozen, openBtn);
+      return;
+    }
     var meer = target.closest("[data-meer]");
     if (meer) {
       var soort = meer.getAttribute("data-meer");
