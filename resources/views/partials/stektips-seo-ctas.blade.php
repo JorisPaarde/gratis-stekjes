@@ -21,9 +21,9 @@
     @endif
 
     @if(!empty($seoCtas['aanbod_url']))
-      <h2 class="stektips-related-title">Gratis {{ $seoCtas['plant_label'] ?? '' }}-stekjes in je buurt</h2>
+      <h2 class="stektips-related-title">Gratis {{ $seoCtas['plant_label'] ?? '' }}-{{ $seoCtas['aanbod_zelfstandig_naam'] ?? 'stekjes' }} in je buurt</h2>
       <p>
-        <a class="btn" href="{{ $seoCtas['aanbod_url'] }}">Zoek gratis {{ $seoCtas['plant_label'] ?? 'planten' }}-stekjes</a>
+        <a class="btn" href="{{ $seoCtas['aanbod_url'] }}">Zoek gratis {{ $seoCtas['plant_label'] ?? 'planten' }}-{{ $seoCtas['aanbod_zelfstandig_naam'] ?? 'stekjes' }}</a>
       </p>
     @endif
 

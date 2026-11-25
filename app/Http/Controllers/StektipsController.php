@@ -385,11 +385,12 @@ class StektipsController extends Controller
         $aanbodPlant = is_array($hub) ? (string) ($hub['aanbod_plant'] ?? $naam) : $naam;
         $aanbodUrl = route('aanbod', ['plant' => $aanbodPlant]);
 
-        $title = $seoNaam.' '.$seoWerkwoord.' en gratis stekjes';
+        $aanbodZelfstandigNaam = $stektips->aanbodZelfstandigNaam($soort);
+        $title = $seoNaam.' '.$seoWerkwoord.' en gratis '.$aanbodZelfstandigNaam;
         $heading = $seoNaam.' '.$seoWerkwoord.': zo doe je het';
         // Latijn alleen in meta als het geheel ≤ 160 tekens blijft.
-        $metaWithLatijn = $seoNaam.$metaLatijn.' '.$seoWerkwoord.': zo doe je het. '.$metaKort.'Daarna gratis stekjes delen via '.config('site.name').'.';
-        $metaWithoutLatijn = $seoNaam.' '.$seoWerkwoord.': zo doe je het. '.$metaKort.'Daarna gratis stekjes delen via '.config('site.name').'.';
+        $metaWithLatijn = $seoNaam.$metaLatijn.' '.$seoWerkwoord.': zo doe je het. '.$metaKort.'Daarna gratis '.$aanbodZelfstandigNaam.' delen via '.config('site.name').'.';
+        $metaWithoutLatijn = $seoNaam.' '.$seoWerkwoord.': zo doe je het. '.$metaKort.'Daarna gratis '.$aanbodZelfstandigNaam.' delen via '.config('site.name').'.';
         $metaDescription = mb_strlen($metaWithLatijn, 'UTF-8') <= 160 ? $metaWithLatijn : $metaWithoutLatijn;
         // Meta description max 160; bij overlange kort-tekst inkorten zonder latijn.
         if (mb_strlen($metaDescription, 'UTF-8') > 160) {
@@ -407,7 +408,8 @@ class StektipsController extends Controller
             'verwanten' => $stektips->related($soort),
             'gerelateerdeArtikelen' => $kennisbank->articlesForSoort($slug),
             'aanbodUrl' => $aanbodUrl,
-            'seoCtas' => $this->seoCtasForSoort($slug, $naam, $kennisbank),
+            'aanbodZelfstandigNaam' => $aanbodZelfstandigNaam,
+            'seoCtas' => $this->seoCtasForSoort($slug, $naam, $kennisbank, $aanbodZelfstandigNaam),
             'breadcrumbs' => [
                 ['naam' => 'Home', 'url' => route('home')],
                 ['naam' => 'Stektips', 'url' => route('stektips.index')],
@@ -464,7 +466,7 @@ class StektipsController extends Controller
     /**
      * @return array<string, mixed>
      */
-    private function seoCtasForSoort(string $slug, string $naam, Kennisbank $kennisbank): array
+    private function seoCtasForSoort(string $slug, string $naam, Kennisbank $kennisbank, string $aanbodZelfstandigNaam = 'stekjes'): array
     {
         $hub = $kennisbank->soortHub($slug);
         if ($hub === null) {
@@ -473,6 +475,7 @@ class StektipsController extends Controller
 
         $ctas = [
             'plant_label' => $naam,
+            'aanbod_zelfstandig_naam' => $aanbodZelfstandigNaam,
             'wilgenwater_url' => route('stektips.artikel', ['slug' => 'wilgenwater']),
             'aanbod_url' => route('aanbod', ['plant' => (string) ($hub['aanbod_plant'] ?? $naam)]),
             'aanbod_plant' => (string) ($hub['aanbod_plant'] ?? $naam),
