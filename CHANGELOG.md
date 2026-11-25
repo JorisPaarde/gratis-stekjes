@@ -3,6 +3,16 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.81.18] - 2026-11-25
+
+### Changed
+
+- Eeuwig moes: aparte, bijgesneden desktopfoto voor de brede hero, gecentreerd
+  op bladrozet en stengels (zelfde Commons-origineel van FarceRéjeane,
+  CC BY-SA 4.0). De bestaande foto blijft op mobiel. Optioneel veld
+  `desktop` in `data/soort-afbeeldingen.json`; andere soorten zonder dat
+  veld blijven ongewijzigd (`<picture>` met media-query vanaf 700px).
+
 ## [0.81.17] - 2026-11-25
 
 ### Fixed

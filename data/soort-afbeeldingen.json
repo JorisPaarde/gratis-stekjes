@@ -648,7 +648,15 @@
       "status": "goedgekeurd",
       "sha256": "b2fb18df6a34fb95e45b6b6837aeee546ed99aad79e4d5564f23d2ef076b60cd",
       "bytes": 228896,
-      "width_max": 1200
+      "width_max": 1200,
+      "desktop": {
+        "bestand": "assets/images/soorten/eeuwig-moes-desktop.jpg",
+        "sha256": "01aa699b9d0714176f6409b81505a01dbb83f2afe4418e281524c97f4a7646a5",
+        "bytes": 195903,
+        "width": 1536,
+        "height": 497,
+        "notitie": "Uitsnede van hetzelfde Commons-origineel, in de brede hero-verhouding (68:22), gecentreerd op bladrozet en stengels."
+      }
     },
     "eucalyptus": {
       "slug": "eucalyptus",
