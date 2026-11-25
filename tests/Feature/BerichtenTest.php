@@ -154,6 +154,7 @@ test('gesprekspagina toont chat en invoervak in chat-layout', function () {
         ->assertSee('Verstuur', false)
         ->assertSee('Terug naar inbox', false)
         ->assertSee('Schrijf een bericht', false)
+        ->assertSee('data-gesprek-meer', false)
         ->assertSee('Tips, contact en instellingen', false)
         ->assertSee('Veiligheidstips', false)
         ->assertSee('Verder contact?', false)

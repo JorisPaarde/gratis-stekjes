@@ -3,6 +3,18 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.84.7] - 2026-11-25
+
+### Fixed
+
+- Gesprekspagina op desktop: de drie info-panelen (Veiligheidstips, Verder
+  contact, Melden of blokkeren) bleven onzichtbaar, omdat de mobiele
+  samenvatting een gesloten `<details>` is en de inhoud dan niet toont.
+  Op brede schermen gaat die samenvatting nu open, zodat de panelen weer
+  onder elkaar staan.
+- Tijdens typen schuift de berichtenlijst mee, zodat het laatste bericht
+  niet onder het groter wordende invoervak verdwijnt.
+
 ## [0.84.6] - 2026-11-25
 
 ### Fixed

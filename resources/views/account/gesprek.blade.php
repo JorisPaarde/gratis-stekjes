@@ -23,7 +23,7 @@
       <p class="flash-error" role="alert">{{ session('error') }}</p>
     @endif
 
-    <details class="gesprek-meer">
+    <details class="gesprek-meer" data-gesprek-meer>
       <summary class="gesprek-meer-knop">Tips, contact en instellingen</summary>
       <div class="gesprek-meer-inhoud">
         <details class="gesprek-panel">
@@ -84,6 +84,13 @@
         </details>
       </div>
     </details>
+    <script>
+      (function (el) {
+        if (el && window.matchMedia && window.matchMedia('(min-width: 40rem)').matches) {
+          el.open = true;
+        }
+      })(document.currentScript.previousElementSibling);
+    </script>
   </header>
 
   <div class="chat" data-gesprek-chat>
