@@ -24,10 +24,10 @@
   <form class="form" method="post" action="{{ route('account.profiel') }}" data-profiel-locatie>
     @csrf
     <label>Voornaam of bijnaam *
-      <input name="voornaam" required maxlength="80" autocomplete="nickname" value="{{ old('voornaam', $user->name) }}">
+      <input id="profiel-voornaam" name="voornaam" required maxlength="80" autocomplete="nickname" value="{{ old('voornaam', $user->name) }}">
     </label>
     @include('partials.naam-check')
-    <fieldset class="adres-blok" data-adres>
+    <fieldset class="adres-blok" id="profiel-adres" data-adres>
       <legend>Je adres</legend>
       <p class="hint">Op de kaart en bij je aanbod staat alleen je postcodegebied en plaats, nooit je straat of huisnummer.</p>
       <label>Land *
@@ -55,7 +55,7 @@
                   }
               }
             @endphp
-            <input name="locatie" maxlength="10" autocomplete="postal-code" data-adres-postcode data-locatie-postcode value="{{ $pcWaarde }}" placeholder="{{ old('country', $user->country ?? 'NL') === 'BE' ? '9000' : '2011 AB' }}" @if($locatieModus === 'postcode') required @endif>
+            <input id="profiel-postcode" name="locatie" maxlength="10" autocomplete="postal-code" data-adres-postcode data-locatie-postcode value="{{ $pcWaarde }}" placeholder="{{ old('country', $user->country ?? 'NL') === 'BE' ? '9000' : '2011 AB' }}" @if($locatieModus === 'postcode') required @endif>
           </label>
           <label>Huisnummer
             <input name="huisnummer" maxlength="12" autocomplete="off" inputmode="text" data-adres-nummer value="{{ old('huisnummer', $user->isUnreadable('adres_huisnummer') ? '' : $user->adres_huisnummer) }}" placeholder="12A">
@@ -73,7 +73,7 @@
 
       <div data-modus-plaats @if($locatieModus !== 'plaats') hidden @endif>
         <label>Plaats *
-          <input name="locatie" maxlength="120" autocomplete="address-level2" data-locatie-plaats value="{{ old('locatie', $locatieModus === 'plaats' ? ($user->woonplaats ?: $user->locatie_label) : '') }}" placeholder="Almere" @if($locatieModus === 'plaats') required @else disabled @endif>
+          <input id="profiel-plaats" name="locatie" maxlength="120" autocomplete="address-level2" data-locatie-plaats value="{{ old('locatie', $locatieModus === 'plaats' ? ($user->woonplaats ?: $user->locatie_label) : '') }}" placeholder="Almere" @if($locatieModus === 'plaats') required @else disabled @endif>
         </label>
         <p class="hint">Op de kaart staat dan alleen je plaatsnaam, zonder postcode. <a href="#" data-naar-postcode>Ik weet mijn postcode</a></p>
       </div>
@@ -81,7 +81,7 @@
       <p class="hint adres-status" data-adres-status data-url="{{ route('account.adres-zoeken') }}" role="status" aria-live="polite"></p>
       <div class="adres-rij">
         <label>Straat
-          <input name="straat" maxlength="120" autocomplete="address-line1" data-adres-straat value="{{ old('straat', $user->isUnreadable('adres_straat') ? '' : $user->adres_straat) }}">
+          <input id="profiel-straat" name="straat" maxlength="120" autocomplete="address-line1" data-adres-straat value="{{ old('straat', $user->isUnreadable('adres_straat') ? '' : $user->adres_straat) }}">
         </label>
         <label>Plaats (adres)
           <input name="plaats" maxlength="120" autocomplete="address-level2" data-adres-plaats value="{{ old('plaats', $user->isUnreadable('adres_plaats') ? '' : $user->adres_plaats) }}">
@@ -255,6 +255,25 @@
 
     // Init: zorg dat maar één locatie-input name=locatie heeft.
     setModus(modusInput.value === 'plaats' ? 'plaats' : 'postcode');
+
+    function focusHash() {
+      var hash = (location.hash || '').replace('#', '');
+      if (!hash) return;
+      var el = document.getElementById(hash);
+      if (!el) return;
+      var focusEl = el;
+      if (hash === 'profiel-postcode') {
+        focusEl = (modusInput.value === 'plaats') ? inputPlaats : inputPc;
+      } else if (hash === 'profiel-adres') {
+        focusEl = straat || nr || el;
+      }
+      if (el.scrollIntoView) el.scrollIntoView({ block: 'center' });
+      if (focusEl && focusEl.focus) {
+        try { focusEl.focus({ preventScroll: true }); } catch (e) { focusEl.focus(); }
+      }
+    }
+    focusHash();
+    window.addEventListener('hashchange', focusHash);
   })();
 </script>
 @endpush

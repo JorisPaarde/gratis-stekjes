@@ -3,6 +3,19 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.85.0] - 2026-11-25
+
+### Changed
+
+- Badges op Mijn account zijn klikbaar, behaald en nog niet behaald. Een tik
+  op een nog niet behaalde badge brengt je naar de plek waar je hem kunt
+  halen: postcode of adres op je profiel (met anker en focus op dat veld),
+  het aanbiedformulier, het aanbod (om een bericht te sturen), je inbox of
+  een nieuw ervaringsformulier. Behaalde badges gaan naar dezelfde plek.
+  Oprichtersbadges, Pionier en Vaste plant kun je niet zelf invullen; die
+  wijzen naar een korte uitleg op dezelfde pagina. Elke tegel is een link
+  met hover- en focusstaat en een tikvlak van minstens 44 px.
+
 ## [0.84.10] - 2026-11-25
 
 ### Fixed

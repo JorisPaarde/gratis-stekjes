@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
+use InvalidArgumentException;
 use Throwable;
 
 /**
@@ -142,6 +143,30 @@ final class MilestoneService
     public const OPRICHTERS = [10 => 'eerste_10', 50 => 'eerste_50', 100 => 'eerste_100', 200 => 'eerste_200'];
 
     /**
+     * Doel per badge: een actiepagina (met optioneel anker) of een korte uitleg
+     * op de accountpagina. Elke bekende badge-sleutel hoort hier te staan.
+     *
+     * @var array<string, array{type: 'actie'|'uitleg', route: string, hash: ?string, label: string}>
+     */
+    public const BADGE_DOELEN = [
+        'geworteld' => ['type' => 'actie', 'route' => 'account.profiel', 'hash' => 'profiel-postcode', 'label' => 'Naar je postcode op je profiel'],
+        'profiel_compleet' => ['type' => 'actie', 'route' => 'account.profiel', 'hash' => 'profiel-adres', 'label' => 'Naar je adres op je profiel'],
+        'eerste_stekje' => ['type' => 'actie', 'route' => 'aanbieden', 'hash' => null, 'label' => 'Naar het aanbiedformulier'],
+        'eerste_praatje' => ['type' => 'actie', 'route' => 'aanbod', 'hash' => null, 'label' => 'Naar het aanbod om een bericht te sturen'],
+        'eerste_overdracht' => ['type' => 'actie', 'route' => 'account.inbox', 'hash' => null, 'label' => 'Naar je gesprekken'],
+        'gulle_gever' => ['type' => 'actie', 'route' => 'aanbieden', 'hash' => null, 'label' => 'Naar het aanbiedformulier'],
+        'stekjesheld' => ['type' => 'actie', 'route' => 'aanbieden', 'hash' => null, 'label' => 'Naar het aanbiedformulier'],
+        'verbinder' => ['type' => 'actie', 'route' => 'account.inbox', 'hash' => null, 'label' => 'Naar je gesprekken'],
+        'verteller' => ['type' => 'actie', 'route' => 'account.ervaringen.create', 'hash' => null, 'label' => 'Deel een ervaring'],
+        'vaste_plant' => ['type' => 'uitleg', 'route' => 'account.index', 'hash' => 'uitleg-vaste-plant', 'label' => 'Uitleg over deze badge'],
+        'pionier' => ['type' => 'uitleg', 'route' => 'account.index', 'hash' => 'uitleg-pionier', 'label' => 'Uitleg over deze badge'],
+        'eerste_10' => ['type' => 'uitleg', 'route' => 'account.index', 'hash' => 'uitleg-oprichters', 'label' => 'Uitleg over deze badge'],
+        'eerste_50' => ['type' => 'uitleg', 'route' => 'account.index', 'hash' => 'uitleg-oprichters', 'label' => 'Uitleg over deze badge'],
+        'eerste_100' => ['type' => 'uitleg', 'route' => 'account.index', 'hash' => 'uitleg-oprichters', 'label' => 'Uitleg over deze badge'],
+        'eerste_200' => ['type' => 'uitleg', 'route' => 'account.index', 'hash' => 'uitleg-oprichters', 'label' => 'Uitleg over deze badge'],
+    ];
+
+    /**
      * Lidnummer op volgorde van aanmelden. Beheerders in ADMIN_DASHBOARD_EMAILS
      * tellen niet mee voor andere leden (hun nummer schuift niet), maar krijgen
      * zelf wél een lidnummer (zichzelf meegeteld), zodat de oprichtersbadge op
@@ -195,6 +220,45 @@ final class MilestoneService
         return null;
     }
 
+    /** Alle badge-sleutels die een doel moeten hebben (actie of uitleg). */
+    public static function alleBadgeKeys(): array
+    {
+        return array_keys(self::BADGE_DOELEN);
+    }
+
+    /**
+     * @return array{type: 'actie'|'uitleg', href: string, label: string}
+     */
+    public function doelVoor(string $key): array
+    {
+        $doel = self::BADGE_DOELEN[$key] ?? null;
+        if ($doel === null) {
+            throw new InvalidArgumentException('Geen doel voor badge '.$key);
+        }
+
+        $href = route($doel['route']);
+        if (is_string($doel['hash']) && $doel['hash'] !== '') {
+            $href .= '#'.$doel['hash'];
+        }
+
+        return [
+            'type' => $doel['type'],
+            'href' => $href,
+            'label' => $doel['label'],
+        ];
+    }
+
+    /**
+     * @param  array{key: string, label: string, earned: bool, hint: string, img: string, exclusief: bool}  $badge
+     * @return array{key: string, label: string, earned: bool, hint: string, img: string, exclusief: bool, doel: array{type: 'actie'|'uitleg', href: string, label: string}}
+     */
+    private function metDoel(array $badge): array
+    {
+        $badge['doel'] = $this->doelVoor($badge['key']);
+
+        return $badge;
+    }
+
     /** Voornaam, plek en volledig adres ingevuld (telefoon blijft optioneel). */
     public function profielCompleet(User $user): bool
     {
@@ -215,7 +279,7 @@ final class MilestoneService
     /**
      * Alle badges met plaatje, status en wat je nog moet doen.
      *
-     * @return list<array{key: string, label: string, earned: bool, hint: string, img: string, exclusief: bool}>
+     * @return list<array{key: string, label: string, earned: bool, hint: string, img: string, exclusief: bool, doel: array{type: 'actie'|'uitleg', href: string, label: string}}>
      */
     public function badgesFor(User $user): array
     {
@@ -284,29 +348,29 @@ final class MilestoneService
 
         $out = [];
         if ($isPionier) {
-            $out[] = [
+            $out[] = $this->metDoel([
                 'key' => self::MILESTONE_PIONIER,
                 'label' => 'Pionier',
                 'earned' => true,
                 'hint' => 'De allereerste die iets weggaf op '.config('site.name').'. Deze badge bestaat maar één keer.',
                 'img' => '/assets/badges/pionier.svg',
                 'exclusief' => true,
-            ];
+            ]);
         }
         // Oprichtersbadge alleen tonen als je hem hebt (later niet meer te halen).
         if (($oprichter = $this->oprichtersBadge($user)) !== null) {
-            $out[] = $oprichter;
+            $out[] = $this->metDoel($oprichter);
         }
 
         foreach ($badges as [$key, $label, $earned, $hintJa, $hintNee]) {
-            $out[] = [
+            $out[] = $this->metDoel([
                 'key' => $key,
                 'label' => $label,
                 'earned' => (bool) $earned,
                 'hint' => $earned ? $hintJa : $hintNee,
                 'img' => '/assets/badges/'.$key.'.svg',
                 'exclusief' => false,
-            ];
+            ]);
         }
 
         return $out;
