@@ -3,6 +3,15 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.84.8] - 2026-11-25
+
+### Fixed
+
+- Gesprekspagina: als je naar het laatste bericht scrollt, werd een restje van
+  het bericht daarboven hard afgeknipt, pal onder de info-panelen. Daar zit nu
+  een korte overgang naar de achtergrond, zodat die rand niet meer als een
+  afgeknipte regel oogt.
+
 ## [0.84.7] - 2026-11-25
 
 ### Fixed

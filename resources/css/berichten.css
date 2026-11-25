@@ -141,7 +141,7 @@ body.page-gesprek main#inhoud > .wrap:has(.flash) .flash {
 
 .gesprek-top {
   flex: 0 0 auto;
-  padding-bottom: 0.35rem;
+  padding-bottom: 0.5rem;
 }
 
 .gesprek-terug {
@@ -242,8 +242,22 @@ body.page-gesprek main#inhoud > .wrap:has(.flash) .flash {
   flex-direction: column;
   gap: 0.75rem;
   max-width: none;
-  padding: 0.5rem 0 1rem;
+  padding: 0.65rem 0 1rem;
   overscroll-behavior: contain;
+  position: relative;
+}
+
+/* Voorkom een hard afgeknipte regel direct onder de panelen. */
+.gesprek .chat::before {
+  content: "";
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  flex: 0 0 auto;
+  height: 0.9rem;
+  margin-bottom: -0.9rem;
+  background: linear-gradient(to bottom, var(--bg, #fff), transparent);
+  pointer-events: none;
 }
 
 .gesprek .bubble {
