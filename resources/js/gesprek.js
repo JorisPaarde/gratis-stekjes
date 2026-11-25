@@ -33,12 +33,19 @@ function initGesprek() {
   if (typeof history !== 'undefined' && 'scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
   }
-  window.scrollTo(0, 0);
+  const pinComposer = () => {
+    window.scrollTo(0, 0);
+    if (form && typeof form.scrollIntoView === 'function') {
+      form.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    }
+    focusComposer(field);
+  };
   fitTextarea(field);
-  focusComposer(field);
-  if (form && typeof form.scrollIntoView === 'function') {
-    form.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-  }
+  pinComposer();
+  window.addEventListener('load', pinComposer);
+  window.addEventListener('pageshow', pinComposer);
+  window.setTimeout(pinComposer, 50);
+  window.setTimeout(pinComposer, 300);
 
   const meer = root.querySelector('[data-gesprek-meer]');
   const syncMeer = () => {
