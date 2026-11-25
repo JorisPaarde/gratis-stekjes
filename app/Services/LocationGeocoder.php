@@ -37,6 +37,16 @@ final class LocationGeocoder
             ? Country::normalize($country)
             : null;
 
+        // Kale postcode zonder land («8102», «8102 AB»): eerst als Nederlandse postcode via PDOK.
+        // Vrije-tekst-Nominatim las «8102» als huisnummer en gaf Enschede i.p.v. Raalte.
+        // Vindt PDOK niets (bv. een Belgische postcode), dan loopt de oude route hieronder.
+        if ($country === null && PostalCode::looksLikePostcode($query, Country::NL)) {
+            $nl = $this->resolve($query, Country::NL, $allowNetwork);
+            if ($nl['ok']) {
+                return $nl;
+            }
+        }
+
         $isPostcode = $country !== null && PostalCode::looksLikePostcode($query, $country);
 
         if ($country === Country::BE && $isPostcode) {

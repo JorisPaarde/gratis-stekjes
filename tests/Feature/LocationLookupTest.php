@@ -220,3 +220,47 @@ test('PDOK postcode-zoekopdracht gebruikt fq zodat 2037 niet Nederweert wordt', 
     expect($hit['woonplaats'])->toBe('Haarlem')
         ->and($hit['lat'])->not->toBe(51.296);
 });
+
+test('kale PC4 zonder land wordt eerst als Nederlandse postcode via PDOK gezocht (8102 ≠ huisnummer in Enschede)', function () {
+    Http::fake(function (Request $request) {
+        // Vrije-tekst-Nominatim las «8102» als huisnummer in Enschede.
+        if (str_contains($request->url(), 'nominatim')) {
+            return Http::response([[
+                'lat' => '52.2197114',
+                'lon' => '6.8826706',
+                'display_name' => '8102, Maarten Harpertsz Tromplaan, Enschede, Overijssel, Nederland, 7513 AD, Nederland',
+                'address' => ['postcode' => '7513 AD', 'city' => 'Enschede', 'country_code' => 'nl'],
+            ]], 200);
+        }
+        if (str_contains((string) $request->url(), 'fq=type') && str_starts_with((string) ($request['q'] ?? ''), '8102')) {
+            return Http::response(['response' => ['docs' => [
+                ['type' => 'postcode', 'woonplaatsnaam' => 'Raalte', 'weergavenaam' => 'Aakstraat, 8102HH Raalte', 'postcode' => '8102HH', 'centroide_ll' => 'POINT(6.2751 52.3864)', 'score' => 5.8],
+            ]]], 200);
+        }
+
+        return Http::response(['response' => ['docs' => []]], 200);
+    });
+
+    $hit = app(LocationGeocoder::class)->resolve('8102', null, true);
+
+    expect($hit['ok'])->toBeTrue()
+        ->and($hit['label'])->toContain('Raalte')
+        ->and($hit['lat'])->toBeGreaterThan(52.3)->toBeLessThan(52.5)
+        ->and($hit['country'])->toBe('NL');
+});
+
+test('kale Belgische PC4 zonder land (niet in PDOK) loopt nog via de oude route', function () {
+    fakeLocationLookupHttp();
+    GeocodeCache::query()->create([
+        'query_key' => Geo::normalizeQuery('nl,be:9000'),
+        'lat' => 51.054,
+        'lon' => 3.723,
+        'label' => '9000 Gent',
+        'country' => 'BE',
+        'cached_at' => now(),
+    ]);
+
+    $hit = app(LocationGeocoder::class)->resolve('9000', null, true);
+
+    expect($hit['ok'])->toBeTrue()->and($hit['label'])->toContain('Gent');
+});
