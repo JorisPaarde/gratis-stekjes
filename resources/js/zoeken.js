@@ -211,6 +211,8 @@
   // Alleen het 2e veld (plant) ingevuld: { plant, sortering: "afstand"|"recent", reden }.
   // Afstand komt van de server (vanaf het eigen adres); coördinaten van het lid krijgen we niet.
   var plantModus = null;
+  // Plaats + plant tegelijk: de plant waarop het aanbod rond de plaats gefilterd is.
+  var plaatsPlant = "";
   var limits = { aanbod: 6, plekken: 12, dichtbij: 12 };
   var STAP = { aanbod: 6, plekken: 12, dichtbij: 12 };
 
@@ -790,6 +792,10 @@
         : "Nog geen aanbod met “" + plantModus.plant + "”.";
       return;
     }
+    if (!aanbodCount && !plekCount && plaatsPlant && center) {
+      status.textContent = "Rond " + center.label + ": nog geen aanbod met “" + plaatsPlant + "”.";
+      return;
+    }
     if (!aanbodCount && !plekCount) {
       status.textContent =
         (partnerItems.length || deelplekItems.length)
@@ -798,7 +804,15 @@
       return;
     }
     var parts = [];
-    if (aanbodCount) parts.push(center ? aanbodCount + " aanbod" : "nieuw aanbod");
+    if (aanbodCount) {
+      parts.push(
+        center
+          ? aanbodCount + " aanbod" + (plaatsPlant ? " met “" + plaatsPlant + "”" : "")
+          : "nieuw aanbod"
+      );
+    } else if (center && plaatsPlant) {
+      parts.push("nog geen aanbod met “" + plaatsPlant + "”");
+    }
     // Geen exact deelplekken-aantal: dat verandert steeds.
     if (plekCount) parts.push("vaste deelplekken");
     if (center) {
@@ -1037,12 +1051,18 @@
   function zoek(q, bron) {
     heeftGezocht = true;
     plantModus = null;
+    plaatsPlant = "";
     var plantEl = document.getElementById("zoek-plant");
     var plant =
       (plantEl && plantEl.value.trim()) ||
       (cfg.plant_filter ? String(cfg.plant_filter) : "");
     var typeEl = document.getElementById("zoek-type");
     var type = typeEl ? typeEl.value : "";
+    // Plant + plaats: de JS-lijst toont het aanbod met foto's en berichtknop, dus de
+    // server-lijst (alle plaatsen) verbergen om dubbele lijsten te voorkomen.
+    var serverLijst = document.getElementById("plant-aanbod");
+    if (serverLijst && plant) serverLijst.hidden = true;
+    plaatsPlant = plant;
     status.textContent = "Zoeken…";
     status.dataset.empty = "";
 
@@ -1097,7 +1117,8 @@
         }
         if (!meta) {
           status.textContent =
-            "Ik kon “" + q + "” niet vinden. Probeer een postcode of een andere plaatsnaam.";
+            "Ik kon “" + q + "” niet vinden als plaats. Probeer een postcode of een andere plaatsnaam." +
+            (plant ? " Hieronder zie je het aanbod met “" + plant + "” in alle plaatsen." : "");
         }
       })
       .catch(function (err) {

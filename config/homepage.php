@@ -16,7 +16,7 @@ return [
 
     'meta' => [
         'title' => 'Gratis planten en stekjes delen in je buurt', // zoekwoordenonderzoek (UniquePageTitlesTest)
-        'description' => 'Deel gratis planten, stekjes en zaden met mensen bij jou in de buurt in Nederland en België. Zoek op postcode, haal het zelf op of bied zelf iets aan.',
+        'description' => 'Deel gratis planten, stekjes en zaden met mensen bij jou in de buurt in Nederland en België. Zoek op plaats, postcode of plant, haal het zelf op of bied zelf iets aan.',
     ],
 
 ];

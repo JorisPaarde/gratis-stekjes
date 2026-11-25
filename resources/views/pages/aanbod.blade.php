@@ -50,6 +50,20 @@
     <button class="btn zoekbalk-knop" type="submit"><x-icon name="zoeken" :size="18" /> Zoek</button>
   </form>
 
+  @if(!empty($zoekOnbekend))
+    <div class="empty-state zoek-onbekend" id="zoek-onbekend" role="status">
+      <p><strong>Ik vond geen plaats of plant met “{{ $zoekOnbekend['tekst'] }}”.</strong></p>
+      @if(!empty($zoekOnbekend['suggesties']))
+        <p>Bedoelde je
+          @foreach($zoekOnbekend['suggesties'] as $suggestie)
+            <a href="{{ route('aanbod', ['plant' => $suggestie]) }}">{{ $suggestie }}</a>{{ $loop->last ? '?' : ',' }}
+          @endforeach
+        </p>
+      @endif
+      <p>Probeer een postcode (bijvoorbeeld 8102), een plaats of de naam van een plant. Hieronder zie je alvast het nieuwste aanbod en de kaart.</p>
+    </div>
+  @endif
+
   @if(!empty($plant) && isset($plantItems))
     <section class="stektips-plant-aanbod" id="plant-aanbod" aria-labelledby="plant-aanbod-titel">
       @if(!empty($plantSortering) && $plantSortering['sortering'] === 'afstand')

@@ -239,6 +239,31 @@ final class Plantensoorten
     }
 
     /**
+     * Alle namen waaronder een soort in aanbodteksten kan voorkomen (Nederlandse naam,
+     * volksnamen/synoniemen en Latijnse naam), genormaliseerd. Alleen bij een exacte
+     * match op naam, synoniem of Latijn; anders null. «gatenplant» geeft dus ook «monstera».
+     *
+     * @return array{id: int, naam: string, namen: list<string>}|null
+     */
+    public function zoeknamen(string $text): ?array
+    {
+        $soort = $this->resolveExact($text);
+        if ($soort === null) {
+            return null;
+        }
+
+        $namen = [];
+        foreach (array_merge([$soort['naam'], $soort['latijn']], $soort['synoniemen']) as $naam) {
+            $norm = $this->normalize($naam);
+            if ($norm !== '') {
+                $namen[$norm] = true;
+            }
+        }
+
+        return ['id' => $soort['id'], 'naam' => $soort['naam'], 'namen' => array_keys($namen)];
+    }
+
+    /**
      * Tekst om te checken op invasieve soorten: ingevoerde tekst plus
      * (bij bekende soort) naam, Latijn en synoniemen.
      */
