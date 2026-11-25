@@ -27,7 +27,9 @@ final class MessagingService
     public function startOrGet(int $viewerId, int $otherUserId, ?int $aanbodId): array
     {
         if ($viewerId === $otherUserId) {
-            return ['ok' => false, 'error' => 'Je kunt jezelf geen bericht sturen.'];
+            return ['ok' => false, 'error' => $aanbodId !== null
+                ? 'Dit is je eigen aanbod. Je kunt jezelf geen bericht sturen.'
+                : 'Je kunt jezelf geen bericht sturen.'];
         }
         if (Block::existsBetween($viewerId, $otherUserId)) {
             return ['ok' => false, 'error' => 'Berichten naar deze gebruiker zijn niet mogelijk.'];

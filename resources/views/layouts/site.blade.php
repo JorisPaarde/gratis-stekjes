@@ -119,6 +119,11 @@
         <p class="flash {{ session('status_level') === 'warn' ? 'flash-warn' : 'flash-ok' }}" role="status">{{ session('status') }}</p>
       </div>
     @endif
+    @if(request()->hasSession() && session('error'))
+      <div class="wrap" style="padding-top:1rem">
+        <p class="flash flash-error" role="alert">{{ session('error') }}</p>
+      </div>
+    @endif
     @yield('content')
   </main>
   <footer class="site-footer">

@@ -31,7 +31,7 @@ class StartConversationController extends Controller
         if ($aanbodId !== null) {
             $aanbod = Aanbod::query()->find($aanbodId);
             if (! $aanbod) {
-                return redirect()->route('aanbod')->with('error', 'Aanbod niet gevonden.');
+                return $this->terugMetFout($request, 'Aanbod niet gevonden.');
             }
             // Eigenaar van het aanbod is de gesprekspartner als user_id ontbreekt
             if ($other <= 0) {
@@ -41,9 +41,33 @@ class StartConversationController extends Controller
 
         $result = $messaging->startOrGet((int) $request->user()->id, $other, $aanbodId);
         if (empty($result['ok'])) {
-            return redirect()->route('aanbod')->with('error', $result['error'] ?? 'Kon gesprek niet starten.');
+            return $this->terugMetFout($request, $result['error'] ?? 'Kon gesprek niet starten.');
         }
 
         return redirect()->route('account.gesprek', $result['conversation']);
+    }
+
+    private function terugMetFout(Request $request, string $error): RedirectResponse
+    {
+        return redirect()->to($this->veiligeTerugUrl($request))->with('error', $error);
+    }
+
+    private function veiligeTerugUrl(Request $request): string
+    {
+        $fallback = route('aanbod');
+        $previous = $request->headers->get('referer');
+        $root = $request->root();
+        if (! is_string($previous) || $previous === '') {
+            return $fallback;
+        }
+        if ($previous !== $root && ! str_starts_with($previous, $root.'/')) {
+            return $fallback;
+        }
+        $path = (string) (parse_url($previous, PHP_URL_PATH) ?? '');
+        if ($path === '' || str_starts_with($path, '/account/bericht-starten')) {
+            return $fallback;
+        }
+
+        return $previous;
     }
 }

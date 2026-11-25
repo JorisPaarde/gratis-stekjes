@@ -1,3 +1,5 @@
+import { escapeHtml, popupAanbodHtml, registerPlek, plekKey as detailPlekKey } from "./aanbod-detail.js";
+
 /* Kaartuitsnede voor /gratis-planten/{stad}. */
 (function () {
   var data = window.STEKJES_STAD;
@@ -31,28 +33,32 @@
     .bindPopup(data.naam || "Stad")
     .addTo(map);
 
+  var aanbodIcon = L.divIcon({
+    className: "partner-marker partner-marker--aanbod",
+    html: '<span class="partner-marker-dot" style="background:#1f4d2b" title="Aanbod"></span>',
+    iconSize: [18, 18],
+    iconAnchor: [9, 9],
+    popupAnchor: [0, -8],
+  });
+  var aanbodGroepen = {};
   (data.aanbod || []).forEach(function (item) {
-    if (item.lat == null || item.lon == null) {
-      return;
+    if (item.lat == null || item.lon == null) return;
+    var key = String(item.user_id || item.id);
+    if (!aanbodGroepen[key]) {
+      aanbodGroepen[key] = {
+        voornaam: item.voornaam,
+        locatie_label: item.locatie_label,
+        lat: item.lat,
+        lon: item.lon,
+        items: [],
+      };
     }
-    // Div-icon i.p.v. Leaflet-default (CDN-bitmap; CSP img-src blokkeert dat).
-    var aanbodIcon = L.divIcon({
-      className: "partner-marker partner-marker--aanbod",
-      html: '<span class="partner-marker-dot" style="background:#1f4d2b" title="Aanbod"></span>',
-      iconSize: [18, 18],
-      iconAnchor: [9, 9],
-      popupAnchor: [0, -8],
-    });
-    L.marker([item.lat, item.lon], { icon: aanbodIcon })
-      .bindPopup(
-        "<strong>" +
-          (item.voornaam || "Iemand") +
-          "</strong><br>" +
-          (item.tekst || "").replace(/</g, "&lt;") +
-          "<br><span class='muted'>" +
-          (item.locatie_label || "") +
-          "</span>"
-      )
+    aanbodGroepen[key].items.push(item);
+  });
+  Object.keys(aanbodGroepen).forEach(function (key) {
+    var group = aanbodGroepen[key];
+    L.marker([group.lat, group.lon], { icon: aanbodIcon })
+      .bindPopup(popupAanbodHtml(group), { className: "gp-leaflet-popup", maxWidth: 320, maxHeight: 320 })
       .addTo(map);
   });
 
@@ -66,13 +72,18 @@
       iconSize: [16, 16],
       iconAnchor: [8, 8],
     });
+    registerPlek(plek);
     L.marker([plek.lat, plek.lng], { icon: icon })
       .bindPopup(
         "<strong>" +
-          (plek.naam || "Deelplek") +
+          escapeHtml(plek.naam || "Deelplek") +
           "</strong><br>" +
-          (plek.type_label || plek.type || "") +
-          (plek.plaats ? " · " + plek.plaats : "")
+          escapeHtml(plek.type_label || plek.type || "") +
+          (plek.plaats ? " · " + escapeHtml(plek.plaats) : "") +
+          '<p class="gp-popup-acties"><button type="button" class="zoek-regel-meer-knop" data-plek-open="' +
+          escapeHtml(detailPlekKey(plek)) +
+          '" aria-haspopup="dialog">Meer info</button></p>',
+        { className: "gp-leaflet-popup", maxWidth: 280, maxHeight: 280 }
       )
       .addTo(map);
   });

@@ -95,6 +95,7 @@
   </p>
   <span class="visually-hidden" id="deelplekken-status" aria-live="polite"></span>
 
+  @php $plekPayloads = []; @endphp
   <ul class="zoek-lijst deelplekken-lijst" id="deelplekken-lijst">
     @forelse($items as $index => $plek)
       @php
@@ -104,6 +105,26 @@
           : ($typeLabels[$plek->type] ?? $plek->type);
         $datumLabel = trim((string) ($plek->datum_label ?? ''));
         $lijstVerborgen = $index >= 12;
+        $plekKind = $isEvenement ? 'evenement' : 'deelplek';
+        $plekId = $plek->id ?? null;
+        $plekKey = $plekKind.':'.($plekId ?? $plek->naam);
+        $plekPayloads[] = [
+            'id' => $plekId,
+            'key' => $plekKey,
+            'kind' => $plekKind,
+            'naam' => (string) $plek->naam,
+            'type' => (string) $plek->type,
+            'type_label' => $typeLabel,
+            'plaats' => (string) ($plek->plaats ?? ''),
+            'provincie' => (string) ($plek->provincie ?? ''),
+            'adres' => (string) ($plek->adres ?? ''),
+            'beschrijving' => trim((string) ($plek->beschrijving ?? $plek->omschrijving ?? '')),
+            'datum_label' => $datumLabel,
+            'bron_url' => (string) ($plek->bron_url ?? ''),
+            'bron_label' => $plek->bron_url ? $bronLabel($plek) : '',
+            'lat' => $plek->lat ?? null,
+            'lng' => $plek->lng ?? null,
+        ];
       @endphp
       <li class="zoek-item zoek-item--plek zoek-item--deelplek{{ $isEvenement ? ' zoek-item--evenement' : '' }}{{ $lijstVerborgen ? ' is-lijst-verborgen' : '' }}" data-kind="{{ $isEvenement ? 'evenement' : 'deelplek' }}" data-type="{{ $plek->type }}" @if($lijstVerborgen) hidden @endif>
         <div class="zoek-item-kop"><h2>{{ $plek->naam }}</h2></div>
@@ -121,6 +142,7 @@
           <p class="zoek-item-adres">{{ $plek->adres }}</p>
         @endif
         <p class="zoek-item-acties">
+          <button type="button" class="zoek-regel-meer-knop" data-plek-open="{{ $plekKey }}" aria-haspopup="dialog">Meer info</button>
           <button type="button" class="zoek-op-kaart" data-lat="{{ $plek->lat }}" data-lng="{{ $plek->lng }}">Op de kaart</button>
           @if($plek->bron_url)
             <a href="{{ $plek->bron_url }}" rel="noopener noreferrer" target="_blank">{{ $bronLabel($plek) }}</a>
@@ -136,6 +158,9 @@
       </li>
     @endforelse
   </ul>
+  @if(!empty($plekPayloads))
+    <script type="application/json" data-plek-items>{!! json_encode($plekPayloads, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
+  @endif
   @if($items->count() > 12)
     <p class="deelplekken-meer">
       <button type="button" class="btn btn-secondary" id="deelplekken-laad-meer" data-stap="12" aria-controls="deelplekken-lijst">Laad meer</button>

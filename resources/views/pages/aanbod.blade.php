@@ -83,15 +83,7 @@
       @if(count($plantItems) === 0)
         <p class="empty-state" role="status">Er is nog geen aanbod met “{{ $plant }}”. <a href="{{ route('account.registreren') }}">Doe mee</a> en deel zelf iets, of zoek hierboven op plaats.</p>
       @else
-        <ul class="zoek-lijst">
-          @foreach($plantItems as $item)
-            <li class="zoek-item">
-              <strong>{{ $item['voornaam'] ?? '' }}</strong>
-              <span class="muted"> · {{ $item['locatie_label'] ?? '' }} · {{ $item['type'] ?? '' }}@isset($item['afstand_km']) · <span class="zoek-item-afstand">{{ str_replace('.', ',', $item['afstand_km'] < 10 ? number_format($item['afstand_km'], 1) : (string) round($item['afstand_km'])) }} km</span>@endisset</span>
-              <p>{{ $item['tekst'] ?? '' }} @include('partials.aanbod-aantal', ['aantal' => $item['aantal'] ?? 1])</p>
-            </li>
-          @endforeach
-        </ul>
+        @include('partials.aanbod-lijst', ['items' => $plantItems])
       @endif
     </section>
   @endif
