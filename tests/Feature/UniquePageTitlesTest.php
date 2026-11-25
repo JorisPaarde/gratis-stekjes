@@ -64,7 +64,7 @@ test('kernroutes hebben unieke title-tags volgens keyword-onderzoek', function (
         ],
         [
             'get' => route('stektips.show', ['slug' => 'pilea']),
-            'expect' => 'Pannenkoekplant stekken en gratis stekjes · Gratis planten',
+            'expect' => 'Pannenkoekplant stekken en gratis plantjes · Gratis planten',
             'h1' => 'Pannenkoekplant stekken: zo doe je het',
         ],
         [
@@ -160,7 +160,8 @@ test('soortpagina’s en steden hebben onderling unieke titles', function () {
         $title = pageTitleFromHtml($html);
         $seoNaam = trim((string) ($soort['seo_naam'] ?? '')) ?: (string) $soort['naam'];
         $seoWerkwoord = trim((string) ($soort['seo_werkwoord'] ?? '')) ?: 'stekken';
-        $expectedPage = $seoNaam.' '.$seoWerkwoord.' en gratis stekjes';
+        $deelwoord = app(Stektips::class)->aanbodZelfstandigNaam($soort);
+        $expectedPage = $seoNaam.' '.$seoWerkwoord.' en gratis '.$deelwoord;
         expect($title)->toBe(SeoTitle::document($expectedPage))
             ->and($html)->toContain('>'.$seoNaam.' '.$seoWerkwoord.': zo doe je het</h1>')
             ->and($titles)->not->toContain($title);

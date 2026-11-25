@@ -66,6 +66,24 @@ final class Stektips
         return $uit;
     }
 
+    /**
+     * Zelfstandig naamwoord in aanbod-CTA's en SEO-titels, uit de bestaande
+     * vermeerderingsmethodes van de soort (geen extra categorieën):
+     * stekken mogelijk → «stekjes»; alleen zaad → «zaad»; anders → «plantjes».
+     */
+    public function aanbodZelfstandigNaam(array $soort): string
+    {
+        $methodes = $this->methodes($soort);
+        if (in_array('stekken', $methodes, true)) {
+            return 'stekjes';
+        }
+        if ($methodes === ['zaaien']) {
+            return 'zaad';
+        }
+
+        return 'plantjes';
+    }
+
     /** @return array<string, mixed>|null */
     public function find(string $slug): ?array
     {

@@ -186,7 +186,7 @@
   @endif
 
   <p class="stektips-actions">
-    <a class="btn" href="{{ $aanbodUrl }}">Gratis {{ $soort['naam'] }}-stekjes in je buurt</a>
+    <a class="btn" href="{{ $aanbodUrl }}">Gratis {{ $soort['naam'] }}-{{ $aanbodZelfstandigNaam }} in je buurt</a>
     <a class="btn btn-secondary" href="{{ route('account.registreren') }}">Doe mee</a>
     <a href="{{ route('stektips.index') }}">Alle stektips</a>
   </p>
