@@ -78,14 +78,9 @@ final class VolgendeStap
     /** @return array{0: string, 1: string} */
     private function actie(string $key): array
     {
-        return match ($key) {
-            'geworteld', 'profiel_compleet' => ['Naar je profiel', route('account.profiel')],
-            'eerste_stekje', 'gulle_gever', 'stekjesheld' => ['Iets aanbieden', route('aanbieden')],
-            'eerste_praatje' => ['Kijk wat er in de buurt is', route('aanbod')],
-            'eerste_overdracht', 'verbinder' => ['Naar je gesprekken', route('account.inbox')],
-            'verteller' => ['Deel een ervaring', route('account.ervaringen.create')],
-            default => ['Naar je account', route('account.index').'#badges'],
-        };
+        $doel = $this->milestones->doelVoor($key);
+
+        return [$doel['label'], $doel['href']];
     }
 
     /** @return array{titel: string, tekst: string, knop: string, url: string, img: ?string, badge: ?string} */
