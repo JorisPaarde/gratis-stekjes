@@ -124,3 +124,127 @@ test('inbox toont gesprekken', function () {
         ->assertOk()
         ->assertSee('Gesprek met Ben', false);
 });
+
+test('gesprekspagina toont invoervak bovenaan met nieuwste bericht eerst', function () {
+    $a = messagingUser('a5@example.com', 'Ada');
+    $b = messagingUser('b5@example.com', 'Ben');
+    $conv = Conversation::query()->create([
+        'user_a_id' => min($a->id, $b->id),
+        'user_b_id' => max($a->id, $b->id),
+    ]);
+
+    $this->actingAs($a)
+        ->post(route('account.gesprek.store', $conv), [
+            'action' => 'message',
+            'body' => 'Eerste bericht, het oudere.',
+            'website' => '',
+            'form_started' => time() - 10,
+        ])
+        ->assertRedirect();
+
+    $this->travel(1)->minutes();
+
+    $this->actingAs($a)
+        ->post(route('account.gesprek.store', $conv), [
+            'action' => 'message',
+            'body' => 'Tweede bericht, het nieuwste.',
+            'website' => '',
+            'form_started' => time() - 10,
+        ])
+        ->assertRedirect();
+
+    $html = $this->actingAs($a)
+        ->get(route('account.gesprek', $conv))
+        ->assertOk()
+        ->assertSee('Gesprek met Ben', false)
+        ->assertSee('Eerste bericht, het oudere.', false)
+        ->assertSee('Tweede bericht, het nieuwste.', false)
+        ->assertSee('data-gesprek', false)
+        ->assertSee('data-gesprek-chat', false)
+        ->assertSee('data-gesprek-composer', false)
+        ->assertSee('data-gesprek-input', false)
+        ->assertSee('Verstuur', false)
+        ->assertSee('Terug naar inbox', false)
+        ->assertSee('Schrijf een bericht', false)
+        ->assertSee('autofocus', false)
+        ->assertSee('data-gesprek-meer', false)
+        ->assertSee('Tips, contact en instellingen', false)
+        ->assertSee('Veiligheidstips', false)
+        ->assertSee('Verder contact?', false)
+        ->assertSee('Melden of blokkeren', false)
+        ->getContent();
+
+    expect(strpos($html, 'data-gesprek-composer'))->toBeLessThan(strpos($html, 'data-gesprek-chat'));
+    expect(strpos($html, 'data-gesprek-chat'))->toBeLessThan(strpos($html, 'data-gesprek-meer'));
+    expect(strpos($html, 'Tweede bericht, het nieuwste.'))->toBeLessThan(strpos($html, 'Eerste bericht, het oudere.'));
+    expect($html)->toContain('page-gesprek');
+    expect($html)->not->toContain('data-feedback-fab');
+    expect($html)->not->toContain('scrollTop = el.scrollHeight');
+});
+
+test('leeg gesprek toont invoervak en uitnodiging om te schrijven', function () {
+    $a = messagingUser('a6@example.com', 'Ada');
+    $b = messagingUser('b6@example.com', 'Ben');
+    $conv = Conversation::query()->create([
+        'user_a_id' => min($a->id, $b->id),
+        'user_b_id' => max($a->id, $b->id),
+    ]);
+
+    $this->actingAs($a)
+        ->get(route('account.gesprek', $conv))
+        ->assertOk()
+        ->assertSee('Nog geen berichten. Zeg hallo.', false)
+        ->assertSee('data-gesprek-composer', false)
+        ->assertSee('Verstuur', false);
+});
+
+
+test('eigen aanbod toont een duidelijke foutmelding op de vorige pagina', function () {
+    $owner = messagingUser('owner-zelf@example.com', 'Owner');
+    $aanbod = Aanbod::query()->create([
+        'user_id' => $owner->id,
+        'type' => 'uitdelen',
+        'tekst' => 'Mijn munt',
+        'visible' => true,
+        'expires_at' => now()->addDays(30),
+    ]);
+
+    $this->actingAs($owner)
+        ->from(route('aanbod'))
+        ->get(route('account.bericht-starten', [
+            'aanbod_id' => $aanbod->id,
+            'user_id' => $owner->id,
+        ]))
+        ->assertRedirect(route('aanbod'))
+        ->assertSessionHas('error', 'Dit is je eigen aanbod. Je kunt jezelf geen bericht sturen.');
+
+    $html = $this->actingAs($owner)
+        ->get(route('aanbod'))
+        ->assertOk()
+        ->assertSee('Dit is je eigen aanbod. Je kunt jezelf geen bericht sturen.', false)
+        ->getContent();
+
+    expect($html)->toContain('role="alert"')
+        ->and($html)->toContain('flash-error');
+});
+
+test('mislukt gesprek start keert terug naar de stadspagina als je daar vandaan kwam', function () {
+    $owner = messagingUser('owner-stad@example.com', 'Owner');
+    $aanbod = Aanbod::query()->create([
+        'user_id' => $owner->id,
+        'type' => 'uitdelen',
+        'tekst' => 'Mijn munt',
+        'visible' => true,
+        'expires_at' => now()->addDays(30),
+    ]);
+    $from = route('gratis-planten.show', ['stad' => 'haarlem']);
+
+    $this->actingAs($owner)
+        ->from($from)
+        ->get(route('account.bericht-starten', [
+            'aanbod_id' => $aanbod->id,
+            'user_id' => $owner->id,
+        ]))
+        ->assertRedirect($from)
+        ->assertSessionHas('error', 'Dit is je eigen aanbod. Je kunt jezelf geen bericht sturen.');
+});

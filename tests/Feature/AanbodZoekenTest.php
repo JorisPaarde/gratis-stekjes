@@ -223,3 +223,58 @@ test('aanbodpagina: compacte zoekbalk zonder uitdelen/ophalen-keuze, filters als
         ->and($html)->toContain('class="filter-chip"')
         ->and($html)->not->toContain('<fieldset class="marker-filters"');
 });
+
+test('zoeken.js: aanbodregel opent een detailvenster; Stuur bericht blijft een eigen link', function () {
+    $js = (string) file_get_contents(base_path('resources/js/zoeken.js'));
+    $shared = (string) file_get_contents(base_path('resources/js/aanbod-detail.js'));
+    $css = (string) file_get_contents(base_path('resources/css/aanbod.css'));
+
+    expect($js)->toContain('from "./aanbod-detail.js"')
+        ->and($js)->toContain('popupAanbodHtml')
+        ->and($js)->toContain('data-plek-open')
+        ->and($shared)->toContain('data-aanbod-open')
+        ->and($shared)->toContain('function openAanbodDetail(')
+        ->and($shared)->toContain('function openPlekDetail(')
+        ->and($shared)->toContain('showModal()')
+        ->and($shared)->toContain('popstate')
+        // Regel is een echte button; Stuur bericht staat ernaast, niet erin (geen link in knop).
+        ->and($shared)->toContain('<button type="button" class="zoek-regel-open"')
+        ->and($shared)->toContain('<a class="zoek-regel-bericht"')
+        ->and($shared)->toContain('aanbod-detail-bericht')
+        ->and($shared)->toContain('aanbod-detail-dl')
+        ->and($shared)->toContain('Beschikbaar tot')
+        ->and($css)->toContain('.aanbod-detail')
+        ->and($css)->toContain('.zoek-regel-open');
+});
+
+test('publiek aanbod-item bevat soort, geplaatst en verloopdatum', function () {
+    $user = App\Models\User::factory()->create([
+        'name' => 'Sam',
+        'locatie_label' => '2011',
+        'lat' => 52.381,
+        'lon' => 4.637,
+    ]);
+    $soort = app(App\Services\Plantensoorten::class)->all()[0] ?? null;
+    expect($soort)->not->toBeNull();
+
+    $aanbod = App\Models\Aanbod::query()->create([
+        'user_id' => $user->id,
+        'type' => 'uitdelen',
+        'tekst' => 'Teststekje',
+        'aantal' => 3,
+        'plantensoort_id' => $soort['id'],
+        'visible' => true,
+        'expires_at' => now()->addDays(20),
+    ]);
+    $aanbod->created_at = now()->subDays(2);
+    $aanbod->save();
+
+    $item = app(App\Services\AanbodSearch::class)->toPublicItem($aanbod->fresh(['user', 'fotos']));
+
+    expect($item)->toHaveKeys(['geplaatst', 'verloopt', 'soort'])
+        ->and($item['geplaatst'])->toBe(now()->subDays(2)->timezone('Europe/Amsterdam')->format('Y-m-d'))
+        ->and($item['verloopt'])->toBe(now()->addDays(20)->timezone('Europe/Amsterdam')->format('Y-m-d'))
+        ->and($item['soort']['naam'])->toBe($soort['naam'])
+        ->and($item)->not->toHaveKey('email')
+        ->and(json_encode($item))->not->toContain($user->email);
+});

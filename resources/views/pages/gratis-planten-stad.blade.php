@@ -44,26 +44,7 @@
     <div>
       @if(!empty($toonAanbod))
         <h2 id="aanbod-titel">Actueel aanbod</h2>
-        <ul class="zoek-lijst gp-aanbod-lijst">
-          @foreach($aanbod as $item)
-            <li class="zoek-item">
-              <h3>{{ $item['voornaam'] ?: 'Iemand' }} · {{ $item['type'] === 'ophalen' ? 'zoekt' : 'deelt' }}</h3>
-              @include('partials.lid-van', ['verenigingen' => $item['verenigingen'] ?? []])
-              <p>{{ $item['tekst'] }} @include('partials.aanbod-aantal', ['aantal' => $item['aantal'] ?? 1])</p>
-              <p class="muted">
-                {{ $item['locatie_label'] }}
-                @if(isset($item['afstand_km']))
-                  · ongeveer {{ $item['afstand_km'] }} km van het centrum
-                @endif
-              </p>
-              @auth
-                <p><a href="{{ route('account.bericht-starten', ['aanbod_id' => $item['id'], 'user_id' => $item['user_id']]) }}">Bericht sturen</a></p>
-              @else
-                <p class="muted"><a href="{{ route('account.inloggen') }}">Log in</a> om een bericht te sturen.</p>
-              @endauth
-            </li>
-          @endforeach
-        </ul>
+        @include('partials.aanbod-lijst', ['items' => $aanbod])
       @endif
       <p class="gp-cta-inline">
         @auth
@@ -106,6 +87,9 @@
       </p>
       <ul class="gp-deelplek-lijst">
         @foreach($deelplekken as $plek)
+          @php
+            $stadPlekKey = 'deelplek:'.($plek['id'] ?? $plek['naam']);
+          @endphp
           <li>
             <strong>{{ $plek['naam'] }}</strong>
             <span class="muted">
@@ -117,12 +101,16 @@
                 · ongeveer {{ $plek['afstand_km'] }} km van het centrum
               @endif
             </span>
+            · <button type="button" class="zoek-regel-meer-knop" data-plek-open="{{ $stadPlekKey }}" aria-haspopup="dialog">Meer info</button>
             @if(!empty($plek['bron_url']))
               · <a href="{{ $plek['bron_url'] }}" rel="noopener noreferrer" target="_blank">{{ $plek['bron_label'] ?? 'Bron' }}</a>
             @endif
           </li>
         @endforeach
       </ul>
+      <script type="application/json" data-plek-items>{!! json_encode(array_map(function ($plek) {
+          return $plek + ['kind' => 'deelplek', 'key' => 'deelplek:'.($plek['id'] ?? $plek['naam'])];
+      }, $deelplekken), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
     @else
       <p class="section-intro">Ik ken geen vaste deelplek binnen ongeveer {{ (int) $stad['straal_km'] }} km. Misschien wel elders in {{ $stad['provincie'] }} of in de rest van het land.</p>
     @endif

@@ -65,6 +65,10 @@ Zie **`deploy/hook/INSTALL.md`**. Kort:
 **Repository of environment (gedeeld)**
 
 `SITE_NAME`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`, `CRON_TOKEN`, `ADMIN_PASSWORD`.
+Zet de `SMTP_*`-secrets in élke GitHub Environment die deployt (`staging` én `production`).
+Ontbreken ze op `staging`, dan valt de workflow terug op repo-secrets. Dat is een andere mailbox
+dan productie; de site zet `mail_log` dan op ok, maar de bevestigingsmails komen niet aan.
+
 
 Optioneel: `POST_LOG_MINT_TOKEN` — header `X-Post-Log-Token` voor `POST /api/internal/post-logs` (plantjes + Grok Bot minten tracking-URL’s). Leeg = mint weigert. Zie `docs/post-log-mint.md`. Nooit committen; ops zet het op de server na merge.
 

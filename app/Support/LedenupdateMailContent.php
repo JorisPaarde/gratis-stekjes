@@ -32,7 +32,7 @@ final class LedenupdateMailContent
 
     /**
      * @return array{naam: string, nr: int, tier: int, vraag_postcode: bool, aanhef: string}|null
-     *         null als lidnummer of tier ontbreekt, of de naam leeg is
+     *                                                                                            null als lidnummer of tier ontbreekt, of de naam leeg is
      */
     public static function placeholders(User $user, MilestoneService $milestones): ?array
     {
@@ -100,7 +100,7 @@ final class LedenupdateMailContent
         return mb_strtoupper(mb_substr($token, 0, 1)).mb_substr($token, 1);
     }
 
-    /** Hoogste (strakste) oprichterstier: 10, 50 of 100. */
+    /** Hoogste (strakste) oprichterstier: 10, 50, 100 of 200. */
     public static function tierFor(?int $lidnummer): ?int
     {
         if ($lidnummer === null) {

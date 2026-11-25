@@ -1,3 +1,14 @@
+import {
+  escapeHtml,
+  formatKm,
+  lidVanHtml,
+  regelHtml,
+  popupAanbodHtml,
+  registerAanbod,
+  registerPlek,
+  plekKey as detailPlekKey,
+} from "./aanbod-detail.js";
+
 /* Zoeken: kaart + lijst + initiatief-/kaartmarkers. */
 (function () {
   var form = document.getElementById("zoek-form");
@@ -211,6 +222,8 @@
   // Alleen het 2e veld (plant) ingevuld: { plant, sortering: "afstand"|"recent", reden }.
   // Afstand komt van de server (vanaf het eigen adres); coördinaten van het lid krijgen we niet.
   var plantModus = null;
+  // Plaats + plant tegelijk: de plant waarop het aanbod rond de plaats gefilterd is.
+  var plaatsPlant = "";
   var limits = { aanbod: 6, plekken: 12, dichtbij: 12 };
   var STAP = { aanbod: 6, plekken: 12, dichtbij: 12 };
 
@@ -225,11 +238,6 @@
         Math.sin(dLon / 2) *
         Math.sin(dLon / 2);
     return r * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  }
-
-  function formatKm(km) {
-    if (km == null || !isFinite(km)) return "";
-    return (km < 10 ? km.toFixed(1) : Math.round(km).toString()).replace(".", ",") + " km";
   }
 
   function itemLon(item) {
@@ -304,6 +312,11 @@
     } else if (item.beschrijving) {
       popup += '<p class="gp-popup-meta">' + escapeHtml(item.beschrijving) + "</p>";
     }
+    registerPlek(item);
+    popup +=
+      '<p class="gp-popup-acties"><button type="button" class="zoek-regel-meer-knop" data-plek-open="' +
+      escapeHtml(detailPlekKey(item)) +
+      '" aria-haspopup="dialog">Meer info</button></p>';
     popup += "</div>";
     return popup;
   }
@@ -424,6 +437,7 @@
     var label = item.type_label || typeLabels[item.type] || item.type;
     var adres = item.kind === "deelplek" ? item.adres || "" : item.beschrijving || "";
     var linkUrl = item.kind === "deelplek" ? item.bron_url : item.url;
+    registerPlek(item);
     li.innerHTML =
       kopHtml(item.naam, item.afstand_km) +
       '<p class="zoek-item-meta"><span class="badge badge--' +
@@ -435,6 +449,9 @@
       "</p>" +
       (adres ? '<p class="zoek-item-adres">' + escapeHtml(adres) + "</p>" : "") +
       '<p class="zoek-item-acties">' +
+      '<button type="button" class="zoek-regel-meer-knop" data-plek-open="' +
+      escapeHtml(detailPlekKey(item)) +
+      '" aria-haspopup="dialog">Meer info</button>' +
       opKaartKnop(plekKey(item)) +
       (linkUrl
         ? '<a href="' +
@@ -452,48 +469,8 @@
   }
 
   function aanbodRegel(item) {
-    var fotos = Array.isArray(item.fotos) ? item.fotos : [];
-    var foto = fotos[0] && (fotos[0].thumb_url || fotos[0].url);
-    var bericht = cfg.bericht_binnenkort
-      ? ""
-      : '<a class="zoek-regel-bericht" href="' +
-        (cfg.bericht_starten || "/account/bericht-starten") +
-        "?aanbod_id=" +
-        encodeURIComponent(item.id) +
-        "&user_id=" +
-        encodeURIComponent(item.user_id) +
-        '">Stuur bericht</a>';
-    return (
-      '<li class="zoek-regel">' +
-      (foto
-        ? '<img src="' +
-          escapeHtml(foto) +
-          '" alt="' +
-          escapeHtml(fotos[0].alt || "Foto bij aanbod") +
-          '" width="48" height="48" loading="lazy">'
-        : "") +
-      '<span class="zoek-regel-tekst"><span class="badge">' +
-      escapeHtml(aanbodTypeLabels[item.type] || item.type) +
-      "</span> " +
-      escapeHtml(item.tekst || "") +
-      (item.aantal > 1 ? ' <span class="aanbod-aantal">(' + item.aantal + " stuks)</span>" : "") +
-      "</span>" +
-      bericht +
-      "</li>"
-    );
-  }
-
-  function lidVanHtml(verenigingen) {
-    if (!verenigingen || !verenigingen.length) return "";
-    return (
-      '<p class="zoek-lid">Lid van ' +
-      verenigingen
-        .map(function (v) {
-          return '<a href="' + escapeHtml(v.url) + '">' + escapeHtml(v.naam) + "</a>";
-        })
-        .join(", ") +
-      "</p>"
-    );
+    registerAanbod(item);
+    return regelHtml(item, cfg);
   }
 
   function aanbodListItem(group) {
@@ -663,6 +640,10 @@
         : "Nog geen aanbod met “" + plantModus.plant + "”.";
       return;
     }
+    if (!aanbodCount && !plekCount && plaatsPlant && center) {
+      status.textContent = "Rond " + center.label + ": nog geen aanbod met “" + plaatsPlant + "”.";
+      return;
+    }
     if (!aanbodCount && !plekCount) {
       status.textContent =
         (partnerItems.length || deelplekItems.length)
@@ -671,7 +652,15 @@
       return;
     }
     var parts = [];
-    if (aanbodCount) parts.push(center ? aanbodCount + " aanbod" : "nieuw aanbod");
+    if (aanbodCount) {
+      parts.push(
+        center
+          ? aanbodCount + " aanbod" + (plaatsPlant ? " met “" + plaatsPlant + "”" : "")
+          : "nieuw aanbod"
+      );
+    } else if (center && plaatsPlant) {
+      parts.push("nog geen aanbod met “" + plaatsPlant + "”");
+    }
     // Geen exact deelplekken-aantal: dat verandert steeds.
     if (plekCount) parts.push("vaste deelplekken");
     if (center) {
@@ -706,20 +695,10 @@
       // Eén marker per lid (zelfde plek), popup met alle regels.
       groupAanbod(aanbodItems).forEach(function (group) {
         if (group.lat == null || group.lon == null) return;
-        var popup =
-          "<strong>" +
-          escapeHtml(group.voornaam) +
-          "</strong>" +
-          (group.locatie_label ? " · " + escapeHtml(group.locatie_label) : "");
-        group.items.forEach(function (item) {
-          popup +=
-            "<br>" +
-            escapeHtml(aanbodTypeLabels[item.type] || item.type) +
-            ": " +
-            escapeHtml(item.tekst || "") +
-            (item.aantal > 1 ? " (" + item.aantal + " stuks)" : "");
-        });
-        var m = L.marker([group.lat, group.lon], { icon: aanbodIcon() }).bindPopup(popup);
+        var m = L.marker([group.lat, group.lon], { icon: aanbodIcon() }).bindPopup(
+          popupAanbodHtml(group, cfg),
+          { className: "gp-leaflet-popup", maxWidth: 320, maxHeight: 320 }
+        );
         aanbodLayer.addLayer(m);
         markerByKey[group.key] = m;
         bounds.push([group.lat, group.lon]);
@@ -910,12 +889,18 @@
   function zoek(q, bron) {
     heeftGezocht = true;
     plantModus = null;
+    plaatsPlant = "";
     var plantEl = document.getElementById("zoek-plant");
     var plant =
       (plantEl && plantEl.value.trim()) ||
       (cfg.plant_filter ? String(cfg.plant_filter) : "");
     var typeEl = document.getElementById("zoek-type");
     var type = typeEl ? typeEl.value : "";
+    // Plant + plaats: de JS-lijst toont het aanbod met foto's en berichtknop, dus de
+    // server-lijst (alle plaatsen) verbergen om dubbele lijsten te voorkomen.
+    var serverLijst = document.getElementById("plant-aanbod");
+    if (serverLijst && plant) serverLijst.hidden = true;
+    plaatsPlant = plant;
     status.textContent = "Zoeken…";
     status.dataset.empty = "";
 
@@ -970,7 +955,8 @@
         }
         if (!meta) {
           status.textContent =
-            "Ik kon “" + q + "” niet vinden. Probeer een postcode of een andere plaatsnaam.";
+            "Ik kon “" + q + "” niet vinden als plaats. Probeer een postcode of een andere plaatsnaam." +
+            (plant ? " Hieronder zie je het aanbod met “" + plant + "” in alle plaatsen." : "");
         }
       })
       .catch(function (err) {
@@ -1008,14 +994,6 @@
     }
     zoek(q, "zelf");
   });
-
-  function escapeHtml(s) {
-    return String(s)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
 
   loadPartners();
   loadDeelplekken();

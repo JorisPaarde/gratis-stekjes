@@ -32,11 +32,12 @@
       <p class="home-hero-lead">{{ $hero['lead'] }}</p>
     @endif
     <form class="hero-zoek" method="get" action="{{ route('aanbod') }}" role="search">
-      <label for="hero-q">Wat is er bij jou in de buurt?</label>
+      <label for="hero-q">Wat of waar zoek je?</label>
       <div class="hero-zoek-veld">
-        <input type="text" id="hero-q" name="q" maxlength="120" required autocomplete="postal-code" placeholder="Postcode of plaats, bijvoorbeeld Haarlem">
+        <input type="text" id="hero-q" name="zoek" maxlength="120" required autocomplete="off" enterkeyhint="search" aria-describedby="hero-zoek-hint" placeholder="Plaats, postcode of plant">
         <button class="btn" type="submit"><x-icon name="zoeken" :size="18" /> Zoek</button>
       </div>
+      <p class="hero-zoek-hint" id="hero-zoek-hint">Bijvoorbeeld Haarlem, 8102 of monstera. Of allebei: monstera Haarlem.</p>
     </form>
     <p class="hero-plantzoeker-link"><a href="{{ route('vermeerderen') }}">Zoek je hoe je een plant vermeerdert?</a></p>
     <p class="home-hero-account">

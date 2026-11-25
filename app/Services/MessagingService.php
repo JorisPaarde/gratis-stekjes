@@ -27,7 +27,9 @@ final class MessagingService
     public function startOrGet(int $viewerId, int $otherUserId, ?int $aanbodId): array
     {
         if ($viewerId === $otherUserId) {
-            return ['ok' => false, 'error' => 'Je kunt jezelf geen bericht sturen.'];
+            return ['ok' => false, 'error' => $aanbodId !== null
+                ? 'Dit is je eigen aanbod. Je kunt jezelf geen bericht sturen.'
+                : 'Je kunt jezelf geen bericht sturen.'];
         }
         if (Block::existsBetween($viewerId, $otherUserId)) {
             return ['ok' => false, 'error' => 'Berichten naar deze gebruiker zijn niet mogelijk.'];
@@ -342,7 +344,7 @@ final class MessagingService
             'overdracht_afgerond' => $conversation->isOverdrachtAfgerond(),
             'andere' => $andere,
             'veiligheidstips' => 'Spreek af op een plek die voor jou veilig voelt, bijvoorbeeld bij je voordeur of overdag op een openbare plek. Deel geen exact huisadres via de site totdat je elkaar vertrouwt.',
-            'berichten' => $conversation->messages()->get()->map(function (Message $m) {
+            'berichten' => $conversation->messages()->reorder()->orderByDesc('created_at')->orderByDesc('id')->get()->map(function (Message $m) {
                 $body = $m->isUnreadable('body')
                     ? SafeEncrypted::VIEW_FALLBACK
                     : (string) ($m->body ?? '');

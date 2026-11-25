@@ -3,6 +3,187 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.84.10] - 2026-11-25
+
+### Fixed
+
+- Gesprekspagina: na versturen zette Safari de oude scrollpositie terug
+  (vaak onderaan, waar het vak eerder stond). Het vak staat nu bovenaan,
+  maar zou dan alsnog buiten beeld vallen. Bij `load` en `pageshow` springt
+  de pagina opnieuw naar het invoervak, ook in een korte iPhone-viewport
+  met de melding «Bericht verstuurd».
+
+## [0.84.9] - 2026-11-25
+
+### Changed
+
+- Gesprekspagina: het invoervak staat bovenaan, direct onder de kop «Gesprek
+  met …» en de woonplaatsregel, op mobiel en desktop. De berichten staan
+  nieuwste eerst, pal onder het vak; oudere berichten staan eronder. Tips,
+  contact en melden blijven in het inklapblok, onder de berichten, zodat het
+  nieuwste bericht niet naar beneden wordt geduwd. Bij openen en na versturen
+  krijgt het vak focus (`autofocus` plus `focus()` in JS). Op iOS opent het
+  toetsenbord daarbij meestal pas na een tik.
+- De chat-shell met invoervak onderaan en het meescrollen naar het laatste
+  bericht zijn weg. De fade van 0.84.8 (tegen een afgeknipte regel onder de
+  panelen) is daarmee overbodig en verwijderd. Na versturen springt de pagina
+  naar boven, zodat het vak ook in een korte Safari-viewport (met
+  browserbalk en de melding «Bericht verstuurd») in beeld blijft.
+
+## [0.84.8] - 2026-11-25
+
+### Fixed
+
+- Gesprekspagina: als je naar het laatste bericht scrollt, werd een restje van
+  het bericht daarboven hard afgeknipt, pal onder de info-panelen. Daar zit nu
+  een korte overgang naar de achtergrond, zodat die rand niet meer als een
+  afgeknipte regel oogt.
+
+## [0.84.7] - 2026-11-25
+
+### Fixed
+
+- Gesprekspagina op desktop: de drie info-panelen (Veiligheidstips, Verder
+  contact, Melden of blokkeren) bleven onzichtbaar, omdat de mobiele
+  samenvatting een gesloten `<details>` is en de inhoud dan niet toont.
+  Op brede schermen gaat die samenvatting nu open, zodat de panelen weer
+  onder elkaar staan.
+- Tijdens typen schuift de berichtenlijst mee, zodat het laatste bericht
+  niet onder het groter wordende invoervak verdwijnt.
+
+## [0.84.6] - 2026-11-25
+
+### Fixed
+
+- In het aanbod-detailvenster kwam de laatste regel (zoals «Beschikbaar tot»)
+  onder de actiebalk tevoorschijn, en op een lang aanbod vielen «Afstand» en
+  de datums achter de knoppen weg. De balk sluit nu aan op de onderkant, de
+  foto is iets lager, zodat de velden en knoppen samen in beeld blijven.
+
+## [0.84.5] - 2026-11-25
+
+### Fixed
+
+- Gesprekspagina op mobiel: de drie info-panelen staan achter één knop
+  («Tips, contact en instellingen»), zodat er meer berichten in beeld passen.
+  Het typvak krijgt meer ruimte naast een compactere «Verstuur»-knop, en
+  tussen het laatste bericht en het vak zit duidelijkere ruimte. Op desktop
+  blijven de drie panelen gewoon onder elkaar zichtbaar.
+
+## [0.84.4] - 2026-11-25
+
+### Fixed
+
+- In het aanbod-detailvenster blijven «Stuur bericht» en «Sluiten» onderaan in beeld,
+  ook als er veel velden en een grote foto staan.
+
+## [0.84.3] - 2026-11-25
+
+### Added
+
+- Oprichtersbadge «Een van de eerste 200» (tin, zelfde stijl als 10/50/100). Gaat
+  automatisch naar de eerste 200 leden op volgorde van aanmelden; wie al een
+  hogere tier heeft (10/50/100) ziet alleen die. Geen losse toekenning of
+  backfill: het lidnummer wordt berekend.
+
+### Fixed
+
+- Beheerders in `ADMIN_DASHBOARD_EMAILS` kregen geen lidnummer, en zagen daardoor
+  de oprichtersbadge («Een van de eerste 10/50/100/200», met «Je bent lid nummer
+  …») niet op hun eigen account. Zij tellen nog steeds niet mee voor andere
+  leden (nummers schuiven niet), maar krijgen zelf wél een lidnummer. Stats-lezers
+  blijven buiten de telling.
+
+## [0.84.2] - 2026-11-25
+
+### Added
+
+- Aanbod-detailvenster geldt nu overal waar aanbodregels staan: zoek- en
+  postcoderesultaten, stadspagina's, soort-/plantlijsten, verenigingspagina's,
+  deelplekkaarten en kaartpopups. Eén gedeelde component (`aanbod-detail.js` +
+  Blade-partials), geen kopieën.
+- Het venster toont alle nuttige velden die al in de data zitten, lege velden
+  blijven weg: volledige omschrijving, aantal, catalogussoort (+ andere namen
+  en stektips-link), plaats en afstand, geplaatst/beschikbaar tot, aanbieder
+  (voornaam, geen e-mail of straat) en eventueel lidmaatschap. Bij meerdere
+  foto's kun je wisselen. Deelplekken en evenementen hebben een eigen venster
+  met beschrijving, adres, datum en bronlink (openingstijden alleen als die in
+  de data staan; die kolom bestaat nog niet).
+
+### Fixed
+
+- Als «Stuur bericht» niet kan (bijvoorbeeld je eigen aanbod) zie je nu een
+  duidelijke melding op de pagina waar je vandaan kwam, in plaats van stil
+  terug te vallen op `/aanbod`.
+- Zoeken op een kale postcode zonder land («8102», «8102 AB») werd als vrije tekst naar
+  Nominatim gestuurd, dat «8102» als huisnummer las: zoeken op 8102 gaf Enschede in plaats van
+  Raalte (`/api/zoeken?q=8102`, ook op productie). De geocoder probeert zo'n postcode nu eerst
+  als Nederlandse postcode via PDOK; vindt PDOK niets (bijv. een Belgische postcode), dan blijft
+  de oude route gelden.
+- Hero-zoekveld: een typfout in een plantnaam («monstra») gaf een willekeurige plaats
+  (Nominatim gaf «1860 Meise»). Als de invoer dicht bij een plantnaam ligt en het gevonden
+  label niet op wat is getypt lijkt, toont de lege staat nu «Bedoelde je Monstera?».
+
+## [0.84.1] - 2026-11-25
+
+### Changed
+
+- Gesprekspagina (`/account/gesprek/{id}`): chat-layout zodat het berichtvak op
+  mobiel meteen in beeld staat. Berichten scrollen naar het laatste, het
+  invoervak blijft onderaan (ook boven het toetsenbord via `visualViewport`).
+  Autofocus alleen op desktop; op iOS/aanraakschermen niet, zodat het
+  toetsenbord niet vanzelf opengaat en de laatste berichten wegduwt.
+  Veiligheidstips, verder contact en melden/blokkeren staan in inklapbare
+  blokken. Footer en feedbackknop zijn op deze pagina verborgen.
+
+## [0.84.0] - 2026-11-25
+
+### Added
+
+- Hero-zoekveld op de homepage zoekt nu op plaats, postcode én plant, in één veld
+  (`/aanbod?zoek=`). `App\Services\ZoekIntent` herkent: postcode, bekende stad, plantnaam /
+  volksnaam / Latijnse naam (`plantensoorten.json`), een woord uit het aanbod (bv. «vetplant»)
+  of een combinatie als «monstera haarlem» (ook «haarlem monstera», «monstera in Haarlem»,
+  «8102 monstera»), en stuurt door naar de bestaande `?q=` en `?plant=`. Rest gaat via de
+  geocoder (PDOK/Nominatim, gecachet; max. 30 opzoekingen per uur per IP vanuit het hero-veld).
+- Nette lege staat op `/aanbod` voor invoer die geen plaats of plant is: «Ik vond geen plaats
+  of plant met “…”», met «Bedoelde je …?» uit de plantencatalogus en gewoon het nieuwste
+  aanbod en de kaart eronder.
+- Statusregel bij plaats + plant: «Rond Haarlem: 2 aanbod met “monstera”».
+
+### Changed
+
+- Plant zoeken (`/aanbod?plant=`, `/api/zoeken?plant=`) vindt nu ook aanbod onder een andere
+  naam van dezelfde soort (volksnaam, synoniem, Latijnse naam) en via het gekozen soort-id:
+  «gatenplant» vindt ook «Monstera». Accent- en hoofdletterongevoelig.
+- Teksten hero (homepage en «Ik zoek een plant» op /hoe-werkt-het): label «Wat of waar zoek je?»
+  (was «Wat is er bij jou in de buurt?»), placeholder «Plaats, postcode of plant», hulpregel
+  met voorbeelden, meta-description «Zoek op plaats, postcode of plant». Het veld heet nu `zoek`
+  en vult het browser-postcode-autocomplete niet meer in; `?q=` en `?plant=` blijven werken.
+- Bij plaats + plant verbergt de pagina de server-lijst «alle plaatsen», zodat er geen dubbele
+  lijst staat.
+
+## [0.83.0] - 2026-11-25
+
+### Added
+
+- Zoekresultaten (`/aanbod`): tik op een aanbodregel (foto of tekst, bv. «Te geef vetplant
+  (4 stuks)») en je ziet meer info met een grote foto in een detailvenster: type, omschrijving,
+  aantal, wie en waar (alleen plaats, geen adres), eventueel meerdere foto's en «Stuur bericht».
+  Op mobiel schuift het venster van onderen in, op desktop staat het in het midden. Sluiten kan
+  met de knop, ×, Esc, een tik naast het venster of de terugknop van de telefoon.
+  «Stuur bericht» blijft ook in de lijst direct bruikbaar. Het venster gebruikt alleen gegevens
+  die de zoekresultaten al tonen; er is geen aparte detailpagina of nieuwe openbare URL.
+
+## [0.82.3] - 2026-11-25
+
+### Fixed
+
+- Staging had geen `SMTP_*` in de GitHub Environment, waardoor de deploy de repo-secrets
+  (andere mailbox) schreef. Bevestigingsmails stonden in `mail_log` op ok maar kwamen niet
+  aan (sinds 16 nov). Staging gebruikt nu dezelfde mailbox als productie
+  (`mail.gratisplanten.nl` / info@). Zie `AGENTS.md`.
+
 ## [0.82.2] - 2026-11-25
 
 ### Added

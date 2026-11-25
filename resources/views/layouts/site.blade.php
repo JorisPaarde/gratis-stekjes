@@ -107,7 +107,7 @@
     @unless(request()->routeIs('beheer.*'))
       @include('partials.postcode-herinnering')
     @endunless
-    @if(request()->is('account', 'account/*') && ! request()->is('account/verwijderen', 'account/export', 'account/welkom', 'account/welkom/*'))
+    @if(request()->is('account', 'account/*') && ! request()->is('account/verwijderen', 'account/export', 'account/welkom', 'account/welkom/*', 'account/gesprek', 'account/gesprek/*'))
       @unless(request()->routeIs('beheer.*'))
         @include('partials.volgende-stap')
       @endunless
@@ -117,6 +117,11 @@
     @if(request()->hasSession() && session('status'))
       <div class="wrap" style="padding-top:1rem">
         <p class="flash {{ session('status_level') === 'warn' ? 'flash-warn' : 'flash-ok' }}" role="status">{{ session('status') }}</p>
+      </div>
+    @endif
+    @if(request()->hasSession() && session('error'))
+      <div class="wrap" style="padding-top:1rem">
+        <p class="flash flash-error" role="alert">{{ session('error') }}</p>
       </div>
     @endif
     @yield('content')
@@ -179,7 +184,7 @@
     <!-- Versie {{ config('site.version') }} -->
   </footer>
   @auth
-    @unless(request()->is('beheer', 'beheer/*', 'feedback'))
+    @unless(request()->is('beheer', 'beheer/*', 'feedback', 'account/gesprek', 'account/gesprek/*'))
       @include('partials.feedback-fab')
     @endunless
   @endauth

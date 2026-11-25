@@ -41,16 +41,17 @@
       <x-home-picture id="stappen" :show-credit="false" sizes="(max-width: 860px) 100vw, 50vw" />
       <h2 id="route-zoek">Ik zoek een plant</h2>
       <ol class="hwh-stappen">
-        <li><strong>Kijk wat er in de buurt is.</strong> Zoek op postcode of plaats. Kijken kan zonder account.</li>
+        <li><strong>Kijk wat er in de buurt is.</strong> Zoek op plaats, postcode of plant. Kijken kan zonder account.</li>
         <li><strong>Stuur een bericht.</strong> Daarvoor maak je een gratis account. Je e-mailadres blijft verborgen.</li>
         <li><strong>Spreek af en haal op.</strong> Kies samen een moment. Neem eventueel een tasje of potje mee.</li>
       </ol>
       <form class="hero-zoek hwh-zoek" method="get" action="{{ route('aanbod') }}" role="search">
-        <label for="hwh-q">Wat is er bij jou in de buurt?</label>
+        <label for="hwh-q">Wat of waar zoek je?</label>
         <div class="hero-zoek-veld">
-          <input type="text" id="hwh-q" name="q" maxlength="120" required autocomplete="postal-code" placeholder="Postcode of plaats">
+          <input type="text" id="hwh-q" name="zoek" maxlength="120" required autocomplete="off" enterkeyhint="search" aria-describedby="hwh-zoek-hint" placeholder="Plaats, postcode of plant">
           <button class="btn" type="submit"><x-icon name="zoeken" :size="18" /> Zoek</button>
         </div>
+        <p class="hero-zoek-hint" id="hwh-zoek-hint">Bijvoorbeeld Haarlem, 8102 of monstera.</p>
       </form>
       <p class="hwh-extra">Liever een vaste plek? Bekijk de <a href="{{ route('deelplekken') }}">deelplekken</a>, zoals plantenasiels en zadenbibliotheken. Of zoek <a href="{{ route('gratis-planten.index') }}">gratis planten in jouw stad</a>.</p>
     </article>

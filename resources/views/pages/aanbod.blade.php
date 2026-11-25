@@ -50,6 +50,20 @@
     <button class="btn zoekbalk-knop" type="submit"><x-icon name="zoeken" :size="18" /> Zoek</button>
   </form>
 
+  @if(!empty($zoekOnbekend))
+    <div class="empty-state zoek-onbekend" id="zoek-onbekend" role="status">
+      <p><strong>Ik vond geen plaats of plant met “{{ $zoekOnbekend['tekst'] }}”.</strong></p>
+      @if(!empty($zoekOnbekend['suggesties']))
+        <p>Bedoelde je
+          @foreach($zoekOnbekend['suggesties'] as $suggestie)
+            <a href="{{ route('aanbod', ['plant' => $suggestie]) }}">{{ $suggestie }}</a>{{ $loop->last ? '?' : ',' }}
+          @endforeach
+        </p>
+      @endif
+      <p>Probeer een postcode (bijvoorbeeld 8102), een plaats of de naam van een plant. Hieronder zie je alvast het nieuwste aanbod en de kaart.</p>
+    </div>
+  @endif
+
   @if(!empty($plant) && isset($plantItems))
     <section class="stektips-plant-aanbod" id="plant-aanbod" aria-labelledby="plant-aanbod-titel">
       @if(!empty($plantSortering) && $plantSortering['sortering'] === 'afstand')
@@ -69,15 +83,7 @@
       @if(count($plantItems) === 0)
         <p class="empty-state" role="status">Er is nog geen aanbod met “{{ $plant }}”. <a href="{{ route('account.registreren') }}">Doe mee</a> en deel zelf iets, of zoek hierboven op plaats.</p>
       @else
-        <ul class="zoek-lijst">
-          @foreach($plantItems as $item)
-            <li class="zoek-item">
-              <strong>{{ $item['voornaam'] ?? '' }}</strong>
-              <span class="muted"> · {{ $item['locatie_label'] ?? '' }} · {{ $item['type'] ?? '' }}@isset($item['afstand_km']) · <span class="zoek-item-afstand">{{ str_replace('.', ',', $item['afstand_km'] < 10 ? number_format($item['afstand_km'], 1) : (string) round($item['afstand_km'])) }} km</span>@endisset</span>
-              <p>{{ $item['tekst'] ?? '' }} @include('partials.aanbod-aantal', ['aantal' => $item['aantal'] ?? 1])</p>
-            </li>
-          @endforeach
-        </ul>
+        @include('partials.aanbod-lijst', ['items' => $plantItems])
       @endif
     </section>
   @endif
