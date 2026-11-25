@@ -3,6 +3,16 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.84.10] - 2026-11-25
+
+### Fixed
+
+- Gesprekspagina: na versturen zette Safari de oude scrollpositie terug
+  (vaak onderaan, waar het vak eerder stond). Het vak staat nu bovenaan,
+  maar zou dan alsnog buiten beeld vallen. Bij `load` en `pageshow` springt
+  de pagina opnieuw naar het invoervak, ook in een korte iPhone-viewport
+  met de melding «Bericht verstuurd».
+
 ## [0.84.9] - 2026-11-25
 
 ### Changed
