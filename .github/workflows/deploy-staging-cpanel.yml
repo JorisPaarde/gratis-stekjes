@@ -110,6 +110,10 @@ jobs:
           ACTIVATION_REMINDER_ENABLED_AT: ${{ vars.ACTIVATION_REMINDER_ENABLED_AT }}
           ACTIVATION_REMINDER_AFTER_HOURS: ${{ vars.ACTIVATION_REMINDER_AFTER_HOURS }}
           REMINDER_TEST_RECIPIENTS: ${{ secrets.REMINDER_TEST_RECIPIENTS }}
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          BREVO_NEWSLETTER_LIST_ID: ${{ secrets.BREVO_NEWSLETTER_LIST_ID }}
+          BREVO_SYNC_ENABLED: ${{ vars.BREVO_SYNC_ENABLED }}
+          BREVO_WEBHOOK_TOKEN: ${{ secrets.BREVO_WEBHOOK_TOKEN }}
           BASE_URL: ${{ secrets.STAGING_BASE_URL }}
           APP_ENV_NAME: staging
         run: |
@@ -147,5 +151,13 @@ jobs:
           fi
           if [ -z "${ACTIVATION_REMINDER_ENABLED:-}" ] && [ -z "${ACTIVATION_REMINDER_ENABLED_AT:-}" ]; then
             echo "::notice::ACTIVATION_REMINDER_* ontbreekt — hook behoudt bestaande of app-default (uit)."
+          fi
+          if [ -n "${BREVO_API_KEY:-}" ]; then
+            echo "::add-mask::${BREVO_API_KEY}"
+          else
+            echo "::notice::BREVO_API_KEY ontbreekt — nieuwsbrief-sync blijft uit tot secret gezet is."
+          fi
+          if [ -n "${BREVO_WEBHOOK_TOKEN:-}" ]; then
+            echo "::add-mask::${BREVO_WEBHOOK_TOKEN}"
           fi
           ./scripts/deploy-hook-upload.sh

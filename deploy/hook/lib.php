@@ -1434,6 +1434,10 @@ function deploy_hook_action_finish(
     $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'ACTIVATION_REMINDER_ENABLED_AT');
     $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'ACTIVATION_REMINDER_AFTER_HOURS');
     $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'REMINDER_TEST_RECIPIENTS');
+    $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'BREVO_API_KEY');
+    $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'BREVO_NEWSLETTER_LIST_ID');
+    $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'BREVO_SYNC_ENABLED');
+    $finalEnv = deploy_hook_preserve_env_key($finalEnv, $existingEnv, 'BREVO_WEBHOOK_TOKEN');
     // APP_PREVIOUS_KEYS: bestaande server-waarde altijd behouden (Laravel previous_keys).
     $finalEnv = deploy_hook_preserve_existing_always($finalEnv, $existingEnv, 'APP_PREVIOUS_KEYS');
     // Timestamped backup buiten docroot (appDir/.env.backup-…, max 10) vóór herschrijven.
