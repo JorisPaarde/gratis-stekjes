@@ -15,6 +15,16 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   Veiligheidstips, verder contact en melden/blokkeren staan in inklapbare
   blokken. Footer en feedbackknop zijn op deze pagina verborgen.
 
+## [0.84.1] - 2026-11-25
+
+### Fixed
+
+- Zoeken op een kale postcode zonder land («8102», «8102 AB») werd als vrije tekst naar
+  Nominatim gestuurd, dat «8102» als huisnummer las: zoeken op 8102 gaf Enschede in plaats van
+  Raalte (`/api/zoeken?q=8102`, ook op productie). De geocoder probeert zo'n postcode nu eerst
+  als Nederlandse postcode via PDOK; vindt PDOK niets (bijv. een Belgische postcode), dan blijft
+  de oude route gelden.
+
 ## [0.84.0] - 2026-11-25
 
 ### Added
