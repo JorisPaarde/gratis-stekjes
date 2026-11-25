@@ -223,3 +223,19 @@ test('aanbodpagina: compacte zoekbalk zonder uitdelen/ophalen-keuze, filters als
         ->and($html)->toContain('class="filter-chip"')
         ->and($html)->not->toContain('<fieldset class="marker-filters"');
 });
+
+test('zoeken.js: aanbodregel opent een detailvenster; Stuur bericht blijft een eigen link', function () {
+    $js = (string) file_get_contents(base_path('resources/js/zoeken.js'));
+    $css = (string) file_get_contents(base_path('resources/css/aanbod.css'));
+
+    expect($js)->toContain('data-aanbod-open')
+        ->and($js)->toContain('function openAanbodDetail(')
+        ->and($js)->toContain('showModal()')
+        ->and($js)->toContain('popstate')
+        // Regel is een echte button; Stuur bericht staat ernaast, niet erin (geen link in knop).
+        ->and($js)->toContain('<button type="button" class="zoek-regel-open"')
+        ->and($js)->toContain('<a class="zoek-regel-bericht"')
+        ->and($js)->toContain('aanbod-detail-bericht')
+        ->and($css)->toContain('.aanbod-detail')
+        ->and($css)->toContain('.zoek-regel-open');
+});
