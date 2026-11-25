@@ -40,7 +40,7 @@ test('alle badges hebben een plaatje en tellen mee', function () {
     $u = badgeUser('b1@example.com');
     $badges = app(MilestoneService::class)->badgesFor($u);
 
-    expect($badges)->toHaveCount(11); // incl. oprichtersbadge (eerste 100)
+    expect($badges)->toHaveCount(11); // incl. één oprichtersbadge (hoogste tier)
     foreach ($badges as $b) {
         expect(is_file(public_path(ltrim($b['img'], '/'))))->toBeTrue();
     }
@@ -119,9 +119,9 @@ test('beheer kan de pionier verplaatsen', function () {
     expect(app(MilestoneService::class)->pionierUserId())->toBe($lid->id);
 });
 
-test('oprichtersbadges: hoogste tier op volgorde van aanmelden, beheerders tellen niet mee', function () {
+test('oprichtersbadges: hoogste tier op volgorde van aanmelden, beheerders tellen niet mee voor anderen', function () {
     config(['stekjes.admin_dashboard_emails' => ['admin-opr@example.com']]);
-    badgeUser('admin-opr@example.com', 'Joris');
+    $admin = badgeUser('admin-opr@example.com', 'Beheer');
     $leden = collect(range(1, 12))->map(fn ($i) => badgeUser('opr'.$i.'@example.com', 'Lid'.$i));
     $service = app(MilestoneService::class);
 
@@ -140,8 +140,49 @@ test('oprichtersbadges: hoogste tier op volgorde van aanmelden, beheerders telle
     $leden[0]->delete();
     expect($service->lidnummer($leden[10]))->toBe(10);
 
-    expect($service->lidnummer(\App\Models\User::query()->where('email', 'admin-opr@example.com')->first()))->toBeNull();
-    foreach (['eerste_10', 'eerste_50', 'eerste_100'] as $k) {
+    // Beheerder krijgt zelf wél een lidnummer (zichzelf meegeteld) en de badge.
+    // Andere leden schuiven daardoor niet op: lid 2 blijft 2 (was 1 na delete + zelf).
+    $admin->refresh();
+    $adminBadges = collect($service->badgesFor($admin))->keyBy('key');
+    expect($service->lidnummer($admin))->toBe(1)
+        ->and($adminBadges->has('eerste_10'))->toBeTrue()
+        ->and($adminBadges['eerste_10']['hint'])->toContain('lid nummer 1')
+        ->and($service->lidnummer($leden[1]))->toBe(1);
+
+    foreach (['eerste_10', 'eerste_50', 'eerste_100', 'eerste_200'] as $k) {
         expect(is_file(public_path('assets/badges/'.$k.'.svg')))->toBeTrue();
     }
+});
+
+test('oprichtersbadge eerste 200 voor lid 101 tot 200, daarna geen tier', function () {
+    // 200 leden: 1–10 eerste_10, 11–50 eerste_50, 51–100 eerste_100, 101–200 eerste_200.
+    User::factory()->count(201)->create();
+    $leden = User::query()->members()->orderBy('id')->get();
+    $service = app(MilestoneService::class);
+
+    expect($leden)->toHaveCount(201)
+        ->and($service->lidnummer($leden[0]))->toBe(1)
+        ->and($service->lidnummer($leden[9]))->toBe(10)
+        ->and($service->lidnummer($leden[10]))->toBe(11)
+        ->and($service->lidnummer($leden[49]))->toBe(50)
+        ->and($service->lidnummer($leden[50]))->toBe(51)
+        ->and($service->lidnummer($leden[99]))->toBe(100)
+        ->and($service->lidnummer($leden[100]))->toBe(101)
+        ->and($service->lidnummer($leden[199]))->toBe(200)
+        ->and($service->lidnummer($leden[200]))->toBe(201);
+
+    $keys = fn (User $u) => collect($service->badgesFor($u))->pluck('key');
+
+    expect($keys($leden[0])->intersect(['eerste_10', 'eerste_50', 'eerste_100', 'eerste_200'])->all())->toBe(['eerste_10'])
+        ->and($keys($leden[10])->intersect(['eerste_10', 'eerste_50', 'eerste_100', 'eerste_200'])->all())->toBe(['eerste_50'])
+        ->and($keys($leden[50])->intersect(['eerste_10', 'eerste_50', 'eerste_100', 'eerste_200'])->all())->toBe(['eerste_100'])
+        ->and($keys($leden[100])->intersect(['eerste_10', 'eerste_50', 'eerste_100', 'eerste_200'])->all())->toBe(['eerste_200'])
+        ->and($keys($leden[199])->intersect(['eerste_10', 'eerste_50', 'eerste_100', 'eerste_200'])->all())->toBe(['eerste_200'])
+        ->and($keys($leden[200])->intersect(['eerste_10', 'eerste_50', 'eerste_100', 'eerste_200'])->all())->toBe([]);
+
+    $tweehonderd = collect($service->badgesFor($leden[100]))->keyBy('key');
+    expect($tweehonderd['eerste_200']['label'])->toBe('Een van de eerste 200')
+        ->and($tweehonderd['eerste_200']['earned'])->toBeTrue()
+        ->and($tweehonderd['eerste_200']['hint'])->toContain('lid nummer 101')
+        ->and($tweehonderd['eerste_200']['img'])->toBe('/assets/badges/eerste_200.svg');
 });

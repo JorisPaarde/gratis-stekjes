@@ -139,11 +139,14 @@ final class MilestoneService
     }
 
     /** Oprichterstiers: de hoogste die je haalt wordt getoond. */
-    public const OPRICHTERS = [10 => 'eerste_10', 50 => 'eerste_50', 100 => 'eerste_100'];
+    public const OPRICHTERS = [10 => 'eerste_10', 50 => 'eerste_50', 100 => 'eerste_100', 200 => 'eerste_200'];
 
     /**
-     * Lidnummer op volgorde van aanmelden (beheerders tellen niet mee). Kan alleen
-     * lager worden (als eerdere leden vertrekken), dus een verdiende badge blijft.
+     * Lidnummer op volgorde van aanmelden. Beheerders in ADMIN_DASHBOARD_EMAILS
+     * tellen niet mee voor andere leden (hun nummer schuift niet), maar krijgen
+     * zelf wél een lidnummer (zichzelf meegeteld), zodat de oprichtersbadge op
+     * hun eigen account zichtbaar is. Kan alleen lager worden (als eerdere
+     * leden vertrekken), dus een verdiende badge blijft.
      */
     public function lidnummer(User $user): ?int
     {
@@ -153,16 +156,18 @@ final class MilestoneService
             }
 
             $admins = AdminDashboard::allowedEmails();
-            if ($admins !== [] && in_array(mb_strtolower((string) $user->email), $admins, true)) {
-                return null;
-            }
+            $isAllowlistedAdmin = $admins !== []
+                && in_array(mb_strtolower((string) $user->email), $admins, true);
 
-            return User::query()
+            $voorgangers = User::query()
                 ->members()
                 ->where('id', '<=', $user->id)
                 ->when($admins !== [], fn ($q) => $q->whereNotIn(DB::raw('LOWER(email)'), $admins))
                 ->count();
-        } catch (\Throwable) {
+
+            // Allowlist-beheerder staat zelf niet in $voorgangers.
+            return $isAllowlistedAdmin ? $voorgangers + 1 : $voorgangers;
+        } catch (Throwable) {
             return null;
         }
     }
