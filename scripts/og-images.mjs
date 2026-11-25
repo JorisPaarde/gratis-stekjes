@@ -19,6 +19,8 @@ import { fileURLToPath } from 'node:url';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'public/assets/og');
 const only = process.argv[2] || 'alles';
+/** Optioneel: alleen één soort-OG (bijv. `node scripts/og-images.mjs soort eeuwig-moes`). */
+const onlySlug = process.argv[3] || null;
 
 let chromium;
 try {
@@ -93,6 +95,7 @@ if (only === 'alles' || only === 'soort') {
   const stektips = json('data/stektips.json').soorten;
   const fotos = json('data/soort-afbeeldingen.json').soorten;
   for (const s of stektips) {
+    if (onlySlug && s.slug !== onlySlug) continue;
     const f = fotos[s.slug];
     const foto = f && f.bestand && existsSync(join(ROOT, 'public', f.bestand)) ? 'public/' + f.bestand : null;
     const kans = String(s.kans || '').toLowerCase();
