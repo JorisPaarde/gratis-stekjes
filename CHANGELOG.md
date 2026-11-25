@@ -3,6 +3,18 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.83.0] - 2026-11-25
+
+### Added
+
+- Zoekresultaten (`/aanbod`): tik op een aanbodregel (foto of tekst, bv. «Te geef vetplant
+  (4 stuks)») en je ziet meer info met een grote foto in een detailvenster: type, omschrijving,
+  aantal, wie en waar (alleen plaats, geen adres), eventueel meerdere foto's en «Stuur bericht».
+  Op mobiel schuift het venster van onderen in, op desktop staat het in het midden. Sluiten kan
+  met de knop, ×, Esc, een tik naast het venster of de terugknop van de telefoon.
+  «Stuur bericht» blijft ook in de lijst direct bruikbaar. Het venster gebruikt alleen gegevens
+  die de zoekresultaten al tonen; er is geen aparte detailpagina of nieuwe openbare URL.
+
 ## [0.82.3] - 2026-11-25
 
 ### Fixed
