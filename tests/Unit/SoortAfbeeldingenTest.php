@@ -113,16 +113,22 @@ test('geen dubbele soortfoto-bestanden (zelfde sha256) tussen soorten', function
     $byHash = [];
 
     foreach ($data['soorten'] ?? [] as $slug => $row) {
-        $path = $root.'/public/'.(string) ($row['bestand'] ?? '');
-        expect(is_file($path))->toBeTrue("ontbrekend bestand voor {$slug}");
-        $hash = hash_file('sha256', $path);
-        expect($hash)->toBeString()->not->toBeEmpty();
-        if (isset($byHash[$hash])) {
-            expect(false)->toBeTrue(
-                "dubbele foto: {$byHash[$hash]} en {$slug} delen sha256 {$hash}"
-            );
+        $bestanden = [(string) ($row['bestand'] ?? '')];
+        if (is_array($row['desktop'] ?? null) && ($row['desktop']['bestand'] ?? '') !== '') {
+            $bestanden[] = (string) $row['desktop']['bestand'];
         }
-        $byHash[$hash] = $slug;
+        foreach ($bestanden as $bestand) {
+            $path = $root.'/public/'.$bestand;
+            expect(is_file($path))->toBeTrue("ontbrekend bestand voor {$slug}: {$bestand}");
+            $hash = hash_file('sha256', $path);
+            expect($hash)->toBeString()->not->toBeEmpty();
+            if (isset($byHash[$hash])) {
+                expect(false)->toBeTrue(
+                    "dubbele foto: {$byHash[$hash]} en {$slug} ({$bestand}) delen sha256 {$hash}"
+                );
+            }
+            $byHash[$hash] = $slug.' '.$bestand;
+        }
     }
 });
 
@@ -146,6 +152,30 @@ test('sha256-allowlist komt overeen met de JPEG op schijf', function () {
         $bytes = (int) ($row['bytes'] ?? 0);
         if ($bytes > 0) {
             expect(filesize($path))->toBe($bytes, "bytes-veld klopt niet voor {$slug}");
+        }
+
+        $desktop = $row['desktop'] ?? null;
+        if (is_array($desktop)) {
+            $deskBestand = (string) ($desktop['bestand'] ?? '');
+            expect($deskBestand)->toBe(
+                "assets/images/soorten/{$slug}-desktop.jpg",
+                "desktop-bestand voor {$slug} wijst niet naar {$slug}-desktop.jpg"
+            );
+            $expectedDesk = strtolower((string) ($desktop['sha256'] ?? ''));
+            expect($expectedDesk)->toMatch(
+                '/^[a-f0-9]{64}$/',
+                "ontbrekende of ongeldige desktop-sha256 voor {$slug}"
+            );
+            $deskPath = $root.'/public/'.$deskBestand;
+            expect(is_file($deskPath))->toBeTrue("ontbrekend desktop-bestand voor {$slug}");
+            expect(hash_file('sha256', $deskPath))->toBe(
+                $expectedDesk,
+                "stille vervanging van desktopfoto {$slug}"
+            );
+            $deskBytes = (int) ($desktop['bytes'] ?? 0);
+            if ($deskBytes > 0) {
+                expect(filesize($deskPath))->toBe($deskBytes, "desktop-bytes klopt niet voor {$slug}");
+            }
         }
     }
 });

@@ -25,6 +25,7 @@ final class SoortAfbeeldingen
      * @return array{
      *   slug: string,
      *   url: string,
+     *   url_desktop: ?string,
      *   alt: string,
      *   auteur: string,
      *   licentie: string,
@@ -44,6 +45,7 @@ final class SoortAfbeeldingen
                 return [
                     'slug' => $slug,
                     'url' => self::urlWithContentHash((string) $row['bestand'], (string) ($row['sha256'] ?? '')),
+                    'url_desktop' => self::desktopUrl($row),
                     'alt' => (string) ($row['alt'] ?? ($naam !== '' ? $naam : $slug)),
                     'auteur' => (string) ($row['auteur'] ?? ''),
                     'licentie' => (string) ($row['licentie'] ?? ''),
@@ -57,6 +59,7 @@ final class SoortAfbeeldingen
         return [
             'slug' => $slug,
             'url' => asset('assets/illustrations/soort-fallback.svg'),
+            'url_desktop' => null,
             'alt' => $naam !== '' ? 'Illustratie bij '.$naam : 'Neutrale plantillustratie',
             'auteur' => 'Gratis planten',
             'licentie' => 'CC0',
@@ -116,6 +119,26 @@ final class SoortAfbeeldingen
         }
 
         return $n;
+    }
+
+    /**
+     * Optionele bijgesneden desktop-hero; null als de soort geen desktop-veld heeft
+     * of het bestand ontbreekt. Zelfde credit als de hoofd foto.
+     *
+     * @param  array<string, mixed>  $row
+     */
+    private static function desktopUrl(array $row): ?string
+    {
+        $desktop = $row['desktop'] ?? null;
+        if (! is_array($desktop)) {
+            return null;
+        }
+        $bestand = (string) ($desktop['bestand'] ?? '');
+        if ($bestand === '' || ! is_file(public_path($bestand))) {
+            return null;
+        }
+
+        return self::urlWithContentHash($bestand, (string) ($desktop['sha256'] ?? ''));
     }
 
     /**
