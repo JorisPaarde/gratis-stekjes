@@ -1,16 +1,31 @@
 @php
   /** @var array $afbeelding */
   $isFallback = (bool) ($afbeelding['is_fallback'] ?? true);
+  $desktopUrl = $afbeelding['url_desktop'] ?? null;
 @endphp
 <figure class="soort-afbeelding{{ $isFallback ? ' soort-afbeelding--fallback' : '' }}">
-  <img
-    src="{{ $afbeelding['url'] }}"
-    alt="{{ $afbeelding['alt'] }}"
-    width="640"
-    height="480"
-    loading="lazy"
-    decoding="async"
-  >
+  @if(!empty($desktopUrl))
+    <picture>
+      <source media="(min-width: 700px)" srcset="{{ $desktopUrl }}">
+      <img
+        src="{{ $afbeelding['url'] }}"
+        alt="{{ $afbeelding['alt'] }}"
+        width="640"
+        height="480"
+        loading="lazy"
+        decoding="async"
+      >
+    </picture>
+  @else
+    <img
+      src="{{ $afbeelding['url'] }}"
+      alt="{{ $afbeelding['alt'] }}"
+      width="640"
+      height="480"
+      loading="lazy"
+      decoding="async"
+    >
+  @endif
   <figcaption class="soort-afbeelding-credit">
     @if($isFallback)
       <span>Eigen illustratie · {{ $afbeelding['licentie'] }}</span>

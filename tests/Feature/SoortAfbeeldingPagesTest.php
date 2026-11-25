@@ -47,3 +47,30 @@ test('goedgekeurde soort-url bevat sha256-cachebuster', function () {
     expect($img['is_fallback'])->toBeFalse()
         ->and($img['url'])->toMatch('/assets\/images\/soorten\/munt\.jpg\?h=[a-f0-9]{12}/');
 });
+
+test('eeuwig moes heeft een bijgesneden desktop-hero, andere soorten niet', function () {
+    $eeuwig = app(SoortAfbeeldingen::class)->forSlug('eeuwig-moes', 'Eeuwig moes');
+    expect($eeuwig['is_fallback'])->toBeFalse()
+        ->and($eeuwig['url'])->toContain('assets/images/soorten/eeuwig-moes.jpg')
+        ->and($eeuwig['url'])->not->toContain('desktop')
+        ->and($eeuwig['url_desktop'])->toBeString()
+        ->and($eeuwig['url_desktop'])->toContain('assets/images/soorten/eeuwig-moes-desktop.jpg')
+        ->and($eeuwig['url_desktop'])->toContain('h=01aa699b9d07');
+
+    $this->get(route('stektips.show', ['slug' => 'eeuwig-moes']))
+        ->assertOk()
+        ->assertSee('eeuwig-moes-desktop.jpg?h=01aa699b9d07', false)
+        ->assertSee('media="(min-width: 700px)"', false)
+        ->assertSee('FarceRéjeane', false)
+        ->assertSee('CC BY-SA', false);
+
+    $monstera = app(SoortAfbeeldingen::class)->forSlug('monstera', 'Monstera');
+    expect($monstera['url_desktop'])->toBeNull();
+
+    $html = $this->get(route('stektips.show', ['slug' => 'monstera']))
+        ->assertOk()
+        ->assertDontSee('monstera-desktop', false)
+        ->getContent();
+
+    expect(substr_count($html, '<picture>'))->toBe(0);
+});
