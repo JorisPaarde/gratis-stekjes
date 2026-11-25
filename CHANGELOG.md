@@ -3,6 +3,23 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.84.9] - 2026-11-25
+
+### Changed
+
+- Gesprekspagina: het invoervak staat bovenaan, direct onder de kop «Gesprek
+  met …» en de woonplaatsregel, op mobiel en desktop. De berichten staan
+  nieuwste eerst, pal onder het vak; oudere berichten staan eronder. Tips,
+  contact en melden blijven in het inklapblok, onder de berichten, zodat het
+  nieuwste bericht niet naar beneden wordt geduwd. Bij openen en na versturen
+  krijgt het vak focus (`autofocus` plus `focus()` in JS). Op iOS opent het
+  toetsenbord daarbij meestal pas na een tik.
+- De chat-shell met invoervak onderaan en het meescrollen naar het laatste
+  bericht zijn weg. De fade van 0.84.8 (tegen een afgeknipte regel onder de
+  panelen) is daarmee overbodig en verwijderd. Na versturen springt de pagina
+  naar boven, zodat het vak ook in een korte Safari-viewport (met
+  browserbalk en de melding «Bericht verstuurd») in beeld blijft.
+
 ## [0.84.8] - 2026-11-25
 
 ### Fixed
