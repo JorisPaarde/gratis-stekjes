@@ -165,3 +165,32 @@ test('plant plus plaats via de API filtert op plant en sorteert op afstand', fun
     expect(array_column($res->json('items'), 'tekst'))->toBe(['Gatenplant dichtbij', 'Monstera ver weg'])
         ->and($res->json('meta.zoek_label'))->toBe('Haarlem');
 });
+
+test('typfout in een plantnaam wint niet van een willekeurig geocoder-resultaat', function () {
+    // Nominatim geeft «monstra» graag een Belgische plaats terug (Meise); de suggestie wint.
+    Http::fake(function ($request) {
+        if (str_contains($request->url(), 'nominatim')) {
+            return Http::response([[
+                'lat' => '50.9333',
+                'lon' => '4.3333',
+                'display_name' => 'Meise, Vlaams-Brabant, België',
+                'address' => ['postcode' => '1860', 'town' => 'Meise', 'country_code' => 'be'],
+            ]], 200);
+        }
+
+        return Http::response(['response' => ['docs' => []]], 200);
+    });
+
+    $this->get(route('aanbod', ['zoek' => 'monstra']))
+        ->assertOk()
+        ->assertSee('Ik vond geen plaats of plant met “monstra”', false)
+        ->assertSee(route('aanbod', ['plant' => 'Monstera']), false);
+});
+
+test('een echte plaats zonder plantnaam in de buurt blijft een plaats, ook bij een andere schrijfwijze', function () {
+    heroCache('nl,be:raalte', 'Raalte', 52.386, 6.275);
+
+    $intent = app(ZoekIntent::class)->bepaal('Raalte', true);
+
+    expect($intent['soort'])->toBe(ZoekIntent::PLAATS)->and($intent['q'])->toBe('Raalte');
+});
