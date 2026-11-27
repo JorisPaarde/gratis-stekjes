@@ -99,8 +99,19 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .nav-cta:focus-visibl
 .site-nav {
   display: none; flex-direction: column; gap: .35rem;
   position: absolute; left: 0; right: 0; top: 100%;
-  background: rgba(255, 255, 255, 0.98);
+  background: #fff;
   padding: 1rem; border-bottom: 1px solid var(--line);
+}
+.site-nav .menu-sep {
+  display: block;
+  height: 1px;
+  background: var(--line);
+  margin: .5rem .65rem;
+}
+.site-nav .app-link {
+  font-weight: 600;
+  color: var(--ink-soft);
+  font-size: .95rem;
 }
 .site-nav.is-open { display: flex; }
 .site-nav a {
@@ -150,6 +161,8 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .nav-cta:focus-visibl
   .site-nav .nav-cta { min-height: 0; }
   /* Iconen alleen in het hamburgermenu; desktop blijft één regel. */
   .site-nav .icon { display: none; }
+  .site-nav .menu-sep,
+  .site-nav .app-link { display: none !important; }
 }
 
 /* —— Hero (full-bleed) —— */
@@ -598,6 +611,16 @@ h1.page-title {
 }
 .site-footer a.footer-cta { color: var(--orange-text); text-decoration: none; }
 .site-footer a.footer-cta:hover { color: var(--orange-text); }
+.footer-merk .footer-app { margin-bottom: 0; }
+.footer-app a {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  min-height: 44px;
+}
 .footer-contact a { text-decoration: underline; text-underline-offset: 0.15em; }
 .footer-links { display: grid; gap: 1.5rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (min-width: 600px) {
@@ -1497,4 +1520,137 @@ a.badge-pionier:focus-visible { outline: 3px solid var(--forest); outline-offset
   .in-de-media-page .media-redactie { margin-bottom: 2.15rem; }
   .in-de-media-page .media-meedoen { padding: 1.25rem 1.05rem 1.35rem; }
   .in-de-media-page .media-meedoen-acties { gap: .55rem; }
+}
+
+
+/* —— Gratis planten als app (/app + balk) —— */
+.app-page { max-width: 36rem; }
+.app-kaart {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+  margin-top: 1rem;
+}
+.app-kaart h2 {
+  margin: 0 0 .5rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.app-icoon {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin: 1rem 0;
+}
+.app-icoon img {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .15);
+}
+.app-icoon strong { display: block; font-size: 1.05rem; }
+.app-page .stappen {
+  list-style: none;
+  counter-reset: s;
+  margin: .5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: .75rem;
+}
+.app-page .stappen li {
+  counter-increment: s;
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: .75rem;
+  align-items: start;
+  line-height: 1.45;
+}
+.app-page .stappen li::before {
+  content: counter(s);
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--bg-mint);
+  color: var(--forest-deep);
+  font-weight: 700;
+}
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .1rem .45rem;
+  border: 1px solid var(--line);
+  border-radius: .45rem;
+  background: #fff;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--forest-deep);
+}
+.kbd .icon { color: #0a84ff; }
+.w-full { width: 100%; justify-content: center; }
+.app-terug { margin-top: 1.25rem; }
+
+.app-balk {
+  position: fixed;
+  left: .5rem;
+  right: .5rem;
+  bottom: calc(.5rem + env(safe-area-inset-bottom, 0px));
+  z-index: 45;
+  display: grid;
+  grid-template-columns: 40px 1fr auto 44px;
+  align-items: center;
+  gap: .6rem;
+  padding: .5rem .25rem .5rem .6rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 28px rgba(26, 18, 16, .18);
+}
+.app-balk[hidden] { display: none !important; }
+.app-balk img {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+.app-balk p {
+  margin: 0;
+  font-weight: 700;
+  color: var(--forest-deep);
+  line-height: 1.25;
+  font-size: .95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.app-balk .btn-secondary {
+  padding: .55rem .95rem;
+  min-height: 44px;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.app-balk-sluit {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--ink-soft);
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+}
+.app-balk-sluit:hover,
+.app-balk-sluit:focus-visible {
+  color: var(--forest-deep);
+  background: var(--bg-mint);
+}
+.app-balk-sluit:focus-visible {
+  outline: 2px solid var(--forest);
+  outline-offset: 2px;
 }

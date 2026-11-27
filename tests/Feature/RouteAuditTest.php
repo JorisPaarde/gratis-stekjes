@@ -33,6 +33,7 @@ function auditPublicGetRoutes(): array
         '/robots.txt',
         '/sitemap.xml',
         '/manifest.webmanifest',
+        '/app',
         '/hoe-werkt-het',
         '/hulpmiddelen',
         '/over',

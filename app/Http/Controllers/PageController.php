@@ -114,6 +114,15 @@ class PageController extends Controller
         ]);
     }
 
+    public function app(): View
+    {
+        return view('pages.app', [
+            'title' => 'Gratis planten als app',
+            'metaDescription' => 'Zet Gratis planten op je beginscherm. Dan open je het met één tik, net als een app. Gratis, zonder app store en zonder meldingen.',
+            'canonical' => CanonicalUrl::absolute('/app'),
+        ]);
+    }
+
     public function stijlgids(): View
     {
         return view('pages.stijlgids', [
@@ -221,6 +230,7 @@ class PageController extends Controller
             ])],
             ['loc' => route('privacy'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/privacy.blade.php')])],
             ['loc' => route('contact'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/contact.blade.php')])],
+            ['loc' => route('app'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/app.blade.php')])],
             ['loc' => route('partners'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/partners.blade.php')])],
             ['loc' => route('agenda'), 'lastmod' => $this->lastmodFromFiles([resource_path('views/pages/agenda.blade.php')])],
             ['loc' => route('deelplekken'), 'lastmod' => $this->lastmodFromFiles([base_path('data/deelplekken.json')])],
