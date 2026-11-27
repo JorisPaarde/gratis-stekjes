@@ -119,15 +119,8 @@
   <div class="soft-card" style="margin-top:1rem" data-pwa-install-block>
     <h2>Zet Gratis planten op je beginscherm</h2>
     <p>Zet Gratis planten op je beginscherm, dan open je de site met één tik. Geen app store en geen pushmeldingen, alleen een icoon.</p>
-    <ol class="prose" style="margin:.75rem 0 0;padding-left:1.25rem">
-      <li><strong>iPhone (Safari):</strong> tik op Delen → «Zet op beginscherm» → Voeg toe.</li>
-      <li><strong>Android (Chrome):</strong> open het menu (⋮) → «App installeren» of «Toevoegen aan startscherm».</li>
-    </ol>
     <p style="margin-top:1rem">
-      <button type="button" class="btn" data-pwa-install hidden>Installeer Gratis planten</button>
-    </p>
-    <p class="muted" data-pwa-install-hint style="margin-top:.75rem">
-      Zie je geen installatieknop? Gebruik dan de stappen hierboven in Safari of Chrome.
+      <a class="btn" href="{{ route('app') }}"><x-icon name="telefoon" :size="16" /> Gratis planten als app</a>
     </p>
   </div>
 

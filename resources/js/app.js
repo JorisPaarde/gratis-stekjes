@@ -1,5 +1,6 @@
 import './aanbod-detail.js';
 import './bootstrap';
+import { initAppInstallatie } from './app-installatie.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.querySelector('[data-nav-toggle]');
@@ -13,9 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initFeedbackFabTip();
   initPwa();
+  initAppInstallatie();
 });
 
-/** PWA: service worker + optionele installatieknop (beforeinstallprompt). Geen push. */
+/** Service worker registreren. Installatieknop en balk staan in app-installatie.js. */
 function initPwa() {
   const versionMeta = document.querySelector('meta[name="gp-app-version"]');
   const version = (versionMeta && versionMeta.getAttribute('content')) || '0';
@@ -24,49 +26,9 @@ function initPwa() {
     navigator.serviceWorker
       .register('/sw.js?v=' + encodeURIComponent(version))
       .catch(() => {
-        /* stil — offline/PWA is progressive enhancement */
+        /* stil — offline is progressive enhancement */
       });
   }
-
-  let deferredPrompt = null;
-  const installButtons = () => document.querySelectorAll('[data-pwa-install]');
-  const installHints = () => document.querySelectorAll('[data-pwa-install-hint]');
-
-  const setInstallVisible = (visible) => {
-    installButtons().forEach((btn) => {
-      btn.hidden = !visible;
-    });
-    installHints().forEach((el) => {
-      el.hidden = visible;
-    });
-  };
-
-  window.addEventListener('beforeinstallprompt', (event) => {
-    event.preventDefault();
-    deferredPrompt = event;
-    setInstallVisible(true);
-  });
-
-  window.addEventListener('appinstalled', () => {
-    deferredPrompt = null;
-    setInstallVisible(false);
-  });
-
-  document.addEventListener('click', async (event) => {
-    const btn = event.target.closest('[data-pwa-install]');
-    if (!btn || !deferredPrompt) {
-      return;
-    }
-    event.preventDefault();
-    deferredPrompt.prompt();
-    try {
-      await deferredPrompt.userChoice;
-    } catch {
-      /* stil */
-    }
-    deferredPrompt = null;
-    setInstallVisible(false);
-  });
 }
 
 /** Touch/no-hover: tip één keer per sessie ~5s tonen (geen cookies). */

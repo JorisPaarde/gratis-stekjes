@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   @php($siteName = config('site.name'))
   @php($noindex = (bool) config('site.noindex') || app()->environment('staging'))
   @php($accountNoindex = request()->is('account', 'account/*', 'berichtmail/*', 'activatieherinnering/*'))
@@ -100,6 +100,8 @@
           <a href="{{ route('account.inloggen') }}"><x-icon name="gebruiker" :size="16" /> Inloggen</a>
           <a class="nav-cta" href="{{ route('ga.word-lid', ['from' => $meetFrom, 'utm_content' => 'menu']) }}"><x-icon name="plus" :size="16" /> Doe mee</a>
         @endauth
+        <span class="menu-sep" aria-hidden="true"></span>
+        <a class="app-link" href="{{ route('app') }}" @if(request()->routeIs('app')) aria-current="page" @endif><x-icon name="telefoon" :size="16" /> Gratis planten als app</a>
       </nav>
     </div>
   </header>
@@ -118,6 +120,9 @@
       <div class="wrap" style="padding-top:1rem">
         <p class="flash {{ session('status_level') === 'warn' ? 'flash-warn' : 'flash-ok' }}" role="status">{{ session('status') }}</p>
       </div>
+      @if(str_contains((string) session('status'), 'Gelukt, je aanbod staat online!'))
+        <div hidden data-app-balk-na-aanbod></div>
+      @endif
     @endif
     @if(request()->hasSession() && session('error'))
       <div class="wrap" style="padding-top:1rem">
@@ -137,6 +142,7 @@
           @php($meetFromFooter = app(\App\Services\ConversionTracker::class)->normalizePath(request()->getPathInfo()) ?: '/')
           <p><a class="btn footer-cta" href="{{ route('ga.word-lid', ['from' => $meetFromFooter, 'utm_content' => 'footer']) }}"><x-icon name="plus" :size="16" /> Doe mee</a></p>
         @endauth
+        <p class="footer-app"><a href="{{ route('app') }}"><x-icon name="telefoon" :size="16" /> Gratis planten als app</a></p>
         <p class="footer-contact"><a href="mailto:{{ config('site.contact_email') }}">{{ config('site.contact_email') }}</a></p>
       </div>
       <nav class="footer-links" aria-label="Footer">
@@ -183,6 +189,7 @@
     {{-- Niet zichtbaar voor bezoekers; deploy-smoke (scripts/deploy-hook-upload.sh) grept op «Versie x.y.z». --}}
     <!-- Versie {{ config('site.version') }} -->
   </footer>
+  @include('partials.app-balk')
   @auth
     @unless(request()->is('beheer', 'beheer/*', 'feedback', 'account/gesprek', 'account/gesprek/*'))
       @include('partials.feedback-fab')
