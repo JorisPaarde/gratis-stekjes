@@ -174,19 +174,24 @@
 }
 .gp-cluster-bubble--evenement {
   box-shadow:
-    0 0 0 3px #b54a2a,
-    0 2px 8px rgba(22, 56, 32, 0.35);
+    0 0 0 2px #b54a2a,
+    0 2px 6px rgba(22, 56, 32, 0.35);
 }
 .gp-cluster-event-badge {
   position: absolute;
-  top: -2px;
-  right: -2px;
-  width: 10px;
-  height: 10px;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: #b54a2a;
   border: 2px solid #fff;
   box-shadow: 0 1px 2px rgba(28, 46, 34, 0.35);
+}
+@media (max-width: 899px) {
+  .gp-cluster-bubble--sm { font-size: 0.7rem; }
+  .gp-cluster-bubble--md { font-size: 0.8rem; }
+  .gp-cluster-bubble--lg { font-size: 0.9rem; }
 }
 .gp-cluster-count {
   position: relative;

@@ -3,6 +3,16 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.89.3] - 2026-11-27
+
+### Changed
+
+- Clustering op /aanbod en /deelplekken: op mobiel vult Nederland en
+  België de kaart beter (minder lege buurlanden). De bolletjes zijn op
+  smalle schermen kleiner (32–44 px, dunnere evenement-ring) zodat ze
+  elkaar niet meer bedekken, en je ziet nog steeds duidelijk meer
+  regio's dan de oude 6 of 7 bolletjes.
+
 ## [0.89.2] - 2026-11-27
 
 ### Fixed

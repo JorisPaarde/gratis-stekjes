@@ -1,5 +1,5 @@
 import { escapeHtml, registerPlek, plekKey as detailPlekKey } from "./aanbod-detail.js";
-import { deelplekClusterOptions } from "./kaart-cluster.js";
+import { deelplekClusterOptions, NL_BE_BOUNDS, NL_BE_FIT, clusterIconPx, bindIconSeparation } from "./kaart-cluster.js";
 
 /* Deelplekken: eigen kaart + markers (ruit-icoon) + tijdelijke evenementen + clustering. */
 (function () {
@@ -76,11 +76,8 @@ import { deelplekClusterOptions } from "./kaart-cluster.js";
     stekchallenge: "#b54a2a",
   };
 
-  var nlBeBounds = [
-    [49.45, 2.4],
-    [53.55, 7.25],
-  ];
-  var nlBeFitOpts = { padding: [4, 4], maxZoom: 8 };
+  var nlBeBounds = NL_BE_BOUNDS;
+  var nlBeFitOpts = NL_BE_FIT;
   var map = L.map(mapEl, { zoomSnap: 0.25 }).fitBounds(nlBeBounds, nlBeFitOpts);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution:
@@ -135,7 +132,7 @@ import { deelplekClusterOptions } from "./kaart-cluster.js";
       if (m.options && m.options.gpEvenement) evenementCount++;
     });
     var size = count < 10 ? "sm" : count < 40 ? "md" : "lg";
-    var px = size === "sm" ? 36 : size === "md" ? 44 : 54;
+    var px = clusterIconPx(count);
     var label = clusterLabel(count, evenementCount);
     var classes =
       "gp-cluster-bubble gp-cluster-bubble--" +
@@ -175,6 +172,7 @@ import { deelplekClusterOptions } from "./kaart-cluster.js";
   }
 
   var layer = makeDeelplekClusterGroup().addTo(map);
+  bindIconSeparation(map, layer);
 
   function deelplekIcon(type, evenement) {
     var color = evenement ? "#b54a2a" : markerColors[type] || "#1f4d2b";
