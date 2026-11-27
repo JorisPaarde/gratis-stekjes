@@ -239,6 +239,7 @@ final class Deelplekken
                 'bron_label' => BronLabel::for($bronUrl, $naam, false, $urlCounts),
                 'geraadpleegd' => $row->geraadpleegd?->format('Y-m-d') ?? '',
                 'beschrijving' => trim((string) ($row->beschrijving ?? '')),
+                'open_regel' => $row->openRegel(),
                 'kind' => 'deelplek',
                 'soort' => 'deelplek',
             ];

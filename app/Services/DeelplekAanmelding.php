@@ -33,6 +33,7 @@ final class DeelplekAanmelding
         $country = Country::normalize((string) ($fields['country'] ?? Country::NL));
         $url = trim(mb_substr((string) ($fields['url'] ?? ''), 0, 500));
         $beschrijving = trim(mb_substr((string) ($fields['beschrijving'] ?? ''), 0, 1000));
+        $open = Deelplek::openFromAanmelding($fields);
         $email = strtolower(trim(mb_substr((string) ($fields['contact_email'] ?? ''), 0, 254)));
 
         if ($naam === '') {
@@ -104,6 +105,8 @@ final class DeelplekAanmelding
             'source' => Deelplek::SOURCE_AANMELDING,
             'status' => Deelplek::STATUS_PENDING,
             'beschrijving' => $beschrijving,
+            'open_keuze' => $open['open_keuze'],
+            'open_tekst' => $open['open_tekst'],
             'contact_email' => $email,
             'privacy_at' => now(),
             'reviewed_at' => null,

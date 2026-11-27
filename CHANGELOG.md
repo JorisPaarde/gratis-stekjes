@@ -3,6 +3,20 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.89.0] - 2026-11-27
+
+### Added
+
+- Plek aanmelden is makkelijker te vinden: een zin in de intro van
+  /deelplekken, een knop bij een zoekopdracht zonder resultaat (boven
+  de kaart) en een link in het menu op de telefoon, onder Doe mee.
+  Allemaal naar het bestaande formulier. Bestaande aanmeldlinks
+  (homepage, voettekst en de vraag op /deelplekken) gaan daar nu
+  ook heen.
+- Op het formulier kun je optioneel aangeven wanneer de plek open is
+  (altijd, op vaste dagen of in een seizoen). Die regel is na
+  goedkeuring te zien bij Meer info, en in beheer bij de aanmelding.
+
 ## [0.88.1] - 2026-11-27
 
 ### Changed
@@ -13,6 +27,7 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   de kaart zonder beeld. Aanbieden is een tekstlink «Zelf aanbieden»
   naast «Bekijk de tip». Zonder tip en zonder foto blijft alleen de zin
   met een tekstlink over.
+
 
 ## [0.88.0] - 2026-11-27
 

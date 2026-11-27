@@ -523,6 +523,11 @@ html.aanbod-detail-open { overflow: hidden; }
   overflow-wrap: anywhere;
   white-space: pre-wrap;
 }
+.aanbod-detail-open {
+  margin: 0.7rem 0 0;
+  font-weight: 600;
+  color: var(--forest-deep, #163820);
+}
 .aanbod-detail .zoek-lid { margin-top: 0.75rem; }
 
 /* Kaart bij zoeken op een plant: hoe je er meer van maakt, plus aanbieden. */

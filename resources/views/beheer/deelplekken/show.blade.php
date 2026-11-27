@@ -24,6 +24,12 @@
   <dl class="beheer-dl">
     <dt>Plaats</dt><dd>{{ $plek->plaats }}@if($plek->provincie) <span class="muted">({{ $plek->provincie }})</span>@endif</dd>
     <dt>Adres</dt><dd>{{ $plek->adres !== '' ? $plek->adres : 'Geen adres bekend' }}</dd>
+    @if($plek->openRegel())
+      <dt>Open</dt><dd>{{ $plek->openRegel() }}</dd>
+    @endif
+    @if($plek->beschrijving)
+      <dt>Beschrijving</dt><dd>{{ $plek->beschrijving }}</dd>
+    @endif
     <dt>Slug</dt><dd><code>{{ $plek->slug }}</code></dd>
     <dt>Bron</dt>
     <dd>

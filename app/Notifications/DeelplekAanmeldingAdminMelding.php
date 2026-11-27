@@ -27,13 +27,18 @@ class DeelplekAanmeldingAdminMelding extends Notification
         $labels = config('stekjes.deelplek_types', []);
         $typeLabel = is_array($labels) ? ($labels[$plek->type] ?? $plek->type) : $plek->type;
 
-        return (new MailMessage)
+        $mail = (new MailMessage)
             ->subject('Nieuwe deelplek-aanmelding: '.$plek->naam)
             ->greeting('Beheer,')
             ->line('Er is een nieuwe aanmelding binnengekomen (status: in afwachting).')
             ->line('Naam: '.$plek->naam)
             ->line('Type: '.$typeLabel)
-            ->line('Plaats: '.$plek->plaats)
+            ->line('Plaats: '.$plek->plaats);
+        if ($plek->openRegel()) {
+            $mail->line($plek->openRegel());
+        }
+
+        return $mail
             ->line('Contact: '.$plek->contact_email)
             ->action('Open beheer', route('beheer.index'))
             ->salutation($site);

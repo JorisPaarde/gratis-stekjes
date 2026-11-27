@@ -463,6 +463,32 @@ h1.page-title {
   font-weight: 400 !important;
 }
 .checkbox input { margin-top: .25rem; }
+.form fieldset.form-open {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: .35rem;
+}
+.form fieldset.form-open legend {
+  font-weight: 600;
+  padding: 0;
+  margin: 0 0 .15rem;
+}
+.form fieldset.form-open > .hint { margin: 0 0 .15rem; }
+.form fieldset.form-open .checkbox {
+  min-height: 44px;
+  align-items: center;
+}
+.form fieldset.form-open .checkbox input { margin-top: 0; }
+.form-open-extra {
+  display: none;
+  margin: 0 0 .15rem 1.7rem;
+}
+.form-open:has(input[value="dagen"]:checked) .form-open-extra--dagen,
+.form-open:has(input[value="seizoen"]:checked) .form-open-extra--seizoen {
+  display: grid;
+}
 .hp {
   position: absolute !important; left: -10000px !important;
   width: 1px; height: 1px; overflow: hidden;
