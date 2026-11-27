@@ -3,7 +3,7 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
-## [0.89.1] - 2026-11-27
+## [0.89.2] - 2026-11-27
 
 ### Fixed
 
@@ -11,6 +11,15 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   scherm (360 en 390 px).
 - In Meer info staat de openingstijd in de rij Openingstijden. Is er
   niets ingevuld, dan is die rij weg. Geen aparte zin «Open: …» erbij.
+
+## [0.89.1] - 2026-11-27
+
+### Changed
+
+- Clustering op de kaarten van /aanbod en /deelplekken is minder grof: op
+  mobiel zie je bij de beginzoom van Nederland meer losse bolletjes
+  (maxClusterRadius 40 in plaats van 55). Dicht bij elkaar blijven ze
+  samengevoegd, zodat de kaart overzichtelijk en snel blijft.
 
 ## [0.89.0] - 2026-11-27
 
