@@ -1,4 +1,5 @@
 import { escapeHtml, registerPlek, plekKey as detailPlekKey } from "./aanbod-detail.js";
+import { deelplekClusterOptions } from "./kaart-cluster.js";
 
 /* Deelplekken: eigen kaart + markers (ruit-icoon) + tijdelijke evenementen + clustering. */
 (function () {
@@ -165,16 +166,12 @@ import { escapeHtml, registerPlek, plekKey as detailPlekKey } from "./aanbod-det
     if (typeof L.markerClusterGroup !== "function") {
       return L.layerGroup();
     }
-    return L.markerClusterGroup({
-      showCoverageOnHover: false,
-      zoomToBoundsOnClick: true,
-      spiderfyOnMaxZoom: true,
-      maxClusterRadius: 55,
-      chunkedLoading: true,
-      // Anders haalt autoPan de pin uit beeld, verwijdert de cluster-laag hem en sluit de popup (touch).
-      removeOutsideVisibleBounds: false,
-      iconCreateFunction: clusterIcon,
-    });
+    return L.markerClusterGroup(
+      deelplekClusterOptions(clusterIcon, {
+        // Anders haalt autoPan de pin uit beeld, verwijdert de cluster-laag hem en sluit de popup (touch).
+        removeOutsideVisibleBounds: false,
+      })
+    );
   }
 
   var layer = makeDeelplekClusterGroup().addTo(map);
