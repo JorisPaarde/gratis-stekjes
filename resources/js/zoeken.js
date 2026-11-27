@@ -8,7 +8,7 @@ import {
   registerPlek,
   plekKey as detailPlekKey,
 } from "./aanbod-detail.js";
-import { deelplekClusterOptions, NL_BE_BOUNDS, NL_BE_FIT, clusterIconPx, bindIconSeparation } from "./kaart-cluster.js";
+import { deelplekClusterOptions, NL_BE_BOUNDS, NL_BE_FIT, NL_BE_ZOOM_PAD, clusterIconPx, bindIconSeparation } from "./kaart-cluster.js";
 
 /* Zoeken: kaart + lijst + initiatief-/kaartmarkers. */
 (function () {
@@ -34,7 +34,7 @@ import { deelplekClusterOptions, NL_BE_BOUNDS, NL_BE_FIT, clusterIconPx, bindIco
     map.invalidateSize();
     var bounds = L.latLngBounds(nlBeBounds);
     // inside=false: NL+BE past binnen viewport (contain) → geen afsnijden.
-    var zoom = map.getBoundsZoom(bounds, false, L.point(4, 4));
+    var zoom = map.getBoundsZoom(bounds, false, L.point(NL_BE_ZOOM_PAD[0], NL_BE_ZOOM_PAD[1]));
     if (isFinite(zoom)) {
       map.setView(bounds.getCenter(), Math.min(zoom, 8));
     } else {

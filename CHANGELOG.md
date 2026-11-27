@@ -3,6 +3,14 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.89.4] - 2026-11-27
+
+### Fixed
+
+- Op 390 px viel het zuidelijkste bolletje in België (Namen) over de
+  onderrand van de kaart. De beginuitsnede houdt nu meer ruimte onderaan,
+  en bolletjes blijven binnen het kaartvak.
+
 ## [0.89.3] - 2026-11-27
 
 ### Changed

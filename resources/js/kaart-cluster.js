@@ -11,10 +11,11 @@
  * evenement-ring, zodat ze in de clusterstraal passen.
  */
 export var NL_BE_BOUNDS = [
-  [50.28, 2.92],
+  [50.15, 2.92],
   [53.58, 7.16],
 ];
-export var NL_BE_FIT = { padding: [4, 4], maxZoom: 8 };
+export var NL_BE_FIT = { padding: [8, 16], maxZoom: 8 };
+export var NL_BE_ZOOM_PAD = [8, 16];
 
 export function clusterIconPx(count) {
   var narrow = typeof window !== "undefined" && window.innerWidth < 900;
@@ -100,6 +101,26 @@ export function separateMapIcons(map) {
       }
     }
     if (!moved) break;
+  }
+  clampIconsToMap(root, icons);
+}
+
+function clampIconsToMap(root, icons) {
+  var box = root.getBoundingClientRect();
+  var inset = 2;
+  var i;
+  for (i = 0; i < icons.length; i++) {
+    var el = icons[i];
+    var r = el.getBoundingClientRect();
+    if (!r.width) continue;
+    var dx = 0;
+    var dy = 0;
+    if (r.left < box.left + inset) dx += box.left + inset - r.left;
+    if (r.right > box.right - inset) dx -= r.right - (box.right - inset);
+    if (r.top < box.top + inset) dy += box.top + inset - r.top;
+    if (r.bottom > box.bottom - inset) dy -= r.bottom - (box.bottom - inset);
+    if (dx) el.style.marginLeft = parseFloat(el.style.marginLeft || "0") + dx + "px";
+    if (dy) el.style.marginTop = parseFloat(el.style.marginTop || "0") + dy + "px";
   }
 }
 

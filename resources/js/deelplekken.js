@@ -1,5 +1,5 @@
 import { escapeHtml, registerPlek, plekKey as detailPlekKey } from "./aanbod-detail.js";
-import { deelplekClusterOptions, NL_BE_BOUNDS, NL_BE_FIT, clusterIconPx, bindIconSeparation } from "./kaart-cluster.js";
+import { deelplekClusterOptions, NL_BE_BOUNDS, NL_BE_FIT, NL_BE_ZOOM_PAD, clusterIconPx, bindIconSeparation } from "./kaart-cluster.js";
 
 /* Deelplekken: eigen kaart + markers (ruit-icoon) + tijdelijke evenementen + clustering. */
 (function () {
@@ -87,7 +87,7 @@ import { deelplekClusterOptions, NL_BE_BOUNDS, NL_BE_FIT, clusterIconPx, bindIco
   function fitNlBe() {
     map.invalidateSize();
     var bounds = L.latLngBounds(nlBeBounds);
-    var zoom = map.getBoundsZoom(bounds, false, L.point(4, 4));
+    var zoom = map.getBoundsZoom(bounds, false, L.point(NL_BE_ZOOM_PAD[0], NL_BE_ZOOM_PAD[1]));
     if (isFinite(zoom)) {
       map.setView(bounds.getCenter(), Math.min(zoom, 8));
     } else {
