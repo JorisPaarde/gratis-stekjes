@@ -8,6 +8,7 @@ import {
   registerPlek,
   plekKey as detailPlekKey,
 } from "./aanbod-detail.js";
+import { deelplekClusterOptions } from "./kaart-cluster.js";
 
 /* Zoeken: kaart + lijst + initiatief-/kaartmarkers. */
 (function () {
@@ -109,14 +110,7 @@ import {
 
   var deelplekLayer =
     typeof L.markerClusterGroup === "function"
-      ? L.markerClusterGroup({
-          showCoverageOnHover: false,
-          zoomToBoundsOnClick: true,
-          spiderfyOnMaxZoom: true,
-          maxClusterRadius: 55,
-          chunkedLoading: true,
-          iconCreateFunction: deelplekClusterIcon,
-        }).addTo(map)
+      ? L.markerClusterGroup(deelplekClusterOptions(deelplekClusterIcon)).addTo(map)
       : L.layerGroup().addTo(map);
 
   var cfg = window.STEKJES_SITE || {};

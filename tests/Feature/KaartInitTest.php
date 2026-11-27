@@ -114,18 +114,23 @@ test('deelplekken.js en zoeken.js clusteren deelplekmarkers met evenement-accent
     foreach (['resources/js/deelplekken.js', 'resources/js/zoeken.js'] as $rel) {
         $js = (string) file_get_contents(base_path($rel));
         expect($js)->toContain('markerClusterGroup')
+            ->and($js)->toContain('deelplekClusterOptions')
             ->and($js)->toContain('zoomToShowLayer')
-            ->and($js)->toContain('zoomToBoundsOnClick')
-            ->and($js)->toContain('spiderfyOnMaxZoom')
             ->and($js)->toContain('gpEvenement')
             ->and($js)->toContain('gp-cluster-bubble--evenement')
             ->and($js)->toContain('" evenementen"')
-            ->and($js)->toContain('chunkedLoading')
             ->and($js)->toContain('autoPanPaddingTopLeft')
             ->and($js)->toContain('gp-leaflet-popup')
             ->and($js)->toContain('gp-popup-titel')
             ->and($js)->not->toContain('unpkg.com/leaflet');
     }
+
+    $cluster = (string) file_get_contents(base_path('resources/js/kaart-cluster.js'));
+    expect($cluster)->toContain('maxClusterRadius: 40')
+        ->and($cluster)->toContain('zoomToBoundsOnClick')
+        ->and($cluster)->toContain('spiderfyOnMaxZoom')
+        ->and($cluster)->toContain('chunkedLoading')
+        ->and($cluster)->not->toContain('disableClusteringAtZoom');
 
     $css = (string) file_get_contents(base_path('resources/css/deelplekken.css'));
     expect($css)->toContain('.gp-cluster-bubble')

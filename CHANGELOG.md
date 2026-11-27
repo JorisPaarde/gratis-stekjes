@@ -3,6 +3,15 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.89.1] - 2026-11-27
+
+### Changed
+
+- Clustering op de kaarten van /aanbod en /deelplekken is minder grof: op
+  mobiel zie je bij de beginzoom van Nederland meer losse bolletjes
+  (maxClusterRadius 40 in plaats van 55). Dicht bij elkaar blijven ze
+  samengevoegd, zodat de kaart overzichtelijk en snel blijft.
+
 ## [0.89.0] - 2026-11-27
 
 ### Added
