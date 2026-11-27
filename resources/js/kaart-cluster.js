@@ -3,8 +3,8 @@
  *
  * maxClusterRadius 40 (was 55): op de beginzoom van Nederland (mobiel zoom 6)
  * zie je zo meer losse bolletjes, zonder dat ze onleesbaar over elkaar vallen.
- * Geen disableClusteringAtZoom: evenementen op dezelfde coördinaat als een
- * deelplek blijven bij maximale zoom uitspreiden (spiderfyOnMaxZoom).
+ * Clustering blijft tot de maximale zoom aan, zodat evenementen op dezelfde
+ * coördinaat als een deelplek daar uitspreiden (spiderfyOnMaxZoom).
  */
 export function deelplekClusterOptions(iconCreateFunction, extra) {
   var options = {
