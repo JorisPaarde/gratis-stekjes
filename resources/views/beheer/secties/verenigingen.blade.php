@@ -32,7 +32,22 @@
                   @endif
                 </td>
               @endif
-              <td data-label="Naam">@if($v->isApproved())<a href="{{ $v->url() }}">{{ $v->naam }}</a>@else{{ $v->naam }}@endif</td>
+              <td data-label="Naam">
+                @if($v->isApproved())
+                  <a href="{{ $v->url() }}">{{ $v->naam }}</a>
+                @else
+                  {{ $v->naam }}
+                @endif
+                <form method="post" action="{{ route('beheer.verenigingen.naam', $v) }}" class="beheer-naam-form">
+                  @csrf
+                  <label for="vereniging-naam-{{ $v->id }}">Naam wijzigen</label>
+                  <input id="vereniging-naam-{{ $v->id }}" type="text" name="naam" value="{{ (string) old('renamed_id') === (string) $v->id ? old('naam') : $v->naam }}" required maxlength="160" autocomplete="off">
+                  <button type="submit" class="linkish">Opslaan</button>
+                </form>
+                @if($errors->has('naam') && (string) old('renamed_id') === (string) $v->id)
+                  <p class="error" role="alert">{{ $errors->first('naam') }}</p>
+                @endif
+              </td>
               <td data-label="Plaats">{{ $v->plaats }}</td>
               <td data-label="Soort">{{ $v->typeLabel() }}</td>
               <td data-label="Leden">{{ $v->leden_count }}</td>
