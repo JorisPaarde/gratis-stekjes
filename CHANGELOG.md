@@ -3,12 +3,46 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.86.1] - 2026-11-27
+
+### Fixed
+
+- Zolang de balk «Ook als app» zichtbaar is, schuift de onderkant van
+  de pagina eronder vandaan. De laatste footerregel en knoppen onderaan
+  blijven zo bereikbaar, ook boven de iPhone-veilige zone.
+
+## [0.86.0] - 2026-11-27
+
+### Added
+
+- Gratis planten als app: in het mobiele menu (onder Doe mee, na een lijn)
+  en in de footer staat de link «Gratis planten als app». Niet in het
+  menu op groot scherm. De pagina /app toont per situatie één scherm:
+  op Android «Installeer de app», op iPhone in Safari drie stappen, op
+  de computer de uitleg om het op je telefoon te doen, in een andere
+  browser «Open deze pagina in Safari of Chrome», en als de app al
+  open is «Je hebt de app al». Op Mijn account verwijst het
+  beginscherm-blok naar die pagina.
+- Balk «Ook als app» met «Installeren» (op iPhone «Hoe?») en een
+  sluitkruis. De balk komt zo’n anderhalve seconde na «Gelukt, je
+  aanbod staat online!» of bij een tweede bezoek na de eerste keer
+  scrollen, wat het eerst gebeurt. Nooit bij het eerste bezoek, nooit
+  meer vanzelf na wegklikken, en nooit als de app al open is. De
+  Feedback-knop is weg zolang de balk staat.
+
+### Fixed
+
+- In het open menu op een smal scherm schemerde de tekst van de
+  homepage door het paneel. De achtergrond van het menu is nu helemaal
+  dekkend.
+
 ## [0.85.1] - 2026-11-27
 
 ### Added
 
 - In beheer, bij Verenigingen, kun je de naam van een vereniging wijzigen.
   De link naar de pagina blijft hetzelfde.
+
 
 ## [0.85.0] - 2026-11-25
 
