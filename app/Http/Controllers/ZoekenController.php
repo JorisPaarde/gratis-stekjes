@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Services\AanbodSearch;
 use App\Services\NuTeStekken;
 use App\Services\Plantensoorten;
+use App\Services\SoortAfbeeldingen;
 use App\Services\Stektips;
 use App\Services\ZoekIntent;
 use Illuminate\Http\RedirectResponse;
@@ -16,7 +17,7 @@ use Illuminate\View\View;
 
 class ZoekenController extends Controller
 {
-    public function __invoke(Request $request, NuTeStekken $calendar, AanbodSearch $search, Stektips $stektips, Plantensoorten $plantensoorten, ZoekIntent $intent): View|RedirectResponse
+    public function __invoke(Request $request, NuTeStekken $calendar, AanbodSearch $search, Stektips $stektips, Plantensoorten $plantensoorten, SoortAfbeeldingen $afbeeldingen, ZoekIntent $intent): View|RedirectResponse
     {
         // Eén zoekveld (hero): herken plaats, postcode, plant of allebei en stuur door naar
         // de bestaande ?q= en ?plant=. Onbekende invoer krijgt hieronder een nette lege staat.
@@ -82,7 +83,7 @@ class ZoekenController extends Controller
             'plantSortering' => $plantSortering,
             'zoekOnbekend' => $zoekOnbekend,
             'maakMeer' => $plant !== ''
-                ? $this->maakMeerKaart($plant, $stektips, $plantensoorten, count($plantItems) > 0)
+                ? $this->maakMeerKaart($plant, $stektips, $plantensoorten, $afbeeldingen, count($plantItems) > 0)
                 : null,
         ]);
     }
@@ -111,7 +112,8 @@ class ZoekenController extends Controller
     }
 
     /**
-     * Kaart bij een plantzoekopdracht: bestaande stektip-tekst (niets verzonnen) plus knop naar aanbieden.
+     * Kaart bij een plantzoekopdracht: bestaande stektip-tekst (niets verzonnen)
+     * en, als die er is, de bestaande soortfoto. Aanbieden blijft een tekstlink.
      *
      * @return array{
      *     naam: string,
@@ -120,10 +122,11 @@ class ZoekenController extends Controller
      *     kort: ?string,
      *     wanneer: ?string,
      *     stektip_url: ?string,
-     *     aanbied_url: string
+     *     aanbied_url: string,
+     *     afbeelding: ?array<string, mixed>
      * }
      */
-    private function maakMeerKaart(string $plant, Stektips $stektips, Plantensoorten $plantensoorten, bool $heeftAanbod): array
+    private function maakMeerKaart(string $plant, Stektips $stektips, Plantensoorten $plantensoorten, SoortAfbeeldingen $afbeeldingen, bool $heeftAanbod): array
     {
         $soort = $stektips->voorZoekterm($plant, $plantensoorten);
         $catalogus = $plantensoorten->resolveExact($plant);
@@ -136,7 +139,11 @@ class ZoekenController extends Controller
             $kort = trim((string) ($soort['methode'] ?? ''));
         }
         $wanneer = is_array($soort) ? trim((string) ($soort['wanneer'] ?? '')) : '';
-        $slug = is_array($soort) ? trim((string) ($soort['slug'] ?? '')) : '';
+        $stektipSlug = is_array($soort) ? trim((string) ($soort['slug'] ?? '')) : '';
+        $beeldSlug = $stektipSlug;
+        if ($beeldSlug === '' && is_array($catalogus)) {
+            $beeldSlug = trim((string) ($catalogus['slug'] ?? ''));
+        }
 
         return [
             'naam' => $naam,
@@ -144,8 +151,9 @@ class ZoekenController extends Controller
             'heeft_methode' => $kort !== '',
             'kort' => $kort !== '' ? $kort : null,
             'wanneer' => $wanneer !== '' ? $wanneer : null,
-            'stektip_url' => $slug !== '' ? route('stektips.show', $slug) : null,
+            'stektip_url' => $stektipSlug !== '' ? route('stektips.show', $stektipSlug) : null,
             'aanbied_url' => route('aanbieden', ['plant' => $naam]),
+            'afbeelding' => $beeldSlug !== '' ? $afbeeldingen->kaartVoorSlug($beeldSlug, $naam) : null,
         ];
     }
 }

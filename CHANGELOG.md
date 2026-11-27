@@ -3,6 +3,17 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.88.1] - 2026-11-27
+
+### Changed
+
+- De oranje knop «Bied … aan» op de kaart bij /aanbod?plant= is vervangen
+  door de bestaande soortfoto (Wikimedia Commons, zelfde credit als op
+  de stektip), als WebP in kaartformaat. Staat er geen foto, dan blijft
+  de kaart zonder beeld. Aanbieden is een tekstlink «Zelf aanbieden»
+  naast «Bekijk de tip». Zonder tip en zonder foto blijft alleen de zin
+  met een tekstlink over.
+
 ## [0.88.0] - 2026-11-27
 
 ### Added

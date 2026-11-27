@@ -76,6 +76,52 @@ final class SoortAfbeeldingen
         return ! $img['is_fallback'];
     }
 
+    /**
+     * Kaartformaat (WebP) van een geverifieerde soortfoto; null als die er niet is.
+     * Geen SVG-fallback: de aanbodkaart toont dan gewoon geen beeld.
+     *
+     * @return array{
+     *   url: string,
+     *   alt: string,
+     *   auteur: string,
+     *   licentie: string,
+     *   licentie_url: string,
+     *   bron_url: string,
+     *   width: int,
+     *   height: int
+     * }|null
+     */
+    public function kaartVoorSlug(string $slug, string $naam = ''): ?array
+    {
+        if (! $this->hasLicensedImage($slug)) {
+            return null;
+        }
+
+        $img = $this->forSlug($slug, $naam);
+        $row = $this->all()[$slug] ?? [];
+        $kaart = is_array($row['kaart'] ?? null) ? $row['kaart'] : [];
+        $url = $img['url'];
+        $width = 640;
+        $height = 480;
+        $bestand = (string) ($kaart['bestand'] ?? '');
+        if ($bestand !== '' && is_file(public_path($bestand))) {
+            $url = self::urlWithContentHash($bestand, (string) ($kaart['sha256'] ?? ''));
+            $width = max(1, (int) ($kaart['width'] ?? 640));
+            $height = max(1, (int) ($kaart['height'] ?? 480));
+        }
+
+        return [
+            'url' => $url,
+            'alt' => $img['alt'],
+            'auteur' => $img['auteur'],
+            'licentie' => $img['licentie'],
+            'licentie_url' => $img['licentie_url'],
+            'bron_url' => $img['bron_url'],
+            'width' => $width,
+            'height' => $height,
+        ];
+    }
+
     /** @return array<string, array<string, mixed>> */
     public function all(): array
     {
