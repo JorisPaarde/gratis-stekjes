@@ -3,6 +3,15 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.89.2] - 2026-11-27
+
+### Fixed
+
+- De voorbeelden bij «Wanneer is de plek open?» passen nu op een smal
+  scherm (360 en 390 px).
+- In Meer info staat de openingstijd in de rij Openingstijden. Is er
+  niets ingevuld, dan is die rij weg. Geen aparte zin «Open: …» erbij.
+
 ## [0.89.1] - 2026-11-27
 
 ### Changed

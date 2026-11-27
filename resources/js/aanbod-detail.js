@@ -197,7 +197,7 @@ function toonDetailFoto(i) {
 }
 
 function rij(label, inhoudHtml) {
-  if (!inhoudHtml) return "";
+  if (!inhoudHtml || !String(inhoudHtml).trim()) return "";
   return (
     '<div class="aanbod-detail-rij"><dt>' +
     escapeHtml(label) +
@@ -293,8 +293,12 @@ export function openPlekDetail(item, trigger) {
   const evenement = item.kind === "evenement" || item.soort === "evenement" || item.tijdelijk;
   const afstand = formatKm(item.afstand_km);
   const beschrijving = (item.beschrijving || item.omschrijving || "").trim();
-  const openRegel = (item.open_regel || "").trim();
-  const opening = (item.openingstijden || item.openingtijden || item.wanneer || "").trim();
+  const bestaandeOpening = (item.openingstijden || item.openingtijden || item.wanneer || "").trim();
+  let openRegel = (item.open_regel || "").trim();
+  if (/^open:\s*/i.test(openRegel)) {
+    openRegel = openRegel.replace(/^open:\s*/i, "").trim();
+  }
+  const opening = bestaandeOpening || openRegel;
   const rijen =
     rij("Type", label ? escapeHtml(label) + (evenement ? ' <span class="badge badge--tijdelijk">Tijdelijk</span>' : "") : "") +
     rij("Waar", escapeHtml([item.plaats, item.provincie].filter(Boolean).join(" · "))) +
@@ -316,7 +320,6 @@ export function openPlekDetail(item, trigger) {
     '<h2 id="aanbod-detail-titel" class="aanbod-detail-titel" tabindex="-1">' +
     escapeHtml(item.naam || "Deelplek") +
     "</h2>" +
-    (openRegel ? '<p class="aanbod-detail-open">' + escapeHtml(openRegel) + "</p>" : "") +
     (beschrijving ? '<p class="aanbod-detail-beschrijving">' + escapeHtml(beschrijving) + "</p>" : "") +
     (rijen ? '<dl class="aanbod-detail-dl">' + rijen + "</dl>" : "") +
     '<div class="aanbod-detail-acties">' +

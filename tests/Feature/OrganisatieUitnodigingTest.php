@@ -409,6 +409,8 @@ test('aanmeldformulier toont optionele vraag over openingstijden', function () {
         ->assertSee('Op vaste dagen', false)
         ->assertSee('Alleen in een seizoen', false)
         ->assertSee('Kort, bijvoorbeeld wat je er kunt brengen of meenemen.', false)
+        ->assertSee('Bijv. di en za, 10 tot 16 uur', false)
+        ->assertSee('Bijv. april tot oktober', false)
         ->assertSee('Na controle wordt je plek zichtbaar op de kaart en in de lijst, en soms op een stadspagina.', false);
 });
 
