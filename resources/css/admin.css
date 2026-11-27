@@ -50,6 +50,36 @@
   align-items: center;
 }
 
+.beheer-naam-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.55rem;
+  margin-top: 0.4rem;
+  font-size: 0.88rem;
+}
+.beheer-naam-form label {
+  flex: 0 0 100%;
+  font-weight: 700;
+  color: var(--forest-deep, #163820);
+}
+.beheer-naam-form input[type="text"] {
+  flex: 1 1 10rem;
+  min-width: 0;
+  max-width: 22rem;
+  font: inherit;
+  padding: 0.4rem 0.55rem;
+  min-height: 44px;
+  box-sizing: border-box;
+  border: 1px solid var(--line, rgba(26, 18, 16, 0.18));
+  border-radius: 0.4rem;
+  background: #fff;
+}
+.beheer-naam-form .linkish {
+  min-height: 44px;
+  padding: 0.4rem 0.2rem;
+}
+
 .beheer-page .linkish {
   background: none;
   border: 0;

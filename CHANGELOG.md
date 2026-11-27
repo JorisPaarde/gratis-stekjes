@@ -3,6 +3,13 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.85.1] - 2026-11-27
+
+### Added
+
+- In beheer, bij Verenigingen, kun je de naam van een vereniging wijzigen.
+  De link naar de pagina blijft hetzelfde.
+
 ## [0.85.0] - 2026-11-25
 
 ### Changed

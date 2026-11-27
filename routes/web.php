@@ -446,6 +446,10 @@ Route::middleware('admin')->prefix('beheer')->group(function () {
         ->middleware('throttle:30,1')
         ->whereNumber('vereniging')
         ->name('beheer.verenigingen.status');
+    Route::post('/verenigingen/{vereniging}/naam', [BeheerVerenigingenController::class, 'updateNaam'])
+        ->middleware('throttle:30,1')
+        ->whereNumber('vereniging')
+        ->name('beheer.verenigingen.naam');
     Route::post('/gebruikers/{user}/pionier', [BeheerDashboardController::class, 'setPionier'])
         ->middleware('throttle:10,1')
         ->whereNumber('user')

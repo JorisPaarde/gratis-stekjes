@@ -9,10 +9,42 @@ use App\Models\Vereniging;
 use App\Services\VerenigingVerwijdering;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class VerenigingenController extends Controller
 {
+    public function updateNaam(Request $request, Vereniging $vereniging): RedirectResponse
+    {
+        $naam = trim(preg_replace('/\s+/', ' ', (string) $request->input('naam')) ?? '');
+
+        $validator = Validator::make(
+            ['naam' => $naam],
+            ['naam' => ['required', 'string', 'min:3', 'max:160']],
+            [
+                'naam.required' => 'Gebruik een naam van 3 tot 160 tekens.',
+                'naam.min' => 'Gebruik een naam van 3 tot 160 tekens.',
+                'naam.max' => 'Gebruik een naam van 3 tot 160 tekens.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()
+                ->route('beheer.verenigingen')
+                ->withErrors($validator)
+                ->withInput([
+                    'naam' => $naam,
+                    'renamed_id' => $vereniging->id,
+                ]);
+        }
+
+        $vereniging->updateQuietly(['naam' => $naam]);
+
+        return redirect()
+            ->route('beheer.verenigingen')
+            ->with('status', 'Naam opgeslagen');
+    }
+
     public function confirmDestroy(Vereniging $vereniging, VerenigingVerwijdering $verwijdering): View|RedirectResponse
     {
         $reden = VerenigingVerwijdering::weigerReden($vereniging);
