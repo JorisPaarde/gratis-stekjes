@@ -15,11 +15,9 @@ test('zoeken.js en deelplekken.js zetten view direct bij L.map (fitBounds NL+BE)
 
         // Directe beginview bij aanmaken — niet alleen in whenReady.
         expect($js)->toMatch('/L\.map\([^)]+\)\.fitBounds\(/')
-            ->and($js)->toContain('[49.45, 2.4]')
-            ->and($js)->toContain('[53.55, 7.25]')
-            ->and($js)->toContain('maxZoom: 8')
+            ->and($js)->toContain('NL_BE_BOUNDS')
+            ->and($js)->toContain('NL_BE_FIT')
             ->and($js)->toContain('zoomSnap: 0.25')
-            ->and($js)->toContain('padding: [4, 4]')
             ->and($js)->toContain('getBoundsZoom(bounds, false')
             ->and($js)->toContain('invalidateSize')
             ->and($js)->toContain('tile.openstreetmap.org');
@@ -126,10 +124,16 @@ test('deelplekken.js en zoeken.js clusteren deelplekmarkers met evenement-accent
     }
 
     $cluster = (string) file_get_contents(base_path('resources/js/kaart-cluster.js'));
-    expect($cluster)->toContain('maxClusterRadius: 40')
+    expect($cluster)->toContain('maxClusterRadius')
+        ->and($cluster)->toContain('[50.28, 2.92]')
+        ->and($cluster)->toContain('[53.58, 7.16]')
+        ->and($cluster)->toContain('clusterIconPx')
+        ->and($cluster)->toContain('separateMapIcons')
         ->and($cluster)->toContain('zoomToBoundsOnClick')
         ->and($cluster)->toContain('spiderfyOnMaxZoom')
-        ->and($cluster)->toContain('chunkedLoading');
+        ->and($cluster)->toContain('chunkedLoading')
+        ->and($cluster)->toContain('maxZoom: 8')
+        ->and($cluster)->toContain('padding: [4, 4]');
 
     $css = (string) file_get_contents(base_path('resources/css/deelplekken.css'));
     expect($css)->toContain('.gp-cluster-bubble')

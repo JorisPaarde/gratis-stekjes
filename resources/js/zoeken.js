@@ -8,7 +8,7 @@ import {
   registerPlek,
   plekKey as detailPlekKey,
 } from "./aanbod-detail.js";
-import { deelplekClusterOptions } from "./kaart-cluster.js";
+import { deelplekClusterOptions, NL_BE_BOUNDS, NL_BE_FIT, clusterIconPx, bindIconSeparation } from "./kaart-cluster.js";
 
 /* Zoeken: kaart + lijst + initiatief-/kaartmarkers. */
 (function () {
@@ -20,11 +20,8 @@ import { deelplekClusterOptions } from "./kaart-cluster.js";
   if (!form || !list || typeof L === "undefined") return;
 
   // Beginuitsnede direct bij aanmaken (view nodig vóór whenReady/tiles).
-  var nlBeBounds = [
-    [49.45, 2.4],
-    [53.55, 7.25],
-  ];
-  var nlBeFitOpts = { padding: [4, 4], maxZoom: 8 };
+  var nlBeBounds = NL_BE_BOUNDS;
+  var nlBeFitOpts = NL_BE_FIT;
   // zoomSnap 0.25: tussenstappen tussen zoom 5/6/7.
   // fitNlBe: contain (inside=false) zodat heel NL+BE in beeld blijft,
   // strakker dan zoom 5 maar zonder afsnijden van noord/zuid.
@@ -81,7 +78,7 @@ import { deelplekClusterOptions } from "./kaart-cluster.js";
       if (m.options && m.options.gpEvenement) evenementCount++;
     });
     var size = count < 10 ? "sm" : count < 40 ? "md" : "lg";
-    var px = size === "sm" ? 36 : size === "md" ? 44 : 54;
+    var px = clusterIconPx(count);
     var label = deelplekClusterLabel(count, evenementCount);
     var classes =
       "gp-cluster-bubble gp-cluster-bubble--" +
@@ -112,6 +109,7 @@ import { deelplekClusterOptions } from "./kaart-cluster.js";
     typeof L.markerClusterGroup === "function"
       ? L.markerClusterGroup(deelplekClusterOptions(deelplekClusterIcon)).addTo(map)
       : L.layerGroup().addTo(map);
+  bindIconSeparation(map, typeof deelplekLayer.on === "function" ? deelplekLayer : null);
 
   var cfg = window.STEKJES_SITE || {};
   var api = cfg.api_zoeken || "/api/zoeken.php";
