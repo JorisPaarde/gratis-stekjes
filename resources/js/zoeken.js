@@ -851,6 +851,25 @@ import {
     if (map.getZoom() < minZ) fitNlBe();
   }
 
+  // Verberg alleen de server-lijst, niet de kaart «zo maak je er meer van».
+  function verbergServerLijst() {
+    var serverLijst = document.getElementById("plant-aanbod-lijst");
+    if (serverLijst) serverLijst.hidden = true;
+  }
+
+  // Compacte kaart onder de JS-resultaten; lege staat blijft bovenaan, voor de kaart.
+  function plaatsMaakMeerKaart() {
+    var kaart = document.querySelector(".maak-meer");
+    if (!kaart) return;
+    var jsLijst = document.getElementById("zoek-lijst");
+    if (kaart.classList.contains("maak-meer--compact") && jsLijst) {
+      jsLijst.insertAdjacentElement("afterend", kaart);
+      return;
+    }
+    var host = document.getElementById("plant-aanbod");
+    if (host && kaart.parentElement !== host) host.appendChild(kaart);
+  }
+
   // Alleen het 2e veld: zoek alleen op plant; de server sorteert vanaf het eigen adres
   // van het ingelogde lid, of (gast / geen adres) nieuwste eerst.
   // bron: "zelf" (formulier) of "auto" (SEO/plant_filter bij paginalaad).
@@ -858,8 +877,7 @@ import {
     heeftGezocht = true;
     center = null;
     tekenZoekpunt();
-    var serverLijst = document.getElementById("plant-aanbod");
-    if (serverLijst) serverLijst.hidden = true; // JS-lijst toont hetzelfde, met foto's en berichtknop
+    verbergServerLijst(); // JS-lijst toont hetzelfde, met foto's en berichtknop
     status.textContent = "Zoeken…";
     status.dataset.empty = "";
     var bronQ = bron === "auto" ? "&bron=auto" : "&bron=zelf";
@@ -880,9 +898,11 @@ import {
         resetLimits();
         refreshMarkers(false);
         fitOpAanbod();
+        plaatsMaakMeerKaart();
       })
       .catch(function (err) {
         status.textContent = err.message || "Zoeken is niet gelukt";
+        plaatsMaakMeerKaart();
       });
   }
 
@@ -898,8 +918,7 @@ import {
     var type = typeEl ? typeEl.value : "";
     // Plant + plaats: de JS-lijst toont het aanbod met foto's en berichtknop, dus de
     // server-lijst (alle plaatsen) verbergen om dubbele lijsten te voorkomen.
-    var serverLijst = document.getElementById("plant-aanbod");
-    if (serverLijst && plant) serverLijst.hidden = true;
+    if (plant) verbergServerLijst();
     plaatsPlant = plant;
     status.textContent = "Zoeken…";
     status.dataset.empty = "";
@@ -958,9 +977,11 @@ import {
             "Ik kon “" + q + "” niet vinden als plaats. Probeer een postcode of een andere plaatsnaam." +
             (plant ? " Hieronder zie je het aanbod met “" + plant + "” in alle plaatsen." : "");
         }
+        plaatsMaakMeerKaart();
       })
       .catch(function (err) {
         status.textContent = err.message || "Zoeken is niet gelukt";
+        plaatsMaakMeerKaart();
       });
   }
 

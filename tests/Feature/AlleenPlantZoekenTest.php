@@ -168,5 +168,9 @@ test('zoeken.js: alleen 2e veld zoekt op plant via de API, 1e veld blijft zoek(q
         ->and($js)->toContain('plantModus')
         ->and($js)->toContain('zoek(startQ.trim(), "zelf")')
         ->and($js)->toContain('zoekOpPlant(String(cfg.plant_filter).trim(), "auto")')
+        ->and($js)->toContain('function verbergServerLijst(')
+        ->and($js)->toContain('plant-aanbod-lijst')
+        ->and($js)->toContain('function plaatsMaakMeerKaart(')
+        ->and($js)->not->toContain('getElementById("plant-aanbod").hidden')
         ->and($js)->not->toContain('zoek_lat: meta.lat');
 });
