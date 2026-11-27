@@ -18,7 +18,8 @@ function maakMeerAanbieder(): User
 test('zoeken op daglelie zonder aanbod toont tip, knop en link naar de stektip', function () {
     $html = $this->get('/aanbod?plant=Daglelie')->assertOk()->getContent();
 
-    expect($html)->toContain('maak-meer--uitgelicht')
+    expect($html)->toContain('id="plant-aanbod-lijst"')
+        ->and($html)->toContain('maak-meer--uitgelicht')
         ->and($html)->toContain('Deze staat er nog niet op')
         ->and($html)->toContain('Zo maak je er meer, en dan kun je die zelf aanbieden.')
         ->and($html)->toContain('Scheuren in september of voorjaar')

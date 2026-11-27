@@ -3,6 +3,17 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.87.1] - 2026-11-27
+
+### Fixed
+
+- De kaart «zo maak je er meer van» bleef onzichtbaar nadat de pagina
+  was geladen: het zoekscript verborg de hele plantsectie, inclusief
+  die kaart. Nu verdwijnt alleen de server-lijst (de JS-lijst toont
+  die resultaten). Staat de plant er nog niet op, dan blijft de kaart
+  bovenaan zichtbaar; is er wél aanbod, dan komt ze onder de
+  resultaten.
+
 ## [0.87.0] - 2026-11-27
 
 ### Added
