@@ -53,6 +53,7 @@ use App\Http\Controllers\DeployImportMeerbomenUitdeeldagenController;
 use App\Http\Controllers\DeployImportStruikrovenAgendaController;
 use App\Http\Controllers\DeployLedenupdateMailController;
 use App\Http\Controllers\DeployNormaliseerLocatiesController;
+use App\Http\Controllers\DeployOnbevestigdVerwijderenController;
 use App\Http\Controllers\DeployPostcodeHerinneringController;
 use App\Http\Controllers\DeployStatsLezerController;
 use App\Http\Controllers\DeployStedenAanbodController;
@@ -193,6 +194,9 @@ Route::post('/deploy/postcode-herinnering-lijst', DeployPostcodeHerinneringContr
 Route::post('/deploy/activatie-herinnering', DeployActivatieHerinneringController::class)
     ->middleware('throttle:10,1')
     ->name('deploy.activatie-herinnering');
+Route::post('/deploy/onbevestigd-verwijderen', DeployOnbevestigdVerwijderenController::class)
+    ->middleware('throttle:10,1')
+    ->name('deploy.onbevestigd-verwijderen');
 Route::post('/deploy/ledenupdate-mail', DeployLedenupdateMailController::class)
     ->middleware('throttle:30,1')
     ->name('deploy.ledenupdate-mail');

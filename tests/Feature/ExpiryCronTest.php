@@ -56,6 +56,9 @@ test('cron stuurt herinnering en purge geocode-cache', function () {
         ->assertJsonPath('jobs.expiry_reminders.sent', 1)
         ->assertJsonPath('jobs.verification_reminders.enabled', false)
         ->assertJsonPath('jobs.activation_reminders.enabled', false)
+        ->assertJsonPath('jobs.unverified_deletions.enabled', false)
+        ->assertJsonPath('jobs.unverified_deletions.sent', 0)
+        ->assertJsonPath('jobs.unverified_deletions.purged', 0)
         ->assertJsonPath('jobs.purge_geocode_cache.deleted', 1)
         ->assertJsonPath('jobs.purge_mail_log.deleted', 0);
 
