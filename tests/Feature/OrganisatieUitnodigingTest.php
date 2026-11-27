@@ -6,6 +6,8 @@ use App\Models\Deelplek;
 use App\Models\GeocodeCache;
 use App\Notifications\DeelplekAanmeldingAdminMelding;
 use App\Notifications\DeelplekAanmeldingBevestiging;
+use App\Services\DeelplekAanmelding;
+use App\Services\Deelplekken;
 use App\Services\Organisaties;
 use App\Support\Geo;
 use Database\Seeders\DeelplekkenSeeder;
@@ -76,12 +78,14 @@ test('voor-organisaties pagina en links vanuit footer en deelplekken', function 
 
     $this->get(route('deelplekken'))
         ->assertOk()
-        ->assertSee(route('voor-organisaties'), false)
-        ->assertSee('Organisatie of plek aanmelden', false);
+        ->assertSee(route('voor-organisaties.aanmelden'), false)
+        ->assertSee('Plek aanmelden', false)
+        ->assertDontSee('Organisatie of plek aanmelden', false);
 
-    $this->get(route('home'))
-        ->assertOk()
-        ->assertSee(route('voor-organisaties'), false);
+    $this->seed(DeelplekkenSeeder::class);
+    $home = $this->get(route('home'))->assertOk()->getContent();
+    expect($home)->toContain('Meld hem aan')
+        ->and($home)->toContain('href="'.e(route('voor-organisaties.aanmelden')).'"');
 });
 
 test('organisatiepagina met deelplekken rendert 200', function () {
@@ -341,7 +345,7 @@ test('seeder wist geen aanmeldingen', function () {
 
     expect(Deelplek::query()->where('naam', 'Demo Voedselbos Utrecht')->where('status', Deelplek::STATUS_APPROVED)->exists())->toBeTrue();
     expect(Deelplek::query()->where('source', Deelplek::SOURCE_SEED)->count())
-        ->toBe(count(app(\App\Services\Deelplekken::class)->loadJson()['plekken']));
+        ->toBe(count(app(Deelplekken::class)->loadJson()['plekken']));
 });
 
 test('sitemap bevat voor-organisaties en organisatiepaginas', function () {
@@ -395,4 +399,72 @@ test('aanmeldbevestiging is ik-vorm (afzender Gratis planten)', function () {
     expect($lines)->not->toMatch('/\b[Ww]e\b/');
     expect($lines)->not->toMatch('/\b[Ww]ij\b/');
     expect((string) $mail->salutation)->not->toContain('Joris');
+});
+
+test('aanmeldformulier toont optionele vraag over openingstijden', function () {
+    $this->get(route('voor-organisaties.aanmelden'))
+        ->assertOk()
+        ->assertSee('Wanneer is de plek open?', false)
+        ->assertSee('Altijd of meestal open', false)
+        ->assertSee('Op vaste dagen', false)
+        ->assertSee('Alleen in een seizoen', false)
+        ->assertSee('Kort, bijvoorbeeld wat je er kunt brengen of meenemen.', false)
+        ->assertSee('Na controle wordt je plek zichtbaar op de kaart en in de lijst, en soms op een stadspagina.', false);
+});
+
+test('aanmelden slaat openingstijden op en toont die na goedkeuring', function () {
+    Notification::fake();
+    $this->seed(DeelplekkenSeeder::class);
+
+    $this->post(route('voor-organisaties.aanmelden'), aanmeldPayload([
+        'naam' => 'Demo Bieb Openingstijden',
+        'type' => 'plantenbieb',
+        'open_keuze' => 'dagen',
+        'open_tekst_dagen' => 'di en za van 10 tot 16 uur',
+        'open_tekst_seizoen' => 'april tot en met oktober',
+    ]))->assertRedirect(route('voor-organisaties.aanmelden'));
+
+    $plek = Deelplek::query()->where('naam', 'Demo Bieb Openingstijden')->first();
+    expect($plek)->not->toBeNull()
+        ->and($plek->open_keuze)->toBe(Deelplek::OPEN_DAGEN)
+        ->and($plek->open_tekst)->toBe('di en za van 10 tot 16 uur')
+        ->and($plek->openRegel())->toBe('Open: di en za van 10 tot 16 uur');
+
+    app(DeelplekAanmelding::class)->approve($plek->fresh());
+
+    $html = $this->get(route('deelplekken', ['plaats' => 'Utrecht']))->assertOk()->getContent();
+    expect($html)->toContain('Demo Bieb Openingstijden')
+        ->and($html)->toContain('Open: di en za van 10 tot 16 uur');
+
+    $this->getJson(route('api.deelplekken'))
+        ->assertOk()
+        ->assertJsonFragment([
+            'naam' => 'Demo Bieb Openingstijden',
+            'open_regel' => 'Open: di en za van 10 tot 16 uur',
+        ]);
+});
+
+test('aanmelden zonder openingskeuze laat het veld leeg', function () {
+    Notification::fake();
+    $this->seed(DeelplekkenSeeder::class);
+
+    $this->post(route('voor-organisaties.aanmelden'), aanmeldPayload([
+        'naam' => 'Demo Zonder Open',
+    ]))->assertRedirect();
+
+    $plek = Deelplek::query()->where('naam', 'Demo Zonder Open')->first();
+    expect($plek->open_keuze)->toBeNull()
+        ->and($plek->openRegel())->toBeNull();
+});
+
+test('openRegel toont altijd, seizoen en fallback zonder toelichting', function () {
+    $altijd = new Deelplek(['open_keuze' => Deelplek::OPEN_ALTIJD, 'open_tekst' => '']);
+    $seizoen = new Deelplek(['open_keuze' => Deelplek::OPEN_SEIZOEN, 'open_tekst' => 'april tot en met oktober']);
+    $leegSeizoen = new Deelplek(['open_keuze' => Deelplek::OPEN_SEIZOEN, 'open_tekst' => '']);
+    $geen = new Deelplek(['open_keuze' => null, 'open_tekst' => '']);
+
+    expect($altijd->openRegel())->toBe('Open: altijd')
+        ->and($seizoen->openRegel())->toBe('Open: april tot en met oktober')
+        ->and($leegSeizoen->openRegel())->toBe('Open: alleen in een seizoen')
+        ->and($geen->openRegel())->toBeNull();
 });

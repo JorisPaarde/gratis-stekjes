@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\SafeEncrypted;
 use App\Models\Concerns\HasSafeEncryptedAttributes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +22,12 @@ class Deelplek extends Model
     public const STATUS_APPROVED = 'approved';
 
     public const STATUS_REJECTED = 'rejected';
+
+    public const OPEN_ALTIJD = 'altijd';
+
+    public const OPEN_DAGEN = 'dagen';
+
+    public const OPEN_SEIZOEN = 'seizoen';
 
     protected $table = 'deelplekken';
 
@@ -40,6 +47,8 @@ class Deelplek extends Model
         'source',
         'status',
         'beschrijving',
+        'open_keuze',
+        'open_tekst',
         'contact_email',
         'privacy_at',
         'reviewed_at',
@@ -53,7 +62,7 @@ class Deelplek extends Model
             'lng' => 'float',
             'geraadpleegd' => 'date',
             'visible' => 'boolean',
-            'contact_email' => \App\Casts\SafeEncrypted::class,
+            'contact_email' => SafeEncrypted::class,
             'privacy_at' => 'datetime',
             'reviewed_at' => 'datetime',
             'approval_mailed_at' => 'datetime',
@@ -110,5 +119,47 @@ class Deelplek extends Model
         }
 
         return $this->getAttribute('visible') ? 'status--ok' : 'status--uit';
+    }
+
+    /** @return list<string> */
+    public static function openKeuzes(): array
+    {
+        return [self::OPEN_ALTIJD, self::OPEN_DAGEN, self::OPEN_SEIZOEN];
+    }
+
+    /**
+     * Openingskeuze uit het aanmeldformulier.
+     *
+     * @param  array<string, mixed>  $fields
+     * @return array{open_keuze: ?string, open_tekst: string}
+     */
+    public static function openFromAanmelding(array $fields): array
+    {
+        $keuze = trim((string) ($fields['open_keuze'] ?? ''));
+        if (! in_array($keuze, self::openKeuzes(), true)) {
+            return ['open_keuze' => null, 'open_tekst' => ''];
+        }
+        $tekst = '';
+        if ($keuze === self::OPEN_DAGEN) {
+            $tekst = trim(mb_substr((string) ($fields['open_tekst_dagen'] ?? ''), 0, 200));
+        } elseif ($keuze === self::OPEN_SEIZOEN) {
+            $tekst = trim(mb_substr((string) ($fields['open_tekst_seizoen'] ?? ''), 0, 200));
+        }
+
+        return ['open_keuze' => $keuze, 'open_tekst' => $tekst];
+    }
+
+    /** Eén regel voor bezoekers en beheer, of null als er niets is ingevuld. */
+    public function openRegel(): ?string
+    {
+        $keuze = (string) ($this->open_keuze ?? '');
+        $tekst = trim((string) ($this->open_tekst ?? ''));
+
+        return match ($keuze) {
+            self::OPEN_ALTIJD => 'Open: altijd',
+            self::OPEN_DAGEN => $tekst !== '' ? 'Open: '.$tekst : 'Open: op vaste dagen',
+            self::OPEN_SEIZOEN => $tekst !== '' ? 'Open: '.$tekst : 'Open: alleen in een seizoen',
+            default => null,
+        };
     }
 }

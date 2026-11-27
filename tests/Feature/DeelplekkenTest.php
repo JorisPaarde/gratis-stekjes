@@ -64,7 +64,9 @@ test('deelplekkenpagina laadt met intro, bronlink en meldpad', function () {
         ->assertSee('Website', false)
         ->assertSee('Gecontroleerd op', false)
         ->assertSee('Mis je een plek, of klopt er iets niet?', false)
-        ->assertSee(route('voor-organisaties'), false)
+        ->assertSee('Ken je een plek die hier nog niet staat?', false)
+        ->assertSee(route('voor-organisaties.aanmelden'), false)
+        ->assertDontSee('Organisatie of plek aanmelden', false)
         ->assertSee('id="deelplekken-kaart"', false)
         ->assertSee('id="veelgestelde-vragen"', false)
         ->assertSee('"@type":"FAQPage"', false)
@@ -275,7 +277,7 @@ test('deelplekkenlijst toont laad-meer knop bij meer dan 12 plekken', function (
 
 test('deelplekkenlijst zonder filters behoudt seed-volgorde in eerste twaalf', function () {
     $html = $this->get('/deelplekken')->assertOk()->getContent();
-    $eerste = app(\App\Services\Deelplekken::class)->queryVisible([])->take(12)->pluck('naam')->all();
+    $eerste = app(Deelplekken::class)->queryVisible([])->take(12)->pluck('naam')->all();
     foreach ($eerste as $naam) {
         expect($html)->toContain(e($naam));
     }
@@ -407,4 +409,27 @@ test('gecorrigeerde adressen van Joure en Utrecht', function () {
         ->assertOk()
         ->assertSee('3565 MD Utrecht', false)
         ->assertDontSee('3554 GR Utrecht', false);
+});
+
+test('lege zoekopdracht toont aanmelden boven de kaart', function () {
+    $html = $this->get('/deelplekken?plaats=Xxxyzendijk')->assertOk()->getContent();
+
+    expect($html)->toContain('Geen deelplek gevonden in Xxxyzendijk.')
+        ->and($html)->toContain('Ken je er een? Meld de plek aan. Na controle wordt hij zichtbaar op de kaart.')
+        ->and($html)->toContain('Toon alle deelplekken')
+        ->and($html)->toContain('>Plek aanmelden</a>')
+        ->and($html)->not->toContain('Geen deelplekken gevonden met deze keuzes');
+
+    $leeg = strpos($html, 'class="deelplekken-leeg"');
+    $kaart = strpos($html, 'id="deelplekken-kaart"');
+    expect($leeg)->toBeInt()->and($kaart)->toBeInt()
+        ->and($leeg)->toBeLessThan($kaart);
+
+    $formulier = e(route('voor-organisaties.aanmelden'));
+    expect($html)->toContain('href="'.$formulier.'"');
+});
+
+test('mobiel menu heeft Plek aanmelden onder Doe mee, boven de app-link', function () {
+    $html = $this->get('/')->assertOk()->getContent();
+    expect($html)->toMatch('/id="hoofdmenu"[\s\S]*Doe mee[\s\S]*Plek aanmelden[\s\S]*Gratis planten als app/');
 });

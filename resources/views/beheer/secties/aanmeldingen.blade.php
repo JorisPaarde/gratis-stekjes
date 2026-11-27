@@ -19,6 +19,9 @@
             <tr>
               <td>
                 {{ $plek->naam }}
+                @if($plek->openRegel())
+                  <div>{{ $plek->openRegel() }}</div>
+                @endif
                 @if($plek->beschrijving)
                   <div class="muted">{{ \Illuminate\Support\Str::limit($plek->beschrijving, 120) }}</div>
                 @endif

@@ -1,7 +1,7 @@
 {
   "meta": {
     "omschrijving": "Veelgestelde vragen op /deelplekken, op basis van vragen die in Google bij plantenasiel en plantenbieb terugkomen. Algemeen geformuleerd: regels en openingstijden verschillen per plek.",
-    "bijgewerkt": "2026-11-01"
+    "bijgewerkt": "2026-11-27"
   },
   "vragen": [
     {
@@ -42,7 +42,7 @@
       "antwoord": "Meld het via het formulier voor organisaties of stuur een mail. Ik controleer de gegevens en zet de plek erbij of pas hem aan.",
       "link": {
         "label": "Plek aanmelden",
-        "pad": "/voor-organisaties"
+        "pad": "/voor-organisaties/aanmelden"
       }
     }
   ]
