@@ -125,7 +125,7 @@ test('deelplekken.js en zoeken.js clusteren deelplekmarkers met evenement-accent
 
     $cluster = (string) file_get_contents(base_path('resources/js/kaart-cluster.js'));
     expect($cluster)->toContain('maxClusterRadius')
-        ->and($cluster)->toContain('[50.28, 2.92]')
+        ->and($cluster)->toContain('[50.15, 2.92]')
         ->and($cluster)->toContain('[53.58, 7.16]')
         ->and($cluster)->toContain('clusterIconPx')
         ->and($cluster)->toContain('separateMapIcons')
@@ -133,7 +133,7 @@ test('deelplekken.js en zoeken.js clusteren deelplekmarkers met evenement-accent
         ->and($cluster)->toContain('spiderfyOnMaxZoom')
         ->and($cluster)->toContain('chunkedLoading')
         ->and($cluster)->toContain('maxZoom: 8')
-        ->and($cluster)->toContain('padding: [4, 4]');
+        ->and($cluster)->toContain('padding: [8, 16]');
 
     $css = (string) file_get_contents(base_path('resources/css/deelplekken.css'));
     expect($css)->toContain('.gp-cluster-bubble')
