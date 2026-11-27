@@ -67,7 +67,7 @@
       <p class="form-open-extra form-open-extra--dagen">
         <label>
           <span class="visually-hidden">Op welke dagen of tijden is de plek open?</span>
-          <input name="open_tekst_dagen" maxlength="200" value="{{ old('open_keuze') === 'dagen' ? old('open_tekst_dagen') : '' }}" placeholder="Bijvoorbeeld: di en za van 10 tot 16 uur">
+          <input name="open_tekst_dagen" maxlength="200" value="{{ old('open_keuze') === 'dagen' ? old('open_tekst_dagen') : '' }}" placeholder="Bijv. di en za, 10 tot 16 uur">
         </label>
       </p>
       <label class="checkbox">
@@ -77,7 +77,7 @@
       <p class="form-open-extra form-open-extra--seizoen">
         <label>
           <span class="visually-hidden">In welk seizoen is de plek open?</span>
-          <input name="open_tekst_seizoen" maxlength="200" value="{{ old('open_keuze') === 'seizoen' ? old('open_tekst_seizoen') : '' }}" placeholder="Bijvoorbeeld: april tot en met oktober">
+          <input name="open_tekst_seizoen" maxlength="200" value="{{ old('open_keuze') === 'seizoen' ? old('open_tekst_seizoen') : '' }}" placeholder="Bijv. april tot oktober">
         </label>
       </p>
     </fieldset>
