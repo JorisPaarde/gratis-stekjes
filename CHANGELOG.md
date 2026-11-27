@@ -3,6 +3,15 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.89.5] - 2026-11-27
+
+### Fixed
+
+- De extra marge onderaan de kaart van 0.89.4 zoomde op 390 px te ver
+  uit, waardoor je weer grote bolletjes zag. De strakkere zoom van
+  0.89.3 is terug, met alleen de beveiliging dat bolletjes binnen het
+  kaartvak blijven. Namen blijft zichtbaar, zonder overlap.
+
 ## [0.89.4] - 2026-11-27
 
 ### Fixed
