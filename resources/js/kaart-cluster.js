@@ -11,11 +11,11 @@
  * evenement-ring, zodat ze in de clusterstraal passen.
  */
 export var NL_BE_BOUNDS = [
-  [50.15, 2.92],
+  [50.28, 2.92],
   [53.58, 7.16],
 ];
-export var NL_BE_FIT = { padding: [8, 16], maxZoom: 8 };
-export var NL_BE_ZOOM_PAD = [8, 16];
+export var NL_BE_FIT = { padding: [4, 4], maxZoom: 8 };
+export var NL_BE_ZOOM_PAD = [4, 4];
 
 export function clusterIconPx(count) {
   var narrow = typeof window !== "undefined" && window.innerWidth < 900;
