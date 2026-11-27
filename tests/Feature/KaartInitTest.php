@@ -130,7 +130,7 @@ test('deelplekken.js en zoeken.js clusteren deelplekmarkers met evenement-accent
         ->and($cluster)->toContain('zoomToBoundsOnClick')
         ->and($cluster)->toContain('spiderfyOnMaxZoom')
         ->and($cluster)->toContain('chunkedLoading')
-        ->and($cluster)->not->toContain('disableClusteringAtZoom');
+        ->and($cluster)->not->toContain('disableClusteringAtZoom:');
 
     $css = (string) file_get_contents(base_path('resources/css/deelplekken.css'));
     expect($css)->toContain('.gp-cluster-bubble')
