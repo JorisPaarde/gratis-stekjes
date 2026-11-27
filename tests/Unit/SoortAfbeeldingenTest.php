@@ -49,6 +49,10 @@ test('elke stektip-soort heeft geverifieerde metadata of fallback', function () 
             ->and($row['alt'] ?? '')->not->toBeEmpty();
         $path = $root.'/public/assets/images/soorten/'.$slug.'.jpg';
         expect(is_file($path))->toBeTrue("bestand ontbreekt voor {$slug}");
+        $kaart = $row['kaart']['bestand'] ?? '';
+        expect($kaart)->toStartWith('assets/images/soorten/kaart/')
+            ->and($kaart)->toEndWith('.webp')
+            ->and(is_file($root.'/public/'.$kaart))->toBeTrue("kaart-webp ontbreekt voor {$slug}");
     }
 });
 
