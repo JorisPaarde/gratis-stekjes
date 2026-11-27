@@ -58,23 +58,29 @@ class DeelplekkenSeeder extends Seeder
                 $visible = false;
             }
 
+            $attrs = [
+                'naam' => trim(mb_substr((string) $row['naam'], 0, 160)),
+                'type' => (string) $row['type'],
+                'plaats' => trim(mb_substr((string) $row['plaats'], 0, 120)),
+                'provincie' => trim(mb_substr((string) $row['provincie'], 0, 64)),
+                'country' => $country,
+                'adres' => trim(mb_substr((string) ($row['adres'] ?? ''), 0, 255)),
+                'lat' => (float) $row['lat'],
+                'lng' => (float) $row['lng'],
+                'bron_url' => trim(mb_substr((string) $row['bron_url'], 0, 500)),
+                'geraadpleegd' => (string) $row['geraadpleegd'],
+                'visible' => $visible,
+                'source' => Deelplek::SOURCE_SEED,
+                'status' => Deelplek::STATUS_APPROVED,
+            ];
+            // Optioneel: korte tekst (bijv. openingstijden) meenemen als die in de JSON staat.
+            if (array_key_exists('beschrijving', $row)) {
+                $attrs['beschrijving'] = trim(mb_substr((string) $row['beschrijving'], 0, 1000));
+            }
+
             Deelplek::query()->updateOrCreate(
                 ['slug' => $slug],
-                [
-                    'naam' => trim(mb_substr((string) $row['naam'], 0, 160)),
-                    'type' => (string) $row['type'],
-                    'plaats' => trim(mb_substr((string) $row['plaats'], 0, 120)),
-                    'provincie' => trim(mb_substr((string) $row['provincie'], 0, 64)),
-                    'country' => $country,
-                    'adres' => trim(mb_substr((string) ($row['adres'] ?? ''), 0, 255)),
-                    'lat' => (float) $row['lat'],
-                    'lng' => (float) $row['lng'],
-                    'bron_url' => trim(mb_substr((string) $row['bron_url'], 0, 500)),
-                    'geraadpleegd' => (string) $row['geraadpleegd'],
-                    'visible' => $visible,
-                    'source' => Deelplek::SOURCE_SEED,
-                    'status' => Deelplek::STATUS_APPROVED,
-                ]
+                $attrs
             );
         }
 

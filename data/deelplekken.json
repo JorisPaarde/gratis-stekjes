@@ -2242,6 +2242,19 @@
       "geraadpleegd": "2026-11-16"
     },
     {
+      "id": "hoogeloon-plantenbieb",
+      "naam": "Plantenbieb Hoogeloon",
+      "type": "plantenbieb",
+      "plaats": "Hoogeloon",
+      "provincie": "Noord-Brabant",
+      "adres": "Heuvelseweg 10, 5528 AE Hoogeloon",
+      "lat": 51.394573,
+      "lng": 5.269673,
+      "bron_url": "https://www.buitenparadijsje.com/",
+      "geraadpleegd": "2026-11-27",
+      "beschrijving": "Open van 1 april tot 1 oktober, op woensdag en zaterdag van 10 tot 17 uur, tegelijk met bezoektuin Buitenparadijsje (van Lenneke Van de Sande)."
+    },
+    {
       "id": "kekerdom-zadenbibliotheek",
       "naam": "Zadenbibliotheek Kekerdom",
       "type": "zaadbibliotheek",

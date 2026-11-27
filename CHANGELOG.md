@@ -3,6 +3,15 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.86.2] - 2026-11-27
+
+### Added
+
+- Plantenbieb Hoogeloon op de deelplekkenkaart (Heuvelseweg 10). Open van
+  1 april tot 1 oktober, op woensdag en zaterdag van 10 tot 17 uur,
+  tegelijk met bezoektuin Buitenparadijsje (van Lenneke Van de Sande).
+  Website: https://www.buitenparadijsje.com/
+
 ## [0.86.1] - 2026-11-27
 
 ### Fixed
