@@ -1654,3 +1654,6 @@ a.badge-pionier:focus-visible { outline: 3px solid var(--forest); outline-offset
   outline: 2px solid var(--forest);
   outline-offset: 2px;
 }
+body.app-balk-zichtbaar {
+  padding-bottom: var(--app-balk-ruimte, 0px);
+}

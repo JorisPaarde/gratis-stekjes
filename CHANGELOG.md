@@ -3,6 +3,14 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.86.1] - 2026-11-27
+
+### Fixed
+
+- Zolang de balk «Ook als app» zichtbaar is, schuift de onderkant van
+  de pagina eronder vandaan. De laatste footerregel en knoppen onderaan
+  blijven zo bereikbaar, ook boven de iPhone-veilige zone.
+
 ## [0.86.0] - 2026-11-27
 
 ### Added

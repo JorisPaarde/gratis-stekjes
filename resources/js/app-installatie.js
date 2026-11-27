@@ -197,6 +197,19 @@ function verbergFeedbackFab(verberg) {
   wrap.hidden = verberg;
 }
 
+function zetBalkRuimte() {
+  const balk = document.querySelector('[data-app-balk]');
+  if (!balk || balk.hidden) {
+    document.body.classList.remove('app-balk-zichtbaar');
+    document.documentElement.style.removeProperty('--app-balk-ruimte');
+    return;
+  }
+  const top = balk.getBoundingClientRect().top;
+  const ruimte = Math.max(0, Math.ceil(window.innerHeight - top));
+  document.documentElement.style.setProperty('--app-balk-ruimte', `${ruimte}px`);
+  document.body.classList.add('app-balk-zichtbaar');
+}
+
 function toonBalk() {
   const balk = document.querySelector('[data-app-balk]');
   if (!balk || balkGetoond || isStandalone() || balkIsGesloten() || !balkMagOpDezePagina()) {
@@ -209,6 +222,7 @@ function toonBalk() {
   }
   balk.hidden = false;
   verbergFeedbackFab(true);
+  window.requestAnimationFrame(zetBalkRuimte);
 }
 
 function sluitBalk() {
@@ -222,6 +236,7 @@ function sluitBalk() {
     /* opslag niet beschikbaar — balk blijft deze sessie weg */
   }
   verbergFeedbackFab(false);
+  zetBalkRuimte();
 }
 
 function telBezoek() {
@@ -269,6 +284,8 @@ function initAppBalk() {
     };
     window.addEventListener('scroll', bijEersteScroll, { passive: true });
   }
+
+  window.addEventListener('resize', zetBalkRuimte);
 }
 
 function initInstallatieKnop() {

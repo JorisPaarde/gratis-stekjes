@@ -198,3 +198,14 @@ test('sitemap bevat /app', function () {
 
     expect($xml)->toContain('<loc>'.e(url('/app')).'</loc>');
 });
+
+test('zolang de balk staat heeft de pagina ruimte onderaan', function () {
+    $css = (string) file_get_contents(resource_path('css/site.css'));
+    $js = (string) file_get_contents(resource_path('js/app-installatie.js'));
+
+    expect($css)->toContain('body.app-balk-zichtbaar')
+        ->and($css)->toContain('padding-bottom: var(--app-balk-ruimte, 0px);')
+        ->and($js)->toContain('function zetBalkRuimte')
+        ->and($js)->toContain('--app-balk-ruimte')
+        ->and($js)->toContain('app-balk-zichtbaar');
+});
