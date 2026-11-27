@@ -16,12 +16,15 @@ use App\Notifications\DeelplekGoedgekeurd;
 use App\Notifications\EmailChangeNoticeDutch;
 use App\Notifications\PartnerAanvraag;
 use App\Notifications\ResetPasswordDutch;
+use App\Notifications\UnverifiedDeletionNoticeDutch;
 use App\Notifications\VerenigingAangemeld;
 use App\Notifications\VerenigingGoedgekeurd;
 use App\Notifications\VerifyEmailDutch;
 use App\Notifications\VerifyEmailReminderDutch;
 use App\Notifications\VerifyPendingEmailDutch;
+use Illuminate\Mail\Markdown;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\URL;
 
 /**
  * Rendert alle HTML-mails van de site (zonder te versturen), voor layout-tests
@@ -56,6 +59,7 @@ final class MailRenderer
         $notifications = [
             'bevestigen' => new VerifyEmailDutch,
             'bevestigen-herinnering' => new VerifyEmailReminderDutch,
+            'onbevestigd-verwijderen' => new UnverifiedDeletionNoticeDutch(now()->addDays(7)),
             'wachtwoord-reset' => new ResetPasswordDutch(str_repeat('f9e8d7c6', 8)),
             'nieuw-emailadres-bevestigen' => new VerifyPendingEmailDutch('nieuw@example.com', (int) $user->getKey()),
             'email-wijziging-melding' => new EmailChangeNoticeDutch('nieuw@example.com'),
@@ -74,14 +78,14 @@ final class MailRenderer
             $message = $notification->toMail($user);
             $out[$key] = [
                 'html' => (string) $message->render(),
-                'text' => (string) app(\Illuminate\Mail\Markdown::class)->renderText($message->markdown, $message->data()),
+                'text' => (string) app(Markdown::class)->renderText($message->markdown, $message->data()),
             ];
         }
 
         $herinnering = new ActivatieHerinneringMail(
             'Sam',
             url('/aanbieden'),
-            \Illuminate\Support\Facades\URL::signedRoute('activatieherinnering.uit', ['user' => $user->getKey()])
+            URL::signedRoute('activatieherinnering.uit', ['user' => $user->getKey()])
         );
         $out['activatie-herinnering'] = ['html' => $herinnering->render(), 'text' => ''];
 

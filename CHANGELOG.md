@@ -3,6 +3,18 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.88.0] - 2026-11-27
+
+### Added
+
+- Voorstel voor onbevestigde accounts: na 20 dagen en 3 herinneringen een
+  mail dat het account wordt verwijderd, en na 7 dagen opruimen (inclusief
+  gekoppelde data, via de bestaande AVG-wisfunctie). Standaard uit, ook in
+  de cron. Artisan `gp:onbevestigd-verwijderen` is dry-run (alleen aantallen,
+  geen e-mailadressen of namen); `--uitvoeren` verstuurt en verwijdert.
+  Staging-telling via `POST /deploy/onbevestigd-verwijderen`. Nog niet naar
+  productie en geen cron op productie.
+
 ## [0.87.1] - 2026-11-27
 
 ### Fixed

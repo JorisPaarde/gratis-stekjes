@@ -8,10 +8,12 @@ use App\Services\AanbodExpiryService;
 use App\Services\ActivatieHerinneringService;
 use App\Services\BrevoNewsletterService;
 use App\Services\ConversionTracker;
+use App\Services\UnverifiedAccountDeletionService;
 use App\Services\VerificationReminderService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Throwable;
@@ -24,6 +26,7 @@ class CronController extends Controller
         ConversionTracker $conversions,
         VerificationReminderService $verificationReminder,
         ActivatieHerinneringService $activatieHerinnering,
+        UnverifiedAccountDeletionService $unverifiedDeletion,
         BrevoNewsletterService $newsletter,
     ): Response|JsonResponse {
         $expected = (string) config('stekjes.cron_token', '');
@@ -45,6 +48,7 @@ class CronController extends Controller
                 'expiry_reminders' => $expiry->sendExpiryReminders(),
                 'verification_reminders' => $verificationReminder->run(),
                 'activation_reminders' => $activatieHerinnering->run(),
+                'unverified_deletions' => $unverifiedDeletion->run(false),
                 'purge_geocode_cache' => ['deleted' => $expiry->purgeGeocodeCache()],
                 'purge_mail_log' => ['deleted' => $expiry->purgeMailLog()],
                 'conversion_aggregate' => $conversions->aggregateAndPurge(),
@@ -75,7 +79,7 @@ class CronController extends Controller
         $key = 'cron:newsletter_sync_at';
         $last = Cache::get($key);
         if (is_string($last) || $last instanceof \DateTimeInterface) {
-            $lastAt = \Illuminate\Support\Carbon::parse($last);
+            $lastAt = Carbon::parse($last);
             if ($lastAt->gt(now()->subHours(20))) {
                 return ['skipped' => true, 'reason' => 'recent'];
             }
