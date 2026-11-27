@@ -3,6 +3,18 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.87.0] - 2026-11-27
+
+### Added
+
+- Bij zoeken op een plant op /aanbod zie je een kaart met hoe je er meer
+  van maakt, uit de bestaande stektips (methode en beste tijd). Staat die
+  plant er nog niet op, dan nodigt de kaart je uit om die zelf aan te
+  bieden, met een knop naar het aanbiedformulier (plant al ingevuld).
+  Is er wél aanbod, dan staat de kaart kleiner onder de resultaten. Van
+  planten zonder stektip zie je geen tip, wel de uitnodiging om aan te
+  bieden. Link naar de bestaande stektip-pagina als die er is.
+
 ## [0.86.2] - 2026-11-27
 
 ### Added

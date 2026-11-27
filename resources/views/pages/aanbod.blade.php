@@ -81,9 +81,10 @@
         <h2 id="plant-aanbod-titel" class="stektips-related-title">Aanbod met “{{ $plant }}” (alle plaatsen)</h2>
       @endif
       @if(count($plantItems) === 0)
-        <p class="empty-state" role="status">Er is nog geen aanbod met “{{ $plant }}”. <a href="{{ route('account.registreren') }}">Doe mee</a> en deel zelf iets, of zoek hierboven op plaats.</p>
+        @include('partials.maak-meer-kaart', ['maakMeer' => $maakMeer])
       @else
         @include('partials.aanbod-lijst', ['items' => $plantItems])
+        @include('partials.maak-meer-kaart', ['maakMeer' => $maakMeer])
       @endif
     </section>
   @endif

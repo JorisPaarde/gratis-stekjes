@@ -51,7 +51,7 @@ class AanbodController extends Controller
     }
 
     /** Losse pagina met alleen het formulier: de snelste weg naar «iets aanbieden». */
-    public function create(Request $request, InvasieveSoorten $invasieve): View|RedirectResponse
+    public function create(Request $request, InvasieveSoorten $invasieve, Plantensoorten $plantensoorten): View|RedirectResponse
     {
         $user = $request->user();
         if ($user->isStatsViewer()) {
@@ -59,10 +59,10 @@ class AanbodController extends Controller
                 ->with('status', 'Dit account kan geen aanbod plaatsen.');
         }
         if (! $user->heeftGekozenNaam()) {
-            return $this->eerstNaam();
+            return $this->eerstNaam($request->fullUrl());
         }
         if (! $user->hasLocation()) {
-            return $this->eerstLocatie();
+            return $this->eerstLocatie($request->fullUrl());
         }
 
         return view('account.aanbieden', [
@@ -73,25 +73,50 @@ class AanbodController extends Controller
             'aantalAanbod' => $user->aanbod()->count(),
             'terug' => 'aanbieden',
             ...$this->formData($invasieve),
+            ...$this->voorafIngevuldePlant($request, $plantensoorten),
         ]);
     }
 
-    private function eerstNaam(): RedirectResponse
+    private function eerstNaam(?string $intended = null): RedirectResponse
     {
-        session()->put('url.intended', route('aanbieden'));
+        session()->put('url.intended', $intended ?: route('aanbieden'));
 
         return redirect()
             ->route('account.profiel')
             ->with('status', 'Kies eerst een voornaam of bijnaam. Die zien anderen bij je aanbod.');
     }
 
-    private function eerstLocatie(): RedirectResponse
+    private function eerstLocatie(?string $intended = null): RedirectResponse
     {
-        session()->put('url.intended', route('aanbieden'));
+        session()->put('url.intended', $intended ?: route('aanbieden'));
 
         return redirect()
             ->route('account.profiel')
             ->with('status', 'Vul eerst je postcode of plaats in om aanbod te plaatsen.');
+    }
+
+    /**
+     * @return array{voorafTekst: ?string, voorafPlantensoortId: ?int}
+     */
+    private function voorafIngevuldePlant(Request $request, Plantensoorten $plantensoorten): array
+    {
+        $plant = trim((string) $request->query('plant', ''));
+        if (mb_strlen($plant) > 80) {
+            $plant = mb_substr($plant, 0, 80);
+        }
+        if ($plant === '') {
+            return ['voorafTekst' => null, 'voorafPlantensoortId' => null];
+        }
+
+        $catalogus = $plantensoorten->resolveExact($plant);
+        if (is_array($catalogus) && ! empty($catalogus['naam'])) {
+            return [
+                'voorafTekst' => (string) $catalogus['naam'],
+                'voorafPlantensoortId' => (int) $catalogus['id'],
+            ];
+        }
+
+        return ['voorafTekst' => $plant, 'voorafPlantensoortId' => null];
     }
 
     /** @return array<string, mixed> */
