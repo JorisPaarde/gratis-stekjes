@@ -28,6 +28,8 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
   "15–19 u" en "Di–vr" blijven op één regel.
 - In het kaartpopup is de sluitknop (×) nu 44×44 groot en valt hij niet meer
   over de titel van de deelplek (bijvoorbeeld "Zadenbib Bibliotheek Laarne").
+  Op een smal scherm is het popup nooit breder dan de kaart; een lange titel
+  loopt dan door op een tweede regel.
 
 ## [0.90.3] - 2026-11-28
 
