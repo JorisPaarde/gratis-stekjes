@@ -3,6 +3,15 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.90.2] - 2026-11-28
+
+### Changed
+
+- De schakelaar `UNVERIFIED_DELETION_ENABLED` kan nu via een GitHub
+  variable in de server-.env worden gezet, net als de
+  activatieherinnering. Staat de variable niet, dan blijft de
+  schakelaar uit.
+
 ## [0.90.1] - 2026-11-28
 
 ### Fixed
