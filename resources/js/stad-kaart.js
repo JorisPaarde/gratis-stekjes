@@ -12,18 +12,46 @@ import { escapeHtml, popupAanbodHtml, registerPlek, plekKey as detailPlekKey } f
   // Zelfde popupgedrag als op /deelplekken: ruimte t.o.v. de zoomknoppen (linksboven) en de rand,
   // en niet hoger dan de (kleine) stadskaart.
   var popupOpts = {
-    className: "gp-leaflet-popup",
+    className: "gp-leaflet-popup gp-leaflet-popup--stad",
     autoPan: true,
     autoPanPaddingTopLeft: L.point(50, 56),
     autoPanPaddingBottomRight: L.point(24, 24),
     offset: L.point(0, -6),
     maxWidth: 320,
-    maxHeight: 150,
+    // Geen maxHeight: alleen de aanbodlijst scrolt (zie .gp-leaflet-popup--stad in aanbod.css),
+    // titel en sluitknop blijven staan.
   };
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 18,
     attribution: "&copy; OpenStreetMap",
   }).addTo(map);
+
+  // Lange aanbodlijst: alleen de lijst scrolt; een zachte fade onderaan zolang er nog meer is.
+  // De popupinhoud wordt vooraf als element gebouwd, zodat Leaflet de juiste hoogte meet (autoPan).
+  function aanbodPopupEl(group) {
+    var box = document.createElement("div");
+    box.innerHTML = popupAanbodHtml(group);
+    var ul = box.querySelector(".zoek-regels--popup");
+    if (!ul) return box;
+    var wrap = document.createElement("div");
+    wrap.className = "gp-popup-lijst";
+    ul.parentNode.insertBefore(wrap, ul);
+    wrap.appendChild(ul);
+    ul.setAttribute("tabindex", "0");
+    ul.setAttribute("role", "group");
+    ul.setAttribute("aria-label", "Aanbod, scroll voor meer");
+    function update() {
+      wrap.classList.toggle("heeft-meer", ul.scrollHeight - ul.scrollTop - ul.clientHeight > 2);
+    }
+    ul.addEventListener("scroll", update, { passive: true });
+    if (typeof ResizeObserver !== "undefined") new ResizeObserver(update).observe(ul);
+    box._gpUpdate = update;
+    return box;
+  }
+  map.on("popupopen", function (ev) {
+    var c = ev.popup.getContent && ev.popup.getContent();
+    if (c && c._gpUpdate) window.requestAnimationFrame(c._gpUpdate);
+  });
 
   var radiusM = Math.max(1000, (Number(data.straal_km) || 12) * 1000);
   L.circle([data.lat, data.lng], {
@@ -71,7 +99,7 @@ import { escapeHtml, popupAanbodHtml, registerPlek, plekKey as detailPlekKey } f
     var group = aanbodGroepen[key];
     markers.push(
       L.marker([group.lat, group.lon], { icon: aanbodIcon })
-        .bindPopup(popupAanbodHtml(group), popupOpts)
+        .bindPopup(aanbodPopupEl(group), popupOpts)
         .addTo(map)
     );
   });
