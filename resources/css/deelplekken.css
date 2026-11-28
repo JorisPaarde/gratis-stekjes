@@ -239,6 +239,10 @@
 .leaflet-container .gp-leaflet-popup a.leaflet-popup-close-button:focus-visible {
   color: var(--forest-deep, #163820);
 }
+/* Popup nooit breder dan de kaart op smalle schermen; een lange titel loopt dan door op de volgende regel. */
+.leaflet-container .gp-leaflet-popup .leaflet-popup-content {
+  max-width: min(20rem, calc(100vw - 9rem));
+}
 .gp-popup > .gp-popup-titel:first-child {
   padding-right: 2rem;
 }
