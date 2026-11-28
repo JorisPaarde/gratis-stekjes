@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 test('deploy-prod-hook heeft import_enabled input en geeft IMPORT_ENABLED door', function () {
-    $yml = file_get_contents(dirname(__DIR__, 2).'/.github/workflows/deploy-prod-hook.yml');
+    $yml = file_get_contents(dirname(__DIR__, 2).'/.github/workflows/_deploy-prod-attempt.yml');
     expect($yml)->toContain('import_enabled:')
         ->and($yml)->toContain('IMPORT_ENABLED:')
         ->and($yml)->toContain("github.event_name == 'workflow_dispatch' && inputs.import_enabled");
@@ -34,8 +34,8 @@ test('deploy-workflows schrijven optioneel ADMIN_DASHBOARD_EMAILS (gemaskeerd)',
         ->and($script)->toMatch('/if \[ -n "\$\{ADMIN_DASHBOARD_EMAILS:-\}" \]/');
 
     foreach ([
-        'deploy-staging-cpanel.yml',
-        'deploy-prod-hook.yml',
+        '_deploy-staging-attempt.yml',
+        '_deploy-prod-attempt.yml',
         'deploy-production.yml',
     ] as $file) {
         $yml = file_get_contents($root.'/.github/workflows/'.$file);
@@ -54,7 +54,7 @@ test('deploy schrijft optioneel POST_LOG_MINT_TOKEN (gemaskeerd, behouden bij le
     expect($script)->toContain('POST_LOG_MINT_TOKEN')
         ->and($script)->toContain('dotenv_line POST_LOG_MINT_TOKEN');
 
-    foreach (['deploy-staging-cpanel.yml', 'deploy-prod-hook.yml'] as $file) {
+    foreach (['_deploy-staging-attempt.yml', '_deploy-prod-attempt.yml'] as $file) {
         $yml = file_get_contents($root.'/.github/workflows/'.$file);
         expect($yml)->toContain('POST_LOG_MINT_TOKEN: ${{ secrets.POST_LOG_MINT_TOKEN }}')
             ->and($yml)->toContain('::add-mask::${POST_LOG_MINT_TOKEN}');
@@ -74,7 +74,7 @@ test('deploy schrijft optioneel BREVO_* (gemaskeerd, behouden bij leeg)', functi
     expect($hook)->toContain("deploy_hook_preserve_env_key(\$finalEnv, \$existingEnv, 'BREVO_API_KEY')")
         ->and($hook)->toContain("deploy_hook_preserve_env_key(\$finalEnv, \$existingEnv, 'BREVO_WEBHOOK_TOKEN')");
 
-    foreach (['deploy-staging-cpanel.yml', 'deploy-prod-hook.yml'] as $file) {
+    foreach (['_deploy-staging-attempt.yml', '_deploy-prod-attempt.yml'] as $file) {
         $yml = file_get_contents($root.'/.github/workflows/'.$file);
         expect($yml)->toContain('BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}')
             ->and($yml)->toContain('BREVO_WEBHOOK_TOKEN: ${{ secrets.BREVO_WEBHOOK_TOKEN }}')

@@ -45,6 +45,13 @@ jobs:
             echo "${LABEL}: site nog niet bereikbaar of endpoint ontbreekt — ok voor nu."
             exit 0
           fi
-          head -c 400 /tmp/cron.txt || true
-          echo
+          # Alleen aantallen loggen (geen persoonsgegevens): het blok unverified_deletions volledig
+          # (sent_dag7, sent_dag14, sent, purged, failed, skipped, ...), de rest ingekort.
+          if command -v jq >/dev/null 2>&1 \
+            && jq -e 'type == "object"' /tmp/cron.txt >/dev/null 2>&1; then
+            jq -c '{ok, version, unverified_deletions: (.jobs.unverified_deletions // null), activation_reminders: (.jobs.activation_reminders // null)}' /tmp/cron.txt
+          else
+            head -c 400 /tmp/cron.txt || true
+            echo
+          fi
           [ "$code" = "200" ]

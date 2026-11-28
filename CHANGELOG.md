@@ -3,6 +3,22 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.90.5] - 2026-11-28
+
+### Changed
+
+- Deploys en backups geven alleen nog een foutmelding (en een mail) als er echt
+  iets mis is. Blokkeert de hostingbeveiliging (Imunify) het adres van de
+  GitHub-computer waarop de taak draait, dan start de taak vanzelf opnieuw op
+  een andere computer (maximaal 3 keer). Dat geldt voor "Deploy staging
+  (cPanel)", "Deploy production (HTTPS hook)" en "Encrypted backups".
+  Een echte fout (verkeerd token, mislukte migratie, kapotte backup) blijft
+  direct rood. De deploy-hook geeft bij zo'n blokkade nu exitcode 75, de
+  zelftest dekt dat.
+- "Onbevestigd-verwijderen dry-run" probeert bij een Imunify-403 tot 3 keer.
+- "Cron queue & expiry" logt het blok `unverified_deletions` (sent_dag7,
+  sent_dag14, sent, purged, failed, skipped) nu volledig, alleen aantallen.
+
 ## [0.90.4] - 2026-11-28
 
 ### Fixed
