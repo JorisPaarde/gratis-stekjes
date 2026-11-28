@@ -26,6 +26,8 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - In het venster "Meer info" van een deelplek (en in het kaartpopup)
   breken tijden en dagen niet meer midden in het bereik. "10–12.30 u",
   "15–19 u" en "Di–vr" blijven op één regel.
+- In het kaartpopup is de sluitknop (×) nu 44×44 groot en valt hij niet meer
+  over de titel van de deelplek (bijvoorbeeld "Zadenbib Bibliotheek Laarne").
 
 ## [0.90.3] - 2026-11-28
 
