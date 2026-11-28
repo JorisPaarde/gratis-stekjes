@@ -1,5 +1,6 @@
 import {
   escapeHtml,
+  escapeHtmlBereik,
   formatKm,
   lidVanHtml,
   regelHtml,
@@ -302,7 +303,7 @@ import { deelplekClusterOptions, NL_BE_BOUNDS, NL_BE_FIT, NL_BE_ZOOM_PAD, cluste
           "</a>";
       }
     } else if (item.beschrijving) {
-      popup += '<p class="gp-popup-meta">' + escapeHtml(item.beschrijving) + "</p>";
+      popup += '<p class="gp-popup-meta">' + escapeHtmlBereik(item.beschrijving) + "</p>";
     }
     registerPlek(item);
     popup +=
