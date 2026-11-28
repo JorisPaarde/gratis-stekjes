@@ -1,0 +1,219 @@
+name: Deploy production (poging)
+
+# Eén deploy-poging naar productie (aangeroepen door deploy-prod-hook.yml).
+# Meldt `blocked=true` als de hook niet bereikt werd door een Imunify-blokkade op het IP van deze
+# runner (script-exit 75, nog niets gewijzigd op de server). De aanroeper probeert dan opnieuw op
+# een nieuwe runner. Echte fouten blijven falen.
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: "Bestaande tag om te herdeployen (leeg = de ref van de aanroeper)"
+        required: false
+        type: string
+        default: ""
+      import_enabled:
+        description: "Zet DEPLOY_IMPORT_ENABLED op prod (alleen tijdens VERHUIS)"
+        required: false
+        type: boolean
+        default: false
+      retry_sleeps:
+        description: "Wachttijden (s) tussen hook-pogingen op deze runner"
+        type: string
+        default: "20 40 60 60 60"
+    outputs:
+      blocked:
+        description: "true als de hook door Imunify geblokkeerd bleef"
+        value: ${{ jobs.deploy.outputs.blocked }}
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    outputs:
+      blocked: ${{ steps.upload.outputs.blocked }}
+    env:
+      DEPLOY_HOOK_TOKEN: ${{ secrets.DEPLOY_HOOK_TOKEN }}
+      DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      PROD_BASE_URL: ${{ secrets.PROD_BASE_URL }}
+    steps:
+      - name: Resolve ref
+        id: ref
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ inputs.tag }}" ]; then
+            echo "ref=${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "ref=${{ github.ref }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.ref.outputs.ref }}
+
+      - name: Alleen tags vanaf master-lijn
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          git fetch origin master --depth=50
+          if ! git merge-base --is-ancestor HEAD origin/master && ! git merge-base --is-ancestor origin/master HEAD; then
+            echo "::error::Tag lijkt niet op master-historie; stop."
+            exit 1
+          fi
+
+      - name: Secrets aanwezig?
+        id: chk
+        run: |
+          set -euo pipefail
+          if [ -z "${DEPLOY_HOOK_TOKEN:-}" ] && [ -z "${DEPLOY_TOKEN:-}" ] && [ -z "${PROD_BASE_URL:-}" ]; then
+            echo "::notice::Production deploy-hook secrets ontbreken — overgeslagen."
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          missing=0
+          for v in DEPLOY_HOOK_TOKEN DEPLOY_TOKEN PROD_BASE_URL; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Verplicht secret ontbreekt: ${v}"
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            echo "::error::Gedeeltelijke production deploy-hook-config."
+            exit 1
+          fi
+          echo "skip=0" >> "$GITHUB_OUTPUT"
+          echo "::add-mask::${DEPLOY_HOOK_TOKEN}"
+          echo "::add-mask::${DEPLOY_TOKEN}"
+
+      - name: Setup PHP 8.2
+        if: steps.chk.outputs.skip != '1'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, curl, xml, zip, bcmath, intl
+          coverage: none
+
+      - name: Setup Node
+        if: steps.chk.outputs.skip != '1'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Build (composer + vite)
+        if: steps.chk.outputs.skip != '1'
+        run: |
+          set -euo pipefail
+          composer install --no-dev --optimize-autoloader --no-interaction
+          npm ci
+          npm run build
+          test -f public/build/manifest.json
+          chmod +x scripts/write-robots-txt.sh
+          APP_ENV_NAME=production ./scripts/write-robots-txt.sh
+          test -s public/robots.txt
+          grep -q 'Allow: /' public/robots.txt
+          grep -q 'Sitemap: https://gratisplanten.nl/sitemap.xml' public/robots.txt
+          ! grep -q 'To customize, create a robots.txt' public/robots.txt
+
+      - name: Upload via HTTPS deploy-hook + migrate + smoke
+        if: steps.chk.outputs.skip != '1'
+        id: upload
+        env:
+          SITE_NAME: ${{ secrets.SITE_NAME }}
+          DB_HOST: ${{ secrets.PROD_DB_HOST }}
+          DB_DATABASE: ${{ secrets.PROD_DB_NAME }}
+          DB_USERNAME: ${{ secrets.PROD_DB_USER }}
+          DB_PASSWORD: ${{ secrets.PROD_DB_PASS }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
+          CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          ADMIN_DASHBOARD_EMAILS: ${{ secrets.ADMIN_DASHBOARD_EMAILS }}
+          APP_KEY: ${{ secrets.APP_KEY }}
+          BACKUP_ENCRYPTION_KEY: ${{ secrets.BACKUP_ENCRYPTION_KEY }}
+          BACKUP_RETAIN_DAYS: ${{ vars.BACKUP_RETAIN_DAYS }}
+          POST_LOG_MINT_TOKEN: ${{ secrets.POST_LOG_MINT_TOKEN }}
+          ACTIVATION_REMINDER_ENABLED: ${{ vars.ACTIVATION_REMINDER_ENABLED }}
+          UNVERIFIED_DELETION_ENABLED: ${{ vars.UNVERIFIED_DELETION_ENABLED }}
+          ACTIVATION_REMINDER_ENABLED_AT: ${{ vars.ACTIVATION_REMINDER_ENABLED_AT }}
+          ACTIVATION_REMINDER_AFTER_HOURS: ${{ vars.ACTIVATION_REMINDER_AFTER_HOURS }}
+          REMINDER_TEST_RECIPIENTS: ${{ secrets.REMINDER_TEST_RECIPIENTS }}
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          BREVO_NEWSLETTER_LIST_ID: ${{ secrets.BREVO_NEWSLETTER_LIST_ID }}
+          BREVO_SYNC_ENABLED: ${{ vars.BREVO_SYNC_ENABLED }}
+          BREVO_WEBHOOK_TOKEN: ${{ secrets.BREVO_WEBHOOK_TOKEN }}
+          BASE_URL: ${{ secrets.PROD_BASE_URL }}
+          APP_ENV_NAME: production
+          HOOK_RETRY_SLEEPS: ${{ inputs.retry_sleeps }}
+          # Tag-pushes: altijd false. workflow_dispatch: input import_enabled.
+          IMPORT_ENABLED: ${{ github.event_name == 'workflow_dispatch' && inputs.import_enabled || false }}
+        run: |
+          set -euo pipefail
+          chmod +x scripts/deploy-hook-upload.sh scripts/dotenv-quote.sh
+          for v in DB_HOST DB_DATABASE DB_USERNAME DB_PASSWORD SMTP_HOST SMTP_USER SMTP_PASS CRON_TOKEN ADMIN_PASSWORD; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Verplicht secret/env ontbreekt: ${v}"
+              exit 1
+            fi
+          done
+          echo "::add-mask::${DB_PASSWORD}"
+          echo "::add-mask::${SMTP_PASS}"
+          echo "::add-mask::${ADMIN_PASSWORD}"
+          echo "::add-mask::${CRON_TOKEN}"
+          if [ -n "${ADMIN_DASHBOARD_EMAILS:-}" ]; then
+            echo "::add-mask::${ADMIN_DASHBOARD_EMAILS}"
+          else
+            echo "::notice::ADMIN_DASHBOARD_EMAILS ontbreekt — hook behoudt bestaande server-.env-waarde."
+          fi
+          if [ -n "${BACKUP_ENCRYPTION_KEY:-}" ]; then
+            echo "::add-mask::${BACKUP_ENCRYPTION_KEY}"
+          else
+            echo "::notice::BACKUP_ENCRYPTION_KEY ontbreekt — hook behoudt bestaande server-.env-waarde (zie docs/backups.md)."
+          fi
+          if [ -n "${POST_LOG_MINT_TOKEN:-}" ]; then
+            echo "::add-mask::${POST_LOG_MINT_TOKEN}"
+          else
+            echo "::notice::POST_LOG_MINT_TOKEN ontbreekt — hook behoudt bestaande server-.env-waarde (zie docs/post-log-mint.md)."
+          fi
+          if [ -n "${REMINDER_TEST_RECIPIENTS:-}" ]; then
+            echo "::add-mask::${REMINDER_TEST_RECIPIENTS}"
+          else
+            echo "::notice::REMINDER_TEST_RECIPIENTS ontbreekt — hook behoudt bestaande of app-default."
+          fi
+          if [ -z "${ACTIVATION_REMINDER_ENABLED:-}" ] && [ -z "${ACTIVATION_REMINDER_ENABLED_AT:-}" ]; then
+            echo "::notice::ACTIVATION_REMINDER_* ontbreekt — hook behoudt bestaande of app-default (uit)."
+          fi
+          if [ -z "${UNVERIFIED_DELETION_ENABLED:-}" ]; then
+            echo "::notice::UNVERIFIED_DELETION_ENABLED ontbreekt — hook behoudt bestaande of app-default (uit)."
+          fi
+          if [ -n "${BREVO_API_KEY:-}" ]; then
+            echo "::add-mask::${BREVO_API_KEY}"
+          else
+            echo "::notice::BREVO_API_KEY ontbreekt — nieuwsbrief-sync blijft uit tot secret gezet is."
+          fi
+          if [ -n "${BREVO_WEBHOOK_TOKEN:-}" ]; then
+            echo "::add-mask::${BREVO_WEBHOOK_TOKEN}"
+          fi
+          # Normaliseer boolean → true|false voor .env
+          case "$(printf '%s' "${IMPORT_ENABLED:-false}" | tr '[:upper:]' '[:lower:]')" in
+            1|true|yes) IMPORT_ENABLED=true ;;
+            *) IMPORT_ENABLED=false ;;
+          esac
+          export IMPORT_ENABLED
+          echo "::notice::DEPLOY_IMPORT_ENABLED=${IMPORT_ENABLED}"
+          # Exit 75 = Imunify-blokkade vóór de hook (nog niets gewijzigd): geen rode stap, de
+          # aanroeper probeert het op een andere runner opnieuw. Andere fouten blijven falen.
+          rc=0
+          ./scripts/deploy-hook-upload.sh || rc=$?
+          if [ "$rc" -eq 75 ]; then
+            echo "blocked=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::Imunify blokkeert deze runner; nieuwe poging op een andere runner."
+            exit 0
+          fi
+          exit "$rc"

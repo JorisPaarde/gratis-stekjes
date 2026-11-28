@@ -88,6 +88,24 @@ scenario "500 met hook-fout: geen retry"    1 500 1 '500 {"ok":false,"error":"ex
 scenario "finish: WAF-403 wel retry"        0 200 2 "$IMUNIFY"
 scenario "200 direct"                       1 200 1
 
+# hook_is_waf_block: alleen een blokkade vóór de hook (403/429 zonder hook-foutcode).
+waf() {
+  local name=$1 want=$2 http=$3 body=$4
+  HOOK_HTTP="$http"
+  HOOK_BODY="$body"
+  if hook_is_waf_block; then got=ja; else got=nee; fi
+  if [ "$got" = "$want" ]; then
+    echo "ok   waf-blokkade ${name}: ${got}"
+  else
+    echo "FAIL waf-blokkade ${name}: ${got} (verwacht ${want})"; fails=$((fails + 1))
+  fi
+}
+waf "imunify-403"            ja   403 '{"message":"Access denied by Imunify360 bot-protection."}'
+waf "429 rate_limited"       ja   429 '{"ok":false,"error":"rate_limited"}'
+waf "403 forbidden (hook)"   nee  403 '{"ok":false,"error":"forbidden"}'
+waf "502 proxy"              nee  502 '<html>Bad Gateway</html>'
+waf "200"                    nee  200 '{"ok":true}'
+
 # Connectiefout: poort zonder server.
 kill "$SRV" 2>/dev/null || true
 wait "$SRV" 2>/dev/null || true

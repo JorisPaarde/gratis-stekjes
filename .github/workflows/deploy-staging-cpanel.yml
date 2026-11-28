@@ -2,6 +2,10 @@ name: Deploy staging (cPanel)
 
 # HTTPS deploy-hook (geen :2083 / UAPI). Bouwt vendor + Vite, zip't, chunked upload
 # naar /deploy-hook.php, daarna POST /deploy/run + smoke.
+# De eigenlijke deploy staat in _deploy-staging-attempt.yml. Blokkeert Imunify het IP van een runner
+# (403 vóór de hook, vaak langer dan een paar minuten), dan volgt automatisch een nieuwe poging op
+# een andere runner (max. 3). Alleen als alle drie geblokkeerd zijn, of bij een echte fout, wordt
+# deze run rood. Zo komt er alleen een mail als er echt iets mis is.
 # Ontbrekende verplichte secrets → skip met notice (geen rode X) alleen als HELE
 # hook-set ontbreekt; gedeeltelijk → hard fail. Hook 404 → ::error:: + INSTALL-stappen.
 on:
@@ -17,151 +21,46 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
+  poging-1:
+    uses: ./.github/workflows/_deploy-staging-attempt.yml
+    with:
+      retry_sleeps: "10 20"
+    secrets: inherit
+
+  poging-2:
+    needs: poging-1
+    if: needs.poging-1.outputs.blocked == 'true'
+    uses: ./.github/workflows/_deploy-staging-attempt.yml
+    with:
+      retry_sleeps: "10 20"
+    secrets: inherit
+
+  poging-3:
+    needs: poging-2
+    if: needs.poging-2.outputs.blocked == 'true'
+    uses: ./.github/workflows/_deploy-staging-attempt.yml
+    secrets: inherit
+
+  uitkomst:
+    name: Uitkomst deploy
+    needs: [poging-1, poging-2, poging-3]
+    if: always()
     runs-on: ubuntu-latest
-    environment: staging
-    env:
-      DEPLOY_HOOK_TOKEN: ${{ secrets.DEPLOY_HOOK_TOKEN }}
-      DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-      STAGING_BASE_URL: ${{ secrets.STAGING_BASE_URL }}
-      STAGING_APP_DIR: /home/gratisplanten/app-staging
-      STAGING_DEPLOY_PATH: /home/gratisplanten/staging.gratisplanten.nl
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Secrets aanwezig?
-        id: chk
-        run: |
-          set -euo pipefail
-          if [ -z "${DEPLOY_HOOK_TOKEN:-}" ] && [ -z "${DEPLOY_TOKEN:-}" ] && [ -z "${STAGING_BASE_URL:-}" ]; then
-            echo "::notice::Deploy-hook secrets ontbreken — deploy-staging-cpanel overgeslagen. Zie deploy/hook/INSTALL.md."
-            echo "skip=1" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          missing=0
-          for v in DEPLOY_HOOK_TOKEN DEPLOY_TOKEN STAGING_BASE_URL; do
-            if [ -z "${!v:-}" ]; then
-              echo "::error::Verplicht secret ontbreekt: ${v}"
-              missing=1
-            fi
-          done
-          if [ "$missing" -ne 0 ]; then
-            echo "::error::Gedeeltelijke deploy-hook-config — niets half gedaan."
-            exit 1
-          fi
-          echo "skip=0" >> "$GITHUB_OUTPUT"
-          echo "::add-mask::${DEPLOY_HOOK_TOKEN}"
-          echo "::add-mask::${DEPLOY_TOKEN}"
-
-      - name: Setup PHP 8.2
-        if: steps.chk.outputs.skip != '1'
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.2"
-          extensions: mbstring, curl, xml, zip, bcmath, intl
-          coverage: none
-
-      - name: Setup Node
-        if: steps.chk.outputs.skip != '1'
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: npm
-
-      - name: Build (composer + vite)
-        if: steps.chk.outputs.skip != '1'
-        run: |
-          set -euo pipefail
-          composer install --no-dev --optimize-autoloader --no-interaction
-          npm ci
-          npm run build
-          test -f public/build/manifest.json
-          chmod +x scripts/write-robots-txt.sh
-          APP_ENV_NAME=staging ./scripts/write-robots-txt.sh
-          test -s public/robots.txt
-          grep -q 'Disallow: /' public/robots.txt
-          ! grep -q 'To customize, create a robots.txt' public/robots.txt
-          php -l deploy/hook/deploy-hook.php
-          php -l deploy/hook/lib.php
-
-      - name: Upload via HTTPS deploy-hook + migrate + smoke
-        if: steps.chk.outputs.skip != '1'
-        id: upload
+      - name: Rood alleen bij een echte fout of drie geblokkeerde pogingen
         env:
-          SITE_NAME: ${{ secrets.SITE_NAME }}
-          DB_HOST: ${{ secrets.STAGING_DB_HOST }}
-          DB_DATABASE: ${{ secrets.STAGING_DB_NAME }}
-          DB_USERNAME: ${{ secrets.STAGING_DB_USER }}
-          DB_PASSWORD: ${{ secrets.STAGING_DB_PASS }}
-          SMTP_HOST: ${{ secrets.SMTP_HOST }}
-          SMTP_PORT: ${{ secrets.SMTP_PORT }}
-          SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
-          SMTP_USER: ${{ secrets.SMTP_USER }}
-          SMTP_PASS: ${{ secrets.SMTP_PASS }}
-          SMTP_FROM: ${{ secrets.SMTP_FROM }}
-          CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
-          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
-          ADMIN_DASHBOARD_EMAILS: ${{ secrets.ADMIN_DASHBOARD_EMAILS }}
-          APP_KEY: ${{ secrets.APP_KEY }}
-          BACKUP_ENCRYPTION_KEY: ${{ secrets.BACKUP_ENCRYPTION_KEY }}
-          BACKUP_RETAIN_DAYS: ${{ vars.BACKUP_RETAIN_DAYS }}
-          POST_LOG_MINT_TOKEN: ${{ secrets.POST_LOG_MINT_TOKEN }}
-          ACTIVATION_REMINDER_ENABLED: ${{ vars.ACTIVATION_REMINDER_ENABLED }}
-          UNVERIFIED_DELETION_ENABLED: ${{ vars.UNVERIFIED_DELETION_ENABLED }}
-          ACTIVATION_REMINDER_ENABLED_AT: ${{ vars.ACTIVATION_REMINDER_ENABLED_AT }}
-          ACTIVATION_REMINDER_AFTER_HOURS: ${{ vars.ACTIVATION_REMINDER_AFTER_HOURS }}
-          REMINDER_TEST_RECIPIENTS: ${{ secrets.REMINDER_TEST_RECIPIENTS }}
-          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
-          BREVO_NEWSLETTER_LIST_ID: ${{ secrets.BREVO_NEWSLETTER_LIST_ID }}
-          BREVO_SYNC_ENABLED: ${{ vars.BREVO_SYNC_ENABLED }}
-          BREVO_WEBHOOK_TOKEN: ${{ secrets.BREVO_WEBHOOK_TOKEN }}
-          BASE_URL: ${{ secrets.STAGING_BASE_URL }}
-          APP_ENV_NAME: staging
+          R1: ${{ needs.poging-1.result }}
+          B1: ${{ needs.poging-1.outputs.blocked }}
+          R2: ${{ needs.poging-2.result }}
+          B2: ${{ needs.poging-2.outputs.blocked }}
+          R3: ${{ needs.poging-3.result }}
+          B3: ${{ needs.poging-3.outputs.blocked }}
         run: |
           set -euo pipefail
-          chmod +x scripts/deploy-hook-upload.sh scripts/dotenv-quote.sh scripts/make-deploy-hook-config.sh
-          for v in DB_HOST DB_DATABASE DB_USERNAME DB_PASSWORD SMTP_HOST SMTP_USER SMTP_PASS CRON_TOKEN ADMIN_PASSWORD; do
-            if [ -z "${!v:-}" ]; then
-              echo "::error::Verplicht secret/env ontbreekt: ${v}"
-              exit 1
-            fi
-          done
-          echo "::add-mask::${DB_PASSWORD}"
-          echo "::add-mask::${SMTP_PASS}"
-          echo "::add-mask::${ADMIN_PASSWORD}"
-          echo "::add-mask::${CRON_TOKEN}"
-          if [ -n "${ADMIN_DASHBOARD_EMAILS:-}" ]; then
-            echo "::add-mask::${ADMIN_DASHBOARD_EMAILS}"
-          else
-            echo "::notice::ADMIN_DASHBOARD_EMAILS ontbreekt — hook behoudt bestaande server-.env-waarde."
-          fi
-          if [ -n "${BACKUP_ENCRYPTION_KEY:-}" ]; then
-            echo "::add-mask::${BACKUP_ENCRYPTION_KEY}"
-          else
-            echo "::notice::BACKUP_ENCRYPTION_KEY ontbreekt — hook behoudt bestaande server-.env-waarde (zie docs/backups.md)."
-          fi
-          if [ -n "${POST_LOG_MINT_TOKEN:-}" ]; then
-            echo "::add-mask::${POST_LOG_MINT_TOKEN}"
-          else
-            echo "::notice::POST_LOG_MINT_TOKEN ontbreekt — hook behoudt bestaande server-.env-waarde (zie docs/post-log-mint.md)."
-          fi
-          if [ -n "${REMINDER_TEST_RECIPIENTS:-}" ]; then
-            echo "::add-mask::${REMINDER_TEST_RECIPIENTS}"
-          else
-            echo "::notice::REMINDER_TEST_RECIPIENTS ontbreekt — hook behoudt bestaande of app-default (staging fail-closed)."
-          fi
-          if [ -z "${ACTIVATION_REMINDER_ENABLED:-}" ] && [ -z "${ACTIVATION_REMINDER_ENABLED_AT:-}" ]; then
-            echo "::notice::ACTIVATION_REMINDER_* ontbreekt — hook behoudt bestaande of app-default (uit)."
-          fi
-          if [ -z "${UNVERIFIED_DELETION_ENABLED:-}" ]; then
-            echo "::notice::UNVERIFIED_DELETION_ENABLED ontbreekt — hook behoudt bestaande of app-default (uit)."
-          fi
-          if [ -n "${BREVO_API_KEY:-}" ]; then
-            echo "::add-mask::${BREVO_API_KEY}"
-          else
-            echo "::notice::BREVO_API_KEY ontbreekt — nieuwsbrief-sync blijft uit tot secret gezet is."
-          fi
-          if [ -n "${BREVO_WEBHOOK_TOKEN:-}" ]; then
-            echo "::add-mask::${BREVO_WEBHOOK_TOKEN}"
-          fi
-          ./scripts/deploy-hook-upload.sh
+          [ "$R1" = "success" ] || { echo "::error::Poging 1 faalde (${R1})."; exit 1; }
+          [ "$B1" = "true" ] || { echo "Deploy gelukt in poging 1."; exit 0; }
+          [ "$R2" = "success" ] || { echo "::error::Poging 2 faalde (${R2})."; exit 1; }
+          [ "$B2" = "true" ] || { echo "Deploy gelukt in poging 2 (andere runner)."; exit 0; }
+          [ "$R3" = "success" ] || { echo "::error::Poging 3 faalde (${R3})."; exit 1; }
+          [ "$B3" = "true" ] && { echo "::error::Imunify blokkeerde alle 3 runners; deploy niet gedaan."; exit 1; }
+          echo "Deploy gelukt in poging 3 (andere runner)."

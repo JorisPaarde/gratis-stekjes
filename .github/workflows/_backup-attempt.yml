@@ -1,0 +1,183 @@
+name: Encrypted backup (poging)
+
+# Eén backup-poging voor één omgeving (aangeroepen door backup.yml).
+# Meldt `blocked=true` als Imunify het IP van deze runner blokkeert (403 met Imunify-tekst).
+# De aanroeper probeert het dan op een andere runner opnieuw; een echte fout blijft falen.
+on:
+  workflow_call:
+    inputs:
+      target:
+        description: "staging of production"
+        required: true
+        type: string
+      selected:
+        description: "both, staging of production (workflow_dispatch-keuze)"
+        type: string
+        default: "both"
+      attempt:
+        description: "Poging 1-3 (voor een unieke artifact-naam)"
+        type: string
+        default: "1"
+    outputs:
+      blocked:
+        description: "true als Imunify deze runner blokkeerde"
+        value: ${{ jobs.backup.outputs.blocked }}
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    name: backup (${{ inputs.target }}, poging ${{ inputs.attempt }})
+    runs-on: ubuntu-latest
+    # Productie-secrets (URL, CRON_TOKEN) staan alleen in environment "production".
+    # Environment "staging" = nieuwe staging (STAGING_BASE_URL daar), niet de oude staging.stekjes.
+    environment: ${{ inputs.target }}
+    outputs:
+      blocked: ${{ steps.run.outputs.blocked }}
+    steps:
+      - name: Backup ${{ inputs.target }} (ciphertext → artifact)
+        id: run
+        env:
+          LABEL: ${{ inputs.target }}
+          STAGING_BASE: ${{ secrets.STAGING_BASE_URL }}
+          PROD_BASE: ${{ secrets.PROD_BASE_URL }}
+          # Fallback voor oudere secretnaam (cron.yml gebruikt BASE_URL voor prod).
+          BASE: ${{ secrets.BASE_URL }}
+          CRON_TOKEN: ${{ secrets.CRON_TOKEN }}
+          TARGET: ${{ inputs.selected }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CRON_TOKEN:-}" ]; then
+            echo "::notice::CRON_TOKEN ontbreekt — backup overgeslagen."
+            exit 0
+          fi
+          echo "::add-mask::${CRON_TOKEN}"
+
+          PROD_URL="${PROD_BASE:-${BASE:-}}"
+          ROOT="${RUNNER_TEMP}/encrypted-backups"
+          mkdir -p "$ROOT"
+          chmod 700 "$ROOT"
+
+          # Imunify/WAF-blokkade (403/429 met Imunify-tekst) hangt aan het IP van de runner.
+          # Return 75 = laat de aanroeper het op een andere runner opnieuw proberen.
+          is_waf_block() {
+            local code="$1" file="$2"
+            case "$code" in 403|429) ;; *) return 1 ;; esac
+            head -c 2000 "$file" 2>/dev/null | grep -qiE 'imunify|bot-protection|one moment, please'
+          }
+
+          run_one() {
+            local label="$1"
+            local target="$2"
+            if [ -z "${target}" ]; then
+              echo "${label}: URL niet gezet — overgeslagen."
+              return 0
+            fi
+            case "${TARGET}" in
+              both) ;;
+              staging|production)
+                if [ "${TARGET}" != "${label}" ]; then
+                  echo "${label}: overgeslagen (target=${TARGET})."
+                  return 0
+                fi
+                ;;
+            esac
+
+            local out="${ROOT}/${label}"
+            mkdir -p "$out"
+            chmod 700 "$out"
+            target="${target%/}"
+
+            local code
+            code=$(curl -sS -o "${out}/manifest.json" -w '%{http_code}' \
+              -H "X-Cron-Token: ${CRON_TOKEN}" \
+              -H "Accept: application/json" \
+              --connect-timeout 20 --max-time 600 \
+              "${target}/cron/backup" || true)
+            echo "${label}: /cron/backup → HTTP ${code}"
+            if [ "$code" = "000" ] || [ "$code" = "404" ] || [ "$code" = "502" ] || [ "$code" = "503" ]; then
+              echo "::notice::${label}: endpoint nog niet bereikbaar — ok voor nu."
+              head -c 400 "${out}/manifest.json" || true
+              return 0
+            fi
+            if [ "$code" != "200" ]; then
+              if is_waf_block "$code" "${out}/manifest.json"; then
+                echo "::notice::${label}: Imunify blokkeert deze runner (HTTP ${code})."
+                return 75
+              fi
+              echo "::error::${label}: backup mislukt (HTTP ${code})"
+              head -c 600 "${out}/manifest.json" || true
+              return 1
+            fi
+
+            python3 -c '
+          import json,sys
+          d=json.load(open(sys.argv[1]))
+          assert d.get("ok") is True, d
+          print("db=", (d.get("db") or {}).get("basename"), "bytes=", (d.get("db") or {}).get("bytes"))
+          st=d.get("storage")
+          if st:
+              print("storage=", st.get("basename"), "bytes=", st.get("bytes"))
+          print("pruned=", d.get("pruned"), "retain_days=", d.get("retain_days"))
+          ' "${out}/manifest.json"
+
+            local kind name http
+            for kind in db storage; do
+              http=$(curl -sS -o "${out}/${kind}.enc" -w '%{http_code}' \
+                -H "X-Cron-Token: ${CRON_TOKEN}" \
+                --connect-timeout 20 --max-time 600 \
+                "${target}/cron/backup?download=${kind}" || true)
+              echo "${label}: download ${kind} → HTTP ${http}"
+              if [ "$http" != "200" ]; then
+                if is_waf_block "$http" "${out}/${kind}.enc"; then
+                  echo "::notice::${label}: Imunify blokkeert de download van ${kind} (HTTP ${http})."
+                  return 75
+                fi
+                echo "::warning::${label}: download ${kind} mislukt (HTTP ${http})"
+                rm -f "${out}/${kind}.enc"
+                continue
+              fi
+              head -c 4 "${out}/${kind}.enc" | grep -q '^GPB1$' \
+                || { echo "::error::${label}: ${kind}.enc mist magic GPB1"; return 1; }
+              name=$(python3 -c '
+          import json,sys
+          d=json.load(open(sys.argv[1]))
+          k=sys.argv[2]
+          print((d.get(k) or {}).get("basename") or (k+".enc"))
+          ' "${out}/manifest.json" "$kind")
+              mv "${out}/${kind}.enc" "${out}/${name}"
+            done
+            return 0
+          }
+
+          rc=0
+          if [ "${LABEL}" = "staging" ]; then
+            run_one "staging" "${STAGING_BASE:-}" || rc=$?
+          else
+            run_one "production" "${PROD_URL}" || rc=$?
+          fi
+
+          if [ "$rc" -eq 75 ]; then
+            # Geen half artifact bewaren; de volgende poging doet de hele backup opnieuw.
+            find "$ROOT" -type f -name '*.enc' -delete
+            echo "blocked=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Markeer root voor artifact-upload alleen als er .enc-bestanden zijn.
+          if find "$ROOT" -type f -name '*.enc' | grep -q .; then
+            echo "ARTIFACT_DIR=${ROOT}" >> "$GITHUB_ENV"
+          else
+            echo "::notice::Geen .enc-bestanden om te uploaden."
+          fi
+          exit "$rc"
+
+      - name: Upload encrypted artifacts
+        if: env.ARTIFACT_DIR != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: encrypted-backups-${{ inputs.target }}-${{ github.run_id }}${{ inputs.attempt != '1' && format('-poging{0}', inputs.attempt) || '' }}
+          path: ${{ env.ARTIFACT_DIR }}
+          if-no-files-found: warn
+          retention-days: 30
