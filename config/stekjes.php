@@ -202,16 +202,18 @@ return [
     ],
 
     /**
-     * Verwijdermail + opruimen van onbevestigde accounts (na min_age_days en
-     * min_reminders herinneringen; daarna grace_days wachten). Default UIT.
-     * Deelt REMINDER_TEST_RECIPIENTS (staging fail-closed). Niet aanzetten op
+     * Reeks voor onbevestigde accounts: herinnering op dag 7 en 14,
+     * verwijdermail op min_age_days (20), opruimen na grace_days (7).
+     * Default UIT. Deelt REMINDER_TEST_RECIPIENTS (staging fail-closed).
+     * De 24-uursherinnering valt hier niet onder. Niet aanzetten op
      * productie zonder ja van de eigenaar.
      */
     'unverified_deletion' => [
         'enabled' => filter_var(env('UNVERIFIED_DELETION_ENABLED', false), FILTER_VALIDATE_BOOL),
         'grace_days' => (int) env('UNVERIFIED_DELETION_GRACE_DAYS', 7),
         'min_age_days' => (int) env('UNVERIFIED_DELETION_MIN_AGE_DAYS', 20),
-        'min_reminders' => (int) env('UNVERIFIED_DELETION_MIN_REMINDERS', 3),
+        'day7_days' => (int) env('UNVERIFIED_DELETION_DAY7_DAYS', 7),
+        'day14_days' => (int) env('UNVERIFIED_DELETION_DAY14_DAYS', 14),
         'test_recipients' => array_values(array_filter(array_map(
             static fn (string $email): string => strtolower(trim($email)),
             explode(',', (string) env('REMINDER_TEST_RECIPIENTS', ''))

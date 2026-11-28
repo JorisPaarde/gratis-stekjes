@@ -20,6 +20,8 @@ use App\Notifications\UnverifiedDeletionNoticeDutch;
 use App\Notifications\VerenigingAangemeld;
 use App\Notifications\VerenigingGoedgekeurd;
 use App\Notifications\VerifyEmailDutch;
+use App\Notifications\VerifyEmailReminderDay14Dutch;
+use App\Notifications\VerifyEmailReminderDay7Dutch;
 use App\Notifications\VerifyEmailReminderDutch;
 use App\Notifications\VerifyPendingEmailDutch;
 use Illuminate\Mail\Markdown;
@@ -59,6 +61,8 @@ final class MailRenderer
         $notifications = [
             'bevestigen' => new VerifyEmailDutch,
             'bevestigen-herinnering' => new VerifyEmailReminderDutch,
+            'bevestigen-herinnering-dag7' => new VerifyEmailReminderDay7Dutch,
+            'bevestigen-herinnering-dag14' => new VerifyEmailReminderDay14Dutch,
             'onbevestigd-verwijderen' => new UnverifiedDeletionNoticeDutch(now()->addDays(7)),
             'wachtwoord-reset' => new ResetPasswordDutch(str_repeat('f9e8d7c6', 8)),
             'nieuw-emailadres-bevestigen' => new VerifyPendingEmailDutch('nieuw@example.com', (int) $user->getKey()),
