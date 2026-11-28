@@ -59,13 +59,23 @@ jobs:
           BASE_URL="${BASE_URL%/}"
           echo "::notice::Dry-run only op ${TARGET} (geen mail, geen verwijderen, geen --uitvoeren)."
 
-          code=$(curl -sS -o /tmp/onbevestigd-verwijderen.json -w '%{http_code}' \
-            -X POST \
-            -H "Authorization: Bearer ${DEPLOY_TOKEN}" \
-            -H "Content-Type: application/json" \
-            -H "Accept: application/json" \
-            -d '{}' \
-            "${BASE_URL}/deploy/onbevestigd-verwijderen" || true)
+          # Imunify geeft soms een 403 (zonder JSON van de app) op het IP van de runner: maximaal
+          # 3 pogingen met 20 s ertussen. Alleen-lezen, dus herhalen is veilig.
+          code=000
+          for attempt in 1 2 3; do
+            code=$(curl -sS -o /tmp/onbevestigd-verwijderen.json -w '%{http_code}' \
+              -X POST \
+              -H "Authorization: Bearer ${DEPLOY_TOKEN}" \
+              -H "Content-Type: application/json" \
+              -H "Accept: application/json" \
+              -d '{}' \
+              "${BASE_URL}/deploy/onbevestigd-verwijderen" || true)
+            if [ "${code}" != "403" ] || [ "${attempt}" -eq 3 ]; then
+              break
+            fi
+            echo "::warning::HTTP 403 (poging ${attempt}/3), opnieuw over 20 s."
+            sleep 20
+          done
 
           echo "${TARGET}: HTTP ${code}"
           if command -v python3 >/dev/null 2>&1 && [ -f /tmp/onbevestigd-verwijderen.json ]; then

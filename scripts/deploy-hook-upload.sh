@@ -37,6 +37,15 @@ die() {
   exit 1
 }
 
+# Exitcode 75: de hook is niet bereikt door een Imunify/WAF-blokkade op het IP van deze runner.
+# Er is nog niets op de server veranderd (init/chunks), dus de workflow mag het veilig opnieuw
+# proberen op een andere runner. Alles anders blijft exit 1.
+EXIT_BLOCKED=75
+blocked_die() {
+  printf '%s\n' "$*" >&2
+  exit "$EXIT_BLOCKED"
+}
+
 notice() {
   if [ -n "${GITHUB_ACTIONS:-}" ]; then
     printf '%s\n' "::notice::$*"
@@ -338,6 +347,9 @@ hook_call_retry init 1 -X POST \
 if [ "$HOOK_HTTP" != "200" ]; then
   error_ann "Hook init HTTP ${HOOK_HTTP}"
   echo "Init-antwoord: $(printf '%s' "$HOOK_BODY" | tr -d '\r' | tr '\n' ' ' | cut -c1-200)"
+  if hook_is_waf_block; then
+    blocked_die "Hook init geblokkeerd (HTTP ${HOOK_HTTP}, Imunify/WAF) na ${HOOK_ATTEMPTS} poging(en); nog niets gewijzigd op de server."
+  fi
   die "Hook init faalde (HTTP ${HOOK_HTTP}: $(hook_error_code)) na ${HOOK_ATTEMPTS} poging(en)."
 fi
 
@@ -365,6 +377,9 @@ try:
  print(json.load(sys.stdin).get("error","?"))
 except Exception:
  print("non-json")' 2>/dev/null || echo non-json)"
+    if hook_is_waf_block; then
+      blocked_die "Hook chunk ${idx} geblokkeerd (HTTP ${HOOK_HTTP}, Imunify/WAF) na ${HOOK_ATTEMPTS} poging(en); de uitrol is nog niet afgerond."
+    fi
     die "Hook chunk ${idx} faalde (HTTP ${HOOK_HTTP}: ${err}) na ${HOOK_ATTEMPTS} poging(en)."
   fi
   idx=$((idx + 1))

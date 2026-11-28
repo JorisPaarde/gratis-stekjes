@@ -85,6 +85,20 @@ hook_is_transient() {
   return 1
 }
 
+# hook_is_waf_block  → exit 0 als HOOK_HTTP/HOOK_BODY een blokkade vóór de hook is (Imunify/WAF:
+# 403/429 zonder hook-foutcode). Zo'n blokkade hangt aan het IP van de runner; opnieuw proberen
+# op dezelfde runner helpt meestal niet, op een andere runner wel.
+hook_is_waf_block() {
+  local code
+  case "$HOOK_HTTP" in
+    403|429)
+      code="$(hook_error_code)"
+      case "$code" in '?'|non-json|rate_limited) return 0 ;; esac
+      ;;
+  esac
+  return 1
+}
+
 # hook_call_retry <label> <idempotent 0|1> curl-args…
 # Doet de call opnieuw bij tijdelijke storingen (zie boven). Geeft altijd 0 terug; de aanroeper
 # controleert HOOK_HTTP. Zet HOOK_ATTEMPTS = aantal gedane pogingen.
