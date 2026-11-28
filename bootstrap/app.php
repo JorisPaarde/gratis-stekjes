@@ -64,6 +64,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'deploy/steden-aanbod',
             'deploy/postcode-herinnering-lijst',
             'deploy/activatie-herinnering',
+            'deploy/onbevestigd-verwijderen',
             'deploy/ledenupdate-mail',
             'deploy/import-struikroven-agenda',
             'deploy/import-meerbomen-uitdeeldagen',

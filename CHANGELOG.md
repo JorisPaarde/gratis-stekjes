@@ -3,6 +3,28 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.90.1] - 2026-11-28
+
+### Fixed
+
+- Op /aanbod?plant= zat de vermeerderkaart (lege staat) tegen de
+  filterpills aan. Daaronder staat nu dezelfde 1rem als tussen het
+  zoekformulier en de kaart, en tussen de pills en de landkaart.
+
+## [0.90.0] - 2026-11-28
+
+### Added
+
+- Onbevestigde accounts: extra herinneringen op dag 7 en dag 14, daarna
+  de verwijdermail op dag 20 en opruimen 7 dagen later. Accounts met
+  aanbod of berichten worden overgeslagen. Alles achter de schakelaar
+  `UNVERIFIED_DELETION_ENABLED` (standaard uit). De herinnering na
+  24 uur blijft zoals die is. `gp:onbevestigd-verwijderen --dry-run`
+  telt per moment: dag 7, dag 14, dag 20 of ouder, te verwijderen,
+  overgeslagen met aanbod of berichten, en zonder beide. Het
+  deploy-endpoint staat bij de CSRF-uitzonderingen, zodat de dry-run
+  vanaf GitHub zonder sessie werkt.
+
 ## [0.89.5] - 2026-11-27
 
 ### Fixed
