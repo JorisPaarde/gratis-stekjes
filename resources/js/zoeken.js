@@ -8,6 +8,7 @@ import {
   registerPlek,
   plekKey as detailPlekKey,
 } from "./aanbod-detail.js";
+import { deelplekClusterOptions, NL_BE_BOUNDS, NL_BE_FIT, NL_BE_ZOOM_PAD, clusterIconPx, bindIconSeparation } from "./kaart-cluster.js";
 
 /* Zoeken: kaart + lijst + initiatief-/kaartmarkers. */
 (function () {
@@ -19,11 +20,8 @@ import {
   if (!form || !list || typeof L === "undefined") return;
 
   // Beginuitsnede direct bij aanmaken (view nodig vóór whenReady/tiles).
-  var nlBeBounds = [
-    [49.45, 2.4],
-    [53.55, 7.25],
-  ];
-  var nlBeFitOpts = { padding: [4, 4], maxZoom: 8 };
+  var nlBeBounds = NL_BE_BOUNDS;
+  var nlBeFitOpts = NL_BE_FIT;
   // zoomSnap 0.25: tussenstappen tussen zoom 5/6/7.
   // fitNlBe: contain (inside=false) zodat heel NL+BE in beeld blijft,
   // strakker dan zoom 5 maar zonder afsnijden van noord/zuid.
@@ -36,7 +34,7 @@ import {
     map.invalidateSize();
     var bounds = L.latLngBounds(nlBeBounds);
     // inside=false: NL+BE past binnen viewport (contain) → geen afsnijden.
-    var zoom = map.getBoundsZoom(bounds, false, L.point(4, 4));
+    var zoom = map.getBoundsZoom(bounds, false, L.point(NL_BE_ZOOM_PAD[0], NL_BE_ZOOM_PAD[1]));
     if (isFinite(zoom)) {
       map.setView(bounds.getCenter(), Math.min(zoom, 8));
     } else {
@@ -80,7 +78,7 @@ import {
       if (m.options && m.options.gpEvenement) evenementCount++;
     });
     var size = count < 10 ? "sm" : count < 40 ? "md" : "lg";
-    var px = size === "sm" ? 36 : size === "md" ? 44 : 54;
+    var px = clusterIconPx(count);
     var label = deelplekClusterLabel(count, evenementCount);
     var classes =
       "gp-cluster-bubble gp-cluster-bubble--" +
@@ -109,15 +107,9 @@ import {
 
   var deelplekLayer =
     typeof L.markerClusterGroup === "function"
-      ? L.markerClusterGroup({
-          showCoverageOnHover: false,
-          zoomToBoundsOnClick: true,
-          spiderfyOnMaxZoom: true,
-          maxClusterRadius: 55,
-          chunkedLoading: true,
-          iconCreateFunction: deelplekClusterIcon,
-        }).addTo(map)
+      ? L.markerClusterGroup(deelplekClusterOptions(deelplekClusterIcon)).addTo(map)
       : L.layerGroup().addTo(map);
+  bindIconSeparation(map, typeof deelplekLayer.on === "function" ? deelplekLayer : null);
 
   var cfg = window.STEKJES_SITE || {};
   var api = cfg.api_zoeken || "/api/zoeken.php";
@@ -851,6 +843,25 @@ import {
     if (map.getZoom() < minZ) fitNlBe();
   }
 
+  // Verberg alleen de server-lijst, niet de kaart «zo maak je er meer van».
+  function verbergServerLijst() {
+    var serverLijst = document.getElementById("plant-aanbod-lijst");
+    if (serverLijst) serverLijst.hidden = true;
+  }
+
+  // Compacte kaart onder de JS-resultaten; lege staat blijft bovenaan, voor de kaart.
+  function plaatsMaakMeerKaart() {
+    var kaart = document.querySelector(".maak-meer");
+    if (!kaart) return;
+    var jsLijst = document.getElementById("zoek-lijst");
+    if (kaart.classList.contains("maak-meer--compact") && jsLijst) {
+      jsLijst.insertAdjacentElement("afterend", kaart);
+      return;
+    }
+    var host = document.getElementById("plant-aanbod");
+    if (host && kaart.parentElement !== host) host.appendChild(kaart);
+  }
+
   // Alleen het 2e veld: zoek alleen op plant; de server sorteert vanaf het eigen adres
   // van het ingelogde lid, of (gast / geen adres) nieuwste eerst.
   // bron: "zelf" (formulier) of "auto" (SEO/plant_filter bij paginalaad).
@@ -858,8 +869,7 @@ import {
     heeftGezocht = true;
     center = null;
     tekenZoekpunt();
-    var serverLijst = document.getElementById("plant-aanbod");
-    if (serverLijst) serverLijst.hidden = true; // JS-lijst toont hetzelfde, met foto's en berichtknop
+    verbergServerLijst(); // JS-lijst toont hetzelfde, met foto's en berichtknop
     status.textContent = "Zoeken…";
     status.dataset.empty = "";
     var bronQ = bron === "auto" ? "&bron=auto" : "&bron=zelf";
@@ -880,9 +890,11 @@ import {
         resetLimits();
         refreshMarkers(false);
         fitOpAanbod();
+        plaatsMaakMeerKaart();
       })
       .catch(function (err) {
         status.textContent = err.message || "Zoeken is niet gelukt";
+        plaatsMaakMeerKaart();
       });
   }
 
@@ -898,8 +910,7 @@ import {
     var type = typeEl ? typeEl.value : "";
     // Plant + plaats: de JS-lijst toont het aanbod met foto's en berichtknop, dus de
     // server-lijst (alle plaatsen) verbergen om dubbele lijsten te voorkomen.
-    var serverLijst = document.getElementById("plant-aanbod");
-    if (serverLijst && plant) serverLijst.hidden = true;
+    if (plant) verbergServerLijst();
     plaatsPlant = plant;
     status.textContent = "Zoeken…";
     status.dataset.empty = "";
@@ -958,9 +969,11 @@ import {
             "Ik kon “" + q + "” niet vinden als plaats. Probeer een postcode of een andere plaatsnaam." +
             (plant ? " Hieronder zie je het aanbod met “" + plant + "” in alle plaatsen." : "");
         }
+        plaatsMaakMeerKaart();
       })
       .catch(function (err) {
         status.textContent = err.message || "Zoeken is niet gelukt";
+        plaatsMaakMeerKaart();
       });
   }
 

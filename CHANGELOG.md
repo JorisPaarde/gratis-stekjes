@@ -3,6 +3,112 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.89.5] - 2026-11-27
+
+### Fixed
+
+- De extra marge onderaan de kaart van 0.89.4 zoomde op 390 px te ver
+  uit, waardoor je weer grote bolletjes zag. De strakkere zoom van
+  0.89.3 is terug, met alleen de beveiliging dat bolletjes binnen het
+  kaartvak blijven. Namen blijft zichtbaar, zonder overlap.
+
+## [0.89.4] - 2026-11-27
+
+### Fixed
+
+- Op 390 px viel het zuidelijkste bolletje in België (Namen) over de
+  onderrand van de kaart. De beginuitsnede houdt nu meer ruimte onderaan,
+  en bolletjes blijven binnen het kaartvak.
+
+## [0.89.3] - 2026-11-27
+
+### Changed
+
+- Clustering op /aanbod en /deelplekken: op mobiel vult Nederland en
+  België de kaart beter (minder lege buurlanden). De bolletjes zijn op
+  smalle schermen kleiner (32–44 px, dunnere evenement-ring) zodat ze
+  elkaar niet meer bedekken, en je ziet nog steeds duidelijk meer
+  regio's dan de oude 6 of 7 bolletjes.
+
+## [0.89.2] - 2026-11-27
+
+### Fixed
+
+- De voorbeelden bij «Wanneer is de plek open?» passen nu op een smal
+  scherm (360 en 390 px).
+- In Meer info staat de openingstijd in de rij Openingstijden. Is er
+  niets ingevuld, dan is die rij weg. Geen aparte zin «Open: …» erbij.
+
+## [0.89.1] - 2026-11-27
+
+### Changed
+
+- Clustering op de kaarten van /aanbod en /deelplekken is minder grof: op
+  mobiel zie je bij de beginzoom van Nederland meer losse bolletjes
+  (maxClusterRadius 40 in plaats van 55). Dicht bij elkaar blijven ze
+  samengevoegd, zodat de kaart overzichtelijk en snel blijft.
+
+## [0.89.0] - 2026-11-27
+
+### Added
+
+- Plek aanmelden is makkelijker te vinden: een zin in de intro van
+  /deelplekken, een knop bij een zoekopdracht zonder resultaat (boven
+  de kaart) en een link in het menu op de telefoon, onder Doe mee.
+  Allemaal naar het bestaande formulier. Bestaande aanmeldlinks
+  (homepage, voettekst en de vraag op /deelplekken) gaan daar nu
+  ook heen.
+- Op het formulier kun je optioneel aangeven wanneer de plek open is
+  (altijd, op vaste dagen of in een seizoen). Die regel is na
+  goedkeuring te zien bij Meer info, en in beheer bij de aanmelding.
+
+## [0.88.1] - 2026-11-27
+
+### Changed
+
+- De oranje knop «Bied … aan» op de kaart bij /aanbod?plant= is vervangen
+  door de bestaande soortfoto (Wikimedia Commons, zelfde credit als op
+  de stektip), als WebP in kaartformaat. Staat er geen foto, dan blijft
+  de kaart zonder beeld. Aanbieden is een tekstlink «Zelf aanbieden»
+  naast «Bekijk de tip». Zonder tip en zonder foto blijft alleen de zin
+  met een tekstlink over.
+
+
+## [0.88.0] - 2026-11-27
+
+### Added
+
+- Voorstel voor onbevestigde accounts: na 20 dagen en 3 herinneringen een
+  mail dat het account wordt verwijderd, en na 7 dagen opruimen (inclusief
+  gekoppelde data, via de bestaande AVG-wisfunctie). Standaard uit, ook in
+  de cron. Artisan `gp:onbevestigd-verwijderen` is dry-run (alleen aantallen,
+  geen e-mailadressen of namen); `--uitvoeren` verstuurt en verwijdert.
+  Staging-telling via `POST /deploy/onbevestigd-verwijderen`. Nog niet naar
+  productie en geen cron op productie.
+
+## [0.87.1] - 2026-11-27
+
+### Fixed
+
+- De kaart «zo maak je er meer van» bleef onzichtbaar nadat de pagina
+  was geladen: het zoekscript verborg de hele plantsectie, inclusief
+  die kaart. Nu verdwijnt alleen de server-lijst (de JS-lijst toont
+  die resultaten). Staat de plant er nog niet op, dan blijft de kaart
+  bovenaan zichtbaar; is er wél aanbod, dan komt ze onder de
+  resultaten.
+
+## [0.87.0] - 2026-11-27
+
+### Added
+
+- Bij zoeken op een plant op /aanbod zie je een kaart met hoe je er meer
+  van maakt, uit de bestaande stektips (methode en beste tijd). Staat die
+  plant er nog niet op, dan nodigt de kaart je uit om die zelf aan te
+  bieden, met een knop naar het aanbiedformulier (plant al ingevuld).
+  Is er wél aanbod, dan staat de kaart kleiner onder de resultaten. Van
+  planten zonder stektip zie je geen tip, wel de uitnodiging om aan te
+  bieden. Link naar de bestaande stektip-pagina als die er is.
+
 ## [0.86.2] - 2026-11-27
 
 ### Added

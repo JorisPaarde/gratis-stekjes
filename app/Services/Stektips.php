@@ -84,6 +84,36 @@ final class Stektips
         return 'plantjes';
     }
 
+    /**
+     * Zoek de stektip bij een vrije zoekterm (catalogusnaam, synoniem, Latijn, of exacte stektip-naam).
+     */
+    public function voorZoekterm(string $plant, Plantensoorten $plantensoorten): ?array
+    {
+        $plant = trim($plant);
+        if ($plant === '') {
+            return null;
+        }
+
+        $catalogus = $plantensoorten->resolveExact($plant);
+        if (is_array($catalogus) && ! empty($catalogus['slug'])) {
+            $soort = $this->find((string) $catalogus['slug']);
+            if ($soort !== null) {
+                return $soort;
+            }
+        }
+
+        $norm = mb_strtolower($plant, 'UTF-8');
+        foreach ($this->all() as $soort) {
+            $naam = mb_strtolower((string) ($soort['naam'] ?? ''), 'UTF-8');
+            $seo = mb_strtolower(trim((string) ($soort['seo_naam'] ?? '')), 'UTF-8');
+            if ($naam === $norm || ($seo !== '' && $seo === $norm)) {
+                return $soort;
+            }
+        }
+
+        return null;
+    }
+
     /** @return array<string, mixed>|null */
     public function find(string $slug): ?array
     {

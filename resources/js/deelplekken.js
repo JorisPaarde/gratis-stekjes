@@ -1,4 +1,5 @@
 import { escapeHtml, registerPlek, plekKey as detailPlekKey } from "./aanbod-detail.js";
+import { deelplekClusterOptions, NL_BE_BOUNDS, NL_BE_FIT, NL_BE_ZOOM_PAD, clusterIconPx, bindIconSeparation } from "./kaart-cluster.js";
 
 /* Deelplekken: eigen kaart + markers (ruit-icoon) + tijdelijke evenementen + clustering. */
 (function () {
@@ -75,11 +76,8 @@ import { escapeHtml, registerPlek, plekKey as detailPlekKey } from "./aanbod-det
     stekchallenge: "#b54a2a",
   };
 
-  var nlBeBounds = [
-    [49.45, 2.4],
-    [53.55, 7.25],
-  ];
-  var nlBeFitOpts = { padding: [4, 4], maxZoom: 8 };
+  var nlBeBounds = NL_BE_BOUNDS;
+  var nlBeFitOpts = NL_BE_FIT;
   var map = L.map(mapEl, { zoomSnap: 0.25 }).fitBounds(nlBeBounds, nlBeFitOpts);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution:
@@ -89,7 +87,7 @@ import { escapeHtml, registerPlek, plekKey as detailPlekKey } from "./aanbod-det
   function fitNlBe() {
     map.invalidateSize();
     var bounds = L.latLngBounds(nlBeBounds);
-    var zoom = map.getBoundsZoom(bounds, false, L.point(4, 4));
+    var zoom = map.getBoundsZoom(bounds, false, L.point(NL_BE_ZOOM_PAD[0], NL_BE_ZOOM_PAD[1]));
     if (isFinite(zoom)) {
       map.setView(bounds.getCenter(), Math.min(zoom, 8));
     } else {
@@ -134,7 +132,7 @@ import { escapeHtml, registerPlek, plekKey as detailPlekKey } from "./aanbod-det
       if (m.options && m.options.gpEvenement) evenementCount++;
     });
     var size = count < 10 ? "sm" : count < 40 ? "md" : "lg";
-    var px = size === "sm" ? 36 : size === "md" ? 44 : 54;
+    var px = clusterIconPx(count);
     var label = clusterLabel(count, evenementCount);
     var classes =
       "gp-cluster-bubble gp-cluster-bubble--" +
@@ -165,19 +163,16 @@ import { escapeHtml, registerPlek, plekKey as detailPlekKey } from "./aanbod-det
     if (typeof L.markerClusterGroup !== "function") {
       return L.layerGroup();
     }
-    return L.markerClusterGroup({
-      showCoverageOnHover: false,
-      zoomToBoundsOnClick: true,
-      spiderfyOnMaxZoom: true,
-      maxClusterRadius: 55,
-      chunkedLoading: true,
-      // Anders haalt autoPan de pin uit beeld, verwijdert de cluster-laag hem en sluit de popup (touch).
-      removeOutsideVisibleBounds: false,
-      iconCreateFunction: clusterIcon,
-    });
+    return L.markerClusterGroup(
+      deelplekClusterOptions(clusterIcon, {
+        // Anders haalt autoPan de pin uit beeld, verwijdert de cluster-laag hem en sluit de popup (touch).
+        removeOutsideVisibleBounds: false,
+      })
+    );
   }
 
   var layer = makeDeelplekClusterGroup().addTo(map);
+  bindIconSeparation(map, layer);
 
   function deelplekIcon(type, evenement) {
     var color = evenement ? "#b54a2a" : markerColors[type] || "#1f4d2b";

@@ -18,7 +18,13 @@
       "bytes": 163753,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "2ff63b2e2418f5e845c97ec83898f2db2683ae2536b2c405a5a7e464fea9272f"
+      "sha256": "2ff63b2e2418f5e845c97ec83898f2db2683ae2536b2c405a5a7e464fea9272f",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/aardbei.webp",
+        "width": 640,
+        "height": 564,
+        "sha256": "4510ec41b0a21ce94c964f599e0fd095a46b2708e6bbd96490b902f0bb17e635"
+      }
     },
     "aardpeer": {
       "slug": "aardpeer",
@@ -36,7 +42,13 @@
       "status": "goedgekeurd",
       "sha256": "8f2792f61ed143e075efd55fdd3725fd634f577da99ef7989e39c62c6e4d4eaf",
       "bytes": 245273,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/aardpeer.webp",
+        "width": 640,
+        "height": 437,
+        "sha256": "10df3aebcbfcdcf89dbcc989a12c3b487b023c5825d4ef32e545146ea3c32254"
+      }
     },
     "abrikoos": {
       "slug": "abrikoos",
@@ -54,7 +66,13 @@
       "bytes": 180293,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "099b9d87edba9a3f1aea0c77244f36916d7dbbc0cea6ac7e1eb08ac5539fa285"
+      "sha256": "099b9d87edba9a3f1aea0c77244f36916d7dbbc0cea6ac7e1eb08ac5539fa285",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/abrikoos.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "6ef2ed93079cc95be0a8d2a22ca262397023aed6ac040bbe35ab671656416625"
+      }
     },
     "agapanthus": {
       "slug": "agapanthus",
@@ -72,7 +90,13 @@
       "bytes": 107742,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "d56d778de6f20b39f68431ac31b584380e8593967328b753f97255bac55bfa1d"
+      "sha256": "d56d778de6f20b39f68431ac31b584380e8593967328b753f97255bac55bfa1d",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/agapanthus.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "9354d015ec4b82a6f221d3eeb2fd8def65e28054807bc0a218c30da6b1bd4467"
+      }
     },
     "akelei": {
       "slug": "akelei",
@@ -90,7 +114,13 @@
       "status": "goedgekeurd",
       "sha256": "6004eee70e8396b6a3b1512215154f58a67df5d876afd210f976937467d94287",
       "bytes": 105300,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/akelei.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "1b2257b86ec1352ab421f7ba827618620b95c644516e62c85e0091a3122d8b8f"
+      }
     },
     "aloe-vera": {
       "slug": "aloe-vera",
@@ -108,7 +138,13 @@
       "bytes": 173584,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "4e993196669b5ef7f8ae2bf4872dfec64a80a04946bf4c8709d591fc9eb38196"
+      "sha256": "4e993196669b5ef7f8ae2bf4872dfec64a80a04946bf4c8709d591fc9eb38196",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/aloe-vera.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "c545464e363a89e8a5cfc8b6af78e89761a355e9e9168448c7def6ecde3cb70c"
+      }
     },
     "anthurium": {
       "slug": "anthurium",
@@ -126,7 +162,13 @@
       "bytes": 84107,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "7de5f2d48e54b76d2f49eef10cdaf5e56c17f8185ac6ff9661665d90508c1365"
+      "sha256": "7de5f2d48e54b76d2f49eef10cdaf5e56c17f8185ac6ff9661665d90508c1365",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/anthurium.webp",
+        "width": 640,
+        "height": 512,
+        "sha256": "67b12986904d2b7115bac11fb019cdea5ba8c47c8fdb672ec4dddf5a85b258a2"
+      }
     },
     "appel": {
       "slug": "appel",
@@ -144,7 +186,13 @@
       "bytes": 540930,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "4ab09e950fa2bacd8b9b325ee2e5074a5bee65859ec9e076a45ad35e1da34224"
+      "sha256": "4ab09e950fa2bacd8b9b325ee2e5074a5bee65859ec9e076a45ad35e1da34224",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/appel.webp",
+        "width": 640,
+        "height": 640,
+        "sha256": "f2163b71ab4b12a10238826155af6d8031f0af0f430a842e018f06c087b0cadd"
+      }
     },
     "appelbes": {
       "slug": "appelbes",
@@ -162,7 +210,13 @@
       "bytes": 158092,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "e2dd971d619baff800bb326f487d22273a575c91d7ca77d27b5840d034aef8e3"
+      "sha256": "e2dd971d619baff800bb326f487d22273a575c91d7ca77d27b5840d034aef8e3",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/appelbes.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "2706dea0c8128f2ed82112faeb3dac6613eee161fb5a85db0fa314aff2560ef1"
+      }
     },
     "artisjok": {
       "slug": "artisjok",
@@ -180,7 +234,13 @@
       "status": "goedgekeurd",
       "sha256": "c029a6533ce25f91f0802b3bb635866b1eaac6ecb5c8ea9b5f02b0d36c264345",
       "bytes": 120805,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/artisjok.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "6594a7f87b7b9040f84fb54daf025345224578e3052231f2ce8bc7a7c402848b"
+      }
     },
     "basilicum": {
       "slug": "basilicum",
@@ -198,7 +258,13 @@
       "bytes": 168123,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "d7440450c00d143999462d1af52cd901f974c3396bb65245c59ce14155d1fda9"
+      "sha256": "d7440450c00d143999462d1af52cd901f974c3396bb65245c59ce14155d1fda9",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/basilicum.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "ef02efb25e8f3d453be7185e027b1e824fbfcdee7cfdc00c3aa55d4a0b16bf0d"
+      }
     },
     "begonia": {
       "slug": "begonia",
@@ -216,7 +282,13 @@
       "bytes": 106336,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "7f33d606de7102a786397b6d10d5096217f488eba70b906b660035582aeb6aeb"
+      "sha256": "7f33d606de7102a786397b6d10d5096217f488eba70b906b660035582aeb6aeb",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/begonia.webp",
+        "width": 640,
+        "height": 551,
+        "sha256": "54da96273e02e6fdc12c67b481294399716228635f79984c1965760ed50fa263"
+      }
     },
     "bieslook": {
       "slug": "bieslook",
@@ -234,7 +306,13 @@
       "bytes": 141417,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "17d9888f774eb37c01ae9442033d9d1afe5dde799d94034a012fb0bc221b34fd"
+      "sha256": "17d9888f774eb37c01ae9442033d9d1afe5dde799d94034a012fb0bc221b34fd",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/bieslook.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "52f3af03f9bd6eb6a0c41ee54d9907722f5ae8a064a6a7c6ffde203f319b3b43"
+      }
     },
     "blauwe-bes": {
       "slug": "blauwe-bes",
@@ -252,7 +330,13 @@
       "bytes": 131187,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "933dec0b92c27106b4f024eb5e9c9888e15a60b282eddbd8285f7042a359444e"
+      "sha256": "933dec0b92c27106b4f024eb5e9c9888e15a60b282eddbd8285f7042a359444e",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/blauwe-bes.webp",
+        "width": 640,
+        "height": 479,
+        "sha256": "1b52630405a87a4a8144cac3d70034fa513cf6afe9fe0ce3d78d29030cc3e70c"
+      }
     },
     "blauwe-regen": {
       "slug": "blauwe-regen",
@@ -270,7 +354,13 @@
       "bytes": 298703,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "2cd94b93963d3ca65cd42ad605f42a380ce24de26f80c3e4390ff8fd773bd7da"
+      "sha256": "2cd94b93963d3ca65cd42ad605f42a380ce24de26f80c3e4390ff8fd773bd7da",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/blauwe-regen.webp",
+        "width": 640,
+        "height": 457,
+        "sha256": "2623bf3d7d232082733475fe64c31f14270a6fbfcffb34ee95867858e41b3b13"
+      }
     },
     "bosaardbei": {
       "slug": "bosaardbei",
@@ -288,7 +378,13 @@
       "status": "goedgekeurd",
       "sha256": "881427c7a1dbe28db237a1b429a4fff8324c783b66f79ad0fb3853efeb833891",
       "bytes": 169239,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/bosaardbei.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "ff5bd7edbdfb5e74c6a31eb1cc6989eda184a54ba25afec6baff21ee600f0be8"
+      }
     },
     "bosbes": {
       "slug": "bosbes",
@@ -306,7 +402,13 @@
       "status": "goedgekeurd",
       "sha256": "e1e8ed5aa20997ddf2a875c474aac4cb2c3fb849b816959b3b9c91aad882e25a",
       "bytes": 162602,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/bosbes.webp",
+        "width": 640,
+        "height": 852,
+        "sha256": "7015ebe013f47a4d7fb00d57c2d58e2ec3c507c9ca51f3c4aca67bcb19a7687d"
+      }
     },
     "braam": {
       "slug": "braam",
@@ -324,7 +426,13 @@
       "bytes": 165223,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "df71d838b70f92714074846bf2f377b50fcd59c95abd8b4996dfc30390b3977a"
+      "sha256": "df71d838b70f92714074846bf2f377b50fcd59c95abd8b4996dfc30390b3977a",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/braam.webp",
+        "width": 640,
+        "height": 477,
+        "sha256": "826c3023284ea892edf7221c412fbc7297cbbbdcfecdce775e2682fdf36611bf"
+      }
     },
     "brandnetel": {
       "slug": "brandnetel",
@@ -342,7 +450,13 @@
       "status": "goedgekeurd",
       "sha256": "82b7ef2731639e5dd950ffaa7dd99d94c23f15a97d6c2da76f436abed222b321",
       "bytes": 324853,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/brandnetel.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "f5a1710eea0f9b0b0e82f9d291e5b812866106b2318baf9578ccc5819ffa6c15"
+      }
     },
     "buxus": {
       "slug": "buxus",
@@ -360,7 +474,13 @@
       "bytes": 357581,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "89a5531316d0842ca11c718cbd5077a2e1681391c63214b2a062401ba21bda86"
+      "sha256": "89a5531316d0842ca11c718cbd5077a2e1681391c63214b2a062401ba21bda86",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/buxus.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "7ce787299b894d39b32e643cbcc50eef8e3535122fe83113c991a6efa40e67c6"
+      }
     },
     "calathea": {
       "slug": "calathea",
@@ -378,7 +498,13 @@
       "bytes": 176185,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "b0a9b60774d02ddcceca1f18844409f4dd1c3b17944bc35a3048d0b55fad0398"
+      "sha256": "b0a9b60774d02ddcceca1f18844409f4dd1c3b17944bc35a3048d0b55fad0398",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/calathea.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "097e84127d79475a677ce24600b8cc6cd68228277d8e329fb59277cfcdaff2c2"
+      }
     },
     "citroenmelisse": {
       "slug": "citroenmelisse",
@@ -396,7 +522,13 @@
       "bytes": 205110,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "eebfe87ffc762a646a5516188d3b09613e0e0c2efafd3289d4b48a17e7857843"
+      "sha256": "eebfe87ffc762a646a5516188d3b09613e0e0c2efafd3289d4b48a17e7857843",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/citroenmelisse.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "ca7487be95fd89bca62283238012008f81fabacadaf32440f61933454ab25dba"
+      }
     },
     "citroenverbena": {
       "slug": "citroenverbena",
@@ -414,7 +546,13 @@
       "bytes": 200032,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "2de89431b64b1bedcd3770a0f3d7a412322139435ca73ebce3db300005d681c4"
+      "sha256": "2de89431b64b1bedcd3770a0f3d7a412322139435ca73ebce3db300005d681c4",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/citroenverbena.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "8993a702a3f4c06240a2c2fb270196aa1e4d54af7108ecac28afb5b335264afd"
+      }
     },
     "clematis": {
       "slug": "clematis",
@@ -432,7 +570,13 @@
       "bytes": 273215,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "33459a043ac933d920789ab5863b7f71d07061692d1392880ae6c49b197ed22c"
+      "sha256": "33459a043ac933d920789ab5863b7f71d07061692d1392880ae6c49b197ed22c",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/clematis.webp",
+        "width": 640,
+        "height": 960,
+        "sha256": "94d006465c9389a8a4d122e30501fa72edfe13be4d6a7437ad0bcbb00c742c44"
+      }
     },
     "dagkoekoeksbloem": {
       "slug": "dagkoekoeksbloem",
@@ -450,7 +594,13 @@
       "status": "goedgekeurd",
       "sha256": "1f5ef96466ce7239e4a52b5dbcbbd7146bf9f4ee0d2e87a52324616fee96ba53",
       "bytes": 145778,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/dagkoekoeksbloem.webp",
+        "width": 640,
+        "height": 823,
+        "sha256": "c62a383619d61a718ce571be98175d4ba971884f5ace45bd2ae0e49c5c5fdabd"
+      }
     },
     "daglelie": {
       "slug": "daglelie",
@@ -468,7 +618,13 @@
       "bytes": 117530,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "17bdd5c619814d729f9652c2473d6e94e6fed663d326f0ba436d0c80aabcbc7e"
+      "sha256": "17bdd5c619814d729f9652c2473d6e94e6fed663d326f0ba436d0c80aabcbc7e",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/daglelie.webp",
+        "width": 640,
+        "height": 503,
+        "sha256": "b32cf02514e85ed20b1a228bbd0a2827f9244ac929c2fee6aaf10916483a7f0e"
+      }
     },
     "dahlia": {
       "slug": "dahlia",
@@ -486,7 +642,13 @@
       "bytes": 182668,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "5c7cd460900b7601ad0dfb62fb20002905346090713cd5127dbf482193e2f1ca"
+      "sha256": "5c7cd460900b7601ad0dfb62fb20002905346090713cd5127dbf482193e2f1ca",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/dahlia.webp",
+        "width": 640,
+        "height": 640,
+        "sha256": "a32a88328b80c5461662770303595fc322c4db79270bb461e1daa6e0adf7f320"
+      }
     },
     "daslook": {
       "slug": "daslook",
@@ -504,7 +666,13 @@
       "status": "goedgekeurd",
       "sha256": "f71305614ff6c71ca1cbb27c6f7b0a6868b907760f8673f77f6a43a7bf47c1a9",
       "bytes": 73029,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/daslook.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "47e6bfc6ac8103d136da2d9c92331dcbc80599fc33b8632862123c6c5e337bb1"
+      }
     },
     "dieffenbachia": {
       "slug": "dieffenbachia",
@@ -522,7 +690,13 @@
       "bytes": 145989,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "c2c318dd74d6cc2256ad4e5936360e201c593c296eb0d6eaf55df7b1e28468bb"
+      "sha256": "c2c318dd74d6cc2256ad4e5936360e201c593c296eb0d6eaf55df7b1e28468bb",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/dieffenbachia.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "8264f6cb9acc6b75a69cf6c77bdc78a31a058b0bffc23800d465cb1a4995ab82"
+      }
     },
     "dotterbloem": {
       "slug": "dotterbloem",
@@ -540,7 +714,13 @@
       "status": "goedgekeurd",
       "sha256": "ca36278fe737ae8e48be38bf695a6c3a02bd0231fa0cd9219a065958ec383237",
       "bytes": 387760,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/dotterbloem.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "525652e1df7cc1d82eb0d221dc66b315193727f655228a0b6cf878442592469b"
+      }
     },
     "dragon": {
       "slug": "dragon",
@@ -558,7 +738,13 @@
       "bytes": 300353,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "07e96a99e4ff118f2100177f2da4a1a2424324c5822eb4df1a6fae71c4167d35"
+      "sha256": "07e96a99e4ff118f2100177f2da4a1a2424324c5822eb4df1a6fae71c4167d35",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/dragon.webp",
+        "width": 640,
+        "height": 861,
+        "sha256": "1d838d9686d8375240b3c2cfd1f66d229550ec2dbc498f7a00eb1f3ca9668e6e"
+      }
     },
     "druif": {
       "slug": "druif",
@@ -576,7 +762,13 @@
       "bytes": 115281,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "7ea68d9466dedda13236024e44a0244723c223d3bdb2bf9f7a4ceb0b8d84ecc4"
+      "sha256": "7ea68d9466dedda13236024e44a0244723c223d3bdb2bf9f7a4ceb0b8d84ecc4",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/druif.webp",
+        "width": 640,
+        "height": 363,
+        "sha256": "5313baa17c38efeed1e34d3ff259869f7c6c16f9a355b56b0a939cdc36cbda68"
+      }
     },
     "duindoorn": {
       "slug": "duindoorn",
@@ -594,7 +786,13 @@
       "bytes": 144215,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "42c884b8b735cc120ef23015212f7d7b169c61de36f8032928da16268a6e9f1c"
+      "sha256": "42c884b8b735cc120ef23015212f7d7b169c61de36f8032928da16268a6e9f1c",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/duindoorn.webp",
+        "width": 640,
+        "height": 854,
+        "sha256": "e1c6dc12c5a25c69ab7ee742c47b8fc9ddbf73713a62f23b02634f2d48a8307a"
+      }
     },
     "duizendblad": {
       "slug": "duizendblad",
@@ -612,7 +810,13 @@
       "status": "goedgekeurd",
       "sha256": "bf993f8496010a06ddce2fea99ffaafe381700fcdf3506c837f4220ae8091681",
       "bytes": 160782,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/duizendblad.webp",
+        "width": 640,
+        "height": 533,
+        "sha256": "f297dea6132bbe9d65f2de1855a73b69a69356c591fe0049d9a4ad373787cbd3"
+      }
     },
     "echeveria": {
       "slug": "echeveria",
@@ -630,7 +834,13 @@
       "bytes": 289965,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "9479007849676e71bf7ca17b353c4afc69e40e181ba9f91153c067eed800ff64"
+      "sha256": "9479007849676e71bf7ca17b353c4afc69e40e181ba9f91153c067eed800ff64",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/echeveria.webp",
+        "width": 640,
+        "height": 545,
+        "sha256": "27bccc5948605b57c802288285c280dc3838adaa940fcaa143ad3ead584965f9"
+      }
     },
     "eeuwig-moes": {
       "slug": "eeuwig-moes",
@@ -656,6 +866,12 @@
         "width": 1536,
         "height": 497,
         "notitie": "Uitsnede van hetzelfde Commons-origineel, in de brede hero-verhouding (68:22), gecentreerd op bladrozet en stengels."
+      },
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/eeuwig-moes.webp",
+        "width": 640,
+        "height": 961,
+        "sha256": "a6c0fc6b5e5475c304c8067ed8c86804ed6a46f44e40edbb51845a4f89529cf7"
       }
     },
     "eucalyptus": {
@@ -674,7 +890,13 @@
       "bytes": 62734,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "d282084e780d39c7cce40c130f12461ed76de6715cfb673cb03207ace9505693"
+      "sha256": "d282084e780d39c7cce40c130f12461ed76de6715cfb673cb03207ace9505693",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/eucalyptus.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "4237c088ac2752eb4660740104e256f15c2f38b19b970cbefbd12d44e9d1a199"
+      }
     },
     "forsythia": {
       "slug": "forsythia",
@@ -692,7 +914,13 @@
       "bytes": 183280,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "e4f92cce5d6e79cbadec3b31df46bc65c686f0dc2f7a2efed582d24694cd7ce8"
+      "sha256": "e4f92cce5d6e79cbadec3b31df46bc65c686f0dc2f7a2efed582d24694cd7ce8",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/forsythia.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "29804b1a4d22871ae8d496bba5f38c3e2d252128e4adffaf8a6f68519869b55b"
+      }
     },
     "framboos": {
       "slug": "framboos",
@@ -710,7 +938,13 @@
       "bytes": 124392,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "39062c81d6bd3c8a219cbc8a1fc621412e1b190ca279e2d52865db70642ae936"
+      "sha256": "39062c81d6bd3c8a219cbc8a1fc621412e1b190ca279e2d52865db70642ae936",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/framboos.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "cbeba3b33a2f976199ecd525b4b77a19a03164834fca90e8d39e711d4f9f6844"
+      }
     },
     "fuchsia": {
       "slug": "fuchsia",
@@ -728,7 +962,13 @@
       "bytes": 68986,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "11917bb61262b5c5bfa092d9371fe720f2b6a36345beb7d1e862de098d953fca"
+      "sha256": "11917bb61262b5c5bfa092d9371fe720f2b6a36345beb7d1e862de098d953fca",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/fuchsia.webp",
+        "width": 640,
+        "height": 907,
+        "sha256": "16f9df41c013420e850a8903988ea4561124c321585eca926351dea4f751fcf9"
+      }
     },
     "gele-kornoelje": {
       "slug": "gele-kornoelje",
@@ -746,7 +986,13 @@
       "bytes": 68671,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "17e839f0ac7d58e01cff91e1bffa1f1262ab4fec23511cc6cf9bd2bf06d04340"
+      "sha256": "17e839f0ac7d58e01cff91e1bffa1f1262ab4fec23511cc6cf9bd2bf06d04340",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/gele-kornoelje.webp",
+        "width": 640,
+        "height": 800,
+        "sha256": "67484704dc3af97d4cd4a4298b65eccb467d8690b0b90c7e53af4c6f035577cf"
+      }
     },
     "gele-lis": {
       "slug": "gele-lis",
@@ -764,7 +1010,13 @@
       "status": "goedgekeurd",
       "sha256": "1da2f9fe13dcd1604402cf7efbce810e5dd712884ce0a01f60100bc00e65205c",
       "bytes": 182260,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/gele-lis.webp",
+        "width": 640,
+        "height": 792,
+        "sha256": "06b0435a896d308f8ed60d510a115fd488111191a4a282f2643c0f76b728fe98"
+      }
     },
     "gewone-brunel": {
       "slug": "gewone-brunel",
@@ -782,7 +1034,13 @@
       "status": "goedgekeurd",
       "sha256": "189ef3aa7333a5f40fab4f5645bd02226fd4c5f5121ebb82d78162dd44fca5f1",
       "bytes": 177816,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/gewone-brunel.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "e379566a03e0c9277f1790c06953989192b35b5105a3d1885d21ea90d85d1b71"
+      }
     },
     "gewone-margriet": {
       "slug": "gewone-margriet",
@@ -800,7 +1058,13 @@
       "status": "goedgekeurd",
       "sha256": "1fc9ecc4398751c0f574145190430426a646f2d1e0549655536103f68f67e175",
       "bytes": 112034,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/gewone-margriet.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "dfe4847efd56c48566c280da5555d698cfa284fe53f8b56ae1a12230b6ab1221"
+      }
     },
     "goede-hendrik": {
       "slug": "goede-hendrik",
@@ -818,7 +1082,13 @@
       "status": "goedgekeurd",
       "sha256": "5ddfa44d55c263effa21756ad5564cc8259f38afd62ff69c8b1c399ca31348ce",
       "bytes": 313568,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/goede-hendrik.webp",
+        "width": 640,
+        "height": 670,
+        "sha256": "c657c4d614374cd7338788c8048824f57f457e9f00e92b38f3510e6a85ee43fc"
+      }
     },
     "gojibes": {
       "slug": "gojibes",
@@ -836,7 +1106,13 @@
       "bytes": 201297,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "a91fe0d32874ad8aaa1360a85ab928760d6386eccefd4d94e1765fde2bc03aeb"
+      "sha256": "a91fe0d32874ad8aaa1360a85ab928760d6386eccefd4d94e1765fde2bc03aeb",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/gojibes.webp",
+        "width": 640,
+        "height": 461,
+        "sha256": "e34115252064c6be8bcbdcaa00d8be94a2feaae1df211cd26776a9453aba948f"
+      }
     },
     "graslelie": {
       "slug": "graslelie",
@@ -854,7 +1130,13 @@
       "bytes": 158234,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "e7340cded5c468af06219e624efb455dac4c9cd0bc1789b6d6e22f532b5909fa"
+      "sha256": "e7340cded5c468af06219e624efb455dac4c9cd0bc1789b6d6e22f532b5909fa",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/graslelie.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "f325318cb3144b5aeed0250014687e65296f19481f054f4139a9c3028eb7d3d0"
+      }
     },
     "grote-kattenstaart": {
       "slug": "grote-kattenstaart",
@@ -872,7 +1154,13 @@
       "status": "goedgekeurd",
       "sha256": "43fc6d1f24828a211f2ad3a83c09e513d3647a8f0870b4704a326a3f0016afd8",
       "bytes": 184222,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/grote-kattenstaart.webp",
+        "width": 640,
+        "height": 851,
+        "sha256": "dbaae0e39b9759770cb283e5c5b1809b1f1a89a31298d284981d5e72ad9654ca"
+      }
     },
     "hazelaar": {
       "slug": "hazelaar",
@@ -890,7 +1178,13 @@
       "bytes": 141874,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "d2b6066bfb1474dfb31a5b62eafc3d052c5ce916b5f4e8b430c1c81c18143229"
+      "sha256": "d2b6066bfb1474dfb31a5b62eafc3d052c5ce916b5f4e8b430c1c81c18143229",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/hazelaar.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "dcca0c8698e74312a7f264d4a69d9c9e771a7381363ff833b9ac1b43d679eb58"
+      }
     },
     "heemst": {
       "slug": "heemst",
@@ -908,7 +1202,13 @@
       "status": "goedgekeurd",
       "sha256": "403b9cce797bf9c08f1601add6f075b73449c3574c94e2f4136f129334b4d98d",
       "bytes": 131967,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/heemst.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "e767148c362a07eb2fbc282aba42da43527dc24bd8519710ead089cd3e1b9170"
+      }
     },
     "herfstaster": {
       "slug": "herfstaster",
@@ -926,7 +1226,13 @@
       "bytes": 126405,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "ce74e6d3531e856a7a4eb0b01389b8344407b932360ac2506fbf6ab7458f007b"
+      "sha256": "ce74e6d3531e856a7a4eb0b01389b8344407b932360ac2506fbf6ab7458f007b",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/herfstaster.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "3fe536ec724594d66e089a71b5a2cff494ccb5912a5d19a69e1fa5ac06a763c2"
+      }
     },
     "herfstolijfwilg": {
       "slug": "herfstolijfwilg",
@@ -944,7 +1250,13 @@
       "bytes": 243027,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "3f47ff2aeca99f4c031fcb0d26c9196de4879c9ef140db04a2304041b15a3a8f"
+      "sha256": "3f47ff2aeca99f4c031fcb0d26c9196de4879c9ef140db04a2304041b15a3a8f",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/herfstolijfwilg.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "15dc68ade06e07d30d85d6db338cac752774f8214d7c492f1f5953f27e732495"
+      }
     },
     "heuchera": {
       "slug": "heuchera",
@@ -962,7 +1274,13 @@
       "bytes": 411344,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "10fb2f6de0937d6ec1ccb36c09205699ff99d79e4dce02aee1cf0a868bec79bd"
+      "sha256": "10fb2f6de0937d6ec1ccb36c09205699ff99d79e4dce02aee1cf0a868bec79bd",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/heuchera.webp",
+        "width": 640,
+        "height": 580,
+        "sha256": "3edad90dfc3f660c1ff5d8d84e25c4fa5f3ac07e663458e090aa2efba3988e79"
+      }
     },
     "hondsroos": {
       "slug": "hondsroos",
@@ -980,7 +1298,13 @@
       "status": "goedgekeurd",
       "sha256": "a9dde4aa859572e4f20f0ffca40ef1674af100ecf190ffb4911739b0b9bad1df",
       "bytes": 168340,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/hondsroos.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "8c3ad29ae5cfc91e4b789093801d309b775db7b458ccfd38316ec796dac9357a"
+      }
     },
     "honingbes": {
       "slug": "honingbes",
@@ -998,7 +1322,13 @@
       "bytes": 130746,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "5aa248a01ba427ab2e5b89016a253005e2d96bcee7cd91a5a7f4d1d86f03f8c7"
+      "sha256": "5aa248a01ba427ab2e5b89016a253005e2d96bcee7cd91a5a7f4d1d86f03f8c7",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/honingbes.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "a14009d0f6b5022803b9c548a64d252fff1ae51387ef51374dbd948d6f2908e6"
+      }
     },
     "hortensia": {
       "slug": "hortensia",
@@ -1016,7 +1346,13 @@
       "bytes": 154828,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "58b6609524152742d0e7a7ce3fa27b4978639f299c5a49236dcaf71fe59f8f81"
+      "sha256": "58b6609524152742d0e7a7ce3fa27b4978639f299c5a49236dcaf71fe59f8f81",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/hortensia.webp",
+        "width": 640,
+        "height": 640,
+        "sha256": "a89267671045d03d04c754686c3b299f61cb0934b68f3159667f1262a15fa085"
+      }
     },
     "hosta": {
       "slug": "hosta",
@@ -1034,7 +1370,13 @@
       "bytes": 164902,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "7dd72d9822b969789a2789088dcd3b6cc7d2fbc50ee88f4cd2e73d0aaa62cd30"
+      "sha256": "7dd72d9822b969789a2789088dcd3b6cc7d2fbc50ee88f4cd2e73d0aaa62cd30",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/hosta.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "f50f1d6eb3c2d8ff39eb28a86fa55608aef494c783e554bcd13d2ffc73e6e7ff"
+      }
     },
     "huislook": {
       "slug": "huislook",
@@ -1052,7 +1394,13 @@
       "bytes": 285229,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "f4b79c3401eae0161cadcb7bc29a0cab6097f772d57a39964ca163c0882f1995"
+      "sha256": "f4b79c3401eae0161cadcb7bc29a0cab6097f772d57a39964ca163c0882f1995",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/huislook.webp",
+        "width": 640,
+        "height": 1045,
+        "sha256": "14b99e4e66503adeb7cf957d181830ea1cb941a30ec32b22ce0f8a98f27f6e58"
+      }
     },
     "echt-ijzerhard": {
       "slug": "echt-ijzerhard",
@@ -1070,7 +1418,13 @@
       "status": "goedgekeurd",
       "sha256": "231fe0ea25dcdd0c24d39b88a8454ef8eec46f7db3a52f9cc099312c9daea959",
       "bytes": 319720,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/echt-ijzerhard.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "c50912e3a57aa147188d897e4c23681428e08d079f650b2242ae576444becc88"
+      }
     },
     "iris": {
       "slug": "iris",
@@ -1088,7 +1442,13 @@
       "bytes": 130763,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "70da55301bc20bc3c82eab3e415e89cd5f067c2ac2a3b2390dcac63941da9597"
+      "sha256": "70da55301bc20bc3c82eab3e415e89cd5f067c2ac2a3b2390dcac63941da9597",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/iris.webp",
+        "width": 640,
+        "height": 828,
+        "sha256": "97677f88e02556893915f0e1c19e53164f276b9405e6584da0da229504259272"
+      }
     },
     "jadeplant": {
       "slug": "jadeplant",
@@ -1106,7 +1466,13 @@
       "bytes": 286258,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "700bb9ef8ee36a9513e1070e1269b13b6596061875eb0c3d296f60f03c6754fc"
+      "sha256": "700bb9ef8ee36a9513e1070e1269b13b6596061875eb0c3d296f60f03c6754fc",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/jadeplant.webp",
+        "width": 640,
+        "height": 854,
+        "sha256": "59977f74ae2a050547b137abe9b14d021b8637c90169520440ab19ffb09d507e"
+      }
     },
     "japanse-wijnbes": {
       "slug": "japanse-wijnbes",
@@ -1124,7 +1490,13 @@
       "bytes": 160756,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "209d162d9a15699647a9a2e9cc01e5a4ed8edf24070e1b2063bc00e14288230d"
+      "sha256": "209d162d9a15699647a9a2e9cc01e5a4ed8edf24070e1b2063bc00e14288230d",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/japanse-wijnbes.webp",
+        "width": 640,
+        "height": 426,
+        "sha256": "bc77db7f3413cc0ac2c277b6170743e6f512b0c221b4e2e768377eafbf51c7a0"
+      }
     },
     "jostabes": {
       "slug": "jostabes",
@@ -1142,7 +1514,13 @@
       "bytes": 89262,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "8eb6a22f03323231bcf81c4d0a8c2a0dd0963d1ae96128cf109eb52748a3b839"
+      "sha256": "8eb6a22f03323231bcf81c4d0a8c2a0dd0963d1ae96128cf109eb52748a3b839",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/jostabes.webp",
+        "width": 640,
+        "height": 426,
+        "sha256": "1611a82e5d923782460cd2ec65044f1065a1252e3d96a922daec7b37a5594f3c"
+      }
     },
     "kaaps-viooltje": {
       "slug": "kaaps-viooltje",
@@ -1160,7 +1538,13 @@
       "bytes": 159643,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "28caaa83f5595ac057dc8ac82556c5f2bb6bb49e65065d285411df6e03167314"
+      "sha256": "28caaa83f5595ac057dc8ac82556c5f2bb6bb49e65065d285411df6e03167314",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/kaaps-viooltje.webp",
+        "width": 640,
+        "height": 459,
+        "sha256": "04a971e77fc31f5247b524b0030e1d825f6159cb1fe458d715259a4b62a52ed2"
+      }
     },
     "kaasjeskruid": {
       "slug": "kaasjeskruid",
@@ -1178,7 +1562,13 @@
       "status": "goedgekeurd",
       "sha256": "f7ba8ea54448d68c7f74d0cc842866f64bac28b9666ff45fc85af54208e0d236",
       "bytes": 139040,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/kaasjeskruid.webp",
+        "width": 640,
+        "height": 525,
+        "sha256": "0259f2e42cec57e03db2431c5b830dc97082662c4d269d78bf81f6e0218a0306"
+      }
     },
     "kalanchoe": {
       "slug": "kalanchoe",
@@ -1196,7 +1586,13 @@
       "bytes": 167571,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "cfa5f5d5ea2e34c26376a229ce88bb14fb58278a52d6ff7031cdc69fa7094f24"
+      "sha256": "cfa5f5d5ea2e34c26376a229ce88bb14fb58278a52d6ff7031cdc69fa7094f24",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/kalanchoe.webp",
+        "width": 640,
+        "height": 707,
+        "sha256": "58570b9ffe5271877a8b55cf64c573db8acf1bf31d0348b372afe3ea10cf7c4c"
+      }
     },
     "kamperfoelie": {
       "slug": "kamperfoelie",
@@ -1214,7 +1610,13 @@
       "bytes": 174630,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "1525a91aef8db20b8ba717df3c977a89ac4ca0da29f1d392259176a9a98592a5"
+      "sha256": "1525a91aef8db20b8ba717df3c977a89ac4ca0da29f1d392259176a9a98592a5",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/kamperfoelie.webp",
+        "width": 640,
+        "height": 482,
+        "sha256": "43d2a1d5ebfe9e8c3d6d36e933aacc59172d2ef1f5d054be9840c9e6ef858314"
+      }
     },
     "kardoen": {
       "slug": "kardoen",
@@ -1232,7 +1634,13 @@
       "status": "goedgekeurd",
       "sha256": "f68288747ad82c0bcdb67aa51fe96c62d54bbac2556bcfbca4e155b464e6aed1",
       "bytes": 395166,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/kardoen.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "c693aa28c2b4a89fba8c1149263fd42ce1266d442c0df7abe45afb13740fe0f9"
+      }
     },
     "kattenkruid": {
       "slug": "kattenkruid",
@@ -1250,7 +1658,13 @@
       "bytes": 374096,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "f3e121d7559e7c800ed0cf891c0a89bca315d07ed6923e5f448e4d2c7d24c363"
+      "sha256": "f3e121d7559e7c800ed0cf891c0a89bca315d07ed6923e5f448e4d2c7d24c363",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/kattenkruid.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "935f10470eb91429fa3189d3f47bf7ce08167da899281f1167f990f369025cc4"
+      }
     },
     "kers": {
       "slug": "kers",
@@ -1268,7 +1682,13 @@
       "bytes": 200237,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "edfbf84156bdb817be0f9a9428f02e93b51a2b75d5af6102a2fc15e759fc502c"
+      "sha256": "edfbf84156bdb817be0f9a9428f02e93b51a2b75d5af6102a2fc15e759fc502c",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/kers.webp",
+        "width": 640,
+        "height": 519,
+        "sha256": "91edee8a645926ce6d83a581ec4f7576c49ee15cab06d605cc8d927fea178818"
+      }
     },
     "kerstcactus": {
       "slug": "kerstcactus",
@@ -1286,7 +1706,13 @@
       "bytes": 93145,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "5f1e76f5e027c210d7a33afd202e167e355b78a36bc6cc393382a08a168845ad"
+      "sha256": "5f1e76f5e027c210d7a33afd202e167e355b78a36bc6cc393382a08a168845ad",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/kerstcactus.webp",
+        "width": 640,
+        "height": 640,
+        "sha256": "38e051dce413e5ae7a7b80df5b4c7bc4126cf615004a57a7117a7a7323de060d"
+      }
     },
     "kerstroos": {
       "slug": "kerstroos",
@@ -1304,7 +1730,13 @@
       "bytes": 183498,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "658d499b07eb70bf7cbb7b782ff228e9ef04ac8a7a39ad0d3e16852d10d73f5d"
+      "sha256": "658d499b07eb70bf7cbb7b782ff228e9ef04ac8a7a39ad0d3e16852d10d73f5d",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/kerstroos.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "d1a62226c8de74aea0f014837099bf3334a339eb1f473e7df453183b9aadcbba"
+      }
     },
     "kettinghart": {
       "slug": "kettinghart",
@@ -1322,7 +1754,13 @@
       "bytes": 78726,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "fe94b2857df215c49550380dcbe9777f21a8d2d754da533674608ff39bb7371f"
+      "sha256": "fe94b2857df215c49550380dcbe9777f21a8d2d754da533674608ff39bb7371f",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/kettinghart.webp",
+        "width": 640,
+        "height": 960,
+        "sha256": "b8a85cabff6b43fadbf0f0fff45162e0a4623bd450a83cb2e158d401a6450bbd"
+      }
     },
     "kiwi": {
       "slug": "kiwi",
@@ -1340,7 +1778,13 @@
       "bytes": 247268,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "7540a327457422a7126c659c42edaa50a1043e39209c79592317094577d52615"
+      "sha256": "7540a327457422a7126c659c42edaa50a1043e39209c79592317094577d52615",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/kiwi.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "8cb8fc758cb56f4972a57c6fad0b54433778fc1443956ce3b4f5806ff4d267d4"
+      }
     },
     "kiwibes": {
       "slug": "kiwibes",
@@ -1358,7 +1802,13 @@
       "bytes": 121849,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "0ba0cea1955b243f1f13350f6bf8c7c9835e12a466f472806fd1bac769fa1bf5"
+      "sha256": "0ba0cea1955b243f1f13350f6bf8c7c9835e12a466f472806fd1bac769fa1bf5",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/kiwibes.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "b154bccdce1cd7e6e25728f5a44d2738b86eff33a535196f383ee9c06a8a1ee2"
+      }
     },
     "klimop": {
       "slug": "klimop",
@@ -1376,7 +1826,13 @@
       "bytes": 360979,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "6e8adde5983e7d00c710cdaed1e22b5b98b3c8537c62f6f13e40326c2be44e7e"
+      "sha256": "6e8adde5983e7d00c710cdaed1e22b5b98b3c8537c62f6f13e40326c2be44e7e",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/klimop.webp",
+        "width": 640,
+        "height": 705,
+        "sha256": "765becd73ac6dd2bfbc604e60f4e43c32a052989ac7c108f7df9ae1536ed2dc1"
+      }
     },
     "palmkool": {
       "slug": "palmkool",
@@ -1394,7 +1850,13 @@
       "status": "goedgekeurd",
       "sha256": "ae15a01226a1fd3940139d092dd391f6dd8596ea6436c38159bfda1c07339594",
       "bytes": 353771,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/palmkool.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "cec38d36b94fa3662bb62c75f7868bedabb6742dfc873978db661008cd94ef46"
+      }
     },
     "ruig-klokje": {
       "slug": "ruig-klokje",
@@ -1412,7 +1874,13 @@
       "status": "goedgekeurd",
       "sha256": "f9afca1da6b54baae29ac1441e456ff935e74035311d957e38c36777d553805a",
       "bytes": 160327,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/ruig-klokje.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "a1f5d1fb69c4cdd394d5b86ddd137214424937f4522eb8f3d83be3ca9bb2d33b"
+      }
     },
     "knoopkruid": {
       "slug": "knoopkruid",
@@ -1430,7 +1898,13 @@
       "status": "goedgekeurd",
       "sha256": "0f963f7f674b481306ffeac4c6ba82c5cde9347950c25b5e76c33b0bf97e46be",
       "bytes": 186513,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/knoopkruid.webp",
+        "width": 640,
+        "height": 640,
+        "sha256": "cff44c95d38f06e72f4f692563028b8a07d4a4a81d30c75317a92c93fdf617c9"
+      }
     },
     "koninginnekruid": {
       "slug": "koninginnekruid",
@@ -1448,7 +1922,13 @@
       "status": "goedgekeurd",
       "sha256": "029e9f6b4ea79af25f12f90766e97fdeaad43004bb6108b53b99e0ddc0c673db",
       "bytes": 177886,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/koninginnekruid.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "12dd559a55fc7d40317908604836c90afbf0bc768f82a0ac901224c296e24fea"
+      }
     },
     "kruisbes": {
       "slug": "kruisbes",
@@ -1466,7 +1946,13 @@
       "bytes": 202444,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "3dce18091a5a638f74e85fddaad89702d5183e96ba10b1f0977f0c0e6bb1ee37"
+      "sha256": "3dce18091a5a638f74e85fddaad89702d5183e96ba10b1f0977f0c0e6bb1ee37",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/kruisbes.webp",
+        "width": 640,
+        "height": 456,
+        "sha256": "57550bf9cf54ac766300df7334d2f4f6e28b5cfe290aa0b26c195c3cb9cb4030"
+      }
     },
     "kweepeer": {
       "slug": "kweepeer",
@@ -1484,7 +1970,13 @@
       "bytes": 186309,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "35a16003cf4051fa2b27b91cd9553d8b4bec759add6f6297ce618d35d53b3b6b"
+      "sha256": "35a16003cf4051fa2b27b91cd9553d8b4bec759add6f6297ce618d35d53b3b6b",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/kweepeer.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "87ed505c9440b3468d3bdb50f8a1186d20d806cf30b80fb787d8defd74921827"
+      }
     },
     "laurier": {
       "slug": "laurier",
@@ -1502,7 +1994,13 @@
       "bytes": 243364,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "0df3fa33969ce125b9bbf6ca8a967d97b01995551e2b3d07815d1af97fbf03bb"
+      "sha256": "0df3fa33969ce125b9bbf6ca8a967d97b01995551e2b3d07815d1af97fbf03bb",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/laurier.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "86d62dbc1208b86b6f350ce938d09a63ca2f27416b692be2a4f9ee67361d95a4"
+      }
     },
     "laurierkers": {
       "slug": "laurierkers",
@@ -1520,7 +2018,13 @@
       "bytes": 272488,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "b61f24d303d658a59d62a987cc7489eb9823dc8226b952007877f07ee696b8da"
+      "sha256": "b61f24d303d658a59d62a987cc7489eb9823dc8226b952007877f07ee696b8da",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/laurierkers.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "f6098f2e6175fdd0b511082dddaab13e2ad860cc02be568e933c0f97edef1553"
+      }
     },
     "lavas": {
       "slug": "lavas",
@@ -1538,7 +2042,13 @@
       "bytes": 225936,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "2a8b481c2719de3c6af5fc52e22042f2212e537417030e879fc5840cc62cd64c"
+      "sha256": "2a8b481c2719de3c6af5fc52e22042f2212e537417030e879fc5840cc62cd64c",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/lavas.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "3af93487602bbbab19bfa8df95af5a045aec70d5055c4b37bf3c3f762c859d78"
+      }
     },
     "lavendel": {
       "slug": "lavendel",
@@ -1556,7 +2066,13 @@
       "bytes": 422400,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "28447249a1830b02d4105b1b1bc0162894dcfa7d6657373337f9e34b24a9216a"
+      "sha256": "28447249a1830b02d4105b1b1bc0162894dcfa7d6657373337f9e34b24a9216a",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/lavendel.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "9513db6e217db27001cf7ae11e02136bae9ae79f6bb0433db8a32636cfa2ae3a"
+      }
     },
     "lepelplant": {
       "slug": "lepelplant",
@@ -1574,7 +2090,13 @@
       "bytes": 243147,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "b72f70eef90a8bb35236d7d3f8fb0093070b5ecacfa16297c19ec3918cd4af5d"
+      "sha256": "b72f70eef90a8bb35236d7d3f8fb0093070b5ecacfa16297c19ec3918cd4af5d",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/lepelplant.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "6fa6f6deff3d67488cca6d85ffdd479b40709bc28ec0e0a8dd0830dac62356cf"
+      }
     },
     "liguster": {
       "slug": "liguster",
@@ -1592,7 +2114,13 @@
       "bytes": 205863,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "8dde57e9a2588bd7393b846bf2c777e4f7c78f596d955b9a0d251e52a414aa1d"
+      "sha256": "8dde57e9a2588bd7393b846bf2c777e4f7c78f596d955b9a0d251e52a414aa1d",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/liguster.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "eb45efa1f21be701aa7ddca1d6cc4b6a05dc6937eb09b90195ead41ec7d463c3"
+      }
     },
     "lijsterbes": {
       "slug": "lijsterbes",
@@ -1610,7 +2138,13 @@
       "status": "goedgekeurd",
       "sha256": "99ba955bc47f6b666238c423d5d438e6af0b739d31c3ac03b3b4468c22d0b07a",
       "bytes": 248494,
-      "width_max": 1024
+      "width_max": 1024,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/lijsterbes.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "31f0683a600ed553f61cae0bd2171907193d93b2ef30c0c834124c17a42d95b8"
+      }
     },
     "gevlekt-longkruid": {
       "slug": "gevlekt-longkruid",
@@ -1628,7 +2162,13 @@
       "status": "goedgekeurd",
       "sha256": "6aae8cfc188ff16f9542e5c8661190ce8f96b32caba9b472387abb379ca69d7e",
       "bytes": 172107,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/gevlekt-longkruid.webp",
+        "width": 640,
+        "height": 481,
+        "sha256": "e77869f2f331dd680e9bfe54175e511755a7c32072979895f12db3a4af2de529"
+      }
     },
     "look-zonder-look": {
       "slug": "look-zonder-look",
@@ -1646,7 +2186,13 @@
       "status": "goedgekeurd",
       "sha256": "af60bbc890bebcb818958ee3eb64c9b64eff970d41616e90ecaa1139f2c7d8a3",
       "bytes": 64079,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/look-zonder-look.webp",
+        "width": 640,
+        "height": 340,
+        "sha256": "6d2a5d04214afaaf3476a303301a14833d7f4d18d7e909dbdfd6b6c18d81ae68"
+      }
     },
     "meidoorn": {
       "slug": "meidoorn",
@@ -1664,7 +2210,13 @@
       "status": "goedgekeurd",
       "sha256": "e19bfb39f77f646dadcd0630b31f747c5001cf0486a98ffc2f7ce93ed546330a",
       "bytes": 200048,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/meidoorn.webp",
+        "width": 640,
+        "height": 422,
+        "sha256": "8cf864ccf9a1cb3ae325f6676130130ea31ea279f7d8d67715632ceb7eb738d6"
+      }
     },
     "mierikswortel": {
       "slug": "mierikswortel",
@@ -1682,7 +2234,13 @@
       "status": "goedgekeurd",
       "sha256": "17add20bece6cff97b4262bd3ea32d3c3117913f7afb6e9937d691119db144f8",
       "bytes": 132922,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/mierikswortel.webp",
+        "width": 640,
+        "height": 960,
+        "sha256": "5bc6a07e9d80b3ca358ab14fa63182a0f4857ce8f5d78dc7effd987141a0fcdf"
+      }
     },
     "mispel": {
       "slug": "mispel",
@@ -1700,7 +2258,13 @@
       "bytes": 230458,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "c865647d830e2d254643b58e2218ab4247a22e1eec4006af187b7a35d4f133e0"
+      "sha256": "c865647d830e2d254643b58e2218ab4247a22e1eec4006af187b7a35d4f133e0",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/mispel.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "f7da79f6a443fa5b3b65f1e7fed48449cae2998b993bd3a34e1d1716e26abdc9"
+      }
     },
     "moerasspirea": {
       "slug": "moerasspirea",
@@ -1718,7 +2282,13 @@
       "status": "goedgekeurd",
       "sha256": "82dfed4048d7a32226bf4d68b6357799f9967fe05be785b714fc870ddead3fd2",
       "bytes": 135354,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/moerasspirea.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "9fe488673284e8c03a2669f3da2a5e1a8e2807c0165f68246d5d136b126bf9cf"
+      }
     },
     "moerbei": {
       "slug": "moerbei",
@@ -1736,7 +2306,13 @@
       "bytes": 174122,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "266e7dcecbfd90124759ca77e2dfdbdd9007a1e29e12c4f919b290589c71d9b3"
+      "sha256": "266e7dcecbfd90124759ca77e2dfdbdd9007a1e29e12c4f919b290589c71d9b3",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/moerbei.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "d7b6d833daec5c09f39a9f92afe681ef57924f766be3994c950c6caa05cf5c9e"
+      }
     },
     "monstera": {
       "slug": "monstera",
@@ -1754,7 +2330,13 @@
       "bytes": 338631,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "699bcb804b28351e83b7a4c6fce4c5e5f928b3ae98de92391bd57c33cdcbdad8"
+      "sha256": "699bcb804b28351e83b7a4c6fce4c5e5f928b3ae98de92391bd57c33cdcbdad8",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/monstera.webp",
+        "width": 640,
+        "height": 728,
+        "sha256": "678f67ed666e07a02b9b562906e63699e06ad21eb4b1eefbae80df330e349461"
+      }
     },
     "munt": {
       "slug": "munt",
@@ -1772,7 +2354,13 @@
       "bytes": 171393,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "cb3b0d4fa18d0d214be4b63a26a050bc5b96491959cfba78787cbd8e6562ef20"
+      "sha256": "cb3b0d4fa18d0d214be4b63a26a050bc5b96491959cfba78787cbd8e6562ef20",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/munt.webp",
+        "width": 640,
+        "height": 490,
+        "sha256": "5d2ed36057cfbc937515bd8f3c3acf293e6b24178bd28a1545820152e3063b34"
+      }
     },
     "oleander": {
       "slug": "oleander",
@@ -1790,7 +2378,13 @@
       "bytes": 158030,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "bebff224519b055156477d07e1443f16bed43440a5b427b9cd5bd4c12028d44e"
+      "sha256": "bebff224519b055156477d07e1443f16bed43440a5b427b9cd5bd4c12028d44e",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/oleander.webp",
+        "width": 640,
+        "height": 467,
+        "sha256": "57e23c27988964fac9df88c81b985f4bc84166e2bc0a11e93adf7599c41c59e2"
+      }
     },
     "ooievaarsbek": {
       "slug": "ooievaarsbek",
@@ -1808,7 +2402,13 @@
       "bytes": 150639,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "08ed96e071ad8e08f7a371afa7e98b37db36c426a98fa8dc5de05539a256aef7"
+      "sha256": "08ed96e071ad8e08f7a371afa7e98b37db36c426a98fa8dc5de05539a256aef7",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/ooievaarsbek.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "6c518e64af38c22b241df26c9abdf6cea52a48339417003880ddb0f021dfb741"
+      }
     },
     "oregano": {
       "slug": "oregano",
@@ -1826,7 +2426,13 @@
       "bytes": 226787,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "0fb8d13aa84f05cbc519e59473eedabb4cc66519df6b837f952168caffb0b1ef"
+      "sha256": "0fb8d13aa84f05cbc519e59473eedabb4cc66519df6b837f952168caffb0b1ef",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/oregano.webp",
+        "width": 640,
+        "height": 640,
+        "sha256": "d21bb6a741e81eca1a3a44fa62a4d953d1a06cc7af2400764058000a6036521c"
+      }
     },
     "passiebloem": {
       "slug": "passiebloem",
@@ -1844,7 +2450,13 @@
       "bytes": 205626,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "f756a59338c9a8f735d450c299693469f1ffde6c6c9921a6201ba81f2fb01428"
+      "sha256": "f756a59338c9a8f735d450c299693469f1ffde6c6c9921a6201ba81f2fb01428",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/passiebloem.webp",
+        "width": 640,
+        "height": 679,
+        "sha256": "6e0d194833d4082876e8b9ef8d4e833e8a12507fe50b0f16d71cf63b1314c8bd"
+      }
     },
     "peer": {
       "slug": "peer",
@@ -1862,7 +2474,13 @@
       "bytes": 149469,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "3f941d912e3d1930378e72581fcdb45f5df82a268a401f96a540b8dd26ce6c50"
+      "sha256": "3f941d912e3d1930378e72581fcdb45f5df82a268a401f96a540b8dd26ce6c50",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/peer.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "966f71c1eee5b86cb91ef911869b65d0888b48559f82efc47aa942874d6c2245"
+      }
     },
     "pelargonium": {
       "slug": "pelargonium",
@@ -1880,7 +2498,13 @@
       "bytes": 98893,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "0a77c961b3a0f81b39f10f6e234f3b77efc95a5af6e1cc332e6df73ed69a7ec3"
+      "sha256": "0a77c961b3a0f81b39f10f6e234f3b77efc95a5af6e1cc332e6df73ed69a7ec3",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/pelargonium.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "9894f6684de4259c7cab282107e6908b828fc690753395603675094058cee1f4"
+      }
     },
     "peperomia": {
       "slug": "peperomia",
@@ -1898,7 +2522,13 @@
       "bytes": 122247,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "0f8d51ba07e83e322ad2cef68d54e8333c9c43f054c4398effe001d52702043c"
+      "sha256": "0f8d51ba07e83e322ad2cef68d54e8333c9c43f054c4398effe001d52702043c",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/peperomia.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "93c1e86e1a1b66606be59a91b9a67ac9cd23d3a94cc0ff71343387776bd8ebd0"
+      }
     },
     "perzik": {
       "slug": "perzik",
@@ -1916,7 +2546,13 @@
       "bytes": 164378,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "cc0eb4664a11de7755eaf7459f2c5188f5b13448b33ba46014ef3dfb4d48ebe9"
+      "sha256": "cc0eb4664a11de7755eaf7459f2c5188f5b13448b33ba46014ef3dfb4d48ebe9",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/perzik.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "7d16575f4f11f38353c5ce8edf841c693f568f269bcfb13bc506288f0b444d03"
+      }
     },
     "philodendron": {
       "slug": "philodendron",
@@ -1934,7 +2570,13 @@
       "bytes": 226079,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "2bf67066098ab5dbf73cfd27b779e85d0bf86e4cc7de4df3e74384d77cfd8132"
+      "sha256": "2bf67066098ab5dbf73cfd27b779e85d0bf86e4cc7de4df3e74384d77cfd8132",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/philodendron.webp",
+        "width": 640,
+        "height": 640,
+        "sha256": "a3b9e3bf3a3ecca86695c3cba7a1f2137db7bbcdc7309483a3b2ecdc1a914691"
+      }
     },
     "phlox": {
       "slug": "phlox",
@@ -1952,7 +2594,13 @@
       "bytes": 181162,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "badab869cc7344b5082f218142971075ee002340c62a6f5549b42e9dc3c56965"
+      "sha256": "badab869cc7344b5082f218142971075ee002340c62a6f5549b42e9dc3c56965",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/phlox.webp",
+        "width": 640,
+        "height": 453,
+        "sha256": "665955935b1b6ad73ee0d269667b7281e19c526df87b6874676fd8e794386bb8"
+      }
     },
     "pilea": {
       "slug": "pilea",
@@ -1970,7 +2618,13 @@
       "bytes": 181791,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "6c689743004b25ed10bb22693694054f3efe9addc2b13dbbb82fe6d1cf185856"
+      "sha256": "6c689743004b25ed10bb22693694054f3efe9addc2b13dbbb82fe6d1cf185856",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/pilea.webp",
+        "width": 640,
+        "height": 854,
+        "sha256": "c743bf32c92b40789560f058b13e4a1ea7f58c623b25eab0cfdd1c7396cc0f13"
+      }
     },
     "pioenroos": {
       "slug": "pioenroos",
@@ -1988,7 +2642,13 @@
       "bytes": 130048,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "0fa5b41b09c7cd6e41a262c061a0dcaafd41753eaa5926b4b5c5f476e9b51070"
+      "sha256": "0fa5b41b09c7cd6e41a262c061a0dcaafd41753eaa5926b4b5c5f476e9b51070",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/pioenroos.webp",
+        "width": 640,
+        "height": 424,
+        "sha256": "1804c7e60da1416d82ab50f33bea7dcb787dfdebc1ef1b69ceae04a7e254b3b2"
+      }
     },
     "pothos": {
       "slug": "pothos",
@@ -2006,7 +2666,13 @@
       "bytes": 201652,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "06fd3183468d036a09ae474f63568daa6402e7b531a80d44abc05ef77cc47d5f"
+      "sha256": "06fd3183468d036a09ae474f63568daa6402e7b531a80d44abc05ef77cc47d5f",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/pothos.webp",
+        "width": 640,
+        "height": 857,
+        "sha256": "81e29962a8ce410745ee22278a724062d5e672a3e5e6f4d4dfb1f15110f56e88"
+      }
     },
     "pruim": {
       "slug": "pruim",
@@ -2024,7 +2690,13 @@
       "bytes": 310737,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "fb6cc6d80897beef543f3f161009eebb80834a641fc1194761d85a596bc2a978"
+      "sha256": "fb6cc6d80897beef543f3f161009eebb80834a641fc1194761d85a596bc2a978",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/pruim.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "81f076d3a8e74bb7db6435965187b8d63c9e8c8981f81565c0003c1949b07780"
+      }
     },
     "rabarber": {
       "slug": "rabarber",
@@ -2042,7 +2714,13 @@
       "bytes": 386853,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "a2ed9372137b11a9ffe81e8ddd5aa25690e34df6f7c4135a0fdeb579406dfd81"
+      "sha256": "a2ed9372137b11a9ffe81e8ddd5aa25690e34df6f7c4135a0fdeb579406dfd81",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/rabarber.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "675924ae5b0a112d64e25cbd96c39d321bcde1087ea474445a0f5eedf356ed82"
+      }
     },
     "rhododendron": {
       "slug": "rhododendron",
@@ -2060,7 +2738,13 @@
       "bytes": 159357,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "8af1f8d2cd8b569f52e11bc856188a5ec6480a7599f790e083aaf799cae6439f"
+      "sha256": "8af1f8d2cd8b569f52e11bc856188a5ec6480a7599f790e083aaf799cae6439f",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/rhododendron.webp",
+        "width": 640,
+        "height": 501,
+        "sha256": "1879d6ba946ce253a0e6cd14a1a1bfc6a2856d67f3801d7019721b647bf7342f"
+      }
     },
     "robertskruid": {
       "slug": "robertskruid",
@@ -2078,7 +2762,13 @@
       "status": "goedgekeurd",
       "sha256": "d075336bf2d0d11d5a4e49facdf1696478046909e8bf5f6f621c6d6e42a282bb",
       "bytes": 67310,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/robertskruid.webp",
+        "width": 640,
+        "height": 474,
+        "sha256": "3dc6797c28329633404faea13cc10527359653873d89fe05bd45442016ddacdb"
+      }
     },
     "rode-bes": {
       "slug": "rode-bes",
@@ -2096,7 +2786,13 @@
       "bytes": 199559,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "921531f303f0f29ef1d5517207cd36668a5dbc37a84dd993299350fb707f7085"
+      "sha256": "921531f303f0f29ef1d5517207cd36668a5dbc37a84dd993299350fb707f7085",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/rode-bes.webp",
+        "width": 640,
+        "height": 454,
+        "sha256": "873d1f6d8f3d5393a6e1502530156f62c96bb5588cf7d84b2e6180aca2523df2"
+      }
     },
     "rode-kornoelje": {
       "slug": "rode-kornoelje",
@@ -2114,7 +2810,13 @@
       "bytes": 355826,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "87cbec7cb3791030b92f6f90d893b7e1b58e7ec7237bb98b471bb5db17aeaa03"
+      "sha256": "87cbec7cb3791030b92f6f90d893b7e1b58e7ec7237bb98b471bb5db17aeaa03",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/rode-kornoelje.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "2e3da5792c0903ebbe6ad4b68088dc7de7b3c33ffb82f247d8e747265924d1de"
+      }
     },
     "rozemarijn": {
       "slug": "rozemarijn",
@@ -2132,7 +2834,13 @@
       "bytes": 225137,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "8a99115f8803a1e743181b1f05cbe3560095ed810e83b82785566620a2c16407"
+      "sha256": "8a99115f8803a1e743181b1f05cbe3560095ed810e83b82785566620a2c16407",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/rozemarijn.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "2a8f8fce1744eab571f868e841fc1e32553c2538ea0b4dd42a54694ba8a60599"
+      }
     },
     "rubberplant": {
       "slug": "rubberplant",
@@ -2150,7 +2858,13 @@
       "bytes": 176889,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "4e1013272ca2efb393cd5ef9285a0acc81525f20644fc76f864a487ef5da5a33"
+      "sha256": "4e1013272ca2efb393cd5ef9285a0acc81525f20644fc76f864a487ef5da5a33",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/rubberplant.webp",
+        "width": 640,
+        "height": 937,
+        "sha256": "8c32e92089fb6960bee08031e6b40a11d1a594a548112b03867c41275e73b85a"
+      }
     },
     "salie": {
       "slug": "salie",
@@ -2168,7 +2882,13 @@
       "bytes": 183323,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "c3941099865662a6c42734fc9552802440460211f7f75ff57f1538255d7cf282"
+      "sha256": "c3941099865662a6c42734fc9552802440460211f7f75ff57f1538255d7cf282",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/salie.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "d641f91dd4017b5fa5121e4d5488da913843a9adcd9732bad7f21e418e7f6097"
+      }
     },
     "sansevieria": {
       "slug": "sansevieria",
@@ -2186,7 +2906,13 @@
       "bytes": 204490,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "44f512f7e0dd92695762d6d19351bfcc54519ec0f55ee2d97a63d38b64a7f688"
+      "sha256": "44f512f7e0dd92695762d6d19351bfcc54519ec0f55ee2d97a63d38b64a7f688",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/sansevieria.webp",
+        "width": 640,
+        "height": 1138,
+        "sha256": "0cff62a11b54c3c59d0c86ad28fd438cc1fe99ab0a02bc9c48b926260351937a"
+      }
     },
     "scindapsus": {
       "slug": "scindapsus",
@@ -2204,7 +2930,13 @@
       "bytes": 205191,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "c9fea6edaf571645bc649e398e0cfdbdcb88fbf0560a4014ac1661e261845930"
+      "sha256": "c9fea6edaf571645bc649e398e0cfdbdcb88fbf0560a4014ac1661e261845930",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/scindapsus.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "e89460c21317729ae142868799c78d3216316a61d17251bbaeeae1e17461d59e"
+      }
     },
     "sedum": {
       "slug": "sedum",
@@ -2222,7 +2954,13 @@
       "bytes": 71634,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "6519849e7e1a7abacd813e88f71fe8a4ae878516aa90912d0e48cf39a80ae355"
+      "sha256": "6519849e7e1a7abacd813e88f71fe8a4ae878516aa90912d0e48cf39a80ae355",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/sedum.webp",
+        "width": 640,
+        "height": 530,
+        "sha256": "58fca249804bbf84a18d85d71f12b653869615daf9e7687bc7ee6598cf891d80"
+      }
     },
     "sering": {
       "slug": "sering",
@@ -2240,7 +2978,13 @@
       "bytes": 186316,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "c303557cf806eda7ae4cfec2b9fa6dce98ec1134dcfaad03ba503266a302ea35"
+      "sha256": "c303557cf806eda7ae4cfec2b9fa6dce98ec1134dcfaad03ba503266a302ea35",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/sering.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "2fe5666b6ff65239ab5e8a097fb3f03906c341cb6cbdf18be20c3556f5c4872b"
+      }
     },
     "siergras": {
       "slug": "siergras",
@@ -2258,7 +3002,13 @@
       "bytes": 344855,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "05dcd7a1b20856714b4bf90d69702338b6fcee4c5ee5d411cb564a2caf3f4d7c"
+      "sha256": "05dcd7a1b20856714b4bf90d69702338b6fcee4c5ee5d411cb564a2caf3f4d7c",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/siergras.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "7d884d7adc1d915367608417025d76125240bad86109e0d42a637e08fc7c66c9"
+      }
     },
     "sleedoorn": {
       "slug": "sleedoorn",
@@ -2276,7 +3026,13 @@
       "status": "goedgekeurd",
       "sha256": "99112454882122394abcf0da3b783feadf6c4a5c69153479c78eae27c00ba4f8",
       "bytes": 178946,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/sleedoorn.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "e5870d770e848494e0e74b652b0de33eb54f76fb9f3a2985972fa671c75f9203"
+      }
     },
     "gulden-sleutelbloem": {
       "slug": "gulden-sleutelbloem",
@@ -2294,7 +3050,13 @@
       "status": "goedgekeurd",
       "sha256": "236ef419d3c02c41b8452770913dd180d7a400f833aa17c0a08b437c3f767652",
       "bytes": 266046,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/gulden-sleutelbloem.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "c2acbac372da68302a8f09e597ca8644ee29c249fde3034efa6f89e0a35261ca"
+      }
     },
     "smeerwortel": {
       "slug": "smeerwortel",
@@ -2312,7 +3074,13 @@
       "status": "goedgekeurd",
       "sha256": "f68fb0dbe29ea62dc5363013e594039bc954aad7f86bf346bafb6a3366e38f97",
       "bytes": 120459,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/smeerwortel.webp",
+        "width": 640,
+        "height": 442,
+        "sha256": "2c7d39f99521e6039c1d5b696281c6737fe7194b2bc4318cba601f5667921636"
+      }
     },
     "syngonium": {
       "slug": "syngonium",
@@ -2330,7 +3098,13 @@
       "bytes": 301917,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "84acc587d1b4628b8739b9a73a90eb61044b6299bc3c44f49ac7f582126c047d"
+      "sha256": "84acc587d1b4628b8739b9a73a90eb61044b6299bc3c44f49ac7f582126c047d",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/syngonium.webp",
+        "width": 640,
+        "height": 640,
+        "sha256": "7b817151892d1dbca0e3ed53fb0ee4b5e478fce510ed03509356672bfabc2741"
+      }
     },
     "tamme-kastanje": {
       "slug": "tamme-kastanje",
@@ -2348,7 +3122,13 @@
       "bytes": 146741,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "cbf01dc431726ffdc0b38b5ffa1e042ff0885a22a09cfafd7e71bc0cb20556ad"
+      "sha256": "cbf01dc431726ffdc0b38b5ffa1e042ff0885a22a09cfafd7e71bc0cb20556ad",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/tamme-kastanje.webp",
+        "width": 640,
+        "height": 425,
+        "sha256": "ab2fac4f290d015b77759df8d4bccf5f67c530a5260962bc4b175b1ee961a3b2"
+      }
     },
     "tijm": {
       "slug": "tijm",
@@ -2366,7 +3146,13 @@
       "bytes": 285208,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "2beed9d73a7cb62ec5853dc35bda624668f728e193b88670d57acdd259b4645f"
+      "sha256": "2beed9d73a7cb62ec5853dc35bda624668f728e193b88670d57acdd259b4645f",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/tijm.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "9e906fa0cf2da4e64bce772a236ba0c75b38dcaa45c3beedce904dcbfe33ddae"
+      }
     },
     "toscaanse-jasmijn": {
       "slug": "toscaanse-jasmijn",
@@ -2384,7 +3170,13 @@
       "bytes": 76284,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "95a04b60b47829e49cccc251bd0f94e938d3cb9ee2d0b85937f9f9e2f89d5bcb"
+      "sha256": "95a04b60b47829e49cccc251bd0f94e938d3cb9ee2d0b85937f9f9e2f89d5bcb",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/toscaanse-jasmijn.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "8e610851b0d766f45769b84349529915622bc703f0106f2f603858c5d467e7b8"
+      }
     },
     "tradescantia": {
       "slug": "tradescantia",
@@ -2402,7 +3194,13 @@
       "bytes": 186549,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "f2456290751eec76f0a4c27691b3a8c00ce1c1a4a3aa3dac14365782a96a08bb"
+      "sha256": "f2456290751eec76f0a4c27691b3a8c00ce1c1a4a3aa3dac14365782a96a08bb",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/tradescantia.webp",
+        "width": 640,
+        "height": 360,
+        "sha256": "d853c03db368f182cdd29ff2712024553b702f7dd1a62fcc0be6f836da553602"
+      }
     },
     "tuinhibiscus": {
       "slug": "tuinhibiscus",
@@ -2420,7 +3218,13 @@
       "bytes": 133867,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "e19e164c80e35d6fcb2ea03b9d05f621f94d215b4e01ce55e1fbc58d68a293cd"
+      "sha256": "e19e164c80e35d6fcb2ea03b9d05f621f94d215b4e01ce55e1fbc58d68a293cd",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/tuinhibiscus.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "210824e7324c96554998263bd46decd464b888305d8b9f6443b1502e8f8fbb40"
+      }
     },
     "turkse-rabarber": {
       "slug": "turkse-rabarber",
@@ -2438,7 +3242,13 @@
       "status": "goedgekeurd",
       "sha256": "b8a06296718178caf0eafe9191ba2ba2d2731d49a5ec2017a61e79b49a058e04",
       "bytes": 266244,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/turkse-rabarber.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "9a0bad58860e17cbd285837c8d64bb91a8817595d7c2f05cb427a81230072152"
+      }
     },
     "vijg": {
       "slug": "vijg",
@@ -2456,7 +3266,13 @@
       "bytes": 413875,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "36b95df8a5f6144ed6e374443c1c204b3c22a0a00a17be460a77be72aa3ea2a9"
+      "sha256": "36b95df8a5f6144ed6e374443c1c204b3c22a0a00a17be460a77be72aa3ea2a9",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/vijg.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "7e8c18814ae731a5fe71c52cccaa8565c0eed72de90969e95b58b52c365678d8"
+      }
     },
     "vingerhoedskruid": {
       "slug": "vingerhoedskruid",
@@ -2474,7 +3290,13 @@
       "status": "goedgekeurd",
       "sha256": "67ec8c511e880a4934419c0ad6f09be3d0eb50974de839422050fd85c06d75ca",
       "bytes": 174242,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/vingerhoedskruid.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "64a145eb0a825df165d3fa86c4bb2277d4f94a6783e56388efc2ded55ae12530"
+      }
     },
     "walnoot": {
       "slug": "walnoot",
@@ -2492,7 +3314,13 @@
       "bytes": 166060,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "4b636f033835c20cb82c18a1b84098c1463d36e2e041656ca625315e8675450b"
+      "sha256": "4b636f033835c20cb82c18a1b84098c1463d36e2e041656ca625315e8675450b",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/walnoot.webp",
+        "width": 640,
+        "height": 480,
+        "sha256": "ded088d34a3419084034b48a55587aa8edea7ae363c8d5dd6b2418dc07d0232c"
+      }
     },
     "watermunt": {
       "slug": "watermunt",
@@ -2510,7 +3338,13 @@
       "status": "goedgekeurd",
       "sha256": "5e770c28acdbe67d11888eef5b4ddbe2079269acfe29bc583f05684f542bd3ba",
       "bytes": 101631,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/watermunt.webp",
+        "width": 562,
+        "height": 1200,
+        "sha256": "80c13330a9b821faed4b765727ae55d53020cbdc5b2392181046d31d88b28112"
+      }
     },
     "wilde-peen": {
       "slug": "wilde-peen",
@@ -2528,7 +3362,13 @@
       "status": "goedgekeurd",
       "sha256": "374940d735d7dbb01576e6b2870c0bb23c91612097906f23d41f7037227d4a7b",
       "bytes": 132458,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/wilde-peen.webp",
+        "width": 640,
+        "height": 425,
+        "sha256": "e987073ae2f0a2dbd98991a11c94fe466261e363789c33ed3d5e1aa2fac6ec96"
+      }
     },
     "wilg": {
       "slug": "wilg",
@@ -2546,7 +3386,13 @@
       "bytes": 129260,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "da86dd8a80054495a00a56099a5f5e3e8ee0480744d0d1e896dfbcd98f15d0a8"
+      "sha256": "da86dd8a80054495a00a56099a5f5e3e8ee0480744d0d1e896dfbcd98f15d0a8",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/wilg.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "a16ad36b4dfcce021449cc211caf65047dd03e53c0ac0161c5382002acdce7e2"
+      }
     },
     "zamioculcas": {
       "slug": "zamioculcas",
@@ -2564,7 +3410,13 @@
       "bytes": 165392,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "cdaea3c9dde1f0b2ef480df63b170d9e781869ca1418b2bd467c57e4bad542a7"
+      "sha256": "cdaea3c9dde1f0b2ef480df63b170d9e781869ca1418b2bd467c57e4bad542a7",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/zamioculcas.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "c0648fe948e1964aea23a4407c98cf53c80a942ff3064cd2f58a54f0b682502d"
+      }
     },
     "zevenblad": {
       "slug": "zevenblad",
@@ -2582,7 +3434,13 @@
       "status": "goedgekeurd",
       "sha256": "c28bc7b02b5c470b5897bd0799bcd3f9c0ad9b3533a7e580600a589d52040b01",
       "bytes": 366526,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/zevenblad.webp",
+        "width": 640,
+        "height": 853,
+        "sha256": "5b9cad25e3c6eed94baad6c09bac0ddd2dc58b157574889d9d542edf40ead891"
+      }
     },
     "zonnehoed": {
       "slug": "zonnehoed",
@@ -2600,7 +3458,13 @@
       "bytes": 127442,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "8d97c4634ca70676dc2bdd86bc803b6b09c476683c89773de824912dcc3aca1f"
+      "sha256": "8d97c4634ca70676dc2bdd86bc803b6b09c476683c89773de824912dcc3aca1f",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/zonnehoed.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "ca16cfb37a53753bfe67f26bd9380493c879c98220cfdb201e0db7bebabb716c"
+      }
     },
     "zuring": {
       "slug": "zuring",
@@ -2618,7 +3482,13 @@
       "status": "goedgekeurd",
       "sha256": "cabcfa5fc4dbf332a06db5e45ab2931e419002035e219ced813ea7c12a687854",
       "bytes": 282486,
-      "width_max": 1200
+      "width_max": 1200,
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/zuring.webp",
+        "width": 640,
+        "height": 361,
+        "sha256": "728d3f257895759f0aea5049f343efe77863487999e45555c91363c853b18648"
+      }
     },
     "zwarte-bes": {
       "slug": "zwarte-bes",
@@ -2636,7 +3506,13 @@
       "bytes": 243609,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "7e3dfe151039b1c6b07db8d6b89414f4b183689eea976d4c2967deaa438828d2"
+      "sha256": "7e3dfe151039b1c6b07db8d6b89414f4b183689eea976d4c2967deaa438828d2",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/zwarte-bes.webp",
+        "width": 640,
+        "height": 478,
+        "sha256": "6375dbe25ec77228ad673ccf8bd0a89ae05edbffd93f9d11211ba2ca00edbe68"
+      }
     },
     "zwarte-vlier": {
       "slug": "zwarte-vlier",
@@ -2654,7 +3530,13 @@
       "bytes": 144825,
       "width_max": 1200,
       "status": "goedgekeurd",
-      "sha256": "cd2f1a960d81897e4acd6b4b3d28b64ce0811ac21b61b8577a573a50c8f75165"
+      "sha256": "cd2f1a960d81897e4acd6b4b3d28b64ce0811ac21b61b8577a573a50c8f75165",
+      "kaart": {
+        "bestand": "assets/images/soorten/kaart/zwarte-vlier.webp",
+        "width": 640,
+        "height": 427,
+        "sha256": "a905068f51b8466a9c21bfb98d85235b18f57c36bd762d8fb57be15443df13c7"
+      }
     }
   },
   "count": 147,

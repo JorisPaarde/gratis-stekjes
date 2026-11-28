@@ -45,7 +45,7 @@
 <section class="section wrap deelplekken-page">
   @include('partials.plekken-tabs')
   <h1 class="deelplekken-titel">Vind een deelplek in de buurt</h1>
-  <p class="section-intro">Plantenasiels, plantenbiebs, ruilkastjes en zadenbibliotheken in Nederland en België: plekken waar je planten, stekjes of zaden kunt brengen, ruilen of ophalen. Kijk vóór je gaat even op de website van de plek voor de openingstijden. Zoek je liever per plaats? Bekijk <a href="{{ route('gratis-planten.index') }}">gratis planten per stad</a>.</p>
+  <p class="section-intro">Plantenasiels, plantenbiebs, ruilkastjes en zadenbibliotheken in Nederland en België: plekken waar je planten, stekjes of zaden kunt brengen, ruilen of ophalen. Kijk vóór je gaat even op de website van de plek voor de openingstijden. Zoek je liever per plaats? Bekijk <a href="{{ route('gratis-planten.index') }}">gratis planten per stad</a>. Ken je een plek die hier nog niet staat? <a href="{{ route('voor-organisaties.aanmelden') }}">Plek aanmelden</a>. Na controle wordt hij zichtbaar op de kaart.</p>
 
   <form class="zoekbalk deelplekken-zoek" method="get" action="{{ route('deelplekken') }}" role="search">
     @if($filters['type'] !== '')
@@ -84,15 +84,34 @@
     @endif
   </nav>
 
+  @if($items->isEmpty())
+    <div class="deelplekken-leeg" role="status">
+      <p class="deelplekken-leeg-titel">
+        @if($filters['plaats'] !== '')
+          Geen deelplek gevonden in {{ $filters['plaats'] }}.
+        @else
+          Geen deelplek gevonden met deze keuzes.
+        @endif
+      </p>
+      <p>Ken je er een? Meld de plek aan. Na controle wordt hij zichtbaar op de kaart.</p>
+      <p class="deelplekken-leeg-acties">
+        <a class="btn btn-secondary" href="{{ route('voor-organisaties.aanmelden') }}">Plek aanmelden</a>
+        <a href="{{ route('deelplekken') }}">Toon alle deelplekken</a>
+      </p>
+    </div>
+  @endif
+
   <div id="deelplekken-kaart" role="img" aria-label="Kaart met deelplekken voor planten"></div>
 
-  <p class="zoek-status" id="deelplekken-status-tekst">
-    @if($isFilter)
-      Gevonden deelplekken · <a href="{{ route('deelplekken') }}">Toon alles</a>
-    @else
-      Steeds meer deelplekken in Nederland en België
-    @endif
-  </p>
+  @if($items->isNotEmpty())
+    <p class="zoek-status" id="deelplekken-status-tekst">
+      @if($isFilter)
+        Gevonden deelplekken · <a href="{{ route('deelplekken') }}">Toon alles</a>
+      @else
+        Steeds meer deelplekken in Nederland en België
+      @endif
+    </p>
+  @endif
   <span class="visually-hidden" id="deelplekken-status" aria-live="polite"></span>
 
   @php $plekPayloads = []; @endphp
@@ -119,6 +138,7 @@
             'provincie' => (string) ($plek->provincie ?? ''),
             'adres' => (string) ($plek->adres ?? ''),
             'beschrijving' => trim((string) ($plek->beschrijving ?? $plek->omschrijving ?? '')),
+            'open_regel' => $isEvenement ? null : ($plek->openRegel() ?? null),
             'datum_label' => $datumLabel,
             'bron_url' => (string) ($plek->bron_url ?? ''),
             'bron_label' => $plek->bron_url ? $bronLabel($plek) : '',
@@ -153,9 +173,6 @@
         @endif
       </li>
     @empty
-      <li class="zoek-item">
-        <p>Geen deelplekken gevonden met deze keuzes. <a href="{{ route('deelplekken') }}">Toon alles</a></p>
-      </li>
     @endforelse
   </ul>
   @if(!empty($plekPayloads))
@@ -185,7 +202,7 @@
     </section>
   @endif
 
-  <p class="muted deelplekken-voet">Mis je een plek, of klopt er iets niet? <a href="{{ route('voor-organisaties') }}">Organisatie of plek aanmelden</a>. Op de <a href="{{ route('aanbod') }}">aanbodkaart</a> zie je ook wat mensen in de buurt weggeven.<br>
+  <p class="muted deelplekken-voet">Mis je een plek, of klopt er iets niet? <a href="{{ route('voor-organisaties.aanmelden') }}">Plek aanmelden</a>. Na controle wordt hij zichtbaar op de kaart. Op de <a href="{{ route('aanbod') }}">aanbodkaart</a> zie je ook wat mensen in de buurt weggeven.<br>
   Kaart: © OpenStreetMap-bijdragers. De plekken staan ongeveer op het openbare adres uit de bron. Dit is geen officiële lijst van samenwerkingspartners.</p>
 </section>
 @endsection

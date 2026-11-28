@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Services\AanbodSearch;
 use App\Services\NuTeStekken;
 use App\Services\Plantensoorten;
+use App\Services\SoortAfbeeldingen;
 use App\Services\Stektips;
 use App\Services\ZoekIntent;
 use Illuminate\Http\RedirectResponse;
@@ -16,7 +17,7 @@ use Illuminate\View\View;
 
 class ZoekenController extends Controller
 {
-    public function __invoke(Request $request, NuTeStekken $calendar, AanbodSearch $search, Stektips $stektips, Plantensoorten $plantensoorten, ZoekIntent $intent): View|RedirectResponse
+    public function __invoke(Request $request, NuTeStekken $calendar, AanbodSearch $search, Stektips $stektips, Plantensoorten $plantensoorten, SoortAfbeeldingen $afbeeldingen, ZoekIntent $intent): View|RedirectResponse
     {
         // Eén zoekveld (hero): herken plaats, postcode, plant of allebei en stuur door naar
         // de bestaande ?q= en ?plant=. Onbekende invoer krijgt hieronder een nette lege staat.
@@ -81,6 +82,9 @@ class ZoekenController extends Controller
             'plantItems' => $plantItems,
             'plantSortering' => $plantSortering,
             'zoekOnbekend' => $zoekOnbekend,
+            'maakMeer' => $plant !== ''
+                ? $this->maakMeerKaart($plant, $stektips, $plantensoorten, $afbeeldingen, count($plantItems) > 0)
+                : null,
         ]);
     }
 
@@ -102,23 +106,54 @@ class ZoekenController extends Controller
      */
     private function aanbodZelfstandigNaamVoorPlant(string $plant, Stektips $stektips, Plantensoorten $plantensoorten): string
     {
+        $soort = $stektips->voorZoekterm($plant, $plantensoorten);
+
+        return $soort !== null ? $stektips->aanbodZelfstandigNaam($soort) : 'plantjes';
+    }
+
+    /**
+     * Kaart bij een plantzoekopdracht: bestaande stektip-tekst (niets verzonnen)
+     * en, als die er is, de bestaande soortfoto. Aanbieden blijft een tekstlink.
+     *
+     * @return array{
+     *     naam: string,
+     *     heeft_aanbod: bool,
+     *     heeft_methode: bool,
+     *     kort: ?string,
+     *     wanneer: ?string,
+     *     stektip_url: ?string,
+     *     aanbied_url: string,
+     *     afbeelding: ?array<string, mixed>
+     * }
+     */
+    private function maakMeerKaart(string $plant, Stektips $stektips, Plantensoorten $plantensoorten, SoortAfbeeldingen $afbeeldingen, bool $heeftAanbod): array
+    {
+        $soort = $stektips->voorZoekterm($plant, $plantensoorten);
         $catalogus = $plantensoorten->resolveExact($plant);
-        if (is_array($catalogus) && ! empty($catalogus['slug'])) {
-            $soort = $stektips->find((string) $catalogus['slug']);
-            if ($soort !== null) {
-                return $stektips->aanbodZelfstandigNaam($soort);
-            }
+        $naam = is_array($soort) && ! empty($soort['naam'])
+            ? (string) $soort['naam']
+            : (is_array($catalogus) && ! empty($catalogus['naam']) ? (string) $catalogus['naam'] : $plant);
+
+        $kort = is_array($soort) ? trim((string) ($soort['kort'] ?? '')) : '';
+        if ($kort === '' && is_array($soort)) {
+            $kort = trim((string) ($soort['methode'] ?? ''));
+        }
+        $wanneer = is_array($soort) ? trim((string) ($soort['wanneer'] ?? '')) : '';
+        $stektipSlug = is_array($soort) ? trim((string) ($soort['slug'] ?? '')) : '';
+        $beeldSlug = $stektipSlug;
+        if ($beeldSlug === '' && is_array($catalogus)) {
+            $beeldSlug = trim((string) ($catalogus['slug'] ?? ''));
         }
 
-        $norm = mb_strtolower($plant, 'UTF-8');
-        foreach ($stektips->all() as $soort) {
-            $naam = mb_strtolower((string) ($soort['naam'] ?? ''), 'UTF-8');
-            $seo = mb_strtolower(trim((string) ($soort['seo_naam'] ?? '')), 'UTF-8');
-            if ($naam === $norm || ($seo !== '' && $seo === $norm)) {
-                return $stektips->aanbodZelfstandigNaam($soort);
-            }
-        }
-
-        return 'plantjes';
+        return [
+            'naam' => $naam,
+            'heeft_aanbod' => $heeftAanbod,
+            'heeft_methode' => $kort !== '',
+            'kort' => $kort !== '' ? $kort : null,
+            'wanneer' => $wanneer !== '' ? $wanneer : null,
+            'stektip_url' => $stektipSlug !== '' ? route('stektips.show', $stektipSlug) : null,
+            'aanbied_url' => route('aanbieden', ['plant' => $naam]),
+            'afbeelding' => $beeldSlug !== '' ? $afbeeldingen->kaartVoorSlug($beeldSlug, $naam) : null,
+        ];
     }
 }

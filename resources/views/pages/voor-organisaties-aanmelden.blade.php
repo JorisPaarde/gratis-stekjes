@@ -7,7 +7,7 @@
 @section('content')
 <section class="section wrap">
   <h1 class="page-title">Plek aanmelden</h1>
-  <p class="section-intro">Meld je voedselbos, tuinvereniging, plantenasiel, plantenbieb, ruilkast of andere deelplek aan. Na controle verschijnt de plek op <a href="{{ route('deelplekken') }}">deelplekken</a> en eventueel op stadspagina’s.</p>
+  <p class="section-intro">Meld je voedselbos, tuinvereniging, plantenasiel, plantenbieb, ruilkast of andere deelplek aan. Na controle wordt je plek zichtbaar op de kaart en in de lijst, en soms op een stadspagina.</p>
 
   @if($errors->any())
     <ul class="error-list" role="alert">
@@ -53,8 +53,37 @@
     <label>Website
       <input name="url" maxlength="500" placeholder="https://" value="{{ old('url') }}" autocomplete="url">
     </label>
+    <fieldset class="form-open">
+      <legend>Wanneer is de plek open?</legend>
+      <p class="hint">Niet verplicht. Zo weten bezoekers of ze altijd langs kunnen, of alleen op bepaalde dagen.</p>
+      <label class="checkbox">
+        <input type="radio" name="open_keuze" value="altijd" @checked(old('open_keuze') === 'altijd')>
+        <span>Altijd of meestal open</span>
+      </label>
+      <label class="checkbox">
+        <input type="radio" name="open_keuze" value="dagen" @checked(old('open_keuze') === 'dagen')>
+        <span>Op vaste dagen</span>
+      </label>
+      <p class="form-open-extra form-open-extra--dagen">
+        <label>
+          <span class="visually-hidden">Op welke dagen of tijden is de plek open?</span>
+          <input name="open_tekst_dagen" maxlength="200" value="{{ old('open_keuze') === 'dagen' ? old('open_tekst_dagen') : '' }}" placeholder="Bijv. di en za, 10 tot 16 uur">
+        </label>
+      </p>
+      <label class="checkbox">
+        <input type="radio" name="open_keuze" value="seizoen" @checked(old('open_keuze') === 'seizoen')>
+        <span>Alleen in een seizoen</span>
+      </label>
+      <p class="form-open-extra form-open-extra--seizoen">
+        <label>
+          <span class="visually-hidden">In welk seizoen is de plek open?</span>
+          <input name="open_tekst_seizoen" maxlength="200" value="{{ old('open_keuze') === 'seizoen' ? old('open_tekst_seizoen') : '' }}" placeholder="Bijv. april tot oktober">
+        </label>
+      </p>
+    </fieldset>
     <label>Korte beschrijving
       <textarea name="beschrijving" maxlength="1000" rows="4">{{ old('beschrijving') }}</textarea>
+      <span class="hint">Kort, bijvoorbeeld wat je er kunt brengen of meenemen.</span>
     </label>
     <label>Contact-e-mail *
       <input type="email" name="contact_email" required maxlength="254" value="{{ old('contact_email') }}" autocomplete="email">

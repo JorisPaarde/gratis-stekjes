@@ -86,7 +86,7 @@
               <li><a href="{{ $plek['url'] }}">{{ \Illuminate\Support\Str::ucfirst($plek['label']) }}</a></li>
             @endforeach
           </ul>
-          <p class="home-meer">Elke week komen er nieuwe deelplekken bij. Ken je er nog een? <a href="{{ route('voor-organisaties') }}">Meld hem aan</a>.</p>
+          <p class="home-meer">Elke week komen er nieuwe deelplekken bij. Ken je er nog een? <a href="{{ route('voor-organisaties.aanmelden') }}">Meld hem aan</a>.</p>
         @endif
         <p class="home-actions">
           <a class="btn" href="{{ route('aanbod') }}"><x-icon name="kaart" :size="18" /> Open de kaart</a>

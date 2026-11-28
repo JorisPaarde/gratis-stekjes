@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Models\Deelplek;
 use App\Support\Country;
 use App\Support\FormGuard;
 use App\Support\PostalCode;
@@ -16,6 +17,13 @@ class DeelplekAanmeldenRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    protected function prepareForValidation(): void
+    {
+        if ($this->input('open_keuze') === '') {
+            $this->merge(['open_keuze' => null]);
+        }
     }
 
     /** @return array<string, mixed> */
@@ -33,6 +41,9 @@ class DeelplekAanmeldenRequest extends FormRequest
             // Echte website van de plek = veld "url"; honeypot = gp_hp_stem (+ legacy website).
             'url' => ['nullable', 'string', 'max:500'],
             'beschrijving' => ['nullable', 'string', 'max:1000'],
+            'open_keuze' => ['nullable', 'string', Rule::in(Deelplek::openKeuzes())],
+            'open_tekst_dagen' => ['nullable', 'string', 'max:200'],
+            'open_tekst_seizoen' => ['nullable', 'string', 'max:200'],
             'contact_email' => ['required', 'string', 'email:filter', 'max:254'],
             'privacy' => ['accepted'],
             ...FormGuard::honeypotRules(),
@@ -53,6 +64,7 @@ class DeelplekAanmeldenRequest extends FormRequest
             'contact_email.required' => 'Vul een contact-e-mailadres in.',
             'contact_email.email' => 'Vul een geldig e-mailadres in.',
             'privacy.accepted' => 'Je moet akkoord gaan met de privacyverklaring.',
+            'open_keuze.in' => 'Kies of de plek altijd open is, op vaste dagen, of alleen in een seizoen.',
         ];
     }
 

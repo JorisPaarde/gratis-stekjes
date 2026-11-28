@@ -22,7 +22,7 @@
         id="aanbod-tekst"
         maxlength="2000"
         placeholder="Bijvoorbeeld monstera of munt"
-        value="{{ old('tekst') }}"
+        value="{{ old('tekst', $voorafTekst ?? '') }}"
         data-invasieve-input
         data-plantsoort-input
         data-aanbod-tekst
@@ -32,7 +32,7 @@
         autocomplete="off"
       >
     </label>
-    <input type="hidden" name="plantensoort_id" value="{{ old('plantensoort_id') }}" data-plantsoort-id>
+    <input type="hidden" name="plantensoort_id" value="{{ old('plantensoort_id', $voorafPlantensoortId ?? '') }}" data-plantsoort-id>
     <ul
       id="aanbod-plantsoort-listbox"
       class="plantsoort-listbox"

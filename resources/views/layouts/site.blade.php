@@ -101,6 +101,7 @@
           <a class="nav-cta" href="{{ route('ga.word-lid', ['from' => $meetFrom, 'utm_content' => 'menu']) }}"><x-icon name="plus" :size="16" /> Doe mee</a>
         @endauth
         <span class="menu-sep" aria-hidden="true"></span>
+        <a class="app-link" href="{{ route('voor-organisaties.aanmelden') }}" @if(request()->routeIs('voor-organisaties.aanmelden')) aria-current="page" @endif><x-icon name="locatie" :size="16" /> Plek aanmelden</a>
         <a class="app-link" href="{{ route('app') }}" @if(request()->routeIs('app')) aria-current="page" @endif><x-icon name="telefoon" :size="16" /> Gratis planten als app</a>
       </nav>
     </div>

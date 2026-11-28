@@ -66,25 +66,26 @@
 
   @if(!empty($plant) && isset($plantItems))
     <section class="stektips-plant-aanbod" id="plant-aanbod" aria-labelledby="plant-aanbod-titel">
-      @if(!empty($plantSortering) && $plantSortering['sortering'] === 'afstand')
-        <h2 id="plant-aanbod-titel" class="stektips-related-title">Aanbod met “{{ $plant }}”, dichtstbij jouw adres</h2>
-      @elseif(!empty($plantSortering))
-        <h2 id="plant-aanbod-titel" class="stektips-related-title">Aanbod met “{{ $plant }}”, nieuwste eerst</h2>
-        <p class="muted">
-          @if($plantSortering['reden'] === 'geen_adres')
-            Vul je postcode of plaats in bij <a href="{{ route('account.profiel') }}">je profiel</a> om op afstand te sorteren.
-          @else
-            <a href="{{ route('account.inloggen') }}">Log in</a> om te sorteren op afstand vanaf je eigen adres, of vul hierboven een postcode of plaats in.
-          @endif
-        </p>
-      @else
-        <h2 id="plant-aanbod-titel" class="stektips-related-title">Aanbod met “{{ $plant }}” (alle plaatsen)</h2>
-      @endif
-      @if(count($plantItems) === 0)
-        <p class="empty-state" role="status">Er is nog geen aanbod met “{{ $plant }}”. <a href="{{ route('account.registreren') }}">Doe mee</a> en deel zelf iets, of zoek hierboven op plaats.</p>
-      @else
-        @include('partials.aanbod-lijst', ['items' => $plantItems])
-      @endif
+      <div id="plant-aanbod-lijst">
+        @if(!empty($plantSortering) && $plantSortering['sortering'] === 'afstand')
+          <h2 id="plant-aanbod-titel" class="stektips-related-title">Aanbod met “{{ $plant }}”, dichtstbij jouw adres</h2>
+        @elseif(!empty($plantSortering))
+          <h2 id="plant-aanbod-titel" class="stektips-related-title">Aanbod met “{{ $plant }}”, nieuwste eerst</h2>
+          <p class="muted">
+            @if($plantSortering['reden'] === 'geen_adres')
+              Vul je postcode of plaats in bij <a href="{{ route('account.profiel') }}">je profiel</a> om op afstand te sorteren.
+            @else
+              <a href="{{ route('account.inloggen') }}">Log in</a> om te sorteren op afstand vanaf je eigen adres, of vul hierboven een postcode of plaats in.
+            @endif
+          </p>
+        @else
+          <h2 id="plant-aanbod-titel" class="stektips-related-title">Aanbod met “{{ $plant }}” (alle plaatsen)</h2>
+        @endif
+        @if(count($plantItems) > 0)
+          @include('partials.aanbod-lijst', ['items' => $plantItems])
+        @endif
+      </div>
+      @include('partials.maak-meer-kaart', ['maakMeer' => $maakMeer])
     </section>
   @endif
 

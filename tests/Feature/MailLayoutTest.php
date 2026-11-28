@@ -26,7 +26,7 @@ test('html-mails: geen lange URL als zichtbare linktekst en geen vaste breedte b
 test('knopmails: fallback is korte linktekst; platte tekst bevat de volledige url', function () {
     $mails = MailRenderer::all();
 
-    foreach (['bevestigen', 'bevestigen-herinnering', 'wachtwoord-reset', 'nieuw-emailadres-bevestigen'] as $key) {
+    foreach (['bevestigen', 'bevestigen-herinnering', 'onbevestigd-verwijderen', 'wachtwoord-reset', 'nieuw-emailadres-bevestigen'] as $key) {
         expect($mails[$key]['html'])->toContain('Werkt de knop niet? Gebruik dan');
         expect($mails[$key]['html'])->toContain('>deze link</a>');
         expect($mails[$key]['text'])->toMatch('#Werkt de knop niet\? Gebruik dan https?://\S+ in je browser\.#');
