@@ -3,6 +3,14 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.90.1] - 2026-11-28
+
+### Fixed
+
+- Op /aanbod?plant= zat de vermeerderkaart (lege staat) tegen de
+  filterpills aan. Daaronder staat nu dezelfde 1rem als tussen het
+  zoekformulier en de kaart, en tussen de pills en de landkaart.
+
 ## [0.90.0] - 2026-11-28
 
 ### Added

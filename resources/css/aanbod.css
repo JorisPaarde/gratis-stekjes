@@ -541,7 +541,8 @@ html.aanbod-detail-open { overflow: hidden; }
   overflow-wrap: anywhere;
 }
 .maak-meer--uitgelicht {
-  margin-top: 1rem;
+  /* Onder: zelfde 1rem als erboven (formulier→kaart) en als de pills naar de kaart. */
+  margin: 1rem 0;
   padding: 1.4rem 1.25rem 1.55rem;
 }
 .maak-meer--compact {
