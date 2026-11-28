@@ -3,6 +3,14 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.90.4] - 2026-11-28
+
+### Fixed
+
+- In het venster "Meer info" van een deelplek (en in het kaartpopup)
+  breken tijden en dagen niet meer midden in het bereik. "10–12.30 u",
+  "15–19 u" en "Di–vr" blijven op één regel.
+
 ## [0.90.3] - 2026-11-28
 
 ### Added

@@ -32,6 +32,29 @@ export function escapeHtml(s) {
     .replace(/"/g, "&quot;");
 }
 
+/**
+ * Zoals escapeHtml, maar tijdsbereiken ("10–12", "10–12.30 u", "15–19 uur") en
+ * dagbereiken ("Di–vr") breken nooit midden in het bereik. Eerst wordt alles
+ * ge-escaped, daarna krijgen alleen cijfers/letters/streepjes een vaste span.
+ */
+const BEREIK_STREEP = "[\\u2013\\u2014-]";
+const DAG = "(?:ma|di|wo|do|vr|za|zo)(?:dag)?";
+const TIJD = "\\d{1,2}(?:[.:]\\d{2})?";
+const BEREIK_RE = new RegExp(
+  "(^|[^\\d.:\\u2013\\u2014A-Za-z-])(" +
+    TIJD + "\\s?" + BEREIK_STREEP + "\\s?" + TIJD + "(?:\\s?(?:uur|u)(?![A-Za-z]))?" +
+    "|" +
+    DAG + "\\s?" + BEREIK_STREEP + "\\s?" + DAG +
+    ")(?![\\dA-Za-z])",
+  "gi",
+);
+
+export function escapeHtmlBereik(s) {
+  return escapeHtml(s).replace(BEREIK_RE, function (_m, voor, bereik) {
+    return voor + '<span class="tekst-bereik">' + bereik + "</span>";
+  });
+}
+
 export function siteCfg() {
   return window.STEKJES_SITE || {};
 }
@@ -305,7 +328,7 @@ export function openPlekDetail(item, trigger) {
     rij("Adres", item.adres ? escapeHtml(item.adres) : "") +
     rij("Afstand", afstand ? escapeHtml(afstand) : "") +
     rij("Wanneer", item.datum_label ? escapeHtml(item.datum_label) : "") +
-    rij("Openingstijden", opening ? escapeHtml(opening) : "");
+    rij("Openingstijden", opening ? escapeHtmlBereik(opening) : "");
   const link = item.bron_url
     ? '<a class="btn aanbod-detail-bericht" href="' +
       escapeHtml(item.bron_url) +
@@ -320,7 +343,7 @@ export function openPlekDetail(item, trigger) {
     '<h2 id="aanbod-detail-titel" class="aanbod-detail-titel" tabindex="-1">' +
     escapeHtml(item.naam || "Deelplek") +
     "</h2>" +
-    (beschrijving ? '<p class="aanbod-detail-beschrijving">' + escapeHtml(beschrijving) + "</p>" : "") +
+    (beschrijving ? '<p class="aanbod-detail-beschrijving">' + escapeHtmlBereik(beschrijving) + "</p>" : "") +
     (rijen ? '<dl class="aanbod-detail-dl">' + rijen + "</dl>" : "") +
     '<div class="aanbod-detail-acties">' +
     link +

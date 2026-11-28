@@ -518,6 +518,8 @@ html.aanbod-detail-open { overflow: hidden; }
 }
 .aanbod-detail-rij dd { margin: 0; overflow-wrap: anywhere; }
 .aanbod-detail-ook { display: block; color: var(--ink-soft, #3d4a3f); font-size: 0.92rem; margin-top: 0.15rem; }
+/* Tijds- en dagbereiken ("10–12 u", "Di–vr") blijven op één regel. */
+.tekst-bereik { white-space: nowrap; }
 .aanbod-detail-beschrijving {
   margin: 0.7rem 0 0;
   overflow-wrap: anywhere;
