@@ -211,78 +211,7 @@
   line-height: 1.2;
 }
 
-/* Leaflet-popup in GP-huisstijl (site-font i.p.v. Leaflet-default) */
-.leaflet-container .gp-leaflet-popup .leaflet-popup-content-wrapper {
-  border-radius: 0.7rem;
-  box-shadow: 0 6px 18px rgba(22, 56, 32, 0.18);
-  font-family: var(--font-body, "Titillium Web", "Segoe UI", sans-serif);
-  color: var(--ink, #1a1210);
-}
-.leaflet-container .gp-leaflet-popup .leaflet-popup-content {
-  margin: 0.7rem 0.85rem;
-  font-family: inherit;
-  font-size: 0.92rem;
-  line-height: 1.35;
-  min-width: 10rem;
-}
-/* Sluitknop (×): tikvlak 44×44; de titel houdt rechts ruimte vrij zodat de × nooit over de tekst valt. */
-.leaflet-container .gp-leaflet-popup a.leaflet-popup-close-button {
-  top: 0;
-  right: 0;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  font: 400 1.5rem/44px var(--font-body, "Titillium Web", "Segoe UI", sans-serif);
-  color: var(--ink-soft, #3d4a3f);
-}
-.leaflet-container .gp-leaflet-popup a.leaflet-popup-close-button:hover,
-.leaflet-container .gp-leaflet-popup a.leaflet-popup-close-button:focus-visible {
-  color: var(--forest-deep, #163820);
-}
-/* Popup nooit breder dan de kaart op smalle schermen; een lange titel loopt dan door op de volgende regel. */
-.leaflet-container .gp-leaflet-popup .leaflet-popup-content {
-  max-width: min(20rem, calc(100vw - 9rem));
-}
-.gp-popup > .gp-popup-titel:first-child {
-  padding-right: 2rem;
-}
-.leaflet-container .gp-leaflet-popup .leaflet-popup-tip {
-  box-shadow: none;
-}
-.gp-popup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  font-family: var(--font-body, "Titillium Web", "Segoe UI", sans-serif);
-}
-.gp-popup-titel {
-  display: block;
-  font-weight: 700;
-  font-size: 1rem;
-  line-height: 1.25;
-  color: var(--forest-deep, #163820);
-}
-.gp-popup-meta,
-.leaflet-container .leaflet-popup-content .gp-popup-meta {
-  /* Leaflet zet .leaflet-popup-content p { margin: 17px 0 } — hier overschrijven. */
-  margin: 0;
-  font-size: 0.82rem;
-  line-height: 1.35;
-  color: var(--ink-soft, #3d4a3f);
-  font-weight: 400;
-}
-.gp-popup-link {
-  margin-top: 0.2rem;
-  font-weight: 600;
-  font-size: 0.88rem;
-  color: var(--forest-deep, #163820);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.gp-popup-link:hover,
-.gp-popup-link:focus-visible {
-  color: var(--forest, #1f4d2b);
-}
+/* Kaartpopup-stijl (.gp-leaflet-popup, .gp-popup*) staat in aanbod.css, gedeeld met de stadspagina's. */
 .page-deelplekken .deelplekken-lijst h2 { font-family: var(--font-body); font-size: 1.02rem; font-weight: 700; margin: 0; }
 .page-deelplekken .zoek-item p { margin: 0; }
 .zoek-item-datum { font-size: 0.78rem; color: var(--ink-soft); }
