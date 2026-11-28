@@ -775,20 +775,6 @@
       "beschrijving": "Gratis zaden van groenten, bloemen en kruiden, maximaal 4 zakjes per bezoeker. Ruilen mag, maar hoeft niet. Samen met Velt. De groen-blauwe kastjes staan bij de krantenhoek in de bib. Vanaf september is de zadenbib in winterslaap; zaden inbrengen kan wel. Open in de bib-uren: ma 10–12 u; di 10–12 en 15–19 u; wo 10–12 en 13–17 u; do 10–12 en 15–18 u; vr 10–12 en 15–19 u; za 10–12.30 u; zo dicht. Di–vr 's ochtends is de bib onbemand."
     },
     {
-      "id": "zadenbib-laarne-test-tijdelijk-laarne",
-      "naam": "Zadenbib Laarne TEST (tijdelijk)",
-      "type": "zaadbibliotheek",
-      "plaats": "Laarne",
-      "provincie": "Oost-Vlaanderen",
-      "adres": "9270 Laarne",
-      "lat": 51.042,
-      "lng": 3.884,
-      "bron_url": "https://staging.gratisplanten.nl/",
-      "geraadpleegd": "2026-11-28",
-      "country": "BE",
-      "visible": false
-    },
-    {
       "id": "be-halle-zadenbib",
       "naam": "Zadenbib Bibliotheek Halle",
       "type": "zaadbibliotheek",
