@@ -93,6 +93,7 @@ final class UnverifiedAccountDeletionService
 
         $skip = array_fill_keys($this->idsMetAanbodOfBerichten($ids), true);
         $stats['overgeslagen_met_aanbod_of_berichten'] = count($skip);
+        $stats['zonder_aanbod_of_berichten'] = count($ids) - count($skip);
 
         $kandidaten = $this->unverifiedQuery()
             ->orderBy('id')
@@ -122,6 +123,15 @@ final class UnverifiedAccountDeletionService
             $noticeAt = $hasNotice ? $row->unverified_deletion_notice_sent_at : null;
             $day7At = $hasDay7 ? $row->verification_reminder_day7_sent_at : null;
             $day14At = $hasDay14 ? $row->verification_reminder_day14_sent_at : null;
+
+            // Momenttelling: alle accounts in dit leeftijdsvak, ook als de mail al is gegaan.
+            if ($created <= $dag20Grens) {
+                $stats['op_dag_20_of_ouder']++;
+            } elseif ($created <= $dag14Grens) {
+                $stats['op_dag_14']++;
+            } elseif ($created <= $dag7Grens) {
+                $stats['op_dag_7']++;
+            }
 
             if ($noticeAt !== null) {
                 if ($noticeAt <= $purgeGrens) {
@@ -409,12 +419,16 @@ final class UnverifiedAccountDeletionService
             'grace_days' => $this->graceDays(),
             'min_age_days' => $this->minAgeDays(),
             'onbevestigd_actief' => 0,
+            'zonder_aanbod_of_berichten' => 0,
+            'overgeslagen_met_aanbod_of_berichten' => 0,
+            'op_dag_7' => 0,
+            'op_dag_14' => 0,
+            'op_dag_20_of_ouder' => 0,
             'eligible_herinnering_dag7' => 0,
             'eligible_herinnering_dag14' => 0,
             'eligible_verwijdermail' => 0,
             'notice_in_termijn' => 0,
             'eligible_verwijdering' => 0,
-            'overgeslagen_met_aanbod_of_berichten' => 0,
             'sent_dag7' => 0,
             'sent_dag14' => 0,
             'sent' => 0,

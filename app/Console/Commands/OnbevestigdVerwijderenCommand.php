@@ -44,22 +44,26 @@ class OnbevestigdVerwijderenCommand extends Command
     {
         return sprintf(
             'enabled=%s dry_run=%s grace_days=%d min_age_days=%d'
-            .' onbevestigd_actief=%d'
+            .' onbevestigd_actief=%d zonder_aanbod_of_berichten=%d overgeslagen_met_aanbod_of_berichten=%d'
+            .' op_dag_7=%d op_dag_14=%d op_dag_20_of_ouder=%d eligible_verwijdering=%d'
             .' eligible_herinnering_dag7=%d eligible_herinnering_dag14=%d'
-            .' eligible_verwijdermail=%d notice_in_termijn=%d eligible_verwijdering=%d'
-            .' overgeslagen_met_aanbod_of_berichten=%d'
+            .' eligible_verwijdermail=%d notice_in_termijn=%d'
             .' sent_dag7=%d sent_dag14=%d sent=%d skipped=%d failed=%d purged=%d',
             ! empty($r['enabled']) ? 'ja' : 'nee',
             ! empty($r['dry_run']) ? 'ja' : 'nee',
             (int) $r['grace_days'],
             (int) $r['min_age_days'],
             (int) $r['onbevestigd_actief'],
+            (int) $r['zonder_aanbod_of_berichten'],
+            (int) $r['overgeslagen_met_aanbod_of_berichten'],
+            (int) $r['op_dag_7'],
+            (int) $r['op_dag_14'],
+            (int) $r['op_dag_20_of_ouder'],
+            (int) $r['eligible_verwijdering'],
             (int) $r['eligible_herinnering_dag7'],
             (int) $r['eligible_herinnering_dag14'],
             (int) $r['eligible_verwijdermail'],
             (int) $r['notice_in_termijn'],
-            (int) $r['eligible_verwijdering'],
-            (int) $r['overgeslagen_met_aanbod_of_berichten'],
             (int) $r['sent_dag7'],
             (int) $r['sent_dag14'],
             (int) $r['sent'],

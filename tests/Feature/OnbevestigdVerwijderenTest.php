@@ -67,10 +67,14 @@ test('dry-run telt de stappen zonder te versturen en toont geen e-mail', functio
 
     expect(Artisan::call('gp:onbevestigd-verwijderen', ['--dry-run' => true]))->toBe(0);
     $output = Artisan::output();
-    expect($output)->toContain('eligible_herinnering_dag7=1')
+    expect($output)->toContain('op_dag_7=1')
+        ->and($output)->toContain('op_dag_14=1')
+        ->and($output)->toContain('op_dag_20_of_ouder=1')
+        ->and($output)->toContain('eligible_herinnering_dag7=1')
         ->and($output)->toContain('eligible_herinnering_dag14=1')
         ->and($output)->toContain('eligible_verwijdermail=1')
         ->and($output)->toContain('overgeslagen_met_aanbod_of_berichten=1')
+        ->and($output)->toContain('zonder_aanbod_of_berichten=4')
         ->and($output)->toContain('dry_run=ja')
         ->and($output)->toContain('sent=0')
         ->and($output)->toContain('purged=0')
@@ -79,6 +83,27 @@ test('dry-run telt de stappen zonder te versturen en toont geen e-mail', functio
 
     Notification::assertNothingSent();
     expect($dag7->fresh()->verification_reminder_day7_sent_at)->toBeNull();
+});
+
+test('dry-run telt accounts per moment, ook als de mail al is gegaan', function () {
+    $dag7 = onbevestigdSinds(8);
+    $dag7->forceFill(['verification_reminder_day7_sent_at' => now()->subDay()])->save();
+    $dag20 = onbevestigdSinds(21);
+    $dag20->forceFill(['unverified_deletion_notice_sent_at' => now()->subDays(2)])->save();
+    $zonder = onbevestigdSinds(10, ['email' => 'zonder-data@example.test']);
+    $met = onbevestigdSinds(10, ['email' => 'met-data@example.test']);
+    koppelAanbodEnBericht($met);
+
+    $counts = app(UnverifiedAccountDeletionService::class)->counts();
+    expect($counts['op_dag_7'])->toBe(2)
+        ->and($counts['op_dag_14'])->toBe(0)
+        ->and($counts['op_dag_20_of_ouder'])->toBe(1)
+        ->and($counts['eligible_herinnering_dag7'])->toBe(1)
+        ->and($counts['eligible_verwijdermail'])->toBe(0)
+        ->and($counts['notice_in_termijn'])->toBe(1)
+        ->and($counts['eligible_verwijdering'])->toBe(0)
+        ->and($counts['overgeslagen_met_aanbod_of_berichten'])->toBe(1)
+        ->and($counts['zonder_aanbod_of_berichten'])->toBe(3);
 });
 
 test('zonder --uitvoeren blijft het een dry-run, ook als de vlag aan staat', function () {
@@ -101,9 +126,12 @@ test('vlag uit: dry-run telt wel, --uitvoeren stuurt en verwijdert niets', funct
     expect(Artisan::call('gp:onbevestigd-verwijderen', ['--dry-run' => true]))->toBe(0);
     $output = Artisan::output();
     expect($output)->toContain('enabled=nee')
+        ->and($output)->toContain('op_dag_7=1')
+        ->and($output)->toContain('op_dag_20_of_ouder=2')
         ->and($output)->toContain('eligible_herinnering_dag7=1')
         ->and($output)->toContain('eligible_verwijdermail=1')
-        ->and($output)->toContain('eligible_verwijdering=1');
+        ->and($output)->toContain('eligible_verwijdering=1')
+        ->and($output)->toContain('zonder_aanbod_of_berichten=3');
 
     expect(Artisan::call('gp:onbevestigd-verwijderen', ['--uitvoeren' => true]))->toBe(0);
     expect(Artisan::output())->toContain('sent_dag7=0')->toContain('sent=0')->toContain('purged=0');
@@ -179,7 +207,11 @@ test('accounts met aanbod of berichten worden overgeslagen bij elke stap', funct
         ->and($counts['eligible_herinnering_dag14'])->toBe(0)
         ->and($counts['eligible_verwijdermail'])->toBe(0)
         ->and($counts['eligible_verwijdering'])->toBe(0)
-        ->and($counts['overgeslagen_met_aanbod_of_berichten'])->toBe(4);
+        ->and($counts['op_dag_7'])->toBe(0)
+        ->and($counts['op_dag_14'])->toBe(0)
+        ->and($counts['op_dag_20_of_ouder'])->toBe(0)
+        ->and($counts['overgeslagen_met_aanbod_of_berichten'])->toBe(4)
+        ->and($counts['zonder_aanbod_of_berichten'])->toBe(0);
 
     expect(Artisan::call('gp:onbevestigd-verwijderen', ['--uitvoeren' => true]))->toBe(0);
     expect(Artisan::output())->toContain('sent_dag7=0')->toContain('sent=0')->toContain('purged=0');
@@ -271,6 +303,11 @@ test('deploy-endpoint draait alleen dry-run en vereist token', function () {
         ->and($output)->not->toMatch('/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i');
 
     $this->postJson('/deploy/onbevestigd-verwijderen')->assertForbidden();
+
+    $this->withHeaders(['X-CSRF-TOKEN' => 'ongeldig'])
+        ->postJson('/deploy/onbevestigd-verwijderen', [], [
+            'Authorization' => 'Bearer test-deploy-token',
+        ])->assertOk();
 });
 
 test('admin-accounts worden nooit geselecteerd', function () {
