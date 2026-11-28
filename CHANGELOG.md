@@ -3,6 +3,16 @@
 Alle noemenswaardige wijzigingen in dit project. Formaat: [Keep a Changelog](https://keepachangelog.com/nl/1.1.0/),
 versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 
+## [0.90.3] - 2026-11-28
+
+### Added
+
+- Zadenbib Bibliotheek Laarne op de deelplekkenkaart (Keistraat 5, Laarne),
+  samen met Velt. Gratis zaden, maximaal 4 zakjes per bezoeker. Vanaf
+  september in winterslaap; zaden inbrengen kan wel. Openingstijden van de
+  bib staan in de beschrijving.
+  Bron: https://laarne.bibliotheek.be/en/node/281
+
 ## [0.90.2] - 2026-11-28
 
 ### Changed
