@@ -16,6 +16,7 @@
 #            POST_LOG_MINT_TOKEN (mint API; leeg → hook behoudt bestaande .env-waarde)
 #            ACTIVATION_REMINDER_ENABLED / _ENABLED_AT / _AFTER_HOURS / REMINDER_TEST_RECIPIENTS
 #              (alleen schrijven als gezet; leeg → hook behoudt bestaande of app-default uit)
+#            UNVERIFIED_DELETION_ENABLED (alleen schrijven als gezet; leeg → hook behoudt bestaande of app-default uit)
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -296,6 +297,9 @@ umask 077
   # de bestaande server-waarde (of app-default: uit + fail-closed). Geen waarden zelf verzinnen.
   if [ -n "${ACTIVATION_REMINDER_ENABLED:-}" ]; then
     dotenv_line ACTIVATION_REMINDER_ENABLED "$ACTIVATION_REMINDER_ENABLED"
+  fi
+  if [ -n "${UNVERIFIED_DELETION_ENABLED:-}" ]; then
+    dotenv_line UNVERIFIED_DELETION_ENABLED "$UNVERIFIED_DELETION_ENABLED"
   fi
   if [ -n "${ACTIVATION_REMINDER_ENABLED_AT:-}" ]; then
     dotenv_line ACTIVATION_REMINDER_ENABLED_AT "$ACTIVATION_REMINDER_ENABLED_AT"
