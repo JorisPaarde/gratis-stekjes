@@ -139,10 +139,14 @@ test('deelplekken.js en zoeken.js clusteren deelplekmarkers met evenement-accent
     expect($css)->toContain('.gp-cluster-bubble')
         ->and($css)->toContain('.gp-cluster-bubble--evenement')
         ->and($css)->toContain('.gp-cluster-event-badge')
-        ->and($css)->toContain('.leaflet-cluster-anim')
-        ->and($css)->toContain('.gp-popup-titel')
-        ->and($css)->toContain('.gp-popup-meta')
-        ->and($css)->toContain('.gp-popup-link');
+        ->and($css)->toContain('.leaflet-cluster-anim');
+
+    // Popupopmaak is gedeeld (deelplekken, aanbod en stadspagina's) en staat in aanbod.css.
+    $popupCss = (string) file_get_contents(base_path('resources/css/aanbod.css'));
+    expect($popupCss)->toContain('.gp-popup-titel')
+        ->and($popupCss)->toContain('.gp-popup-meta')
+        ->and($popupCss)->toContain('.gp-popup-link')
+        ->and($popupCss)->toContain('a.leaflet-popup-close-button');
 });
 
 test('zoeken na postcode zoomt rond resultaat (geen landelijke fitBounds)', function () {
