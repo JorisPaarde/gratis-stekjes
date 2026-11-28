@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\MailLog;
 use App\Models\User;
 use App\Notifications\UnverifiedDeletionNoticeDutch;
-use App\Support\BevestigingsmailStats;
+use App\Notifications\VerifyEmailReminderDay14Dutch;
+use App\Notifications\VerifyEmailReminderDay7Dutch;
 use App\Support\SafeMail;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,54 +17,28 @@ use Illuminate\Support\Facades\Schema;
 use Throwable;
 
 /**
- * Verwijdermail + opruimen van onbevestigde accounts.
+ * Reeks voor onbevestigde accounts (achter UNVERIFIED_DELETION_ENABLED):
+ * herinnering op dag 7 en dag 14, verwijdermail op dag 20, opruimen 7 dagen
+ * later via AvgService::purgeUserAccount.
  *
- * Selectie waarschuwing: actief lid, e-mail onbevestigd, account ≥ min_age_days
- * (standaard 20), minstens min_reminders herinneringen (standaard 3, zelfde
- * telling als beheer: VerifyEmailDutch ná de eerste + VerifyEmailReminderDutch),
- * nog geen verwijdermail.
+ * De bestaande 24-uursherinnering (VerificationReminderService) blijft apart.
  *
- * Ontbreekt de auto-herinnering in mail_log (retentie 90 dagen) maar is
- * verification_reminder_sent_at gezet, dan telt die als 1 herinnering.
- *
- * Default UIT (UNVERIFIED_DELETION_ENABLED). Staging: versturen/verwijderen
- * is fail-closed zonder REMINDER_TEST_RECIPIENTS. Dry-run telt altijd, zonder
- * allowlist, en zonder e-mailadressen, namen of id's in de uitvoer.
+ * Accounts met aanbod of berichten worden altijd overgeslagen.
+ * Staging: versturen/verwijderen is fail-closed zonder REMINDER_TEST_RECIPIENTS.
+ * Dry-run telt altijd, zonder allowlist, en zonder e-mailadressen, namen of id's.
  */
 final class UnverifiedAccountDeletionService
 {
     /**
-     * @return array{
-     *   enabled: bool,
-     *   dry_run: bool,
-     *   grace_days: int,
-     *   min_age_days: int,
-     *   min_reminders: int,
-     *   onbevestigd_actief: int,
-     *   onbevestigd_min_leeftijd: int,
-     *   herinneringen_0: int,
-     *   herinneringen_1: int,
-     *   herinneringen_2: int,
-     *   herinneringen_3plus: int,
-     *   met_auto_herinnering: int,
-     *   eligible_verwijdermail: int,
-     *   notice_in_termijn: int,
-     *   eligible_verwijdering: int,
-     *   met_aanbod: int,
-     *   met_gesprekken: int,
-     *   met_ervaringen: int,
-     *   met_vereniging: int,
-     *   sent: int,
-     *   skipped: int,
-     *   failed: int,
-     *   purged: int
-     * }
+     * @return array<string, mixed>
      */
     public function run(bool $dryRun = true, int $limit = 50): array
     {
         if ($dryRun) {
             $stats = $this->counts();
             $stats['dry_run'] = true;
+            $stats['sent_dag7'] = 0;
+            $stats['sent_dag14'] = 0;
             $stats['sent'] = 0;
             $stats['skipped'] = 0;
             $stats['failed'] = 0;
@@ -73,32 +47,9 @@ final class UnverifiedAccountDeletionService
             return $stats;
         }
 
-        // Cron-pad: geen zware telling, alleen versturen/verwijderen als de vlag aan staat.
-        $stats = [
-            'enabled' => (bool) config('stekjes.unverified_deletion.enabled'),
-            'dry_run' => false,
-            'grace_days' => $this->graceDays(),
-            'min_age_days' => $this->minAgeDays(),
-            'min_reminders' => $this->minReminders(),
-            'onbevestigd_actief' => 0,
-            'onbevestigd_min_leeftijd' => 0,
-            'herinneringen_0' => 0,
-            'herinneringen_1' => 0,
-            'herinneringen_2' => 0,
-            'herinneringen_3plus' => 0,
-            'met_auto_herinnering' => 0,
-            'eligible_verwijdermail' => 0,
-            'notice_in_termijn' => 0,
-            'eligible_verwijdering' => 0,
-            'met_aanbod' => 0,
-            'met_gesprekken' => 0,
-            'met_ervaringen' => 0,
-            'met_vereniging' => 0,
-            'sent' => 0,
-            'skipped' => 0,
-            'failed' => 0,
-            'purged' => 0,
-        ];
+        $stats = $this->emptyStats();
+        $stats['dry_run'] = false;
+        $stats['enabled'] = (bool) config('stekjes.unverified_deletion.enabled');
 
         if (! $stats['enabled']) {
             return $stats;
@@ -110,143 +61,128 @@ final class UnverifiedAccountDeletionService
             return $stats;
         }
 
-        $send = $this->sendNotices($limit);
-        $stats['sent'] = $send['sent'];
-        $stats['skipped'] = $send['skipped'];
-        $stats['failed'] = $send['failed'];
+        $dag7 = $this->sendReminders('day7', $limit);
+        $dag14 = $this->sendReminders('day14', $limit);
+        $notice = $this->sendNotices($limit);
+        $stats['sent_dag7'] = $dag7['sent'];
+        $stats['sent_dag14'] = $dag14['sent'];
+        $stats['sent'] = $notice['sent'];
+        $stats['skipped'] = $dag7['skipped'] + $dag14['skipped'] + $notice['skipped'];
+        $stats['failed'] = $dag7['failed'] + $dag14['failed'] + $notice['failed'];
         $stats['purged'] = $this->purgeExpired($limit);
 
         return $stats;
     }
 
     /**
-     * @return array{
-     *   enabled: bool,
-     *   dry_run: bool,
-     *   grace_days: int,
-     *   min_age_days: int,
-     *   min_reminders: int,
-     *   onbevestigd_actief: int,
-     *   onbevestigd_min_leeftijd: int,
-     *   herinneringen_0: int,
-     *   herinneringen_1: int,
-     *   herinneringen_2: int,
-     *   herinneringen_3plus: int,
-     *   met_auto_herinnering: int,
-     *   eligible_verwijdermail: int,
-     *   notice_in_termijn: int,
-     *   eligible_verwijdering: int,
-     *   met_aanbod: int,
-     *   met_gesprekken: int,
-     *   met_ervaringen: int,
-     *   met_vereniging: int,
-     *   sent: int,
-     *   skipped: int,
-     *   failed: int,
-     *   purged: int
-     * }
+     * @return array<string, mixed>
      */
     public function counts(): array
     {
-        $grace = $this->graceDays();
-        $minAge = $this->minAgeDays();
-        $minReminders = $this->minReminders();
-        $empty = [
-            'enabled' => (bool) config('stekjes.unverified_deletion.enabled'),
-            'dry_run' => true,
-            'grace_days' => $grace,
-            'min_age_days' => $minAge,
-            'min_reminders' => $minReminders,
-            'onbevestigd_actief' => 0,
-            'onbevestigd_min_leeftijd' => 0,
-            'herinneringen_0' => 0,
-            'herinneringen_1' => 0,
-            'herinneringen_2' => 0,
-            'herinneringen_3plus' => 0,
-            'met_auto_herinnering' => 0,
-            'eligible_verwijdermail' => 0,
-            'notice_in_termijn' => 0,
-            'eligible_verwijdering' => 0,
-            'met_aanbod' => 0,
-            'met_gesprekken' => 0,
-            'met_ervaringen' => 0,
-            'met_vereniging' => 0,
-            'sent' => 0,
-            'skipped' => 0,
-            'failed' => 0,
-            'purged' => 0,
-        ];
+        $stats = $this->emptyStats();
+        $stats['dry_run'] = true;
+        $stats['enabled'] = (bool) config('stekjes.unverified_deletion.enabled');
 
-        $onbevestigd = $this->unverifiedQuery();
-        $empty['onbevestigd_actief'] = (clone $onbevestigd)->count();
-
-        $oud = (clone $onbevestigd)->where('created_at', '<=', now()->subDays($minAge));
-        $empty['onbevestigd_min_leeftijd'] = (clone $oud)->count();
-
-        if ($empty['onbevestigd_min_leeftijd'] === 0) {
-            return $empty;
+        $ids = $this->unverifiedQuery()->orderBy('id')->pluck('id')
+            ->map(static fn ($id): int => (int) $id)
+            ->all();
+        $stats['onbevestigd_actief'] = count($ids);
+        if ($ids === []) {
+            return $stats;
         }
 
-        $rows = (clone $oud)
-            ->get(['id', 'verification_reminder_sent_at', 'unverified_deletion_notice_sent_at']);
+        $skip = array_fill_keys($this->idsMetAanbodOfBerichten($ids), true);
+        $stats['overgeslagen_met_aanbod_of_berichten'] = count($skip);
 
-        $ids = $rows->pluck('id')->map(static fn ($id): int => (int) $id)->all();
-        $herinneringen = $this->herinneringenVoor($ids);
-        $eligibleNoticeIds = [];
-        $hasNoticeCol = Schema::hasColumn('users', 'unverified_deletion_notice_sent_at');
-        $cutoff = now()->subDays($grace);
+        $kandidaten = $this->unverifiedQuery()
+            ->orderBy('id')
+            ->get([
+                'id',
+                'created_at',
+                'verification_reminder_day7_sent_at',
+                'verification_reminder_day14_sent_at',
+                'unverified_deletion_notice_sent_at',
+            ]);
 
-        foreach ($rows as $row) {
+        $dag7Grens = now()->subDays($this->day7Days());
+        $dag14Grens = now()->subDays($this->day14Days());
+        $dag20Grens = now()->subDays($this->minAgeDays());
+        $purgeGrens = now()->subDays($this->graceDays());
+        $hasDay7 = Schema::hasColumn('users', 'verification_reminder_day7_sent_at');
+        $hasDay14 = Schema::hasColumn('users', 'verification_reminder_day14_sent_at');
+        $hasNotice = Schema::hasColumn('users', 'unverified_deletion_notice_sent_at');
+
+        foreach ($kandidaten as $row) {
             $id = (int) $row->id;
-            $n = $herinneringen[$id] ?? 0;
-            if ($n <= 0) {
-                $empty['herinneringen_0']++;
-            } elseif ($n === 1) {
-                $empty['herinneringen_1']++;
-            } elseif ($n === 2) {
-                $empty['herinneringen_2']++;
-            } else {
-                $empty['herinneringen_3plus']++;
+            if (isset($skip[$id])) {
+                continue;
             }
 
-            if ($row->verification_reminder_sent_at !== null) {
-                $empty['met_auto_herinnering']++;
-            }
+            $created = $row->created_at;
+            $noticeAt = $hasNotice ? $row->unverified_deletion_notice_sent_at : null;
+            $day7At = $hasDay7 ? $row->verification_reminder_day7_sent_at : null;
+            $day14At = $hasDay14 ? $row->verification_reminder_day14_sent_at : null;
 
-            $noticeAt = $hasNoticeCol ? $row->unverified_deletion_notice_sent_at : null;
-            if ($noticeAt === null) {
-                if ($n >= $minReminders) {
-                    $eligibleNoticeIds[] = $id;
+            if ($noticeAt !== null) {
+                if ($noticeAt <= $purgeGrens) {
+                    $stats['eligible_verwijdering']++;
+                } else {
+                    $stats['notice_in_termijn']++;
                 }
-            } elseif ($noticeAt <= $cutoff) {
-                $empty['eligible_verwijdering']++;
-            } else {
-                $empty['notice_in_termijn']++;
+
+                continue;
+            }
+
+            if ($created <= $dag20Grens) {
+                $stats['eligible_verwijdermail']++;
+
+                continue;
+            }
+
+            if ($created <= $dag14Grens) {
+                if ($day14At === null) {
+                    $stats['eligible_herinnering_dag14']++;
+                }
+
+                continue;
+            }
+
+            if ($created <= $dag7Grens && $day7At === null) {
+                $stats['eligible_herinnering_dag7']++;
             }
         }
 
-        $empty['eligible_verwijdermail'] = count($eligibleNoticeIds);
+        return $stats;
+    }
 
-        // Gekoppelde data: van de accounts die in aanmerking komen voor de
-        // verwijdermail, plus die al een mail kregen (wachtend of rijp).
-        $relevantIds = $eligibleNoticeIds;
-        foreach ($rows as $row) {
-            if ($row->unverified_deletion_notice_sent_at !== null) {
-                $relevantIds[] = (int) $row->id;
-            }
-        }
-        $relevantIds = array_values(array_unique($relevantIds));
-        if ($relevantIds === [] && $empty['onbevestigd_min_leeftijd'] > 0) {
-            // Nog niemand met 3 herinneringen: toon gekoppelde data voor alle ≥20 dagen.
-            $relevantIds = $ids;
-        }
-        $related = $this->relatedCounts($relevantIds);
-        $empty['met_aanbod'] = $related['met_aanbod'];
-        $empty['met_gesprekken'] = $related['met_gesprekken'];
-        $empty['met_ervaringen'] = $related['met_ervaringen'];
-        $empty['met_vereniging'] = $related['met_vereniging'];
+    /**
+     * @return array{sent: int, skipped: int, failed: int}
+     */
+    public function sendReminders(string $welke, int $limit = 50): array
+    {
+        $kolom = $welke === 'day14'
+            ? 'verification_reminder_day14_sent_at'
+            : 'verification_reminder_day7_sent_at';
+        $notification = $welke === 'day14'
+            ? VerifyEmailReminderDay14Dutch::class
+            : VerifyEmailReminderDay7Dutch::class;
 
-        return $empty;
+        if (! (bool) config('stekjes.unverified_deletion.enabled')
+            || ! Schema::hasColumn('users', $kolom)) {
+            return ['sent' => 0, 'skipped' => 0, 'failed' => 0];
+        }
+
+        $allowlist = $this->normalizedAllowlist();
+        if (app()->environment('staging') && $allowlist === []) {
+            return ['sent' => 0, 'skipped' => 0, 'failed' => 0];
+        }
+
+        $ids = $welke === 'day14' ? $this->eligibleDay14Ids() : $this->eligibleDay7Ids();
+        if ($allowlist !== []) {
+            $ids = $this->filterAllowlist($ids, $allowlist);
+        }
+
+        return $this->sendToIds($ids, $kolom, $notification, $limit);
     }
 
     /**
@@ -254,11 +190,6 @@ final class UnverifiedAccountDeletionService
      */
     public function sendNotices(int $limit = 50): array
     {
-        $sent = 0;
-        $skipped = 0;
-        $failed = 0;
-        $limit = max(1, $limit);
-
         if (! (bool) config('stekjes.unverified_deletion.enabled')
             || ! Schema::hasColumn('users', 'unverified_deletion_notice_sent_at')) {
             return ['sent' => 0, 'skipped' => 0, 'failed' => 0];
@@ -271,19 +202,17 @@ final class UnverifiedAccountDeletionService
 
         $ids = $this->eligibleNoticeIds();
         if ($allowlist !== []) {
-            $allowedIds = User::query()
-                ->whereIn('id', $ids)
-                ->whereIn('email', $allowlist)
-                ->pluck('id')
-                ->map(static fn ($id): int => (int) $id)
-                ->all();
-            $ids = $allowedIds;
+            $ids = $this->filterAllowlist($ids, $allowlist);
         }
 
         $verwijderOp = $this->verwijderOpVanaf(now()->toImmutable());
+        $sent = 0;
+        $skipped = 0;
+        $failed = 0;
+        $limit = max(1, $limit);
 
         foreach (array_slice($ids, 0, $limit) as $userId) {
-            if (! $this->claimNoticeSlot($userId)) {
+            if ($this->heeftAanbodOfBerichten($userId) || ! $this->claimNoticeSlot($userId)) {
                 $skipped++;
 
                 continue;
@@ -340,6 +269,10 @@ final class UnverifiedAccountDeletionService
         $avg = app(AvgService::class);
 
         foreach ($users as $user) {
+            if ($this->heeftAanbodOfBerichten((int) $user->id)) {
+                continue;
+            }
+
             try {
                 $avg->purgeUserAccount($user);
                 $purged++;
@@ -365,14 +298,69 @@ final class UnverifiedAccountDeletionService
         return max(1, (int) config('stekjes.unverified_deletion.min_age_days', 20));
     }
 
-    public function minReminders(): int
+    public function day7Days(): int
     {
-        return max(1, (int) config('stekjes.unverified_deletion.min_reminders', 3));
+        return max(1, (int) config('stekjes.unverified_deletion.day7_days', 7));
+    }
+
+    public function day14Days(): int
+    {
+        return max($this->day7Days() + 1, (int) config('stekjes.unverified_deletion.day14_days', 14));
     }
 
     public function verwijderOpVanaf(CarbonImmutable $vanaf): CarbonImmutable
     {
         return $vanaf->addDays($this->graceDays());
+    }
+
+    /**
+     * @return list<int>
+     */
+    public function eligibleDay7Ids(): array
+    {
+        if (! Schema::hasColumn('users', 'verification_reminder_day7_sent_at')) {
+            return [];
+        }
+
+        $ids = $this->unverifiedQuery()
+            ->where('created_at', '<=', now()->subDays($this->day7Days()))
+            ->where('created_at', '>', now()->subDays($this->day14Days()))
+            ->whereNull('verification_reminder_day7_sent_at')
+            ->when(
+                Schema::hasColumn('users', 'unverified_deletion_notice_sent_at'),
+                static fn (Builder $q): Builder => $q->whereNull('unverified_deletion_notice_sent_at')
+            )
+            ->orderBy('id')
+            ->pluck('id')
+            ->map(static fn ($id): int => (int) $id)
+            ->all();
+
+        return $this->zonderAanbodOfBerichten($ids);
+    }
+
+    /**
+     * @return list<int>
+     */
+    public function eligibleDay14Ids(): array
+    {
+        if (! Schema::hasColumn('users', 'verification_reminder_day14_sent_at')) {
+            return [];
+        }
+
+        $ids = $this->unverifiedQuery()
+            ->where('created_at', '<=', now()->subDays($this->day14Days()))
+            ->where('created_at', '>', now()->subDays($this->minAgeDays()))
+            ->whereNull('verification_reminder_day14_sent_at')
+            ->when(
+                Schema::hasColumn('users', 'unverified_deletion_notice_sent_at'),
+                static fn (Builder $q): Builder => $q->whereNull('unverified_deletion_notice_sent_at')
+            )
+            ->orderBy('id')
+            ->pluck('id')
+            ->map(static fn ($id): int => (int) $id)
+            ->all();
+
+        return $this->zonderAanbodOfBerichten($ids);
     }
 
     /**
@@ -384,39 +372,56 @@ final class UnverifiedAccountDeletionService
             return [];
         }
 
-        $kandidaten = $this->unverifiedQuery()
+        $ids = $this->unverifiedQuery()
             ->where('created_at', '<=', now()->subDays($this->minAgeDays()))
             ->whereNull('unverified_deletion_notice_sent_at')
             ->orderBy('id')
-            ->get(['id', 'verification_reminder_sent_at']);
+            ->pluck('id')
+            ->map(static fn ($id): int => (int) $id)
+            ->all();
 
-        $ids = $kandidaten->pluck('id')->map(static fn ($id): int => (int) $id)->all();
-        $herinneringen = $this->herinneringenVoor($ids);
-        $min = $this->minReminders();
-        $out = [];
-        foreach ($ids as $id) {
-            if (($herinneringen[$id] ?? 0) >= $min) {
-                $out[] = $id;
-            }
-        }
-
-        return $out;
+        return $this->zonderAanbodOfBerichten($ids);
     }
 
     public function claimNoticeSlot(int $userId): bool
     {
-        if ($userId < 1 || ! Schema::hasColumn('users', 'unverified_deletion_notice_sent_at')) {
-            return false;
-        }
+        return $this->claimKolom($userId, 'unverified_deletion_notice_sent_at');
+    }
 
-        $affected = User::query()
-            ->whereKey($userId)
-            ->where('active', true)
-            ->whereNull('email_verified_at')
-            ->whereNull('unverified_deletion_notice_sent_at')
-            ->update(['unverified_deletion_notice_sent_at' => now()]);
+    public function claimDay7Slot(int $userId): bool
+    {
+        return $this->claimKolom($userId, 'verification_reminder_day7_sent_at');
+    }
 
-        return $affected === 1;
+    public function claimDay14Slot(int $userId): bool
+    {
+        return $this->claimKolom($userId, 'verification_reminder_day14_sent_at');
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function emptyStats(): array
+    {
+        return [
+            'enabled' => (bool) config('stekjes.unverified_deletion.enabled'),
+            'dry_run' => true,
+            'grace_days' => $this->graceDays(),
+            'min_age_days' => $this->minAgeDays(),
+            'onbevestigd_actief' => 0,
+            'eligible_herinnering_dag7' => 0,
+            'eligible_herinnering_dag14' => 0,
+            'eligible_verwijdermail' => 0,
+            'notice_in_termijn' => 0,
+            'eligible_verwijdering' => 0,
+            'overgeslagen_met_aanbod_of_berichten' => 0,
+            'sent_dag7' => 0,
+            'sent_dag14' => 0,
+            'sent' => 0,
+            'skipped' => 0,
+            'failed' => 0,
+            'purged' => 0,
+        ];
     }
 
     /**
@@ -436,140 +441,136 @@ final class UnverifiedAccountDeletionService
         return $query;
     }
 
-    /**
-     * @param  list<int>  $userIds
-     * @return array<int, int> user_id => aantal herinneringen
-     */
-    private function herinneringenVoor(array $userIds): array
+    private function claimKolom(int $userId, string $kolom): bool
     {
-        $acc = [];
-        foreach ($userIds as $id) {
-            $acc[$id] = 0;
-        }
-        if ($userIds === [] || ! Schema::hasTable('mail_log')) {
-            return $this->aanvullenMetAutoKolom($acc, $userIds);
+        if ($userId < 1 || ! Schema::hasColumn('users', $kolom)) {
+            return false;
         }
 
-        $rows = MailLog::query()
-            ->selectRaw('user_id, type, status, COUNT(*) as n')
-            ->whereIn('user_id', $userIds)
-            ->whereIn('type', BevestigingsmailStats::TYPES)
-            ->groupBy('user_id', 'type', 'status')
-            ->get();
+        $affected = User::query()
+            ->whereKey($userId)
+            ->where('active', true)
+            ->whereNull('email_verified_at')
+            ->whereNull($kolom)
+            ->update([$kolom => now()]);
 
-        /** @var array<int, array{verify: int, auto: int}> $raw */
-        $raw = [];
-        foreach ($userIds as $id) {
-            $raw[$id] = ['verify' => 0, 'auto' => 0];
-        }
-        foreach ($rows as $row) {
-            if ($row->status !== 'ok') {
-                continue;
-            }
-            $uid = (int) $row->user_id;
-            if (! isset($raw[$uid])) {
-                continue;
-            }
-            if ($row->type === 'VerifyEmailDutch') {
-                $raw[$uid]['verify'] += (int) $row->n;
-            } elseif ($row->type === 'VerifyEmailReminderDutch') {
-                $raw[$uid]['auto'] += (int) $row->n;
-            }
-        }
-
-        foreach ($raw as $uid => $s) {
-            $acc[$uid] = max(0, $s['verify'] - 1) + $s['auto'];
-        }
-
-        return $this->aanvullenMetAutoKolom($acc, $userIds);
+        return $affected === 1;
     }
 
     /**
-     * Als mail_log de auto-herinnering niet meer heeft, maar de kolom wel.
-     *
-     * @param  array<int, int>  $acc
-     * @param  list<int>  $userIds
-     * @return array<int, int>
+     * @param  list<int>  $ids
+     * @param  class-string  $notification
+     * @return array{sent: int, skipped: int, failed: int}
      */
-    private function aanvullenMetAutoKolom(array $acc, array $userIds): array
+    private function sendToIds(array $ids, string $kolom, string $notification, int $limit): array
     {
-        if ($userIds === [] || ! Schema::hasColumn('users', 'verification_reminder_sent_at')) {
-            return $acc;
+        $sent = 0;
+        $skipped = 0;
+        $failed = 0;
+        $limit = max(1, $limit);
+
+        foreach (array_slice($ids, 0, $limit) as $userId) {
+            if ($this->heeftAanbodOfBerichten($userId) || ! $this->claimKolom($userId, $kolom)) {
+                $skipped++;
+
+                continue;
+            }
+
+            try {
+                $user = User::query()->members()->whereKey($userId)->first();
+                if ($user === null || $user->email_verified_at !== null || ! $user->active) {
+                    $skipped++;
+
+                    continue;
+                }
+                $user->rotateEmailVerificationToken();
+                $ok = SafeMail::notify($user, new $notification);
+                if ($ok) {
+                    $sent++;
+                } else {
+                    $failed++;
+                }
+            } catch (Throwable $e) {
+                $failed++;
+                Log::error('unverified_deletion herinnering mislukt: '.$e::class);
+            }
         }
 
-        $autoIds = User::query()
-            ->whereIn('id', $userIds)
-            ->whereNotNull('verification_reminder_sent_at')
+        return ['sent' => $sent, 'skipped' => $skipped, 'failed' => $failed];
+    }
+
+    /**
+     * @param  list<int>  $ids
+     * @param  list<string>  $allowlist
+     * @return list<int>
+     */
+    private function filterAllowlist(array $ids, array $allowlist): array
+    {
+        if ($ids === []) {
+            return [];
+        }
+
+        return User::query()
+            ->whereIn('id', $ids)
+            ->whereIn('email', $allowlist)
             ->pluck('id')
             ->map(static fn ($id): int => (int) $id)
             ->all();
+    }
 
-        $autoInLog = [];
-        if (Schema::hasTable('mail_log') && $autoIds !== []) {
-            $autoInLog = MailLog::query()
-                ->whereIn('user_id', $autoIds)
-                ->where('type', 'VerifyEmailReminderDutch')
-                ->where('status', 'ok')
-                ->distinct()
-                ->pluck('user_id')
-                ->map(static fn ($id): int => (int) $id)
-                ->all();
+    /**
+     * @param  list<int>  $ids
+     * @return list<int>
+     */
+    private function zonderAanbodOfBerichten(array $ids): array
+    {
+        if ($ids === []) {
+            return [];
         }
-        $autoInLogLookup = array_flip($autoInLog);
+        $skip = array_fill_keys($this->idsMetAanbodOfBerichten($ids), true);
 
-        foreach ($autoIds as $id) {
-            if (! isset($autoInLogLookup[$id])) {
-                $acc[$id] = ($acc[$id] ?? 0) + 1;
-            }
-        }
+        return array_values(array_filter($ids, static fn (int $id): bool => ! isset($skip[$id])));
+    }
 
-        return $acc;
+    public function heeftAanbodOfBerichten(int $userId): bool
+    {
+        return $this->idsMetAanbodOfBerichten([$userId]) !== [];
     }
 
     /**
      * @param  list<int>  $userIds
-     * @return array{met_aanbod: int, met_gesprekken: int, met_ervaringen: int, met_vereniging: int}
+     * @return list<int>
      */
-    private function relatedCounts(array $userIds): array
+    private function idsMetAanbodOfBerichten(array $userIds): array
     {
-        $out = [
-            'met_aanbod' => 0,
-            'met_gesprekken' => 0,
-            'met_ervaringen' => 0,
-            'met_vereniging' => 0,
-        ];
         if ($userIds === []) {
-            return $out;
+            return [];
         }
 
+        $gevonden = [];
+
         if (Schema::hasTable('aanbod')) {
-            $out['met_aanbod'] = DB::table('aanbod')
-                ->whereIn('user_id', $userIds)
-                ->distinct()
-                ->count('user_id');
+            foreach (DB::table('aanbod')->whereIn('user_id', $userIds)->pluck('user_id') as $id) {
+                $gevonden[] = (int) $id;
+            }
         }
 
         if (Schema::hasTable('conversations')) {
-            $a = DB::table('conversations')->whereIn('user_a_id', $userIds)->pluck('user_a_id');
-            $b = DB::table('conversations')->whereIn('user_b_id', $userIds)->pluck('user_b_id');
-            $out['met_gesprekken'] = $a->merge($b)->unique()->count();
+            foreach (DB::table('conversations')->whereIn('user_a_id', $userIds)->pluck('user_a_id') as $id) {
+                $gevonden[] = (int) $id;
+            }
+            foreach (DB::table('conversations')->whereIn('user_b_id', $userIds)->pluck('user_b_id') as $id) {
+                $gevonden[] = (int) $id;
+            }
         }
 
-        if (Schema::hasTable('ervaringen')) {
-            $out['met_ervaringen'] = DB::table('ervaringen')
-                ->whereIn('user_id', $userIds)
-                ->distinct()
-                ->count('user_id');
+        if (Schema::hasTable('messages') && Schema::hasColumn('messages', 'sender_id')) {
+            foreach (DB::table('messages')->whereIn('sender_id', $userIds)->pluck('sender_id') as $id) {
+                $gevonden[] = (int) $id;
+            }
         }
 
-        if (Schema::hasTable('vereniging_user')) {
-            $out['met_vereniging'] = (int) DB::table('vereniging_user')
-                ->whereIn('user_id', $userIds)
-                ->distinct()
-                ->count('user_id');
-        }
-
-        return $out;
+        return array_values(array_unique($gevonden));
     }
 
     /**

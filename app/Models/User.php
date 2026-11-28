@@ -121,6 +121,8 @@ class User extends Authenticatable implements MustVerifyEmail
             'last_seen_at' => 'datetime',
             'conversion_flow_expires_at' => 'datetime',
             'verification_reminder_sent_at' => 'datetime',
+            'verification_reminder_day7_sent_at' => 'datetime',
+            'verification_reminder_day14_sent_at' => 'datetime',
             'activatie_herinnering_sent_at' => 'datetime',
             'unverified_deletion_notice_sent_at' => 'datetime',
             'lat' => 'float',

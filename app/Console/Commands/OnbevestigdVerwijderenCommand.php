@@ -8,7 +8,7 @@ use App\Services\UnverifiedAccountDeletionService;
 use Illuminate\Console\Command;
 
 /**
- * Verwijdermail + opruimen van onbevestigde accounts.
+ * Herinneringen dag 7/14, verwijdermail dag 20, opruimen na 7 dagen.
  * Standaard dry-run: alleen aantallen, geen e-mailadressen, namen of id's.
  * --uitvoeren verstuurt mails en verwijdert accounts waarvan de termijn voorbij is.
  */
@@ -16,10 +16,10 @@ class OnbevestigdVerwijderenCommand extends Command
 {
     protected $signature = 'gp:onbevestigd-verwijderen
         {--dry-run : Toon alleen aantallen (niets versturen of verwijderen)}
-        {--uitvoeren : Verstuur verwijdermails en verwijder accounts na de termijn}
-        {--limit=50 : Max. mails of verwijderingen per run}';
+        {--uitvoeren : Verstuur herinneringen en verwijdermails, en verwijder accounts na de termijn}
+        {--limit=50 : Max. mails of verwijderingen per stap per run}';
 
-    protected $description = 'Onbevestigde accounts: dry-run (aantallen) of --uitvoeren';
+    protected $description = 'Onbevestigde accounts (dag 7/14/20): dry-run (aantallen) of --uitvoeren';
 
     public function handle(UnverifiedAccountDeletionService $service): int
     {
@@ -43,31 +43,25 @@ class OnbevestigdVerwijderenCommand extends Command
     private function formatCounts(array $r): string
     {
         return sprintf(
-            'enabled=%s dry_run=%s grace_days=%d min_age_days=%d min_reminders=%d'
-            .' onbevestigd_actief=%d onbevestigd_min_leeftijd=%d'
-            .' herinneringen_0=%d herinneringen_1=%d herinneringen_2=%d herinneringen_3plus=%d'
-            .' met_auto_herinnering=%d eligible_verwijdermail=%d notice_in_termijn=%d eligible_verwijdering=%d'
-            .' met_aanbod=%d met_gesprekken=%d met_ervaringen=%d met_vereniging=%d'
-            .' sent=%d skipped=%d failed=%d purged=%d',
+            'enabled=%s dry_run=%s grace_days=%d min_age_days=%d'
+            .' onbevestigd_actief=%d'
+            .' eligible_herinnering_dag7=%d eligible_herinnering_dag14=%d'
+            .' eligible_verwijdermail=%d notice_in_termijn=%d eligible_verwijdering=%d'
+            .' overgeslagen_met_aanbod_of_berichten=%d'
+            .' sent_dag7=%d sent_dag14=%d sent=%d skipped=%d failed=%d purged=%d',
             ! empty($r['enabled']) ? 'ja' : 'nee',
             ! empty($r['dry_run']) ? 'ja' : 'nee',
             (int) $r['grace_days'],
             (int) $r['min_age_days'],
-            (int) $r['min_reminders'],
             (int) $r['onbevestigd_actief'],
-            (int) $r['onbevestigd_min_leeftijd'],
-            (int) $r['herinneringen_0'],
-            (int) $r['herinneringen_1'],
-            (int) $r['herinneringen_2'],
-            (int) $r['herinneringen_3plus'],
-            (int) $r['met_auto_herinnering'],
+            (int) $r['eligible_herinnering_dag7'],
+            (int) $r['eligible_herinnering_dag14'],
             (int) $r['eligible_verwijdermail'],
             (int) $r['notice_in_termijn'],
             (int) $r['eligible_verwijdering'],
-            (int) $r['met_aanbod'],
-            (int) $r['met_gesprekken'],
-            (int) $r['met_ervaringen'],
-            (int) $r['met_vereniging'],
+            (int) $r['overgeslagen_met_aanbod_of_berichten'],
+            (int) $r['sent_dag7'],
+            (int) $r['sent_dag14'],
             (int) $r['sent'],
             (int) $r['skipped'],
             (int) $r['failed'],
