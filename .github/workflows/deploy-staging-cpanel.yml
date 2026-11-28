@@ -107,6 +107,7 @@ jobs:
           BACKUP_RETAIN_DAYS: ${{ vars.BACKUP_RETAIN_DAYS }}
           POST_LOG_MINT_TOKEN: ${{ secrets.POST_LOG_MINT_TOKEN }}
           ACTIVATION_REMINDER_ENABLED: ${{ vars.ACTIVATION_REMINDER_ENABLED }}
+          UNVERIFIED_DELETION_ENABLED: ${{ vars.UNVERIFIED_DELETION_ENABLED }}
           ACTIVATION_REMINDER_ENABLED_AT: ${{ vars.ACTIVATION_REMINDER_ENABLED_AT }}
           ACTIVATION_REMINDER_AFTER_HOURS: ${{ vars.ACTIVATION_REMINDER_AFTER_HOURS }}
           REMINDER_TEST_RECIPIENTS: ${{ secrets.REMINDER_TEST_RECIPIENTS }}
@@ -151,6 +152,9 @@ jobs:
           fi
           if [ -z "${ACTIVATION_REMINDER_ENABLED:-}" ] && [ -z "${ACTIVATION_REMINDER_ENABLED_AT:-}" ]; then
             echo "::notice::ACTIVATION_REMINDER_* ontbreekt — hook behoudt bestaande of app-default (uit)."
+          fi
+          if [ -z "${UNVERIFIED_DELETION_ENABLED:-}" ]; then
+            echo "::notice::UNVERIFIED_DELETION_ENABLED ontbreekt — hook behoudt bestaande of app-default (uit)."
           fi
           if [ -n "${BREVO_API_KEY:-}" ]; then
             echo "::add-mask::${BREVO_API_KEY}"
