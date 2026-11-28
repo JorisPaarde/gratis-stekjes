@@ -18,7 +18,7 @@ import { escapeHtml, popupAanbodHtml, registerPlek, plekKey as detailPlekKey } f
     autoPanPaddingBottomRight: L.point(24, 24),
     offset: L.point(0, -6),
     maxWidth: 320,
-    maxHeight: 190,
+    maxHeight: 150,
   };
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 18,
