@@ -24,7 +24,8 @@ versies volgens [Semantic Versioning](https://semver.org/lang/nl/).
 - Kaartpopup op de stadspagina's (/gratis-planten/<stad>) heeft nu dezelfde
   opmaak als op /deelplekken: sluitknop 44×44, titel valt niet onder de ×
   en het popup is nooit breder of hoger dan de kaart (ook niet onder de
-  zoomknoppen). De popupopmaak staat nu in één gedeeld stylesheet.
+  zoomknoppen; een lang popup scrolt binnenin). De popupopmaak staat nu in
+  één gedeeld stylesheet.
 - Op de stadskaart staan alle markers in beeld (bijvoorbeeld Rotterdam op een
   smal scherm); er wordt niet verder dan zoomniveau 14 ingezoomd.
 
