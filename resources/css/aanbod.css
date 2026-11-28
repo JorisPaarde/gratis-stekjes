@@ -563,6 +563,28 @@ html.aanbod-detail-open { overflow: hidden; }
   font-weight: 400;
 }
 .leaflet-container .leaflet-popup-content .gp-popup-acties { margin: 0.3rem 0 0; }
+/* Stadskaart (280 px hoog): titel en × blijven staan, alleen de aanbodlijst scrolt. */
+.gp-leaflet-popup--stad .gp-popup-lijst {
+  position: relative;
+  margin-top: 0.7rem; /* lijst begint onder de 44px-×, dus niets valt eronder */
+}
+.gp-leaflet-popup--stad .gp-popup-lijst > .zoek-regels--popup {
+  margin-top: 0;
+  max-height: 7rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.gp-leaflet-popup--stad .gp-popup-lijst.heeft-meer::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2rem;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff);
+  pointer-events: none;
+}
+
 .gp-popup-link {
   margin-top: 0.2rem;
   font-weight: 600;
